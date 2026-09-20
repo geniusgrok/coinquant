@@ -13,7 +13,6 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import shutil
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -141,7 +140,17 @@ def download(url: str, destination: Path, *, timeout: float, max_bytes: int) -> 
     destination.parent.mkdir(parents=True, exist_ok=True)
     partial = destination.with_suffix(destination.suffix + ".partial")
     offset = partial.stat().st_size if partial.exists() else 0
-    response = _open(url, offset, timeout)
+    try:
+        response = _open(url, offset, timeout)
+    except HTTPError as exc:
+        if not offset or exc.code != 416:
+            raise
+        # A partial may already equal the remote length but has not passed our
+        # gzip/hash completion checks. Never promote it from HTTP 416 alone:
+        # restart from zero and verify the complete original deterministically.
+        partial.unlink(missing_ok=True)
+        offset = 0
+        response = _open(url, 0, timeout)
     status = getattr(response, "status", None) or response.getcode()
     if offset and status != 206:
         response.close()
