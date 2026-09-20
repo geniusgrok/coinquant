@@ -102,3 +102,65 @@ acceptance merely because the two numerical thresholds happen to pass.
 endpoint probe. It retrieves a small number of native responses and optionally one
 historical trade file, preserving bytes and hashes. It is not a full history
 collector, and it does not use account keys or bypass a venue's access restrictions.
+
+
+## Acquisition and manifest workflow
+
+For native V5 trade/mark/funding acquisition, use an explicitly selected official
+Bybit live API host that is reachable from the research machine. This is public,
+read-only research traffic and does not read account credentials:
+
+```sh
+python research/acquire_v5.py \
+  --output data/v5 \
+  --api-host api.bybit.com \
+  --start 2019-12-11 \
+  --end 2026-09-20
+```
+
+If the global host is region-blocked, choose the official regional host that
+corresponds to the environment/account; do not route credentials or public
+research through an arbitrary proxy host. The V5 collector stores every raw JSON
+page and SHA-256 identity, then writes deterministic daily native trade+mark bars
+and funding rows. A completed day is re-hashed before reuse, so corrupted
+checkpoints are re-acquired instead of silently skipped.
+
+The legacy/public daily tick archive can be preserved independently with:
+
+```sh
+python research/acquire.py --output data/archive --kinds trades index premium
+python research/build_trade_bars.py --archive data/archive --output data/trade-bars
+```
+
+Those static index/premium files are not substitutes for native mark-price
+history. They remain provenance evidence and diagnostics unless their semantics
+and coverage satisfy the strict dataset contract.
+
+A replay manifest is not created from market data alone. First place a dated
+`rules.csv` inside the V5 dataset root with the exact rules columns documented
+above and a precise source. Then assemble:
+
+```sh
+python research/build_manifest.py \
+  --root data/v5 \
+  --rules rules.csv \
+  --rules-source "<precise Bybit notice/API/archive provenance>" \
+  --rules-provenance native
+```
+
+Use `--rules-provenance proxy` only for explicitly diagnostic assumptions.
+That forces the overall manifest to `proxy`; favorable CAGR/MDD from such a
+manifest is not formal native qualification.
+
+After a strict manifest exists:
+
+```sh
+python -m pancakequant backtest --config config.json \
+  --manifest data/v5/manifest.json --output results/base
+python -m pancakequant backtest --config config.json \
+  --manifest data/v5/manifest.json --output results/absence --stress-absence
+```
+
+Do not move the frozen research endpoint merely because one public archive lags.
+If complete native inputs cannot be obtained through the selected official
+source, record the coverage gap and keep formal economics NOT_MEASURED.
