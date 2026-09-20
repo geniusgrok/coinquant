@@ -12,6 +12,7 @@ from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation, ROUND_FLOOR
 import gzip
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -142,12 +143,18 @@ def aggregate_day(original: Path, day: date) -> list[tuple]:
 
 
 def write_day(path: Path, rows: list[tuple]) -> tuple[int, str]:
+    """Write deterministic gzip bytes so the same originals produce the same hash."""
     path.parent.mkdir(parents=True, exist_ok=True)
+    text = io.StringIO(newline="")
+    writer = csv.writer(text, lineterminator="\n")
+    writer.writerow(["time", "open", "high", "low", "close", "volume"])
+    writer.writerows(rows)
+    payload = gzip.compress(text.getvalue().encode("utf-8"), compresslevel=9, mtime=0)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    with gzip.open(temporary, "wt", encoding="utf-8", newline="") as stream:
-        writer = csv.writer(stream)
-        writer.writerow(["time", "open", "high", "low", "close", "volume"])
-        writer.writerows(rows)
+    with temporary.open("wb") as stream:
+        stream.write(payload)
+        stream.flush()
+        os.fsync(stream.fileno())
     os.replace(temporary, path)
     return path.stat().st_size, sha256(path)
 
