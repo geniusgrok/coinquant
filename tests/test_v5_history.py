@@ -89,7 +89,7 @@ class V5HistoryTests(unittest.TestCase):
         start = 1_000_000 * MINUTE_MS
         end = start + 3 * MINUTE_MS
         with tempfile.TemporaryDirectory() as directory:
-            with self.assertRaisesRegex(ValueError, "missing native mark minute"):
+            with self.assertRaisesRegex(ValueError, "missing native mark bar"):
                 fetch_klines(
                     "api.bybit.com", "mark", start, end, Path(directory),
                     opener=FakeOpener(skip=start + MINUTE_MS),
@@ -126,15 +126,15 @@ class V5HistoryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             trade_receipt = {
-                "path": str(root / "raw/2020-01-01/trade-000.json"),
+                "path": str(root / "raw/2020-01-01_2020-01-02/trade-000.json"),
                 "bytes": 1, "sha256": "a", "source": "https://api.bybit.com/trade",
             }
             mark_receipt = {
-                "path": str(root / "raw/2020-01-01/mark-000.json"),
+                "path": str(root / "raw/2020-01-01_2020-01-02/mark-000.json"),
                 "bytes": 1, "sha256": "b", "source": "https://api.bybit.com/mark",
             }
             funding_receipt = {
-                "path": str(root / "raw/2020-01-01/funding.json"),
+                "path": str(root / "raw/2020-01-01_2020-01-02/funding.json"),
                 "bytes": 1, "sha256": "c", "source": "https://api.bybit.com/funding",
             }
             with patch("research.acquire_v5.fetch_klines",
@@ -148,9 +148,9 @@ class V5HistoryTests(unittest.TestCase):
             record = inventory["shards"]["2020-01-01_2020-01-02"]
             self.assertEqual(
                 [row["path"] for row in record["raw_pages"]],
-                ["raw/2020-01-01/trade-000.json",
-                 "raw/2020-01-01/mark-000.json",
-                 "raw/2020-01-01/funding.json"],
+                ["raw/2020-01-01_2020-01-02/trade-000.json",
+                 "raw/2020-01-01_2020-01-02/mark-000.json",
+                 "raw/2020-01-01_2020-01-02/funding.json"],
             )
             self.assertEqual(record["bars"]["path"], "normalized/bars/2020-01-01_2020-01-02.csv.gz")
             self.assertEqual(record["funding"]["path"], "normalized/funding/2020-01-01_2020-01-02.csv.gz")
