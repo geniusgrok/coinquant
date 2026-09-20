@@ -191,7 +191,15 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
         return Target(candle, ZERO, mark, ZERO, ZERO, ZERO, ZERO, ZERO,
                       "ATR stop cannot precede initial 20x liquidation with safety margin")
     tp, sl = _prices(reference, direction, distance, cfg.reward_multiple, rules.tick)
-    quote = reference if trigger else snapshot.ask if direction > 0 else snapshot.bid
+    if trigger:
+        # A future conditional fill has no future book snapshot yet. Use the
+        # currently observed half-spread as the causal proxy so the hosted FOK
+        # limit budgets the same spread + slippage that replay applies at trigger.
+        mid = (snapshot.bid + snapshot.ask) / 2
+        half_spread = (snapshot.ask - snapshot.bid) / (2 * mid)
+        quote = reference * (1 + half_spread if direction > 0 else 1 - half_spread)
+    else:
+        quote = snapshot.ask if direction > 0 else snapshot.bid
     price = quote * (1 + cfg.slippage_fraction) if direction > 0 else quote * (1 - cfg.slippage_fraction)
     price = (price / rules.tick).to_integral_value(rounding=ROUND_CEILING) * rules.tick if direction > 0 else floor_step(price, rules.tick)
     unit_loss = abs(1 / price - 1 / sl)
