@@ -1,4 +1,4 @@
-"""Bounded PUBLIC-only contract/schema probe. Never uses account credentials."""
+"""Bounded PUBLIC-only Bybit history/coverage probe. Never uses account credentials."""
 import argparse
 import hashlib
 import json
@@ -8,6 +8,45 @@ import time
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+START = 1577836800000  # 2020-01-01T00:00:00Z
+END_LAST_MINUTE = 1789862340000  # 2026-09-19T23:59:00Z
+END_LAST_MS = 1789862399999
+
+
+def endpoints():
+    values = {
+        'trading-directory.html': 'https://public.bybit.com/trading/BTCUSD/',
+        'spot-index-directory.html': 'https://public.bybit.com/spot_index/BTCUSD/',
+        'premium-index-directory.html': 'https://public.bybit.com/premium_index/BTCUSD/',
+    }
+    hosts = {
+        'global': 'api.bybit.com',
+        'bytick': 'api.bytick.com',
+        'manepa': 'api.manepa.jp',
+    }
+    for label, host in hosts.items():
+        base = f'https://{host}/v5/'
+        values[f'{label}-instrument.json'] = (
+            base + 'market/instruments-info?category=inverse&symbol=BTCUSD'
+        )
+        values[f'{label}-start-mark.json'] = (
+            base + f'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1'
+            f'&start={START}&end={START + 119999}&limit=2'
+        )
+        values[f'{label}-start-funding.json'] = (
+            base + f'market/funding/history?category=inverse&symbol=BTCUSD'
+            f'&startTime={START}&endTime={START + 86399999}&limit=10'
+        )
+        values[f'{label}-end-mark.json'] = (
+            base + f'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1'
+            f'&start={END_LAST_MINUTE}&end={END_LAST_MS}&limit=2'
+        )
+        values[f'{label}-end-funding.json'] = (
+            base + f'market/funding/history?category=inverse&symbol=BTCUSD'
+            f'&startTime={END_LAST_MINUTE - 86400000}&endTime={END_LAST_MS}&limit=10'
+        )
+    return values
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -15,69 +54,47 @@ def main():
     args = parser.parse_args()
     root = Path(args.output)
     root.mkdir(parents=True, exist_ok=True)
-    base = 'https://api.bybit.com/v5/'
-    # Frozen research window: 2020-01-01T00:00:00Z .. 2026-09-20T00:00:00Z.
-    start = 1577836800000
-    end_last_minute = 1789862280000  # 2026-09-19T23:58:00Z
-    end_last_ms = 1789862399999      # 2026-09-19T23:59:59.999Z
-    endpoints = {
-        'instrument.json': base + 'market/instruments-info?category=inverse&symbol=BTCUSD',
-        'bytick-instrument.json': 'https://api.bytick.com/v5/market/instruments-info?category=inverse&symbol=BTCUSD',
-        'bytick-start-mark.json': 'https://api.bytick.com/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2',
-        'manepa-start-mark.json': 'https://api.manepa.jp/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2',
-        'eu-start-mark.json': 'https://api.bybit.eu/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2',
-        'nl-start-mark.json': 'https://api.bybit.nl/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2',
-        'risk.json': base + 'market/risk-limit?category=inverse&symbol=BTCUSD',
-        'start-kline.json': base + f'market/kline?category=inverse&symbol=BTCUSD&interval=1&start={start}&end={start + 119999}&limit=2',
-        'start-mark.json': base + f'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start={start}&end={start + 119999}&limit=2',
-        'start-funding.json': base + f'market/funding/history?category=inverse&symbol=BTCUSD&startTime={start}&endTime={start + 86399999}&limit=10',
-        'end-kline.json': base + f'market/kline?category=inverse&symbol=BTCUSD&interval=1&start={end_last_minute}&end={end_last_ms}&limit=2',
-        'end-mark.json': base + f'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start={end_last_minute}&end={end_last_ms}&limit=2',
-        'end-funding.json': base + f'market/funding/history?category=inverse&symbol=BTCUSD&startTime={end_last_minute - 86400000}&endTime={end_last_ms}&limit=10',
-        'BTCUSD2020-01-01.csv.gz': 'https://public.bybit.com/trading/BTCUSD/BTCUSD2020-01-01.csv.gz',
-        'BTCUSD2020-01-01_index_price.csv.gz': 'https://public.bybit.com/spot_index/BTCUSD/BTCUSD2020-01-01_index_price.csv.gz',
-        'BTCUSD2020-01-01_premium_index.csv.gz': 'https://public.bybit.com/premium_index/BTCUSD/BTCUSD2020-01-01_premium_index.csv.gz',
-        'BTCUSD2026-09-19.csv.gz': 'https://public.bybit.com/trading/BTCUSD/BTCUSD2026-09-19.csv.gz',
-        'BTCUSD2026-09-19_index_price.csv.gz': 'https://public.bybit.com/spot_index/BTCUSD/BTCUSD2026-09-19_index_price.csv.gz',
-        'BTCUSD2026-09-19_premium_index.csv.gz': 'https://public.bybit.com/premium_index/BTCUSD/BTCUSD2026-09-19_premium_index.csv.gz',
-        'trading-directory.html': 'https://public.bybit.com/trading/BTCUSD/',
-        'spot-index-directory.html': 'https://public.bybit.com/spot_index/BTCUSD/',
-        'premium-index-directory.html': 'https://public.bybit.com/premium_index/BTCUSD/',
-    }
+
     results = []
-    deadline = time.monotonic() + 90
-    for name, url in endpoints.items():
-        row = dict(file=name, source=url)
+    deadline = time.monotonic() + 60
+    for name, url in endpoints().items():
+        row = {'file': name, 'source': url}
         temporary = root / (name + '.partial')
         try:
-            if time.monotonic() >= deadline:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
                 raise TimeoutError('public probe deadline')
             request = Request(url, headers={'User-Agent': 'pancakequant-public-research'})
-            with urlopen(request, timeout=min(10, max(.1, deadline - time.monotonic()))) as response, open(temporary, 'wb') as stream:
-                count, h = 0, hashlib.sha256()
-                for block in iter(lambda: response.read(65536), b''):
-                    if time.monotonic() >= deadline or count + len(block) > 10_000_000:
+            with urlopen(request, timeout=min(5, max(.1, remaining))) as response, temporary.open('wb') as stream:
+                count, digest = 0, hashlib.sha256()
+                while True:
+                    block = response.read(65536)
+                    if not block:
+                        break
+                    if time.monotonic() >= deadline or count + len(block) > 5_000_000:
                         raise TimeoutError('probe size or deadline bound')
                     stream.write(block)
-                    h.update(block)
+                    digest.update(block)
                     count += len(block)
-            temporary.replace(root / name)
-            row.update(status='downloaded', bytes=count, sha256=h.hexdigest())
+            final = root / name
+            temporary.replace(final)
+            row.update(status='downloaded', bytes=count, sha256=digest.hexdigest())
+
             if name.endswith('.json'):
-                document = json.loads((root / name).read_text())
-                result = document.get('result', {})
-                rows = result.get('list', [])
+                document = json.loads(final.read_text(encoding='utf-8'))
+                result = document.get('result')
+                if not isinstance(result, dict):
+                    raise ValueError('V5 result object is missing')
+                rows = result.get('list')
                 row['retCode'] = document.get('retCode')
                 row['exchange_time'] = document.get('time')
-                row['rows'] = len(rows)
-                if name == 'instrument.json' and rows:
+                row['rows'] = len(rows) if isinstance(rows, list) else None
+                if name.endswith('-instrument.json') and isinstance(rows, list) and rows:
                     row['launchTime'] = rows[0].get('launchTime')
                     row['fundingInterval'] = rows[0].get('fundingInterval')
-                    row['status'] = rows[0].get('status')
-                elif name == 'risk.json' and rows:
-                    row['risk_tiers'] = len(rows)
-            elif name.endswith('-directory.html'):
-                listing = (root / name).read_text(encoding='utf-8', errors='strict')
+                    row['instrument_status'] = rows[0].get('status')
+            else:
+                listing = final.read_text(encoding='utf-8')
                 patterns = {
                     'trading-directory.html': r'BTCUSD(\d{4}-\d{2}-\d{2})\.csv\.gz',
                     'spot-index-directory.html': r'BTCUSD(\d{4}-\d{2}-\d{2})_index_price\.csv\.gz',
@@ -85,32 +102,26 @@ def main():
                 }
                 dates = sorted(set(re.findall(patterns[name], listing)))
                 if not dates:
-                    raise ValueError('public archive directory contains no recognized BTCUSD dates')
-                row['first_date'] = dates[0]
-                row['latest_date'] = dates[-1]
-                row['dated_files'] = len(dates)
+                    raise ValueError('archive directory contains no recognized BTCUSD dates')
+                row.update(first_date=dates[0], latest_date=dates[-1], dated_files=len(dates))
         except (HTTPError, URLError, OSError, ValueError, TimeoutError) as exc:
             row.update(status='unavailable', error_type=type(exc).__name__,
                        http_status=getattr(exc, 'code', None))
-            try:
-                temporary.unlink(missing_ok=True)
-            except OSError:
-                pass
+            temporary.unlink(missing_ok=True)
         results.append(row)
+
     coverage = {
-        row['file']: {
-            key: row[key] for key in ('first_date', 'latest_date', 'dated_files')
-            if key in row
-        }
+        row['file']: {key: row[key] for key in ('first_date', 'latest_date', 'dated_files')
+                      if key in row}
         for row in results if row['file'].endswith('-directory.html')
     }
     report = {
-        'purpose': 'PUBLIC schema/coverage probe, not economic validation',
+        'purpose': 'PUBLIC coverage/access probe only; never economic qualification',
         'window': {'start': '2020-01-01T00:00:00Z', 'end': '2026-09-20T00:00:00Z'},
         'archive_coverage': coverage,
         'requests': results,
     }
-    (root / 'probe.json').write_text(json.dumps(report, indent=2) + '\n')
+    (root / 'probe.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report, indent=2))
 
 
