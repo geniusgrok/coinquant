@@ -79,6 +79,28 @@ for the 2020 regime than copying current contract details backward. It still
 does not prove that the same values were effective on 2020-01-01 or identify
 the exact timestamps of later specification changes.
 
+Additional CCXT verbose logs preserve direct Bybit `v2/public/symbols`
+responses at several later dates with the same BTCUSD values:
+
+- **2020-06-09**: CCXT issue #7091
+- **2020-08-12**: CCXT issue #7454
+- **2021-04-23**: CCXT issue #9053
+- **2022-01-12**: CCXT issue #11268
+
+Across these captures BTCUSD remains tick 0.5, quantity step/minimum 1,
+single-order maximum 1,000,000, maximum leverage 100, maker -0.00025 and
+taker 0.00075.
+
+Sources:
+- https://github.com/ccxt/ccxt/issues/7091
+- https://github.com/ccxt/ccxt/issues/7454
+- https://github.com/ccxt/ccxt/issues/9053
+- https://github.com/ccxt/ccxt/issues/11268
+
+Together with the 2020-10-07 capture, these are contemporaneous API observations
+spanning 2020-06 through 2022-01. They substantially constrain that regime but
+still do not establish a value for 2020-01-01 before the first captured point.
+
 ## BTCUSD inverse margin/risk facts
 
 Current Bybit inverse-contract documentation states:
