@@ -7,11 +7,11 @@ permissions:
   contents: write
 concurrency:
   group: pancakequant-source-import
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   copy:
     if: github.repository == 'ychenracing/pancakequant'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 12
     steps:
       - name: Copy without fork and verify every remote file
