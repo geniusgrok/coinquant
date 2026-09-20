@@ -34,6 +34,12 @@ def main():
         'BTCUSD2026-09-19.csv.gz': 'https://public.bybit.com/trading/BTCUSD/BTCUSD2026-09-19.csv.gz',
         'BTCUSD2026-09-19_index_price.csv.gz': 'https://public.bybit.com/spot_index/BTCUSD/BTCUSD2026-09-19_index_price.csv.gz',
         'BTCUSD2026-09-19_premium_index.csv.gz': 'https://public.bybit.com/premium_index/BTCUSD/BTCUSD2026-09-19_premium_index.csv.gz',
+        'candidate-kline-start.csv.gz': 'https://public.bybit.com/kline/BTCUSD/2020-01-01/1min.csv.gz',
+        'candidate-kline-end.csv.gz': 'https://public.bybit.com/kline/BTCUSD/2026-09-19/1min.csv.gz',
+        'candidate-price-quote-start.csv.gz': 'https://public.bybit.com/price_quote/BTCUSD/2020-01-01/1min.csv.gz',
+        'candidate-price-quote-end.csv.gz': 'https://public.bybit.com/price_quote/BTCUSD/2026-09-19/1min.csv.gz',
+        'candidate-premium-quote-start.csv.gz': 'https://public.bybit.com/premium_quote/BTCUSD/2020-01-01/1min.csv.gz',
+        'candidate-premium-quote-end.csv.gz': 'https://public.bybit.com/premium_quote/BTCUSD/2026-09-19/1min.csv.gz',
     }
     results = []
     deadline = time.monotonic() + 90
