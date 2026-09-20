@@ -43,10 +43,58 @@ jobs:
       - name: One requested public schema probe
         if: github.event.head_commit.message == 'Check public BTCUSD endpoints'
         run: python research/probe.py --output "$RUNNER_TEMP/pancakequant-check/public"
+      - name: One-time native BTCUSD history acquisition
+        if: github.event.head_commit.message == 'Acquire native BTCUSD history'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/pancakequant-history"
+          ok=0
+          for attempt in 1 2 3; do
+            if python research/acquire_v5.py \
+              --output "$RUNNER_TEMP/pancakequant-history" \
+              --api-host api.manepa.jp \
+              --start 2019-12-11 \
+              --end 2026-09-20 \
+              --interval-minutes 60 \
+              --shard-days 30 \
+              --timeout 8 \
+              --pause 0.02; then
+              ok=1
+              break
+            fi
+            sleep 2
+          done
+          test "$ok" = 1
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "pancakequant-history"
+          result = json.loads((root / "v5-result.json").read_text())
+          inventory = json.loads((root / "v5-inventory.json").read_text())
+          assert result["status"] == "complete", result
+          assert result["failed_shards"] == 0, result
+          assert inventory["api_host"] == "api.manepa.jp"
+          assert inventory["start"] == "2019-12-11"
+          assert inventory["end_exclusive"] == "2026-09-20"
+          assert inventory["bar_interval_ms"] == 3600000
+          print(json.dumps({
+              "complete_shards": result["complete_shards"],
+              "failed_shards": result["failed_shards"],
+              "bar_interval_ms": result["bar_interval_ms"],
+          }, sort_keys=True))
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: checked-source-${{ github.sha }}
           path: ${{ runner.temp }}/pancakequant-check/
           if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always() && github.event.head_commit.message == 'Acquire native BTCUSD history'
+        with:
+          name: native-btcusd-history-${{ github.sha }}
+          path: ${{ runner.temp }}/pancakequant-history/
+          if-no-files-found: warn
           retention-days: 30
