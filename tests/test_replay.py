@@ -8,14 +8,14 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from pancakequant.data import Dataset, MINUTE
+from pancakequant.data import Dataset, HOUR, MINUTE
 from pancakequant.replay import Account, _replay
 from pancakequant.research import digest, invocations, iso, spec, timestamp
 from pancakequant.types import Blocked, ModelConfig
 from test_model import sample
 
 
-def dataset_fixture(path, *, missing_funding=False):
+def dataset_fixture(path, *, missing_funding=False, interval=MINUTE):
     frozen = spec()
     start = timestamp(frozen['start'])
     end = start + 48 * 3_600_000
@@ -23,11 +23,11 @@ def dataset_fixture(path, *, missing_funding=False):
     frozen['gap_hours'] = [19, 31]  # TEST-ONLY; production spec is unchanged
     warmup = start - 3 * 14_400_000
     m = dict(venue='bybit', symbol='BTCUSD', contract_type='InversePerpetual', settlement_coin='BTC',
-             start=iso(start), end=iso(end), warmup_start=iso(warmup), provenance='synthetic', bar_interval_ms=MINUTE, files={})
+             start=iso(start), end=iso(end), warmup_start=iso(warmup), provenance='synthetic', bar_interval_ms=interval, files={})
     with gzip.open(path / 'bars.csv.gz', 'wt', newline='') as stream:
         writer = csv.writer(stream)
         writer.writerow(['time', 'open', 'high', 'low', 'close', 'volume', 'mark_open', 'mark_high', 'mark_low', 'mark_close'])
-        for i, t in enumerate(range(warmup, end, MINUTE)):
+        for i, t in enumerate(range(warmup, end, interval)):
             p = D(20000) + D(i) / 5
             writer.writerow([t, p, p + D('.1'), p - D('.1'), p + D('.05'), 1000000,
                              p, p + D('.1'), p - D('.1'), p + D('.05')])
@@ -85,6 +85,30 @@ class ReplayTests(unittest.TestCase):
             with open(path / 'funding.csv', 'a') as stream:
                 stream.write('corruption')
             with self.assertRaisesRegex(Blocked, 'hash'):
+                Dataset(manifest, frozen, warmup_bars=3)
+
+    def test_hourly_base_bars_rebuild_the_same_four_hour_signal_clock(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)
+            manifest, frozen = dataset_fixture(path, interval=HOUR)
+            dataset = Dataset(manifest, frozen, warmup_bars=3)
+            self.assertEqual(dataset.interval, HOUR)
+            output = path / 'hourly-output'; output.mkdir()
+            config = replace(ModelConfig(), trend_bars=2, channel_bars=2, atr_bars=2)
+            result = _replay(dataset, config, frozen, output)
+            self.assertEqual(result['decisions'], len(set(invocations(frozen))))
+            with gzip.open(output / 'equity.csv.gz', 'rt') as stream:
+                equity = list(csv.DictReader(stream))
+            self.assertEqual(int(equity[-1]['time']), timestamp(frozen['end']))
+
+    def test_unsupported_two_hour_base_interval_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)
+            manifest, frozen = dataset_fixture(path, interval=HOUR)
+            value = json.loads(manifest.read_text())
+            value['bar_interval_ms'] = 2 * HOUR
+            manifest.write_text(json.dumps(value))
+            with self.assertRaisesRegex(Blocked, 'supported aligned'):
                 Dataset(manifest, frozen, warmup_bars=3)
 
     def test_sparse_replay_and_artifacts_on_synthetic_data(self):
