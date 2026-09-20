@@ -114,6 +114,22 @@ def aggregate(chunk):
                min(b.low for b in chunk), chunk[-1].close, sum((b.volume for b in chunk), ZERO))
 
 
+def hosted_exit_price(position, trigger_price, trade_open, slip, *, adverse_gap):
+    """Conservative market-exit estimate without borrowing a later bar extreme.
+
+    Stop/liquidation exits honor an adverse gap already visible at the bar open.
+    Take-profit exits receive no favorable gap improvement. High/low remain
+    available separately for trigger detection and complete-account MDD.
+    """
+    if not position.quantity or min(trigger_price, trade_open) <= 0:
+        raise Blocked('invalid hosted exit pricing inputs')
+    if position.quantity > 0:
+        reference = min(trigger_price, trade_open) if adverse_gap else trigger_price
+        return reference * (1 - slip)
+    reference = max(trigger_price, trade_open) if adverse_gap else trigger_price
+    return reference * (1 + slip)
+
+
 def activate_entry(account, mark, trade, rules, capacity, spread, slip, *, at_open=False):
     """Return (target, execution_price, reason) without any signal evaluation.
 
@@ -132,14 +148,17 @@ def activate_entry(account, mark, trade, rules, capacity, spread, slip, *, at_op
     account.entry_pending = None
     if account.position.quantity:
         raise Blocked('pending parent cannot coexist with an existing replay position')
-    quote = trade.open if at_open else trade.high if long else trade.low
+    # At the bar open, an already-crossed parent can execute from the known
+    # traded open. For an intrabar crossing, do not use a later high/low as if
+    # it were the trigger-time quote: price from the trigger plus frozen costs.
+    quote = trade.open if at_open else target.trigger_price
     price = quote * (1 + spread / 2 + slip if long else 1 - spread / 2 - slip)
     q = abs(target.quantity)
     affordable = account.wallet >= q / price * (D('.05') + 2 * rules.taker_fee)
     cap = min(capacity, rules.maximum, rules.risk_limit_usd)
     within_limit = price <= target.entry if long else price >= target.entry
     protective = target.stop_loss < mark.open < target.take_profit if long else target.take_profit < mark.open < target.stop_loss
-    # Before an intraminute crossing the open can be below the entry stop; do
+    # Before an intrabar crossing the open can be below the entry stop; do
     # not use that path favorably. Its account excursion is still marked below.
     if not at_open:
         protective = target.stop_loss < target.trigger_price < target.take_profit if long else target.take_profit < target.trigger_price < target.stop_loss
@@ -292,7 +311,7 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                 # and exits can fire; never recompute a target from this bar.
                 activate()
                 p = account.position
-                # Conservative intraminute account-extrema envelope: mark the
+                # Conservative intrabar account-extrema envelope: mark the
                 # current complete account at both extremes before considering
                 # fills. This deliberately does not erase excursions at SL price.
                 candidates = [(account.equity(m), m) for m in (mark.high, mark.low)]
@@ -303,17 +322,24 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                     liq_hit = mark.low <= p.liquidation if long else mark.high >= p.liquidation
                     stop_hit = mark.low <= p.stop_loss if long else mark.high >= p.stop_loss
                     take_hit = mark.high >= p.take_profit if long else mark.low <= p.take_profit
+                    exit_reference = ZERO
+                    adverse_gap = False
                     if liq_hit:
                         account.liquidations += 1
                         account.exit_pending = 'liquidation reachable in unresolved base-bar path'
+                        exit_reference, adverse_gap = p.liquidation, True
                     elif stop_hit:
                         account.exit_pending = 'hosted_stop'
+                        exit_reference, adverse_gap = p.stop_loss, True
                     elif take_hit and not account.exit_pending:
                         account.exit_pending = 'hosted_take_profit'
+                        exit_reference = p.take_profit
                     if account.exit_pending:
-                        # Stop first when stop and TP share a base bar; adverse
-                        # traded extreme plus modeled slippage, never SL=fill.
-                        price = bar.low * (1 - slip) if long else bar.high * (1 + slip)
+                        # Stop/liquidation win ambiguous same-bar races. Execution
+                        # is based on the trigger threshold (or an already-worse
+                        # known open gap), not on a later unknown bar extreme.
+                        price = hosted_exit_price(
+                            p, exit_reference, bar.open, slip, adverse_gap=adverse_gap)
                         reason = account.exit_pending
                         execute(-p.quantity, price, 'native_exit', reason, liquidation=liq_hit)
                 final_mark = mark.close
