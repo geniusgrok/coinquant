@@ -2,10 +2,10 @@
 from dataclasses import replace
 from decimal import ROUND_CEILING
 
-from .bybit import ACTIVE, TERMINAL
+from .bybit import TERMINAL
 from .model import decide, protected, repair_target
 from .state import State, client_id
-from .types import D, ZERO, Blocked, Unknown, Target, floor_step, number, serial
+from .types import D, INTERVAL_MS, ZERO, Blocked, Unknown, Target, floor_step, number, serial
 
 
 def _coverage(snapshot) -> bool:
@@ -52,6 +52,23 @@ def close_target(snapshot, config, candle=-1):
 class Execution:
     def __init__(self, venue, state, config, report):
         self.venue, self.state, self.config, self.report = venue, state, config, report
+        self.last_snapshot = None
+        self.observation_current = False
+        self.write_attempted = False
+
+    def observe(self):
+        # An observation is not current while a newer read is incomplete.
+        self.observation_current = False
+        observed = self.venue.snapshot()
+        observed.validate()
+        self.last_snapshot = observed
+        self.observation_current = True
+        return observed
+
+    def before_write(self):
+        # Invalidate BEFORE sending, including writes with lost acknowledgments.
+        self.observation_current = False
+        self.write_attempted = True
 
     def recover(self, snapshot):
         for intent in self.state.pending():
@@ -75,6 +92,7 @@ class Execution:
         if any(i['id'] == identity for i in self.state.pending()):
             raise Unknown('previous cancellation remains unknown; no resend')
         self.state.prepare(identity, 'cancel', {'link': link})
+        self.before_write()
         try:
             self.venue.cancel(link)
         except (Unknown, Blocked):
@@ -91,7 +109,7 @@ class Execution:
             if not link.startswith('pq-'):
                 raise Blocked('unowned BTC entry remains; it was not altered')
             self.cancel(link)
-        return self.venue.snapshot() if entry_orders(snapshot) else snapshot
+        return self.observe() if entry_orders(snapshot) else snapshot
 
     def protect(self, snapshot, target):
         if not snapshot.position.quantity:
@@ -108,11 +126,12 @@ class Execution:
         if any(i['kind'] == 'protect' for i in self.state.pending()):
             raise Unknown('previous protection replacement remains unknown')
         self.state.prepare(identity, 'protect', {'tp': target.take_profit, 'sl': target.stop_loss})
+        self.before_write()
         try:
             self.venue.protect(target)  # native amendment of BOTH sides; never cancel old first
         except (Unknown, Blocked):
             pass
-        observed = self.venue.snapshot()
+        observed = self.observe()
         if observed.position.quantity:
             if not coverage(observed) or observed.position.take_profit != target.take_profit or observed.position.stop_loss != target.stop_loss:
                 raise Unknown('full native protection was not confirmed')
@@ -144,8 +163,9 @@ class Execution:
                                            'outcome': prior.get('orderStatus', 'unknown')})
             if prior.get('orderStatus') not in TERMINAL:
                 self.cancel(link)
-            return self.venue.snapshot()
+            return self.observe()
         self.state.prepare(link, 'order', {'link': link, 'delta': delta, 'reduce_only': reduce_only})
+        self.before_write()
         try:
             self.venue.place(link, delta, target, reduce_only=reduce_only)
         except (Unknown, Blocked):
@@ -168,7 +188,7 @@ class Execution:
                                        'outcome': observed['orderStatus']})
         if filled != abs(delta):
             self.report['partial'] = True
-        return self.venue.snapshot()
+        return self.observe()
 
     def target(self, snapshot, target, bars):
         p = snapshot.position
@@ -194,22 +214,68 @@ class Execution:
         return snapshot
 
 
+def _recover_safety(engine, config, report):
+    """One bounded fresh reconciliation, then protection or reduce-only removal."""
+    fresh = engine.clean_entries(engine.observe())
+    engine.recover(fresh)
+    if fresh.position.quantity and not coverage(fresh):
+        # An unknown prior protection amendment must not be duplicated. If its
+        # outcome cannot be verified, only reduction of the real position is safe.
+        pending_protect = any(i['kind'] == 'protect' for i in engine.state.pending())
+        if not pending_protect:
+            try:
+                fresh = engine.protect(fresh, repair_target(fresh, config.model))
+            except (Blocked, Unknown):
+                fresh = engine.observe()
+        if fresh.position.quantity and not coverage(fresh):
+            removal = close_target(fresh, config, fresh.time // INTERVAL_MS * INTERVAL_MS)
+            qty = min(abs(fresh.position.quantity), fresh.rules.maximum)
+            fresh = engine.trade(fresh, removal, -qty if fresh.position.quantity > 0 else qty,
+                                 'emergency-close', reduce_only=True)
+    report['emergency'] = ('flat_verified' if not fresh.position.quantity else
+                           'protected_verified' if coverage(fresh) else 'partial_or_unprotected')
+
+
+def _observation_report(engine, report):
+    current, last = engine.observation_current, engine.last_snapshot
+    report.update(actual=None, account_observation_current=current,
+                  offline_safe_at_observation=False, protection_verified_at_observation=False)
+    if last is None:
+        return
+    if not current:
+        # Historical data is useful for recovery but must never look like actual
+        # position or proof that a post-write account is flat/protected.
+        report['last_observed'] = serial(last)
+        return
+    report['actual'] = serial(last)
+    report['protection_verified_at_observation'] = coverage(last)
+    report['offline_safe_at_observation'] = (coverage(last) and not entry_orders(last)
+                                              and not engine.state.pending())
+    report['position_btc_at_mark'] = str(abs(last.position.quantity) / last.mark)
+    report['effective_derivative_leverage'] = str(abs(last.position.quantity) / last.equity_usd)
+    # Fiat delta of the BTC wallet AND inverse position, not just derivative notional.
+    delta_btc = last.wallet_btc
+    if last.position.quantity:
+        delta_btc += last.position.quantity / last.position.entry
+    report['net_btc_delta'] = str(delta_btc)
+    report['effective_fiat_delta_leverage'] = str(delta_btc * last.mark / last.equity_usd)
+
+
 def run_once(venue, config, *, execute=False):
     uid = venue.identity()
-    identity = f'{config.environment}:{uid}'
     report = {'status': 'read_only', 'environment': config.environment, 'account_uid': uid,
               'actions': [], 'partial': False,
               'limitations': ['offline resting entry linkage is not validated; residual entries are cancelled',
                               'BTC collateral retains fiat price risk when the derivative is flat',
                               'native testnet and live execution are not yet integration-qualified']}
-    snapshot = None
-    with State(config.state_dir, identity) as state:
+    with State(config.state_dir, f'{config.environment}:{uid}') as state:
         engine = Execution(venue, state, config, report)
+        account_verified = False
         try:
             if execute:
                 config.authorize(uid, True)
-            snapshot = venue.snapshot()
-            snapshot.validate()
+            snapshot = engine.observe()
+            account_verified = True
             if execute:
                 engine.recover(snapshot)
                 if snapshot.position.quantity and not coverage(snapshot):
@@ -217,54 +283,42 @@ def run_once(venue, config, *, execute=False):
                 snapshot = engine.clean_entries(snapshot)
                 if snapshot.position.quantity and not coverage(snapshot):
                     snapshot = engine.protect(snapshot, repair_target(snapshot, config.model))
-            # Fetch candles AFTER protection repair; stale candles cannot disable
-            # account reconciliation or protection repair on this invocation.
             bars = venue.candles(snapshot.time)
             target = decide(bars, snapshot, config.model)
-            report['target'] = serial(target)
-            report['market_time'] = snapshot.time
+            report['target'], report['market_time'] = serial(target), snapshot.time
             if execute:
                 if state.pending():
                     raise Unknown('unresolved prior operation blocks strategy execution')
                 if state.get('last_candle') == target.candle:
                     report['status'] = 'no_action'
                 else:
-                    if not snapshot.position.quantity and any(o.get('stopOrderType') in ('TakeProfit', 'StopLoss') for o in snapshot.orders):
+                    if not snapshot.position.quantity and any(
+                        o.get('stopOrderType') in ('TakeProfit', 'StopLoss') for o in snapshot.orders
+                    ):
                         raise Blocked('orphan protection on flat account requires reconciliation before entry')
-                    # Persist consumption before any strategy order, not after it.
                     state.set('last_candle', target.candle)
-                    snapshot = engine.target(snapshot, target, bars)
-                    report['status'] = 'partial' if report['partial'] else 'executed' if report['actions'] else 'no_action'
-                snapshot = engine.clean_entries(venue.snapshot())
+                    engine.target(snapshot, target, bars)
+                    report['status'] = 'partial' if report['partial'] else 'executed'
+                snapshot = engine.clean_entries(engine.observe())
                 if not coverage(snapshot):
                     raise Unknown('final full-position protection is not verified')
         except (Blocked, Unknown) as exc:
             report['status'] = 'unknown' if isinstance(exc, Unknown) else 'blocked'
             report['reason'] = str(exc)
-            # Best-effort risk removal is bounded and always reduce-only. A
-            # disconnected exchange cannot be claimed to have closed safely.
-            if execute and snapshot is not None and snapshot.position.quantity and not coverage(snapshot):
+            last = engine.last_snapshot
+            needs_recovery = engine.write_attempted or (last is not None and not coverage(last))
+            # An incompatible account/mode was NEVER accepted for writes. An
+            # engineering invocation must not opportunistically flatten it.
+            if execute and account_verified and needs_recovery:
                 try:
-                    fresh = engine.clean_entries(venue.snapshot())
-                    if fresh.position.quantity:
-                        removal = close_target(fresh, config, fresh.time // 14_400_000 * 14_400_000)
-                        qty = min(abs(fresh.position.quantity), fresh.rules.maximum)
-                        snapshot = engine.trade(fresh, removal, -qty if fresh.position.quantity > 0 else qty,
-                                                'emergency-close', reduce_only=True)
-                    else:
-                        snapshot = fresh
-                    report['emergency'] = 'flat_verified' if not snapshot.position.quantity else 'partial_or_unprotected'
+                    _recover_safety(engine, config, report)
                 except (Blocked, Unknown) as recovery_error:
                     report['emergency'] = 'unknown: ' + str(recovery_error)
         if execute and report['status'] in ('executed', 'no_action'):
-            changed = any(a['operation'] in ('increase', 'reduce', 'protect', 'cancel') for a in report['actions'])
+            changed = any(a['operation'] in ('increase', 'reduce', 'protect', 'cancel')
+                          for a in report['actions'])
             report['status'] = 'executed' if changed else 'no_action'
-        if snapshot is not None:
-            report['offline_safe_at_observation'] = coverage(snapshot) and not entry_orders(snapshot) and not state.pending()
-            report['actual'] = serial(snapshot)
-            report['protection_verified_at_observation'] = coverage(snapshot)
-            report['position_btc_at_mark'] = str(abs(snapshot.position.quantity) / snapshot.mark)
-            report['effective_derivative_leverage'] = str(abs(snapshot.position.quantity) / snapshot.equity_usd)
+        _observation_report(engine, report)
         report['pending_intents'] = state.pending()
         state.report(report)
     return serial(report)
