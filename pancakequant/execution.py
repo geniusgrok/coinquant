@@ -335,8 +335,13 @@ def run_once(venue, config, *, execute=False):
                         o.get('stopOrderType') in ('TakeProfit', 'StopLoss') for o in snapshot.orders
                     ):
                         raise Blocked('orphan protection on flat account requires reconciliation before entry')
-                    state.set('last_candle', target.candle)
                     engine.target(snapshot, target, bars)
+                    # Commit candle consumption only after the bounded target
+                    # lifecycle returns. A pre-write block/crash must not turn
+                    # an unattempted signal into a false same-candle no-op.
+                    # Unknown writes remain idempotent through durable intents
+                    # and deterministic exchange client identifiers.
+                    state.set('last_candle', target.candle)
                     report['status'] = 'partial' if report['partial'] else 'executed'
                 snapshot = engine.clean_entries(engine.observe(), keep_pending=True)
                 if not coverage(snapshot):
