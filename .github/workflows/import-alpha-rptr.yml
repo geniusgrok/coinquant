@@ -1,0 +1,102 @@
+name: Copy pinned alpha-rptr snapshot
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/import-alpha-rptr.yml]
+permissions:
+  contents: write
+concurrency:
+  group: pancakequant-source-import
+  cancel-in-progress: false
+jobs:
+  copy:
+    if: github.repository == 'ychenracing/pancakequant'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Copy without fork and verify every remote file
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PINNED_SOURCE: 31a7ae00744ee58689a1b5baa1ab525ff4b3981d
+          EXPECTED_TREE: b8114279a0d8bc1513dcaf08a4e9179a229b8e1c
+          BOOTSTRAP_PATH: .github/workflows/import-alpha-rptr.yml
+        shell: bash
+        run: |
+          set -euo pipefail
+          export GIT_TERMINAL_PROMPT=0
+          export GIT_CONFIG_COUNT=1
+          export GIT_CONFIG_KEY_0=http.https://github.com/.extraheader
+          export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          export COPY_ROOT="$(mktemp -d)"
+          destination=https://github.com/ychenracing/pancakequant.git
+          source=https://github.com/TheFourGreatErrors/alpha-rptr.git
+          git init -q "$COPY_ROOT/source"
+          git -C "$COPY_ROOT/source" fetch -q --no-tags --depth=1 "$source" "$PINNED_SOURCE"
+          test "$(git -C "$COPY_ROOT/source" rev-parse FETCH_HEAD)" = "$PINNED_SOURCE"
+          test "$(git -C "$COPY_ROOT/source" rev-parse "$PINNED_SOURCE^{tree}")" = "$EXPECTED_TREE"
+          git -C "$COPY_ROOT/source" fsck --strict --no-reflogs
+          git init -q "$COPY_ROOT/staging"
+          cd "$COPY_ROOT/staging"
+          git remote add origin "$destination"
+          git fetch -q --no-tags --depth=1 origin main
+          base=$(git rev-parse FETCH_HEAD)
+          test "$base" = "$GITHUB_SHA"
+          bootstrap_blob=$(git rev-parse "$base:$BOOTSTRAP_PATH")
+          git fetch -q --no-tags --depth=1 "$COPY_ROOT/source" "$PINNED_SOURCE"
+          git read-tree "$EXPECTED_TREE"
+          git update-index --add --cacheinfo "100644,$bootstrap_blob,$BOOTSTRAP_PATH"
+          export STAGED_TREE=$(git write-tree)
+          export IMPORT_COMMIT=$(git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$STAGED_TREE" -p "$base" -m "Import alpha-rptr snapshot as an independent copy" -m "Source: TheFourGreatErrors/alpha-rptr@$PINNED_SOURCE; source tree: $EXPECTED_TREE. Original files and MIT license preserved. Upstream commit history is not imported. The temporary import workflow will be removed after verification.")
+          remote_before=$(git ls-remote origin refs/heads/main | cut -f1)
+          test "$remote_before" = "$base"
+          if ! git push origin "$IMPORT_COMMIT:refs/heads/main"; then
+            actual=$(git ls-remote origin refs/heads/main | cut -f1)
+            test "$actual" = "$IMPORT_COMMIT"
+          fi
+          git init -q "$COPY_ROOT/reread"
+          git -C "$COPY_ROOT/reread" fetch -q --no-tags --depth=1 "$destination" main
+          test "$(git -C "$COPY_ROOT/reread" rev-parse FETCH_HEAD)" = "$IMPORT_COMMIT"
+          git -C "$COPY_ROOT/reread" fsck --strict --no-reflogs
+          python3 - <<'PY'
+          import collections, hashlib, json, os, subprocess
+          from pathlib import Path
+          root = Path(os.environ['COPY_ROOT'])
+          def git(repo, *args):
+              return subprocess.check_output(['git', '-C', str(root / repo), *args])
+          def entries(repo, ref):
+              result = {}
+              for record in git(repo, 'ls-tree', '-rz', ref).split(b'\0'):
+                  if not record:
+                      continue
+                  metadata, path = record.split(b'\t', 1)
+                  mode, kind, oid = metadata.split()
+                  if kind != b'blob':
+                      raise RuntimeError('Unsupported non-blob entry: ' + repr(path))
+                  result[path] = (mode, oid)
+              return result
+          source = entries('source', os.environ['PINNED_SOURCE'])
+          target = entries('reread', os.environ['IMPORT_COMMIT'])
+          bootstrap = os.environ['BOOTSTRAP_PATH'].encode()
+          assert bootstrap not in source
+          del target[bootstrap]
+          assert source == target, 'Remote paths, modes or blob IDs differ'
+          manifest, total = [], 0
+          for path, (mode, oid) in sorted(source.items()):
+              original = git('source', 'cat-file', 'blob', oid.decode())
+              copied = git('reread', 'cat-file', 'blob', oid.decode())
+              assert not original.startswith(b'version https://git-lfs.github.com/spec/v1\n'), 'LFS needs separate transfer'
+              assert original == copied, 'Byte mismatch: ' + repr(path)
+              checksum = hashlib.sha256(original).hexdigest()
+              assert checksum == hashlib.sha256(copied).hexdigest()
+              for data in (original, copied):
+                  header = b'blob ' + str(len(data)).encode() + b'\0'
+                  assert hashlib.sha1(header + data).hexdigest() == oid.decode()
+              total += len(original)
+              manifest.append({'path': path.decode(), 'mode': mode.decode(), 'bytes': len(original), 'git_blob': oid.decode(), 'sha256': checksum})
+          encoded = json.dumps(manifest, sort_keys=True, separators=(',', ':')).encode()
+          (root / 'verification-manifest.json').write_bytes(encoded)
+          summary = {'source_commit': os.environ['PINNED_SOURCE'], 'source_tree': os.environ['EXPECTED_TREE'], 'import_commit': os.environ['IMPORT_COMMIT'], 'staged_tree': os.environ['STAGED_TREE'], 'file_count': len(manifest), 'total_bytes': total, 'manifest_sha256': hashlib.sha256(encoded).hexdigest(), 'modes': dict(collections.Counter(item['mode'] for item in manifest)), 'byte_comparison': 'PASS', 'sha256_comparison': 'PASS', 'git_blob_id_verification': 'PASS', 'temporary_extra_file': os.environ['BOOTSTRAP_PATH']}
+          print('COPY_VERIFIED_JSON=' + json.dumps(summary, sort_keys=True))
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write('## Remote source-copy verification\n\n```json\n' + json.dumps(summary, indent=2, sort_keys=True) + '\n```\n')
+          PY
