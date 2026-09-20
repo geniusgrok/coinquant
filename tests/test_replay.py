@@ -77,6 +77,25 @@ class ReplayTests(unittest.TestCase):
         a.fill(D(-500), D(11000), r)
         self.assertEqual(a.position.quantity, 0)
 
+    def test_hourly_input_rejects_mid_hour_rule_change(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary)
+            manifest, frozen = dataset_fixture(path, interval=HOUR)
+            rules = path / 'rules.csv'
+            rows = list(csv.reader(rules.open()))
+            rows.append([
+                str(timestamp(frozen['start']) + 30 * MINUTE), str(timestamp(frozen['start'])),
+                str(8 * HOUR), '.5', '1', '1', '1000000', '1000000',
+                '150', '.005', '.00075', '.005'])
+            with rules.open('w', newline='') as stream:
+                csv.writer(stream).writerows(rows)
+            value = json.loads(manifest.read_text())
+            value['files']['rules'][0]['bytes'] = rules.stat().st_size
+            value['files']['rules'][0]['sha256'] = digest(rules)
+            manifest.write_text(json.dumps(value))
+            with self.assertRaisesRegex(Blocked, 'not representable'):
+                Dataset(manifest, frozen, warmup_bars=3)
+
     def test_missing_funding_and_bad_hash_are_rejected(self):
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary)

@@ -74,8 +74,10 @@ class Dataset:
         previous = -1
         for row in self.rows('rules'):
             row = {k: (int(v) if k in ('time', 'launch_ms', 'funding_interval_ms') else number(v)) for k, v in row.items()}
-            if row['time'] <= previous or row['funding_interval_ms'] <= 0 or row['funding_interval_ms'] % self.interval:
-                raise Blocked('historical rule timeline is invalid')
+            if (row['time'] <= previous or row['time'] % self.interval
+                    or row['funding_interval_ms'] <= 0
+                    or row['funding_interval_ms'] % self.interval):
+                raise Blocked('historical rule timeline is invalid or not representable at the base interval')
             if row['launch_ms'] > self.warmup_start:
                 raise Blocked('claimed contract listing cannot cover required warmup')
             previous = row['time']
