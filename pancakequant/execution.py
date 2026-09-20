@@ -201,7 +201,7 @@ class Execution:
             if snapshot.position.quantity:
                 self.report['partial'] = True
                 return snapshot
-            target = decide(bars, snapshot, self.config.model)  # actual equity after closing
+            target = decide(bars, snapshot, self.config.model, notional_limit=self.config.max_position_usd)  # actual equity after closing
         delta = target.quantity - snapshot.position.quantity
         if delta:
             reduction = snapshot.position.quantity * delta < 0
@@ -284,7 +284,7 @@ def run_once(venue, config, *, execute=False):
                 if snapshot.position.quantity and not coverage(snapshot):
                     snapshot = engine.protect(snapshot, repair_target(snapshot, config.model))
             bars = venue.candles(snapshot.time)
-            target = decide(bars, snapshot, config.model)
+            target = decide(bars, snapshot, config.model, notional_limit=config.max_position_usd if config.max_position_usd > 0 else None)
             report['target'], report['market_time'] = serial(target), snapshot.time
             if execute:
                 if state.pending():
