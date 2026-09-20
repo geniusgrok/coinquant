@@ -23,6 +23,10 @@ def main():
     endpoints = {
         'instrument.json': base + 'market/instruments-info?category=inverse&symbol=BTCUSD',
         'bytick-instrument.json': 'https://api.bytick.com/v5/market/instruments-info?category=inverse&symbol=BTCUSD',
+        'bytick-start-mark.json': 'https://api.bytick.com/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2',
+        'manepa-start-mark.json': 'https://api.manepa.jp/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2',
+        'eu-start-mark.json': 'https://api.bybit.eu/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2',
+        'nl-start-mark.json': 'https://api.bybit.nl/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2',
         'risk.json': base + 'market/risk-limit?category=inverse&symbol=BTCUSD',
         'start-kline.json': base + f'market/kline?category=inverse&symbol=BTCUSD&interval=1&start={start}&end={start + 119999}&limit=2',
         'start-mark.json': base + f'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start={start}&end={start + 119999}&limit=2',
