@@ -57,6 +57,28 @@ maker 0.02%:
 The exact effective date for the transition from 0.06%/0.01% to
 0.055%/0.02% is still **UNVERIFIED**.
 
+## Dated BTCUSD contract specification capture (2020-10-07)
+
+A CCXT issue opened **2020-10-07** includes the then-current Bybit BTCUSD
+market metadata returned to the client. The captured fields are:
+
+- `tick_size = 0.5`
+- `min_trading_qty = 1`
+- `qty_step = 1`
+- `max_trading_qty = 1,000,000`
+- `min_leverage = 1`
+- `max_leverage = 100`
+- `maker_fee = -0.00025`
+- `taker_fee = 0.00075`
+
+Source:
+- https://github.com/ccxt/ccxt/issues/7713
+
+This is a dated third-party capture of Bybit API metadata, materially stronger
+for the 2020 regime than copying current contract details backward. It still
+does not prove that the same values were effective on 2020-01-01 or identify
+the exact timestamps of later specification changes.
+
 ## BTCUSD inverse margin/risk facts
 
 Current Bybit inverse-contract documentation states:
