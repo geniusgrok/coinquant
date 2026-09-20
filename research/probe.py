@@ -22,6 +22,7 @@ def main():
     end_last_ms = 1789862399999      # 2026-09-19T23:59:59.999Z
     endpoints = {
         'instrument.json': base + 'market/instruments-info?category=inverse&symbol=BTCUSD',
+        'bytick-instrument.json': 'https://api.bytick.com/v5/market/instruments-info?category=inverse&symbol=BTCUSD',
         'risk.json': base + 'market/risk-limit?category=inverse&symbol=BTCUSD',
         'start-kline.json': base + f'market/kline?category=inverse&symbol=BTCUSD&interval=1&start={start}&end={start + 119999}&limit=2',
         'start-mark.json': base + f'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start={start}&end={start + 119999}&limit=2',
