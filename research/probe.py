@@ -28,7 +28,12 @@ def main():
         'end-kline.json': base + f'market/kline?category=inverse&symbol=BTCUSD&interval=1&start={end_last_minute}&end={end_last_ms}&limit=2',
         'end-mark.json': base + f'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start={end_last_minute}&end={end_last_ms}&limit=2',
         'end-funding.json': base + f'market/funding/history?category=inverse&symbol=BTCUSD&startTime={end_last_minute - 86400000}&endTime={end_last_ms}&limit=10',
-        'BTCUSD2020-01-01.csv.gz': 'https://public.bybit.com/trading/BTCUSD/BTCUSD2020-01-01.csv.gz',\n        'BTCUSD2020-01-01_index_price.csv.gz': 'https://public.bybit.com/spot_index/BTCUSD/BTCUSD2020-01-01_index_price.csv.gz',\n        'BTCUSD2020-01-01_premium_index.csv.gz': 'https://public.bybit.com/premium_index/BTCUSD/BTCUSD2020-01-01_premium_index.csv.gz',\n        'BTCUSD2026-09-19.csv.gz': 'https://public.bybit.com/trading/BTCUSD/BTCUSD2026-09-19.csv.gz',\n        'BTCUSD2026-09-19_index_price.csv.gz': 'https://public.bybit.com/spot_index/BTCUSD/BTCUSD2026-09-19_index_price.csv.gz',\n        'BTCUSD2026-09-19_premium_index.csv.gz': 'https://public.bybit.com/premium_index/BTCUSD/BTCUSD2026-09-19_premium_index.csv.gz',
+        'BTCUSD2020-01-01.csv.gz': 'https://public.bybit.com/trading/BTCUSD/BTCUSD2020-01-01.csv.gz',
+        'BTCUSD2020-01-01_index_price.csv.gz': 'https://public.bybit.com/spot_index/BTCUSD/BTCUSD2020-01-01_index_price.csv.gz',
+        'BTCUSD2020-01-01_premium_index.csv.gz': 'https://public.bybit.com/premium_index/BTCUSD/BTCUSD2020-01-01_premium_index.csv.gz',
+        'BTCUSD2026-09-19.csv.gz': 'https://public.bybit.com/trading/BTCUSD/BTCUSD2026-09-19.csv.gz',
+        'BTCUSD2026-09-19_index_price.csv.gz': 'https://public.bybit.com/spot_index/BTCUSD/BTCUSD2026-09-19_index_price.csv.gz',
+        'BTCUSD2026-09-19_premium_index.csv.gz': 'https://public.bybit.com/premium_index/BTCUSD/BTCUSD2026-09-19_premium_index.csv.gz',
     }
     results = []
     deadline = time.monotonic() + 90
