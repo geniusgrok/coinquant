@@ -127,7 +127,6 @@ def _parse_kline(result: dict, kind: str, start: int, end: int) -> list[tuple]:
             raise ValueError("Bybit kline timestamp is invalid") from exc
         if not start <= timestamp < end or timestamp % MINUTE_MS:
             raise ValueError("Bybit kline timestamp is outside requested aligned range")
-        values = tuple(str(value) for value in row[1:6] if kind == "trade") if False else None
         if kind == "trade":
             values = tuple(str(value) for value in row[1:6])
         else:
@@ -304,9 +303,20 @@ def acquire(root: Path, host: str, start: date, end: date, *,
                 root / "normalized" / "funding" / f"{key}.csv.gz",
                 ["time", "rate", "mark"], funding_rows,
             )
+            receipts = trade_receipts + mark_receipts + funding_receipts
+            for receipt in receipts:
+                raw_path = Path(receipt["path"]).resolve()
+                if not raw_path.is_relative_to(root):
+                    raise ValueError("raw receipt escaped acquisition root")
+                receipt["path"] = raw_path.relative_to(root).as_posix()
+            for receipt in (bars_receipt, funding_receipt):
+                derived_path = Path(receipt["path"]).resolve()
+                if not derived_path.is_relative_to(root):
+                    raise ValueError("normalized receipt escaped acquisition root")
+                receipt["path"] = derived_path.relative_to(root).as_posix()
             record.update(
                 status="complete",
-                raw_pages=trade_receipts + mark_receipts + funding_receipts,
+                raw_pages=receipts,
                 bars=bars_receipt,
                 funding=funding_receipt,
                 funding_mark_convention="native mark 1m open at settlement timestamp",
