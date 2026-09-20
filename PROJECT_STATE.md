@@ -2,28 +2,39 @@
 
 ## Effective mandate
 
-Implement the attached 2026-09-20 redesign on research/on-demand-btc-20260920. Main was verified at c886b7c63c6455bd7c933269e32cd35a6fb3e09a and must not receive an unqualified candidate. CNY 10,000 initial capital; formal start 2020-01-01 UTC; CAGR > 200%, complete-account MDD < 20%; fixed exchange leverage 20. This task does not authorize live trading or real account changes.
+Implement the attached 2026-09-20 redesign on `research/on-demand-btc-20260920`. Main remains at `c886b7c63c6455bd7c933269e32cd35a6fb3e09a` and must not receive an unqualified candidate. Formal economics remain CNY 10,000 initial capital, 2020-01-01 UTC through the frozen 2026 endpoint, CAGR > 200%, complete-account MDD < 20%, and exchange leverage fixed at 20. This task does not authorize live trading or real account changes.
 
-## Reconciled branch state
+## Current remote implementation
 
-The current production implementation is the Bybit BTCUSD inverse path in pancakequant/types.py, model.py, config.py, rest.py, decode.py, bybit.py, state.py and execution.py. Parallel commits removed the old framework and added the .transfer historical recovery packet and read-only exporter. AGENTS.md at bb448a439bac1d520a39ced0e763879b462c8e14 was read and retained. The .transfer packet contains a different unqualified implementation; preserve it as recovery evidence, never restore it over current source or mix both adapters into production.
+The active candidate is the single Bybit BTCUSD inverse path in `pancakequant/`. The old multi-exchange/multi-strategy resident bot was removed. The production lifecycle is bounded run-once: reconcile exchange state, read complete market/account data, compute one model target, optionally execute under explicit account authorization, verify actual orders/protection, persist a recoverable result, then exit.
 
-Preserved current execution tests: commit 2b9aae59e10e8bd1f35239df64cc4af1c4b55e85. Native write-through file operations on the research branch are working. Native Git DNS is unavailable in this container. Before every integration read the current remote ref; no force rewinds or local-snapshot replacement.
+The current path includes deterministic order identities, durable write intents, unknown-result reconciliation before retry, conditional FOK entries that may remain hosted only while flat, full-position native TP/SL readback, reduce-only risk removal, same-candle protection repair, cancel/fill race handling, and a shared pre-write risk validator used by both production execution and replay.
 
-## Actual verification
+The `.transfer` packet is historical recovery evidence containing a different unqualified implementation. Preserve it independently; never restore it over current source or mix its adapter into production.
 
-24 local offline tests passed for the current Bybit model, durable state and execution lifecycle. These cover default read-only, account binding, unknown response reconciliation, deterministic IDs after local state loss, partial fills with cancellation of remaining entry, native-protector readback requirements, same-candle protection repair and best-effort reduce-only recovery. They are synthetic/fake-venue tests, not live or testnet validation. Initial old-framework CI failed on removed dependency imports. Current check/export run 35516362361 was queued when inspected; no CI success is claimed.
+## Verified evidence
 
-The first complete source archive at a3c2e3127c02e9abbf38e55f7a12c30f51907670 was downloaded using the connector and its ZIP/tar hashes verified. Subsequent current-source byte readback is still pending. A later .transfer recovery artifact is being obtained without passing the archive through model context.
+Remote commit `8662b403024d65876a0810d2400cd38f073fc54f` added pre-write revalidation of margin, leverage, risk budget, quantity/price rules and projected liquidation before any new exposure. GitHub Actions run `35521903584` checked out that exact SHA, compiled `pancakequant` and `tests`, and ran 55 offline tests successfully in Python 3.13. The workflow also preserved an immutable source archive artifact for that SHA.
 
-## Remaining implementation and evidence
+These are synthetic/offline safety and replay checks, not live or testnet order validation. No private exchange credentials were used. Native Git from the current agent container still cannot resolve github.com, so connector writes are the active preservation path.
 
-A local three-command CLI, strict historical data manifest reader, frozen invocation specification and sparse replay have been written in the active workspace and are undergoing tests and remote preservation. They are not yet the branch's runnable release. Keep this entry current after they are committed; do not infer completion from this description.
+## Current research status
 
-Still missing: complete native 2020-2026 BTCUSD price/mark/funding/historical-rule evidence, full economic measurement, chronological independent validation, real native API safety verification, verified offline resting-entry parent/residual cancellation linkage, and end-to-end durable margin/ordinary-entry amendment integration. Adapter methods alone do not prove those features are delivered.
+`research/spec.json` locks the formal upper bound at 2026-09-20T00:00:00Z and keeps the predeclared sparse irregular invocation schedule. The replay uses the same target model, one-minute trade and mark inputs, funding, dated rules/costs, inverse-contract arithmetic, continuous whole-account BTC/USD/CNY equity and conservative minute extrema.
 
-No formal CAGR/MDD result exists. No financial target has been relaxed. BTC collateral itself changes fiat value even while the derivative is flat; this must remain in whole-account replay and reporting. Do not present the 0.6% incremental BTC stop budget as a fiat drawdown guarantee.
+No formal CAGR/MDD result exists yet. Complete native 2020-2026 trade + mark + funding data and a defensible dated historical fee/risk/liquidation-rule timeline have not yet been assembled into the strict manifest. Current-rule responses must not be backfilled across history and called native evidence.
+
+A bounded public endpoint probe now checks the frozen start and end for native trade, mark and funding availability plus current instrument/risk schemas and one public historical trade file. Its output is schema/coverage evidence only; favorable endpoint responses do not qualify economics.
+
+## Remaining blockers before main
+
+1. Obtain and hash complete native BTCUSD inverse trade/mark/funding history for the frozen window, with enough causal warmup.
+2. Source or explicitly bound the historical fee, funding schedule, risk-tier, size-limit and liquidation-cost timeline without copying current rules backward.
+3. Run baseline sparse replay and the declared absence replay, preserving raw identity/equity/orders/results; report CAGR and MDD honestly.
+4. Keep development (2020-2023) and chronological validation (2024-end) distinguishable; if validation is used for tuning, mark it no longer unseen.
+5. Validate the current Bybit private-order lifecycle on an authorized testnet account when credentials/UID are actually available. Until then, private API behavior is unverified and live use remains blocked.
+6. Only if the economic thresholds and necessary trading-safety checks pass should this redesign be merged to `main`.
 
 ## Direct recovery
 
-Read this file and AGENTS.md from the current branch, obtain the current-source artifact without applying the historical packet, verify file identity, then finish the current CLI/data/replay integration and targeted safety checks. Preserve raw logs and code promptly. Continue independent engineering if native data or API checks are blocked, but keep economic status NOT_MEASURED and leave main unchanged.
+Read this file and `AGENTS.md`, then read the current remote branch before writing. Continue from the latest commit; do not reconstruct from the old recovery packet. Preserve meaningful work promptly to the same research branch. If data or private API access is blocked, continue independent engineering and evidence work, but keep economics NOT_MEASURED/NOT_QUALIFIED and leave main unchanged.

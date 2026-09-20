@@ -12,18 +12,26 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
-    root = Path(args.output); root.mkdir(parents=True, exist_ok=True)
+    root = Path(args.output)
+    root.mkdir(parents=True, exist_ok=True)
     base = 'https://api.bybit.com/v5/'
+    # Frozen research window: 2020-01-01T00:00:00Z .. 2026-09-20T00:00:00Z.
+    start = 1577836800000
+    end_last_minute = 1789862280000  # 2026-09-19T23:58:00Z
+    end_last_ms = 1789862399999      # 2026-09-19T23:59:59.999Z
     endpoints = {
         'instrument.json': base + 'market/instruments-info?category=inverse&symbol=BTCUSD',
         'risk.json': base + 'market/risk-limit?category=inverse&symbol=BTCUSD',
-        'start-kline.json': base + 'market/kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2',
-        'end-mark.json': base + 'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1789862280000&end=1789862399999&limit=2',
-        'start-funding.json': base + 'market/funding/history?category=inverse&symbol=BTCUSD&startTime=1577836800000&endTime=1577923199999&limit=10',
+        'start-kline.json': base + f'market/kline?category=inverse&symbol=BTCUSD&interval=1&start={start}&end={start + 119999}&limit=2',
+        'start-mark.json': base + f'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start={start}&end={start + 119999}&limit=2',
+        'start-funding.json': base + f'market/funding/history?category=inverse&symbol=BTCUSD&startTime={start}&endTime={start + 86399999}&limit=10',
+        'end-kline.json': base + f'market/kline?category=inverse&symbol=BTCUSD&interval=1&start={end_last_minute}&end={end_last_ms}&limit=2',
+        'end-mark.json': base + f'market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start={end_last_minute}&end={end_last_ms}&limit=2',
+        'end-funding.json': base + f'market/funding/history?category=inverse&symbol=BTCUSD&startTime={end_last_minute - 86400000}&endTime={end_last_ms}&limit=10',
         'BTCUSD2020-01-01.csv.gz': 'https://public.bybit.com/trading/BTCUSD/BTCUSD2020-01-01.csv.gz',
     }
     results = []
-    deadline = time.monotonic() + 60
+    deadline = time.monotonic() + 90
     for name, url in endpoints.items():
         row = dict(file=name, source=url)
         temporary = root / (name + '.partial')
@@ -31,23 +39,42 @@ def main():
             if time.monotonic() >= deadline:
                 raise TimeoutError('public probe deadline')
             request = Request(url, headers={'User-Agent': 'pancakequant-public-research'})
-            with urlopen(request, timeout=min(8, max(.1, deadline - time.monotonic()))) as response, open(temporary, 'wb') as stream:
+            with urlopen(request, timeout=min(10, max(.1, deadline - time.monotonic()))) as response, open(temporary, 'wb') as stream:
                 count, h = 0, hashlib.sha256()
                 for block in iter(lambda: response.read(65536), b''):
                     if time.monotonic() >= deadline or count + len(block) > 10_000_000:
                         raise TimeoutError('probe size or deadline bound')
-                    stream.write(block); h.update(block); count += len(block)
+                    stream.write(block)
+                    h.update(block)
+                    count += len(block)
             temporary.replace(root / name)
             row.update(status='downloaded', bytes=count, sha256=h.hexdigest())
             if name.endswith('.json'):
                 document = json.loads((root / name).read_text())
+                result = document.get('result', {})
+                rows = result.get('list', [])
                 row['retCode'] = document.get('retCode')
                 row['exchange_time'] = document.get('time')
-                row['rows'] = len(document.get('result', {}).get('list', []))
-        except (HTTPError, URLError, OSError, ValueError) as exc:
-            row.update(status='unavailable', error_type=type(exc).__name__, http_status=getattr(exc, 'code', None))
+                row['rows'] = len(rows)
+                if name == 'instrument.json' and rows:
+                    row['launchTime'] = rows[0].get('launchTime')
+                    row['fundingInterval'] = rows[0].get('fundingInterval')
+                    row['status'] = rows[0].get('status')
+                elif name == 'risk.json' and rows:
+                    row['risk_tiers'] = len(rows)
+        except (HTTPError, URLError, OSError, ValueError, TimeoutError) as exc:
+            row.update(status='unavailable', error_type=type(exc).__name__,
+                       http_status=getattr(exc, 'code', None))
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError:
+                pass
         results.append(row)
-    report = {'purpose': 'PUBLIC schema/coverage probe, not economic validation', 'requests': results}
+    report = {
+        'purpose': 'PUBLIC schema/coverage probe, not economic validation',
+        'window': {'start': '2020-01-01T00:00:00Z', 'end': '2026-09-20T00:00:00Z'},
+        'requests': results,
+    }
     (root / 'probe.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
 
