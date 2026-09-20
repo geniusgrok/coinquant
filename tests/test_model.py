@@ -74,6 +74,13 @@ class ModelTests(unittest.TestCase):
             self.assertTrue(protected(s, t.take_profit, t.stop_loss))
             self.assertFalse(protected(s))
 
+    def test_authorized_notional_is_a_sizing_cap_not_a_failed_order(self):
+        t = decide(history(), sample(), ModelConfig(), notional_limit=D(10))
+        self.assertGreater(t.quantity, 0)
+        self.assertLessEqual(t.quantity, 10)
+        with self.assertRaises(Blocked):
+            decide(history(), sample(), ModelConfig(), notional_limit=D('NaN'))
+
     def test_invalid_and_nonfinite_numbers(self):
         for text in ('NaN', 'Infinity', '-Infinity', 'not-a-number', ''):
             with self.assertRaises(Blocked):
