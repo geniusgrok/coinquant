@@ -36,9 +36,10 @@ class FakeOpener:
             }]
             result = {"category": "inverse", "list": rows}
         else:
-            aligned_end = end // MINUTE_MS * MINUTE_MS
+            step = int(query.get("interval", "1")) * MINUTE_MS
+            aligned_end = end // step * step
             times = [
-                timestamp for timestamp in range(aligned_end, start - 1, -MINUTE_MS)
+                timestamp for timestamp in range(aligned_end, start - 1, -step)
                 if timestamp != self.skip
             ][:2]  # force pagination even though the real endpoint allows 1000
             if parsed.path.endswith("/market/kline"):
