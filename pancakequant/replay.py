@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 
 from .data import Dataset, MINUTE
-from .model import decide, liquidation_price
+from .model import decide, liquidation_price, validate_risk_increase
 from .pending import validate_target
 from .research import digest, invocations, iso, source_identity, spec, timestamp
 from .types import Bar, Blocked, INTERVAL_MS, Position, Snapshot, ZERO, floor_step, serial
@@ -258,7 +258,7 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                                 snapshot = refreshed
                                 target = decide(list(history), snapshot, cfg, notional_limit=notional_limit)
                         if target.trigger_price:
-                            validate_target(snapshot, target, notional_limit or rules.maximum)
+                            validate_target(snapshot, target, notional_limit or rules.maximum, cfg)
                             operation = 'manual_amend_entry' if account.entry_pending else 'manual_place_entry'
                             account.entry_pending = target
                             orders.writerow([t, iso(t), operation, '0', str(target.entry), '0',
@@ -275,6 +275,9 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                             # limit. Subsequent slippage does not bypass that cap.
                             acceptable = reduction or (delta > 0 and price <= target.entry) or (delta < 0 and price >= target.entry)
                             if acceptable:
+                                if not reduction:
+                                    validate_risk_increase(snapshot, target, cfg,
+                                                           notional_limit=notional_limit or rules.maximum)
                                 execute(delta, price, 'manual_reduce' if reduction else 'manual_increase',
                                         target.reason, target.take_profit, target.stop_loss)
                         if account.position.quantity and target.quantity * account.position.quantity > 0:

@@ -5,7 +5,7 @@ import unittest
 
 from pancakequant.config import Config
 from pancakequant.execution import coverage, run_once
-from pancakequant.model import liquidation_price, repair_target
+from pancakequant.model import decide, liquidation_price, repair_target
 from pancakequant.types import Position, Unknown, ModelConfig
 from test_model import sample, history
 
@@ -195,6 +195,17 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(venue.s.position.quantity, 0)
         self.assertTrue(venue.writes[-1][3])
         self.assertEqual(r['emergency'], 'flat_verified')
+
+    def test_forged_risk_target_is_blocked_before_exchange_write(self):
+        venue = FakeVenue()
+        unsafe = replace(decide(history(), venue.s, ModelConfig()), quantity=D(5000))
+        with tempfile.TemporaryDirectory() as path:
+            from unittest.mock import patch
+            with patch('pancakequant.execution.decide', return_value=unsafe):
+                r = run_once(venue, self.config(path), execute=True)
+        self.assertEqual(r['status'], 'blocked')
+        self.assertEqual(venue.writes, [])
+        self.assertIn('risk-increasing target', r['reason'])
 
     def test_failed_order_read_is_not_empty_account(self):
         venue = FakeVenue(); venue.failure = 'snapshot'

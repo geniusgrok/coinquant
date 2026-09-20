@@ -5,7 +5,7 @@ that parent. Ordinary GTC entries and additions to an existing position must not
 remain offline. This contract follows Bybit's documented order fields; actual
 exchange integration remains a separate qualification, not a mock-test claim.
 """
-from .model import liquidation_price
+from .model import liquidation_price, validate_risk_increase
 from .state import client_id
 from .types import D, SYMBOL, Blocked, Unknown, number
 
@@ -66,9 +66,10 @@ def matches(order, target):
         return False
 
 
-def validate_target(snapshot, target, cap):
+def validate_target(snapshot, target, cap, cfg):
     if not target.trigger_price or snapshot.position.quantity:
         raise Blocked('offline entry requires a conditional target and a flat account')
+    validate_risk_increase(snapshot, target, cfg, notional_limit=cap)
     if target.quantity * (target.trigger_price - snapshot.mark) <= 0:
         raise Blocked('conditional trigger has already crossed; reconcile and decide again')
     row = record('pq-validation', target)
@@ -144,7 +145,7 @@ def apply(engine, snapshot, target):
         raise Blocked('native FOK safety contract previously failed; no additional risk')
     if engine.state.pending():
         raise Unknown('unresolved write blocks a conditional entry or amendment')
-    validate_target(snapshot, target, engine.config.max_position_usd)
+    validate_target(snapshot, target, engine.config.max_position_usd, engine.config.model)
     existing = working(snapshot, engine.config.max_position_usd)
     if existing and matches(existing, target):
         return snapshot

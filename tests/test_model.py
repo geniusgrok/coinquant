@@ -2,7 +2,7 @@ import unittest
 from dataclasses import replace
 from decimal import Decimal as D
 
-from pancakequant.model import decide, liquidation_price, protected, repair_target, validate_bars
+from pancakequant.model import decide, liquidation_price, protected, repair_target, validate_bars, validate_risk_increase
 from pancakequant.types import Bar, Blocked, INTERVAL_MS, ModelConfig, Position, Rules, Snapshot, number
 
 
@@ -36,6 +36,14 @@ class ModelTests(unittest.TestCase):
         self.assertLess(t.stop_loss, s.mark)
         self.assertGreater(t.take_profit, s.mark)
         self.assertLessEqual(abs(t.quantity), s.rules.maximum)
+
+    def test_shared_prewrite_validator_rejects_forged_risk(self):
+        s, cfg = sample(), ModelConfig()
+        t = decide(history(), s, cfg)
+        validate_risk_increase(s, t, cfg, notional_limit=D(100000))
+        with self.assertRaises(Blocked):
+            validate_risk_increase(s, replace(t, quantity=t.quantity * 2), cfg,
+                                   notional_limit=D(100000))
 
     def test_no_future_or_gap_candles(self):
         bars = history()

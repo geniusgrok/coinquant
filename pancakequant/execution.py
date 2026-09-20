@@ -4,7 +4,7 @@ from decimal import ROUND_CEILING
 
 from .bybit import TERMINAL
 from . import pending
-from .model import decide, protected, repair_target
+from .model import decide, protected, repair_target, validate_risk_increase
 from .state import State, client_id
 from .types import D, INTERVAL_MS, ZERO, Blocked, Unknown, Target, floor_step, number, serial
 
@@ -177,6 +177,9 @@ class Execution:
             if prior.get('orderStatus') not in TERMINAL:
                 self.cancel(link)
             return self.observe()
+        if not reduce_only:
+            validate_risk_increase(snapshot, target, self.config.model,
+                                   notional_limit=self.config.max_position_usd)
         self.state.prepare(link, 'order', {'link': link, 'delta': delta, 'reduce_only': reduce_only})
         self.before_write()
         try:

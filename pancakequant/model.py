@@ -52,6 +52,78 @@ def protected(snapshot: Snapshot, tp: D | None = None, sl: D | None = None) -> b
     return ZERO < tp < snapshot.mark < sl < p.liquidation - cushion
 
 
+def validate_risk_increase(snapshot: Snapshot, target: Target, cfg: ModelConfig,
+                           *, notional_limit: D | None = None) -> None:
+    """Re-validate a risk-increasing target against the latest account snapshot.
+
+    The model is not an authorization boundary. Execution and replay both call
+    this function immediately before accepting additional exposure so a stale,
+    corrupted, or externally constructed Target cannot bypass the same margin,
+    leverage, stop/liquidation and risk-budget constraints used by decide().
+    """
+    snapshot.validate()
+    rules, p = snapshot.rules, snapshot.position
+    q = abs(target.quantity)
+    if not q or target.quantity * (p.quantity or target.quantity) <= 0:
+        raise Blocked("risk increase must keep one position direction")
+    if p.quantity and q <= abs(p.quantity):
+        raise Blocked("target does not increase current exposure")
+    cap = rules.maximum if notional_limit is None else number(
+        notional_limit, "authorized notional", positive=True)
+    tier_cap = rules.risk_limit_usd * min(D(1), target.stop_loss / snapshot.mark)
+    if q % rules.step or q < rules.minimum or q > min(rules.maximum, cap, tier_cap):
+        raise Blocked("risk-increasing target violates quantity limits")
+    prices = [target.entry, target.take_profit, target.stop_loss]
+    if target.trigger_price:
+        prices.append(target.trigger_price)
+    if any(x <= 0 or x % rules.tick for x in prices):
+        raise Blocked("risk-increasing target violates price precision")
+    reference = target.trigger_price or snapshot.mark
+    direction = 1 if target.quantity > 0 else -1
+    if direction > 0:
+        geometry = target.stop_loss < reference <= target.entry < target.take_profit
+    else:
+        geometry = ZERO < target.take_profit < target.entry <= reference < target.stop_loss
+    if not geometry:
+        raise Blocked("risk-increasing target has unsafe price geometry")
+
+    required_initial = q / target.entry / 20
+    if target.initial_margin_btc < required_initial or target.allocated_margin_btc < target.initial_margin_btc:
+        raise Blocked("risk-increasing target understates required margin")
+    delta = q - abs(p.quantity)
+    required_cash = delta / target.entry * (D("0.05") + 2 * rules.taker_fee)
+    if required_cash > snapshot.available_btc:
+        raise Blocked("insufficient currently available margin for risk increase")
+    if q > snapshot.equity_usd * cfg.max_effective_leverage:
+        raise Blocked("risk-increasing target exceeds effective leverage limit")
+
+    unit_loss = abs(1 / target.entry - 1 / target.stop_loss)
+    unit_cost = rules.taker_fee * (1 / target.entry + 1 / target.stop_loss)
+    unit_cost += cfg.slippage_fraction / target.stop_loss + abs(snapshot.funding_rate) / snapshot.mark
+    recomputed_risk = q * (unit_loss + unit_cost)
+    if recomputed_risk > snapshot.equity_btc * cfg.risk_fraction:
+        raise Blocked("risk-increasing target exceeds current risk budget")
+    if target.risk_btc < recomputed_risk:
+        raise Blocked("risk-increasing target understates modeled risk")
+
+    if p.quantity:
+        delta_signed = target.quantity - p.quantity
+        if delta_signed * p.quantity <= 0:
+            raise Blocked("risk increase must be same-direction addition")
+        projected_entry = target.quantity / (p.quantity / p.entry + delta_signed / target.entry)
+        existing_base_margin = abs(p.quantity) / p.entry / 20
+        projected_margin = min(p.margin_btc, existing_base_margin) + abs(delta_signed) / target.entry / 20
+    else:
+        projected_entry = target.entry
+        projected_margin = required_initial
+    liq = liquidation_price(target.quantity, projected_entry, projected_margin,
+                            rules.maintenance_rate, rules.taker_fee)
+    cushion = max(rules.tick * 2, reference * D("0.003"))
+    if ((direction > 0 and target.stop_loss <= liq + cushion) or
+            (direction < 0 and target.stop_loss >= liq - cushion)):
+        raise Blocked("stop does not precede projected liquidation with safety margin")
+
+
 def _prices(mark: D, direction: int, distance: D, reward: D, tick: D) -> tuple[D, D]:
     # Round toward the market for the stop and away for take profit.
     if direction > 0:
