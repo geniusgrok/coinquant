@@ -40,6 +40,17 @@ def liquidation_price(quantity: D, entry: D, margin_btc: D,
     return numerator / denominator
 
 
+def bankruptcy_price(quantity: D, entry: D, margin_btc: D, fee: D) -> D:
+    """Inverse isolated bankruptcy/takeover price including closing taker fee.
+
+    At this price, realized PnL plus the closing fee consumes exactly the
+    position's isolated margin. Perpetual liquidation has no separate platform
+    liquidation fee; the insurance fund/engine absorbs execution beyond this
+    takeover price rather than charging additional account loss.
+    """
+    return liquidation_price(quantity, entry, margin_btc, ZERO, fee)
+
+
 def protected(snapshot: Snapshot, tp: D | None = None, sl: D | None = None) -> bool:
     p = snapshot.position
     if not p.quantity:

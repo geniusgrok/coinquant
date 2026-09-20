@@ -2,7 +2,7 @@ import unittest
 from dataclasses import replace
 from decimal import Decimal as D
 
-from pancakequant.model import decide, liquidation_price, protected, repair_target, validate_bars, validate_risk_increase
+from pancakequant.model import bankruptcy_price, decide, liquidation_price, protected, repair_target, validate_bars, validate_risk_increase
 from pancakequant.types import Bar, Blocked, INTERVAL_MS, ModelConfig, Position, Rules, Snapshot, number
 
 
@@ -70,6 +70,15 @@ class ModelTests(unittest.TestCase):
                   replace(sample(), ask=D(100))):
             with self.assertRaises(Blocked):
                 decide(history(), s, ModelConfig())
+
+    def test_bankruptcy_price_consumes_margin_after_closing_fee(self):
+        r = sample().rules
+        for quantity in (D(1000), D(-1000)):
+            entry, margin = D(10000), D('.005')
+            price = bankruptcy_price(quantity, entry, margin, r.taker_fee)
+            pnl = quantity * (D(1) / entry - D(1) / price)
+            close_fee = abs(quantity) * r.taker_fee / price
+            self.assertAlmostEqual(margin + pnl - close_fee, D(0))
 
     def test_liquidation_and_repair_for_both_directions(self):
         for sign in (-1, 1):

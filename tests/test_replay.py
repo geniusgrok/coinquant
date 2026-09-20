@@ -41,8 +41,8 @@ def dataset_fixture(path, *, missing_funding=False, interval=MINUTE):
     with open(path / 'rules.csv', 'w', newline='') as stream:
         writer = csv.writer(stream)
         writer.writerow(['time', 'launch_ms', 'funding_interval_ms', 'tick', 'step', 'minimum', 'maximum',
-                         'market_maximum', 'risk_limit_btc', 'maintenance_rate', 'taker_fee', 'liquidation_fee'])
-        writer.writerow([warmup, warmup, 8 * 3_600_000, '.5', 1, 1, 1000000, 1000000, 150, '.005', '.00075', '.005'])
+                         'market_maximum', 'risk_limit_btc', 'maintenance_rate', 'taker_fee'])
+        writer.writerow([warmup, warmup, 8 * 3_600_000, '.5', 1, 1, 1000000, 1000000, 150, '.005', '.00075'])
     for key, filename in [('bars', 'bars.csv.gz'), ('funding', 'funding.csv'), ('rules', 'rules.csv')]:
         p = path / filename
         m['files'][key] = [dict(path=filename, bytes=p.stat().st_size, sha256=digest(p), source='synthetic unit-test fixture, NOT exchange data')]
@@ -77,6 +77,20 @@ class ReplayTests(unittest.TestCase):
         a.fill(D(-500), D(11000), r)
         self.assertEqual(a.position.quantity, 0)
 
+    def test_liquidation_takeover_consumes_only_isolated_position_margin(self):
+        from pancakequant.model import bankruptcy_price
+
+        r = sample().rules
+        a = Account(D('1'))
+        a.fill(D(1000), D(10000), r, D(12000), D(9800))
+        before = a.wallet
+        margin = a.position.margin_btc
+        takeover = bankruptcy_price(
+            a.position.quantity, a.position.entry, margin, r.taker_fee)
+        a.fill(-a.position.quantity, takeover, r)
+        self.assertEqual(a.position.quantity, 0)
+        self.assertAlmostEqual(a.wallet, before - margin)
+
     def test_hourly_input_rejects_mid_hour_rule_change(self):
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary)
@@ -86,7 +100,7 @@ class ReplayTests(unittest.TestCase):
             rows.append([
                 str(timestamp(frozen['start']) + 30 * MINUTE), str(timestamp(frozen['start'])),
                 str(8 * HOUR), '.5', '1', '1', '1000000', '1000000',
-                '150', '.005', '.00075', '.005'])
+                '150', '.005', '.00075'])
             with rules.open('w', newline='') as stream:
                 csv.writer(stream).writerows(rows)
             value = json.loads(manifest.read_text())

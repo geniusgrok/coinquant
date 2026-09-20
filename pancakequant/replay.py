@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 
 from .data import Dataset, MINUTE
-from .model import decide, liquidation_price, validate_risk_increase
+from .model import bankruptcy_price, decide, liquidation_price, validate_risk_increase
 from .pending import validate_target
 from .research import digest, invocations, iso, source_identity, spec, timestamp
 from .types import Bar, Blocked, INTERVAL_MS, Position, Snapshot, ZERO, floor_step, serial
@@ -32,7 +32,7 @@ class Account:
     def equity(self, mark):
         return (self.wallet + self.position.pnl(mark)) * mark
 
-    def fill(self, delta, price, rules, tp=ZERO, sl=ZERO, liquidation_fee=ZERO):
+    def fill(self, delta, price, rules, tp=ZERO, sl=ZERO):
         p = self.position
         if not delta:
             return
@@ -44,7 +44,7 @@ class Account:
         else:
             q = p.quantity + delta
             entry = q / (p.quantity / p.entry + delta / price) if p.quantity else price
-        fee = abs(delta) * (rules.taker_fee + liquidation_fee) / price
+        fee = abs(delta) * rules.taker_fee / price
         self.wallet -= fee
         self.fees += fee
         if not q:
@@ -216,7 +216,7 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                 statistics.observe(t, 'open', account.equity(mark.open), account.equity(mark.open) / mark.open, fx)
                 capacity = floor_step(bar.volume * liquidity_scale * participation, rules.step)
 
-                def execute(delta, price, kind, reason, tp=ZERO, sl=ZERO, liquidation=False):
+                def execute(delta, price, kind, reason, tp=ZERO, sl=ZERO):
                     nonlocal capacity, fills_count
                     qty = min(abs(delta), capacity, rules.maximum)
                     qty = floor_step(qty, rules.step)
@@ -224,8 +224,7 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                         return ZERO
                     signed = qty if delta > 0 else -qty
                     fee_before = account.fees
-                    account.fill(signed, price, rules, tp, sl,
-                                 row['liquidation_fee'] if liquidation else ZERO)
+                    account.fill(signed, price, rules, tp, sl)
                     capacity -= qty
                     fills_count += 1
                     orders.writerow([t, iso(t), kind, str(signed), str(price), str(account.fees - fee_before),
@@ -327,10 +326,11 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                     take_hit = mark.high >= p.take_profit if long else mark.low <= p.take_profit
                     exit_reference = ZERO
                     adverse_gap = False
+                    liquidation_takeover = False
                     if liq_hit:
                         account.liquidations += 1
-                        account.exit_pending = 'liquidation reachable in unresolved base-bar path'
-                        exit_reference, adverse_gap = p.liquidation, True
+                        account.exit_pending = 'liquidation takeover at bankruptcy price'
+                        liquidation_takeover = True
                     elif stop_hit:
                         account.exit_pending = 'hosted_stop'
                         exit_reference, adverse_gap = p.stop_loss, True
@@ -338,13 +338,17 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                         account.exit_pending = 'hosted_take_profit'
                         exit_reference = p.take_profit
                     if account.exit_pending:
-                        # Stop/liquidation win ambiguous same-bar races. Execution
-                        # is based on the trigger threshold (or an already-worse
-                        # known open gap), not on a later unknown bar extreme.
-                        price = hosted_exit_price(
-                            p, exit_reference, bar.open, slip, adverse_gap=adverse_gap)
+                        # Liquidation is triggered by mark at the liquidation
+                        # threshold, but the isolated account is taken over at
+                        # bankruptcy: it cannot lose more than the allocated
+                        # position margin due solely to a later bar extreme.
+                        price = (bankruptcy_price(
+                            p.quantity, p.entry, p.margin_btc, rules.taker_fee)
+                            if liquidation_takeover else hosted_exit_price(
+                                p, exit_reference, bar.open, slip,
+                                adverse_gap=adverse_gap))
                         reason = account.exit_pending
-                        execute(-p.quantity, price, 'native_exit', reason, liquidation=liq_hit)
+                        execute(-p.quantity, price, 'native_exit', reason)
                 final_mark = mark.close
                 statistics.observe(t + step, 'close', account.equity(mark.close), account.equity(mark.close) / mark.close, fx)
                 if account.wallet <= 0 or account.equity(mark.close) <= 0:

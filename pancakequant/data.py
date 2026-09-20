@@ -119,8 +119,6 @@ class Dataset:
 
     @staticmethod
     def venue_rules(row, mark):
-        if not 0 < row['liquidation_fee'] < D('0.10'):
-            raise Blocked('nonzero historical liquidation cost is required')
         return Rules(row['tick'], row['step'], row['minimum'],
                      min(row['maximum'], row['market_maximum']), row['risk_limit_btc'] * mark,
                      row['maintenance_rate'], row['taker_fee'], row['launch_ms'])

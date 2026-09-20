@@ -21,7 +21,7 @@ HOUR_MS = 3_600_000
 EXPECTED_RULE_COLUMNS = [
     "time", "launch_ms", "funding_interval_ms", "tick", "step", "minimum",
     "maximum", "market_maximum", "risk_limit_btc", "maintenance_rate",
-    "taker_fee", "liquidation_fee",
+    "taker_fee",
 ]
 
 
