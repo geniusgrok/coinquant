@@ -242,6 +242,32 @@ def _deterministic_gzip_csv(path: Path, header: list[str], rows: list[tuple]) ->
             "rows": len(rows)}
 
 
+def _receipt_ok(root: Path, receipt: dict) -> bool:
+    try:
+        path = (root / receipt["path"]).resolve()
+        return (
+            path.is_relative_to(root)
+            and path.is_file()
+            and path.stat().st_size == int(receipt["bytes"])
+            and sha256(path) == receipt["sha256"]
+        )
+    except (KeyError, TypeError, ValueError, OSError):
+        return False
+
+
+def _day_complete(root: Path, record: dict | None) -> bool:
+    if not record or record.get("status") != "complete":
+        return False
+    raw_pages = record.get("raw_pages")
+    if not isinstance(raw_pages, list) or not raw_pages:
+        return False
+    return (
+        all(_receipt_ok(root, receipt) for receipt in raw_pages)
+        and _receipt_ok(root, record.get("bars", {}))
+        and _receipt_ok(root, record.get("funding", {}))
+    )
+
+
 def _load_inventory(path: Path, host: str, start: date, end: date) -> dict:
     identity = {
         "version": INVENTORY_VERSION,
@@ -276,7 +302,7 @@ def acquire(root: Path, host: str, start: date, end: date, *,
     while current < end:
         key = current.isoformat()
         prior = inventory["days"].get(key)
-        if prior and prior.get("status") == "complete":
+        if _day_complete(root, prior):
             current += timedelta(days=1)
             continue
         begin = _day_ms(current)
