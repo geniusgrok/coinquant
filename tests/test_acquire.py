@@ -1,12 +1,15 @@
 from datetime import date
+import gzip
 import hashlib
+import io
 import json
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+from urllib.error import HTTPError
 
-from research.acquire import acquire, checkpoint, default_window, source
+from research.acquire import acquire, checkpoint, default_window, download, source
 
 
 class ArchiveAcquisitionTests(unittest.TestCase):
@@ -74,6 +77,36 @@ class ArchiveAcquisitionTests(unittest.TestCase):
             row = inventory["files"]["trades:2020-01-01"]
             self.assertEqual(row["status"], "unavailable")
             self.assertEqual(row["error_type"], "OSError")
+
+
+    def test_http_416_partial_restarts_from_zero_and_reverifies(self):
+        class Response(io.BytesIO):
+            status = 200
+            def getcode(self):
+                return self.status
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                self.close()
+
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "day.csv.gz"
+            partial = target.with_suffix(target.suffix + ".partial")
+            partial.write_bytes(b"unverified-partial")
+            payload = gzip.compress(b"timestamp,price\n1,2\n")
+            exhausted = HTTPError("https://example.invalid", 416, "range", {}, None)
+            with patch("research.acquire._open", side_effect=[exhausted, Response(payload)]) as opened:
+                size, digest = download(
+                    "https://example.invalid/day.csv.gz", target,
+                    timeout=1, max_bytes=1024,
+                )
+            self.assertEqual(opened.call_count, 2)
+            self.assertEqual(opened.call_args_list[0].args[1], len(b"unverified-partial"))
+            self.assertEqual(opened.call_args_list[1].args[1], 0)
+            self.assertEqual(target.read_bytes(), payload)
+            self.assertEqual(size, len(payload))
+            self.assertEqual(digest, hashlib.sha256(payload).hexdigest())
+            self.assertFalse(partial.exists())
 
 
 if __name__ == "__main__":
