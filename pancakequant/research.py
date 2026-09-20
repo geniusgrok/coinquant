@@ -35,6 +35,8 @@ def spec():
     value = json.loads(SPEC_PATH.read_text(encoding='utf-8'))
     if (value['start'] != '2020-01-01T00:00:00Z' or value['initial_cny'] != '10000'
             or value['leverage'] != 20 or value['symbol'] != 'BTCUSD'
+            or value.get('bar_interval_ms') != 3_600_000
+            or value.get('liquidity_activity_basis_ms') != 60_000
             or value['cagr_minimum_exclusive'] != '2' or value['mdd_maximum_exclusive'] != '0.20'):
         raise Blocked('formal economic mandate changed; do not silently qualify')
     if timestamp(value['end']) > int(datetime.now(timezone.utc).timestamp() * 1000):

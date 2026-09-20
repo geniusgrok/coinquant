@@ -21,6 +21,8 @@ def dataset_fixture(path, *, missing_funding=False, interval=MINUTE):
     end = start + 48 * 3_600_000
     frozen['end'] = iso(end)
     frozen['gap_hours'] = [19, 31]  # TEST-ONLY; production spec is unchanged
+    frozen['bar_interval_ms'] = interval  # synthetic mechanics fixture only
+    frozen['liquidity_activity_basis_ms'] = MINUTE
     warmup = start - 3 * 14_400_000
     m = dict(venue='bybit', symbol='BTCUSD', contract_type='InversePerpetual', settlement_coin='BTC',
              start=iso(start), end=iso(end), warmup_start=iso(warmup), provenance='synthetic', bar_interval_ms=interval, files={})

@@ -45,6 +45,8 @@ class Dataset:
                 or type(self.interval) is not int or self.interval not in SUPPORTED_INTERVALS
                 or INTERVAL_MS % self.interval):
             raise Blocked('explicit provenance and a supported aligned trade/mark interval are required')
+        if mandate.get('bar_interval_ms') is not None and self.interval != mandate['bar_interval_ms']:
+            raise Blocked('dataset base interval differs from the frozen research specification')
         if self.warmup_start > self.start - warmup_bars * 14_400_000 or self.warmup_start % 14_400_000:
             raise Blocked('insufficient complete pre-start signal warmup bars')
         self.files = {}

@@ -15,7 +15,14 @@
   "settlement_coin": "BTC",
   "leverage": 20,
   "seed": "pancakequant-20260920-before-economic-observations",
-  "gap_hours": [19, 31, 47, 73, 109, 151],
+  "gap_hours": [
+    19,
+    31,
+    47,
+    73,
+    109,
+    151
+  ],
   "stress_skip_after_trigger": 50,
   "stress_absence_days": 21,
   "spread_fraction": "0.0002",
@@ -25,5 +32,8 @@
   "cost_status": "spread, slippage, conversion and depth are explicit modeling assumptions; fees, funding and margin tiers must come from identified input records",
   "cagr_minimum_exclusive": "2",
   "mdd_maximum_exclusive": "0.20",
-  "qualification_status": "NOT_MEASURED"
+  "qualification_status": "NOT_MEASURED",
+  "bar_interval_ms": 3600000,
+  "liquidity_activity_basis_ms": 60000,
+  "bar_interval_status": "frozen before native economic measurement; native 60m trade/mark extrema rebuild the 4h signal clock"
 }

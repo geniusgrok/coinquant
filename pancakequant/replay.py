@@ -169,10 +169,13 @@ def activate_entry(account, mark, trade, rules, capacity, spread, slip, *, at_op
 
 def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=None):
     step = dataset.interval
-    # Frozen liquidity assumptions were calibrated to a one-minute activity
-    # proxy. Hourly bars preserve price extrema but must not multiply executable
-    # capacity by aggregating 60 minutes of volume.
-    liquidity_scale = D(MINUTE) / D(step)
+    # The activity basis is frozen independently of the bar interval. Hourly
+    # price bars preserve extrema but must not multiply executable capacity by
+    # aggregating an hour of volume into a one-minute liquidity assumption.
+    liquidity_basis = int(frozen['liquidity_activity_basis_ms'])
+    if liquidity_basis <= 0 or step % liquidity_basis:
+        raise Blocked('frozen liquidity activity basis is incompatible with replay interval')
+    liquidity_scale = D(liquidity_basis) / D(step)
     initial = D(frozen['initial_cny']) / D(frozen['cny_per_usd'])
     fx = D(frozen['cny_per_usd'])
     spread, slip = D(frozen['spread_fraction']), D(frozen['slippage_fraction'])
