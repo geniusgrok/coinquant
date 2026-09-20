@@ -1,41 +1,19 @@
-name: Check
+name: Preserve and check research source
 on:
   push:
-    branches: [main, 'research/**']
-  workflow_dispatch:
+    branches: [research/on-demand-btc-20260920]
 permissions:
-  contents: read
-concurrency:
-  group: check-${{ github.ref }}
-  cancel-in-progress: true
+  contents: write
 jobs:
-  check:
+  preserve:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
-          python-version: '3.12'
-      - name: Targeted offline checks
-        shell: bash
-        run: |
-          mkdir -p /tmp/pancakequant-check
-          if [ -d tests ]; then
-            set -o pipefail
-            python -m unittest discover -s tests -v 2>&1 | tee /tmp/pancakequant-check/tests.txt
-          else
-            echo 'NOT_RUN: redesigned tests are not implemented yet' > /tmp/pancakequant-check/tests.txt
-          fi
-      - name: Preserve checked source identity
-        if: always()
-        run: |
-          git rev-parse HEAD > /tmp/pancakequant-check/HEAD.txt
-          git archive --format=tar HEAD > /tmp/pancakequant-check/source.tar
-          sha256sum /tmp/pancakequant-check/source.tar > /tmp/pancakequant-check/SHA256SUMS
-      - uses: actions/upload-artifact@v4
-        if: always()
+          ref: research/on-demand-btc-20260920
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
-          name: checked-source-${{ github.sha }}
-          path: /tmp/pancakequant-check/
-          retention-days: 30
+          python-version: '3.13'
+      - name: Reconstruct source and verify remote bytes
+        run: python .transfer/materialize.py
