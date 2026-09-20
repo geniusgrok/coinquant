@@ -1,19 +1,35 @@
-name: Preserve and check research source
+name: Check and export research source
 on:
   push:
     branches: [research/on-demand-btc-20260920]
 permissions:
-  contents: write
+  contents: read
+concurrency:
+  group: pancakequant-research-check
+  cancel-in-progress: true
 jobs:
-  preserve:
+  check:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
-          ref: research/on-demand-btc-20260920
+          ref: ${{ github.sha }}
+          persist-credentials: false
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
-      - name: Reconstruct source and verify remote bytes
-        run: python .transfer/materialize.py
+      - name: Export both verified inputs without changing the repository
+        run: python .transfer/materialize.py | tee "$RUNNER_TEMP/recovery-export.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-recovery-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/pancakequant-recovery/recovery.zip
+            ${{ runner.temp }}/recovery-export.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Compile and check materialized source only
+        run: |
+          python -m compileall -q pancakequant tests
+          python -m unittest discover -s tests -v
