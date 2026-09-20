@@ -1,5 +1,6 @@
 {
   "environment": "testnet",
+  "api_host": "",
   "account_uid": "",
   "max_position_usd": "0",
   "state_dir": "~/.pancakequant/testnet",

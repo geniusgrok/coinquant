@@ -16,7 +16,7 @@ class Bybit:
     def __init__(self, config: Config, *, execute=False, rest=None):
         self.config = config
         self.execute = execute
-        self.rest = rest or Rest(config.environment, execute=execute)
+        self.rest = rest or Rest(config.environment, api_host=config.api_host, execute=execute)
         self.uid = None
         self.read_only_key = True
         self.instrument = None

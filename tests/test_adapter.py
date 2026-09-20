@@ -47,6 +47,17 @@ class AdapterTests(unittest.TestCase):
             Rest('testnet', opener=opener).call('POST', '/v5/order/create')
         self.assertEqual(len(opener.calls), 1)
 
+    def test_transport_host_is_explicit_and_restricted_to_official_environment_hosts(self):
+        self.assertEqual(Rest('live', opener=Opener()).base, 'https://api.bybit.com')
+        self.assertEqual(Rest('live', api_host='api.manepa.jp', opener=Opener()).base,
+                         'https://api.manepa.jp')
+        self.assertEqual(Rest('testnet', api_host='api-testnet.manepa.jp', opener=Opener()).base,
+                         'https://api-testnet.manepa.jp')
+        with self.assertRaises(Blocked):
+            Rest('live', api_host='example.com', opener=Opener())
+        with self.assertRaises(Blocked):
+            Rest('testnet', api_host='api.manepa.jp', opener=Opener())
+
     def test_missing_or_looping_pages_are_not_empty_account(self):
         rest = Rest('testnet', opener=Opener())
         rest.get = lambda *a, **k: {}

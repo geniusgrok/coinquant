@@ -11,17 +11,41 @@ from urllib.error import HTTPError, URLError
 from .types import Blocked, Unknown
 
 
+OFFICIAL_HOSTS = {
+    'testnet': (
+        'api-testnet.bybit.com',
+        'api-testnet.manepa.jp',
+        'api-testnet.spark-fintech.com',
+    ),
+    'live': (
+        'api.bybit.com',
+        'api.bytick.com',
+        'api.bybit.nl',
+        'api.bybit.tr',
+        'api.bybit.kz',
+        'api.bybitgeorgia.ge',
+        'api.bybit.ae',
+        'api.bybit.eu',
+        'api.bybit.id',
+        'api.manepa.jp',
+        'api.spark-fintech.com',
+    ),
+}
+
+
 class NoRedirect(HTTPRedirectHandler):
     def redirect_request(self, *args, **kwargs):
         raise Blocked('refusing API redirect; credentials never leave the selected host')
 
 
 class Rest:
-    def __init__(self, environment: str, *, execute: bool = False, opener=None):
-        hosts = {'testnet': 'https://api-testnet.bybit.com', 'live': 'https://api.bybit.com'}
-        if environment not in hosts:
+    def __init__(self, environment: str, *, api_host: str = '', execute: bool = False, opener=None):
+        if environment not in OFFICIAL_HOSTS:
             raise Blocked('invalid explicit exchange environment')
-        self.base = hosts[environment]
+        host = api_host or OFFICIAL_HOSTS[environment][0]
+        if host not in OFFICIAL_HOSTS[environment]:
+            raise Blocked('api_host is not an approved Bybit host for this environment')
+        self.base = 'https://' + host
         self.environment = environment
         self.execute = execute
         self.opener = opener or build_opener(NoRedirect())
@@ -54,7 +78,7 @@ class Rest:
             if len(raw) > 2_000_000:
                 raise Unknown('oversized API response')
             result = json.loads(raw)
-        except (HTTPError, URLError, TimeoutError, OSError, ValueError) as exc:
+        except (HTTPError, URLError, TimeoutError, OSError, ValueError):
             # Do not log HTTP bodies, signed headers, keys, or exception messages.
             raise Unknown(f'{method} {path}: transport outcome unknown') from None
         if not isinstance(result, dict) or type(result.get('retCode')) is not int:

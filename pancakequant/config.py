@@ -9,6 +9,7 @@ from .types import Blocked, D, ModelConfig, number
 @dataclass(frozen=True)
 class Config:
     environment: str = 'testnet'
+    api_host: str = ''
     account_uid: str = ''
     max_position_usd: D = D(0)
     state_dir: str = '~/.pancakequant/testnet'
@@ -17,8 +18,10 @@ class Config:
     def __post_init__(self):
         if self.environment not in ('testnet', 'live'):
             raise Blocked('environment must explicitly be testnet or live')
-        if not isinstance(self.account_uid, str) or not isinstance(self.state_dir, str):
-            raise Blocked('account_uid and state_dir must be strings')
+        if not isinstance(self.api_host, str) or not isinstance(self.account_uid, str) or not isinstance(self.state_dir, str):
+            raise Blocked('api_host, account_uid and state_dir must be strings')
+        if '://' in self.api_host or '/' in self.api_host:
+            raise Blocked('api_host must be an approved hostname, not a URL')
         if number(self.max_position_usd) < 0:
             raise Blocked('negative authorized position limit')
 

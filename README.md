@@ -27,7 +27,7 @@ python -m pancakequant status --config config.json
 python -m pancakequant run --config config.json
 ```
 
-默认配置是测试网、空账户 UID、零交易额度。因此在没有正确配置密钥/账户时，命令返回 `blocked` 和退出码 2；不会自动回退到实盘。示例中的 `cp` 用于 POSIX shell，Windows 可直接复制该文件。
+默认配置是测试网、空账户 UID、零交易额度。因此在没有正确配置密钥/账户时，命令返回 `blocked` 和退出码 2；不会自动回退到实盘。示例中的 `cp` 用于 POSIX shell，Windows 可直接复制该文件。\n\n`api_host` 默认留空：测试网使用 `api-testnet.bybit.com`，实盘使用 `api.bybit.com`。如果账户所属地区要求 Bybit 的地区域名，可显式填写官方域名；程序只接受内置官方 allowlist，并要求与 `testnet/live` 匹配，防止 API 密钥被发送到任意主机。程序不根据 IP 或地理位置自动猜测区域。
 
 密钥仅通过环境变量读取：测试网为 `PANCAKEQUANT_TESTNET_KEY` / `PANCAKEQUANT_TESTNET_SECRET`；真实账户为 `PANCAKEQUANT_LIVE_KEY` / `PANCAKEQUANT_LIVE_SECRET`。配置中不保存密钥，不需要提现权限。账户配置只在合法可用、明确授权的账户上使用；本次改造未改变任何真实账户设置，也未进行真实交易。
 
