@@ -82,6 +82,8 @@ class Rules:
     def __post_init__(self) -> None:
         for key in ("tick", "step", "minimum", "maximum", "risk_limit_usd"):
             number(getattr(self, key), key, positive=True)
+        number(self.maintenance_rate, 'maintenance rate')
+        number(self.taker_fee, 'fee')
         if not ZERO < self.maintenance_rate < D("0.05"):
             raise Blocked("unsupported maintenance tier at 20x")
         if not ZERO <= self.taker_fee < D("0.01"):
@@ -100,6 +102,12 @@ class Position:
     stop_loss: D = ZERO
     leverage: D = D(20)
     index: int = 0
+
+    def __post_init__(self) -> None:
+        for name in ('quantity', 'entry', 'margin_btc', 'liquidation', 'take_profit', 'stop_loss', 'leverage'):
+            value = number(getattr(self, name), name)
+            if name != 'quantity' and value < 0:
+                raise Blocked('negative position field')
 
     def pnl(self, mark: D) -> D:
         if self.quantity == 0:
@@ -141,7 +149,8 @@ class Snapshot:
         for key in ("available_btc", "buy_depth_usd", "sell_depth_usd"):
             if number(getattr(self, key), key) < 0:
                 raise Blocked(f"negative {key}")
-        if self.bid > self.ask or self.equity_btc <= 0 or not self.account_id:
+        number(self.funding_rate, "funding rate")
+        if self.time < 0 or self.bid > self.ask or self.equity_btc <= 0 or not self.account_id:
             raise Blocked("inconsistent account or quotation")
         if self.margin_mode != "ISOLATED_MARGIN":
             raise Blocked("account is not isolated; no automatic mode change")
@@ -185,6 +194,8 @@ class ModelConfig:
     slippage_fraction: D = D("0.001")
 
     def __post_init__(self) -> None:
+        for key in ('risk_fraction', 'atr_multiple', 'reward_multiple', 'max_effective_leverage', 'liquidity_fraction', 'slippage_fraction'):
+            number(getattr(self, key), key, positive=True)
         if not 2 <= self.atr_bars <= self.trend_bars <= 500 or not 2 <= self.channel_bars <= 500:
             raise Blocked("invalid indicator periods")
         for name in ("risk_fraction", "liquidity_fraction", "slippage_fraction"):
