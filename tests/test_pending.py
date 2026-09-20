@@ -169,11 +169,10 @@ class PendingTests(unittest.TestCase):
     def test_conditional_fok_still_respects_single_order_max(self):
         s = replace(sample(), rules=replace(sample().rules, maximum=D(5)))
         bars = history()
-        older = bars[-25]
-        bars[-1] = replace(bars[-1], close=older.close)
+        bars[-10] = replace(bars[-10], high=D(31000))
         target_value = decide(bars, s, ModelConfig(), notional_limit=D(100000))
-        if target_value.trigger_price:
-            self.assertLessEqual(abs(target_value.quantity), s.rules.maximum)
+        self.assertGreater(target_value.trigger_price, s.mark)
+        self.assertLessEqual(abs(target_value.quantity), s.rules.maximum)
 
     def test_model_generates_pending_from_complete_past_channel_only(self):
         bars = history()

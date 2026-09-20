@@ -31,7 +31,7 @@ python -m pancakequant run --config config.json
 
 密钥仅通过环境变量读取：测试网为 `PANCAKEQUANT_TESTNET_KEY` / `PANCAKEQUANT_TESTNET_SECRET`；真实账户为 `PANCAKEQUANT_LIVE_KEY` / `PANCAKEQUANT_LIVE_SECRET`。配置中不保存密钥，不需要提现权限。账户配置只在合法可用、明确授权的账户上使用；本次改造未改变任何真实账户设置，也未进行真实交易。
 
-将 `account_uid` 与交易所返回的 UID 对齐，设置一次性的最大授权名义敞口 `max_position_usd`。模型自动在风险、保证金、交易规格、流动性及授权上限内计算每次数量，不需要逐次手填仓位。每个账户/环境使用独立、持久化的 `state_dir`，不要同时在多台机器执行；本地锁不是分布式锁。
+将 `account_uid` 与交易所返回的 UID 对齐，设置一次性的最大授权名义敞口 `max_position_usd`。模型自动在风险、保证金、交易规格、流动性及授权上限内计算每次数量，不需要逐次手填仓位。每个账户/环境使用独立、持久化的 `state_dir`，不要同时在多台机器执行；本地锁不是分布式锁。\n\n交易所的 `maxOrderQty/maxMktOrderQty` 是**单笔订单上限**，不是总持仓上限。系统每次人工触发最多发送一个该上限内的普通增减仓 chunk；若模型目标尚未达到，报告为 `partial`，同根 K 线不会继续追单。总持仓另外受账户授权、风险档、模型风险/杠杆以及 Bybit Full TP/SL 最多六次最大平仓单的离线保护容量共同约束；未来 conditional FOK 入场仍必须在单笔上限内。
 
 未来明确授权交易后，才使用：
 
