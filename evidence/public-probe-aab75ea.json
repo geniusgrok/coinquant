@@ -1,0 +1,72 @@
+{
+  "purpose": "PUBLIC schema/coverage probe, not economic validation",
+  "window": {
+    "start": "2020-01-01T00:00:00Z",
+    "end": "2026-09-20T00:00:00Z"
+  },
+  "requests": [
+    {
+      "file": "instrument.json",
+      "source": "https://api.bybit.com/v5/market/instruments-info?category=inverse&symbol=BTCUSD",
+      "status": "unavailable",
+      "error_type": "HTTPError",
+      "http_status": 403
+    },
+    {
+      "file": "risk.json",
+      "source": "https://api.bybit.com/v5/market/risk-limit?category=inverse&symbol=BTCUSD",
+      "status": "unavailable",
+      "error_type": "HTTPError",
+      "http_status": 403
+    },
+    {
+      "file": "start-kline.json",
+      "source": "https://api.bybit.com/v5/market/kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2",
+      "status": "unavailable",
+      "error_type": "HTTPError",
+      "http_status": 403
+    },
+    {
+      "file": "start-mark.json",
+      "source": "https://api.bybit.com/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1577836800000&end=1577836919999&limit=2",
+      "status": "unavailable",
+      "error_type": "HTTPError",
+      "http_status": 403
+    },
+    {
+      "file": "start-funding.json",
+      "source": "https://api.bybit.com/v5/market/funding/history?category=inverse&symbol=BTCUSD&startTime=1577836800000&endTime=1577923199999&limit=10",
+      "status": "unavailable",
+      "error_type": "HTTPError",
+      "http_status": 403
+    },
+    {
+      "file": "end-kline.json",
+      "source": "https://api.bybit.com/v5/market/kline?category=inverse&symbol=BTCUSD&interval=1&start=1789862280000&end=1789862399999&limit=2",
+      "status": "unavailable",
+      "error_type": "HTTPError",
+      "http_status": 403
+    },
+    {
+      "file": "end-mark.json",
+      "source": "https://api.bybit.com/v5/market/mark-price-kline?category=inverse&symbol=BTCUSD&interval=1&start=1789862280000&end=1789862399999&limit=2",
+      "status": "unavailable",
+      "error_type": "HTTPError",
+      "http_status": 403
+    },
+    {
+      "file": "end-funding.json",
+      "source": "https://api.bybit.com/v5/market/funding/history?category=inverse&symbol=BTCUSD&startTime=1789775880000&endTime=1789862399999&limit=10",
+      "status": "unavailable",
+      "error_type": "HTTPError",
+      "http_status": 403
+    },
+    {
+      "file": "BTCUSD2020-01-01.csv.gz",
+      "source": "https://public.bybit.com/trading/BTCUSD/BTCUSD2020-01-01.csv.gz",
+      "status": "downloaded",
+      "bytes": 1634666,
+      "sha256": "380fffa270906f97098e98cc68d7358513e8970b9800ff4e84612925927cd3ed"
+    }
+  ]
+}
