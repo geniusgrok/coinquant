@@ -2,54 +2,99 @@
 
 ## Effective mandate
 
-Implement the attached 2026-09-20 redesign on `research/on-demand-btc-20260920`. Main remains at `c886b7c63c6455bd7c933269e32cd35a6fb3e09a` and must not receive an unqualified candidate. Formal economics remain CNY 10,000 initial capital, 2020-01-01 UTC through the frozen 2026 endpoint, CAGR > 200%, complete-account MDD < 20%, and exchange leverage fixed at 20. This task does not authorize live trading or real account changes.
+Repository: `ychenracing/pancakequant`.
 
-## Current remote implementation
+Continue the attached 2026-09-20 redesign on `research/on-demand-btc-20260920`. Main remains unchanged until the candidate meets the applicable economic and trading-safety requirements. Formal economics remain CNY 10,000 initial capital, 2020-01-01 UTC through the research protocol's frozen complete-data endpoint in 2026, CAGR > 200%, complete-account mark-to-market MDD < 20%, with exchange leverage fixed at 20. This work does not authorize live trading, transfers, credential changes, or real account-setting changes.
 
-The active candidate is the single Bybit BTCUSD inverse path in `pancakequant/`. The old multi-exchange/multi-strategy resident bot was removed. The production lifecycle is bounded run-once: reconcile exchange state, read complete market/account data, compute one model target, optionally execute under explicit account authorization, verify actual orders/protection, persist a recoverable result, then exit.
+## Current production design
 
-The current path includes deterministic order identities, durable write intents, unknown-result reconciliation before retry, conditional FOK entries that may remain hosted only while flat, full-position native TP/SL readback, reduce-only risk removal, same-candle protection repair, cancel/fill race handling, and a shared pre-write risk validator used by both production execution and replay.
+The candidate is a single manually triggered Bybit BTCUSD inverse-perpetual system. The resident multi-exchange/multi-strategy bot path has been removed.
 
-Through runtime commit `f2eca8a6001edf2d7d0d2af3d3186055a420ecaf`, a blocked/crashed pre-write target no longer consumes the signal candle: `last_candle` is persisted only after the bounded target lifecycle returns successfully. Unknown writes remain deduplicated by durable intents and deterministic exchange client identifiers.
+A normal run is bounded:
 
-The `.transfer` packet is historical recovery evidence containing a different unqualified implementation. Preserve it independently; never restore it over current source or mix its adapter into production.
+1. reconcile the configured exchange account, position, ordinary/conditional orders and fills;
+2. read complete market/account state;
+3. compute one causal model target;
+4. remain read-only unless the current invocation explicitly enables execution and the configured UID/exposure authorization matches;
+5. execute through durable intents and deterministic exchange client IDs;
+6. re-read actual position/order/protection state;
+7. persist the report/recovery state and exit.
+
+The current execution path includes unknown-write reconciliation before retry, conditional FOK entries while flat, IOC immediate execution with bounded order chunking, full-position MarkPrice-triggered native TP/SL, reduce-only risk removal, cancel/fill-race handling, same-candle protection repair, and a shared pre-write risk validator. A single-order venue cap no longer incorrectly caps total safe position size; total position remains constrained by risk tier, account authorization, margin, risk budget, effective leverage and liquidity.
+
+`api_host` is explicit and restricted to an allowlist of official Bybit hosts matching `live` or `testnet`; redirects remain blocked so credentials cannot be sent to arbitrary hosts.
+
+## Latest runtime correction
+
+Remote HEAD before this state-only update is:
+
+`345c9fccf21a6bc8562e55a6b439e755fcc18eac`
+
+The preceding CI at `3f99e28f9d7a2c809ff602dc51878352e466a8a2` exposed one real model bug: protection prices were computed from mark/trigger before spread and slippage were applied to the conservative executable entry. In sufficiently low volatility this could make a long entry limit exceed its own take-profit.
+
+The fix now:
+- keeps the stop beyond the causal current-mark/trigger reference;
+- measures reward from the conservative executable entry to that stop;
+- therefore cannot place TP on the wrong side of the executable entry merely because execution friction exceeds short-term ATR;
+- uses one shared unit-risk calculation in both sizing and pre-write validation, eliminating Decimal regrouping drift that previously produced a false `1E-32 BTC` risk-understatement failure.
+
+A regression test explicitly covers the low-volatility/high-friction geometry.
 
 ## Verification evidence
 
-The last fully verified runtime snapshot is commit `8662b403024d65876a0810d2400cd38f073fc54f`. GitHub Actions run `35521903584` checked out that exact SHA, compiled the current source and ran 55 offline tests successfully in Python 3.13. Those tests cover the run-once execution model, risk validation, unknown-write reconciliation, entry/protection lifecycle and sparse replay behavior.
+The GitHub Actions source artifact from failed run `35528571079` contains the exact `3f99e28` source tree and was used locally as the reproduction base.
 
-Later branch changes add:
-- resumable, atomic, SHA-256-verified acquisition of Bybit public BTCUSD archive originals in `research/acquire.py`;
-- HTTP Range/416 recovery without promoting an unverified partial file;
-- deterministic conversion of verified native tick originals into strict complete one-minute trade OHLCV shards in `research/build_trade_bars.py`;
-- hard rejection of missing trade minutes instead of forward fill;
-- byte-reproducible derived gzip output;
-- the pre-write `last_candle` recovery fix and its regression test;
-- CI compilation of `pancakequant`, `research` and `tests`, with latest-run concurrency replacing stale queued checks.
+On that exact source artifact plus the two corrective files that became commits `2e8e4568166f1370cdc308c31081cf77542c14ef` and `345c9fccf21a6bc8562e55a6b439e755fcc18eac`, the full short offline suite ran:
 
-These later changes are saved remotely, but their exact latest aggregate test result must be read from the newest workflow run before being called passed. Do not reuse the 55-test result as if it validated later commits.
+- Python 3.13-compatible source;
+- 87 tests;
+- 87 passed;
+- no test errors/failures.
 
-The public-only probe attached to commit `aab75ea29dbed9678781b6f837b43adb9e47f0d8` is preserved at `evidence/public-probe-aab75ea.json`. GitHub Actions run `35522765182` obtained the official Bybit BTCUSD 2020-01-01 trade archive (1,634,666 bytes, SHA-256 `380fffa270906f97098e98cc68d7358513e8970b9800ff4e84612925927cd3ed`). The same US-hosted runner received HTTP 403 from Bybit V5 market/instrument/risk/funding endpoints. This establishes that the static public archive path is usable from that runner; it does not prove complete historical mark/funding/rule coverage.
+This is a local verification of the exact predecessor artifact plus the committed diff, not a substitute for reading the hosted result on the current SHA. GitHub Actions run `35542946661`, attempt 2, targets `345c9fc` and is currently queued. Do not call hosted CI passed until that run actually completes successfully.
 
-All current safety tests are synthetic/offline unless explicitly identified otherwise. No private exchange credentials were used. Native Git from the current agent container cannot reliably resolve github.com, so the authorized GitHub connector is the active preservation path.
+These tests are offline/synthetic safety and replay checks. No private Bybit credentials were used. Live/testnet private-order semantics remain unverified.
 
-## Current research status
+## Historical-data pipeline
 
-`research/spec.json` locks the formal upper bound at 2026-09-20T00:00:00Z and keeps the predeclared sparse irregular invocation schedule. The replay uses the same target model, one-minute trade and mark inputs, funding, dated rules/costs, inverse-contract arithmetic, continuous whole-account BTC/USD/CNY equity and conservative minute extrema.
+The branch now includes:
 
-No formal CAGR/MDD result exists yet. Complete native 2020-2026 mark + funding data and a defensible dated historical fee/risk/liquidation-rule timeline have not yet been assembled into the strict manifest. Current-rule responses must not be copied backward across history and called native evidence. Trade-price bars, spot index and premium index must not silently substitute for native mark price.
+- `research/acquire.py`: resumable SHA-256-verified Bybit static archive acquisition;
+- `research/build_trade_bars.py`: deterministic strict tick-to-minute trade OHLCV conversion with no forward-filled missing minutes;
+- `research/acquire_v5.py`: public V5 trade/mark/funding acquisition with raw JSON receipts, deterministic normalized shards, resume-time hash revalidation and causal funding mark convention;
+- `research/build_manifest.py`: strict manifest assembly that refuses incomplete/corrupt shards and requires an explicitly sourced historical rules timeline;
+- `research/probe.py`: bounded public-only endpoint/archive coverage probe;
+- hourly research input support that rebuilds the same UTC-aligned four-hour signal clock and rejects sub-bar historical rule changes.
 
-The archive collector and trade-bar builder are intentionally separate from the formal dataset manifest. They preserve original bytes, hashes and deterministic derived trade bars while mark, funding and dated rules remain hard qualification dependencies.
+Static official archive evidence currently establishes:
+- BTCUSD trade originals exist from before the 2020 start and the public directory currently extends through 2026-08-08;
+- BTCUSD static spot-index and premium-index archives contain the 2020 start but end in March 2020;
+- therefore static directories alone cannot supply native mark/funding coverage for the complete 2020-2026 protocol.
+
+Bybit V5 officially exposes inverse-contract trade klines, mark-price klines and funding-rate history. The US-hosted GitHub runner has returned HTTP 403 to the global V5 endpoint, so the collector supports explicit approved official regional hosts. This is an access constraint, not permission to synthesize missing native data.
+
+## Replay correctness already tightened
+
+Recent commits also:
+- remove future bar extremes from trigger fill pricing;
+- budget hosted FOK spread/slippage causally;
+- model inverse liquidation/takeover through bankruptcy price and isolated position margin;
+- freeze the supported hourly research replay basis;
+- reject mid-hour rule changes that cannot be represented causally;
+- separate single-order venue caps from total protected position capacity.
+
+No fresh formal CAGR/MDD result exists for the current candidate.
 
 ## Remaining blockers before main
 
-1. Verify and acquire complete native BTCUSD inverse trade/mark/funding inputs for the frozen window plus causal warmup. Public static candidate paths are probed directly; unsupported paths remain unqualified.
-2. Source or explicitly bound historical fee, funding schedule, risk-tier, size-limit, maintenance-margin and liquidation-cost changes without copying current rules backward.
-3. Assemble the strict manifest and run baseline sparse replay plus the declared absence replay, preserving identity/equity/orders/results; report CAGR and MDD honestly.
-4. Keep development (2020-2023) and chronological validation (2024-end) distinguishable; if validation is used for tuning, mark it no longer unseen.
-5. Validate the current Bybit private-order lifecycle on an authorized testnet account when credentials/UID are actually available. Until then, private API behavior is unverified and live use remains blocked.
-6. Only if the economic thresholds and necessary trading-safety checks pass should this redesign be merged to `main`.
+1. Complete native BTCUSD trade + mark + funding history through one frozen 2026 endpoint with causal warmup, or document the exact latest complete-data endpoint if official native sources demonstrably stop earlier.
+2. Source a defensible dated historical timeline for fee, funding interval, tick/size limits, risk tier, maintenance margin and liquidation assumptions. Current rules must not be copied backward and labeled historical.
+3. Assemble the strict manifest and run the fixed sparse baseline plus the declared absence stress replay; preserve identity, equity, orders and result artifacts.
+4. Report CAGR, continuous whole-account MDD, annual/segment behavior, costs, funding, turnover/activity and failure modes honestly.
+5. Keep 2020-2023 development distinct from the chronological validation interval; if validation is used for tuning it is no longer unseen.
+6. Validate current private order/TP-SL/amendment semantics on an explicitly authorized Bybit testnet account when usable credentials/UID are actually available.
+7. Merge to main only after the applicable economic targets and necessary safety checks actually pass.
 
 ## Direct recovery
 
-Read this file and `AGENTS.md`, then read the current remote branch before writing. Continue from the latest commit; do not reconstruct from the old recovery packet. Preserve meaningful work promptly to the same research branch. If data or private API access is blocked, continue independent engineering and evidence work, but keep economics NOT_MEASURED/NOT_QUALIFIED and leave main unchanged.
+Read this file and `AGENTS.md`, then re-read the remote branch HEAD before writing. Continue from the latest commit; do not restore the historical `.transfer` packet over current source. Preserve meaningful work promptly on the same research branch. If data access or private API validation remains blocked, continue all independent engineering/research work, but keep economics `NOT_MEASURED/NOT_QUALIFIED` and leave main unchanged.
