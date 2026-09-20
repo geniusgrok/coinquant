@@ -1,0 +1,43 @@
+test_cancel_race_extra_fill_is_reconciled_not_ignored (test_adapter.AdapterTests.test_cancel_race_extra_fill_is_reconciled_not_ignored) ... ok
+test_inverse_risk_units_and_market_close_capacity (test_adapter.AdapterTests.test_inverse_risk_units_and_market_close_capacity) ... ok
+test_missing_or_looping_pages_are_not_empty_account (test_adapter.AdapterTests.test_missing_or_looping_pages_are_not_empty_account) ... ok
+test_native_parent_has_both_full_mark_market_protectors (test_adapter.AdapterTests.test_native_parent_has_both_full_mark_market_protectors) ... ok
+test_protection_amends_both_sides_without_a_cancel (test_adapter.AdapterTests.test_protection_amends_both_sides_without_a_cancel) ... ok
+test_transport_never_retries_unknown_writes (test_adapter.AdapterTests.test_transport_never_retries_unknown_writes) ... ok
+test_absent_unknown_order_stays_pending_and_is_not_resent (test_execution.ExecutionTests.test_absent_unknown_order_stays_pending_and_is_not_resent) ... ok
+test_failed_order_read_is_not_empty_account (test_execution.ExecutionTests.test_failed_order_read_is_not_empty_account) ... ok
+test_local_state_loss_uses_exchange_client_identifier (test_execution.ExecutionTests.test_local_state_loss_uses_exchange_client_identifier) ... ok
+test_partial_fill_has_full_actual_coverage_and_remainder_is_cancelled (test_execution.ExecutionTests.test_partial_fill_has_full_actual_coverage_and_remainder_is_cancelled) ... ok
+test_position_fields_without_native_orders_are_not_protection (test_execution.ExecutionTests.test_position_fields_without_native_orders_are_not_protection) ... ok
+test_protection_failure_attempts_reduce_only_not_increase (test_execution.ExecutionTests.test_protection_failure_attempts_reduce_only_not_increase) ... ok
+test_read_only_is_default_and_keys_do_not_enable_writes (test_execution.ExecutionTests.test_read_only_is_default_and_keys_do_not_enable_writes) ... ok
+test_real_account_match_required (test_execution.ExecutionTests.test_real_account_match_required) ... ok
+test_same_candle_and_missing_data_still_repair_protection (test_execution.ExecutionTests.test_same_candle_and_missing_data_still_repair_protection) ... ok
+test_unknown_ack_reconciles_without_duplicate_and_same_candle_skips_entry (test_execution.ExecutionTests.test_unknown_ack_reconciles_without_duplicate_and_same_candle_skips_entry) ... ok
+test_authorized_notional_is_a_sizing_cap_not_a_failed_order (test_model.ModelTests.test_authorized_notional_is_a_sizing_cap_not_a_failed_order) ... ok
+test_causal_prefix_is_not_changed_by_future_rows (test_model.ModelTests.test_causal_prefix_is_not_changed_by_future_rows) ... ok
+test_invalid_and_nonfinite_numbers (test_model.ModelTests.test_invalid_and_nonfinite_numbers) ... ok
+test_inverse_pnl_and_collateral_equity (test_model.ModelTests.test_inverse_pnl_and_collateral_equity) ... ok
+test_liquidation_and_repair_for_both_directions (test_model.ModelTests.test_liquidation_and_repair_for_both_directions) ... ok
+test_mode_leverage_and_account_errors (test_model.ModelTests.test_mode_leverage_and_account_errors) ... ok
+test_no_collateral_price_risk_is_hidden_when_flat (test_model.ModelTests.test_no_collateral_price_risk_is_hidden_when_flat) ... ok
+test_no_future_or_gap_candles (test_model.ModelTests.test_no_future_or_gap_candles) ... ok
+test_risk_tier_and_market_close_cap (test_model.ModelTests.test_risk_tier_and_market_close_cap) ... ok
+test_stop_risk_margin_and_discrete_contracts (test_model.ModelTests.test_stop_risk_margin_and_discrete_contracts) ... ok
+test_flat_derivative_report_keeps_collateral_fiat_delta (test_observation.ObservationTests.test_flat_derivative_report_keeps_collateral_fiat_delta) ... ok
+test_mismatched_margin_mode_does_not_authorize_emergency_flatten (test_observation.ObservationTests.test_mismatched_margin_mode_does_not_authorize_emergency_flatten) ... ok
+test_post_write_read_failure_never_reports_previous_flat_account_as_safe (test_observation.ObservationTests.test_post_write_read_failure_never_reports_previous_flat_account_as_safe) ... ok
+test_fixed_schedule_and_absence_are_market_independent (test_replay.ReplayTests.test_fixed_schedule_and_absence_are_market_independent) ... ok
+test_missing_funding_and_bad_hash_are_rejected (test_replay.ReplayTests.test_missing_funding_and_bad_hash_are_rejected) ... ok
+test_real_cost_and_partial_inverse_position_arithmetic (test_replay.ReplayTests.test_real_cost_and_partial_inverse_position_arithmetic) ... ok
+test_sparse_replay_and_artifacts_on_synthetic_data (test_replay.ReplayTests.test_sparse_replay_and_artifacts_on_synthetic_data) ... ok
+test_atomic_report (test_state.StateTests.test_atomic_report) ... ok
+test_crash_recovery_does_not_duplicate_or_overwrite_intents (test_state.StateTests.test_crash_recovery_does_not_duplicate_or_overwrite_intents) ... ok
+test_deterministic_id_scope (test_state.StateTests.test_deterministic_id_scope) ... ok
+test_exclusion_survives_database_commits (test_state.StateTests.test_exclusion_survives_database_commits) ... ok
+test_identity_and_default_authorization (test_state.StateTests.test_identity_and_default_authorization) ... ok
+
+----------------------------------------------------------------------
+Ran 38 tests in 0.718s
+
+OK
