@@ -6,7 +6,7 @@ import unittest
 from unittest.mock import patch
 from urllib.parse import parse_qs, urlparse
 
-from research.acquire_v5 import MINUTE_MS, _day_complete, acquire, fetch_funding, fetch_klines, merge_day
+from research.acquire_v5 import MINUTE_MS, _checkpoint_complete, acquire, fetch_funding, fetch_klines, merge_bars
 
 
 class Response(BytesIO):
@@ -71,6 +71,19 @@ class V5HistoryTests(unittest.TestCase):
         self.assertEqual(rows[start][-1], "10")
         self.assertEqual(len(opener.calls), 2)
 
+    def test_hourly_kline_mode_keeps_reported_hour_extrema(self):
+        start = 1_000_000 * 60 * MINUTE_MS
+        end = start + 3 * 60 * MINUTE_MS
+        with tempfile.TemporaryDirectory() as directory:
+            rows, receipts = fetch_klines(
+                "api.bybit.com", "mark", start, end, Path(directory),
+                interval_minutes=60, opener=FakeOpener(),
+            )
+        self.assertEqual(sorted(rows), [
+            start, start + 60 * MINUTE_MS, start + 120 * MINUTE_MS])
+        self.assertEqual(rows[start], ("200", "202", "199", "201"))
+        self.assertEqual(len(receipts), 2)
+
     def test_missing_native_mark_minute_is_rejected(self):
         start = 1_000_000 * MINUTE_MS
         end = start + 3 * MINUTE_MS
@@ -92,7 +105,7 @@ class V5HistoryTests(unittest.TestCase):
             start: ("200", "202", "199", "999"),
             start + MINUTE_MS: ("201", "203", "200", "998"),
         }
-        bars, funding = merge_day(trade, mark, {start: "0.0001"}, start, end)
+        bars, funding = merge_bars(trade, mark, {start: "0.0001"}, start, end)
         self.assertEqual(len(bars), 2)
         self.assertEqual(funding, [(start, "0.0001", "200")])
 
@@ -129,16 +142,17 @@ class V5HistoryTests(unittest.TestCase):
                        return_value=({}, [funding_receipt])):
                 result = acquire(root, "api.bybit.com", day, date(2020, 1, 2))
             self.assertEqual(result["status"], "complete")
+            self.assertEqual(result["bar_interval_ms"], 3_600_000)
             inventory = json.loads((root / "v5-inventory.json").read_text())
-            record = inventory["days"]["2020-01-01"]
+            record = inventory["shards"]["2020-01-01_2020-01-02"]
             self.assertEqual(
                 [row["path"] for row in record["raw_pages"]],
                 ["raw/2020-01-01/trade-000.json",
                  "raw/2020-01-01/mark-000.json",
                  "raw/2020-01-01/funding.json"],
             )
-            self.assertEqual(record["bars"]["path"], "normalized/bars/2020-01-01.csv.gz")
-            self.assertEqual(record["funding"]["path"], "normalized/funding/2020-01-01.csv.gz")
+            self.assertEqual(record["bars"]["path"], "normalized/bars/2020-01-01_2020-01-02.csv.gz")
+            self.assertEqual(record["funding"]["path"], "normalized/funding/2020-01-01_2020-01-02.csv.gz")
 
     def test_complete_checkpoint_is_rejected_after_file_corruption(self):
         import hashlib
@@ -165,9 +179,9 @@ class V5HistoryTests(unittest.TestCase):
                 "bars": receipts[1],
                 "funding": receipts[2],
             }
-            self.assertTrue(_day_complete(root, record))
+            self.assertTrue(_checkpoint_complete(root, record))
             (root / receipts[1]["path"]).write_bytes(b"corrupt")
-            self.assertFalse(_day_complete(root, record))
+            self.assertFalse(_checkpoint_complete(root, record))
 
     def test_funding_schema_and_host_allowlist(self):
         start = 1_000_000 * MINUTE_MS
