@@ -1,0 +1,14 @@
+{
+  "purpose": "one-time public native-history acquisition; no private credentials",
+  "api_host": "api.manepa.jp",
+  "venue": "bybit",
+  "category": "inverse",
+  "symbol": "BTCUSD",
+  "start": "2019-12-11",
+  "end_exclusive": "2026-09-20",
+  "interval_minutes": 60,
+  "shard_days": 30,
+  "formal_start": "2020-01-01T00:00:00Z",
+  "formal_end": "2026-09-20T00:00:00Z",
+  "note": "Acquisition only. Economic replay and tuning are not run in GitHub Actions."
+}
