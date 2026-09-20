@@ -72,12 +72,19 @@ class Rules:
     tick: D
     step: D
     minimum: D
-    maximum: D  # capped at the venue's market-close maximum as well
+    maximum: D  # per-order cap, conservatively min(limit-order, market-close maximum)
     risk_limit_usd: D
     maintenance_rate: D
     taker_fee: D
     launch_ms: int
     status: str = "Trading"
+
+    @property
+    def full_exit_capacity(self) -> D:
+        # Bybit Full-position TP/SL under UTA may resubmit at most six
+        # max-size close orders. Keep offline-protected total exposure within
+        # that bounded exchange-managed exit capacity.
+        return self.maximum * 6
 
     def __post_init__(self) -> None:
         for key in ("tick", "step", "minimum", "maximum", "risk_limit_usd"):

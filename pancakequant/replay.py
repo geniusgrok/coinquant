@@ -304,7 +304,7 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                             if acceptable:
                                 if not reduction:
                                     validate_risk_increase(snapshot, target, cfg,
-                                                           notional_limit=notional_limit or rules.maximum)
+                                                           notional_limit=notional_limit)
                                 execute(delta, price, 'manual_reduce' if reduction else 'manual_increase',
                                         target.reason, target.take_profit, target.stop_loss)
                         if account.position.quantity and target.quantity * account.position.quantity > 0:

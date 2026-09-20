@@ -79,11 +79,14 @@ def validate_risk_increase(snapshot: Snapshot, target: Target, cfg: ModelConfig,
         raise Blocked("risk increase must keep one position direction")
     if p.quantity and q <= abs(p.quantity):
         raise Blocked("target does not increase current exposure")
-    cap = rules.maximum if notional_limit is None else number(
+    cap = rules.full_exit_capacity if notional_limit is None else number(
         notional_limit, "authorized notional", positive=True)
     tier_cap = rules.risk_limit_usd * min(D(1), target.stop_loss / snapshot.mark)
-    if q % rules.step or q < rules.minimum or q > min(rules.maximum, cap, tier_cap):
-        raise Blocked("risk-increasing target violates quantity limits")
+    total_cap = min(rules.full_exit_capacity, cap, tier_cap)
+    if q % rules.step or q < rules.minimum or q > total_cap:
+        raise Blocked("risk-increasing target violates total position limits")
+    if target.trigger_price and q > rules.maximum:
+        raise Blocked("conditional FOK target exceeds the single-order limit")
     prices = [target.entry, target.take_profit, target.stop_loss]
     if target.trigger_price:
         prices.append(target.trigger_price)
@@ -169,7 +172,7 @@ def repair_target(snapshot: Snapshot, cfg: ModelConfig, candle: int = -1) -> Tar
 
 def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_limit: D | None = None) -> Target:
     snapshot.validate()
-    cap = snapshot.rules.maximum if notional_limit is None else number(notional_limit, "authorized notional", positive=True)
+    cap = snapshot.rules.full_exit_capacity if notional_limit is None else number(notional_limit, "authorized notional", positive=True)
     validate_bars(bars, snapshot.time)
     required = max(cfg.trend_bars, cfg.channel_bars + 1, cfg.atr_bars + 1)
     if len(bars) < required:
@@ -222,11 +225,14 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
     reusable = p.margin_btc if direction * p.quantity > 0 else ZERO
     available = max(ZERO, snapshot.available_btc + reusable)
     depth = snapshot.buy_depth_usd if direction > 0 else snapshot.sell_depth_usd
+    total_cap = min(rules.full_exit_capacity, cap,
+                    rules.risk_limit_usd * min(D(1), sl / mark))
+    if trigger:
+        total_cap = min(total_cap, rules.maximum)
     quantity = floor_step(min(risk_budget / (unit_loss + unit_cost),
                               snapshot.equity_usd * cfg.max_effective_leverage,
                               available / (1 / price / 20 + 2 * rules.taker_fee / price),
-                              rules.maximum, cap, rules.risk_limit_usd * min(D(1), sl / mark),
-                              depth * cfg.liquidity_fraction), rules.step)
+                              total_cap, depth * cfg.liquidity_fraction), rules.step)
     if quantity < rules.minimum:
         return Target(candle, ZERO, mark, ZERO, ZERO, ZERO, ZERO, ZERO,
                       "executable size below venue minimum")

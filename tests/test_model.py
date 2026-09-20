@@ -35,7 +35,7 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(t.initial_margin_btc, abs(t.quantity) / t.entry / 20)
         self.assertLess(t.stop_loss, s.mark)
         self.assertGreater(t.take_profit, s.mark)
-        self.assertLessEqual(abs(t.quantity), s.rules.maximum)
+        self.assertLessEqual(abs(t.quantity), s.rules.full_exit_capacity)
 
     def test_shared_prewrite_validator_rejects_forged_risk(self):
         s, cfg = sample(), ModelConfig()
@@ -103,9 +103,20 @@ class ModelTests(unittest.TestCase):
             with self.assertRaises(Blocked):
                 number(text)
 
-    def test_risk_tier_and_market_close_cap(self):
+    def test_single_order_max_does_not_cap_immediate_total_target(self):
         s = replace(sample(), rules=replace(sample().rules, maximum=D(5)))
-        self.assertLessEqual(abs(decide(history(), s, ModelConfig()).quantity), 5)
+        t = decide(history(), s, ModelConfig())
+        self.assertGreater(abs(t.quantity), s.rules.maximum)
+        self.assertLessEqual(abs(t.quantity), s.rules.full_exit_capacity)
+
+    def test_full_exit_capacity_bounds_total_target(self):
+        s = replace(sample(), rules=replace(sample().rules, maximum=D(5)))
+        t = decide(history(), s, replace(ModelConfig(), risk_fraction=D('.5')))
+        self.assertLessEqual(abs(t.quantity), D(30))
+        with self.assertRaisesRegex(Blocked, 'total position limits'):
+            validate_risk_increase(
+                s, replace(t, quantity=D(31), risk_btc=D(1)), ModelConfig(),
+                notional_limit=D(100000))
 
     def test_no_collateral_price_risk_is_hidden_when_flat(self):
         s = sample()

@@ -14,7 +14,7 @@ def _coverage(snapshot) -> bool:
     p = snapshot.position
     if not p.quantity:
         return True
-    if abs(p.quantity) > snapshot.rules.maximum or not protected(snapshot):
+    if abs(p.quantity) > snapshot.rules.full_exit_capacity or not protected(snapshot):
         return False
     side = 'Sell' if p.quantity > 0 else 'Buy'
     for kind, price in (('TakeProfit', p.take_profit), ('StopLoss', p.stop_loss)):
@@ -161,8 +161,9 @@ class Execution:
             if delta * p.quantity >= 0 or abs(delta) > abs(p.quantity):
                 raise Blocked('invalid reduce-only delta')
         else:
-            if abs(target.quantity) > self.config.max_position_usd or abs(target.quantity) > rules.maximum:
-                raise Blocked('target exceeds authorized or full-market-exit capacity')
+            if (abs(target.quantity) > self.config.max_position_usd
+                    or abs(target.quantity) > rules.full_exit_capacity):
+                raise Blocked('target exceeds authorized or exchange-managed full-exit capacity')
             if p.quantity and not coverage(snapshot):
                 raise Blocked('cannot add risk before full protection is verified')
             if self.state.get('native_fok_violation'):
@@ -234,9 +235,15 @@ class Execution:
         delta = target.quantity - snapshot.position.quantity
         if delta:
             reduction = snapshot.position.quantity * delta < 0
-            order_target = replace(target, entry=close_target(snapshot, self.config, target.candle).entry) if reduction else target
+            if abs(delta) > snapshot.rules.maximum:
+                delta = (1 if delta > 0 else -1) * snapshot.rules.maximum
+                self.report['partial'] = True
+            order_target = replace(
+                target, entry=close_target(snapshot, self.config, target.candle).entry
+            ) if reduction else target
             snapshot = self.trade(snapshot, order_target, delta,
-                                  'decrease' if reduction else 'increase', reduce_only=reduction)
+                                  'decrease' if reduction else 'increase',
+                                  reduce_only=reduction)
         if snapshot.position.quantity:
             snapshot = self.protect(snapshot, target)
         self.report['target'] = serial(target)
