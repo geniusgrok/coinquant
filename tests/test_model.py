@@ -37,6 +37,26 @@ class ModelTests(unittest.TestCase):
         self.assertGreater(t.take_profit, s.mark)
         self.assertLessEqual(abs(t.quantity), s.rules.risk_limit_usd)
 
+    def test_execution_friction_cannot_put_entry_beyond_take_profit(self):
+        bars = [
+            Bar(146 * INTERVAL_MS, D(20000), D(20001), D(19999), D(20000), D(1000000)),
+            Bar(147 * INTERVAL_MS, D(20000), D(20001), D(19999), D(20000), D(1000000)),
+            Bar(148 * INTERVAL_MS, D(20000), D(20002), D(19999), D(20001), D(1000000)),
+            Bar(149 * INTERVAL_MS, D(20001), D(20003), D(20000), D(20002), D(1000000)),
+        ]
+        s = replace(sample(), mark=D('20003.5'), bid=D('20001.5'), ask=D('20005.5'))
+        cfg = replace(ModelConfig(), trend_bars=2, channel_bars=2, atr_bars=2)
+        t = decide(bars, s, cfg)
+        self.assertEqual(t.trigger_price, 0)
+        self.assertGreater(t.entry, s.mark)
+        self.assertLess(t.stop_loss, s.mark)
+        self.assertGreater(t.take_profit, t.entry)
+        self.assertGreaterEqual(
+            t.take_profit - t.entry,
+            (t.entry - t.stop_loss) * cfg.reward_multiple,
+        )
+        validate_risk_increase(s, t, cfg)
+
     def test_shared_prewrite_validator_rejects_forged_risk(self):
         s, cfg = sample(), ModelConfig()
         t = decide(history(), s, cfg)
