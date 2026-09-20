@@ -170,9 +170,15 @@ class PendingTests(unittest.TestCase):
         bars = history()
         bars[-10] = replace(bars[-10], high=D(31000))
         t = decide(bars, sample(), ModelConfig(), notional_limit=D(100))
-        self.assertGreater(t.trigger_price, sample().mark)
+        snapshot = sample()
+        self.assertGreater(t.trigger_price, snapshot.mark)
         self.assertLessEqual(t.quantity, 100)
-        self.assertTrue(valid(record('pq-model', t), sample(), D(100)))
+        mid = (snapshot.bid + snapshot.ask) / 2
+        half_spread = (snapshot.ask - snapshot.bid) / (2 * mid)
+        modeled_trigger_fill = (
+            t.trigger_price * (1 + half_spread) * (1 + ModelConfig().slippage_fraction))
+        self.assertGreaterEqual(t.entry, modeled_trigger_fill)
+        self.assertTrue(valid(record('pq-model', t), snapshot, D(100)))
 
     def test_adapter_serializes_fok_trigger_and_native_full_protectors(self):
         venue = Bybit(Config(max_position_usd=D(1000)))
