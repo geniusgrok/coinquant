@@ -8,15 +8,16 @@ from __future__ import annotations
 
 import argparse
 import csv
-from datetime import date, timedelta
+from datetime import date
 import json
 from pathlib import Path
 import sys
 
 from pancakequant.research import spec
-from research.acquire_v5 import _day_complete, sha256
+from research.acquire_v5 import _checkpoint_complete, sha256
 
 MINUTE_MS = 60_000
+HOUR_MS = 3_600_000
 EXPECTED_RULE_COLUMNS = [
     "time", "launch_ms", "funding_interval_ms", "tick", "step", "minimum",
     "maximum", "market_maximum", "risk_limit_btc", "maintenance_rate",
@@ -77,10 +78,13 @@ def _load_v5(root: Path) -> dict:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         raise ValueError("V5 inventory is missing or invalid") from exc
-    if value.get("symbol") != "BTCUSD" or value.get("category") != "inverse":
-        raise ValueError("V5 inventory is not BTCUSD inverse history")
-    if not isinstance(value.get("days"), dict):
-        raise ValueError("V5 inventory day map is invalid")
+    if (value.get("version") != 2 or value.get("symbol") != "BTCUSD"
+            or value.get("category") != "inverse"):
+        raise ValueError("V5 inventory is not the supported BTCUSD inverse format")
+    if value.get("bar_interval_ms") not in (MINUTE_MS, HOUR_MS):
+        raise ValueError("V5 inventory has an unsupported replay interval")
+    if not isinstance(value.get("shards"), dict):
+        raise ValueError("V5 inventory shard map is invalid")
     return value
 
 
@@ -102,24 +106,34 @@ def build(root: Path, rules: Path, rules_source: str, rules_provenance: str,
 
     bars, funding = [], []
     current = acquired_start
-    while current < end:
-        key = current.isoformat()
-        record = v5["days"].get(key)
-        if not _day_complete(root, record):
-            raise ValueError(f"V5 day is incomplete or corrupt: {key}")
+    ordered = sorted(
+        v5["shards"].items(),
+        key=lambda item: (item[1].get("start", ""), item[0]),
+    )
+    for key, record in ordered:
+        shard_start = date.fromisoformat(record.get("start", ""))
+        shard_end = date.fromisoformat(record.get("end_exclusive", ""))
+        if shard_start >= end:
+            break
+        if shard_start != current or shard_end <= shard_start:
+            raise ValueError(f"V5 shard coverage is non-contiguous at {key}")
+        if shard_end > end:
+            raise ValueError(f"V5 shard extends beyond the frozen endpoint: {key}")
+        if not _checkpoint_complete(root, record):
+            raise ValueError(f"V5 shard is incomplete or corrupt: {key}")
         raw_hashes = [receipt["sha256"] for receipt in record["raw_pages"]]
         source = f"v5:{v5['api_host']}:{key}"
-        bars.append(_receipt_entry(
-            root, record["bars"], source,
+        common = dict(
             raw_sha256=raw_hashes,
             funding_mark_convention=record.get("funding_mark_convention", ""),
-        ))
-        funding.append(_receipt_entry(
-            root, record["funding"], source,
-            raw_sha256=raw_hashes,
-            funding_mark_convention=record.get("funding_mark_convention", ""),
-        ))
-        current += timedelta(days=1)
+            shard_start=record["start"],
+            shard_end_exclusive=record["end_exclusive"],
+        )
+        bars.append(_receipt_entry(root, record["bars"], source, **common))
+        funding.append(_receipt_entry(root, record["funding"], source, **common))
+        current = shard_end
+    if current < end:
+        raise ValueError(f"V5 shard coverage ends early at {current.isoformat()}")
 
     rule_entry = _read_rules(root, rules, rules_source, rules_provenance)
     manifest = {
@@ -128,7 +142,7 @@ def build(root: Path, rules: Path, rules_source: str, rules_provenance: str,
         "contract_type": "InversePerpetual",
         "settlement_coin": "BTC",
         "provenance": "native" if rules_provenance == "native" else "proxy",
-        "bar_interval_ms": MINUTE_MS,
+        "bar_interval_ms": v5["bar_interval_ms"],
         "start": mandate["start"],
         "end": mandate["end"],
         "warmup_start": acquired_start.isoformat() + "T00:00:00Z",
@@ -142,6 +156,8 @@ def build(root: Path, rules: Path, rules_source: str, rules_provenance: str,
             "bytes": (root / "v5-inventory.json").stat().st_size,
             "sha256": sha256(root / "v5-inventory.json"),
             "api_host": v5["api_host"],
+            "bar_interval_ms": v5["bar_interval_ms"],
+            "shard_days": v5["shard_days"],
         },
         "qualification_note": (
             "native market/funding inputs with sourced native historical rules"
