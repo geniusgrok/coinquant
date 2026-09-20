@@ -24,19 +24,24 @@ def fixture(root: Path):
     bars = receipt(root, "normalized/bars/2019-12-31.csv.gz", b"bars")
     funding = receipt(root, "normalized/funding/2019-12-31.csv.gz", b"funding")
     inventory = {
-        "version": 1,
+        "version": 2,
         "api_host": "api.bybit.com",
         "symbol": "BTCUSD",
         "category": "inverse",
         "start": "2019-12-31",
         "end_exclusive": "2020-01-01",
-        "days": {
-            "2019-12-31": {
+        "interval_minutes": 60,
+        "bar_interval_ms": 3600000,
+        "shard_days": 30,
+        "shards": {
+            "2019-12-31_2020-01-01": {
                 "status": "complete",
+                "start": "2019-12-31",
+                "end_exclusive": "2020-01-01",
                 "raw_pages": [raw],
                 "bars": bars,
                 "funding": funding,
-                "funding_mark_convention": "native mark 1m open at settlement timestamp",
+                "funding_mark_convention": "native mark 60m open at settlement timestamp",
             }
         },
     }
@@ -63,6 +68,7 @@ class ManifestBuilderTests(unittest.TestCase):
                 mandate=mandate,
             )
             self.assertEqual(manifest["provenance"], "native")
+            self.assertEqual(manifest["bar_interval_ms"], 3_600_000)
             self.assertEqual(len(manifest["files"]["bars"]), 1)
             self.assertEqual(len(manifest["files"]["funding"]), 1)
             self.assertEqual(manifest["files"]["rules"][0]["provenance"], "native")
@@ -78,7 +84,7 @@ class ManifestBuilderTests(unittest.TestCase):
             self.assertIn("cannot be formal native qualification",
                           manifest["qualification_note"])
 
-    def test_corrupt_v5_day_refuses_manifest(self):
+    def test_corrupt_v5_shard_refuses_manifest(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             rules, mandate = fixture(root)
