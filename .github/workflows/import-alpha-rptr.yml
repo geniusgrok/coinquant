@@ -11,7 +11,7 @@ concurrency:
 jobs:
   copy:
     if: github.repository == 'ychenracing/pancakequant'
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-slim
     timeout-minutes: 12
     steps:
       - name: Copy without fork and verify every remote file
@@ -100,3 +100,18 @@ jobs:
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
               f.write('## Remote source-copy verification\n\n```json\n' + json.dumps(summary, indent=2, sort_keys=True) + '\n```\n')
           PY
+          cd "$COPY_ROOT/staging"
+          FINAL_COMMIT=$(git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$EXPECTED_TREE" -p "$IMPORT_COMMIT" -m "Finalize exact independent alpha-rptr source copy" -m "Source: TheFourGreatErrors/alpha-rptr@$PINNED_SOURCE. Exact source tree: $EXPECTED_TREE. Remote file bytes, SHA-256 and Git blob IDs verified. Remove temporary import workflow; do not import upstream history.")
+          actual=$(git ls-remote origin refs/heads/main | cut -f1)
+          test "$actual" = "$IMPORT_COMMIT"
+          if ! git push origin "$FINAL_COMMIT:refs/heads/main"; then
+            actual=$(git ls-remote origin refs/heads/main | cut -f1)
+            test "$actual" = "$FINAL_COMMIT"
+          fi
+          git init -q "$COPY_ROOT/final-reread"
+          git -C "$COPY_ROOT/final-reread" fetch -q --no-tags --depth=1 "$destination" main
+          test "$(git -C "$COPY_ROOT/final-reread" rev-parse FETCH_HEAD)" = "$FINAL_COMMIT"
+          test "$(git -C "$COPY_ROOT/final-reread" rev-parse 'FETCH_HEAD^{tree}')" = "$EXPECTED_TREE"
+          git -C "$COPY_ROOT/final-reread" fsck --strict --no-reflogs
+          printf 'FINAL_COPY_VERIFIED commit=%s tree=%s temporary_workflow=removed\n' "$FINAL_COMMIT" "$EXPECTED_TREE"
+          printf '\nFinal main commit: `%s`\n\nExact source tree: `%s`\n\nTemporary workflow removed.\n' "$FINAL_COMMIT" "$EXPECTED_TREE" >> "$GITHUB_STEP_SUMMARY"
