@@ -51,7 +51,7 @@ On that exact source artifact plus the two corrective files that became commits 
 - 87 passed;
 - no test errors/failures.
 
-This is a local verification of the exact predecessor artifact plus the committed diff, not a substitute for reading the hosted result on the current SHA. GitHub Actions run `35542946661`, attempt 2, targets `345c9fc` and is currently queued. Do not call hosted CI passed until that run actually completes successfully.
+GitHub Actions run `35542946661`, attempt 2, checked out exact code SHA `345c9fccf21a6bc8562e55a6b439e755fcc18eac`, compiled `pancakequant`, `research` and `tests` under Python 3.13, and ran 87 tests successfully. Immutable source artifact `10615063830` is preserved with digest `sha256:85a6006d9217842f40ed797a34ac1353827ba8eea895e7fc978e99be8c73f4a9`. The later PROJECT_STATE-only commit does not change runtime code.
 
 These tests are offline/synthetic safety and replay checks. No private Bybit credentials were used. Live/testnet private-order semantics remain unverified.
 
