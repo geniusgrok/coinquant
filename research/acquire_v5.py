@@ -1,9 +1,10 @@
 """Resumable public V5 acquisition for native BTCUSD trade/mark/funding history.
 
-This is a research transport, not the private execution transport. It never reads
-API credentials. Every HTTP page is preserved verbatim with a SHA-256 identity,
-then normalized into deterministic one-minute bars. A successful fetch is still
-not formal economic qualification until dated trading/risk/fee rules are supplied.
+Public-only research transport: no account credentials are read. Raw V5 pages
+are preserved byte-for-byte with SHA-256 identities before deterministic
+normalization. Formal acquisition defaults to 60-minute trade/mark candles in
+30-day shards; the 4-hour production signal is rebuilt from four verified hourly
+bars while each hourly high/low retains the exchange-reported intrahour extrema.
 """
 from __future__ import annotations
 
@@ -27,8 +28,12 @@ from pancakequant.rest import NoRedirect, OFFICIAL_HOSTS
 SYMBOL = "BTCUSD"
 CATEGORY = "inverse"
 MINUTE_MS = 60_000
+HOUR_MS = 3_600_000
 DAY_MS = 86_400_000
-INVENTORY_VERSION = 1
+DEFAULT_INTERVAL_MINUTES = 60
+DEFAULT_SHARD_DAYS = 30
+SUPPORTED_INTERVAL_MINUTES = (1, 60)
+INVENTORY_VERSION = 2
 
 
 def sha256(path: Path) -> str:
@@ -74,6 +79,12 @@ def _official_live_host(host: str) -> str:
     return host
 
 
+def _interval_ms(interval_minutes: int) -> int:
+    if type(interval_minutes) is not int or interval_minutes not in SUPPORTED_INTERVAL_MINUTES:
+        raise ValueError("historical interval must be exactly 1 or 60 minutes")
+    return interval_minutes * MINUTE_MS
+
+
 def _request_json(host: str, path: str, params: dict, raw_path: Path,
                   *, opener=None, timeout: float = 10.0) -> tuple[dict, dict]:
     host = _official_live_host(host)
@@ -110,7 +121,8 @@ def _kline_path(kind: str) -> str:
     raise ValueError("unsupported kline kind")
 
 
-def _parse_kline(result: dict, kind: str, start: int, end: int) -> list[tuple]:
+def _parse_kline(result: dict, kind: str, start: int, end: int,
+                 interval_ms: int) -> list[tuple]:
     if result.get("symbol") != SYMBOL or result.get("category") != CATEGORY:
         raise ValueError("wrong Bybit kline contract/category")
     rows = result.get("list")
@@ -125,12 +137,10 @@ def _parse_kline(result: dict, kind: str, start: int, end: int) -> list[tuple]:
             timestamp = int(row[0])
         except (TypeError, ValueError) as exc:
             raise ValueError("Bybit kline timestamp is invalid") from exc
-        if not start <= timestamp < end or timestamp % MINUTE_MS:
+        if not start <= timestamp < end or timestamp % interval_ms:
             raise ValueError("Bybit kline timestamp is outside requested aligned range")
-        if kind == "trade":
-            values = tuple(str(value) for value in row[1:6])
-        else:
-            values = tuple(str(value) for value in row[1:5])
+        values = (tuple(str(value) for value in row[1:6]) if kind == "trade"
+                  else tuple(str(value) for value in row[1:5]))
         parsed.append((timestamp, *values))
     times = [row[0] for row in parsed]
     if times != sorted(times, reverse=True) or len(times) != len(set(times)):
@@ -139,29 +149,32 @@ def _parse_kline(result: dict, kind: str, start: int, end: int) -> list[tuple]:
 
 
 def fetch_klines(host: str, kind: str, start: int, end: int, raw_dir: Path,
-                 *, opener=None, timeout: float = 10.0) -> tuple[dict[int, tuple], list[dict]]:
-    if start >= end or start % MINUTE_MS or end % MINUTE_MS:
-        raise ValueError("kline range must be positive and minute aligned")
+                 *, interval_minutes: int = 1, opener=None,
+                 timeout: float = 10.0) -> tuple[dict[int, tuple], list[dict]]:
+    step = _interval_ms(interval_minutes)
+    if start >= end or start % step or end % step:
+        raise ValueError("kline range must be positive and aligned to its interval")
     rows: dict[int, tuple] = {}
     receipts = []
     cursor_end = end - 1
-    maximum_pages = (end - start + 999 * MINUTE_MS) // (1000 * MINUTE_MS) + 2
+    expected_count = (end - start) // step
+    maximum_pages = (expected_count + 999) // 1000 + 2
     for page in range(maximum_pages):
         raw_path = raw_dir / f"{kind}-{page:03d}.json"
         result, receipt = _request_json(
             host, _kline_path(kind),
-            dict(category=CATEGORY, symbol=SYMBOL, interval="1",
+            dict(category=CATEGORY, symbol=SYMBOL, interval=str(interval_minutes),
                  start=start, end=cursor_end, limit=1000),
             raw_path, opener=opener, timeout=timeout,
         )
-        parsed = _parse_kline(result, kind, start, end)
+        parsed = _parse_kline(result, kind, start, end, step)
         receipts.append(receipt)
         if not parsed:
             raise ValueError(f"{kind} kline page is empty before range is complete")
         for row in parsed:
             previous = rows.get(row[0])
             if previous is not None and previous != row[1:]:
-                raise ValueError(f"conflicting duplicate {kind} minute")
+                raise ValueError(f"conflicting duplicate {kind} bar")
             rows[row[0]] = row[1:]
         oldest = parsed[-1][0]
         if oldest <= start:
@@ -169,12 +182,11 @@ def fetch_klines(host: str, kind: str, start: int, end: int, raw_dir: Path,
         if oldest > cursor_end:
             raise ValueError("Bybit kline pagination did not move backward")
         cursor_end = oldest - 1
-    expected = range(start, end, MINUTE_MS)
-    for timestamp in expected:
+    for timestamp in range(start, end, step):
         if timestamp not in rows:
-            raise ValueError(f"missing native {kind} minute at {timestamp}")
-    if len(rows) != (end - start) // MINUTE_MS:
-        raise ValueError(f"unexpected extra native {kind} minute")
+            raise ValueError(f"missing native {kind} bar at {timestamp}")
+    if len(rows) != expected_count:
+        raise ValueError(f"unexpected extra native {kind} bar")
     return rows, receipts
 
 
@@ -202,7 +214,7 @@ def fetch_funding(host: str, start: int, end: int, raw_dir: Path,
         except (KeyError, TypeError, ValueError) as exc:
             raise ValueError("Bybit funding row schema changed") from exc
         if not start <= timestamp < end or timestamp % MINUTE_MS:
-            raise ValueError("Bybit funding timestamp outside requested minute-aligned shard")
+            raise ValueError("Bybit funding timestamp outside requested aligned shard")
         if previous is not None and timestamp >= previous:
             raise ValueError("Bybit funding rows are not reverse chronological")
         previous = timestamp
@@ -212,21 +224,23 @@ def fetch_funding(host: str, start: int, end: int, raw_dir: Path,
     return values, [receipt]
 
 
-def merge_day(trade: dict[int, tuple], mark: dict[int, tuple],
-              funding: dict[int, str], start: int, end: int) -> tuple[list[tuple], list[tuple]]:
+def merge_bars(trade: dict[int, tuple], mark: dict[int, tuple],
+               funding: dict[int, str], start: int, end: int,
+               *, interval_minutes: int = 1) -> tuple[list[tuple], list[tuple]]:
+    step = _interval_ms(interval_minutes)
     bars = []
-    for timestamp in range(start, end, MINUTE_MS):
+    for timestamp in range(start, end, step):
         if timestamp not in trade or timestamp not in mark:
-            raise ValueError("trade/mark minute coverage differs")
+            raise ValueError("trade/mark base-bar coverage differs")
         o, h, low, close, volume = trade[timestamp]
         mo, mh, ml, mc = mark[timestamp]
         bars.append((timestamp, o, h, low, close, volume, mo, mh, ml, mc))
     funding_rows = []
     for timestamp in sorted(funding):
         if timestamp not in mark:
-            raise ValueError("funding timestamp lacks native mark minute")
-        # Funding settles at the boundary; use the native mark candle OPEN at
-        # that exact timestamp. Never use its future close.
+            raise ValueError("funding timestamp lacks a native mark bar boundary")
+        # Funding settles at the boundary: use that native bar's OPEN, never its
+        # later close or any future observation from the bar.
         funding_rows.append((timestamp, funding[timestamp], mark[timestamp][0]))
     return bars, funding_rows
 
@@ -255,7 +269,7 @@ def _receipt_ok(root: Path, receipt: dict) -> bool:
         return False
 
 
-def _day_complete(root: Path, record: dict | None) -> bool:
+def _checkpoint_complete(root: Path, record: dict | None) -> bool:
     if not record or record.get("status") != "complete":
         return False
     raw_pages = record.get("raw_pages")
@@ -268,7 +282,8 @@ def _day_complete(root: Path, record: dict | None) -> bool:
     )
 
 
-def _load_inventory(path: Path, host: str, start: date, end: date) -> dict:
+def _load_inventory(path: Path, host: str, start: date, end: date,
+                    interval_minutes: int, shard_days: int) -> dict:
     identity = {
         "version": INVENTORY_VERSION,
         "api_host": host,
@@ -276,49 +291,70 @@ def _load_inventory(path: Path, host: str, start: date, end: date) -> dict:
         "category": CATEGORY,
         "start": start.isoformat(),
         "end_exclusive": end.isoformat(),
+        "interval_minutes": interval_minutes,
+        "bar_interval_ms": _interval_ms(interval_minutes),
+        "shard_days": shard_days,
     }
     if path.exists():
         value = json.loads(path.read_text(encoding="utf-8"))
         for key, expected in identity.items():
             if value.get(key) != expected:
                 raise ValueError(f"existing V5 inventory {key} differs")
-        if not isinstance(value.get("days"), dict):
-            raise ValueError("existing V5 inventory day map is invalid")
+        if not isinstance(value.get("shards"), dict):
+            raise ValueError("existing V5 inventory shard map is invalid")
         return value
-    return dict(identity, days={})
+    return dict(identity, shards={})
 
 
 def acquire(root: Path, host: str, start: date, end: date, *,
+            interval_minutes: int = DEFAULT_INTERVAL_MINUTES,
+            shard_days: int = DEFAULT_SHARD_DAYS,
             opener=None, timeout: float = 10.0, pause: float = 0.0) -> dict:
     host = _official_live_host(host)
+    step = _interval_ms(interval_minutes)
     if start >= end:
         raise ValueError("start must precede end")
+    if type(shard_days) is not int or not 1 <= shard_days <= 60:
+        raise ValueError("shard_days must be an integer in [1, 60]")
+    if shard_days * DAY_MS // step > 1000:
+        # Pagination is implemented, but keeping formal shards under one kline
+        # page makes recovery and source identity substantially simpler.
+        raise ValueError("shard contains more than 1000 base bars")
     root = root.resolve()
     root.mkdir(parents=True, exist_ok=True)
     inventory_path = root / "v5-inventory.json"
-    inventory = _load_inventory(inventory_path, host, start, end)
+    inventory = _load_inventory(
+        inventory_path, host, start, end, interval_minutes, shard_days)
     failures = []
     current = start
     while current < end:
-        key = current.isoformat()
-        prior = inventory["days"].get(key)
-        if _day_complete(root, prior):
-            current += timedelta(days=1)
+        shard_end = min(current + timedelta(days=shard_days), end)
+        key = f"{current.isoformat()}_{shard_end.isoformat()}"
+        prior = inventory["shards"].get(key)
+        if _checkpoint_complete(root, prior):
+            current = shard_end
             continue
-        begin = _day_ms(current)
-        finish = begin + DAY_MS
+        begin, finish = _day_ms(current), _day_ms(shard_end)
         raw_dir = root / "raw" / key
-        record = {"status": "pending"}
-        inventory["days"][key] = record
+        record = {
+            "status": "pending",
+            "start": current.isoformat(),
+            "end_exclusive": shard_end.isoformat(),
+        }
+        inventory["shards"][key] = record
         _atomic_json(inventory_path, inventory)
         try:
             trade, trade_receipts = fetch_klines(
-                host, "trade", begin, finish, raw_dir, opener=opener, timeout=timeout)
+                host, "trade", begin, finish, raw_dir,
+                interval_minutes=interval_minutes, opener=opener, timeout=timeout)
             mark, mark_receipts = fetch_klines(
-                host, "mark", begin, finish, raw_dir, opener=opener, timeout=timeout)
+                host, "mark", begin, finish, raw_dir,
+                interval_minutes=interval_minutes, opener=opener, timeout=timeout)
             funding, funding_receipts = fetch_funding(
                 host, begin, finish, raw_dir, opener=opener, timeout=timeout)
-            bars, funding_rows = merge_day(trade, mark, funding, begin, finish)
+            bars, funding_rows = merge_bars(
+                trade, mark, funding, begin, finish,
+                interval_minutes=interval_minutes)
             bars_receipt = _deterministic_gzip_csv(
                 root / "normalized" / "bars" / f"{key}.csv.gz",
                 ["time", "open", "high", "low", "close", "volume",
@@ -345,7 +381,8 @@ def acquire(root: Path, host: str, start: date, end: date, *,
                 raw_pages=receipts,
                 bars=bars_receipt,
                 funding=funding_receipt,
-                funding_mark_convention="native mark 1m open at settlement timestamp",
+                funding_mark_convention=(
+                    f"native mark {interval_minutes}m open at settlement timestamp"),
             )
         except (HTTPError, URLError, TimeoutError, OSError, ValueError, KeyError) as exc:
             record.update(status="failed", error_type=type(exc).__name__, error=str(exc))
@@ -353,13 +390,16 @@ def acquire(root: Path, host: str, start: date, end: date, *,
         _atomic_json(inventory_path, inventory)
         if pause:
             time.sleep(pause)
-        current += timedelta(days=1)
-    completed = sum(row.get("status") == "complete" for row in inventory["days"].values())
-    failed = sum(row.get("status") != "complete" for row in inventory["days"].values())
+        current = shard_end
+    completed = sum(
+        row.get("status") == "complete" for row in inventory["shards"].values())
+    failed = sum(
+        row.get("status") != "complete" for row in inventory["shards"].values())
     result = {
         "status": "complete" if not failures and failed == 0 else "incomplete",
-        "complete_days": completed,
-        "failed_days": failed,
+        "complete_shards": completed,
+        "failed_shards": failed,
+        "bar_interval_ms": step,
         "inventory": str(inventory_path),
     }
     _atomic_json(root / "v5-result.json", result)
@@ -375,12 +415,17 @@ def main() -> int:
     parser.add_argument("--start", type=_parse_day, default=date(2019, 12, 11))
     parser.add_argument("--end", type=_parse_day, default=date(2026, 9, 20),
                         help="exclusive UTC day")
+    parser.add_argument("--interval-minutes", type=int, choices=SUPPORTED_INTERVAL_MINUTES,
+                        default=DEFAULT_INTERVAL_MINUTES)
+    parser.add_argument("--shard-days", type=int, default=DEFAULT_SHARD_DAYS)
     parser.add_argument("--timeout", type=float, default=10.0)
     parser.add_argument("--pause", type=float, default=0.0)
     args = parser.parse_args()
     try:
-        result = acquire(Path(args.output), args.api_host, args.start, args.end,
-                         timeout=args.timeout, pause=args.pause)
+        result = acquire(
+            Path(args.output), args.api_host, args.start, args.end,
+            interval_minutes=args.interval_minutes, shard_days=args.shard_days,
+            timeout=args.timeout, pause=args.pause)
     except (OSError, ValueError) as exc:
         print(json.dumps({"status": "failed", "reason": str(exc)}), file=sys.stderr)
         return 2
