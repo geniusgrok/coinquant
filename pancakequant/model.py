@@ -7,7 +7,7 @@ marks the complete wallet to USD/CNY. It does NOT claim to bound fiat drawdown.
 from decimal import Decimal as D, ROUND_CEILING
 
 from .types import (INTERVAL_MS, ZERO, Bar, Blocked, ModelConfig, Snapshot,
-                    Target, floor_step)
+                    Target, floor_step, number)
 
 
 def validate_bars(bars: list[Bar], now: int) -> None:
@@ -84,8 +84,9 @@ def repair_target(snapshot: Snapshot, cfg: ModelConfig, candle: int = -1) -> Tar
                   p.margin_btc, risk, "repair full-position exchange protection")
 
 
-def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig) -> Target:
+def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_limit: D | None = None) -> Target:
     snapshot.validate()
+    cap = snapshot.rules.maximum if notional_limit is None else number(notional_limit, "authorized notional", positive=True)
     validate_bars(bars, snapshot.time)
     required = max(cfg.trend_bars, cfg.channel_bars + 1, cfg.atr_bars + 1)
     if len(bars) < required:
@@ -130,7 +131,7 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig) -> Target:
     quantity = floor_step(min(risk_budget / (unit_loss + unit_cost),
                               snapshot.equity_usd * cfg.max_effective_leverage,
                               available / (1 / price / 20 + 2 * rules.taker_fee / price),
-                              rules.maximum, rules.risk_limit_usd,
+                              rules.maximum, cap, rules.risk_limit_usd * min(D(1), sl / mark),
                               depth * cfg.liquidity_fraction), rules.step)
     if quantity < rules.minimum:
         return Target(candle, ZERO, mark, ZERO, ZERO, ZERO, ZERO, ZERO,
