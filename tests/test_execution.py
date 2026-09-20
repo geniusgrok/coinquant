@@ -207,6 +207,19 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(venue.writes, [])
         self.assertIn('risk-increasing target', r['reason'])
 
+    def test_prewrite_block_does_not_consume_signal_candle(self):
+        venue = FakeVenue()
+        unsafe = replace(decide(history(), venue.s, ModelConfig()), quantity=D(5000))
+        with tempfile.TemporaryDirectory() as path:
+            config = self.config(path)
+            from unittest.mock import patch
+            with patch('pancakequant.execution.decide', return_value=unsafe):
+                first = run_once(venue, config, execute=True)
+            second = run_once(venue, config, execute=True)
+        self.assertEqual(first['status'], 'blocked')
+        self.assertIn(second['status'], ('executed', 'partial'))
+        self.assertEqual(sum(w[0] == 'place' for w in venue.writes), 1)
+
     def test_failed_order_read_is_not_empty_account(self):
         venue = FakeVenue(); venue.failure = 'snapshot'
         with tempfile.TemporaryDirectory() as path:
