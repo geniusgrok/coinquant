@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import time
 from urllib.error import HTTPError, URLError
@@ -34,12 +35,9 @@ def main():
         'BTCUSD2026-09-19.csv.gz': 'https://public.bybit.com/trading/BTCUSD/BTCUSD2026-09-19.csv.gz',
         'BTCUSD2026-09-19_index_price.csv.gz': 'https://public.bybit.com/spot_index/BTCUSD/BTCUSD2026-09-19_index_price.csv.gz',
         'BTCUSD2026-09-19_premium_index.csv.gz': 'https://public.bybit.com/premium_index/BTCUSD/BTCUSD2026-09-19_premium_index.csv.gz',
-        'candidate-kline-start.csv.gz': 'https://public.bybit.com/kline/BTCUSD/2020-01-01/1min.csv.gz',
-        'candidate-kline-end.csv.gz': 'https://public.bybit.com/kline/BTCUSD/2026-09-19/1min.csv.gz',
-        'candidate-price-quote-start.csv.gz': 'https://public.bybit.com/price_quote/BTCUSD/2020-01-01/1min.csv.gz',
-        'candidate-price-quote-end.csv.gz': 'https://public.bybit.com/price_quote/BTCUSD/2026-09-19/1min.csv.gz',
-        'candidate-premium-quote-start.csv.gz': 'https://public.bybit.com/premium_quote/BTCUSD/2020-01-01/1min.csv.gz',
-        'candidate-premium-quote-end.csv.gz': 'https://public.bybit.com/premium_quote/BTCUSD/2026-09-19/1min.csv.gz',
+        'trading-directory.html': 'https://public.bybit.com/trading/BTCUSD/',
+        'spot-index-directory.html': 'https://public.bybit.com/spot_index/BTCUSD/',
+        'premium-index-directory.html': 'https://public.bybit.com/premium_index/BTCUSD/',
     }
     results = []
     deadline = time.monotonic() + 90
@@ -73,6 +71,19 @@ def main():
                     row['status'] = rows[0].get('status')
                 elif name == 'risk.json' and rows:
                     row['risk_tiers'] = len(rows)
+            elif name.endswith('-directory.html'):
+                listing = (root / name).read_text(encoding='utf-8', errors='strict')
+                patterns = {
+                    'trading-directory.html': r'BTCUSD(\d{4}-\d{2}-\d{2})\.csv\.gz',
+                    'spot-index-directory.html': r'BTCUSD(\d{4}-\d{2}-\d{2})_index_price\.csv\.gz',
+                    'premium-index-directory.html': r'BTCUSD(\d{4}-\d{2}-\d{2})_premium_index\.csv\.gz',
+                }
+                dates = sorted(set(re.findall(patterns[name], listing)))
+                if not dates:
+                    raise ValueError('public archive directory contains no recognized BTCUSD dates')
+                row['first_date'] = dates[0]
+                row['latest_date'] = dates[-1]
+                row['dated_files'] = len(dates)
         except (HTTPError, URLError, OSError, ValueError, TimeoutError) as exc:
             row.update(status='unavailable', error_type=type(exc).__name__,
                        http_status=getattr(exc, 'code', None))
@@ -81,9 +92,17 @@ def main():
             except OSError:
                 pass
         results.append(row)
+    coverage = {
+        row['file']: {
+            key: row[key] for key in ('first_date', 'latest_date', 'dated_files')
+            if key in row
+        }
+        for row in results if row['file'].endswith('-directory.html')
+    }
     report = {
         'purpose': 'PUBLIC schema/coverage probe, not economic validation',
         'window': {'start': '2020-01-01T00:00:00Z', 'end': '2026-09-20T00:00:00Z'},
+        'archive_coverage': coverage,
         'requests': results,
     }
     (root / 'probe.json').write_text(json.dumps(report, indent=2) + '\n')
