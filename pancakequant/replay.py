@@ -1,8 +1,8 @@
-"""Sparse one-minute account replay using the SAME production target model.
+"""Sparse account replay using the SAME production target model.
 
-This is a conservative execution model, not a replacement for native API tests.
-Whole-account extrema include the BTC collateral. Intraminute path uncertainty
-is reported; it is never resolved by assuming the most favorable order of fills.
+The manifest selects a supported aligned base interval (one minute or one hour).
+Whole-account extrema include BTC collateral. Intrabar path uncertainty is handled
+conservatively; it is never resolved by assuming the most favorable fill order.
 """
 from collections import deque
 from dataclasses import replace
@@ -12,7 +12,7 @@ import gzip
 import json
 from pathlib import Path
 
-from .data import Dataset, MINUTE
+from .data import Dataset
 from .model import decide, liquidation_price, validate_risk_increase
 from .pending import validate_target
 from .research import digest, invocations, iso, source_identity, spec, timestamp
@@ -117,8 +117,8 @@ def aggregate(chunk):
 def activate_entry(account, mark, trade, rules, capacity, spread, slip, *, at_open=False):
     """Return (target, execution_price, reason) without any signal evaluation.
 
-    The limit must cover the adverse traded extreme in an unresolved minute.
-    Minute volume is only a disclosed liquidity proxy; it is not FOK book proof.
+    The limit must cover the adverse traded extreme in an unresolved base bar.
+    Base-bar volume is only a disclosed liquidity proxy; it is not FOK book proof.
     At trigger, the parent is consumed whether it fills or is cancelled.
     """
     target = account.entry_pending
@@ -149,6 +149,7 @@ def activate_entry(account, mark, trade, rules, capacity, spread, slip, *, at_op
 
 
 def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=None):
+    step = dataset.interval
     initial = D(frozen['initial_cny']) / D(frozen['cny_per_usd'])
     fx = D(frozen['cny_per_usd'])
     spread, slip = D(frozen['spread_fraction']), D(frozen['slippage_fraction'])
@@ -299,24 +300,24 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                     take_hit = mark.high >= p.take_profit if long else mark.low <= p.take_profit
                     if liq_hit:
                         account.liquidations += 1
-                        account.exit_pending = 'liquidation reachable in unresolved minute path'
+                        account.exit_pending = 'liquidation reachable in unresolved base-bar path'
                     elif stop_hit:
                         account.exit_pending = 'hosted_stop'
                     elif take_hit and not account.exit_pending:
                         account.exit_pending = 'hosted_take_profit'
                     if account.exit_pending:
-                        # Stop first when stop and TP share a minute; adverse
+                        # Stop first when stop and TP share a base bar; adverse
                         # traded extreme plus modeled slippage, never SL=fill.
                         price = bar.low * (1 - slip) if long else bar.high * (1 + slip)
                         reason = account.exit_pending
                         execute(-p.quantity, price, 'native_exit', reason, liquidation=liq_hit)
                 final_mark = mark.close
-                statistics.observe(t + MINUTE, 'close', account.equity(mark.close), account.equity(mark.close) / mark.close, fx)
+                statistics.observe(t + step, 'close', account.equity(mark.close), account.equity(mark.close) / mark.close, fx)
                 if account.wallet <= 0 or account.equity(mark.close) <= 0:
                     raise Blocked('account insolvent in conservative replay; cannot reset or silently truncate')
             chunk.append(bar)
-            if t + MINUTE == (chunk[0].time // INTERVAL_MS + 1) * INTERVAL_MS:
-                if len(chunk) != INTERVAL_MS // MINUTE:
+            if t + step == (chunk[0].time // INTERVAL_MS + 1) * INTERVAL_MS:
+                if len(chunk) != INTERVAL_MS // step:
                     raise Blocked('incomplete signal aggregation')
                 history.append(aggregate(chunk)); chunk = []
             previous_volume = bar.volume
@@ -336,8 +337,8 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                 longest_tail_without_invocation_hours=(dataset.end - actual_triggers[-1]) / 3_600_000,
                 economic_numbers_meet_limits=cagr > 2 and statistics.mdd < D('.20'),
                 qualification='NOT_QUALIFIED',
-                limitations=['Minute extrema are a conservative account-drawdown envelope, not a known tick path.',
-                             'Book depth uses previous-minute volume; spread/slippage/conversion are frozen modeling assumptions.',
+                limitations=['Base-bar extrema are a conservative account-drawdown envelope, not a known tick path.',
+                             'Book depth uses previous-base-bar volume; spread/slippage/conversion are frozen modeling assumptions.',
                              'Native FOK/partial-fill/offline-order integration and historical source authenticity remain unverified.'])
 
 
