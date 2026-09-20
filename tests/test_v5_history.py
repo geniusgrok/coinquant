@@ -3,9 +3,10 @@ from io import BytesIO
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 from urllib.parse import parse_qs, urlparse
 
-from research.acquire_v5 import MINUTE_MS, fetch_funding, fetch_klines, merge_day
+from research.acquire_v5 import MINUTE_MS, acquire, fetch_funding, fetch_klines, merge_day
 
 
 class Response(BytesIO):
@@ -94,6 +95,50 @@ class V5HistoryTests(unittest.TestCase):
         bars, funding = merge_day(trade, mark, {start: "0.0001"}, start, end)
         self.assertEqual(len(bars), 2)
         self.assertEqual(funding, [(start, "0.0001", "200")])
+
+    def test_acquisition_receipts_are_portable_relative_paths(self):
+        from datetime import date, datetime, timezone
+
+        day = date(2020, 1, 1)
+        start = int(datetime(2020, 1, 1, tzinfo=timezone.utc).timestamp() * 1000)
+        trade = {
+            t: ("100", "102", "99", "101", "10")
+            for t in range(start, start + 86_400_000, MINUTE_MS)
+        }
+        mark = {
+            t: ("200", "202", "199", "201")
+            for t in range(start, start + 86_400_000, MINUTE_MS)
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            trade_receipt = {
+                "path": str(root / "raw/2020-01-01/trade-000.json"),
+                "bytes": 1, "sha256": "a", "source": "https://api.bybit.com/trade",
+            }
+            mark_receipt = {
+                "path": str(root / "raw/2020-01-01/mark-000.json"),
+                "bytes": 1, "sha256": "b", "source": "https://api.bybit.com/mark",
+            }
+            funding_receipt = {
+                "path": str(root / "raw/2020-01-01/funding.json"),
+                "bytes": 1, "sha256": "c", "source": "https://api.bybit.com/funding",
+            }
+            with patch("research.acquire_v5.fetch_klines",
+                       side_effect=[(trade, [trade_receipt]), (mark, [mark_receipt])]), \
+                 patch("research.acquire_v5.fetch_funding",
+                       return_value=({}, [funding_receipt])):
+                result = acquire(root, "api.bybit.com", day, date(2020, 1, 2))
+            self.assertEqual(result["status"], "complete")
+            inventory = json.loads((root / "v5-inventory.json").read_text())
+            record = inventory["days"]["2020-01-01"]
+            self.assertEqual(
+                [row["path"] for row in record["raw_pages"]],
+                ["raw/2020-01-01/trade-000.json",
+                 "raw/2020-01-01/mark-000.json",
+                 "raw/2020-01-01/funding.json"],
+            )
+            self.assertEqual(record["bars"]["path"], "normalized/bars/2020-01-01.csv.gz")
+            self.assertEqual(record["funding"]["path"], "normalized/funding/2020-01-01.csv.gz")
 
     def test_funding_schema_and_host_allowlist(self):
         start = 1_000_000 * MINUTE_MS
