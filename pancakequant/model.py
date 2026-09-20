@@ -63,6 +63,14 @@ def protected(snapshot: Snapshot, tp: D | None = None, sl: D | None = None) -> b
     return ZERO < tp < snapshot.mark < sl < p.liquidation - cushion
 
 
+def _unit_risk_btc(snapshot: Snapshot, entry: D, stop_loss: D, cfg: ModelConfig) -> D:
+    unit_loss = abs(1 / entry - 1 / stop_loss)
+    unit_cost = snapshot.rules.taker_fee * (1 / entry + 1 / stop_loss)
+    unit_cost += cfg.slippage_fraction / stop_loss
+    unit_cost += abs(snapshot.funding_rate) / snapshot.mark
+    return unit_loss + unit_cost
+
+
 def validate_risk_increase(snapshot: Snapshot, target: Target, cfg: ModelConfig,
                            *, notional_limit: D | None = None) -> None:
     """Re-validate a risk-increasing target against the latest account snapshot.
@@ -111,10 +119,7 @@ def validate_risk_increase(snapshot: Snapshot, target: Target, cfg: ModelConfig,
     if q > snapshot.equity_usd * cfg.max_effective_leverage:
         raise Blocked("risk-increasing target exceeds effective leverage limit")
 
-    unit_loss = abs(1 / target.entry - 1 / target.stop_loss)
-    unit_cost = rules.taker_fee * (1 / target.entry + 1 / target.stop_loss)
-    unit_cost += cfg.slippage_fraction / target.stop_loss + abs(snapshot.funding_rate) / snapshot.mark
-    recomputed_risk = q * (unit_loss + unit_cost)
+    recomputed_risk = q * _unit_risk_btc(snapshot, target.entry, target.stop_loss, cfg)
     if recomputed_risk > snapshot.equity_btc * cfg.risk_fraction:
         raise Blocked("risk-increasing target exceeds current risk budget")
     if target.risk_btc < recomputed_risk:
@@ -148,6 +153,31 @@ def _prices(mark: D, direction: int, distance: D, reward: D, tick: D) -> tuple[D
         tp = floor_step(mark - distance * reward, tick)
     if min(sl, tp) <= 0 or sl == mark or tp == mark:
         raise Blocked("invalid rounded protection")
+    return tp, sl
+
+
+def _entry_prices(reference: D, entry: D, direction: int, distance: D,
+                  reward: D, tick: D) -> tuple[D, D]:
+    """Keep the stop beyond the causal reference and reward the executable risk.
+
+    The stop is anchored to the observed mark/hosted trigger so it cannot sit
+    inside the market before an entry exists. The take-profit is then measured
+    from the conservative executable entry limit, including spread/slippage.
+    This preserves causal protection geometry even when execution friction is
+    larger than the short-term ATR distance.
+    """
+    _, sl = _prices(reference, direction, distance, reward, tick)
+    risk = entry - sl if direction > 0 else sl - entry
+    if risk <= 0:
+        raise Blocked("execution price crosses protective stop")
+    if direction > 0:
+        tp = ((entry + risk * reward) / tick).to_integral_value(rounding=ROUND_CEILING) * tick
+        valid = sl < reference <= entry < tp
+    else:
+        tp = floor_step(entry - risk * reward, tick)
+        valid = ZERO < tp < entry <= reference < sl
+    if not valid:
+        raise Blocked("invalid executable protection geometry")
     return tp, sl
 
 
@@ -204,7 +234,6 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
             return repair_target(snapshot, cfg, candle)
         return Target(candle, ZERO, mark, ZERO, ZERO, ZERO, ZERO, ZERO,
                       "ATR stop cannot precede initial 20x liquidation with safety margin")
-    tp, sl = _prices(reference, direction, distance, cfg.reward_multiple, rules.tick)
     if trigger:
         # A future conditional fill has no future book snapshot yet. Use the
         # currently observed half-spread as the causal proxy so the hosted FOK
@@ -216,9 +245,8 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
         quote = snapshot.ask if direction > 0 else snapshot.bid
     price = quote * (1 + cfg.slippage_fraction) if direction > 0 else quote * (1 - cfg.slippage_fraction)
     price = (price / rules.tick).to_integral_value(rounding=ROUND_CEILING) * rules.tick if direction > 0 else floor_step(price, rules.tick)
-    unit_loss = abs(1 / price - 1 / sl)
-    unit_cost = rules.taker_fee * (1 / price + 1 / sl) + cfg.slippage_fraction / sl
-    unit_cost += abs(snapshot.funding_rate) / mark
+    tp, sl = _entry_prices(reference, price, direction, distance, cfg.reward_multiple, rules.tick)
+    unit_risk = _unit_risk_btc(snapshot, price, sl, cfg)
     risk_budget = snapshot.equity_btc * cfg.risk_fraction
     # Existing same-direction margin can be released/reused; opposite exposure
     # is first closed and the target recomputed from the resulting real account.
@@ -228,7 +256,7 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
     total_cap = min(cap, rules.risk_limit_usd * min(D(1), sl / mark))
     if trigger:
         total_cap = min(total_cap, rules.maximum)
-    quantity = floor_step(min(risk_budget / (unit_loss + unit_cost),
+    quantity = floor_step(min(risk_budget / unit_risk,
                               snapshot.equity_usd * cfg.max_effective_leverage,
                               available / (1 / price / 20 + 2 * rules.taker_fee / price),
                               total_cap, depth * cfg.liquidity_fraction), rules.step)
@@ -246,6 +274,6 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
     if p.quantity * signed > 0 and protected(snapshot):
         sl = max(sl, p.stop_loss) if signed > 0 else min(sl, p.stop_loss)
     return Target(candle, signed, price, tp, sl, initial, allocated,
-                  quantity * (unit_loss + unit_cost),
+                  quantity * unit_risk,
                   "trend-filtered native FOK breakout" if trigger else "causal channel trend with inverse volatility risk sizing",
                   trigger)
