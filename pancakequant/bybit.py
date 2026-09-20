@@ -110,6 +110,12 @@ class Bybit:
         if not reduce_only:
             if min(target.take_profit, target.stop_loss) <= 0:
                 raise Blocked('entry requires full native TP and SL')
+            if target.trigger_price:
+                if delta != target.quantity:
+                    raise Blocked('conditional entry cannot add to existing exposure')
+                payload.update(timeInForce='FOK', triggerPrice=str(target.trigger_price),
+                               triggerDirection=1 if delta > 0 else 2,
+                               triggerBy='MarkPrice', closeOnTrigger=False)
             payload.update(takeProfit=str(target.take_profit), stopLoss=str(target.stop_loss),
                            tpslMode='Full', tpOrderType='Market', slOrderType='Market',
                            tpTriggerBy='MarkPrice', slTriggerBy='MarkPrice')
@@ -121,15 +127,17 @@ class Bybit:
         return self.write('/v5/order/cancel', dict(SCOPE, orderLinkId=link))
 
     def amend(self, link: str, target):
-        if not link.startswith('pq-'):
-            raise Blocked('unowned order cannot be amended')
+        if not link.startswith('pq-') or not target.trigger_price:
+            raise Blocked('only owned conditional entries use ordinary-order amendment')
         order = self.lookup(link)
-        if not order or order.get('stopOrderType') not in ('', None) or order.get('reduceOnly') is not False:
-            raise Blocked('ordinary entry amendment only; native TP/SL use trading-stop')
-        if number(order['cumExecQty']) != 0:
-            raise Blocked('partial fill raced amendment; reconcile position first')
+        if (not order or order.get('orderStatus') != 'Untriggered'
+                or order.get('stopOrderType') != 'Stop' or order.get('timeInForce') != 'FOK'
+                or order.get('reduceOnly') is not False or number(order['cumExecQty']) != 0
+                or order.get('side') != ('Buy' if target.quantity > 0 else 'Sell')):
+            raise Unknown('parent changed before amendment; reconcile before further action')
         return self.write('/v5/order/amend', dict(SCOPE, orderLinkId=link,
                          qty=str(abs(target.quantity)), price=str(target.entry),
+                         triggerPrice=str(target.trigger_price), triggerBy='MarkPrice',
                          takeProfit=str(target.take_profit), stopLoss=str(target.stop_loss),
                          tpslMode='Full', tpTriggerBy='MarkPrice', slTriggerBy='MarkPrice'))
 

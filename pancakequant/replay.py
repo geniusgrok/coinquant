@@ -14,6 +14,7 @@ from pathlib import Path
 
 from .data import Dataset, MINUTE
 from .model import decide, liquidation_price
+from .pending import validate_target
 from .research import digest, invocations, iso, source_identity, spec, timestamp
 from .types import Bar, Blocked, INTERVAL_MS, Position, Snapshot, ZERO, floor_step, serial
 
@@ -26,6 +27,7 @@ class Account:
         self.funding = ZERO
         self.liquidations = 0
         self.exit_pending = ''
+        self.entry_pending = None
 
     def equity(self, mark):
         return (self.wallet + self.position.pnl(mark)) * mark
@@ -112,6 +114,40 @@ def aggregate(chunk):
                min(b.low for b in chunk), chunk[-1].close, sum((b.volume for b in chunk), ZERO))
 
 
+def activate_entry(account, mark, trade, rules, capacity, spread, slip, *, at_open=False):
+    """Return (target, execution_price, reason) without any signal evaluation.
+
+    The limit must cover the adverse traded extreme in an unresolved minute.
+    Minute volume is only a disclosed liquidity proxy; it is not FOK book proof.
+    At trigger, the parent is consumed whether it fills or is cancelled.
+    """
+    target = account.entry_pending
+    if target is None:
+        return None
+    long = target.quantity > 0
+    trigger_mark = mark.open if at_open else mark.high if long else mark.low
+    hit = trigger_mark >= target.trigger_price if long else trigger_mark <= target.trigger_price
+    if not hit:
+        return None
+    account.entry_pending = None
+    if account.position.quantity:
+        raise Blocked('pending parent cannot coexist with an existing replay position')
+    quote = trade.open if at_open else trade.high if long else trade.low
+    price = quote * (1 + spread / 2 + slip if long else 1 - spread / 2 - slip)
+    q = abs(target.quantity)
+    affordable = account.wallet >= q / price * (D('.05') + 2 * rules.taker_fee)
+    cap = min(capacity, rules.maximum, rules.risk_limit_usd)
+    within_limit = price <= target.entry if long else price >= target.entry
+    protective = target.stop_loss < mark.open < target.take_profit if long else target.take_profit < mark.open < target.stop_loss
+    # Before an intraminute crossing the open can be below the entry stop; do
+    # not use that path favorably. Its account excursion is still marked below.
+    if not at_open:
+        protective = target.stop_loss < target.trigger_price < target.take_profit if long else target.take_profit < target.trigger_price < target.stop_loss
+    if q > cap or not affordable or not within_limit or not protective:
+        return target, None, 'FOK cancelled: liquidity/margin/price or protection precondition'
+    return target, price, 'previously hosted conditional FOK; full fill only'
+
+
 def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=None):
     initial = D(frozen['initial_cny']) / D(frozen['cny_per_usd'])
     fx = D(frozen['cny_per_usd'])
@@ -171,6 +207,23 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                     statistics.observe(t, 'after_' + kind, account.equity(mark.open), account.equity(mark.open) / mark.open, fx)
                     return signed
 
+                def activate(*, at_open=False):
+                    event = activate_entry(account, mark, bar, rules, capacity, spread, slip, at_open=at_open)
+                    if event is None:
+                        return
+                    parent, price, reason = event
+                    if price is None:
+                        orders.writerow([t, iso(t), 'native_entry_cancel', '0', str(parent.entry), '0',
+                                         str(account.position.quantity), str(parent.take_profit), str(parent.stop_loss), reason])
+                    else:
+                        filled = execute(parent.quantity, price, 'native_entry', reason,
+                                         parent.take_profit, parent.stop_loss)
+                        if filled != parent.quantity:
+                            raise Blocked('FOK replay unexpectedly produced a partial fill')
+
+                # Existing parent may have triggered before this invocation. Its
+                # real fill wins; later sizing sees the resulting account.
+                activate(at_open=True)
                 # A protection already crossed at invocation open wins the race;
                 # the new decision may not revive or resize the previous trade.
                 p = account.position
@@ -202,9 +255,20 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                                 # close, still at this authorized invocation.
                                 refreshed = replace(snapshot, wallet_btc=account.wallet,
                                                     available_btc=account.wallet, position=account.position)
-                                target = decide(list(history), refreshed, cfg, notional_limit=notional_limit)
+                                snapshot = refreshed
+                                target = decide(list(history), snapshot, cfg, notional_limit=notional_limit)
+                        if target.trigger_price:
+                            validate_target(snapshot, target, notional_limit or rules.maximum)
+                            operation = 'manual_amend_entry' if account.entry_pending else 'manual_place_entry'
+                            account.entry_pending = target
+                            orders.writerow([t, iso(t), operation, '0', str(target.entry), '0',
+                                             str(account.position.quantity), str(target.take_profit), str(target.stop_loss), target.reason])
+                        elif account.entry_pending:
+                            account.entry_pending = None
+                            orders.writerow([t, iso(t), 'manual_cancel_entry', '0', '0', '0',
+                                             str(account.position.quantity), '0', '0', target.reason])
                         delta = target.quantity - account.position.quantity
-                        if delta and not (account.position.quantity * target.quantity < 0):
+                        if not target.trigger_price and delta and not (account.position.quantity * target.quantity < 0):
                             reduction = account.position.quantity * delta < 0
                             price = bar.open * (1 + spread / 2 + slip) if delta > 0 else bar.open * (1 - spread / 2 - slip)
                             # IOC limit only fills at or better than the submitted
@@ -215,6 +279,9 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                                         target.reason, target.take_profit, target.stop_loss)
                         if account.position.quantity and target.quantity * account.position.quantity > 0:
                             account.position = replace(account.position, take_profit=target.take_profit, stop_loss=target.stop_loss)
+                # Between invocations only the already installed native parent
+                # and exits can fire; never recompute a target from this bar.
+                activate()
                 p = account.position
                 # Conservative intraminute account-extrema envelope: mark the
                 # current complete account at both extremes before considering
@@ -268,7 +335,7 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                 qualification='NOT_QUALIFIED',
                 limitations=['Minute extrema are a conservative account-drawdown envelope, not a known tick path.',
                              'Book depth uses previous-minute volume; spread/slippage/conversion are frozen modeling assumptions.',
-                             'Native partial-fill/offline-order integration and historical source authenticity remain unverified.'])
+                             'Native FOK/partial-fill/offline-order integration and historical source authenticity remain unverified.'])
 
 
 def run(manifest, output, config, *, stress=False):

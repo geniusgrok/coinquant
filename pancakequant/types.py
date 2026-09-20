@@ -175,6 +175,7 @@ class Target:
     allocated_margin_btc: D
     risk_btc: D
     reason: str
+    trigger_price: D = ZERO  # nonzero only for a native conditional FOK entry
 
     @property
     def direction(self) -> str:

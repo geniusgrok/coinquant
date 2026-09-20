@@ -100,24 +100,27 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
     current = bars[-cfg.atr_bars:]
     atr = sum(max(b.high - b.low, abs(b.high - a.close), abs(b.low - a.close))
               for a, b in zip(previous, current)) / cfg.atr_bars
-    direction = 0
-    if close > mean and (close > max(b.high for b in channel) or p.quantity > 0):
-        direction = 1
-    elif close < mean and (close < min(b.low for b in channel) or p.quantity < 0):
-        direction = -1
-    if direction == 0:
+    direction = 1 if close > mean else -1 if close < mean else 0
+    if not direction or (p.quantity and direction * p.quantity < 0):
         return Target(candle, ZERO, mark, ZERO, ZERO, ZERO, ZERO, ZERO,
-                      "no directional edge; close derivative, BTC collateral remains exposed")
+                      "trend no longer supports holding; BTC collateral remains exposed")
+    trigger = ZERO
+    if not p.quantity:
+        boundary = (((max(b.high for b in channel) / rules.tick).to_integral_value(rounding=ROUND_CEILING) + 1) * rules.tick if direction > 0
+                    else floor_step(min(b.low for b in channel), rules.tick) - rules.tick)
+        if direction * (mark - boundary) < 0:
+            trigger = boundary
+    reference = trigger or mark
     distance = max(atr * cfg.atr_multiple, rules.tick * 4)
-    # Initial 20x isolated margin must protect even before a later margin addition.
-    # A wider ATR stop is not silently placed behind the liquidation threshold.
-    if distance >= mark * (D("0.05") - rules.maintenance_rate - rules.taker_fee - D("0.005")):
-        if p.quantity and direction * p.quantity > 0:
+    # Initial 20x margin must cover the attached stop BEFORE any manual addition.
+    if distance >= reference * (D("0.05") - rules.maintenance_rate - rules.taker_fee - D("0.005")):
+        if p.quantity:
             return repair_target(snapshot, cfg, candle)
         return Target(candle, ZERO, mark, ZERO, ZERO, ZERO, ZERO, ZERO,
                       "ATR stop cannot precede initial 20x liquidation with safety margin")
-    tp, sl = _prices(mark, direction, distance, cfg.reward_multiple, rules.tick)
-    price = snapshot.ask * (1 + cfg.slippage_fraction) if direction > 0 else snapshot.bid * (1 - cfg.slippage_fraction)
+    tp, sl = _prices(reference, direction, distance, cfg.reward_multiple, rules.tick)
+    quote = reference if trigger else snapshot.ask if direction > 0 else snapshot.bid
+    price = quote * (1 + cfg.slippage_fraction) if direction > 0 else quote * (1 - cfg.slippage_fraction)
     price = (price / rules.tick).to_integral_value(rounding=ROUND_CEILING) * rules.tick if direction > 0 else floor_step(price, rules.tick)
     unit_loss = abs(1 / price - 1 / sl)
     unit_cost = rules.taker_fee * (1 / price + 1 / sl) + cfg.slippage_fraction / sl
@@ -139,12 +142,14 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
     signed = direction * quantity
     initial = quantity / price / 20
     allocated = initial + quantity * rules.taker_fee / price
-    estimate = liquidation_price(signed, price, allocated, rules.maintenance_rate, rules.taker_fee)
-    cushion = mark * D("0.003")
+    estimate = liquidation_price(signed, price, initial, rules.maintenance_rate, rules.taker_fee)
+    cushion = reference * D("0.003")
     if (direction > 0 and sl <= estimate + cushion) or (direction < 0 and sl >= estimate - cushion):
         raise Blocked("stop does not precede conservative liquidation estimate")
     # Do not loosen an existing valid stop merely because a new candle arrived.
     if p.quantity * signed > 0 and protected(snapshot):
         sl = max(sl, p.stop_loss) if signed > 0 else min(sl, p.stop_loss)
     return Target(candle, signed, price, tp, sl, initial, allocated,
-                  quantity * (unit_loss + unit_cost), "causal channel trend with inverse volatility risk sizing")
+                  quantity * (unit_loss + unit_cost),
+                  "trend-filtered native FOK breakout" if trigger else "causal channel trend with inverse volatility risk sizing",
+                  trigger)

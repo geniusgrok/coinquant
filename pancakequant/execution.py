@@ -3,6 +3,7 @@ from dataclasses import replace
 from decimal import ROUND_CEILING
 
 from .bybit import TERMINAL
+from . import pending
 from .model import decide, protected, repair_target
 from .state import State, client_id
 from .types import D, INTERVAL_MS, ZERO, Blocked, Unknown, Target, floor_step, number, serial
@@ -71,18 +72,25 @@ class Execution:
         self.write_attempted = True
 
     def recover(self, snapshot):
+        changed = False
         for intent in self.state.pending():
             payload, kind = intent['payload'], intent['kind']
-            if kind in ('order', 'cancel'):
+            if kind in ('entry', 'amend'):
+                snapshot = pending.reconcile(self, intent)
+                changed = True
+            elif kind in ('order', 'cancel'):
                 order = self.venue.lookup(payload['link'])
                 if order and order.get('orderStatus') in TERMINAL:
                     self.state.finish(intent['id'], 'confirmed', {'order': order})
+                    changed = True
                     self.report['actions'].append({'operation': 'reconcile', 'id': intent['id'], 'outcome': order['orderStatus']})
             elif kind == 'protect':
                 p = snapshot.position
                 if (not p.quantity or (coverage(snapshot) and p.take_profit == number(payload['tp']) and p.stop_loss == number(payload['sl']))):
                     self.state.finish(intent['id'], 'confirmed', {'position': serial(p)})
-        # Unknown absence is deliberately retained, including a crash before send.
+        # A fill observed during lookup invalidates the earlier position size.
+        return self.observe() if changed else snapshot
+        # Unknown absence remains pending, including a crash before send.
 
     def cancel(self, link):
         identity = client_id(self.state.identity, 0, 'cancel:' + link)
@@ -103,7 +111,10 @@ class Execution:
         self.state.finish(identity, 'confirmed', {'order': observed})
         self.report['actions'].append({'operation': 'cancel', 'id': link, 'outcome': observed['orderStatus']})
 
-    def clean_entries(self, snapshot):
+    def clean_entries(self, snapshot, *, keep_pending=False):
+        if (keep_pending and not self.state.pending() and not self.state.get('native_fok_violation')
+                and pending.working(snapshot, self.config.max_position_usd)):
+            return snapshot
         for order in entry_orders(snapshot):
             link = order.get('orderLinkId', '')
             if not link.startswith('pq-'):
@@ -154,6 +165,8 @@ class Execution:
                 raise Blocked('target exceeds authorized or full-market-exit capacity')
             if p.quantity and not coverage(snapshot):
                 raise Blocked('cannot add risk before full protection is verified')
+            if self.state.get('native_fok_violation'):
+                raise Blocked('native entry safety contract failed; no new exposure')
             if self.state.pending() or entry_orders(snapshot):
                 raise Unknown('unresolved intent or entry blocks additional risk')
         link = client_id(self.state.identity, target.candle, operation)
@@ -191,6 +204,13 @@ class Execution:
         return self.observe()
 
     def target(self, snapshot, target, bars):
+        existing = pending.working(snapshot, self.config.max_position_usd)
+        if existing and (not target.trigger_price or
+                         (existing['side'] == 'Buy') != (target.quantity > 0)):
+            self.cancel(existing['orderLinkId'])
+            snapshot = self.observe()
+            target = decide(bars, snapshot, self.config.model,
+                            notional_limit=self.config.max_position_usd)
         p = snapshot.position
         if p.quantity and (not target.quantity or p.quantity * target.quantity < 0):
             reduction = close_target(snapshot, self.config, target.candle)
@@ -202,6 +222,12 @@ class Execution:
                 self.report['partial'] = True
                 return snapshot
             target = decide(bars, snapshot, self.config.model, notional_limit=self.config.max_position_usd)  # actual equity after closing
+        if target.trigger_price:
+            snapshot = pending.apply(self, snapshot, target)
+            if snapshot.position.quantity and not coverage(snapshot):
+                snapshot = self.protect(snapshot, repair_target(snapshot, self.config.model, target.candle))
+            self.report['target'] = serial(target)
+            return snapshot
         delta = target.quantity - snapshot.position.quantity
         if delta:
             reduction = snapshot.position.quantity * delta < 0
@@ -217,7 +243,7 @@ class Execution:
 def _recover_safety(engine, config, report):
     """One bounded fresh reconciliation, then protection or reduce-only removal."""
     fresh = engine.clean_entries(engine.observe())
-    engine.recover(fresh)
+    fresh = engine.recover(fresh)
     if fresh.position.quantity and not coverage(fresh):
         # An unknown prior protection amendment must not be duplicated. If its
         # outcome cannot be verified, only reduction of the real position is safe.
@@ -249,8 +275,11 @@ def _observation_report(engine, report):
         return
     report['actual'] = serial(last)
     report['protection_verified_at_observation'] = coverage(last)
-    report['offline_safe_at_observation'] = (coverage(last) and not entry_orders(last)
-                                              and not engine.state.pending())
+    parent = pending.working(last, engine.config.max_position_usd)
+    report['hosted_entry_contract_verified_at_observation'] = parent is not None
+    report['offline_safe_at_observation'] = (coverage(last) and (not entry_orders(last) or parent is not None)
+                                              and not engine.state.pending()
+                                              and not engine.state.get('native_fok_violation'))
     report['position_btc_at_mark'] = str(abs(last.position.quantity) / last.mark)
     report['effective_derivative_leverage'] = str(abs(last.position.quantity) / last.equity_usd)
     # Fiat delta of the BTC wallet AND inverse position, not just derivative notional.
@@ -265,7 +294,7 @@ def run_once(venue, config, *, execute=False):
     uid = venue.identity()
     report = {'status': 'read_only', 'environment': config.environment, 'account_uid': uid,
               'actions': [], 'partial': False,
-              'limitations': ['offline resting entry linkage is not validated; residual entries are cancelled',
+              'limitations': ['Only flat-account native conditional FOK parents may remain; native integration is not yet qualified',
                               'BTC collateral retains fiat price risk when the derivative is flat',
                               'native testnet and live execution are not yet integration-qualified']}
     with State(config.state_dir, f'{config.environment}:{uid}') as state:
@@ -277,10 +306,10 @@ def run_once(venue, config, *, execute=False):
             snapshot = engine.observe()
             account_verified = True
             if execute:
-                engine.recover(snapshot)
+                snapshot = engine.recover(snapshot)
                 if snapshot.position.quantity and not coverage(snapshot):
                     snapshot = engine.protect(snapshot, repair_target(snapshot, config.model))
-                snapshot = engine.clean_entries(snapshot)
+                snapshot = engine.clean_entries(snapshot, keep_pending=True)
                 if snapshot.position.quantity and not coverage(snapshot):
                     snapshot = engine.protect(snapshot, repair_target(snapshot, config.model))
             bars = venue.candles(snapshot.time)
@@ -299,7 +328,7 @@ def run_once(venue, config, *, execute=False):
                     state.set('last_candle', target.candle)
                     engine.target(snapshot, target, bars)
                     report['status'] = 'partial' if report['partial'] else 'executed'
-                snapshot = engine.clean_entries(engine.observe())
+                snapshot = engine.clean_entries(engine.observe(), keep_pending=True)
                 if not coverage(snapshot):
                     raise Unknown('final full-position protection is not verified')
         except (Blocked, Unknown) as exc:
@@ -315,7 +344,7 @@ def run_once(venue, config, *, execute=False):
                 except (Blocked, Unknown) as recovery_error:
                     report['emergency'] = 'unknown: ' + str(recovery_error)
         if execute and report['status'] in ('executed', 'no_action'):
-            changed = any(a['operation'] in ('increase', 'reduce', 'protect', 'cancel')
+            changed = any(a['operation'] in ('increase', 'reduce', 'protect', 'cancel', 'place_entry', 'amend_entry')
                           for a in report['actions'])
             report['status'] = 'executed' if changed else 'no_action'
         _observation_report(engine, report)
