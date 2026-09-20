@@ -12,7 +12,7 @@ import gzip
 import json
 from pathlib import Path
 
-from .data import Dataset
+from .data import Dataset, MINUTE
 from .model import decide, liquidation_price, validate_risk_increase
 from .pending import validate_target
 from .research import digest, invocations, iso, source_identity, spec, timestamp
@@ -150,6 +150,10 @@ def activate_entry(account, mark, trade, rules, capacity, spread, slip, *, at_op
 
 def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=None):
     step = dataset.interval
+    # Frozen liquidity assumptions were calibrated to a one-minute activity
+    # proxy. Hourly bars preserve price extrema but must not multiply executable
+    # capacity by aggregating 60 minutes of volume.
+    liquidity_scale = D(MINUTE) / D(step)
     initial = D(frozen['initial_cny']) / D(frozen['cny_per_usd'])
     fx = D(frozen['cny_per_usd'])
     spread, slip = D(frozen['spread_fraction']), D(frozen['slippage_fraction'])
@@ -188,7 +192,7 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                     account.position = replace(p, liquidation=liquidation_price(
                         p.quantity, p.entry, p.margin_btc, rules.maintenance_rate, rules.taker_fee))
                 statistics.observe(t, 'open', account.equity(mark.open), account.equity(mark.open) / mark.open, fx)
-                capacity = floor_step(bar.volume * participation, rules.step)
+                capacity = floor_step(bar.volume * liquidity_scale * participation, rules.step)
 
                 def execute(delta, price, kind, reason, tp=ZERO, sl=ZERO, liquidation=False):
                     nonlocal capacity, fills_count
@@ -237,7 +241,8 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                         snapshot = Snapshot('historical-dedicated-btc', t, account.wallet,
                                             max(ZERO, account.wallet - account.position.margin_btc),
                                             mark.open, bar.open * (1 - spread / 2), bar.open * (1 + spread / 2),
-                                            previous_volume * depth_fraction, previous_volume * depth_fraction,
+                                            previous_volume * liquidity_scale * depth_fraction,
+                                            previous_volume * liquidity_scale * depth_fraction,
                                             account.position, rules, funding_rate=last_funding)
                         try:
                             target = decide(list(history), snapshot, cfg, notional_limit=notional_limit)
@@ -338,7 +343,7 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                 economic_numbers_meet_limits=cagr > 2 and statistics.mdd < D('.20'),
                 qualification='NOT_QUALIFIED',
                 limitations=['Base-bar extrema are a conservative account-drawdown envelope, not a known tick path.',
-                             'Book depth uses previous-base-bar volume; spread/slippage/conversion are frozen modeling assumptions.',
+                             'Liquidity uses previous-base-bar volume normalized to a one-minute activity proxy; spread/slippage/conversion are frozen modeling assumptions.',
                              'Native FOK/partial-fill/offline-order integration and historical source authenticity remain unverified.'])
 
 
