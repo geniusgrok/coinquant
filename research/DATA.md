@@ -7,7 +7,7 @@ synthetic or proxy data as native because a metric looks favorable.
 
 The single `data/manifest.json` identifies Bybit BTCUSD InversePerpetual, BTC settlement.
 Required keys are `venue`, `symbol`, `contract_type`, `settlement_coin`, `provenance`
-(`native`, `proxy`, or `synthetic`), `bar_interval_ms` (60000), `start`, `end`,
+(`native`, `proxy`, or `synthetic`), `bar_interval_ms` (60000 or 3600000), `start`, `end`,
 `warmup_start`, and `files`. Dates are explicit UTC ISO strings. Start/end must
 match research/spec.json. Warmup must supply complete aligned 4-hour bars sufficient
 for the configured indicators before the formal start; warmup earns no return.
@@ -19,7 +19,7 @@ verified before reading. Multiple parts must concatenate in timestamp order,
 without gaps or overlapping rows. Preserve original downloads and conversion
 scripts separately; a normalized CSV is not a substitute for source originals.
 
-## Minute bars
+## Base bars
 
 Exact columns:
 
@@ -115,7 +115,9 @@ python research/acquire_v5.py \
   --output data/v5 \
   --api-host api.bybit.com \
   --start 2019-12-11 \
-  --end 2026-09-20
+  --end 2026-09-20 \
+  --interval-minutes 60 \
+  --shard-days 30
 ```
 
 If the global host is region-blocked, choose the official regional host that
