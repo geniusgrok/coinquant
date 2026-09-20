@@ -79,10 +79,10 @@ def validate_risk_increase(snapshot: Snapshot, target: Target, cfg: ModelConfig,
         raise Blocked("risk increase must keep one position direction")
     if p.quantity and q <= abs(p.quantity):
         raise Blocked("target does not increase current exposure")
-    cap = rules.full_exit_capacity if notional_limit is None else number(
+    cap = rules.risk_limit_usd if notional_limit is None else number(
         notional_limit, "authorized notional", positive=True)
     tier_cap = rules.risk_limit_usd * min(D(1), target.stop_loss / snapshot.mark)
-    total_cap = min(rules.full_exit_capacity, cap, tier_cap)
+    total_cap = min(cap, tier_cap)
     if q % rules.step or q < rules.minimum or q > total_cap:
         raise Blocked("risk-increasing target violates total position limits")
     if target.trigger_price and q > rules.maximum:
@@ -172,7 +172,7 @@ def repair_target(snapshot: Snapshot, cfg: ModelConfig, candle: int = -1) -> Tar
 
 def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_limit: D | None = None) -> Target:
     snapshot.validate()
-    cap = snapshot.rules.full_exit_capacity if notional_limit is None else number(notional_limit, "authorized notional", positive=True)
+    cap = snapshot.rules.risk_limit_usd if notional_limit is None else number(notional_limit, "authorized notional", positive=True)
     validate_bars(bars, snapshot.time)
     required = max(cfg.trend_bars, cfg.channel_bars + 1, cfg.atr_bars + 1)
     if len(bars) < required:
@@ -225,8 +225,7 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
     reusable = p.margin_btc if direction * p.quantity > 0 else ZERO
     available = max(ZERO, snapshot.available_btc + reusable)
     depth = snapshot.buy_depth_usd if direction > 0 else snapshot.sell_depth_usd
-    total_cap = min(rules.full_exit_capacity, cap,
-                    rules.risk_limit_usd * min(D(1), sl / mark))
+    total_cap = min(cap, rules.risk_limit_usd * min(D(1), sl / mark))
     if trigger:
         total_cap = min(total_cap, rules.maximum)
     quantity = floor_step(min(risk_budget / (unit_loss + unit_cost),

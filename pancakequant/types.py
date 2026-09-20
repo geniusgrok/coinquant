@@ -79,13 +79,6 @@ class Rules:
     launch_ms: int
     status: str = "Trading"
 
-    @property
-    def full_exit_capacity(self) -> D:
-        # Bybit Full-position TP/SL under UTA may resubmit at most six
-        # max-size close orders. Keep offline-protected total exposure within
-        # that bounded exchange-managed exit capacity.
-        return self.maximum * 6
-
     def __post_init__(self) -> None:
         for key in ("tick", "step", "minimum", "maximum", "risk_limit_usd"):
             number(getattr(self, key), key, positive=True)

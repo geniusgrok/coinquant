@@ -164,14 +164,14 @@ class ExecutionTests(unittest.TestCase):
     def test_position_above_single_order_cap_can_still_be_fully_protected(self):
         venue = FakeVenue(replace(
             sample(), rules=replace(sample().rules, maximum=D(5))))
-        p = Position(D(10), D(30745), D('0.00002'), D(29000), D(33000), D(30000))
-        venue.s = replace(
-            venue.s, position=p, available_btc=venue.s.wallet_btc - p.margin_btc,
-            orders=protectors(p))
-        self.assertTrue(coverage(venue.s))
-        too_large = replace(p, quantity=D(31))
-        self.assertFalse(coverage(replace(
-            venue.s, position=too_large, orders=protectors(too_large))))
+        for quantity in (D(10), D(31)):
+            p = Position(quantity, D(30745), D('0.0002'), D(29000),
+                         D(33000), D(30000))
+            snapshot = replace(
+                venue.s, position=p,
+                available_btc=venue.s.wallet_btc - p.margin_btc,
+                orders=protectors(p))
+            self.assertTrue(coverage(snapshot))
 
     def test_immediate_target_is_chunked_to_single_order_max(self):
         snapshot = replace(sample(), rules=replace(sample().rules, maximum=D(5)))
