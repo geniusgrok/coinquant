@@ -49,7 +49,7 @@ Missing events are not zero-cost events. Schedule changes belong in dated rules.
 Exact columns:
 
 ```text
-time,launch_ms,funding_interval_ms,tick,step,minimum,maximum,market_maximum,risk_limit_btc,maintenance_rate,taker_fee,liquidation_fee
+time,launch_ms,funding_interval_ms,tick,step,minimum,maximum,market_maximum,risk_limit_btc,maintenance_rate,taker_fee
 ```
 
 Each row is effective from time until the next row. Provide a row effective at or
