@@ -1,12 +1,13 @@
-name: Check and export research source
+name: Check
 on:
   push:
-    branches: [research/on-demand-btc-20260920]
+    branches: [main, research/on-demand-btc-20260920]
+  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: pancakequant-research-check
-  cancel-in-progress: true
+  group: pancakequant-check-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -19,17 +20,23 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
-      - name: Export both verified inputs without changing the repository
-        run: python .transfer/materialize.py | tee "$RUNNER_TEMP/recovery-export.json"
+      - name: Preserve immutable current source
+        run: |
+          mkdir -p "$RUNNER_TEMP/pancakequant-check"
+          git rev-parse HEAD > "$RUNNER_TEMP/pancakequant-check/HEAD.txt"
+          git archive --format=tar HEAD > "$RUNNER_TEMP/pancakequant-check/source.tar"
+          cd "$RUNNER_TEMP/pancakequant-check"
+          sha256sum source.tar > SHA256SUMS
+      - name: Compile and run targeted offline checks
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m compileall -q pancakequant tests
+          python -m unittest discover -s tests -v 2>&1 | tee "$RUNNER_TEMP/pancakequant-check/tests.txt"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: verified-recovery-${{ github.sha }}
-          path: |
-            ${{ runner.temp }}/pancakequant-recovery/recovery.zip
-            ${{ runner.temp }}/recovery-export.json
+          name: checked-source-${{ github.sha }}
+          path: ${{ runner.temp }}/pancakequant-check/
           if-no-files-found: error
           retention-days: 30
-      - name: Compile and check materialized source only
-        run: |
-          python -m compileall -q pancakequant tests
-          python -m unittest discover -s tests -v
