@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from pancakequant.data import Dataset
-from pancakequant.replay import Account, activate_entry, _replay
+from pancakequant.replay import Account, activate_entry, hosted_exit_price, _replay
 from pancakequant.research import invocations
 from pancakequant.types import Bar, D, ModelConfig
 from test_pending import target
@@ -42,6 +42,35 @@ class PendingReplayTests(unittest.TestCase):
         account.fill(-parent.quantity, D(30750), sample().rules)
         self.assertEqual(account.position.quantity, 0)
         self.assertIsNone(account.entry_pending)
+
+    def test_intrabar_future_extreme_does_not_change_trigger_fill_price(self):
+        rules = sample().rules
+        first = Account(D('.1')); first.entry_pending = target()
+        second = Account(D('.1')); second.entry_pending = target()
+        mark = Bar(0, D(30745), D(40000), D(30740), D(31000))
+        normal = Bar(0, D(30745), D(31020), D(30740), D(31000), D(1000))
+        future_spike = Bar(0, D(30745), D(40000), D(30740), D(31000), D(1000))
+        a = activate_entry(first, mark, normal, rules, D(100), D('.0002'), D('.0001'))
+        b = activate_entry(second, mark, future_spike, rules, D(100), D('.0002'), D('.0001'))
+        self.assertIsNotNone(a[1])
+        self.assertEqual(a[1], b[1])
+        self.assertEqual(a[1], target().trigger_price * D('1.0002'))
+
+    def test_hosted_exit_uses_threshold_or_known_adverse_open_not_future_extreme(self):
+        p = replace(sample().position, quantity=D(100), stop_loss=D(30000),
+                    take_profit=D(32000), liquidation=D(29000))
+        # Intrabar stop: fill from stop threshold, not a later low.
+        self.assertEqual(
+            hosted_exit_price(p, p.stop_loss, D(31000), D('.001'), adverse_gap=True),
+            D(30000) * D('.999'))
+        # Gap through stop: the already-worse open is known and must be honored.
+        self.assertEqual(
+            hosted_exit_price(p, p.stop_loss, D(29500), D('.001'), adverse_gap=True),
+            D(29500) * D('.999'))
+        # Take profit receives no optimistic favorable-gap improvement.
+        self.assertEqual(
+            hosted_exit_price(p, p.take_profit, D(33000), D('.001'), adverse_gap=False),
+            D(32000) * D('.999'))
 
     def test_pending_only_fires_between_fixed_invocations_no_extra_decision(self):
         with tempfile.TemporaryDirectory() as tmp:
