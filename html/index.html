@@ -1,0 +1,92 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>Alpha Rptr - Charts</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+
+  <meta name="theme-color" content="#fafafa">
+  <style>
+  
+  </style>
+</head>
+
+<body>  
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+  <script src="/js/jquery.csv.min.js"></script>
+  <script src="/js/moment.min.js"></script>
+  <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>  
+  
+  <link href="//cdn.jsdelivr.net/npm/featherlight@1.7.14/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+  <script src="//cdn.jsdelivr.net/npm/featherlight@1.7.14/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/themes/prism-coy.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js" data-manual></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-python.min.js" data-manual></script>
+
+  <div class="header">
+    <div class="library">
+      <div class="icon">⛁</div>
+      <div class="name">Library</div>  
+    </div>
+    <div class="logo"><img src="/img/logo.png"/></div>
+    <div class="meta">
+      <div class="title"><span>Recent Backtest</span><div class="button save">&#128190; Save</div></div>
+      <div class="props">Loading...</div>
+    </div>     
+  </div>
+  <div id="chart_container">
+    <div id="chart_title">alpha rptr</div>
+    <div id="ed_toggle">
+      <div class="button-wrap">
+        <input class="hidden radio-label" id="equity-button" type="radio" name="ed_toggle" value="equity" checked="checked" autocomplete="off"/>
+        <label class="button-label" for="equity-button">
+          <h1>↝ Equity</h1>
+        </label>
+        <input class="hidden radio-label" id="drawdown-button" type="radio" name="ed_toggle" value="drawdown" autocomplete="off"/>
+        <label class="button-label" for="drawdown-button">
+          <h1>↷ Drawdown</h1>
+        </label>
+        <div class="button code">𝛌 Source</div>
+        <div class="button fitchart">⚃ Fit</div>        
+      </div>      
+    </div>
+    <div id="chart"></div>
+  </div>
+  <div id="trades_cont"><table id="trades" class="display "></table></div>
+  <script src="js/main.js"></script>
+  <script>
+
+  </script>
+  <div class="footer">Built using TradingView Lightweight Charts &bull; 
+    Copyright (с) 2020 <a href="https://www.tradingview.com/">TradingView, Inc.</a></div>
+</body>
+
+</html>
