@@ -6,7 +6,7 @@ import unittest
 from unittest.mock import patch
 from urllib.parse import parse_qs, urlparse
 
-from research.acquire_v5 import MINUTE_MS, acquire, fetch_funding, fetch_klines, merge_day
+from research.acquire_v5 import MINUTE_MS, _day_complete, acquire, fetch_funding, fetch_klines, merge_day
 
 
 class Response(BytesIO):
@@ -139,6 +139,35 @@ class V5HistoryTests(unittest.TestCase):
             )
             self.assertEqual(record["bars"]["path"], "normalized/bars/2020-01-01.csv.gz")
             self.assertEqual(record["funding"]["path"], "normalized/funding/2020-01-01.csv.gz")
+
+    def test_complete_checkpoint_is_rejected_after_file_corruption(self):
+        import hashlib
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            receipts = []
+            for relative, payload in (
+                ("raw/day/trade.json", b"trade"),
+                ("normalized/bars/day.csv.gz", b"bars"),
+                ("normalized/funding/day.csv.gz", b"funding"),
+            ):
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(payload)
+                receipts.append({
+                    "path": relative,
+                    "bytes": len(payload),
+                    "sha256": hashlib.sha256(payload).hexdigest(),
+                })
+            record = {
+                "status": "complete",
+                "raw_pages": [receipts[0]],
+                "bars": receipts[1],
+                "funding": receipts[2],
+            }
+            self.assertTrue(_day_complete(root, record))
+            (root / receipts[1]["path"]).write_bytes(b"corrupt")
+            self.assertFalse(_day_complete(root, record))
 
     def test_funding_schema_and_host_allowlist(self):
         start = 1_000_000 * MINUTE_MS
