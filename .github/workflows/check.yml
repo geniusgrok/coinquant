@@ -2,6 +2,14 @@ name: Check
 on:
   push:
     branches: [main, research/on-demand-btc-20260920]
+    paths:
+      - 'pancakequant/**'
+      - 'tests/**'
+      - 'main.py'
+      - 'config.example.json'
+      - 'research/spec.json'
+      - 'research/probe.py'
+      - '.github/workflows/check.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -27,6 +35,9 @@ jobs:
           git archive --format=tar HEAD > "$RUNNER_TEMP/pancakequant-check/source.tar"
           cd "$RUNNER_TEMP/pancakequant-check"
           sha256sum source.tar > SHA256SUMS
+      - name: One requested public schema probe
+        if: github.event.head_commit.message == 'Check public BTCUSD endpoints'
+        run: python research/probe.py --output "$RUNNER_TEMP/pancakequant-check/public"
       - name: Compile and run targeted offline checks
         shell: bash
         run: |
