@@ -11,9 +11,11 @@ import json
 from pathlib import Path
 
 from .research import digest, timestamp
-from .types import Bar, Blocked, D, Rules, number
+from .types import Bar, Blocked, D, INTERVAL_MS, Rules, number
 
 MINUTE = 60_000
+HOUR = 3_600_000
+SUPPORTED_INTERVALS = (MINUTE, HOUR)
 
 
 @dataclass(frozen=True)
@@ -38,8 +40,11 @@ class Dataset:
                               ('contract_type', 'InversePerpetual'), ('settlement_coin', 'BTC')):
             if m.get(key) != expected:
                 raise Blocked('different venue/contract/settlement data cannot be spliced')
-        if m.get('provenance') not in ('native', 'proxy', 'synthetic') or m.get('bar_interval_ms') != MINUTE:
-            raise Blocked('explicit provenance and one-minute trade plus mark bars are required')
+        self.interval = m.get('bar_interval_ms')
+        if (m.get('provenance') not in ('native', 'proxy', 'synthetic')
+                or type(self.interval) is not int or self.interval not in SUPPORTED_INTERVALS
+                or INTERVAL_MS % self.interval):
+            raise Blocked('explicit provenance and a supported aligned trade/mark interval are required')
         if self.warmup_start > self.start - warmup_bars * 14_400_000 or self.warmup_start % 14_400_000:
             raise Blocked('insufficient complete pre-start signal warmup bars')
         self.files = {}
@@ -59,7 +64,7 @@ class Dataset:
         previous = -1
         for row in self.rows('funding'):
             t = int(row['time'])
-            if t <= previous or t % MINUTE:
+            if t <= previous or t % self.interval:
                 raise Blocked('funding timestamps duplicate, unordered or unaligned')
             previous = t
             self.funding[t] = (number(row['rate']), number(row['mark'], positive=True))
@@ -67,7 +72,7 @@ class Dataset:
         previous = -1
         for row in self.rows('rules'):
             row = {k: (int(v) if k in ('time', 'launch_ms', 'funding_interval_ms') else number(v)) for k, v in row.items()}
-            if row['time'] <= previous or row['funding_interval_ms'] <= 0 or row['funding_interval_ms'] % MINUTE:
+            if row['time'] <= previous or row['funding_interval_ms'] <= 0 or row['funding_interval_ms'] % self.interval:
                 raise Blocked('historical rule timeline is invalid')
             if row['launch_ms'] > self.warmup_start:
                 raise Blocked('claimed contract listing cannot cover required warmup')
@@ -77,7 +82,7 @@ class Dataset:
             raise Blocked('initial historical margin/cost rules are missing')
         # Funding schedule changes must be dated in the same authoritative rules.
         index = 0
-        for t in range(self.start, self.end, MINUTE):
+        for t in range(self.start, self.end, self.interval):
             while index + 1 < len(self.tiers) and self.tiers[index + 1]['time'] <= t:
                 index += 1
             expected = t % self.tiers[index]['funding_interval_ms'] == 0
@@ -96,12 +101,12 @@ class Dataset:
             try:
                 t = int(r['time'])
                 if t != expected:
-                    raise Blocked(f'missing, overlapping or unordered minute at {expected}')
+                    raise Blocked(f'missing, overlapping or unordered base bar at {expected}')
                 trade = Bar(t, *(number(r[k]) for k in ('open', 'high', 'low', 'close', 'volume')))
                 mark = Bar(t, *(number(r['mark_' + k]) for k in ('open', 'high', 'low', 'close')))
             except (KeyError, ValueError, TypeError) as exc:
-                raise Blocked('invalid native trade/mark minute schema') from exc
-            expected += MINUTE
+                raise Blocked('invalid native trade/mark base-bar schema') from exc
+            expected += self.interval
             if t >= self.end:
                 raise Blocked('input extends beyond frozen endpoint')
             yield Tick(trade, mark)
