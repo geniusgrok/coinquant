@@ -242,8 +242,15 @@ class Execution:
 
 def _recover_safety(engine, config, report):
     """One bounded fresh reconciliation, then protection or reduce-only removal."""
-    fresh = engine.clean_entries(engine.observe())
-    fresh = engine.recover(fresh)
+    fresh = engine.observe()
+    # An unresolved parent/cancellation must block new exposure, not prevent
+    # repairing the protection of a separately observed existing position.
+    for reconcile in (engine.clean_entries, engine.recover):
+        try:
+            fresh = reconcile(fresh)
+        except (Blocked, Unknown) as exc:
+            report.setdefault('recovery_issues', []).append(str(exc))
+            fresh = engine.observe()
     if fresh.position.quantity and not coverage(fresh):
         # An unknown prior protection amendment must not be duplicated. If its
         # outcome cannot be verified, only reduction of the real position is safe.

@@ -149,7 +149,9 @@ def apply(engine, snapshot, target):
     if existing and matches(existing, target):
         return snapshot
     operation = 'amend_entry' if existing else 'place_entry'
-    link = existing['orderLinkId'] if existing else client_id(engine.state.identity, target.candle, 'conditional-entry')
+    # One candle's risk-increase intent is shared with immediate IOC entry.
+    # Changing the execution shape after local state loss cannot create a new ID.
+    link = existing['orderLinkId'] if existing else client_id(engine.state.identity, target.candle, 'increase')
     expected = record(link, target)
     identity = client_id(engine.state.identity, target.candle, 'amend:' + link) if existing else link
     if existing and existing['side'] != expected['side']:

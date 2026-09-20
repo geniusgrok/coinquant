@@ -188,3 +188,39 @@ class PendingTests(unittest.TestCase):
         venue.amend('pq-test', target(quantity=D(80)))
         self.assertEqual(requests[-1][0], '/v5/order/amend')
         self.assertEqual(requests[-1][1]['qty'], '80')
+
+
+class CrossEntryIdentityTests(unittest.TestCase):
+    def test_consumed_conditional_cannot_reenter_as_ioc_after_local_state_loss(self):
+        v = ConditionalVenue()
+        with TemporaryDirectory() as first, TemporaryDirectory() as lost:
+            config = Config(account_uid='12345', max_position_usd=D(10000), state_dir=first)
+            with patch('pancakequant.execution.decide', return_value=target()):
+                run_once(v, config, execute=True)
+            v.trigger(next(iter(v.records)))
+            v.s = replace(v.s, position=Position(), orders=(), mark=D(30745))
+            immediate = replace(target(), trigger_price=D(0))
+            with patch('pancakequant.execution.decide', return_value=immediate):
+                report = run_once(v, replace(config, state_dir=lost), execute=True)
+        self.assertEqual(v.s.position.quantity, 0)
+        self.assertEqual(len(v.writes), 1)
+        self.assertEqual(report['status'], 'no_action')
+
+    def test_unknown_parent_reconciliation_does_not_skip_existing_position_protection(self):
+        v = ConditionalVenue()
+        with TemporaryDirectory() as path:
+            config = Config(account_uid='12345', max_position_usd=D(10000), state_dir=path)
+            with patch('pancakequant.execution.decide', return_value=target()):
+                run_once(v, config, execute=True)
+            v.trigger(next(iter(v.records)))
+            v.s = replace(v.s, orders=())
+            link = 'pq-unresolved-parent'
+            with State(path, 'testnet:12345') as state:
+                state.prepare(link, 'entry', {'link': link, 'expected': record(link, target())})
+            writes_before = len(v.writes)
+            report = run_once(v, config, execute=True)
+        self.assertEqual(report['status'], 'unknown')
+        self.assertTrue(coverage(v.s))
+        self.assertTrue(report['pending_intents'])
+        self.assertFalse(report['offline_safe_at_observation'])
+        self.assertEqual([w[0] for w in v.writes[writes_before:]], ['protect'])

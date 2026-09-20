@@ -1,0 +1,59 @@
+$ python -m pancakequant --help
+usage: __main__.py [-h] {run,status,backtest} ...
+
+On-demand BTC perpetual research and bounded execution.
+
+positional arguments:
+  {run,status,backtest}
+
+options:
+  -h, --help            show this help message and exit
+EXIT=0
+$ python -m pancakequant run --help
+usage: __main__.py run [-h] [--config CONFIG] [--execute]
+
+options:
+  -h, --help       show this help message and exit
+  --config CONFIG  The current explicit account/model configuration
+  --execute        Authorize bounded writes on the matching configured account
+EXIT=0
+$ python -m pancakequant backtest --help
+usage: __main__.py backtest [-h] [--config CONFIG] --manifest MANIFEST
+                            --output OUTPUT [--stress-absence]
+
+options:
+  -h, --help           show this help message and exit
+  --config CONFIG      The current explicit account/model configuration
+  --manifest MANIFEST  Hash-verified native-contract data manifest
+  --output OUTPUT      New, empty evidence output directory
+  --stress-absence     Apply the predeclared multi-day absence to the same
+                       trigger sequence
+EXIT=0
+$ python -m pancakequant status --config config.example.json
+{
+  "status": "blocked",
+  "reason": "matching environment credentials are not configured"
+}
+blocked: matching environment credentials are not configured
+EXIT=2
+$ python -m pancakequant run --config config.example.json
+{
+  "status": "blocked",
+  "reason": "matching environment credentials are not configured"
+}
+blocked: matching environment credentials are not configured
+EXIT=2
+$ python -m pancakequant run --config config.example.json --execute
+{
+  "status": "blocked",
+  "reason": "matching environment credentials are not configured"
+}
+blocked: matching environment credentials are not configured
+EXIT=2
+$ python -m pancakequant backtest --config config.example.json --manifest /nonexistent/manifest.json --output /nonexistent/results
+{
+  "status": "blocked",
+  "reason": "dataset manifest is missing or invalid; no synthetic fallback"
+}
+blocked: dataset manifest is missing or invalid; no synthetic fallback
+EXIT=2
