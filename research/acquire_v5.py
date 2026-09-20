@@ -316,10 +316,6 @@ def acquire(root: Path, host: str, start: date, end: date, *,
         raise ValueError("start must precede end")
     if type(shard_days) is not int or not 1 <= shard_days <= 60:
         raise ValueError("shard_days must be an integer in [1, 60]")
-    if shard_days * DAY_MS // step > 1000:
-        # Pagination is implemented, but keeping formal shards under one kline
-        # page makes recovery and source identity substantially simpler.
-        raise ValueError("shard contains more than 1000 base bars")
     root = root.resolve()
     root.mkdir(parents=True, exist_ok=True)
     inventory_path = root / "v5-inventory.json"
