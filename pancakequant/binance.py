@@ -232,7 +232,11 @@ class BinanceReadOnly:
                 original = number(order.get('origQty'), positive=True)
                 if not 0 <= executed <= original or (status == 'FILLED' and executed != original):
                     raise Unknown('inconsistent recovered filled quantity')
+                if status == 'NEW' and executed:
+                    raise Unknown('NEW order reports nonzero fills')
                 if status == 'NEW' or status == 'PARTIALLY_FILLED':
+                    if executed:
+                        state.finish(intent['id'],'partial',{'status':status,'executed_quantity':str(executed)})
                     continue
                 if status == 'REJECTED' and executed:
                     raise Unknown('rejected order cannot prove a nonzero fill')

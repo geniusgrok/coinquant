@@ -39,7 +39,10 @@ def observe(config_path, *, decision=False, execute=False):
             from .linear_preview import advance, preview
             try:
                 model,market,reconstructed=advance(state,venue)
+                from .ownership import reconcile
+                ownership=reconcile(state,venue,model,snapshot)
                 model_preview=preview(model,snapshot)
+                model_preview['ownership']=ownership
                 model_preview['reconstructed_market_only']=reconstructed
                 if model_preview['action']=='enter' and not recovery['pending']:
                     replacement=state.get('binance_protection_replacement')

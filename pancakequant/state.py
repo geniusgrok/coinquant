@@ -13,7 +13,7 @@ from pathlib import Path
 import sqlite3
 from time import time
 
-from .types import Blocked, Unknown, serial
+from .types import Blocked, Unknown, serial, number
 
 
 def client_id(account: str, candle: int, operation: str) -> str:
@@ -75,19 +75,39 @@ class State:
             self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
                             (key, json.dumps(serial(value), sort_keys=True)))
 
-    def prepare(self, identity: str, kind: str, payload: dict) -> None:
+    def prepare(self, identity: str, kind: str, payload: dict, *, campaign=None, flat_snapshot=None) -> None:
         encoded = json.dumps(serial(payload), sort_keys=True, separators=(',', ':'))
         row = self.db.execute('SELECT payload FROM intents WHERE id=?', (identity,)).fetchone()
         if row:
             raise Unknown('intent already exists; reconcile it instead of resending')
+        links=None
+        if campaign is not None:
+            if (type(campaign) is not int or campaign<=0 or kind!='binance_order'
+                    or payload.get('symbol')!='BTCUSDT' or payload.get('positionSide')!='BOTH'
+                    or payload.get('side') not in ('BUY','SELL') or payload.get('reduceOnly')=='true'
+                    or not flat_snapshot or number(flat_snapshot.get('quantity_btc'))!=0
+                    or flat_snapshot.get('possible_entry_remainders')!=0
+                    or self.pending()
+                    or self.identity!=f"binance:BTCUSDT:live:{flat_snapshot.get('account_uid')}"):
+                raise Blocked('entry campaign requires a reconciled flat owned account')
+            links=self.get('entry_campaigns') or {}
+            links[identity]=dict(campaign=campaign,prepared_at=int(time()*1000))
         with self.db:
             self.db.execute('INSERT INTO intents VALUES (?,?,?,?,?,?)',
                             (identity, kind, encoded, 'unknown', '{}', time()))
+            if links is not None:
+                self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('entry_campaigns',json.dumps(links,sort_keys=True)))
         # A crash immediately after this commit must be treated as possibly sent.
 
     def finish(self, identity: str, status: str, result: dict) -> None:
         if status not in ('unknown', 'partial', 'confirmed', 'rejected'):
             raise ValueError('invalid intent status')
+        prior=self.db.execute('SELECT result FROM intents WHERE id=?',(identity,)).fetchone()
+        if prior:
+            old=json.loads(prior[0]).get('executed_quantity')
+            if old is not None and (result.get('executed_quantity') is None
+                    or number(result['executed_quantity'])<number(old)):
+                raise Unknown('native cumulative fill cannot regress or disappear')
         with self.db:
             cursor = self.db.execute('UPDATE intents SET status=?,result=?,updated=? WHERE id=?',
                                     (status, json.dumps(serial(result), sort_keys=True), time(), identity))

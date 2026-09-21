@@ -108,8 +108,11 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None):
     if entry_side not in ('both','long','short'):raise ValueError('invalid diagnostic entry side')
+    if native_trail_order not in (None,'low_first','high_first'):raise ValueError('unknown native trailing path')
+    if native_trail_order and (reference!='impulse_hold' or entry_side!='long'):raise ValueError('T requires frozen persistent long entry')
+    trail_peak=ZERO;trail_invalid=False;opposing_closes=set()
     risk_scale=D(risk_scale)
     short_risk_scale=risk_scale if short_risk_scale is None else D(short_risk_scale)
     if not short_risk_scale.is_finite() or short_risk_scale<0:raise ValueError('invalid short risk scale')
@@ -138,6 +141,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         for bt in range(min(warm),end,model_interval):
             source=warm if bt<start else trade
             rs=[source[x] for x in range(bt,bt+model_interval,HOUR)]
+            if native_trail_order and len(model.model.tr)==14 and model.model.bars and D(rs[-1][4])-model.model.bars[-1][3]<-3*sum(model.model.tr)/14:
+                opposing_closes.add(bt+model_interval)
             opportunities[bt+model_interval]=model.update(bt+model_interval,max(D(r[2]) for r in rs),min(D(r[3]) for r in rs),D(rs[-1][4]))
             fractions[bt+model_interval]=model.fraction(D(1),D(frozen['slippage_fraction'])+D(frozen['spread_fraction'])/2)
     fund_hours={t//HOUR*HOUR:(t,r) for t,r in funding.items()}
@@ -206,8 +211,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     close(t,'liquidation',account.liquidation(ZERO),True);exited=True
                 elif (long and mo<=account.sl) or (not long and mo>=account.sl):
                     close(t,'stop_gap',o);exited=True
+                elif native_trail_order and mo<=trail_peak*D('.90'):
+                    close(t,'native_trail_gap',o);exited=True
                 elif (long and mo>=account.tp) or (not long and mo<=account.tp):
                     close(t,'take_gap',o);exited=True
+            if native_trail_order and account.q and t in opposing_closes:trail_invalid=True
             if t in triggers:
                 seen.append(t);counts['invocations']+=1
                 window=list(daily)
@@ -234,7 +242,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     if account.q>0 and account.sl<proposed<mo:account.sl=floor_step(proposed,TICK)
                     elif account.q<0 and mo<proposed<account.sl:account.sl=floor_step(proposed,TICK)+TICK
                 if targeting:
-                    if account.q and (disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit' if mechanism else account.q*direction<=0):
+                    if account.q and (trail_invalid if native_trail_order else disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit' if mechanism else account.q*direction<=0):
                         close(t,'regime_exit',o);exited=True;action='regime_exit'
                         if reference=='same_run_reversal':exited=False
                     if (reference=='entry_inventory' or mechanism) and account.q and not exited:
@@ -261,6 +269,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                     ow.writerow([t,change['event'],str(direction*change['amount']),str(price),'',str(account.q)])
                                     if change['event']=='entry':
                                         last_entry_epoch=campaign_epoch;delays.append((t-regime_since)//HOUR)
+                                        if native_trail_order:trail_peak=mo;trail_invalid=False;account.tp=D('Infinity')
                 elif account.q:
                     if baseline:
                         proposed=min(x[1] for x in window[-10:]) if account.q>0 else max(x[0] for x in window[-10:])
@@ -324,6 +333,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     if hit_liq:
                         if hit_stop:counts['unresolved_same_interval_stop_liquidation']+=1
                         close(st,'liquidation',account.liquidation(ZERO),True)
+                    elif native_trail_order:
+                        from research.native_trail import step as trail_step
+                        trail_peak,trigger=trail_step(trail_peak,smark,account.sl,native_trail_order)
+                        if trigger is not None:close(st,'native_trail_or_stop',min(trigger,so))
                     elif hit_stop:close(st,'stop',min(account.sl,so) if long else max(account.sl,so))
                     elif (long and smh>=account.tp) or (not long and sml<=account.tp):close(st,'take',account.tp)
             observe(t+HOUR,'close',mc)
@@ -380,9 +393,12 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if targeting and reference=='same_run_reversal':result['candidate']='L28'
     if targeting and reference=='entry_inventory':result['candidate']='L29'
     if mechanism:result['candidate']='S-directional-change' if reference=='swing' else 'A-squeeze' if reference=='squeeze' else 'F-hourly-impulse' if reference=='hourly_impulse_hold' else 'E-persistent-impulse' if reference=='persistent_impulse' else 'V2-impulse-confirmation' if reference=='impulse_confirmation' else 'V1-impulse-validity' if reference=='impulse_validity' else 'D2-impulse-hold' if reference=='impulse_hold' else 'D-impulse' if reference=='impulse' else 'C-shock' if reference=='shock' else 'B-sweep'
+    if native_trail_order:
+        result.update(candidate='T-native-trailing',native_trail_order=native_trail_order,callback_rate='10',no_fixed_take=True)
+        result['limitations'].append('OHLC path scenario, not native tick or protective-write evidence')
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
-    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json'),Path('pancakequant/opportunities.py'),Path('pancakequant/campaign.py'),Path('pancakequant/linear_account.py'),Path('pancakequant/linear_sizing.py')):
+    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json'),Path('pancakequant/opportunities.py'),Path('pancakequant/campaign.py'),Path('pancakequant/linear_account.py'),Path('pancakequant/linear_sizing.py'),Path('research/native_trail.py')):
         raw=source.read_bytes();(sources/source.name).write_bytes(raw);source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()
     result['source_hashes']=source_hashes
     result.update(schedule=schedule,lifecycle=lifecycle,allocation=allocation,quantity_rule_scope='2026_snapshot_scenario_NOT_historical' if instrument else 'legacy_hypothetical',

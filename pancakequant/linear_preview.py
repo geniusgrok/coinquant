@@ -28,6 +28,7 @@ def preview(model,snapshot):
     if not quantity.is_finite():raise Blocked('invalid native quantity')
     action=model.action(quantity)
     return dict(action=action,opportunity=model.model.active,
+                protection_required=bool(quantity) and not (snapshot.get('native_full_position_protected') and snapshot.get('stop_before_liquidation')),
                 consumed_campaign=model.consumed,position_campaign=model.position_campaign,
                 target_fraction=str(model.fraction('3.6','.0011')) if action=='enter' else None,
                 quantity_btc=str(quantity) if action=='hold' else '0' if action in ('exit','flat','consumed') else None,
