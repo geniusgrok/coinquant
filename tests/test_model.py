@@ -2,8 +2,8 @@ import unittest
 from dataclasses import replace
 from decimal import Decimal as D
 
-from pancakequant.model import bankruptcy_price, decide, liquidation_price, protected, repair_target, validate_bars, validate_risk_increase
-from pancakequant.types import Bar, Blocked, INTERVAL_MS, ModelConfig, Position, Rules, Snapshot, number
+from pancakequant.model import bankruptcy_price, decide, liquidation_price, protected, repair_target, _reward_from_stop, _safe_new_entry_stop, validate_bars, validate_risk_increase
+from pancakequant.types import Bar, Blocked, INTERVAL_MS, ModelConfig, Position, Rules, Snapshot, Target, number
 
 
 def sample(position=None):
@@ -56,6 +56,20 @@ class ModelTests(unittest.TestCase):
             (t.entry - t.stop_loss) * cfg.reward_multiple,
         )
         validate_risk_increase(s, t, cfg)
+
+    def test_new_entry_stop_rounds_inward_before_liquidation_boundary(self):
+        rules = sample().rules
+        reference, entry = D("7432.5"), D("7441.0")
+        old_sl = D("7149.5")
+        sl = _safe_new_entry_stop(reference, entry, 1, old_sl, rules)
+        self.assertEqual(sl, D("7150.0"))
+        tp, _ = _reward_from_stop(reference, entry, 1, sl, D(3), rules.tick)
+        self.assertGreater(tp, entry)
+        target = Target(0, D(1), entry, tp, sl, D(1) / entry / 20,
+                        D(1) / entry / 20, D("0.0001"), "boundary")
+        liq = liquidation_price(target.quantity, target.entry, target.initial_margin_btc,
+                                rules.maintenance_rate, rules.taker_fee)
+        self.assertGreater(sl, liq + max(rules.tick * 2, reference * D("0.003")))
 
     def test_shared_prewrite_validator_rejects_forged_risk(self):
         s, cfg = sample(), ModelConfig()

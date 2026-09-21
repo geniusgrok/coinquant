@@ -156,17 +156,9 @@ def _prices(mark: D, direction: int, distance: D, reward: D, tick: D) -> tuple[D
     return tp, sl
 
 
-def _entry_prices(reference: D, entry: D, direction: int, distance: D,
-                  reward: D, tick: D) -> tuple[D, D]:
-    """Keep the stop beyond the causal reference and reward the executable risk.
-
-    The stop is anchored to the observed mark/hosted trigger so it cannot sit
-    inside the market before an entry exists. The take-profit is then measured
-    from the conservative executable entry limit, including spread/slippage.
-    This preserves causal protection geometry even when execution friction is
-    larger than the short-term ATR distance.
-    """
-    _, sl = _prices(reference, direction, distance, reward, tick)
+def _reward_from_stop(reference: D, entry: D, direction: int, sl: D,
+                      reward: D, tick: D) -> tuple[D, D]:
+    """Measure reward from the conservative executable entry to the final stop."""
     risk = entry - sl if direction > 0 else sl - entry
     if risk <= 0:
         raise Blocked("execution price crosses protective stop")
@@ -179,6 +171,42 @@ def _entry_prices(reference: D, entry: D, direction: int, distance: D,
     if not valid:
         raise Blocked("invalid executable protection geometry")
     return tp, sl
+
+
+def _entry_prices(reference: D, entry: D, direction: int, distance: D,
+                  reward: D, tick: D) -> tuple[D, D]:
+    """Keep the stop beyond the causal reference and reward executable risk."""
+    _, sl = _prices(reference, direction, distance, reward, tick)
+    return _reward_from_stop(reference, entry, direction, sl, reward, tick)
+
+
+def _safe_new_entry_stop(reference: D, entry: D, direction: int, sl: D,
+                         rules) -> D:
+    """Move a new-position stop inward by the minimum ticks needed before liquidation.
+
+    At exactly 20x initial margin the liquidation-price ratio is independent of
+    contract quantity, so this adjustment is causal before final sizing. It never
+    widens risk: the stop only moves toward the reference price.
+    """
+    one = D(direction)
+    liq = liquidation_price(one, entry, abs(one) / entry / 20,
+                            rules.maintenance_rate, rules.taker_fee)
+    cushion = max(rules.tick * 2, reference * D("0.003"))
+    if direction > 0 and sl <= liq + cushion:
+        boundary = liq + cushion
+        candidate = (boundary / rules.tick).to_integral_value(rounding=ROUND_CEILING) * rules.tick
+        if candidate <= boundary:
+            candidate += rules.tick
+        sl = candidate
+    elif direction < 0 and sl >= liq - cushion:
+        boundary = liq - cushion
+        candidate = floor_step(boundary, rules.tick)
+        if candidate >= boundary:
+            candidate -= rules.tick
+        sl = candidate
+    if (direction > 0 and not ZERO < sl < reference) or (direction < 0 and not reference < sl):
+        raise Blocked("no legal protective stop before projected liquidation")
+    return sl
 
 
 def repair_target(snapshot: Snapshot, cfg: ModelConfig, candle: int = -1) -> Target:
@@ -246,6 +274,14 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
     price = quote * (1 + cfg.slippage_fraction) if direction > 0 else quote * (1 - cfg.slippage_fraction)
     price = (price / rules.tick).to_integral_value(rounding=ROUND_CEILING) * rules.tick if direction > 0 else floor_step(price, rules.tick)
     tp, sl = _entry_prices(reference, price, direction, distance, cfg.reward_multiple, rules.tick)
+    if not p.quantity:
+        try:
+            sl = _safe_new_entry_stop(reference, price, direction, sl, rules)
+            tp, sl = _reward_from_stop(reference, price, direction, sl,
+                                       cfg.reward_multiple, rules.tick)
+        except Blocked:
+            return Target(candle, ZERO, mark, ZERO, ZERO, ZERO, ZERO, ZERO,
+                          "no legal stop before projected 20x liquidation")
     unit_risk = _unit_risk_btc(snapshot, price, sl, cfg)
     risk_budget = snapshot.equity_btc * cfg.risk_fraction
     # Existing same-direction margin can be released/reused; opposite exposure
@@ -267,9 +303,12 @@ def decide(bars: list[Bar], snapshot: Snapshot, cfg: ModelConfig, *, notional_li
     initial = quantity / price / 20
     allocated = initial + quantity * rules.taker_fee / price
     estimate = liquidation_price(signed, price, initial, rules.maintenance_rate, rules.taker_fee)
-    cushion = reference * D("0.003")
+    cushion = max(rules.tick * 2, reference * D("0.003"))
     if (direction > 0 and sl <= estimate + cushion) or (direction < 0 and sl >= estimate - cushion):
-        raise Blocked("stop does not precede conservative liquidation estimate")
+        if p.quantity:
+            return repair_target(snapshot, cfg, candle)
+        return Target(candle, ZERO, mark, ZERO, ZERO, ZERO, ZERO, ZERO,
+                      "no legal stop before conservative liquidation estimate")
     # Do not loosen an existing valid stop merely because a new candle arrived.
     if p.quantity * signed > 0 and protected(snapshot):
         sl = max(sl, p.stop_loss) if signed > 0 else min(sl, p.stop_loss)
