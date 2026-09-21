@@ -11,7 +11,7 @@ import research.persistent_hold_replay as replay
 from pancakequant.research import timestamp
 
 
-def run(root,output,allocation="edge",reference="channel"):
+def run(root,output,allocation="edge",reference="channel",research_schedule="hourly",minute_days=()):
     original=replay.inputs;cutoff=timestamp('2023-07-01T00:00:00Z');checks=[]
     def changed(*args):
         series,funding,warm,identity=original(*args)
@@ -25,22 +25,23 @@ def run(root,output,allocation="edge",reference="channel"):
         return series,funding,warm,identity
     def rows(path,name):
         with gzip.open(path/name,'rt') as f:return list(csv.DictReader(f))
-    for schedule in ('sparse','hourly'):
+    for schedule in ('sparse',research_schedule):
         for modified in (False,True):
             out=output/(schedule+('-synthetic-future' if modified else '-control'))
             with patch.object(replay,'inputs',changed if modified else original),contextlib.redirect_stdout(io.StringIO()):
-                replay.run(root,Path('evidence/binance-boundary-20260921'),Path('evidence/binance-mark-repair-20260921'),out,root,False,schedule,Path('evidence/binance-boundary-20260921/current-instrument.json'),'one_campaign',allocation,reference)
+                replay.run(root,Path('evidence/binance-boundary-20260921'),Path('evidence/binance-mark-repair-20260921'),out,root,False,schedule,Path('evidence/binance-boundary-20260921/current-instrument.json'),'one_campaign',allocation,reference,minute_days=minute_days)
         control=output/(schedule+'-control');changed_path=output/(schedule+'-synthetic-future')
         for filename in ('decisions.csv.gz','equity.csv.gz','orders.csv.gz'):
             left=[r for r in rows(control,filename) if int(r['time'])<cutoff]
             right=[r for r in rows(changed_path,filename) if int(r['time'])<cutoff]
             assert left==right,(schedule,filename)
             checks.append(dict(schedule=schedule,file=filename,identical_prefix_rows=len(left)))
-    hourly={r['time']:r for r in rows(output/'hourly-control','decisions.csv.gz')}
+    hourly={r['time']:r for r in rows(output/(research_schedule+'-control'),'decisions.csv.gz')}
     sparse=rows(output/'sparse-control','decisions.csv.gz')
     for r in sparse:
         for field in ('regime','edge_target_fraction','edge_samples'):
-            assert r[field]==hourly[r['time']][field],(r['time'],field)
+            key=str(int(r['time'])//(4*replay.HOUR)*(4*replay.HOUR)) if research_schedule=='four_hour' else r['time']
+            assert r[field]==hourly[key][field],(r['time'],field)
     report=dict(passed=True,cutoff=cutoff,checks=checks,matched_sparse_market_states=len(sparse),synthetic_paths_not_economic_evidence=True)
     (output/'checks.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 

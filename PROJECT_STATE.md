@@ -1,3 +1,35 @@
+# 当前状态：独立机制A/B/C失败，D2保留诊断，正式未达标
+
+ACTIVE / NOT_QUALIFIED。研究分支research/on-demand-btc-20260920；禁止合并main。
+本轮从远端d6a63ba恢复，main核验c886b7c；没有覆盖历史/并行工作。
+首先完整阅读evidence/mechanisms-20260921/REPORT.md、candidate-register.json、
+verification.json、sources.json、EXECUTION_STATUS.md及originals.json。
+所有正式窗口、人民币10,000、CAGR>=150%、完整MDD<50%、20x和原稀疏序列保持不变。
+
+本轮A/B/C开发区无成本后优势，拒绝放大；D冲击延续的7天信号有诊断优势，D2取消近端
+止盈后开发33.86%/18.22%，稀疏27.78%/16.62%。D2完整窗4h21.58%/18.22%、
+稀疏20.48%/16.62%、期末¥34,964.35，仍不达标且收益低于L29。
+E去时间退出开发37%附近但稀疏回撤30.39%，不推进全窗。
+2024+本轮又用于D2时间顺序复核并启发E；不能恢复unseen身份。
+L29原始比较基线保留；三条开发轨迹与原件逐字节一致。没有改动既有费用/滑点/
+保护/强平保守顺序以美化候选。
+
+恢复本轮原始包以及originals.json引用的上一轮原始包/依赖。实测source版本A/B/C/D/D2/E
+分别保留并按result.source_hashes核验；不要用最终源文件谎称早先运行的逐字节版本。
+常用开发命令：python -m research.measure_mechanisms --native NATIVE_ROOT --output NEW_DIR
+--mechanism squeeze|sweep|shock|impulse|impulse_hold|persistent_impulse。
+一次只运行单一模型；这些研究选择不是生产多模型配置。
+全窗显式调用persistent_hold_replay.run(...full_window=True...)并复用
+research/mechanism-minute-days.json。只有D2本轮看了全窗。完整再现命令见原始包logs/reproduction。
+
+Binance新增安全操作模块及离线生命周期测试，默认不授权，生产CLI仍只读。
+没有新建风险的网络writer；沒有已授权testnet可验证。不能拿mock替代原生证明。
+下一步：读取详细归因后提出有证据的新机制/持有结构，避免重复A/B/C失败和E尾部退化；
+同时补真实历史经济规则、FX/USDT估值及原生执行证据。本任务未完成。
+
+---
+以下为上轮保留基线与原件恢复说明（不是本轮最新状态）：
+
 # Current state — L29 improvement preserved, formal qualification failed
 
 ACTIVE / NOT_QUALIFIED. Branch research/on-demand-btc-20260920; do not merge main.

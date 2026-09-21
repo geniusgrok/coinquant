@@ -1,0 +1,29 @@
+[
+  {
+    "repo": "jicheolha/crypto-trading-bot",
+    "sha": "9851eadd96c44db99a26d4ca3cbabcc53b199242",
+    "file": "technical.py",
+    "license": "MIT (preserved)",
+    "adopted": "Public BB/KC squeeze definition only; missing signal generator independently defined; no claimed complete replication.",
+    "read_source_sha256": "179131d11f026ef80d04aeefd78937ff6dee5df4cc9a188c96913f33ba1ec663",
+    "url": "https://github.com/jicheolha/crypto-trading-bot/blob/9851eadd96c44db99a26d4ca3cbabcc53b199242/technical.py"
+  },
+  {
+    "repo": "gmendozaveirana/MS-backtesting",
+    "sha": "ba33e8c5cbed79d56aaa14336b7a32aaa2631685",
+    "file": "buying_strategy.py",
+    "license": "No license file found in pinned tree; no code copied",
+    "adopted": "No external-funding or return-calculation code adopted.",
+    "read_source_sha256": "670164ca32ea6e991cc8f4647d4b533ffc7cc0ca0dc8b1ddcd9a69e8ced88c4c",
+    "url": "https://github.com/gmendozaveirana/MS-backtesting/blob/ba33e8c5cbed79d56aaa14336b7a32aaa2631685/buying_strategy.py"
+  },
+  {
+    "repo": "king-No/fvg-trading-strategy",
+    "sha": "6d88394c96aa5430454ab2b4b1ae0337641816aa",
+    "file": "backtest/smc_lgr_v24.py",
+    "license": "No license file found in pinned tree; no code copied",
+    "adopted": "Concept of reclaiming swept known levels; independently coded causal pivots; no future FVG.",
+    "read_source_sha256": "8ecc97f9be1d4d52eab0797ad9a37ca21299e278652ef874e6526c637d3af6e3",
+    "url": "https://github.com/king-No/fvg-trading-strategy/blob/6d88394c96aa5430454ab2b4b1ae0337641816aa/backtest/smc_lgr_v24.py"
+  }
+]
