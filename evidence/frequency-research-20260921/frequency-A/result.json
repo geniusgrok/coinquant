@@ -1,0 +1,45 @@
+{
+  "candidate": "L9-minute-refined",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "cagr": 0.04353915305288392,
+  "mdd_conservative_envelope": "0.1642534011185115902892919162",
+  "final_cny": "11858.68445320506078453390989",
+  "counts": {
+    "invocations": 35064,
+    "no_breakout": 144,
+    "entry": 72,
+    "funding_charge": 2920,
+    "hold": 32869,
+    "regime_exit": 19,
+    "size_below_minimum": 1823,
+    "ambiguous_funding_credit_omitted": 1209,
+    "take": 3,
+    "unresolved_same_interval_stop_liquidation": 4,
+    "liquidation": 4,
+    "unsafe_geometry": 137,
+    "stop": 45
+  },
+  "fees_usdt": "65.80704595262831010758068552",
+  "funding_bound_paid_usdt": "126.4870171251782482105",
+  "progression_passed": null,
+  "progression_status": "requires paired refined comparison",
+  "code_sha256": "842c676059b8c41dc07594d00dddd9ab2d2bd599823c5b8947970dfdd87fd38c",
+  "limitations": [
+    "Proxy dated rules/fees/liquidity and USDT=USD",
+    "Adverse interval funding valuation, not exact cashflow",
+    "Minute refinement on six days only; remaining interval liquidation-first ambiguity",
+    "Margin transfer and full-position execution unverified"
+  ],
+  "schedule": "hourly",
+  "quantity_rule_scope": "2026_snapshot_scenario_NOT_historical",
+  "mean_close_exposure": "0.08821500167531806866834220257",
+  "max_close_exposure": "1.486465115694155012533406209",
+  "holding_hours": 32889,
+  "turnover_usdt": "87742.72793683774681010758069",
+  "binding_caps": {
+    "risk": 1895
+  },
+  "mean_entry_regime_age_hours": 1569.0833333333333,
+  "schedule_sha256": "c75b176a4954541466ffc0d00241e7eea51e093aaa99561cf5638d79c0933642"
+}

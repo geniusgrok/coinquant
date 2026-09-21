@@ -9,7 +9,7 @@ The user selected Binance exclusively on 2026-09-21. Target BTCUSDT USDT-settled
 linear perpetual. Retire other production adapters during migration; retained
 Bybit/OKX evidence is historical research, not required exchange support. All existing code, strategy, risk, dependencies and architecture may be replaced. Do not preserve obsolete interfaces or capabilities as acceptance conditions.
 
-The economic targets remain CAGR > 200% and continuous mark-to-market MDD < 20%, from 2020-01-01 UTC through the research protocol's frozen complete-data endpoint in 2026. Start with CNY 10,000, explicitly freeze conversion and settlement assumptions, include real contract history, costs, funding, liquidation and sparse irregular manual triggers. Do not move the window, lower targets, fabricate data or call diagnostic replay formal acceptance.
+The economic targets are cost-net CAGR >= 150% and continuous full-account MDD < 50%, from 2020-01-01T00:00:00Z through 2026-09-20T00:00:00Z exclusive. Research may decide hourly or at another preregistered causal frequency; formal acceptance still uses the original frozen sparse invocation sequence. Both modes share model, market, costs and account implementation, with independent account paths. Research-frequency success is not formal acceptance. Start with CNY 10,000, explicitly freeze conversion and settlement assumptions, include real contract history, costs, funding, liquidation and sparse irregular manual triggers. Do not move the window, lower targets, fabricate data or call diagnostic replay formal acceptance.
 
 ## Execution safety
 

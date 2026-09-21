@@ -10,6 +10,7 @@ from pathlib import Path
 
 from pancakequant.research import invocations, spec, timestamp, iso
 from pancakequant.types import ZERO, floor_step
+from pancakequant.binance import market_quantity
 from research.linear_forecast import archive_rows, DAY
 from research.audit_binance import repair_rows
 from research.linear_replay import Account, FEE, MMR, LOT, TICK
@@ -66,7 +67,15 @@ def channel_state(window, previous):
     return previous
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False):
+def decision_times(frozen, end, schedule):
+    if schedule == 'sparse':
+        return set(t for t in invocations(frozen) if t < end)
+    if schedule == 'hourly':
+        return set(range(timestamp(frozen['start']), end, HOUR))
+    raise ValueError('unknown research schedule')
+
+
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None):
     frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['development_end'])
     series,funding,warm,identity=inputs(root,warmup,repairs)
     if minutes is not None:
@@ -80,19 +89,25 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False):
         regime=channel_state(daily,regime)
     initial=D(frozen['initial_cny'])/D(frozen['cny_per_usd'])
     account=Account(initial*(1-D(frozen['initial_conversion_cost'])))
-    peak=initial;mdd=ZERO;counts=Counter();seen=[];triggers=set(t for t in invocations(frozen) if t<end)
+    peak=initial;mdd=ZERO;counts=Counter();seen=[];triggers=decision_times(frozen,end,schedule)
+    instrument=json.loads(quantity_rules.read_text())['instrument'] if quantity_rules else None
+    if quantity_rules:identity.append(dict(path=str(quantity_rules),sha256=hashlib.sha256(quantity_rules.read_bytes()).hexdigest()))
+    exposure_sum=ZERO;max_exposure=ZERO;holding_hours=0;turnover=ZERO;regime_since=start;delays=[];binding=Counter()
     slip=D(frozen['slippage_fraction']);spread=D(frozen['spread_fraction']);previous_quote=D(warm[start-HOUR][7])
     output.mkdir(parents=True,exist_ok=False)
-    with gzip.open(output/'equity.csv.gz','wt') as ef,gzip.open(output/'orders.csv.gz','wt') as of:
-        ew=csv.writer(ef);ow=csv.writer(of)
+    with gzip.open(output/'equity.csv.gz','wt') as ef,gzip.open(output/'orders.csv.gz','wt') as of,gzip.open(output/'decisions.csv.gz','wt') as df:
+        ew=csv.writer(ef);ow=csv.writer(of);dw=csv.writer(df)
+        dw.writerow(['time','regime','equity','quantity','notional','margin','free_wallet','sl','tp','regime_age_hours','action','binding_cap','risk_quantity','exposure_quantity','margin_quantity','notional_quantity','liquidity_quantity','requested_quantity','accepted_quantity'])
         ew.writerow(['time','event','equity_usdt','drawdown']);ow.writerow(['time','event','quantity_btc','price_or_mark','funding_rate','quantity_after'])
         def observe(t,event,mark):
             nonlocal peak,mdd
             eq=account.equity(mark);peak=max(peak,eq);dd=1-eq/peak;mdd=max(mdd,dd)
             ew.writerow([t,event,str(eq),str(dd)])
         def close(t,event,reference,bankruptcy=False):
+            nonlocal turnover
             q=account.q
             price=reference if bankruptcy else reference*(1-slip-spread/2 if q>0 else 1+slip+spread/2)
+            turnover+=abs(q)*price
             account.close(abs(q),price);counts[event]+=1
             ow.writerow([t,event,str(q),str(price),'',str(account.q)])
         def funding_bound(t,mark,q):
@@ -125,6 +140,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False):
             if t in triggers:
                 seen.append(t);counts['invocations']+=1
                 window=list(daily)
+                action='hold' if account.q else 'no_signal';caps={};qty=ZERO;raw_qty=ZERO;limiter=''
+                decision_state=[t,regime,str(account.equity(mo)),str(account.q),str(abs(account.q)*mo),str(account.margin),str(account.wallet-account.margin),str(account.sl),str(account.tp),(t-regime_since)//HOUR]
                 if account.q:
                     if baseline:
                         proposed=min(x[1] for x in window[-10:]) if account.q>0 else max(x[0] for x in window[-10:])
@@ -132,7 +149,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False):
                         elif account.q<0 and mo<proposed<account.sl:account.sl=floor_step(proposed,TICK)+TICK
                         counts['hold']+=1
                     elif account.q*regime<0:
-                        close(t,'regime_exit',o);exited=True
+                        close(t,'regime_exit',o);exited=True;action='regime_exit'
                     else: counts['hold']+=1
                 elif not exited:
                     direction=regime
@@ -143,19 +160,24 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False):
                         sl=floor_step(sl,TICK)+(TICK if direction<0 else ZERO)
                         unit=direction*(price-sl)
                         tp=floor_step(price*(price/sl)**20,TICK)+(TICK if direction>0 else ZERO)
-                        if unit<=0 or tp<=0 or not (sl<mo<tp if direction>0 else tp<mo<sl):counts['unsafe_geometry']+=1
+                        if unit<=0 or tp<=0 or not (sl<mo<tp if direction>0 else tp<mo<sl):
+                            counts['unsafe_geometry']+=1;action='unsafe_geometry'
                         else:
                             required_per_btc=max(price/20,unit+price*(D('.01')+MMR+FEE))
                             risk=unit+FEE*(price+sl)+sl*(slip+spread/2)
-                            qty=floor_step(min(account.equity(mo)*D('.006')/risk,
-                                account.equity(mo)*2/price,account.wallet/(required_per_btc+2*price*FEE),
-                                D('1000000')/price,previous_quote/60*D(frozen['volume_participation'])/price),LOT)
+                            caps=dict(risk=account.equity(mo)*D('.006')/risk,
+                                exposure=account.equity(mo)*2/price,margin=account.wallet/(required_per_btc+2*price*FEE),
+                                notional=D('1000000')/price,liquidity=previous_quote/60*D(frozen['volume_participation'])/price)
+                            limiter=min(caps,key=caps.get);binding[limiter]+=1;raw_qty=caps[limiter]
+                            qty=market_quantity(raw_qty,price,instrument) if instrument else floor_step(raw_qty,LOT)
                             if qty:
                                 account.open(direction*qty,price,sl,tp);account.margin=qty*required_per_btc
+                                turnover+=qty*price;delays.append((t-regime_since)//HOUR);action='entry'
                                 liq=account.liquidation()
                                 if not (liq<sl<mo if direction>0 else mo<sl<liq):raise ValueError('unsafe funded stop geometry')
                                 counts['entry']+=1;ow.writerow([t,'entry',str(account.q),str(price),'',str(account.q)])
-                            else:counts['size_below_minimum']+=1
+                            else:counts['size_below_minimum']+=1;action='size_below_minimum'
+                dw.writerow(decision_state+[action,limiter]+[str(caps.get(k,'')) for k in ('risk','exposure','margin','notional','liquidity')]+[str(raw_qty),str(qty)])
             if not charged and t in fund_hours and (opening_q or account.q):
                 if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
                 funding_bound(t,mark,opening_q or account.q)
@@ -181,11 +203,15 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False):
                     elif hit_stop:close(st,'stop',min(account.sl,so) if long else max(account.sl,so))
                     elif (long and smh>=account.tp) or (not long and sml<=account.tp):close(st,'take',account.tp)
             observe(t+HOUR,'close',mc)
+            exposure=abs(account.q)*mc/account.equity(mc) if account.equity(mc)>0 else ZERO
+            exposure_sum+=exposure;max_exposure=max(max_exposure,exposure);holding_hours+=bool(account.q)
             if account.equity(mc)<=0:raise ValueError('account insolvent; no reset or truncation')
             if (t+HOUR)%DAY==0:
                 rows=[trade[s] for s in range(t+HOUR-DAY,t+HOUR,HOUR)]
                 daily.append((max(D(x[2]) for x in rows),min(D(x[3]) for x in rows),D(rows[-1][4])))
-                regime=channel_state(daily,regime)
+                new_regime=channel_state(daily,regime)
+                if new_regime!=regime:regime_since=t+HOUR
+                regime=new_regime
             previous_quote=D(r[7])
         final=account.equity(mc)
     if seen!=sorted(triggers):raise ValueError('frozen invocation mismatch')
@@ -195,6 +221,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False):
                 progression_passed=None,progression_status='requires paired refined comparison',code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 limitations=['Proxy dated rules/fees/liquidity and USDT=USD','Adverse interval funding valuation, not exact cashflow',
                              'Minute refinement on six days only; remaining interval liquidation-first ambiguity','Margin transfer and full-position execution unverified'])
+    result.update(schedule=schedule,quantity_rule_scope='2026_snapshot_scenario_NOT_historical' if instrument else 'legacy_hypothetical',
+        mean_close_exposure=str(exposure_sum/((end-start)//HOUR)),max_close_exposure=str(max_exposure),holding_hours=holding_hours,
+        turnover_usdt=str(turnover),binding_caps=dict(binding),mean_entry_regime_age_hours=sum(delays)/len(delays) if delays else None,
+        schedule_sha256=hashlib.sha256(json.dumps(seen).encode()).hexdigest())
     (output/'inputs.json').write_text(json.dumps(identity,indent=2)+'\n')
     (output/'invocations.json').write_text(json.dumps(seen)+'\n')
     (output/'result.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
@@ -205,4 +235,6 @@ if __name__=='__main__':
     for name in ('root','warmup','repairs','output'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--minutes',type=Path)
     p.add_argument('--baseline',action='store_true',help='Exact L7 ratchet comparison, research only')
-    a=p.parse_args();run(a.root,a.warmup,a.repairs,a.output,a.minutes,a.baseline)
+    p.add_argument('--schedule',choices=('sparse','hourly'),default='sparse')
+    p.add_argument('--quantity-rules',type=Path)
+    a=p.parse_args();run(a.root,a.warmup,a.repairs,a.output,a.minutes,a.baseline,a.schedule,a.quantity_rules)

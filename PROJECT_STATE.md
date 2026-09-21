@@ -1,3 +1,11 @@
+# Current continuation — frequency isolation
+
+Formal target: cost-net CAGR>=150%, continuous full-account MDD<50%, CNY10000,2020-01-01 through2026-09-20exclusive, original sparse schedule and venue20x. Research scheduling may be hourly; no extra formal/manual invocations or daemon.
+
+A/B implemented in one persistent_hold_replay.py. Current-quantity scenario B reproduces archived six economic/count fields exactly. A hourly CAGR4.353915%,MDD16.425340%; B sparse CAGR6.198385%,MDD7.728925%. All development2020-2023;2024+unused; NOT_QUALIFIED. All sizing attempts bind risk budget. More frequent stale-regime reentry is a candidate lifecycle defect.
+
+Evidence: evidence/frequency-research-20260921/REPORT.md plus exact input identities, schedules, full compressed decisions/orders/equity. Next: preregister and test one-entry-per-regime lifecycle on same A/B paths; do not escalate risk. Main unchanged. Default CLI read-only; production safety/data gaps remain.
+
 # Latest continuation — L13 through L16 and native quantity guard
 
 Goal unchanged: cost-net CAGR>=150%, full-account continuous MDD<50%.
