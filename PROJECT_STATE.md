@@ -312,3 +312,17 @@ research/binance-acquisition-request.json lists exactly 203 missing archive path
 It uses no secrets or private API, and runs no optimization. Remove the temporary
 step again once this new Binance evidence is durable. L3 measurement remains
 pending complete development data; no shorter-window result substitutes for it.
+
+## Binance transport implementation checkpoint
+
+research/binance_readonly.py implements a bounded GET-only migration transport,
+exact HMAC query signing, fixed official hosts, redirect refusal, scrubbed failures
+and verified Spot UID extraction. It validates native single-asset/one-way and
+isolated 20x configuration without settings writes. Five targeted tests passed.
+No credentials were read or private API called. Production remains the previous
+Bybit runtime until the coherent Binance replacement is ready; this prototype
+must not be advertised as a working Binance trading adapter.
+
+Missing-data run 35564939199 corresponds to source
+1ae46b54f21040b2e6f5b85e3390d805b0a3a8dc. Check actual status/artifact, preserve
+verified results and merge with the 75 saved originals before L3 measurement.

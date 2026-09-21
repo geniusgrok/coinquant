@@ -24,3 +24,22 @@ selected. No private endpoint has been called. A FOK entry would remove remainde
 risk only after its terminal state is established; it cannot by itself prove atomic
 TP/SL protection. Historical costs, risk tiers and stablecoin collateral risk remain
 unqualified. Native public history acquisition is an evidence task, not acceptance.
+
+## Binance-only migration, verified read surface
+
+The user selected Binance exclusively. The research read transport now signs the
+exact Binance query string, restricts hosts and endpoint paths, rejects redirects,
+scrubs transport errors and exposes no write method. Five focused tests passed.
+No private request was sent; test credentials are synthetic. It is not yet the
+production run_once adapter.
+
+[Official Spot account schema](https://developers.binance.com/en/docs/catalog/core-trading-spot-trading/api/rest-api/account)
+contains uid on GET /api/v3/account. The wallet account-info and futures account
+schemas examined do not expose this UID; do not invent a futures UID field.
+Only the UID is retained by the identity probe.
+
+[Official futures account schema](https://developers.binance.com/en/docs/catalog/core-trading-derivatives-trading-usd-s-m-futures/api/rest-api/account)
+provides accountConfig for one-way/single-asset checks and symbolConfig for
+isolated mode, leverage and automatic margin. The probe requires isolated 20x
+with automatic margin off; it never changes account settings. Historical filters
+and fees are still separate from current account observations.
