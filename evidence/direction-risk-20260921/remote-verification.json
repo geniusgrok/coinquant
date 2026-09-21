@@ -10,5 +10,11 @@
   "actions_conclusion": "success",
   "originals_manifest_entries": 176,
   "originals_verified": true,
-  "main_unchanged": "c886b7c63c6455bd7c933269e32cd35a6fb3e09a"
+  "main_unchanged": "c886b7c63c6455bd7c933269e32cd35a6fb3e09a",
+  "schema_fix": {
+    "commit": "8498c98dc022d19a2cf75d88741ea39724885462",
+    "files_verified": 449,
+    "actions_run": 35603947828,
+    "actions_conclusion": "success"
+  }
 }

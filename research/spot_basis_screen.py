@@ -8,16 +8,21 @@ from pancakequant.research import invocations,spec,timestamp
 def run(native,spot,output):
     manifest=json.loads((spot/'manifest.json').read_text())
     if not manifest['complete']:raise ValueError('spot coverage incomplete')
-    prices={}
+    prices={};rejected=[]
     for item in manifest['records']:
         raw=(spot/item['file']).read_bytes();assert hashlib.sha256(raw).hexdigest()==item['sha256']
         with zipfile.ZipFile(io.BytesIO(raw)) as z:
             for row in csv.reader(io.StringIO(z.read(z.namelist()[0]).decode())):
-                t=int(row[0]);assert t not in prices and int(row[6])==t+HOUR-1;prices[t]=D(row[4])
+                t=int(row[0]);assert t not in prices
+                if int(row[6])!=t+HOUR-1:
+                    rejected.append(dict(file=item['file'],open=t,close=int(row[6]),reason='nonstandard_hour_close'));continue
+                prices[t]=D(row[4])
     series,_,_,identity=inputs(native,Path('evidence/binance-boundary-20260921'),Path('evidence/binance-mark-repair-20260921'))
-    future=series['klines'];assert set(prices)==set(future)
+    future=series['klines'];assert set(prices)<=set(future)
     limit=D('.0037');signals={};episodes=[];active=None;excess=0;max_basis=D(0)
-    for t in sorted(prices):
+    for t in sorted(future):
+        if t not in prices:
+            active=None;continue
         basis=D(future[t][4])/prices[t]-1
         max_basis=max(max_basis,abs(basis));side=-1 if basis>limit else 1 if basis < -limit else 0
         if side:
@@ -33,7 +38,7 @@ def run(native,spot,output):
         if signal and signal['event'] not in used:
             used.add(signal['event']);selected.append(dict(time=t,**signal))
     result=dict(qualification='INFORMATION_SCREEN_NOT_ACCOUNT',spot_manifest=manifest,future_input_identity=identity,
-                completed_hours=len(prices),cost_scale=str(limit),excess_hours=excess,episodes=episodes,
+                completed_hours=len(prices),missing_or_rejected_spot_hours=len(future)-len(prices),rejected_candles=rejected,cost_scale=str(limit),excess_hours=excess,episodes=episodes,
                 sparse_visible_unique_episodes=selected,max_absolute_close_basis=str(max_basis),
                 limitations=['Close-to-close relative price is not simultaneous executable bid/ask','Convergence is not guaranteed; unhedged BTC market risk remains','No account returns, protection, funding, margin or liquidation inferred','Only development used'])
     output.write_text(json.dumps(result,indent=2)+'\n')

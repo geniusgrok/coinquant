@@ -81,5 +81,14 @@
     "Final affected replacement/recovery/CLI checks passed; prior safety checks reused after unchanged safety helpers",
     "Historical economics and funding/FX proxy limitations retained",
     "Initial test-fixture inheritance and moved-helper import failures preserved in logs; fixed before final checks"
-  ]
+  ],
+  "native_cancel_schema_affected_checks_passed": 30,
+  "spot_input_audit": {
+    "archives_sha256_verified": 48,
+    "missing_hours": 31,
+    "rejected_timestamp_rows": 8,
+    "usable_hours": 35025,
+    "sparse_cost_scale_episodes": 2,
+    "account_qualification": false
+  }
 }

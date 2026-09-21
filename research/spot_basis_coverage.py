@@ -1,5 +1,6 @@
 """File-backed official SPOT input acquisition, checksums before parsing."""
-import argparse,concurrent.futures,hashlib,json,zipfile,io,csv
+import argparse,concurrent.futures,hashlib,json,zipfile,io,csv,calendar
+from datetime import datetime,timezone
 from pathlib import Path
 from urllib.request import urlopen
 
@@ -23,8 +24,10 @@ def acquire(output):
         raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()==fields[0]
         with zipfile.ZipFile(p) as z:rows=list(csv.reader(io.StringIO(z.read(z.namelist()[0]).decode())))
         times=[int(r[0]) for r in rows]
-        if times!=list(range(times[0],times[-1]+3600000,3600000)):raise ValueError('spot clock gap')
-        return dict(file=name,url=url,bytes=len(raw),sha256=fields[0],rows=len(rows),first=times[0],last=times[-1])
+        year,m=map(int,month.split('-'));start=int(datetime(year,m,1,tzinfo=timezone.utc).timestamp()*1000)
+        expected=set(range(start,start+calendar.monthrange(year,m)[1]*86400000,3600000))
+        if len(times)!=len(set(times)) or not set(times)<=expected:raise ValueError('invalid spot clock')
+        return dict(file=name,url=url,bytes=len(raw),sha256=fields[0],rows=len(rows),first=times[0],last=times[-1],missing_hours=sorted(expected-set(times)))
     months=[f'{year}-{month:02}' for year in range(2020,2024) for month in range(1,13)]
     receipts=[];errors=[]
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
@@ -34,9 +37,9 @@ def acquire(output):
             except Exception as e:errors.append(dict(month=futures[f],error=type(e).__name__,detail=str(e)))
     receipts.sort(key=lambda r:r['file'])
     if not errors:
-        assert sum(r['rows'] for r in receipts)==35064
+        assert sum(r['rows']+len(r['missing_hours']) for r in receipts)==35064
         assert all(a['last']+3600000==b['first'] for a,b in zip(receipts,receipts[1:]))
-    result=dict(complete=not errors,records=receipts,errors=errors,scope='2020-2023 development only')
+    result=dict(complete=not errors,continuous=not errors and not any(r['missing_hours'] for r in receipts),records=receipts,errors=errors,scope='2020-2023 development only')
     (output/'manifest.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'complete':not errors,'months':len(receipts),'errors':errors}))
 
 if __name__=='__main__':
