@@ -4,7 +4,10 @@ Repository: ychenracing/pancakequant.
 
 ## Current mandate
 
-Implement the user's PANCAKEQUANT_REDESIGN_PROMPT: one manually triggered BTC perpetual system, one quantitative model, one exchange adapter, one current configuration. All existing code, strategy, risk, dependencies and architecture may be replaced. Do not preserve obsolete interfaces or capabilities as acceptance conditions.
+Implement the user's PANCAKEQUANT_REDESIGN_PROMPT: one manually triggered BTC perpetual system, one quantitative model, one Binance exchange adapter, one current configuration.
+The user selected Binance exclusively on 2026-09-21. Target BTCUSDT USDT-settled
+linear perpetual. Retire other production adapters during migration; retained
+Bybit/OKX evidence is historical research, not required exchange support. All existing code, strategy, risk, dependencies and architecture may be replaced. Do not preserve obsolete interfaces or capabilities as acceptance conditions.
 
 The economic targets remain CAGR > 200% and continuous mark-to-market MDD < 20%, from 2020-01-01 UTC through the research protocol's frozen complete-data endpoint in 2026. Start with CNY 10,000, explicitly freeze conversion and settlement assumptions, include real contract history, costs, funding, liquidation and sparse irregular manual triggers. Do not move the window, lower targets, fabricate data or call diagnostic replay formal acceptance.
 

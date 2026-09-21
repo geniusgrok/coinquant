@@ -79,11 +79,19 @@ def acquire(root, path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--request", type=Path, help="Explicit subset of the fixed public archive paths")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     records = []
+    selected = list(paths())
+    if args.request:
+        requested = json.loads(args.request.read_text())["paths"]
+        if (not requested or len(requested) != len(set(requested))
+                or not set(requested).issubset(selected)):
+            raise ValueError("request must be a unique subset of frozen archive paths")
+        selected = requested
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
-        for record in pool.map(lambda path: acquire(args.output, path), paths()):
+        for record in pool.map(lambda path: acquire(args.output, path), selected):
             records.append(record)
             (args.output / "inventory.json").write_text(json.dumps({
                 "qualification": "NOT_QUALIFIED", "records": records,

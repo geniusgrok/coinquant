@@ -31,3 +31,13 @@ jobs:
         run: |
           python -m compileall -q pancakequant research tests
           python -m unittest discover -s tests -v
+      - name: One requested public Binance archive remainder
+        if: github.event.head_commit.message == 'Acquire missing Binance public archives'
+        run: python -m research.acquire_binance --request research/binance-acquisition-request.json --output "$RUNNER_TEMP/binance-remainder"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && github.event.head_commit.message == 'Acquire missing Binance public archives'
+        with:
+          name: binance-native-remainder-${{ github.sha }}
+          path: ${{ runner.temp }}/binance-remainder/
+          if-no-files-found: error
+          retention-days: 30

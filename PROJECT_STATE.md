@@ -287,3 +287,28 @@ write hooks. One 10-minute read-only job remains: compile and offline unittest.
 No full-history optimization or network collection runs in CI. Local full suite
 passed 110 tests in 1.323 seconds; one existing ResourceWarning in a replay test
 fixture is not a test failure. Hosted status must be checked separately.
+
+## Latest user instruction: Binance only
+
+The user explicitly selected Binance as the only supported exchange. Continue
+BTCUSDT USDT-settled linear perpetual migration. Do not build an OKX production
+adapter or retain multi-exchange compatibility. Current Bybit production code is
+not yet replaced and must not be described as Binance-capable. Historical evidence
+remains intact. Economic targets, fixed 20x and native partial-fill protection
+requirements are unchanged. No live trading or account settings are authorized.
+
+## Binance acquisition recovery after network-policy interruption
+
+The local acquisition process was stopped by network policy. Physical audit
+verified 75 ZIPs with exchange checksums (2020-01 through 2022-01); an interrupted
+progress record claimed an additional file not retained, so only the physical
+inventory is authoritative. Originals are preserved by
+evidence/binance-partial-originals.json, with exact hashes in
+evidence/binance-partial-inventory-20260921.json. Do not redownload these files.
+
+The same 10-minute CI job temporarily has one explicitly requested public-data
+remainder step, matching the user's authorized temporary evidence collection.
+research/binance-acquisition-request.json lists exactly 203 missing archive paths.
+It uses no secrets or private API, and runs no optimization. Remove the temporary
+step again once this new Binance evidence is durable. L3 measurement remains
+pending complete development data; no shorter-window result substitutes for it.
