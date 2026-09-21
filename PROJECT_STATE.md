@@ -222,3 +222,9 @@ those exact inputs are restored, its preregistered forecast-only screen can proc
 while the independent July mark gap is investigated. Full-account economic replay
 and native qualification still require correct mark coverage. No shortened economic
 window or favorable mark substitution is authorized.
+
+## Latest measured update: native Binance L3 rejection
+
+Run 35566270075 completed: 117 offline tests passed; acquisition failed semantic validation for four mark months (2021-07, 2022-10, 2023-02, 2026-06), while 199 other archives passed. Exact original artifact is durable; see evidence/binance-remainder-result-20260921.json. There are now 274 verified formal archives. The next acquisition request contains only the four failed originals, using the corrected raw-before-semantic-check collector.
+
+L3 development screen is now measured and rejected: 437 overlapping four-day observations, correlation -0.0161721, direction accuracy 49.1991%, mean directional net -0.434740% versus constant-long +0.0884211%. These are forecast diagnostics, not account CAGR/MDD. Progression gate failed. Exact source, hypothesis, input identities and observations are in evidence/l3-development-20260921/. No 2024+ economic validation was used. Do not tune adjacent L3 parameters. Continue a different causal structural hypothesis and complete Binance data/safety work. Status remains NOT_QUALIFIED; production Binance migration remains incomplete; main must not merge.
