@@ -48,3 +48,14 @@ class BinanceCLI(unittest.TestCase):
                 self.assertEqual(result['status'],'unknown')
                 self.assertFalse(result['write_attempted'])
                 self.assertEqual(result['pending_intents'],1)
+    def test_incomplete_replacement_is_visible_without_pending_order(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            directory=Path(tmp)/'state';config=Path(tmp)/'config.json'
+            config.write_text(json.dumps(dict(account_uid='123',state_dir=str(directory))))
+            with State(directory,'binance:BTCUSDT:live:123') as state:
+                state.set('binance_protection_replacement',dict(done=False,request={'old_ids':['pq-old']}))
+            with patch.dict('os.environ',{'PANCAKEQUANT_BINANCE_KEY':'fake','PANCAKEQUANT_BINANCE_SECRET':'fake'}),patch('pancakequant.cli.BinanceReadOnly') as venue:
+                venue.return_value.snapshot.return_value={'equity_usdt':'100'}
+                result=observe(config)
+                self.assertEqual(result['status'],'unknown');self.assertEqual(result['pending_intents'],0)
+                self.assertFalse(result['protection_replacement']['done']);self.assertFalse(result['write_attempted'])

@@ -20,6 +20,11 @@ def _gate(reader, state, uid, authorized, *, canceling_entry=False):
             safe=(kind=='binance_margin' or
                   kind=='binance_order' and payload.get('reduceOnly')=='true' or
                   kind=='binance_algo' and (payload.get('closePosition')=='true' or payload.get('reduceOnly')=='true'))
+            if kind=='binance_algo_cancel':
+                import json
+                owner=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(payload.get('clientAlgoId'),)).fetchone()
+                safe=bool(payload.get('symbol')=='BTCUSDT' and owner and owner[0]=='binance_algo'
+                          and json.loads(owner[1]).get('closePosition')=='true')
             if not safe:raise Unknown('unsettled possible entry intent; reconcile before reporting safety')
     snapshot=reader.snapshot(uid)
     if snapshot['account_uid']!=str(uid):raise Blocked('account mismatch')
@@ -149,4 +154,91 @@ def add_margin(reader,state,send,uid,epoch,target,*,authorized=False):
     if D(after['quantity_btc'])!=D(before['quantity_btc']) or D(after['isolated_wallet_usdt'])<D(target):
         raise Unknown('margin/position readback changed; reconcile without retry')
     state.finish(identity,'confirmed',{'amount':str(amount),'isolated_wallet':after['isolated_wallet_usdt']})
+    return after
+
+
+def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrument,authorized=False):
+    """Try a new close-all pair, then retire owned old parents after readback.
+
+    No atomic amendment or duplicate-close-all acceptance is assumed. Rejection or
+    missing readback retains old protection and blocks cancellation. A durable
+    journal pins the request/exposure across crashes; uncertain writes never retry.
+    This injected-sender lifecycle is not enabled by the production read-only CLI.
+    """
+    import json
+    if authorized is not True:raise Blocked('explicit operation authorization required')
+    if state.identity!=f'binance:BTCUSDT:live:{uid}':raise Blocked('account scope mismatch')
+    if old_epoch==epoch:raise Blocked('replacement needs a distinct stable epoch')
+    old_ids=[client_id(state.identity,old_epoch,k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')]
+    new_ids=[client_id(state.identity,epoch,k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')]
+    key='binance_protection_replacement'
+    request=dict(old_ids=old_ids,new_ids=new_ids,stop=str(D(stop)),take=str(D(take)))
+    journal=state.get(key)
+    if journal and journal['request']!=request:
+        if not journal.get('done'):raise Unknown('another protection replacement is unresolved')
+        journal=None
+    # Missing ownership after local state loss never authorizes order cancellation.
+    for identity in old_ids:
+        row=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(identity,)).fetchone()
+        if not row or row[0]!='binance_algo':raise Blocked('old protection ownership unavailable; recover read-only')
+        payload=json.loads(row[1])
+        if payload.get('closePosition')!='true':raise Blocked('old order is not owned close-all protection')
+    # Resolve this operation's cancellation uncertainty before normal safety gates.
+    for identity in old_ids+new_ids:
+        cancel_id=client_id(state.identity,epoch,'retire:'+identity)
+        pending=state.db.execute('SELECT status FROM intents WHERE id=?',(cancel_id,)).fetchone()
+        if pending and pending[0] in ('unknown','partial'):
+            if not reader.conditional_terminal(identity):raise Unknown('cancel or child still unsettled; no retry')
+            state.finish(cancel_id,'confirmed',{'target':identity,'terminal':True})
+    before=_gate(reader,state,uid,authorized)
+    q=D(before['quantity_btc'])
+    if before['possible_entry_remainders']:raise Unknown('entry remainder blocks replacement')
+    if journal is None:
+        if not q:raise Blocked('no exposure to replace protection for')
+        journal=dict(request=request,quantity=str(q),done=False)
+        state.set(key,journal)
+    if journal.get('done'):return before  # same operation must never protect a later position
+    original=D(journal['quantity'])
+    if q and q!=original:raise Unknown('partial fill or exposure change; retain protection and reconcile')
+
+    def retire(identity):
+        if reader.conditional_terminal(identity):return
+        cancel_id=client_id(state.identity,epoch,'retire:'+identity)
+        payload=dict(symbol='BTCUSDT',clientAlgoId=identity)
+        _once(state,cancel_id,'binance_algo_cancel',payload,send,'DELETE','/fapi/v1/algoOrder')
+        if not reader.conditional_terminal(identity):raise Unknown('protection cancellation/child unresolved')
+        state.finish(cancel_id,'confirmed',{'target':identity,'terminal':True})
+
+    if q:
+        # Every attempt first reuses/queries the same new identities, never blindly
+        # resends a timed-out request. Native acceptance is the coexistence check.
+        protect_existing(reader,state,send,uid,epoch,stop,take,instrument=instrument,authorized=True)
+        for identity in old_ids:
+            # Read BOTH new legs and the account again before each destructive step.
+            protect_existing(reader,state,send,uid,epoch,stop,take,instrument=instrument,authorized=True)
+            observed=reader.query_intent(identity,conditional=True)
+            p=observed['parent']
+            if (p.get('closePosition') is not True or p.get('side')!=('SELL' if q>0 else 'BUY')
+                    or p.get('orderType') not in ('STOP_MARKET','TAKE_PROFIT_MARKET')):
+                raise Unknown('old protection scope changed')
+            if observed['child'] is not None and not reader.conditional_terminal(identity):
+                raise Unknown('old protection child still working; reconcile partial exposure')
+            retire(identity)
+            after=reader.snapshot(uid)
+            if after['account_uid']!=str(uid) or D(after['quantity_btc'])!=q or after['possible_entry_remainders']:
+                raise Unknown('protection filled during retirement; reconcile before next write')
+        after=protect_existing(reader,state,send,uid,epoch,stop,take,instrument=instrument,authorized=True)
+    else:
+        # A previously journaled position closed during replacement. Cancel only
+        # known accepted close-all intents; unknown acceptance still fails closed.
+        for identity in old_ids+new_ids:
+            if not state.db.execute('SELECT 1 FROM intents WHERE id=?',(identity,)).fetchone():continue
+            now=reader.snapshot(uid)
+            if now['account_uid']!=str(uid) or D(now['quantity_btc']) or now['possible_entry_remainders']:
+                raise Unknown('flat cleanup scope changed')
+            retire(identity)
+        after=reader.snapshot(uid)
+        if after['account_uid']!=str(uid) or D(after['quantity_btc']) or after['possible_entry_remainders']:
+            raise Unknown('flat cleanup exposure changed')
+    journal['done']=True;state.set(key,journal)
     return after

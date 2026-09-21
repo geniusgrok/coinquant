@@ -138,6 +138,21 @@ class BinanceReadOnly:
                     raise Unknown('conditional child observation conflicts with parent')
         return {'parent':parent, 'child':child, 'resubmit_authorized':False}
 
+    def conditional_terminal(self, identity):
+        """A canceled parent is not proof that its triggered child stopped trading."""
+        observed=self.query_intent(identity,conditional=True)
+        parent,child=observed['parent'],observed['child']
+        if parent.get('algoStatus') not in ('CANCELED','EXPIRED','REJECTED','FINISHED'):return False
+        if child is None:
+            if parent['algoStatus']=='FINISHED':raise Unknown('finished protection lacks child evidence')
+            return True
+        original=number(child.get('origQty'),positive=True);filled=number(child.get('executedQty'))
+        if original<=0 or not 0<=filled<=original:raise Unknown('invalid protection child quantities')
+        status=child.get('status')
+        if status=='FILLED' and filled!=original:raise Unknown('incomplete filled protection child')
+        if status=='REJECTED' and filled:raise Unknown('rejected child with fills')
+        return status in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
+
     def recover_pending(self, state):
         """Read-only terminal reconciliation; no missing-order retry inference.
 
@@ -148,6 +163,18 @@ class BinanceReadOnly:
         resolved = 0
         for intent in state.pending():
             kind, payload = intent['kind'], intent['payload']
+            if kind=='binance_algo_cancel':
+                try:
+                    target=payload['clientAlgoId']
+                    row=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(target,)).fetchone()
+                    if payload.get('symbol')!='BTCUSDT' or not row or row[0]!='binance_algo':
+                        raise Unknown('cancellation ownership missing')
+                    if json.loads(row[1]).get('closePosition')!='true':raise Unknown('not close-all cancellation')
+                    if self.conditional_terminal(target):
+                        state.finish(intent['id'],'confirmed',{'target':target,'terminal':True});resolved+=1
+                except (Blocked,Unknown,KeyError,TypeError,ValueError,ArithmeticError):
+                    pass
+                continue
             if kind not in ('binance_order', 'binance_algo'):
                 continue
             try:

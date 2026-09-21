@@ -1,117 +1,45 @@
-# 2026-09-21 最新：D3事件配对与V1/V2
+# 当前状态：方向风险配置改善，仍NOT_QUALIFIED
 
-当前完整报告：evidence/impulse-age-20260921/REPORT.md；原件收据originals.json。
-D3原件不变，继续基线。开发配对确认空头延迟损耗，独立仅多头/空头对照已完成。
-V1拒绝兑现后入场失败；V2一次确认失效边界完整窗口稀疏49.65%CAGR/34.64%MDD包络，仍NOT_QUALIFIED。
-V2小幅增益集中少数事件，不提高风险，不合并main。2024+继续标记已使用。
-新增主动成交量信息检查已完成开发覆盖及小样本描述，未实现过滤器，未查看2024+流向。
-流向逐事件影响与时间稳定性已检查：空头优势去掉最佳事件或取2022–23即反转，暂不实现过滤器；见flow-stability.json。
-执行下一条：新保护确认后撤旧保护的durable生命周期及离线竞争验证；无testnet不得声称原生通过。
-21项定向检查及V2未来扰动通过。当前无后台研究进程。经济、证据和生产整合未完成。
-复现入口research/replay_impulse_age.py，诊断research/impulse_event_diagnosis.py，research/impulse_flow_diagnosis.py。
+仓库ychenracing/pancakequant，研究分支research/on-demand-btc-20260920。
+本轮恢复入口5232f598a1fde7bbb9b3bb85e04b28082a7fd215；main核验c886b7c63c6455bd7c933269e32cd35a6fb3e09a。
+先核验实际远端HEAD及本地差异，不用旧恢复包覆盖代码。当前报告evidence/direction-risk-20260921/REPORT.md、
+PROTOCOL.md、candidate-register.json、各候选JSON、EXECUTION_STATUS.md、verification.json、originals.json。
 
----
+## 不变目标与权限
+人民币10000，无追加；2020-01-01T00:00:00Z至2026-09-20T00:00:00Z exclusive；
+成本后CAGR>=150%，完整连续账户MDD<50%；Binance BTCUSDT，单向逐仓20x设置；原冻结稀疏序列。
+研究4h不能替代正式稀疏验收。授权研究提交推送，不授权真实资金/账户配置/密钥操作。
+所有结果仍代理NOT_QUALIFIED，禁止合并main。生产默认只读，无授权testnet账户，无账户操作。
 
-# 最新追加：D3完整稀疏47.93% CAGR /34.50%MDD，仍未达标
+## 最新成果
+保留D3/V2原始数据与源码。复用long2.4/short2.4开发，不重跑。
+事前H(long2.4/short1.2)开发稀疏66.39%CAGR/22.07%MDD包络；L(long3.6/short0)89.57%/24.25%。
+L是一次50%预算增加，不按历史MDD反推；开发后冻结，未继续放大。
+完整L稀疏67.0921%/32.0241%，人民币314775.82；4h65.0208%/40.2210%。
+完整L0(long2.4)稀疏48.3265%/23.6710%，用于隔离方向/预算；4h44.0065%/28.4504%。
+D3完整47.93%/34.50%、V2 49.65%/34.64%继续比较。L主要增益来自预算，不是新信号。
+L完整稀疏前三净现金占62.01%，正常88.91%；2022稀疏负收益，不能隐瞒。2024+已反复使用。
 
-先读evidence/impulse-risk-20260921/REPORT.md、candidate-register.json、verification.json、
-originals.json，再读下文A–E及L29历史。D3是D2相同模型的固定2.4风险预算配置，
-完整窗期末人民币138,871.75；正常4h50.10%/35.58%。收益与回撤优于L29代理基线，
-仍远低于150%。没有追加本金或提高交易所20x设置。不是正式资格。
-F小时识别开发稀疏4.64%/33.78%，拒绝继续周期/阈值搜索，未看全窗。
-2024+又用于D3时间顺序复核并启发F，没有独立未见区间。生产仍只读，无账户写入。
-D3复现：research.measure_mechanisms --mechanism impulse_hold --risk-scale 2.4；
-需--native/--output，完整窗显式--full-window。所有新逐笔和权益原件及实测源码已保留。
-下一条可执行步骤：检查D3完整归因的单位风险收益不足，定义不同收益来源再开发检验；
-同时按EXECUTION_STATUS继续原生生命周期与历史经济证据。无依据放大/搜索不继续。
+资金费承接/拥挤消退机制已继续筛选：过去7日funding符号，额外滞后1小时，原稀疏至少7日非重叠持有。
+开发13多头均值-1.46%，148空头-1.77%，不推进账户策略、不搜索阈值。
+此为INFORMATION_SCREEN_NOT_ACCOUNT，未模拟保证金/保护/强平，不得当账户绩效。
 
----
-# 当前状态：独立机制A/B/C失败，D2保留诊断，正式未达标
+保护替换已实际实现：新pair真实回读后逐单撤旧，durable journal/取消intent、子单终态、重启与flat cleanup。
+不假设API必然允许并存；拒绝/未知时旧保护保留。部分成交暂停，允许授权reduce-only移除剩余风险。
+丢失ownership阻止写入，只读观察可用。CLI已回读取消意图并显示未完成replacement状态。
+35项相关定向检查分批通过，六组账户时间/事件/价格/funding率一致，全部实测源码哈希核验。
+默认CLI --execute仍阻止，mock不等于原生验证。
 
-ACTIVE / NOT_QUALIFIED。研究分支research/on-demand-btc-20260920；禁止合并main。
-本轮从远端d6a63ba恢复，main核验c886b7c；没有覆盖历史/并行工作。
-首先完整阅读evidence/mechanisms-20260921/REPORT.md、candidate-register.json、
-verification.json、sources.json、EXECUTION_STATUS.md及originals.json。
-所有正式窗口、人民币10,000、CAGR>=150%、完整MDD<50%、20x和原稀疏序列保持不变。
+## 恢复与下一步
+复现：python -m research.direction_risk --native NATIVE --output NEW --candidate L --full-window。
+开发H/L省略full-window。原件包含完整逐笔、权益、输入身份、测量源码、失败日志和全部结果；依赖链到上一轮原始行情。
+读取originals.json回读核验档案后只恢复缺失数据，不重采完整历史。当前Git包含源码及小报告，档案包含大型原件。
+下一具体工程：核验snapshot对子订单剩余风险的识别，补历史经济规则/动态FX与USDT估值的来源可用性；
+取得明确授权testnet后才验证原生并存/部分成交/取消竞争，无账户时继续离线独立工作。
+下一收益研究必须是不同经济信息机制；不继续预算阶梯、年龄/流量/funding阈值搜索，不承诺必然达到150%。
+项目尚未完成：收益、历史经济证据、研究生产一致性及原生安全资格都未过；没有后台继续工作的承诺。
 
-本轮A/B/C开发区无成本后优势，拒绝放大；D冲击延续的7天信号有诊断优势，D2取消近端
-止盈后开发33.86%/18.22%，稀疏27.78%/16.62%。D2完整窗4h21.58%/18.22%、
-稀疏20.48%/16.62%、期末¥34,964.35，仍不达标且收益低于L29。
-E去时间退出开发37%附近但稀疏回撤30.39%，不推进全窗。
-2024+本轮又用于D2时间顺序复核并启发E；不能恢复unseen身份。
-L29原始比较基线保留；三条开发轨迹与原件逐字节一致。没有改动既有费用/滑点/
-保护/强平保守顺序以美化候选。
-
-恢复本轮原始包以及originals.json引用的上一轮原始包/依赖。实测source版本A/B/C/D/D2/E
-分别保留并按result.source_hashes核验；不要用最终源文件谎称早先运行的逐字节版本。
-常用开发命令：python -m research.measure_mechanisms --native NATIVE_ROOT --output NEW_DIR
---mechanism squeeze|sweep|shock|impulse|impulse_hold|persistent_impulse。
-一次只运行单一模型；这些研究选择不是生产多模型配置。
-全窗显式调用persistent_hold_replay.run(...full_window=True...)并复用
-research/mechanism-minute-days.json。只有D2本轮看了全窗。完整再现命令见原始包logs/reproduction。
-
-Binance新增安全操作模块及离线生命周期测试，默认不授权，生产CLI仍只读。
-没有新建风险的网络writer；沒有已授权testnet可验证。不能拿mock替代原生证明。
-下一步：读取详细归因后提出有证据的新机制/持有结构，避免重复A/B/C失败和E尾部退化；
-同时补真实历史经济规则、FX/USDT估值及原生执行证据。本任务未完成。
-
----
-以下为上轮保留基线与原件恢复说明（不是本轮最新状态）：
-
-# Current state — L29 improvement preserved, formal qualification failed
-
-ACTIVE / NOT_QUALIFIED. Branch research/on-demand-btc-20260920; do not merge main.
-Formal CNY10000,2020-01-01..2026-09-20exclusive, netCAGR>=150%, continuousMDD<50%,
-original sparse triggers, isolated20x Binance BTCUSDT. No account writes authorized
-or performed. Main last checked c886b7c63c6455bd7c933269e32cd35a6fb3e09a.
-
-## Current research and validation
-
-Read evidence/return-capture-20260921/REPORT.md, verification.json, originals.json.
-L29 preserves L21 entry volatility size without intra-campaign resizing. Original
-six-day-minute development:71.2820%CAGR/42.4310%MDD; L21:42.2274%/48.8171%.
-Frozen before holdout at0eaf76753fd2b9387a56b15391db5b7bb8e89e22.
-2024+HAS NOW BEEN USED for validation/failure analysis. No unseen claim remains.
-Full continuous final24-day-minute comparison:
-L21 CAGR0.2007671113511038, MDD0.5783639800266933205292557952, CNY34187.67525877459802610382740.
-L29 CAGR0.3576612871420546, MDD0.5479327086513183762218691119, CNY78019.33606695087255024475611.
-Both NOT_QUALIFIED. L27 anchored invalidation/L28 same-run reversal rejected.
-All original and failed raw paths preserved; no post-validation strategy retuning.
-
-## Recovery
-
-Restore new originals.json archive and its prior140850994-byte dependency.
-Verify lengths/SHA256/manifests. Never overwrite newer remote source automatically.
-From repo root, use research.persistent_hold_replay with root/minutes=NATIVE_ROOT,
-warmup=evidence/binance-boundary-20260921,repairs=evidence/binance-mark-repair-20260921,
-quantity-rules=evidence/binance-boundary-20260921/current-instrument.json,
---schedule sparse --allocation volatility --lifecycle one_campaign
---reference entry_inventory --full-window; repeat --extra-minute-day for each
-raw exit-minute-days.json value. Retain L21 exact control with --reference channel.
-Driver default still historical; do not mistake defaults for L29 selection.
-
-## Evidence
-
-8targeted tests and minute reconstruction test passed;3invalid-input checks.
-L21 legacy control traces byte-identical. L29six causal prefixes and468shared
-market states match. Expanded-data development/full prefix identical:
-{"decisions": 468, "orders": 2588, "equity": 144340}.795full sparse calls;zero liquidation classifications.
-42exit-day archives independently checksum verified;24unique minute-refined days.
-This is not a full tick path/native historical economics qualification.
-
-## Remaining work
-
-Economic target is unmet. Do not rescue with arbitrary parameter/risk grids,
-repeat rejected mechanisms, lower150%/50%, or add phantom exact-funding credits.
-A new causal hypothesis must establish incremental information before another
-model change; report holdout reuse honestly. Existing funding interval and
-full-year failure decomposition are in the evidence. L29simplification is valuable
-but not proven sufficient. Do not revert it blindly to L17 or promote to live.
-Native dated fee/filter/margin rules, USDT valuation, exact funding marks remain.
-Binance production stays read-only; full protected execution and authorized
-testnet validation remain unimplemented/unverified. LegacyBybit cannot substitute.
-No credentials or authorized testnet account were supplied. No live fallback.
-
-Native Git write credentials unavailable. Connector checkpoint writes/readback
-verified13files/complete tree. New final receipt records final evidence identity.
-Always recheck actual remote HEAD and parallel work before the next write.
+## 历史证据入口
+impulse-age-20260921保留V1失败/V2/事件配对/流向失败；impulse-risk-20260921保留D3/F；
+mechanisms-20260921保留A/B/C/D/D2/E；return-capture-20260921保留L29。
+原件依赖链由各originals.json给出；历史完整内容和过去交接仍可通过Git原提交读取。

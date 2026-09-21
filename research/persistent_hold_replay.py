@@ -108,9 +108,11 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both'):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None):
     if entry_side not in ('both','long','short'):raise ValueError('invalid diagnostic entry side')
     risk_scale=D(risk_scale)
+    short_risk_scale=risk_scale if short_risk_scale is None else D(short_risk_scale)
+    if not short_risk_scale.is_finite() or short_risk_scale<0:raise ValueError('invalid short risk scale')
     if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and reference not in ('impulse_hold','impulse_validity','impulse_confirmation')):
         raise ValueError('non-unit diagnostic risk requires impulse_hold')
     if allocation not in ('fixed','edge','unit','volatility'):raise ValueError('unknown allocation')
@@ -211,7 +213,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 direction=1 if reference=='long' else max(0,regime) if reference=='long_flat' else regime
                 if entry_side=='long' and direction<0 or entry_side=='short' and direction>0:direction=0
                 edge_target=(volatility_fraction(daily_returns,slip+spread/2) if allocation=='volatility' else D(1) if allocation=='unit' else target_fraction(edge_observations) if allocation=='edge' else D(2))
-                edge_target*=risk_scale
+                edge_target*=short_risk_scale if direction<0 else risk_scale
+                if not edge_target:direction=0
                 if reference=='channel_position':edge_target*=channel_position(daily)[1]
                 action='hold' if account.q else 'no_signal';caps={};qty=ZERO;raw_qty=ZERO;limiter=''
                 decision_state=[t,regime,str(account.equity(mo)),str(account.q),str(abs(account.q)*mo),str(account.margin),str(account.wallet-account.margin),str(account.sl),str(account.tp),(t-regime_since)//HOUR]
@@ -364,6 +367,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if targeting:result['candidate']='L21' if allocation=='volatility' else 'B1' if reference=='long' else 'B2'
     result['risk_scale']=str(risk_scale)
     result['entry_side']=entry_side
+    result['short_risk_scale']=str(short_risk_scale)
     result['protection']=protection
     if targeting and protection=='trailing':result['candidate']='L22'
     if targeting and reference=='long_flat':result['candidate']='L23'

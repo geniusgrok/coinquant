@@ -42,6 +42,10 @@ def observe(config_path, *, decision=False, execute=False):
         report['pending_intents']=recovery['pending']
         if recovery['pending']:
             report.update(status='unknown',reason='Durable intents remain unresolved; no retry or new risk authorized')
+        replacement=state.get('binance_protection_replacement')
+        if replacement and not replacement.get('done'):
+            report.update(status='unknown',reason='Protection replacement incomplete; reconcile before changing exposure')
+            report['protection_replacement']=replacement
         if market is not None:report['market']=market
         state.report(report)
         return report
