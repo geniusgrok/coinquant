@@ -10,7 +10,11 @@ Main must remain unchanged until the active acceptance is genuinely met.
 
 Read the latest continuation section of PROJECT_STATE.md and
 `evidence/linear-feasibility-20260921.md` before following historical steps below.
-Both old evidence jobs were still queued during this continuation. The existing
+Minute acquisition finished during this continuation: artifact 10622037487 is
+preserved in `evidence/ambiguous-minutes-20260921/`, verified at 729363 bytes and
+11520 bars with zero integrity errors. Exact baseline pre-exit snapshots are not
+in the active branch, so the eight event orderings remain unresolved. OKX probe
+35559716288 was still queued. See the minute evidence README for reconstruction. The existing
 OKX probe has been repaired on the active branch; old job success alone cannot
 prove qualification. L1 signal prototype plus preregistration exists, with ten
 local signal/probe tests passed. Native linear economics and production integration

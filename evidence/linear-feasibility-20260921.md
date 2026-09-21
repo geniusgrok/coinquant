@@ -10,8 +10,13 @@ Status: NOT_QUALIFIED; no new economic result. Main unchanged.
 - 35559122193: minute acquisition and check jobs queued at inspection.
 - 35559716288: OKX public boundary probe queued at inspection.
 
-These are observations, not promises about later asynchronous state. No artifacts
-were claimed acquired or preserved from either queued run. Existing native
+Later in this continuation the minute acquisition completed successfully. Artifact
+10622037487 (729363 bytes) was downloaded, integrity checked and preserved in
+`ambiguous-minutes-20260921/`. All 8 inventories and 56 referenced payloads matched;
+11520 consecutive minute bars were verified. Exact baseline event thresholds are
+not present in the active branch, so event ordering remains unresolved. The check
+job and OKX probe remained queued at the later inspection. These are time-specific
+observations, not promises about later asynchronous state. Existing native
 BTCUSD archive was not downloaded again or reacquired. No .transfer restoration.
 The OKX branch has stale recovery documents; do not merge that branch wholesale.
 Only its public probe source was copied and repaired on the active branch.

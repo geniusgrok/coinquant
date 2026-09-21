@@ -1,0 +1,14 @@
+{
+  "source_run": 35559122193,
+  "artifact_id": 10622037487,
+  "archive_bytes": 729363,
+  "archive_sha256": "7cf97ac730953674d7da9f503eddf0d16470b7fd3fa885d5ab16b4ace098580f",
+  "archive_members": 73,
+  "verified_inventories": 8,
+  "verified_payload_files": 56,
+  "minute_bars": 11520,
+  "integrity_errors": 0,
+  "ordering_status": "UNRESOLVED_missing_exact_baseline_event_snapshots",
+  "economic_result_changed": false,
+  "storage": "23 deterministic 32768-byte maximum Git parts plus manifest"
+}

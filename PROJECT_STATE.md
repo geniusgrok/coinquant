@@ -20,9 +20,12 @@ No live trading, transfers, credential changes, or real account-setting changes 
 ## Latest continuation: stable-settlement feasibility and L1
 
 The 2026-09-21 continuation recovered remote HEAD `d67bf03b` and verified main
-still `c886b7c6`. Runs `35559122193` (minutes) and `35559716288` (pre-existing
-OKX probe) were both queued when checked. No new native dataset or economics
-has been produced. Do not confuse the separate OKX probe branch's stale state
+still `c886b7c6`. Run `35559122193` minute acquisition completed successfully during this
+continuation; its separate check job and `35559716288` OKX probe were still queued.
+The 729363-byte minute ZIP passed all integrity checks and is now preserved in
+`evidence/ambiguous-minutes-20260921/` as 23 deterministic parts plus manifest.
+It contains 11520 minute bars. No new economics has been produced.
+Exact baseline event snapshots remain missing, so ordering is still unresolved. Do not confuse the separate OKX probe branch's stale state
 files with this current recovery entry.
 
 New work on this branch:
