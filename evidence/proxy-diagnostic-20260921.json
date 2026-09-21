@@ -1,0 +1,86 @@
+{
+  "status": "measured_diagnostic",
+  "qualification": "NOT_QUALIFIED",
+  "provenance": "proxy_rules_over_native_market_and_funding",
+  "runtime_code_sha": "36fad1849bca116efffc23c8d3abb770508f2de8",
+  "native_history": {
+    "workflow_run_id": 35548881482,
+    "artifact_id": 10617971281,
+    "artifact_sha256": "717841c3267f5de40d0c0b103aeff3c067054eb7752ccf5b8cc1bcad11228159",
+    "inventory_sha256": "43caf20501d1c076af42d74ee279be833be5fba6dfbb3ee1e43e668869a3ab47",
+    "api_host": "api.manepa.jp",
+    "start": "2019-12-11T00:00:00Z",
+    "end_exclusive": "2026-09-20T00:00:00Z",
+    "bar_interval_ms": 3600000,
+    "complete_shards": 83,
+    "raw_pages": 249,
+    "bars_files": 83,
+    "funding_files": 83,
+    "bar_rows": 59400,
+    "funding_rows": 7425,
+    "independent_integrity_errors": 0
+  },
+  "manifest": {
+    "sha256": "cc6d8873392bd703531bf4a44f4ccc58f539b0c09b073401767b8ef6ed8a0bb3",
+    "proxy_rules_sha256": "c620f4ff181147204a200551f8a50ecd07e9126b8c47779e9b7469c14b808eaf",
+    "rules_note": "conservative proxy: tick 0.5, qty step/min 1, 1,000,000 order caps, 150 BTC / 0.5% base tier, 8h funding interval, 0.075% taker fee throughout"
+  },
+  "local_verification": {
+    "tests": 88,
+    "passed": 88,
+    "note": "Exact previously-hosted 345c9fc source plus committed 36fad184 model/test change"
+  },
+  "baseline": {
+    "result_sha256": "89d3c85371e5f71eb48916464f033b81d95af51b2faaefbc2aacad4d1514699d",
+    "identity_sha256": "d8ce9582d3710f7bb899ba64f6badc68ba4611d6f94a5ea38d0241a5e177d60f",
+    "invocations_sha256": "2c385775cf9cc33af2ec99f68314ae76c38fd16e5bf28f449eef9731f983f8b8",
+    "equity_sha256": "bdab062fb627ca06343d2074d167d2c01bfd863766f250986d02816c377dfa5c",
+    "orders_sha256": "efd7cefa5723caada62b8773e5d0e022394c7cb42e59fda627ec963980a3c17c",
+    "initial_equity_usd": "1433.445142054413577592385539",
+    "final_equity_usd": "16549.48143808743289226721949",
+    "final_equity_cny": "115452.4924083855493430345766",
+    "cagr": 0.4392074800343406,
+    "mdd": "0.7705119333829854577554200902",
+    "drawdown_start": "2021-11-10T14:00:00Z",
+    "drawdown_end": "2022-11-21T21:00:00Z",
+    "fees_btc": "0.009076807663738305609923288641",
+    "net_funding_paid_btc": "0.003578368275999584782388062362",
+    "liquidation_events": 8,
+    "fills": 537,
+    "decisions": 795,
+    "invocations": 795,
+    "longest_interval_hours": 151.0,
+    "economic_numbers_meet_limits": false,
+    "yearly_returns": {
+      "2020": "3.109384179459942266188690143",
+      "2021": "0.585509100668753049080494933",
+      "2022": "-0.6296806389665526480578157451",
+      "2023": "1.504140903096495148864855039",
+      "2024": "1.267967006002899725156636199",
+      "2025": "-0.0840859328661920903745717529",
+      "2026_partial": "-0.0801199774535400752123405422"
+    }
+  },
+  "absence_21d": {
+    "result_sha256": "187e46f95dce4a5e5d3e9f110cf55559cca3272d764afc95acbf2ea29355761b",
+    "identity_sha256": "8e14cafe73b8cbdaae97a9436a5cb6e0a4f757f1480b4e73f11fdaab1017b675",
+    "invocations_sha256": "b4f28f4ee92c7692cc51c53e49628f37b75971392e9d927aedf18fa850de13bf",
+    "equity_sha256": "61e360669165f571ca98e565c0158cccb6ca008cc80ef91ba6d6682409a1c413",
+    "orders_sha256": "8a52dc95583aaa1a9e31d9d8679db7e7312e715bd68400ae0ffc433738d3351e",
+    "final_equity_usd": "16839.33649357048867911386872",
+    "final_equity_cny": "117474.5792464464431232341710",
+    "cagr": 0.44293150146801397,
+    "mdd": "0.7704723247552433174006033425",
+    "liquidation_events": 8,
+    "fills": 531,
+    "decisions": 787,
+    "invocations": 787,
+    "longest_interval_hours": 697.0,
+    "economic_numbers_meet_limits": false
+  },
+  "formal_targets": {
+    "cagr_exclusive_minimum": 2.0,
+    "mdd_exclusive_maximum": 0.20
+  },
+  "interpretation": "Current strategy is structurally far from target. Native market/funding acquisition is no longer the blocker; historical rules remain incomplete and current trend/risk structure requires redesign. Proxy results must never be relabeled native."
+}
