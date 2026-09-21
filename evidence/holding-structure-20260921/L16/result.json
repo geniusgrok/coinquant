@@ -1,0 +1,21 @@
+{
+  "candidate": "L16",
+  "qualification": "forecast_diagnostic_only",
+  "validation_used": false,
+  "observations": 459,
+  "mean_net": {
+    "slope_net": 0.012101109882222148,
+    "channel_net": 0.02593241814287423,
+    "long_net": 0.04553876370955892
+  },
+  "score_return_correlation": 0.11451932776980522,
+  "nonoverlap_count": 45,
+  "nonoverlap_mean_net": 0.023329699561417356,
+  "progression_passed": false,
+  "code_sha256": "6784ba9f24ef46c4caf0c7cdfce880d39594fee3cbf8b48da6c14db7aad9c8b4",
+  "limitations": [
+    "Fixed horizon is not actual orders/holding lifecycle",
+    "Funding rate sum is an approximate return, not settlement cashflow",
+    "No leverage, margin, account CAGR or drawdown claim"
+  ]
+}

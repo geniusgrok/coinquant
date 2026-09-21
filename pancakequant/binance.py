@@ -285,3 +285,38 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
             'stop_before_liquidation':bool(safe_stops),
             'protective_algos':protective,'possible_entry_remainders':len(entries),
             'qualification':'NOT_QUALIFIED','writes_supported':False}
+
+
+def market_quantity(maximum, mark, instrument):
+    """Round DOWN a risk-sized quantity using one observed native filter snapshot.
+
+    This validates quantity/minimum shape, not fill certainty or historical rules.
+    Caller must retain snapshot provenance and enforce execution lifecycle gates.
+    Never rounds up to manufacture an executable order outside its risk budget.
+    """
+    from decimal import Decimal
+    from math import lcm
+    maximum=number(maximum);mark=number(mark,positive=True)
+    if maximum<0 or instrument.get('symbol')!='BTCUSDT':
+        raise Blocked('invalid BTCUSDT risk-sized quantity')
+    filters=instrument.get('filters')
+    if not isinstance(filters,list):raise Unknown('missing native order filters')
+    selected={}
+    for name in ('LOT_SIZE','MARKET_LOT_SIZE','MIN_NOTIONAL'):
+        rows=[r for r in filters if r.get('filterType')==name]
+        if len(rows)!=1:raise Unknown('missing or duplicate native quantity filter')
+        selected[name]=rows[0]
+    lots=[selected['LOT_SIZE'],selected['MARKET_LOT_SIZE']]
+    steps=[number(r.get('stepSize')) for r in lots]
+    minima=[number(r.get('minQty')) for r in lots]
+    maxima=[number(r.get('maxQty'),positive=True) for r in lots]
+    notional=number(selected['MIN_NOTIONAL'].get('notional'))
+    if min(steps+minima+[notional])<0 or max(minima)>min(maxima):
+        raise Unknown('inconsistent native quantity limits')
+    positive=[s for s in steps if s>0]
+    if not positive:raise Unknown('native quantity increment unavailable')
+    unit=Decimal(10)**min(s.as_tuple().exponent for s in positive)
+    step=unit*lcm(*(int(s/unit) for s in positive))
+    q=(min(maximum,*maxima)//step)*step
+    if q<max(minima) or q*mark<notional:return Decimal(0)
+    return q

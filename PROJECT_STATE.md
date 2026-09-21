@@ -1,3 +1,33 @@
+# Latest continuation — L13 through L16 and native quantity guard
+
+Goal unchanged: cost-net CAGR>=150%, full-account continuous MDD<50%.
+Previous remotely verified base8207fdd33d27c29c380e05d9f076e42ed9317551; query actual HEAD.
+L13CAGR18.34%/MDD72.68%; L14CAGR27.74%/MDD47.05% with permanent cash lockout;
+L15CAGR27.66%/MDD49.12% after recovery repair. All rejected under registered screens.
+L16monthly-horizon signal also failed its same-sample controls.2024+economics unused.
+Exact failed sources/traces libfile_4b427a1faf4c8191b364523c297d491d; receipt
+evidence/holding-structure-20260921/l13-l16-originals.json.
+
+Current native-filter quantity stress of unchangedL9: CAGR6.1984%,MDD7.7289%,
+37entries,27minimum-size rejections. Current filters are NOT historical backfill.
+Full originals libfile_3e17a2d53ef48191b2a7d7fbccb68143; quantity-stress-originals.json.
+Shared pancakequant.binance.market_quantity enforces lot/notional/per-order maximum
+without forced upsizing.15targeted checks passed. CLI still read-only, no live writes.
+
+Active research/persistent_hold_replay.py restored byte-for-byte to8207fdd (L9).
+RejectedL15 is research/profit_reinvestment_replay.py, NOT the best candidate.
+L9remains a structural reference, not validated executable economics. Its32entry
+quantities include28incompatible with the observed2026snapshot; full report separates
+quantity stress from historical rules. No current candidate qualifies for main.
+
+Continue from REPORT.md and receipts. Next useful work: executable-order-unit-aware
+entry information, after ruling out further profit-floor/recovery/risk-grid tuning.
+Preserve risk/valuation/execution gaps honestly; do not use2024+to rescue failures.
+No new authorization is needed for independent code/research; actual testnet requires
+an explicitly authorized account, absent here. No real account operations performed.
+
+## Earlier continuation record
+
 # Current research continuation — 2026-09-21
 
 Status ACTIVE / NOT_QUALIFIED. Formal CAGR>=150%, continuous full-account MDD<50%;

@@ -72,3 +72,52 @@ This is not a claim of a fresh local full-suite run.
 
 Economic and execution acceptance remain incomplete. Main remains at the last
 verified c886b7c63c6455bd7c933269e32cd35a6fb3e09a; verify current refs on continuation.
+
+
+## Continued implementation following renewed150%/50% instruction
+
+Targets unchanged. New work tested capital reinvestment, full-account profit
+retention, bounded recovery and a30-day holding-horizon information hypothesis.
+All measurements remain development-only,2024+economics unused.
+
+| New experiment | CAGR | MDD envelope | Finding |
+|---|---:|---:|---|
+| L13 locked-profit reinvestment |18.336817%|72.678661%|Rejected; protecting campaign starting cash did not protect accumulated gains|
+| L14 account peak floor |27.742135%|47.047499%|Rejected; cash below planned45% line locked the system out from January2021; risk efficiency below L9|
+| L15 recoverable risk capacity |27.661235%|49.122198%|Rejected; trading resumed but risk efficiency did not recover;11interval liquidation classifications|
+| L9 current-quantity stress |6.198385%|7.728925%|37entries and27minimum-size rejections; not historical native qualification|
+
+L16 causal log-price slope at a30-day holding horizon produced1.2101% mean net
+forecast return versus2.5932% existing channel and4.5539% constant long on459same
+samples. Correlation0.1145 alone does not establish incremental utility.
+The45nonoverlapping samples averaged2.3330%; original progression screen failed.
+This is a forecast diagnostic, not account CAGR or a tradable monthly return.
+
+L15 fixed-inventory funding interval is731.04..739.14USDT net cost against760.38
+old adverse-debits-only cost. This attribution neither replays altered account
+feedback nor proves actual funding cash. Omitted credits are not the main observed
+economic gap on this inventory path.
+
+Current-rule compatibility audit:28/32L9 entries and196/210L15entry/add orders
+conflict with the saved2026-09-21native lot/notional snapshot. This says nothing
+about historical2020rule validity. The previous .0001research lot must not be
+promoted. Shared Binance market_quantity now rounds down to both native lot
+increments, caps each market order, enforces minimum notional and refuses to
+round UP beyond risk budget. Research stress actually calls this implementation;
+production order writes remain unimplemented and blocked.
+
+The stress quantity corrections worsen L9CAGR7.50%->6.20%. The active structural
+reference is therefore still unqualified and not a production recommendation.
+Do not solve rejected small orders by secretly forcing larger risk.
+
+15affected offline checks passed (reinvestment/floor arithmetic, known-trend screen,
+shared native sizing and existing Binance observation). Earlier unaffected
+checks remain applicable; no new local full-suite claim. OriginalL9research entry
+was restored exactly to8207fdd after rejected experiments; rejectedL15implementation
+is isolated in research/profit_reinvestment_replay.py.
+
+Full originals/receipts: l13-l16-originals.json and quantity-stress-originals.json.
+Next: use executable order units as the baseline for a distinct entry-information
+hypothesis; do not keep extending profit floors, risk grids or L16slope thresholds.
+Historical filters, exact settlements/valuation and protected Binance write/testnet
+lifecycle remain unresolved. These results do not meet150%full-window acceptance.
