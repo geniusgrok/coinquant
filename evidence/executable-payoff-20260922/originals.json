@@ -1,0 +1,13 @@
+{
+  "file_name": "PANCAKEQUANT_EXECUTABLE_PAYOFF_EVIDENCE_20260922.zip",
+  "library_file_id": "libfile_33a48f7e8098819180091cadea0b03c1",
+  "file_id": "file_00000000e26081f5b939c2472cb12d5c",
+  "bytes": 53179721,
+  "sha256": "0b46f6fccff4c68d7accc23ef126fbaefb6fdbb3143d3dfb6c74e5912c0c892f",
+  "manifest_files": 6179,
+  "source_commit": "d9a4d2a39b4b73637466e36ff96fbd201de72f8a",
+  "remote_readback": "byte-identical, total length, SHA256 and all6179manifest members verified",
+  "dependencies": "DEPENDENCIES.json preserves complete original archive identities and retrieval references",
+  "qualification": "REJECTED_DEVELOPMENT",
+  "full_window_run": false
+}
