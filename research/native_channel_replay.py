@@ -83,20 +83,25 @@ def run(root,warmup,repairs,output):
             price=reference if bankruptcy else reference*(1-slip-spread/2 if q>0 else 1+slip+spread/2)
             account.close(abs(q),price);counts[event]+=1
             ow.writerow([t,event,str(q),str(price),'',str(account.q)])
-        def funding_bound(t,mark):
+        def funding_bound(t,mark,q):
             ft,rate=fund_hours[t]
-            if account.q*rate>0:
-                p=mark[1]  # hourly high gives maximum positive fee for either direction
-                account.pay_funding(p,rate)
-                ow.writerow([ft,'funding_adverse_bound',str(account.q),str(p),str(rate),str(account.q)])
+            if q*rate>0:
+                p=mark[0] if ft==t else mark[1]
+                # Offset settlement follows the invocation. Charge old exposure
+                # even if it might already have exited: explicit adverse bound.
+                cost=q*p*rate
+                account.wallet-=cost;account.funding+=cost
+                if account.q and account.wallet<account.margin:account.margin=max(ZERO,account.wallet)
+                ow.writerow([ft,'funding_adverse_bound',str(q),str(p),str(rate),str(account.q)])
                 counts['funding_charge']+=1
-            elif account.q:counts['ambiguous_funding_credit_omitted']+=1
+            elif q:counts['ambiguous_funding_credit_omitted']+=1
         for t in range(start,end,HOUR):
             r=trade[t];mr=marks[t];bar=tuple(D(x) for x in r[1:5]);mark=tuple(D(x) for x in mr[1:5])
             o,h,lo,c=bar;mo,mh,ml,mc=mark
             observe(t,'open',mo)
-            charged=False;exited=False
-            if account.q and t in fund_hours:funding_bound(t,mark);charged=True
+            charged=False;exited=False;opening_q=account.q
+            if account.q and t in fund_hours and fund_hours[t][0]==t:
+                funding_bound(t,mark,opening_q);charged=True
             if account.q:
                 long=account.q>0;liq=account.liquidation()
                 if (long and mo<=liq) or (not long and mo>=liq):
@@ -135,7 +140,9 @@ def run(root,warmup,repairs,output):
                                 if not (liq<sl<mo if direction>0 else mo<sl<liq):raise ValueError('unsafe funded stop geometry')
                                 counts['entry']+=1;ow.writerow([t,'entry',str(account.q),str(price),'',str(account.q)])
                             else:counts['size_below_minimum']+=1
-            if account.q and not charged and t in fund_hours:funding_bound(t,mark)
+            if not charged and t in fund_hours and (opening_q or account.q):
+                if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
+                funding_bound(t,mark,opening_q or account.q)
             if account.q:
                 for price in sorted((mh,ml),key=account.equity,reverse=True):observe(t,'conservative_envelope',price)
                 long=account.q>0;liq=account.liquidation()

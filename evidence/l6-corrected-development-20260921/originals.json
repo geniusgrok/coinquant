@@ -1,0 +1,9 @@
+{
+  "bytes": 1294564,
+  "sha256": "48fe2956a1122fba7a9a1d4e1942ba6712889e2a3a1cdff99513450afb51d6e1",
+  "contents": "Full corrected equity/order traces, exact measured source, input identities and all468invocations",
+  "library_original": {
+    "id": "libfile_8ab641e0cb088191b8902caa22d60fd4",
+    "path": "/pancakequant/binance-l6-corrected-originals.zip"
+  }
+}

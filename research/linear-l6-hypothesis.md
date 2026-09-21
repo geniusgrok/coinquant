@@ -21,7 +21,9 @@ Spread/slippage and initial conversion use the frozen specification. Prior-hour
 quote volume supplies the explicit participation proxy; no future hour volume sizing.
 
 For funding whose timestamp has a sub-hour offset, preserve the actual timestamp
-in the trace. Charge before exits at the adverse hourly mark extreme and omit
+in the trace. For exact-hour events use the opening mark before decisions. Offset events follow
+the invocation, charge at the adverse hourly mark extreme (including possibly
+already closed opening exposure) and omit
 ambiguous funding credits; same-hour new entries pay positive funding conservatively.
 This is an adverse interval bound, not exact settlement cashflow. USDT=USD is an
 unresolved valuation assumption; any results remain NOT_QUALIFIED.
@@ -36,3 +38,8 @@ Record full equity/order traces and all frozen invocations. Reject this candidat
 if development CAGR is not positive or MDD is20% or above; even a passing development
 screen cannot meet the final goal without the strict full-window acceptance.
 Do not tune channel lengths/reward/risk after measurement.2024+ remains untouched.
+
+Correctness clarification after initial measurement: offset funding must not
+alter an earlier invocation/opening liquidation check. The original hypothesis
+and source remain in the first-run original archive. Channel lengths, risk,
+leverage, stop/TP geometry and development gate are unchanged.
