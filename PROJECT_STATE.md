@@ -91,8 +91,14 @@ Formal account start remains January 1. All boundary responses/receipts are in
 evidence/binance-boundary-20260921/.
 
 Local acquisition was interrupted by network policy. Physical audit verified
-**75 archives, 2020-01 through 2022-01**. The interrupted progress inventory claimed
-one additional file not retained: physical-inventory is authoritative.
+**75 archives: 26 trade months, 24 mark months, 25 funding months**.
+Cross-month audit found the July 2021 mark archive missing, while February 2022
+trade was already retained. It is not a contiguous three-series dataset. The
+missing mark month is already in the exact 203-file remainder request. The progress inventory has four rejected requests: three December 2019 archive
+404s and July 2021 mark rejected for an actual internal hour gap. All 75 records
+marked verified have retained files. Earlier description of a claimed-but-lost file
+was incorrect; exact error records now establish semantic rejection.
+See evidence/binance-partial-audit-20260921.json for precise per-series coverage.
 Original archive receipt: evidence/binance-partial-originals.json; inventory:
 evidence/binance-partial-inventory-20260921.json.
 Original ZIP: PANCAKEQUANT_BINANCE_NATIVE_PARTIAL_20260921.zip, 1,637,860 bytes,
@@ -197,3 +203,22 @@ Python version, 10-minute limit and 203-file request. This is one controlled poo
 change, not repeated blind reruns. Query the newest run for the commit carrying this
 change; 35564939199 is superseded by branch concurrency. No economic parameters
 changed. L3 now records every archive/warmup hash in input-identity.json.
+
+## July 2021 mark archive integrity issue
+
+Inspecting the exact failed acquisition record identified `ValueError: hour gap`
+for monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2021-07.zip. It is not simply a
+transport-missing month. The collector previously retained raw data only after
+semantic validation; it now preserves checksum-verified originals before semantic
+checks so gaps can be diagnosed without relaxing coverage validation. The current queued run 35566270075 (a92066e1d1f1fc86b286faf4298e3db23226af43)
+uses the prior collector. Keep it queued: its other 202 requested archives remain
+valuable. After preserving its actual results, request only unresolved originals
+with the corrected collector rather than restarting the bulk request. Locate actual missing timestamps
+and investigate official native replacements or documented exchange downtime. Do
+not fabricate/interpolate marks or claim native complete coverage from file count.
+
+L3 needs complete 2020-2023 native trade and funding inputs, not mark candles. Once
+those exact inputs are restored, its preregistered forecast-only screen can proceed
+while the independent July mark gap is investigated. Full-account economic replay
+and native qualification still require correct mark coverage. No shortened economic
+window or favorable mark substitution is authorized.

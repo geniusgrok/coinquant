@@ -25,7 +25,8 @@ CAGR > 200%，完整账户连续 MDD < 20%，交易所固定 20x，原稀疏不�
    job 106224786844）。它只采集 research/binance-acquisition-request.json 中
    203 个缺失公开档案。最后看到 queued，不能假定仍排队。完成后获取原始 artifact，
    验证校验和并持久保存。与已保存的 75 个档案合并，不重复下载。
-2. 已有 75 个原件覆盖 2020-01 至 2022-01，恢复入口
+2. 已有 75 个原件（26 trade 月、24 mark 月、25 funding 月），不是三条连续序列：
+   2021-07 mark 缺失，2022-02 trade 已有。缺口已在补采清单中。恢复入口
    evidence/binance-partial-originals.json。采集中断后的物理清单才权威。
    本地原件已存 Library，完整回执/校验和在 PROJECT_STATE.md。
 3. 完整数据就绪后运行 research/audit_binance.py；September funding tail 和
@@ -63,3 +64,15 @@ ubuntu-24.04-arm pool，10 分钟上限和 203 个文件请求不变。优先查
 Acquire missing Binance public archives 提交对应的 run；35564939199 会被
 分支 concurrency 取代。不要重复启动同一池的盲目重试。Binance snapshot
 现已实现两次观察一致性比较和有界 race 重读；L3 增加完整输入 hash 身份记录。
+
+重要新增：2021-07 mark 的原采集错误是 `ValueError: hour gap`，不是单纯
+网络丢文件。75 个 verified 记录都有对应原件；此前“多声称一个文件”的描述
+不正确，最新 PROJECT_STATE.md 已纠正。采集器改为先保存校验和一致的原件，
+再做语义检查，失败仍失败。下次补采必须使用该修正代码，以定位真实缺失小时，
+然后找官方原生补页/停机证据，禁止插值或伪造完整性。
+
+当前保留的采集 run 是 35566270075（a92066e1d1f1fc86b286faf4298e3db23226af43）。
+它使用修复前采集器，可能会拒绝 July mark 但仍保存其他 202 个档案。不要为了
+一个失败原件取消/重开整批采集；先保存实际结果，再用修正采集器只请求未解决文件。
+L3 仅依赖完整 2020-2023 trade/funding，可在该输入齐备后独立测量；完整账户回放
+仍必须解决 mark 缺口，不得把预测诊断冒充经济验收。

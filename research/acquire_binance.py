@@ -48,6 +48,11 @@ def acquire(root, path):
         digest = hashlib.sha256(raw).hexdigest()
         if expected.decode().split()[0] != digest:
             raise ValueError("exchange checksum mismatch")
+        # Preserve authentic but semantically incomplete originals for diagnosis.
+        # A saved ZIP does not imply its coverage passed validation.
+        target.write_bytes(raw)
+        checksum.write_bytes(expected)
+        record.update(sha256=digest, bytes=len(raw))
         with zipfile.ZipFile(io.BytesIO(raw)) as archive:
             if len(archive.namelist()) != 1 or archive.testzip() is not None:
                 raise ValueError("archive structure/CRC")
@@ -57,8 +62,11 @@ def acquire(root, path):
         times = [int(row[0]) for row in rows]
         if not times or times != sorted(set(times)):
             raise ValueError("empty, duplicate or unordered timestamps")
+        record.update(rows=len(rows), first_ts=times[0], last_ts=times[-1])
         if "/fundingRate/" not in path:
-            if any(b - a != 3600000 for a, b in zip(times, times[1:])):
+            gaps=[{"previous":a,"next":b} for a,b in zip(times,times[1:]) if b-a!=3600000]
+            if gaps:
+                record['hour_gaps']=gaps
                 raise ValueError("hour gap")
             from decimal import Decimal
             for row in rows:
@@ -67,8 +75,6 @@ def acquire(root, path):
                     raise ValueError("invalid OHLC")
                 if int(row[6]) != int(row[0]) + 3599999:
                     raise ValueError("invalid close timestamp")
-        target.write_bytes(raw)
-        checksum.write_bytes(expected)
         record.update(status="verified", sha256=digest, bytes=len(raw), rows=len(rows),
                       first_ts=times[0], last_ts=times[-1])
     except Exception as error:

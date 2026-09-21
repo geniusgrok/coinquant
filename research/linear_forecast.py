@@ -71,9 +71,12 @@ def run(root, warmup, output):
             raise ValueError('warmup receipt mismatch')
         inputs.append({'path':name,'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)})
         return json.loads(raw)
-    bars = {int(x[0]): x for x in warmup_rows('warmup-trade.json')}
+    warmup_trade=warmup_rows('warmup-trade.json');warmup_funding=warmup_rows('warmup-funding.json')
+    bars = {int(x[0]): x for x in warmup_trade}
     funding = {int(x['fundingTime']): float(x['fundingRate'])
-               for x in warmup_rows('warmup-funding.json')}
+               for x in warmup_funding}
+    if len(bars)!=len(warmup_trade) or len(funding)!=len(warmup_funding):
+        raise ValueError('duplicate warmup observation')
     for year in range(2020, 2024):
         for month in range(1, 13):
             date = f'{year}-{month:02}'
@@ -91,6 +94,10 @@ def run(root, warmup, output):
                 raw=(root/relative).read_bytes()
                 inputs.append({'path':relative,'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)})
     times = sorted(bars)
+    if any(not math.isfinite(float(x)) or float(x)<=0 for row in bars.values() for x in row[1:5]):
+        raise ValueError('invalid forecast price input')
+    if any(not math.isfinite(rate) for rate in funding.values()):
+        raise ValueError('invalid forecast funding input')
     if times != list(range(timestamp('2019-12-01T00:00:00Z'), end, 3600000)):
         raise ValueError('development trade gap or overrun')
     ft = sorted(funding)
