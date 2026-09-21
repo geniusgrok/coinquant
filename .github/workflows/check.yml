@@ -17,6 +17,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   check:
+    if: github.event.head_commit.message != 'Acquire native BTCUSD history'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -53,7 +54,7 @@ jobs:
 
   acquire:
     if: github.event.head_commit.message == 'Acquire native BTCUSD history'
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
