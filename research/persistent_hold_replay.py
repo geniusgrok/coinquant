@@ -108,15 +108,19 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None):
     if entry_side not in ('both','long','short'):raise ValueError('invalid diagnostic entry side')
     if native_trail_order not in (None,'low_first','high_first'):raise ValueError('unknown native trailing path')
     if native_trail_order and (reference!='impulse_hold' or entry_side!='long'):raise ValueError('T requires frozen persistent long entry')
     trail_peak=ZERO;trail_invalid=False;opposing_closes=set()
+    if payoff is not None and (reference!='long' or allocation!='volatility' or protection!='fixed' or baseline):
+        raise ValueError('payoff policy requires fixed long volatility control')
+    hypothetical=bool(payoff and payoff.get('terminal_label'))
+    entry_time=None
     risk_scale=D(risk_scale)
     short_risk_scale=risk_scale if short_risk_scale is None else D(short_risk_scale)
     if not short_risk_scale.is_finite() or short_risk_scale<0:raise ValueError('invalid short risk scale')
-    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing')):
+    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and payoff is None and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing')):
         raise ValueError('non-unit diagnostic risk requires impulse_hold')
     if allocation not in ('fixed','edge','unit','volatility'):raise ValueError('unknown allocation')
     if lifecycle not in ('persistent','one_campaign','fresh_breakout'):raise ValueError('unknown lifecycle')
@@ -127,9 +131,14 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if minute_days and minutes is None:raise ValueError('extra minute days require original minute data')
     targeting=allocation in ('unit','volatility')
     frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['end' if full_window else 'development_end'])
-    series,funding,warm,identity=inputs(root,warmup,repairs,True) if full_window else inputs(root,warmup,repairs)
+    series,funding,warm,identity=cached_inputs if cached_inputs is not None else (inputs(root,warmup,repairs,True) if full_window else inputs(root,warmup,repairs))
+    identity=list(identity)
+    if payoff:
+        start=payoff.get('start',start);end=payoff.get('end',end)
     minute_identity=[]
-    if minutes is not None:
+    if cached_minutes is not None:
+        minutes,minute_identity=cached_minutes;identity.extend(minute_identity)
+    elif minutes is not None:
         minutes,minute_identity=minute_load(minutes,series,minute_days);identity.extend(minute_identity)
     trade=series['klines'];marks=series['markPriceKlines']
     mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing')
@@ -147,8 +156,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             fractions[bt+model_interval]=model.fraction(D(1),D(frozen['slippage_fraction'])+D(frozen['spread_fraction'])/2)
     fund_hours={t//HOUR*HOUR:(t,r) for t,r in funding.items()}
     daily=deque(maxlen=21);closes=deque(maxlen=200);regime=0;anchor=None
-    for t in range(min(warm),start,DAY):
-        rows=[warm[s] for s in range(t,t+DAY,HOUR)]
+    prior=warm|trade if payoff else warm
+    prior_end=start//DAY*DAY if payoff else start
+    prior_start=max(min(warm),prior_end-21*DAY) if payoff else min(warm)
+    for t in range(prior_start,prior_end,DAY):
+        rows=[prior[s] for s in range(t,t+DAY,HOUR)]
         daily.append((max(D(r[2]) for r in rows),min(D(r[3]) for r in rows),D(rows[-1][4])))
         closes.append(D(rows[-1][4]))
         if reference=='anchored':regime,anchor=anchored_state(daily,regime,anchor)
@@ -159,11 +171,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     edge_observations=deque(maxlen=252);day_funding=ZERO;prior_day_direction=regime;previous_daily_close=daily[-1][2]
     initial=D(frozen['initial_cny'])/D(frozen['cny_per_usd'])
     account=Account(initial*(1-D(frozen['initial_conversion_cost'])))
-    peak=initial;mdd=ZERO;counts=Counter();seen=[];triggers=decision_times(frozen,end,schedule)
+    peak=initial;mdd=ZERO;counts=Counter();seen=[];triggers={t for t in decision_times(frozen,end,schedule) if t>=start}
     instrument=json.loads(quantity_rules.read_text())['instrument'] if quantity_rules else None
     if quantity_rules:identity.append(dict(path=str(quantity_rules),sha256=hashlib.sha256(quantity_rules.read_bytes()).hexdigest()))
     exposure_sum=ZERO;max_exposure=ZERO;holding_hours=0;turnover=ZERO;regime_since=start;delays=[];binding=Counter();campaign_epoch=0;last_entry_epoch=-1
-    slip=D(frozen['slippage_fraction']);spread=D(frozen['spread_fraction']);previous_quote=D(warm[start-HOUR][7])
+    slip=D(frozen['slippage_fraction']);spread=D(frozen['spread_fraction']);previous_quote=D(prior[start-HOUR][7])
     output.mkdir(parents=True,exist_ok=False)
     with gzip.open(output/'equity.csv.gz.partial','wt') as ef,gzip.open(output/'orders.csv.gz.partial','wt') as of,gzip.open(output/'decisions.csv.gz.partial','wt') as df:
         ew=csv.writer(ef);ow=csv.writer(of);dw=csv.writer(df)
@@ -205,7 +217,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             charged=False;exited=False;opening_q=account.q
             if account.q and t in fund_hours and fund_hours[t][0]==t:
                 funding_bound(t,mark,opening_q);charged=True
-            if account.q:
+            if account.q and not hypothetical:
                 long=account.q>0;liq=account.liquidation()
                 if (long and mo<=liq) or (not long and mo>=liq):
                     close(t,'liquidation',account.liquidation(ZERO),True);exited=True
@@ -241,7 +253,32 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     proposed=min(x[1] for x in window[-10:]) if account.q>0 else max(x[0] for x in window[-10:])
                     if account.q>0 and account.sl<proposed<mo:account.sl=floor_step(proposed,TICK)
                     elif account.q<0 and mo<proposed<account.sl:account.sl=floor_step(proposed,TICK)+TICK
-                if targeting:
+                if payoff is not None:
+                    prediction=payoff['predictions'].get(t)
+                    if account.q:
+                        if entry_time is not None and t>=entry_time+7*DAY:
+                            close(t,'payoff_expiry',o);exited=True;action='payoff_expiry'
+                        else:action='inventory_hold';counts[action]+=1
+                    elif exited:
+                        action='exit_no_same_call_reentry'
+                    elif prediction is None:
+                        action='cold_or_missing';counts[action]+=1
+                    elif prediction<=0 or account.wallet<=0:
+                        action='flat_prediction';counts[action]+=1
+                    else:
+                        price=o*(1+slip+spread/2)
+                        sl=floor_step(min(x[1] for x in window[-10:]),TICK)
+                        tp=floor_step(price*(price/sl)**20,TICK)+TICK if sl>0 else ZERO
+                        if min(sl,tp)<=0:
+                            action='unsafe_geometry';counts[action]+=1
+                        else:
+                            change=funded_target(account,1,edge_target,price,mo,sl,tp,previous_quote/60*D(frozen['volume_participation'])/price,instrument,intended_add=True)
+                            action=change['event'] or change['reason'];limiter=change['reason'];binding[limiter]+=1
+                            raw_qty=D(change['requested']);qty=D(change['accepted']);counts[action]+=1
+                            if change['event']:
+                                turnover+=change['amount']*price;entry_time=t
+                                ow.writerow([t,change['event'],str(change['amount']),str(price),'',str(account.q)])
+                elif targeting:
                     if account.q and (trail_invalid if native_trail_order else disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit' if mechanism else account.q*direction<=0):
                         close(t,'regime_exit',o);exited=True;action='regime_exit'
                         if reference=='same_run_reversal':exited=False
@@ -316,6 +353,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 funding_bound(t,mark,charge_q)
             for st,sbar,smark in steps(t,bar,mark,minutes):
                 if not account.q:break
+                if hypothetical:
+                    observe(st,'hypothetical_envelope_high',smark[1]);observe(st,'hypothetical_envelope_low',smark[2])
+                    if smark[2]<=account.liquidation():counts['hypothetical_liquidation_crossing']+=1
+                    continue
                 so,sh,slo,sc=sbar;smo,smh,sml,smc=smark
                 long=account.q>0;liq=account.liquidation()
                 # Each native subinterval resolves only BEFORE later intervals.
@@ -342,7 +383,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             observe(t+HOUR,'close',mc)
             exposure=abs(account.q)*mc/account.equity(mc) if account.equity(mc)>0 else ZERO
             exposure_sum+=exposure;max_exposure=max(max_exposure,exposure);holding_hours+=bool(account.q)
-            if account.equity(mc)<=0:raise ValueError('account insolvent; no reset or truncation')
+            if account.equity(mc)<=0:
+                if payoff is None:raise ValueError('account insolvent; no reset or truncation')
+                counts['nonpositive_equity_hours']+=1
             if (t+HOUR)%DAY==0:
                 rows=[trade[s] for s in range(t+HOUR-DAY,t+HOUR,HOUR)]
                 observation=D(regime)*(D(rows[-1][4])/previous_daily_close-1)-day_funding
@@ -371,7 +414,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             while stream.read(1024*1024):pass
         pending.replace(output/(name+'.csv.gz'))
     if seen!=sorted(triggers):raise ValueError('frozen invocation mismatch')
-    years=(end-start)/31556952000;cagr=float(final/initial)**(1/years)-1
+    years=(end-start)/31556952000;cagr=(float(final/initial)**(1/years)-1 if final>0 else -1) if not (payoff and payoff.get('scenario')) else None
     result=dict(candidate=('L7' if baseline else 'L9')+'-minute-refined',qualification='NOT_QUALIFIED',validation_used=full_window,window_end_exclusive=iso(end),cagr=cagr,mdd_conservative_envelope=str(mdd),
                 final_cny=str(final*D(frozen['cny_per_usd'])),counts=dict(counts),fees_usdt=str(account.fees),funding_bound_paid_usdt=str(account.funding),
                 progression_passed=None,progression_status='requires paired refined comparison',code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
@@ -396,10 +439,14 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if native_trail_order:
         result.update(candidate='T-native-trailing',native_trail_order=native_trail_order,callback_rate='10',no_fixed_take=True)
         result['limitations'].append('OHLC path scenario, not native tick or protective-write evidence')
+    if payoff is not None:
+        result.update(candidate=payoff['name'],scenario=bool(payoff.get('scenario')),terminal_label=hypothetical,entry_time=entry_time,final_equity_usdt=str(final))
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
     for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json'),Path('pancakequant/opportunities.py'),Path('pancakequant/campaign.py'),Path('pancakequant/linear_account.py'),Path('pancakequant/linear_sizing.py'),Path('research/native_trail.py')):
-        raw=source.read_bytes();(sources/source.name).write_bytes(raw);source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()
+        raw=source.read_bytes()
+        if not (payoff and payoff.get('scenario')):(sources/source.name).write_bytes(raw)
+        source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()
     result['source_hashes']=source_hashes
     result.update(schedule=schedule,lifecycle=lifecycle,allocation=allocation,quantity_rule_scope='2026_snapshot_scenario_NOT_historical' if instrument else 'legacy_hypothetical',
         mean_close_exposure=str(exposure_sum/((end-start)//HOUR)),max_close_exposure=str(max_exposure),holding_hours=holding_hours,
@@ -407,7 +454,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         schedule_sha256=hashlib.sha256(json.dumps(seen).encode()).hexdigest())
     (output/'inputs.json').write_text(json.dumps(identity,indent=2)+'\n')
     (output/'invocations.json').write_text(json.dumps(seen)+'\n')
-    (output/'result.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
+    (output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    if not (payoff and payoff.get('scenario')):print(json.dumps(result,indent=2))
+    return result
 
 
 if __name__=='__main__':
