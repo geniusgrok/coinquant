@@ -7,6 +7,13 @@ from research.linear_replay import Account, FEE
 from research.volatility_target import funded_target, target_fraction
 
 class TargetTests(unittest.TestCase):
+    def test_liquidity_cap_is_not_labeled_target(self):
+        a=Account(D(1000))
+        r=funded_target(a,1,D(1),D(100),D(100),D(80),D(200),D('.5'),None)
+        self.assertEqual(r['reason'],'liquidity_cap')
+        self.assertEqual(r['requested'],'10')
+        self.assertEqual(a.q,D('.5'))
+
     def test_long_short_add_reduce_funds_and_protection(self):
         for side in (1,-1):
             a=Account(D(1000));sl,tp=(D(80),D(180)) if side==1 else (D(120),D(40))

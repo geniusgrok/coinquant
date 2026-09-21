@@ -113,13 +113,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     risk_scale=D(risk_scale)
     short_risk_scale=risk_scale if short_risk_scale is None else D(short_risk_scale)
     if not short_risk_scale.is_finite() or short_risk_scale<0:raise ValueError('invalid short risk scale')
-    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and reference not in ('impulse_hold','impulse_validity','impulse_confirmation')):
+    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing')):
         raise ValueError('non-unit diagnostic risk requires impulse_hold')
     if allocation not in ('fixed','edge','unit','volatility'):raise ValueError('unknown allocation')
     if lifecycle not in ('persistent','one_campaign','fresh_breakout'):raise ValueError('unknown lifecycle')
-    if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold'):raise ValueError('unknown reference')
+    if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing'):raise ValueError('unknown reference')
     if protection not in ('fixed','trailing'):raise ValueError('unknown protection')
-    if reference in ('anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold') and (allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline):
+    if reference in ('anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing') and (allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline):
         raise ValueError('return-capture candidates require their frozen L21 controls')
     if minute_days and minutes is None:raise ValueError('extra minute days require original minute data')
     targeting=allocation in ('unit','volatility')
@@ -129,16 +129,17 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if minutes is not None:
         minutes,minute_identity=minute_load(minutes,series,minute_days);identity.extend(minute_identity)
     trade=series['klines'];marks=series['markPriceKlines']
-    mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold')
-    opportunities={}
+    mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing')
+    opportunities={};fractions={}
     if mechanism:
-        from pancakequant.opportunities import Opportunities
-        model_interval=HOUR if reference=='hourly_impulse_hold' else 4*HOUR
-        model=Opportunities('impulse_hold' if reference=='hourly_impulse_hold' else reference,model_interval)
+        from pancakequant.campaign import Campaign, disposition
+        model_interval=DAY if reference=='swing' else HOUR if reference=='hourly_impulse_hold' else 4*HOUR
+        model=Campaign('impulse_hold' if reference=='hourly_impulse_hold' else reference,model_interval)
         for bt in range(min(warm),end,model_interval):
             source=warm if bt<start else trade
             rs=[source[x] for x in range(bt,bt+model_interval,HOUR)]
             opportunities[bt+model_interval]=model.update(bt+model_interval,max(D(r[2]) for r in rs),min(D(r[3]) for r in rs),D(rs[-1][4]))
+            fractions[bt+model_interval]=model.fraction(D(1),D(frozen['slippage_fraction'])+D(frozen['spread_fraction'])/2)
     fund_hours={t//HOUR*HOUR:(t,r) for t,r in funding.items()}
     daily=deque(maxlen=21);closes=deque(maxlen=200);regime=0;anchor=None
     for t in range(min(warm),start,DAY):
@@ -213,6 +214,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 direction=1 if reference=='long' else max(0,regime) if reference=='long_flat' else regime
                 if entry_side=='long' and direction<0 or entry_side=='short' and direction>0:direction=0
                 edge_target=(volatility_fraction(daily_returns,slip+spread/2) if allocation=='volatility' else D(1) if allocation=='unit' else target_fraction(edge_observations) if allocation=='edge' else D(2))
+                if mechanism:edge_target=fractions[t//model_interval*model_interval]
                 edge_target*=short_risk_scale if direction<0 else risk_scale
                 if not edge_target:direction=0
                 if reference=='channel_position':edge_target*=channel_position(daily)[1]
@@ -232,13 +234,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     if account.q>0 and account.sl<proposed<mo:account.sl=floor_step(proposed,TICK)
                     elif account.q<0 and mo<proposed<account.sl:account.sl=floor_step(proposed,TICK)+TICK
                 if targeting:
-                    if account.q and (account.q*direction<=0 or (mechanism and campaign_epoch!=last_entry_epoch)):
+                    if account.q and (disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit' if mechanism else account.q*direction<=0):
                         close(t,'regime_exit',o);exited=True;action='regime_exit'
                         if reference=='same_run_reversal':exited=False
                     if (reference=='entry_inventory' or mechanism) and account.q and not exited:
                         counts['inventory_hold']+=1
                     elif not exited and direction:
-                        consumed=(not account.q and lifecycle in ('one_campaign','fresh_breakout') and last_entry_epoch==campaign_epoch)
+                        consumed=(disposition(opportunity,account.q,last_entry_epoch,entry_side)=='consumed' if mechanism else not account.q and lifecycle in ('one_campaign','fresh_breakout') and last_entry_epoch==campaign_epoch)
                         if consumed:
                             counts['campaign_consumed']+=1;action='campaign_consumed'
                         else:
@@ -377,10 +379,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if targeting and reference=='anchored':result['candidate']='L27'
     if targeting and reference=='same_run_reversal':result['candidate']='L28'
     if targeting and reference=='entry_inventory':result['candidate']='L29'
-    if mechanism:result['candidate']='A-squeeze' if reference=='squeeze' else 'F-hourly-impulse' if reference=='hourly_impulse_hold' else 'E-persistent-impulse' if reference=='persistent_impulse' else 'V2-impulse-confirmation' if reference=='impulse_confirmation' else 'V1-impulse-validity' if reference=='impulse_validity' else 'D2-impulse-hold' if reference=='impulse_hold' else 'D-impulse' if reference=='impulse' else 'C-shock' if reference=='shock' else 'B-sweep'
+    if mechanism:result['candidate']='S-directional-change' if reference=='swing' else 'A-squeeze' if reference=='squeeze' else 'F-hourly-impulse' if reference=='hourly_impulse_hold' else 'E-persistent-impulse' if reference=='persistent_impulse' else 'V2-impulse-confirmation' if reference=='impulse_confirmation' else 'V1-impulse-validity' if reference=='impulse_validity' else 'D2-impulse-hold' if reference=='impulse_hold' else 'D-impulse' if reference=='impulse' else 'C-shock' if reference=='shock' else 'B-sweep'
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
-    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json'),Path('pancakequant/opportunities.py')):
+    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json'),Path('pancakequant/opportunities.py'),Path('pancakequant/campaign.py'),Path('pancakequant/linear_account.py'),Path('pancakequant/linear_sizing.py')):
         raw=source.read_bytes();(sources/source.name).write_bytes(raw);source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()
     result['source_hashes']=source_hashes
     result.update(schedule=schedule,lifecycle=lifecycle,allocation=allocation,quantity_rule_scope='2026_snapshot_scenario_NOT_historical' if instrument else 'legacy_hypothetical',
@@ -401,7 +403,7 @@ if __name__=='__main__':
     p.add_argument('--quantity-rules',type=Path)
     p.add_argument('--lifecycle',choices=('persistent','one_campaign','fresh_breakout'),default='persistent')
     p.add_argument('--allocation',choices=('fixed','edge','unit','volatility'),default='fixed')
-    p.add_argument('--reference',choices=('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold'),default='channel')
+    p.add_argument('--reference',choices=('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing'),default='channel')
     p.add_argument('--protection',choices=('fixed','trailing'),default='fixed')
     p.add_argument('--full-window',action='store_true',help='Frozen candidate validation; continuous account, no annual resets')
     p.add_argument('--extra-minute-day',action='append',default=[])

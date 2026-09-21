@@ -34,7 +34,15 @@ def observe(config_path, *, decision=False, execute=False):
             recovery=venue.recover_pending(state)
             # Recovery may observe fills newer than the first account read.
             snapshot=venue.snapshot(config['account_uid'])
-        market=venue.completed_market() if decision else None
+        market=None;model_preview=None;model_error=None
+        if decision:
+            from .linear_preview import advance, preview
+            try:
+                model,market,reconstructed=advance(state,venue)
+                model_preview=preview(model,snapshot)
+                model_preview['reconstructed_market_only']=reconstructed
+            except (Blocked,Unknown) as exc:
+                model_error=str(exc)
         report=dict(status='blocked' if decision else 'read_only',exchange='Binance',symbol='BTCUSDT',
                     actual=snapshot,qualification='NOT_QUALIFIED',write_attempted=False,
                     reason='No qualified production alpha or write lifecycle' if decision else 'Account observation only')
@@ -47,6 +55,8 @@ def observe(config_path, *, decision=False, execute=False):
             report.update(status='unknown',reason='Protection replacement incomplete; reconcile before changing exposure')
             report['protection_replacement']=replacement
         if market is not None:report['market']=market
+        if model_preview is not None:report['model_preview']=model_preview
+        if model_error is not None:report['model_blocker']=model_error
         state.report(report)
         return report
 

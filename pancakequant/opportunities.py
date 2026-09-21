@@ -23,12 +23,13 @@ class Opportunity:
 
 class Opportunities:
     def __init__(self, mechanism, interval=FOUR_HOURS):
-        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse'):raise ValueError('unknown mechanism')
-        if interval not in (3600000,FOUR_HOURS):raise ValueError('unsupported completed interval')
+        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing'):raise ValueError('unknown mechanism')
+        if interval not in (3600000,FOUR_HOURS,86400000) or (interval==86400000 and mechanism!='swing'):raise ValueError('unsupported completed interval')
         self.interval=interval
         self.mechanism=mechanism;self.bars=deque(maxlen=21);self.tr=deque(maxlen=14)
         self.ema=None;self.last=None;self.active=None;self.box=None;self.contraction=0
         self.armed=None;self.pivots=[];self.count=0
+        self.swing_direction=0;self.swing_high=None;self.swing_low=None
 
     def update(self, end, high, low, close):
         if self.last is not None and end!=self.last+self.interval:raise ValueError('incomplete model clock')
@@ -45,7 +46,20 @@ class Opportunities:
             self.active=replace(self.active,entry_open=False)
         if self.active and self.active.confirm_at is not None and self.active.direction*(close-self.active.confirm_at)>=0:
             self.active=replace(self.active,stop=self.active.confirmed_stop,confirm_at=None)
-        if self.mechanism=='squeeze':
+        if self.mechanism=='swing':
+            self.swing_high=close if self.swing_high is None else max(self.swing_high,close)
+            self.swing_low=close if self.swing_low is None else min(self.swing_low,close)
+            if prior_atr:
+                side=0
+                if self.swing_direction<=0 and close-self.swing_low>=2*prior_atr:side=1
+                elif self.swing_direction>=0 and self.swing_high-close>=2*prior_atr:side=-1
+                if side:
+                    stop=self.swing_low if side>0 else self.swing_high
+                    take=close*(close/stop)**20
+                    self.active=Opportunity(end,side,stop,take,None)
+                    self.swing_direction=side
+                    self.swing_high=self.swing_low=close
+        elif self.mechanism=='squeeze':
             if len(self.bars)<20 or len(self.tr)<14:return self.active
             closes=[r[3] for r in list(self.bars)[-20:]];mean=sum(closes)/20
             sd=(sum((c-mean)**2 for c in closes)/19).sqrt();atr=sum(self.tr)/14
