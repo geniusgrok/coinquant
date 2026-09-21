@@ -47,3 +47,8 @@ class NativePreviewTests(TestCase):
             elif field=='book':values['/fapi/v1/depth']['E']-=20000
             else:r.snapshot.return_value['quantity_btc']='1'
             with self.assertRaises(Unknown):entry_preview(r,m,s)
+
+    def test_liquidation_uses_supplied_closing_fee(self):
+        a=Account(D(1000),q=D(1),entry=D(100),margin=D(20))
+        self.assertGreater(a.liquidation(D('.005'),D('.002')),a.liquidation(D('.005'),D('.0005')))
+        self.assertEqual(a.liquidation(D('.005'),D('.002')),D(80)/(1-D('.007')))

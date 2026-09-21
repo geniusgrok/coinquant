@@ -23,10 +23,10 @@ class Account:
     def equity(self, mark):
         return self.wallet + self.q * (mark - self.entry)
 
-    def liquidation(self, maintenance=MMR):
+    def liquidation(self, maintenance=MMR, fee=FEE):
         if not self.q:
             raise Blocked('liquidation requires a position')
-        return (self.q * self.entry - self.margin) / (self.q - abs(self.q) * (maintenance + FEE))
+        return (self.q * self.entry - self.margin) / (self.q - abs(self.q) * (maintenance + fee))
 
     def open(self, q, price, sl, tp):
         if self.q or not q or min(price, sl, tp) <= 0:
@@ -57,4 +57,3 @@ class Account:
         self.wallet -= cost; self.funding += cost
         if self.q and self.wallet < self.margin:
             self.margin = max(ZERO, self.wallet)
-

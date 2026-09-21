@@ -3,7 +3,8 @@
     "campaign_cli_market_sizing_native_preview": 21,
     "readonly_quantity_native_preview": 11,
     "native_preview_overlap": 2,
-    "native_preview_after_coefficient_guard": 2
+    "native_preview_after_coefficient_guard": 2,
+    "closing_fee_followup_native_and_sizing": 10
   },
   "shared_refactor_development_control": "orders/equity/decisions decompressed byte-for-byte equal to L3.6 before refactor",
   "default_economics_differential_cases": 40,
@@ -15,5 +16,6 @@
     "no historical rule/valuation qualification",
     "no native confirmed-fill campaign linkage verification",
     "no all-tests or current economic-qualification claim"
-  ]
+  ],
+  "closing_fee_followup": "native fee enters both margin preflight and liquidation denominator; default historical fee unchanged"
 }

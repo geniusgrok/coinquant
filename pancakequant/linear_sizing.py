@@ -68,7 +68,7 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
             return None
         trial = replace(account, wallet=account.wallet-entry_fee, q=q, entry=entry,
                         margin=required, sl=sl, tp=tp, fees=account.fees+entry_fee)
-        liq = trial.liquidation(maintenance)
+        liq = trial.liquidation(maintenance,fee)
         if not (liq < sl < mark if direction > 0 else mark < sl < liq):
             return None
         return trial
@@ -90,4 +90,3 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
     account.__dict__.update(trial.__dict__)
     result.update(accepted=str(delta), event='entry' if not old else 'rebalance_add', amount=delta)
     return result
-
