@@ -4,105 +4,216 @@
 
 Repository: `ychenracing/pancakequant`.
 
-Continue the attached 2026-09-20 redesign on `research/on-demand-btc-20260920`. Main remains unchanged until the candidate meets the applicable economic and trading-safety requirements. Formal economics remain CNY 10,000 initial capital, 2020-01-01 UTC through the frozen 2026 endpoint, CAGR > 200%, complete-account mark-to-market MDD < 20%, exchange leverage fixed at 20. This work does not authorize live trading, transfers, credential changes, or real account-setting changes.
+Continue the 2026-09-20 redesign on `research/on-demand-btc-20260920`. The system is for one user, manually triggered, one BTC perpetual, one production model and one exchange adapter. Normal execution must be bounded `run_once`: reconcile, read complete current state, decide, optionally execute under explicit authorization, verify protection/orders, persist recovery state, report, and exit.
 
-## Current production design
+Formal economics remain frozen:
+- initial capital: CNY 10,000;
+- formal interval: 2020-01-01T00:00:00Z through 2026-09-20T00:00:00Z;
+- CAGR > 200%;
+- complete-account mark-to-market MDD < 20%;
+- exchange leverage setting fixed at 20x;
+- sparse irregular manual trigger schedule is frozen before economic observations;
+- no moving the window, lowering targets, hiding costs, or relabeling proxy results as native qualification.
 
-The candidate is a single manually triggered Bybit BTCUSD inverse-perpetual system. Normal execution is bounded: reconcile account/orders/fills, read complete market state, compute one causal target, optionally execute under explicit UID/exposure authorization, re-read position/orders/protection, persist a recoverable report, then exit.
+No live trading, transfers, credential changes, or real account-setting changes are authorized by this work.
 
-The current path includes stable client order IDs, durable write intents, unknown-write reconciliation before retry, flat-account conditional FOK entries, bounded IOC order chunking, full-position MarkPrice native TP/SL, reduce-only risk removal, cancel/fill-race handling, same-candle protection repair, and shared pre-write risk validation. Single-order limits do not incorrectly cap total protected position size; total exposure remains constrained by risk tier, account authorization, margin, risk budget, effective leverage and liquidity.
+## Git / remote state
 
-`api_host` is explicit and restricted to approved Bybit hosts matching `live` or `testnet`; redirects remain blocked.
+- `main`: `c886b7c63c6455bd7c933269e32cd35a6fb3e09a` (unchanged)
+- active research branch before this state update: `ed157042464767e088503aa3a0f8b1ec677f5f53`
+- latest verified runtime-code commit: `14b89f70daa0a53dcebd437e2938dcc621c2898a`
+- durable native-history evidence branch: `evidence/native-btcusd-20260920`
+- evidence branch HEAD: `230f9d60361bfec144d066c5684b5c3b96f996bb`
+- durable native archive: `evidence/native-btcusd-history-6f5ba384.zip`, 4,679,317 bytes
 
-One requested production capability is still not end-to-end: the adapter exposes Bybit `/v5/position/add-margin`, but the execution lifecycle does not yet apply model-driven add/reduce margin decisions. The interface semantics have been rechecked against current Bybit documentation (positive amount adds isolated margin, negative amount reduces it, up to 4 decimals). This remains a real implementation item, not an assumed capability.
+Do not restore the historical `.transfer` packet over current source.
 
-## Runtime verification
+## Current production/runtime implementation
 
-Runtime code SHA `345c9fccf21a6bc8562e55a6b439e755fcc18eac` fixed two real issues found by hosted CI:
+The current runtime is a bounded single-Bybit BTCUSD inverse-perpetual system with:
+- explicit read-only default and UID/exposure authorization for writes;
+- approved-host allowlist and redirect refusal;
+- stable client order IDs and durable intents;
+- unknown-write reconciliation before retry;
+- conditional FOK hosted entries while flat;
+- bounded IOC chunking for immediate execution;
+- full-position MarkPrice native TP/SL;
+- reduce-only risk removal;
+- cancel/fill race handling;
+- same-candle protection repair;
+- shared pre-write risk validation;
+- separation of single-order venue caps from total safe protected position capacity.
 
-- low-volatility execution friction could previously place a conservative entry beyond its own TP;
-- separate Decimal regrouping in sizing vs pre-write risk validation could create a false 1E-32 BTC risk-understatement failure.
+The runtime/model fixes through `14b89f70` also correct:
+- executable-entry vs TP/SL geometry under spread/slippage;
+- duplicated Decimal risk formula drift;
+- new-entry stop positioning before projected liquidation;
+- native exit replay lifecycle/ordering correctness discovered during structural research.
 
-The fix anchors stop geometry to the causal mark/trigger, measures reward from the conservative executable entry, and reuses one unit-risk function.
+GitHub Actions run `35557150822` checked out exact runtime SHA `14b89f70...`, compiled `pancakequant`, `research`, and `tests` under Python 3.13, and ran **91/91 tests successfully**.
 
-GitHub Actions run `35542946661`, attempt 2, checked out exact SHA `345c9fc`, compiled `pancakequant`, `research`, and `tests` under Python 3.13, and ran **87/87 tests successfully**. Immutable source artifact `10615063830` has digest `sha256:85a6006d9217842f40ed797a34ac1353827ba8eea895e7fc978e99be8c73f4a9`.
+One requested production capability is still incomplete end-to-end: the adapter exposes Bybit isolated-margin adjustment, but the normal execution lifecycle does not yet apply model-driven add/reduce margin decisions. The economic M1 margin-buffer candidate was rejected, so implement margin adjustment only as a coherent execution capability, not as an assumed alpha improvement.
 
-Later commits are workflow, acquisition-request, state, and evidence changes unless explicitly noted; do not silently claim a later runtime SHA without a runtime diff.
+Private Bybit testnet order/TP-SL/amendment/margin semantics remain unverified without explicitly authorized usable credentials/UID.
 
-## Native historical-data access is now proven
+## Native historical data: completed and preserved
 
-Public probe commit `49e0184e535a55b5fa1a4af0ebda4a652b342d35` completed successfully in GitHub Actions run `35543278216`. The same run also executed 87/87 offline tests successfully.
+Full native Bybit BTCUSD inverse trade/mark/funding history was successfully acquired from official `api.manepa.jp`:
 
-The probe established:
+- source workflow run: `35548881482`
+- source artifact ID: `10617971281`
+- artifact SHA-256: `717841c3267f5de40d0c0b103aeff3c067054eb7752ccf5b8cc1bcad11228159`
+- inventory SHA-256: `43caf20501d1c076af42d74ee279be833be5fba6dfbb3ee1e43e668869a3ab47`
+- acquisition window: 2019-12-11 warmup through 2026-09-20 exclusive
+- base interval: native 60-minute trade + mark bars
+- 83 contiguous shards
+- 249 raw V5 pages
+- 59,400 bar rows
+- 7,425 funding rows
+- independent integrity errors: 0
 
-- official static BTCUSD trade archive: first 2019-10-01, latest **2026-09-19**, 2,546 dated files;
-- static spot-index archive: through 2020-03-17 only;
-- static premium-index archive: through 2020-03-10 only;
-- global `api.bybit.com` and `api.bytick.com` returned HTTP 403 from the US-hosted runner;
-- official Bybit Japan host `api.manepa.jp` returned successful BTCUSD inverse V5 data for both formal boundaries.
+The original Actions artifact is additionally preserved byte-for-byte in the dedicated evidence branch above, so recovery does not depend on Actions retention.
 
-Persisted raw receipts under `evidence/public-probe-49e0184/` prove:
+## Historical rules status
 
-- current instrument launchTime `1542211200000` (2018-11-15), leverage max 100, funding interval 480 minutes, step/min 1, current tick 0.10, current maxOrderQty 25,000,000 and maxMktOrderQty 5,000,000;
-- native mark-price rows exist at 2020-01-01 and 2026-09-19;
-- native funding rows exist at both boundaries, including the 2020-01-01 00:00 UTC funding event.
+`evidence/historical-rules-research.md` preserves dated evidence. Important facts:
+- direct Bybit API captures from 2020-06 through 2022-01 repeatedly show BTCUSD tick 0.5, qty step/min 1, max order 1,000,000, max leverage 100, taker 0.075%, maker -0.025%;
+- a 2024-04-26 V5 raw response shows tick 0.50, maxMktOrderQty 1,000,000, maxOrderQty 1,943,695, step/min 1, max leverage 100, 8-hour funding;
+- current 2026 official instrument response has tick 0.10, maxOrderQty 25,000,000 and maxMktOrderQty 5,000,000;
+- current/dated material supports a 150 BTC / 0.5% base risk tier, but the full dated 2020-2026 risk-tier/MMR timeline and exact later specification-change timestamps are not yet proven.
 
-Therefore the formal 2020-01-01 through 2026-09-20 market/funding window is not blocked by Bybit history availability. The remaining task is full acquisition and hashing.
+Therefore formal native-rule qualification is still blocked. The conservative proxy rules are intentionally pessimistic and live at:
+- `evidence/proxy-rules-conservative.csv`
+- `evidence/proxy-rules-conservative.md`
 
-## Full native acquisition
+Proxy economics must stay `NOT_QUALIFIED`.
 
-`research/acquire_v5.py` is resumable, hashes every raw page and normalized shard, revalidates checkpoints, supports 60-minute native trade/mark bars, and stores funding with a causal boundary mark convention.
+## Frozen proxy economic baseline on native market/funding
 
-Attempt 1 failed before network access because the workflow invoked the module as a file and could not import `pancakequant`. This was fixed to `python -m research.acquire_v5`.
+Evidence:
+- `evidence/proxy-diagnostic-20260921.json`
+- `evidence/proxy-diagnostic-20260921.md`
 
-A temporary one-time acquisition job now exists inside the single workflow. It is restricted to the exact commit message `Acquire native BTCUSD history`, uses no private credentials, has a 10-minute timeout, and does not run economic tuning. Current request:
+Runtime basis: `36fad1849bca116efffc23c8d3abb770508f2de8`.
 
-- run: `35548881482`
-- requested data: `api.manepa.jp`, BTCUSD inverse
-- warmup start: 2019-12-11
-- formal end exclusive: 2026-09-20
-- base interval: 60 minutes
-- shard size: 30 days
-- status at this state update: queued for dedicated Ubuntu acquisition runner
+Baseline:
+- CAGR: **43.9207%**
+- MDD: **77.0512%**
+- final CNY: **¥115,452.49**
+- liquidations: 8
+- fills: 537
+- decisions/invocations: 795 / 795
+- longest baseline trigger gap: 151h
+- drawdown: 2021-11-10 through 2022-11-21
 
-Do not call data complete until this run produces and validates its artifact.
+Annual returns:
+- 2020: +310.94%
+- 2021: +58.55%
+- 2022: -62.97%
+- 2023: +150.41%
+- 2024: +126.80%
+- 2025: -8.41%
+- 2026 partial: -8.01%
 
-## Historical trading-rule evidence
+21-day absence stress:
+- CAGR: 44.2932%
+- MDD: 77.0472%
+- liquidations: 8
+- longest gap: 697h
 
-`evidence/historical-rules-research.md` preserves dated evidence rather than copying current rules backward.
+The current inverse strategy is structurally far from CAGR > 200% / MDD < 20%.
 
-Direct Bybit API captures preserved in public GitHub issues show BTCUSD at multiple points from 2020-06 through 2022-01 with tick 0.5, quantity step/minimum 1, max order quantity 1,000,000, max leverage 100, taker 0.075%, maker -0.025%.
+## Structural research already completed — do not repeat
 
-A 2024-04-26 V5 raw response preserved in Bybit.Net issue #207 shows BTCUSD still at tick 0.50, maxMktOrderQty 1,000,000, maxOrderQty 1,943,695, step/min 1, max leverage 100 and 8-hour funding. The 2026 current official response has tick 0.10 and larger order caps, so those changes occurred after 2024-04-26; exact change timestamps remain unverified.
+Evidence:
+- `evidence/structural-research-20260921.json`
+- `evidence/structural-candidates-20260921.json`
+- `evidence/structural-candidates-20260921.md`
 
-Current/dated Bybit material supports a 150 BTC base risk tier with 0.5% MMR, but a full 2020-2026 dated risk-tier timeline is not yet proven.
+Rejected / closed directions:
 
-For economic diagnostics only, `evidence/proxy-rules-conservative.csv` fixes conservative assumptions: tick 0.5, step/min 1, 1,000,000 order caps, 150 BTC / 0.5% base risk tier, 8-hour funding interval, and 0.075% taker fee for the entire window. It must only be used with `--rules-provenance proxy`; favorable results cannot qualify as native acceptance.
+1. **Immediate bearish collateral hedge (H3)**
+   - CAGR ~41.38%, MDD ~78.0%, liquidations 12
+   - worsened return, drawdown and churn
+   - do not revive.
 
-## Replay/data pipeline
+2. **Buffered isolated margin / M1**
+   - full coherent candidate result: CAGR 43.51%, MDD 77.25%, liquidations 9, final CNY ~¥113,239
+   - rejected economically.
+   - A narrower immediate-fill safety experiment reduced liquidations in one diagnostic variant, but did not materially improve MDD/CAGR. Treat additional margin as execution safety capability only, not economic alpha.
 
-The branch includes:
+3. **Collateral-neutralized bearish alpha (H4)**
+   - CAGR 35.02%, MDD 76.59%, liquidations 13, final CNY ~¥75,196
+   - reject.
 
-- `research/acquire.py`
-- `research/build_trade_bars.py`
-- `research/acquire_v5.py`
-- `research/build_manifest.py`
-- `research/probe.py`
+4. **Exposure/leverage scaling**
+   - increasing risk_fraction / effective leverage did not approach target and later worsened return
+   - stop leverage scaling; do not chase the goal via more leverage.
 
-Replay supports native 60-minute trade/mark extrema while rebuilding the same UTC-aligned four-hour signal clock, rejects sub-hour rule changes that cannot be represented causally, prevents future bar extremes from setting fills, models funding and inverse liquidation/takeover, and separates venue single-order limits from total protected position capacity.
+5. **Stop-first liquidation-ordering upper bound**
+   - diagnostic CAGR 44.16%, MDD still ~77.05%, liquidations artificially reduced to 0
+   - proves hourly stop-vs-liquidation ordering is not the main economic blocker.
+   - it is not a production rule.
 
-No fresh formal CAGR/MDD result exists for the current candidate.
+Additional measured fact: in 2022 the derivative position was ~79.5% flat, ~12.2% short, ~8.3% long. Simple inverse short hedging did not solve the account economics.
+
+## Collateral-vs-alpha attribution
+
+Evidence: `evidence/collateral-alpha-attribution-20260921.json`.
+
+Over the frozen interval:
+- initial BTC equity: ~0.199976 BTC
+- final BTC equity: ~0.203809 BTC
+- BTC-unit equity multiple: only **1.01917x**
+- BTC-unit CAGR: ~**0.283%**
+- BTC-unit MDD: ~8.40%
+- BTC price multiple: **11.328x**
+- USD account equity multiple: **11.545x**
+
+Interpretation: almost all USD CAGR in the current inverse system comes from BTC collateral appreciation; the trading alpha adds only ~1.9% BTC units over the entire window. Merely swapping settlement asset will remove this collateral beta but will not create enough alpha to reach CAGR > 200%. A new alpha/exposure structure is required.
+
+## Active evidence job at handoff
+
+Workflow run `35559122193`, commit `411419f3cd7796bf3fe73237d8bd796e74e6af13`, was queued at handoff to acquire **native 1-minute BTCUSD evidence** for eight hourly stop-vs-liquidation ambiguity dates:
+
+- 2020-02-15
+- 2020-11-02
+- 2021-11-03
+- 2023-12-11
+- 2024-01-11
+- 2024-03-15
+- 2024-08-27
+- 2024-12-05
+
+Request file: `research/ambiguity-request.json`.
+
+First action in the next session: read this run's actual current status. If successful, preserve the artifact remotely and use it only to resolve replay ordering evidence. Do not treat it as an economic strategy path because the stop-first upper-bound already showed that eliminating these liquidations barely changes MDD/CAGR.
+
+## Next structural direction
+
+Do **not** continue neighboring inverse-contract parameter tuning.
+
+The strongest next hypothesis recorded by the completed research is to evaluate a **stable-settlement BTC linear perpetual** under the same frozen economic protocol, because BTC-settled collateral beta dominates current USD returns/drawdown. This is a research hypothesis, not an already-approved production exchange switch.
+
+Before changing production:
+1. verify a candidate single exchange/contract has real continuous coverage from the formal 2020 start through the same 2026 endpoint (trade, mark, funding, dated costs/rules);
+2. verify the exchange can satisfy the required run-once native TP/SL and offline-order safety semantics;
+3. keep 20x exchange leverage setting, sparse frozen trigger schedule, CNY 10,000 start and all cost/account-equity rules unchanged;
+4. design a new alpha model that can generate genuine stable-settlement returns; do not expect the contract swap itself to deliver the target;
+5. use 2020-2023 as development and preserve 2024-end as chronological validation until it is actually inspected for tuning.
+
+`evidence/structural-candidates-20260921.md` mentions OKX BTCUSDT as a candidate direction. Re-verify its official 2020-boundary data and current protection semantics before relying on it.
 
 ## Remaining blockers before main
 
-1. Finish the full native trade + mark + funding acquisition and verify the artifact/hash inventory.
-2. Assemble a proxy manifest immediately for economic diagnosis; run the fixed sparse baseline and absence stress without relabeling it native.
-3. Continue closing the dated historical rules timeline. Only a defensible native rules timeline can turn a favorable replay into formal native qualification.
-4. Report CAGR, continuous whole-account MDD, annual/segment behavior, costs, funding and activity honestly; if targets fail, continue structural model improvement without moving the frozen window.
-5. Implement and verify model-driven isolated-margin adjustment without weakening protection or unknown-write semantics.
-6. Validate private Bybit order/TP-SL/amendment/margin semantics on an explicitly authorized testnet account when usable credentials/UID are actually available.
-7. Merge to main only after economic targets and necessary safety checks actually pass.
+- No current candidate meets the economic targets.
+- Full native historical trading-rule timeline is incomplete.
+- Stable-settlement structural candidate has not yet been built/measured.
+- Model-driven isolated-margin execution is not end-to-end.
+- Private testnet order/protection/margin lifecycle is not yet verified.
+- One-time/evidence acquisition hooks currently exist in the lightweight workflow; remove temporary acquisition plumbing after required evidence is durably preserved.
+- Main must remain unchanged until applicable economic and safety requirements actually pass.
 
-## Direct recovery
+## Recovery instruction
 
-Read this file and `AGENTS.md`, then re-read remote branch HEAD and acquisition run `35548881482`. Continue from the latest commit; do not restore the historical `.transfer` packet over current source. Preserve meaningful work promptly. Until native economics are actually measured, keep qualification `NOT_MEASURED/NOT_QUALIFIED` and leave main unchanged.
+Read `AGENTS.md`, this file, and `HANDOFF_PROMPT.md`; then re-read the live remote branch before writing. Prefer current remote evidence over stale local scratch. Rejected H3/H4/M1/leverage candidates are evidence, not code to restore. Preserve every meaningful checkpoint remotely.
