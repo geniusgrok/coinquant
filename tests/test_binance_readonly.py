@@ -4,7 +4,7 @@ import io
 import unittest
 from urllib.error import URLError
 
-from research.binance_readonly import BinanceReadOnly, NoRedirect, validate_account_mode
+from research.binance_readonly import BinanceReadOnly, NoRedirect, validate_account_mode, account_report
 from pancakequant.types import Blocked, Unknown
 
 
@@ -52,3 +52,26 @@ class BinanceReadTests(unittest.TestCase):
         with self.assertRaises(Blocked):validate_account_mode({},symbol)
         with self.assertRaises(Blocked):validate_account_mode(account,dict(symbol,leverage=21))
         with self.assertRaises(Blocked):validate_account_mode(account,dict(symbol,marginType='CROSSED'))
+
+    def test_usdt_equity_full_protection_and_remainder_are_distinct(self):
+        config={'dualSidePosition':False,'multiAssetsMargin':False}
+        symbol={'symbol':'BTCUSDT','marginType':'ISOLATED','leverage':20,'isAutoAddMargin':False}
+        p={'symbol':'BTCUSDT','positionSide':'BOTH','marginAsset':'USDT','positionAmt':'.02',
+           'entryPrice':'100000','unRealizedProfit':'200','liquidationPrice':'95000','isolatedWallet':'100'}
+        a={'assets':[{'asset':'USDT','walletBalance':'1000'}],'positions':[p],
+           'totalWalletBalance':'1000','totalUnrealizedProfit':'200','totalMarginBalance':'1200'}
+        common={'symbol':'BTCUSDT','side':'SELL','positionSide':'BOTH','closePosition':True,
+                'workingType':'MARK_PRICE','priceProtect':False,'algoStatus':'NEW'}
+        algos=[dict(common,algoId=1,orderType='STOP_MARKET',triggerPrice='105000'),
+               dict(common,algoId=2,orderType='TAKE_PROFIT_MARKET',triggerPrice='120000')]
+        r=account_report(123,config,symbol,a,[p],[{'symbol':'BTCUSDT','reduceOnly':False}],algos,'110000')
+        self.assertEqual(r['equity_usdt'],'1200');self.assertEqual(r['quantity_btc'],'0.02')
+        self.assertTrue(r['native_full_position_protected']);self.assertEqual(r['possible_entry_remainders'],1)
+        self.assertTrue(r['stop_before_liquidation'])
+        algos[0]['triggerPrice']='94000'
+        self.assertFalse(account_report(123,config,symbol,a,[p],[],algos,'110000')['stop_before_liquidation'])
+        algos[0]['workingType']='CONTRACT_PRICE'
+        self.assertFalse(account_report(123,config,symbol,a,[p],[],algos,'110000')['native_full_position_protected'])
+        with self.assertRaises(Unknown):account_report(123,config,symbol,a,[],[],algos,'110000')
+        a['totalWalletBalance']='999'
+        with self.assertRaises(Unknown):account_report(123,config,symbol,a,[p],[],algos,'110000')

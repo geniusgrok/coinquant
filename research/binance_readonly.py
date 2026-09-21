@@ -83,3 +83,78 @@ def validate_account_mode(account_config, symbol_config):
             or number(symbol_config.get('leverage')) != 20
             or symbol_config.get('isAutoAddMargin') is not False):
         raise Blocked('Binance isolated 20x BTCUSDT without automatic margin required')
+
+
+def account_report(uid, config, symbol_config, account, positions, orders, algos, mark):
+    """Decode one observed USDT account without translating inverse BTC units.
+
+    Caller must establish observation consistency. This pure decoder is not an
+    authorization gate or proof of atomic entry/partial-fill protection.
+    """
+    validate_account_mode(config,symbol_config)
+    if not str(uid).isdigit() or int(uid)<=0:raise Unknown('missing account UID')
+    mark=number(mark,positive=True)
+    assets=account.get('assets');account_positions=account.get('positions')
+    if not isinstance(assets,list) or not isinstance(account_positions,list):
+        raise Unknown('missing account assets or positions')
+    usdt=[a for a in assets if a.get('asset')=='USDT']
+    if len(usdt)!=1:raise Unknown('missing or duplicate USDT wallet')
+    for asset in assets:
+        if asset.get('asset')!='USDT' and number(asset.get('walletBalance'))!=0:
+            raise Blocked('non-USDT collateral is outside the single settlement account model')
+    for p in account_positions:
+        if p.get('symbol')!='BTCUSDT' and number(p.get('positionAmt'))!=0:
+            raise Blocked('foreign position affects full account equity')
+    if not isinstance(positions,list) or len(positions)>1:
+        raise Unknown('ambiguous native BTCUSDT position response')
+    pos=positions[0] if positions else None
+    q=number(pos.get('positionAmt')) if pos else number(0)
+    if pos and (pos.get('symbol')!='BTCUSDT' or pos.get('positionSide')!='BOTH'
+                or pos.get('marginAsset')!='USDT'):
+        raise Blocked('unexpected native position scope or settlement')
+    ap=[p for p in account_positions if p.get('symbol')=='BTCUSDT']
+    if len(ap)>1 or (ap and ap[0].get('positionSide')!='BOTH'):
+        raise Unknown('ambiguous account position')
+    aq=number(ap[0].get('positionAmt')) if ap else number(0)
+    if q!=aq:raise Unknown('account and position observations disagree')
+    wallet=number(usdt[0].get('walletBalance'))
+    if wallet!=number(account.get('totalWalletBalance')):
+        raise Unknown('USDT wallet and account totals disagree')
+    unrealized=number(account.get('totalUnrealizedProfit'))
+    if not q and unrealized!=0:
+        raise Unknown('flat single-symbol account has unexplained unrealized PnL')
+    if abs(wallet+unrealized-number(account.get('totalMarginBalance'))) > number('.00000001'):
+        raise Unknown('account equity arithmetic is inconsistent')
+    entry=number(pos.get('entryPrice'),positive=True) if q else number(0)
+    liquidation=number(pos.get('liquidationPrice'),positive=True) if q else number(0)
+    isolated=number(pos.get('isolatedWallet')) if q else number(0)
+    if isolated<0:raise Unknown('invalid isolated USDT wallet')
+    if q and abs(number(pos.get('unRealizedProfit'))-unrealized)>number('.00000001'):
+        raise Unknown('native position and account unrealized PnL disagree')
+    if not isinstance(orders,list) or not isinstance(algos,list):
+        raise Unknown('missing ordinary or algo order list')
+    if any(o.get('symbol')!='BTCUSDT' for o in orders+algos):
+        raise Blocked('foreign orders affect the single-symbol account')
+    close_side='SELL' if q>0 else 'BUY'
+    protective=[]
+    for a in algos:
+        if (a.get('algoStatus')=='NEW' and a.get('side')==close_side
+                and a.get('positionSide')=='BOTH' and a.get('closePosition') is True
+                and a.get('workingType')=='MARK_PRICE' and a.get('priceProtect') is False
+                and a.get('orderType') in ('STOP_MARKET','TAKE_PROFIT_MARKET')):
+            trigger=number(a.get('triggerPrice'),positive=True)
+            stop=a['orderType']=='STOP_MARKET'
+            if (trigger<mark if (q>0)==stop else trigger>mark):
+                protective.append({'algo_id':a.get('algoId'),'type':a['orderType'],'trigger':str(trigger)})
+    protected=bool(q) and {a['type'] for a in protective}=={'STOP_MARKET','TAKE_PROFIT_MARKET'}
+    safe_stops=[a for a in protective if a['type']=='STOP_MARKET'
+                and (number(a['trigger'])>liquidation if q>0 else number(a['trigger'])<liquidation)]
+    entries=[o for o in orders if o.get('reduceOnly') is not True]
+    entries += [a for a in algos if a.get('closePosition') is not True and a.get('reduceOnly') is not True]
+    return {'status':'read_only_migration_observation','account_uid':str(uid),'symbol':'BTCUSDT',
+            'wallet_usdt':str(wallet),'equity_usdt':str(wallet+unrealized),
+            'quantity_btc':str(q),'entry':str(entry),'native_full_position_protected':protected,
+            'isolated_wallet_usdt':str(isolated),'native_liquidation_price':str(liquidation),
+            'stop_before_liquidation':bool(safe_stops),
+            'protective_algos':protective,'possible_entry_remainders':len(entries),
+            'qualification':'NOT_QUALIFIED','writes_supported':False}
