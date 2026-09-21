@@ -2,6 +2,7 @@ import hashlib
 import hmac
 import io
 import unittest
+from decimal import Decimal
 from urllib.error import URLError
 
 from research.binance_readonly import BinanceReadOnly, NoRedirect, validate_account_mode, account_report
@@ -57,7 +58,8 @@ class BinanceReadTests(unittest.TestCase):
         config={'dualSidePosition':False,'multiAssetsMargin':False}
         symbol={'symbol':'BTCUSDT','marginType':'ISOLATED','leverage':20,'isAutoAddMargin':False}
         p={'symbol':'BTCUSDT','positionSide':'BOTH','marginAsset':'USDT','positionAmt':'.02',
-           'entryPrice':'100000','unRealizedProfit':'200','liquidationPrice':'95000','isolatedWallet':'100'}
+           'entryPrice':'100000','markPrice':'110000','unRealizedProfit':'200',
+           'liquidationPrice':'95000','isolatedWallet':'100'}
         a={'assets':[{'asset':'USDT','walletBalance':'1000'}],'positions':[p],
            'totalWalletBalance':'1000','totalUnrealizedProfit':'200','totalMarginBalance':'1200'}
         common={'symbol':'BTCUSDT','side':'SELL','positionSide':'BOTH','closePosition':True,
@@ -65,7 +67,7 @@ class BinanceReadTests(unittest.TestCase):
         algos=[dict(common,algoId=1,orderType='STOP_MARKET',triggerPrice='105000'),
                dict(common,algoId=2,orderType='TAKE_PROFIT_MARKET',triggerPrice='120000')]
         r=account_report(123,config,symbol,a,[p],[{'symbol':'BTCUSDT','reduceOnly':False}],algos,'110000')
-        self.assertEqual(r['equity_usdt'],'1200');self.assertEqual(r['quantity_btc'],'0.02')
+        self.assertEqual(Decimal(r['equity_usdt']),1200);self.assertEqual(r['quantity_btc'],'0.02')
         self.assertTrue(r['native_full_position_protected']);self.assertEqual(r['possible_entry_remainders'],1)
         self.assertTrue(r['stop_before_liquidation'])
         algos[0]['triggerPrice']='94000'
@@ -75,3 +77,25 @@ class BinanceReadTests(unittest.TestCase):
         with self.assertRaises(Unknown):account_report(123,config,symbol,a,[],[],algos,'110000')
         a['totalWalletBalance']='999'
         with self.assertRaises(Unknown):account_report(123,config,symbol,a,[p],[],algos,'110000')
+
+    def test_bounded_snapshot_does_not_turn_racing_wallet_into_stable_state(self):
+        class Fixture(BinanceReadOnly):
+            def __init__(self,racing=False):
+                super().__init__(clock=lambda:1000);self.racing=racing;self.observations=0
+            def account_identity(self):return '123'
+            def get(self,path,parameters=None):
+                if path.endswith('accountConfig'):return {'dualSidePosition':False,'multiAssetsMargin':False}
+                if path.endswith('symbolConfig'):
+                    return [{'symbol':'BTCUSDT','marginType':'ISOLATED','leverage':20,'isAutoAddMargin':False}]
+                if path=='/fapi/v3/account':
+                    self.observations+=1;wallet=str(1000+self.observations if self.racing else 1000)
+                    return {'assets':[{'asset':'USDT','walletBalance':wallet,'updateTime':1}],
+                            'positions':[],'totalWalletBalance':wallet,'totalUnrealizedProfit':'0',
+                            'totalMarginBalance':wallet}
+                if path.endswith('premiumIndex'):return {'symbol':'BTCUSDT','markPrice':'100000','time':1000000}
+                return []
+        good=Fixture();self.assertEqual(good.snapshot('123')['equity_usdt'],'1000')
+        with self.assertRaises(Blocked):Fixture().snapshot('456')
+        racing=Fixture(True)
+        with self.assertRaises(Unknown):racing.snapshot('123')
+        self.assertEqual(racing.observations,4)

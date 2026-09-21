@@ -73,6 +73,58 @@ class BinanceReadOnly:
             raise Unknown('Binance account UID is unavailable')
         return str(uid)  # do not retain or log the raw spot account response
 
+    def snapshot(self, expected_uid):
+        uid=self.account_identity()
+        if uid!=str(expected_uid):raise Blocked('Binance account UID does not match the configured account')
+        for _ in range(2):
+            def observe():
+                return {'config':self.get('/fapi/v1/accountConfig'),
+                        'symbol':self.get('/fapi/v1/symbolConfig',{'symbol':'BTCUSDT'}),
+                        'account':self.get('/fapi/v3/account'),
+                        'positions':self.get('/fapi/v3/positionRisk',{'symbol':'BTCUSDT'}),
+                        'orders':self.get('/fapi/v1/openOrders'),
+                        'algos':self.get('/fapi/v1/openAlgoOrders')}
+            first=observe()
+            fills=self.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','limit':1000})
+            second=observe()
+            if not isinstance(fills,list) or len(fills)>=1000:
+                raise Unknown('recent trade response is missing or may be truncated')
+            if any(f.get('symbol')!='BTCUSDT' for f in fills):
+                raise Unknown('unexpected recent trade scope')
+            if observation_key(first)!=observation_key(second):continue
+            symbols=second['symbol']
+            if not isinstance(symbols,list) or len(symbols)!=1:
+                raise Unknown('missing or ambiguous BTCUSDT configuration')
+            ticker=self.get('/fapi/v1/premiumIndex',{'symbol':'BTCUSDT'})
+            if (not isinstance(ticker,dict) or ticker.get('symbol')!='BTCUSDT'
+                    or type(ticker.get('time')) is not int
+                    or abs(int(self.clock()*1000)-ticker['time'])>15000):
+                raise Unknown('stale or invalid Binance mark observation')
+            report=account_report(uid,second['config'],symbols[0],second['account'],
+                                  second['positions'],second['orders'],second['algos'],ticker['markPrice'])
+            report.update(mark_time=ticker['time'],mark_price=ticker['markPrice'],
+                          recent_fill_count=len(fills),recovery_history_complete=False)
+            return report
+        raise Unknown('Binance account changed during bounded reconciliation')
+
+
+def observation_key(value):
+    """Ignore continuously repriced PnL; compare state that fills/margin writes change."""
+    try:
+        account=value['account']
+        assets=sorted((a['asset'],a['walletBalance'],a['updateTime']) for a in account['assets'])
+        account_positions=sorted((p['symbol'],p['positionSide'],p['positionAmt'],
+                                  p['isolatedWallet'],p['updateTime']) for p in account['positions'])
+        positions=sorted((p['symbol'],p['positionSide'],p['positionAmt'],p['entryPrice'],
+                          p['isolatedWallet'],p['updateTime']) for p in value['positions'])
+        stable={'assets':assets,'account_positions':account_positions,'positions':positions,
+                'config':value['config'],'symbol':value['symbol'],
+                'orders':sorted(value['orders'],key=lambda o:o['orderId']),
+                'algos':sorted(value['algos'],key=lambda o:o['algoId'])}
+        return json.dumps(stable,sort_keys=True,separators=(',',':'),allow_nan=False)
+    except (KeyError,TypeError,ValueError):
+        raise Unknown('missing native reconciliation identity fields') from None
+
 
 def validate_account_mode(account_config, symbol_config):
     if (account_config.get('dualSidePosition') is not False
@@ -129,8 +181,10 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
     liquidation=number(pos.get('liquidationPrice'),positive=True) if q else number(0)
     isolated=number(pos.get('isolatedWallet')) if q else number(0)
     if isolated<0:raise Unknown('invalid isolated USDT wallet')
-    if q and abs(number(pos.get('unRealizedProfit'))-unrealized)>number('.00000001'):
-        raise Unknown('native position and account unrealized PnL disagree')
+    if q:
+        position_mark=number(pos.get('markPrice'),positive=True)
+        if abs(number(pos.get('unRealizedProfit'))-q*(position_mark-entry))>number('.00000001'):
+            raise Unknown('native position PnL is inconsistent with its own mark')
     if not isinstance(orders,list) or not isinstance(algos,list):
         raise Unknown('missing ordinary or algo order list')
     if any(o.get('symbol')!='BTCUSDT' for o in orders+algos):
@@ -152,7 +206,8 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
     entries=[o for o in orders if o.get('reduceOnly') is not True]
     entries += [a for a in algos if a.get('closePosition') is not True and a.get('reduceOnly') is not True]
     return {'status':'read_only_migration_observation','account_uid':str(uid),'symbol':'BTCUSDT',
-            'wallet_usdt':str(wallet),'equity_usdt':str(wallet+unrealized),
+            'wallet_usdt':str(wallet),'equity_usdt':str(wallet+q*(mark-entry)),
+            'native_account_equity_usdt':str(wallet+unrealized),
             'quantity_btc':str(q),'entry':str(entry),'native_full_position_protected':protected,
             'isolated_wallet_usdt':str(isolated),'native_liquidation_price':str(liquidation),
             'stop_before_liquidation':bool(safe_stops),

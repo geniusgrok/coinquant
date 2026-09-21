@@ -57,3 +57,9 @@ L1（开发 proxy CAGR 0.58%、MDD 1.36%，极少参与）和 L2（-1.10%、15.9
 提交有意义成果后读取远端字节/hash/tree 核验，避免覆盖并行变化；原件禁止通过
 模型输出巨量 base64/JSON。使用 Library 或已验证分块保存。排队期间继续独立工作；
 临时提交可用 [skip ci] 避免取消必要采集运行。任务仍未完成，继续实施。
+
+最新补充：x64 采集 job 长时间排队后，已将同一个 job 改投 GitHub 官方
+ubuntu-24.04-arm pool，10 分钟上限和 203 个文件请求不变。优先查询最新
+Acquire missing Binance public archives 提交对应的 run；35564939199 会被
+分支 concurrency 取代。不要重复启动同一池的盲目重试。Binance snapshot
+现已实现两次观察一致性比较和有界 race 重读；L3 增加完整输入 hash 身份记录。

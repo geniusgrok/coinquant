@@ -61,20 +61,35 @@ def archive_rows(root, relative):
 
 def run(root, warmup, output):
     frozen = spec(); start = timestamp(frozen['start']); end = timestamp(frozen['development_end'])
-    bars = {int(x[0]): x for x in json.loads((warmup/'warmup-trade.json').read_text())}
+    inputs=[]
+    warmup_receipt=json.loads((warmup/'warmup-receipt.json').read_text())
+    def warmup_rows(name):
+        raw=(warmup/name).read_bytes()
+        matches=[r for r in warmup_receipt['records'] if r['file']==name]
+        if (len(matches)!=1 or matches[0]['bytes']!=len(raw)
+                or matches[0]['sha256']!=hashlib.sha256(raw).hexdigest()):
+            raise ValueError('warmup receipt mismatch')
+        inputs.append({'path':name,'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)})
+        return json.loads(raw)
+    bars = {int(x[0]): x for x in warmup_rows('warmup-trade.json')}
     funding = {int(x['fundingTime']): float(x['fundingRate'])
-               for x in json.loads((warmup/'warmup-funding.json').read_text())}
+               for x in warmup_rows('warmup-funding.json')}
     for year in range(2020, 2024):
         for month in range(1, 13):
             date = f'{year}-{month:02}'
-            for row in archive_rows(root, f'monthly/klines/BTCUSDT/1h/BTCUSDT-1h-{date}.zip'):
+            trade_path=f'monthly/klines/BTCUSDT/1h/BTCUSDT-1h-{date}.zip'
+            funding_path=f'monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-{date}.zip'
+            for row in archive_rows(root, trade_path):
                 t = int(row[0])
                 if t in bars: raise ValueError('duplicate trade bar')
                 bars[t] = row
-            for row in archive_rows(root, f'monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-{date}.zip'):
+            for row in archive_rows(root, funding_path):
                 t = int(row[0])
                 if t in funding: raise ValueError('duplicate funding')
                 funding[t] = float(row[2])
+            for relative in (trade_path,funding_path):
+                raw=(root/relative).read_bytes()
+                inputs.append({'path':relative,'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)})
     times = sorted(bars)
     if times != list(range(timestamp('2019-12-01T00:00:00Z'), end, 3600000)):
         raise ValueError('development trade gap or overrun')
@@ -127,6 +142,10 @@ def run(root, warmup, output):
               'Fixed fee/spread/slippage assumptions, not verified dated native rules'],
               'code_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     output.mkdir(parents=True,exist_ok=False)
+    identity=json.dumps({'venue':'Binance','symbol':'BTCUSDT','inputs':inputs,
+                         'frozen_spec':frozen},indent=2)+'\n'
+    (output/'input-identity.json').write_text(identity)
+    report['input_identity_sha256']=hashlib.sha256(identity.encode()).hexdigest()
     (output/'observations.json').write_text(json.dumps(results,indent=2)+'\n')
     (output/'result.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report,indent=2))

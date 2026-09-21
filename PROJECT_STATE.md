@@ -31,7 +31,7 @@ restoration. No local-only winning strategy needs rescue.
 
 Local full suite passed 110 tests in 1.323 seconds at CI cleanup source
 bf40d47f383d543a154b1867036660b2ece5d370. Current Binance decoder/transport and
-L3 causal-label tests passed 8 targeted checks. This does not imply a hosted pass.
+L3 causal-label tests passed 9 targeted checks. This does not imply a hosted pass.
 
 Current data acquisition Actions run: **35564939199**, source
 1ae46b54f21040b2e6f5b85e3390d805b0a3a8dc, job 106224786844; last observed queued.
@@ -59,8 +59,10 @@ schema. No private request or real credential was used; tests use fake credentia
 The pure account decoder separates USDT equity, BTC quantity, isolated wallet,
 native liquidation, current full-position TP/SL, stop/liquidation geometry and
 possible entry remainders. It blocks incompatible modes, foreign collateral/positions
-and conflicting account observations. Caller must still establish bounded observation
-consistency and recovery history. It exposes no write support.
+and conflicting account observations. A bounded snapshot now compares wallet/position identities, configuration, ordinary
+orders and algo orders across two reads, retries state races at most twice, checks
+mark freshness and reprices equity in USDT. Recent fills are explicitly not complete
+recovery history. It exposes no write support.
 
 Binance public API docs support MARK_PRICE close-all STOP_MARKET and
 TAKE_PROFIT_MARKET; this does not prove atomic entry or partial-fill protection.
@@ -186,3 +188,12 @@ Original refined replay preceded a later continuity guard; exact measured source
 inside its evidence archive. Do not mislabel a reused result as a fresh run of later
 code. Preserve new meaningful evidence promptly, verify remote identities and keep
 working on the same research branch. No task-completion claim is justified yet.
+
+## Runner queue adaptation
+
+The Ubuntu x64 data job remained queued for over 20 minutes. The same single job
+is now submitted on the officially supported ubuntu-24.04-arm pool, with unchanged
+Python version, 10-minute limit and 203-file request. This is one controlled pool
+change, not repeated blind reruns. Query the newest run for the commit carrying this
+change; 35564939199 is superseded by branch concurrency. No economic parameters
+changed. L3 now records every archive/warmup hash in input-identity.json.
