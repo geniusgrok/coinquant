@@ -111,7 +111,7 @@ Bybit live API host that is reachable from the research machine. This is public,
 read-only research traffic and does not read account credentials:
 
 ```sh
-python research/acquire_v5.py \
+python -m research.acquire_v5 \
   --output data/v5 \
   --api-host api.bybit.com \
   --start 2019-12-11 \
@@ -143,7 +143,7 @@ A replay manifest is not created from market data alone. First place a dated
 above and a precise source. Then assemble:
 
 ```sh
-python research/build_manifest.py \
+python -m research.build_manifest \
   --root data/v5 \
   --rules rules.csv \
   --rules-source "<precise Bybit notice/API/archive provenance>" \

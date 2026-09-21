@@ -51,7 +51,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/pancakequant-history"
           ok=0
           for attempt in 1 2 3; do
-            if python research/acquire_v5.py \
+            if python -m research.acquire_v5 \
               --output "$RUNNER_TEMP/pancakequant-history" \
               --api-host api.manepa.jp \
               --start 2019-12-11 \
