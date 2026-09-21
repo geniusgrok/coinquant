@@ -23,7 +23,8 @@ def _gate(reader, state, uid, authorized, *, canceling_entry=False):
             if kind=='binance_algo_cancel':
                 import json
                 owner=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(payload.get('clientAlgoId'),)).fetchone()
-                safe=bool(payload.get('symbol')=='BTCUSDT' and owner and owner[0]=='binance_algo'
+                safe=bool(owner and owner[0]=='binance_algo'
+                          and json.loads(owner[1]).get('symbol')=='BTCUSDT'
                           and json.loads(owner[1]).get('closePosition')=='true')
             if not safe:raise Unknown('unsettled possible entry intent; reconcile before reporting safety')
     snapshot=reader.snapshot(uid)
@@ -204,7 +205,7 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     def retire(identity):
         if reader.conditional_terminal(identity):return
         cancel_id=client_id(state.identity,epoch,'retire:'+identity)
-        payload=dict(symbol='BTCUSDT',clientAlgoId=identity)
+        payload=dict(clientAlgoId=identity)
         _once(state,cancel_id,'binance_algo_cancel',payload,send,'DELETE','/fapi/v1/algoOrder')
         if not reader.conditional_terminal(identity):raise Unknown('protection cancellation/child unresolved')
         state.finish(cancel_id,'confirmed',{'target':identity,'terminal':True})

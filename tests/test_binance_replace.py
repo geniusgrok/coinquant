@@ -16,6 +16,7 @@ class ReplacementTests(unittest.TestCase):
         self.native.children={}
         def send(method,path,p):
             if method=='DELETE' and path=='/fapi/v1/algoOrder':
+                self.assertEqual(set(p),{'clientAlgoId'})  # native schema: no symbol on single algo cancel
                 self.native.sent.append((method,path,p));self.native.orders[p['clientAlgoId']]['algoStatus']='CANCELED'
             else:original(method,path,p)
         self.native.send=send

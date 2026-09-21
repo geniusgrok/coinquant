@@ -167,9 +167,11 @@ class BinanceReadOnly:
                 try:
                     target=payload['clientAlgoId']
                     row=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(target,)).fetchone()
-                    if payload.get('symbol')!='BTCUSDT' or not row or row[0]!='binance_algo':
+                    if not row or row[0]!='binance_algo':
                         raise Unknown('cancellation ownership missing')
-                    if json.loads(row[1]).get('closePosition')!='true':raise Unknown('not close-all cancellation')
+                    owned=json.loads(row[1])
+                    if owned.get('symbol')!='BTCUSDT' or owned.get('closePosition')!='true':
+                        raise Unknown('not BTCUSDT close-all cancellation')
                     if self.conditional_terminal(target):
                         state.finish(intent['id'],'confirmed',{'target':target,'terminal':True});resolved+=1
                 except (Blocked,Unknown,KeyError,TypeError,ValueError,ArithmeticError):

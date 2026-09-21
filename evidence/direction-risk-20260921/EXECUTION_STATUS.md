@@ -35,3 +35,8 @@ CLI status/run已接入read-only取消意图恢复；即使没有pending订单�
 35项相关定向用例分批通过，复用未变更验证；具体记录verification.json和原件日志。
 仍缺目标账户原生并存许可、成交竞争/网络中断真实路径、订单限额及交易场景验证；不能用mock当原生证明。
 模型与完整生产writer尚未整合，V2更新仍只能在run_once时发生，本轮未启用V2为生产模型。
+
+保存后的接口复核发现并修复：单个DELETE /fapi/v1/algoOrder文档参数不包含symbol，
+初版沿用了普通订单撤单的symbol字段。已从native请求移除，BTCUSDT范围改由原始durable保护intent及query_intent确认。
+加入严格参数集合断言，受影响30项替换/安全/恢复检查通过；经济回放不受影响，不重复回测。
+初版源码保留在已上传原件和af7095c，当前修正版本以Git最新提交为准，不能把先前mock通过当原生API合规证明。

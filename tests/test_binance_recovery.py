@@ -39,9 +39,9 @@ class RecoveryTests(unittest.TestCase):
             self.assertEqual(reader.recover_pending(state),dict(resolved=0,pending=2))
     def test_readonly_recovers_algo_cancel_only_after_child_terminal(self):
         with tempfile.TemporaryDirectory() as tmp, State(tmp,'binance:BTCUSDT:live:123') as state:
-            state.prepare('pq-old','binance_algo',dict(closePosition='true'))
+            state.prepare('pq-old','binance_algo',dict(symbol='BTCUSDT',closePosition='true'))
             state.finish('pq-old','confirmed',{})
-            state.prepare('pq-cancel','binance_algo_cancel',dict(symbol='BTCUSDT',clientAlgoId='pq-old'))
+            state.prepare('pq-cancel','binance_algo_cancel',dict(clientAlgoId='pq-old'))
             child=dict(status='PARTIALLY_FILLED',origQty='.01',executedQty='.003')
             reader=BinanceReadOnly();reader.query_intent=lambda *a,**k:dict(parent=dict(algoStatus='CANCELED'),child=child)
             self.assertEqual(reader.recover_pending(state),dict(resolved=0,pending=1))
