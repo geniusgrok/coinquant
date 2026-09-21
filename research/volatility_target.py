@@ -16,7 +16,7 @@ def target_fraction(returns, friction, absence_days=7):
     return D('.20')/(D('2.33')*rms*D(absence_days).sqrt()+GAP+FUNDING_RESERVE+2*(FEE+friction))
 
 
-def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, instrument):
+def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, instrument, intended_add=None):
     """Atomically model a filled target delta after funding/protection preflight.
 
     Allocation is market-volatility based, never inverse stop-distance. Capital
@@ -35,6 +35,8 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
     result = dict(requested=str(requested), accepted='0', reason='minimum_or_unchanged', event='', amount=ZERO)
     if not delta:
         return result
+    if intended_add is not None and (raw>old)!=intended_add:
+        result['reason']='quote_side_changed';return result
     if raw < old:
         delta = min(delta, old)
         account.close(delta, price)
@@ -82,3 +84,12 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
     account.__dict__.update(trial.__dict__)
     result.update(accepted=str(delta), event='entry' if not old else 'rebalance_add', amount=delta)
     return result
+
+
+def channel_position(window):
+    if len(window)<21:return 0,ZERO
+    prior=list(window)[-21:-1];close=window[-1][2]
+    high=max(r[0] for r in prior);low=min(r[1] for r in prior)
+    if high<=low:return 0,ZERO
+    score=max(D(-1),min(D(1),(2*close-high-low)/(high-low)))
+    return (1 if score>0 else -1 if score<0 else 0),abs(score)

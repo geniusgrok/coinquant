@@ -48,3 +48,16 @@ class TargetTests(unittest.TestCase):
         self.assertGreater(low,target_fraction([D('.04')]*20,D('.0011')))
         self.assertGreater(low,target_fraction([D('.02')]*20,D('.0011'),21))
         self.assertEqual(low,target_fraction([D('99')]+[D('.02')]*20,D('.0011')))
+
+    def test_quote_side_change_rejects_without_mutation(self):
+        a=Account(D(1000));before=asdict(a)
+        r=funded_target(a,1,D(1),D(100),D(100),D(80),D(200),D(100),None,intended_add=False)
+        self.assertEqual(r['reason'],'quote_side_changed');self.assertEqual(asdict(a),before)
+
+    def test_channel_position_has_no_state_latch_or_lookahead(self):
+        from research.volatility_target import channel_position
+        prior=[(D(110),D(90),D(100))]*20
+        self.assertEqual(channel_position(prior+[(D(500),D(1),D(110))]),(1,D(1)))
+        self.assertEqual(channel_position(prior+[(D(500),D(1),D(95))]),(-1,D('.5')))
+        self.assertEqual(channel_position(prior+[(D(500),D(1),D(100))]),(0,D(0)))
+        self.assertEqual(channel_position(prior),(0,D(0)))

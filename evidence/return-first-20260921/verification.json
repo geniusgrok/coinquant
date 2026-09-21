@@ -1,0 +1,19 @@
+{
+  "targeted_tests": 10,
+  "command": "python -m unittest tests.test_volatility_target tests.test_frequency_schedule tests.test_binance_quantity -q",
+  "causality": "six unchanged future-perturbation prefixes; 468 common market states",
+  "baseline": "8 L17 economic/schedule fields exactly reproduced",
+  "latest_L21": "7 economic/count/schedule fields identical for both schedules",
+  "completed_gzip_files": 80,
+  "excluded_truncated_traces": [
+    "L24-corrected-sparse/equity.csv.gz",
+    "L17-control/equity.csv.gz",
+    "B2-sparse/equity.csv.gz",
+    "causality-L21/sparse-control/equity.csv.gz"
+  ],
+  "trace_repair": "exact-metric reruns preserved; engine now CRC-verifies closed temporary streams before publishing result",
+  "L24_correction": "fresh rearm excludes oldest of 21 retained daily bars; sparse unchanged, hourly 25.0601% ->25.2352%; initial and corrected originals preserved",
+  "execution_price_side_audit": "zero wrong-side prices across all measured entry/add/reduce events before additional quote-side rejection guard",
+  "qualification": "NOT_QUALIFIED",
+  "validation_economics_used": false
+}

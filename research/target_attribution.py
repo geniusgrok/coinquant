@@ -15,7 +15,8 @@ def summarize(root):
             t=int(r['time']);year=iso(t-1 if r['event']=='close' else t)[:4]
             eq=D(r['equity_usdt']);fees=D(r['fees']);funding=D(r['funding'])
             if year not in years:
-                beginning=previous if previous else dict(equity=eq,fees=D(0),funding=D(0))
+                frozen=json.loads((root/'measured_source/spec.json').read_text())
+                beginning=previous if previous else dict(equity=D(frozen['initial_cny'])/D(frozen['cny_per_usd']),fees=D(0),funding=D(0))
                 years[year]=dict(start=beginning['equity'],peak=beginning['equity'],mdd=D(0),hours=0,holding_hours=0,exposure_sum=D(0),margin_sum=D(0),max_margin=D(0),fees_start=beginning['fees'],funding_start=beginning['funding'])
             y=years[year];y['peak']=max(y['peak'],eq);y['mdd']=max(y['mdd'],1-eq/y['peak']);y['end']=eq;y['fees']=fees-y['fees_start'];y['funding']=funding-y['funding_start']
             if r['event']=='close':

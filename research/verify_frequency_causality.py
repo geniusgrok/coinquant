@@ -11,7 +11,7 @@ import research.persistent_hold_replay as replay
 from pancakequant.research import timestamp
 
 
-def run(root,output):
+def run(root,output,allocation="edge"):
     original=replay.inputs;cutoff=timestamp('2023-07-01T00:00:00Z');checks=[]
     def changed(*args):
         series,funding,warm,identity=original(*args)
@@ -29,7 +29,7 @@ def run(root,output):
         for modified in (False,True):
             out=output/(schedule+('-synthetic-future' if modified else '-control'))
             with patch.object(replay,'inputs',changed if modified else original),contextlib.redirect_stdout(io.StringIO()):
-                replay.run(root,Path('evidence/binance-boundary-20260921'),Path('evidence/binance-mark-repair-20260921'),out,root,False,schedule,Path('evidence/binance-boundary-20260921/current-instrument.json'),'one_campaign','edge')
+                replay.run(root,Path('evidence/binance-boundary-20260921'),Path('evidence/binance-mark-repair-20260921'),out,root,False,schedule,Path('evidence/binance-boundary-20260921/current-instrument.json'),'one_campaign',allocation)
         control=output/(schedule+'-control');changed_path=output/(schedule+'-synthetic-future')
         for filename in ('decisions.csv.gz','equity.csv.gz','orders.csv.gz'):
             left=[r for r in rows(control,filename) if int(r['time'])<cutoff]
@@ -47,4 +47,5 @@ def run(root,output):
 if __name__=='__main__':
     import argparse
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
-    a=p.parse_args();run(a.root,a.output)
+    p.add_argument('--allocation',choices=('edge','volatility'),default='edge')
+    a=p.parse_args();run(a.root,a.output,a.allocation)
