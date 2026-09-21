@@ -1,0 +1,24 @@
+{
+  "qualification": "NOT_QUALIFIED",
+  "probe": "earliest 1000 funding events from official API",
+  "native_funding_marks_returned": 0,
+  "records": [
+    {
+      "file": "page-0.json",
+      "url": "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&startTime=1577836800000&endTime=1789862399999&limit=1000",
+      "sha256": "471753f7843edecf3f471fbf953b8a9ba9efb2044e75c80df231d8c2beab92c5",
+      "bytes": 112157,
+      "rows": 1000,
+      "first": 1577836800000,
+      "last": 1606608000007,
+      "positive_marks": 0
+    }
+  ],
+  "original_bytes": 7771,
+  "original_sha256": "befbed8535df3f1b95271c6764747178d41fbab230f2d1e7fbdc86ec2e6dad2f",
+  "conclusion": "Historical rates exist but markPrice is empty for these events. Do not download all remaining pages expecting this to solve early funding mark valuation.",
+  "library_original": {
+    "id": "libfile_ed7f7d619fb88191844e84635e1d4ee7",
+    "path": "/pancakequant/binance-funding-mark-probe.zip"
+  }
+}

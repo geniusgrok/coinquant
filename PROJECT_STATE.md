@@ -1,154 +1,135 @@
 # Pancakequant current recovery state
 
-Status: ACTIVE RESEARCH / NOT_QUALIFIED. The task is not complete. Continue without
-re-asking existing authorization. Read AGENTS.md and HANDOFF_PROMPT.md as well.
+Status: ACTIVE / NOT_QUALIFIED. Economic and production execution work is incomplete.
+Communicate in Chinese. Continue existing authorization, not a new project.
 
-## Latest mandate
+## Mandate and Git
 
-The user explicitly selected **Binance only** on 2026-09-21. Target one BTCUSDT
-USDT-settled linear perpetual, one causal model, one adapter/current config and a
-bounded manually triggered run_once. Retire other production adapters in the
-coherent migration; retained Bybit/OKX evidence is historical research only.
-All core architecture/model/risk code may change. Communicate in Chinese.
+Repository ychenracing/pancakequant; branch research/on-demand-btc-20260920.
+Latest verified runtime/data commit before this documentation update:
+3f79f2f53c3aaaf482e5a39850a5de8470f9ce90. Actual HEAD must be queried on recovery.
+Main last checked unchanged: c886b7c63c6455bd7c933269e32cd35a6fb3e09a.
+Native Git read works; authorized GitHub connector handles writes. Changed bytes,
+SHA256 and complete Git tree were read back and verified. Never restore .transfer
+on top of newer code. Preserve meaningful work promptly on this research branch.
 
-Frozen acceptance: CNY 10,000, 2020-01-01 UTC through 2026-09-20 exclusive,
-CAGR > 200%, continuous complete-account MDD < 20%, exchange leverage exactly 20x,
-the original sparse market-independent invocation schedule and realistic costs,
-funding, margin, liquidation and collateral risk. No target/window/statistic change,
-proxy relabeling or leverage escalation. No real trades, transfers, credentials or
-real account-setting changes are authorized. Do not merge main before real economic
-and necessary execution-safety acceptance. A checkpoint or CI pass is not completion.
+Only Binance BTCUSDT USDT-settled perpetual is the target production contract.
+One model, one adapter/config, sparse manually/Agent-triggered run_once; no daemon.
+Frozen: CNY10000, 2020-01-01 UTC through 2026-09-20 exclusive, CAGR>200%, complete
+continuous account MDD<20%, exchange leverage20x, original frozen irregular schedule.
+All actual costs/funding/margin/liquidation/collateral exposure count. No weakened
+metrics/window, proxy relabeling or leverage escalation. No live trades, transfers,
+credentials or real account-setting changes authorized. Do not merge main until
+true economics and required safety acceptance pass. A checkpoint is not completion.
 
-## Git and verification
+## Actual default CLI
 
-Repository ychenracing/pancakequant. Continue research/on-demand-btc-20260920.
-Last remotely checked main: c886b7c63c6455bd7c933269e32cd35a6fb3e09a (unchanged).
-Latest verified saved checkpoint before the changes in this commit:
-f9ddd4321ffbf445f5d3cee2732d2500f6612cb6. Query the actual branch HEAD on recovery.
-Native Git reads work; writes used the authorized GitHub connector. Changed files
-were read back with exact-byte/hash and Git tree checks. No historical .transfer
-restoration. No local-only winning strategy needs rescue.
+python -m pancakequant and main.py now use pancakequant/binance.py, GET-only.
+No Bybit construction, old config fallback or other venue selection in default CLI.
+Old Bybit modules remain for historical research, not supported default trading.
+research/binance_readonly.py was moved, without a compatibility shim.
 
-Local full suite passed 110 tests in 1.323 seconds at CI cleanup source
-bf40d47f383d543a154b1867036660b2ece5d370. Current Binance decoder/transport and
-L3 causal-label tests passed 9 targeted checks. This does not imply a hosted pass.
+config.example.json contains only account_uid and state_dir. Credentials are
+PANCAKEQUANT_BINANCE_KEY/SECRET. Observation connects Binance real read-only API,
+not testnet; no private account has been contacted during this task.
 
-Current data acquisition Actions run: **35564939199**, source
-1ae46b54f21040b2e6f5b85e3390d805b0a3a8dc, job 106224786844; last observed queued.
-Check current status instead of assuming it. Run 35564642239 was cancelled when
-this explicitly requested data run superseded it. Do not wait if independent work
-remains. Use [skip ci] for interim evidence/code commits to avoid cancelling the
-needed queued acquisition. The same workflow has one 10-minute job, no secrets or
-private API. Its exact-message public-data remainder/upload steps are temporary;
-remove them again after Binance originals are durable. No optimization runs in CI.
+status checks UID, one-way/single-asset/isolated20x/no-auto-add-margin, wallet,
+positions, ordinary/algo orders and recent fills with bounded double observation.
+Report uses USDT accounting and distinguishes protection existence, liquidation
+geometry and entry remainder risk. State directory is account/venue-bound and locked.
+run additionally reads exactly120 completed native4h bars with server-time/boundary
+validation, then reports blocked because no qualified model/write lifecycle exists.
+--execute rejects before credentials/network. This is not completed trading support.
 
-## Current production / migration code
+Stable-client-ID query follows conditional actualOrderId, even for canceled parents,
+validates child identity/side, and never authorizes resubmission on missing history.
+Recent fills are explicitly incomplete history. Full intent recovery, order writes,
+protected partial fills, safe amendments, margin adjustment and testnet lifecycle
+remain incomplete. Official closePosition TP/SL is not proof of atomic entry protection.
+See evidence/binance-linear-feasibility-20260921.md, binance-api-chronology-20260921.json,
+binance-intent-query-20260921.md. Preserve prior correct execution/risk semantics
+when implementing the actual Binance lifecycle; no favorable metric-driven reversal.
 
-The default CLI now uses Binance read-only observation. Bybit is no longer reachable
-through run/status; legacy modules remain only for historical research. Binance
-run reports blocked after observation; --execute is rejected before credentials
-or network access. No approved production alpha or write lifecycle exists.
-Original validated runtime reference: 14b89f70daa0a53dcebd437e2938dcc621c2898a,
-91 tests in run 35557150822. Correctness fixes must not be removed for better metrics.
+Verification:120 full offline tests passed before CLI/market changes. Then12 affected
+CLI/adapter/intent checks passed;4 affected market/CLI checks passed;5 affected
+collector/market/CLI checks passed. Reuse results, do not claim a new full-suite run.
+Current simple CI run35568398097 at3f79f2 last seen queued. One Python3.13 job,
+10min, no secrets, no optimization; temporary acquisition/upload hooks removed.
 
-pancakequant/data.py and replay.py now support verified per-tick resolution, causal
-volume normalization and complete 4h signal aggregation. Minute refinement is a
-replay correction, not a profitable new strategy.
+## Native Binance data: full market coverage now verified
 
-pancakequant/binance.py now serves the default read-only CLI:
-bounded GET-only, exact Binance HMAC query, fixed official hosts, no redirects,
-no caller signing-field overrides, errors scrubbed, UID read from Spot account
-schema. No private request or real credential was used; tests use fake credentials.
-The pure account decoder separates USDT equity, BTC quantity, isolated wallet,
-native liquidation, current full-position TP/SL, stop/liquidation geometry and
-possible entry remainders. It blocks incompatible modes, foreign collateral/positions
-and conflicting account observations. A bounded snapshot now compares wallet/position identities, configuration, ordinary
-orders and algo orders across two reads, retries state races at most twice, checks
-mark freshness and reprices equity in USDT. Recent fills are explicitly not complete
-recovery history. It exposes no write support.
+Official BTCUSDT onboardDate2019-09-08 precedes frozen start. Current instrument
+metadata is not a historical risk/fee/filter timeline. Native monthly/daily originals
+are unmodified, with exchange SHA256 checksums and ZIP CRC verification.
 
-Binance public API docs support MARK_PRICE close-all STOP_MARKET and
-TAKE_PROFIT_MARKET; this does not prove atomic entry or partial-fill protection.
-Native bracket/partial-fill/parent-remainder semantics, unknown writes and testnet
-lifecycle remain unverified. Full migration must preserve default read-only,
-matching account authorization, durable intent, stable client IDs, reconcile-before-
-retry, full protection surviving exit and safe risk reduction. No daemon substitute.
-See evidence/binance-linear-feasibility-20260921.md and
-evidence/binance-api-chronology-20260921.json. Official changelog dates isolated
-API support to 2020-01-03 and closePosition to 2020-05-18; historical replay must
-not assume those features existed at January 1. Current conditional orders use
-the Algo Service (migration 2025-12-09), not the old ordinary-order endpoints.
+Complete audit:58,896 trade hours,58,896 mark hours,7,362 funding settlements.
+No missing/duplicate/out-of-window hours after native supplements. Funding actual
+millisecond offsets retained (3,296 nonzero,max47ms). See
+ evidence/binance-native-coverage-20260921.json.
 
-## Native Binance data: partial originals durable, remainder queued
+Monthly mark files lacked216h, including a24h month-end hole missed by internal
+continuity checking. Six official markPriceKlines API responses restore exactly
+those gaps, never replacing existing archive rows or interpolating. Raw6pages plus
+URL/hash receipts: evidence/binance-mark-repair-20260921/. Missing sets and original
+receipts: evidence/binance-mark-gaps-20260921.json and binance-mark-boundary-gaps-20260921.json.
+Collector now validates period boundaries as well as internal hourly continuity.
 
-Official current BTCUSDT instrument: PERPETUAL, margin/quote USDT, onboardDate
-1567965300000 (2019-09-08 UTC), pre-2020 listing. Current rules are not historical
-rules and must not be backfilled.
+Restore original archives from these durable sources; do not redownload:
+- Initial75: Library libfile_2a68f05223408191b0f115aff601c93f,
+  PANCAKEQUANT_BINANCE_NATIVE_PARTIAL_20260921.zip,1,637,860bytes,
+  SHA2565ca1555d37fb4549b3ead4d61415d15500612aac6d01222b92f638c2ab580656.
+  Receipt evidence/binance-partial-originals.json; physical inventory/audit beside it.
+- Next199: Library libfile_ff11258400548191a698659cad84933c,
+  binance-native-remainder.zip,3,349,763bytes,
+  SHA2565885db22836f20fcb3582df1faf8495b3fd3c38392cd6445445bd3277a80388c.
+  Run35566270075/artifact10623839632,117 hosted tests passed;4semantic data failures.
+  Receipt evidence/binance-remainder-result-20260921.json.
+- Four gapped originals: Library libfile_9caad5300ce881919da75dd17c284395,
+  binance-mark-gaps.zip,83,138bytes,
+  SHA256fa8f5344769b188a562fb231fcb444321232777f2cc0b86355726887dd41ccc5.
+  Run35567111349/artifact10624731223; failure is accurate semantic rejection.
+- Sep funding tail57events and December2019 trade744h/funding93events are saved
+  in evidence/binance-boundary-20260921/. Warmup mark beginsDec23, not fabricated.
 
-2020-01 trade/mark/funding ZIPs and 2026-09-19 trade/mark ZIPs have matching official
-SHA256 checksums. September funding API tail has 57 settlements, with raw timestamp
-millisecond offsets retained. Daily funding archive URL returned 404, official API
-works. December 2019 API has 744 trade hours and 93 funding events; mark starts
-2019-12-23 only. Signal warmup may use native trade, never fabricated earlier mark.
-Formal account start remains January 1. All boundary responses/receipts are in
-evidence/binance-boundary-20260921/.
+Full market coverage is not native qualification. Dated fees/risk/filter rules,
+USDT valuation and funding settlement-mark accounting remain unresolved.
+A new official funding API probe returned the earliest1,000 native funding events
+but all1,000 markPrice values were empty. Do not fetch all remaining pages hoping
+to solve early mark valuation. Raw original is Library
+libfile_ed7f7d619fb88191844e84635e1d4ee7, binance-funding-mark-probe.zip;
+receipt evidence/binance-funding-mark-probe-20260921.json. Never relabel hourly
+close as exact settlement mark. A conservative interval valuation would require
+explicit bounds and limitations, not an exact cashflow claim.
 
-Local acquisition was interrupted by network policy. Physical audit verified
-**75 archives: 26 trade months, 24 mark months, 25 funding months**.
-Cross-month audit found the July 2021 mark archive missing, while February 2022
-trade was already retained. It is not a contiguous three-series dataset. The
-missing mark month is already in the exact 203-file remainder request. The progress inventory has four rejected requests: three December 2019 archive
-404s and July 2021 mark rejected for an actual internal hour gap. All 75 records
-marked verified have retained files. Earlier description of a claimed-but-lost file
-was incorrect; exact error records now establish semantic rejection.
-See evidence/binance-partial-audit-20260921.json for precise per-series coverage.
-Original archive receipt: evidence/binance-partial-originals.json; inventory:
-evidence/binance-partial-inventory-20260921.json.
-Original ZIP: PANCAKEQUANT_BINANCE_NATIVE_PARTIAL_20260921.zip, 1,637,860 bytes,
-SHA256 5ca1555d37fb4549b3ead4d61415d15500612aac6d01222b92f638c2ab580656,
-Library id libfile_2a68f05223408191b0f115aff601c93f. Restore it, do not reacquire it.
+## Economic candidates: all rejected, no validation tuning
 
-research/binance-acquisition-request.json lists exactly **203 missing archives**.
-research/acquire_binance.py verifies exchange checksums/CRC/OHLC and reuses cache.
-Run 35564939199 requests only those missing public archives. Download its actual
-artifact, verify all payloads, preserve originals and combine with the saved 75.
-research/audit_binance.py then checks the complete frozen trade/mark/funding window,
-without calculating validation economics. It is implemented but not yet run on a
-complete Binance dataset. Historical fee/risk/filter timelines, exact funding price
-at offset timestamps and USDT depeg exposure remain unqualified.
+- Original inverse result: almost all USD growth was BTC collateral beta;
+  BTC-unit CAGR0.283%, multiple1.01917. Attribution evidence preserved.
+- L1/L2 hypothetical linear on Bybit market proxy: development CAGR0.583756% /
+  -1.096052%, MDD1.355090% /15.974647%; L2 has297entries,244stops,5liquidations.
+  Rejected; do not tune neighboring stops/scores or escalate risk.
+- L3 expanding causal four-day ridge on native Binance development:437overlapping
+  observations,correlation-0.0161721,mean directional net-0.434740% vs long+0.0884211%.
+  Failed preregistered gate. Exact code/hypothesis/identities/observations in
+  evidence/l3-development-20260921/. No adjacent ridge/horizon/feature tuning.
+- L4 native taker-flow continuation, preregistered at a6712e6263be0bfbb91e89a92350870cb8af7603:
+  466observations,correlation0.0259375,mean net-0.332363% vs long+0.0672466%.
+  Failed gate; no sign reversal/lookback/threshold tuning. Exact originals in
+  evidence/l4-development-20260921/.
 
-## Alpha experiments
+L3/L4 are overlapping forecast diagnostics, not trades, account CAGR or MDD.
+Funding rates summed as approximate return; fixed proxy costs explicitly disclosed.
+Development2020-2023 only;2024-end was inspected solely for data integrity, not
+model selection/economic validation. No current alpha has earned full qualification.
 
-Do not transplant the inverse model as a claimed solution: inverse BTC-unit CAGR
-was only 0.283%, BTC quantity multiple 1.01917; almost all USD gain was BTC beta.
-Read evidence/collateral-alpha-attribution-20260921.json.
+## Continue
 
-L1 and L2 are rejected development-only proxies on native Bybit inverse prices and
-funding, hypothetical linear USDT accounting/rules; not native Binance qualification.
-2020-2023 only, original frozen sparse schedule, no validation fitting:
-
-- L1 CAGR 0.583756%, MDD 1.355090%, 10 entries / 468 invocations. 306 no-direction,
-  127 unsafe initial stop decisions. Low drawdown reflected very low participation.
-- L2 CAGR -1.096052%, MDD 15.974647%, final CNY 9568.73; 297 entries, 244 stops,
-  33 takes, 5 liquidations. More participation lost money after costs. Do not tune
-  neighboring stop caps, thresholds or increase risk/leverage.
-
-Read evidence/l1-development-20260921.json, l2-development-20260921.json,
-research/linear-hypothesis.md. Exact source/full traces are durable in the originals
-receipts below. research/linear_replay.py and sparse_trend.py currently contain the
-rejected L2 research implementation, not an approved production strategy.
-
-**L3 measured and rejected; see latest result below.**
-research/linear-l3-hypothesis.md and linear_forecast.py: one expanding ridge model
-predicts four-day returns using causal 20-day momentum, one-day return and most
-recent settled funding. Only matured labels enter training; fixed ridge 10, minimum
-90 labels, no grid. Two tests verify label maturity isolation. Native Binance
-2020-2023 screen at the original sparse invocation times; no shortened window as
-substitute. Costs and overlapping forward-label limitations are explicit. It is not
-a tradable account CAGR. Reject unless correlation is positive and directional net
-forward return beats the causal long control. Only a passing screen justifies a
-fully specified execution/account candidate. Do not tune against 2024-end; boundary
-prices were inspected for data completeness, not alpha selection.
+Native market collection is no longer a blocker. Build the Binance account replay
+with explicit honest funding/rule/collateral treatment, and a causally specified
+structural alpha candidate rather than more adjacent L1-L4 tuning. Complete real
+Binance protection/recovery lifecycle, preserving no naked re-entry and unknown-write
+semantics. An actual testnet lifecycle remains unverified without an authorized
+account; do not silently contact live accounts. Keep main unchanged until gates pass.
 
 ## Bybit baseline, refinement and rejected directions (retain evidence)
 
@@ -198,50 +179,3 @@ inside its evidence archive. Do not mislabel a reused result as a fresh run of l
 code. Preserve new meaningful evidence promptly, verify remote identities and keep
 working on the same research branch. No task-completion claim is justified yet.
 
-## Runner queue adaptation
-
-The Ubuntu x64 data job remained queued for over 20 minutes. The same single job
-is now submitted on the officially supported ubuntu-24.04-arm pool, with unchanged
-Python version, 10-minute limit and 203-file request. This is one controlled pool
-change, not repeated blind reruns. Query the newest run for the commit carrying this
-change; 35564939199 is superseded by branch concurrency. No economic parameters
-changed. L3 now records every archive/warmup hash in input-identity.json.
-
-## July 2021 mark archive integrity issue
-
-Inspecting the exact failed acquisition record identified `ValueError: hour gap`
-for monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2021-07.zip. It is not simply a
-transport-missing month. The collector previously retained raw data only after
-semantic validation; it now preserves checksum-verified originals before semantic
-checks so gaps can be diagnosed without relaxing coverage validation. The current queued run 35566270075 (a92066e1d1f1fc86b286faf4298e3db23226af43)
-uses the prior collector. Keep it queued: its other 202 requested archives remain
-valuable. After preserving its actual results, request only unresolved originals
-with the corrected collector rather than restarting the bulk request. Locate actual missing timestamps
-and investigate official native replacements or documented exchange downtime. Do
-not fabricate/interpolate marks or claim native complete coverage from file count.
-
-L3 needs complete 2020-2023 native trade and funding inputs, not mark candles. Once
-those exact inputs are restored, its preregistered forecast-only screen can proceed
-while the independent July mark gap is investigated. Full-account economic replay
-and native qualification still require correct mark coverage. No shortened economic
-window or favorable mark substitution is authorized.
-
-## Latest measured update: native Binance L3 rejection
-
-Run 35566270075 completed: 117 offline tests passed; acquisition failed semantic validation for four mark months (2021-07, 2022-10, 2023-02, 2026-06), while 199 other archives passed. Exact original artifact is durable; see evidence/binance-remainder-result-20260921.json. There are now 274 verified formal archives. The next acquisition request contains only the four failed originals, using the corrected raw-before-semantic-check collector.
-
-L3 development screen is now measured and rejected: 437 overlapping four-day observations, correlation -0.0161721, direction accuracy 49.1991%, mean directional net -0.434740% versus constant-long +0.0884211%. These are forecast diagnostics, not account CAGR/MDD. Progression gate failed. Exact source, hypothesis, input identities and observations are in evidence/l3-development-20260921/. No 2024+ economic validation was used. Do not tune adjacent L3 parameters. Continue a different causal structural hypothesis and complete Binance data/safety work. Status remains NOT_QUALIFIED; production Binance migration remains incomplete; main must not merge.
-
-L4 was preregistered at a6712e6263be0bfbb91e89a92350870cb8af7603 and also rejected: 466 overlapping development observations, correlation 0.0259375, mean directional net -0.332363% versus constant-long +0.0672466%. No validation used. Exact evidence is in evidence/l4-development-20260921/. Do not reverse its sign or tune its lookback following failure. Four-file native mark capture run 35567111349 was queued at last check. Latest full local suite: 118 tests passed.
-
-Binance research reader now supports stable ordinary/conditional order identity queries and conditional child reconciliation; see evidence/binance-intent-query-20260921.md. This grants no resubmission permission and is not a production write lifecycle. Full local suite: 120 tests passed. Mark capture 35567111349 remains queued; continue independent work rather than duplicate acquisition.
-
-Default CLI migration: Binance-only status with UID-bound durable report and lock; obsolete configs rejected. research/binance_readonly.py moved to pancakequant/binance.py without a compatibility shim. run/--execute remain explicitly blocked pending real qualification. Three CLI safety checks plus nine adapter/intent checks passed (12 targeted). No private request executed. README and config.example.json now describe only actual supported behavior.
-
-Binance run now also reads exactly 120 completed native four-hour trade candles using verified server time and exact endpoints; rejects forming, missing, duplicate or invalid bars. Four affected market/CLI checks passed. It still makes no approved model decision and sends no writes. The data capture run 35567111349 just completed with failure; inspect its raw artifact and semantic gap records next.
-
-## Native Binance coverage completed
-
-35567111349 finished with semantic failure and retained four authentic gapped mark ZIPs. Original artifact 10624731223: 83,138 bytes, SHA256 fa8f5344769b188a562fb231fcb444321232777f2cc0b86355726887dd41ccc5; durable Library libfile_9caad5300ce881919da75dd17c284395. Exact receipt evidence/binance-mark-gaps-20260921.json. Five gaps initially totaled 192h; full-window checking found an additional 24h at 2022-07-31, which file-internal continuity had missed. Six official fapi.binance.com markPriceKlines responses now restore all 216h, preserving native monthly originals; raw responses/receipts are in evidence/binance-mark-repair-20260921/. Collector now checks month/day boundaries too.
-
-Full audit passed: 58,896 trade hours, 58,896 mark hours, 7,362 funding events, zero missing/duplicate/out-of-window hours; funding offsets preserved (max47ms). See evidence/binance-native-coverage-20260921.json. Status remains NOT_QUALIFIED: dated rules, USDT valuation, exact funding marked cashflow and entry protection remain unresolved. No economic validation was run. Temporary data-acquisition workflow hooks are removed; one lightweight offline CI remains. Do not re-download complete history.
