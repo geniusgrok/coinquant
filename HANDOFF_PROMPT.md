@@ -27,3 +27,5 @@ L1/L2账户代理和L3/L4原生预测诊断均已失败。L3/L4不是CAGR/MDD，
 下一步：完整Binance账户回放（资金费/历史规则/USDT估值诚实处理）、新的结构性alpha，
 以及原生保护/部分成交/余单/未知结果/保证金的真实生命周期。独立TP/SL不证明原子入场保护。
 继续同一研究分支及时提交并回读字节、hash、tree核验。任务尚未完成。
+
+L5 preregistered at59a73abc4fa33d5443614b4313ad44cfc2321acb then measured and rejected: online Bayesian change-point drift,467development observations,364active,correlation-0.00601996,mean net-0.197441% vs constant-long+0.0710532%. Forecast diagnostics only,NOT_QUALIFIED,no2024+validation. Exact source/hypothesis/observations/result in evidence/l5-development-20260921/. No adjacent hazard/prior/cost-threshold tuning or signal reversal. The one targeted posterior-update/symmetry check passed.

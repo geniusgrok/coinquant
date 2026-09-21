@@ -179,3 +179,5 @@ inside its evidence archive. Do not mislabel a reused result as a fresh run of l
 code. Preserve new meaningful evidence promptly, verify remote identities and keep
 working on the same research branch. No task-completion claim is justified yet.
 
+
+L5 preregistered at59a73abc4fa33d5443614b4313ad44cfc2321acb then measured and rejected: online Bayesian change-point drift,467development observations,364active,correlation-0.00601996,mean net-0.197441% vs constant-long+0.0710532%. Forecast diagnostics only,NOT_QUALIFIED,no2024+validation. Exact source/hypothesis/observations/result in evidence/l5-development-20260921/. No adjacent hazard/prior/cost-threshold tuning or signal reversal. The one targeted posterior-update/symmetry check passed.
