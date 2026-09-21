@@ -1,4 +1,4 @@
-"""L6 native Binance development account diagnostic, never qualification."""
+"""L7 native Binance development account diagnostic, never qualification."""
 import argparse
 from collections import Counter, deque
 import csv
@@ -57,15 +57,24 @@ def inputs(root,warmup,repairs):
     return series,funding,warm,identity
 
 
+def channel_state(window, previous):
+    if len(window)<21:return previous
+    prior=list(window)[:-1];close=window[-1][2]
+    if close>max(x[0] for x in prior):return 1
+    if close<min(x[1] for x in prior):return -1
+    return previous
+
+
 def run(root,warmup,repairs,output):
     frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['development_end'])
     series,funding,warm,identity=inputs(root,warmup,repairs)
     trade=series['klines'];marks=series['markPriceKlines']
     fund_hours={t//HOUR*HOUR:(t,r) for t,r in funding.items()}
-    daily=deque(maxlen=21)
+    daily=deque(maxlen=21);regime=0
     for t in range(min(warm),start,DAY):
         rows=[warm[s] for s in range(t,t+DAY,HOUR)]
         daily.append((max(D(r[2]) for r in rows),min(D(r[3]) for r in rows),D(rows[-1][4])))
+        regime=channel_state(daily,regime)
     initial=D(frozen['initial_cny'])/D(frozen['cny_per_usd'])
     account=Account(initial*(1-D(frozen['initial_conversion_cost'])))
     peak=initial;mdd=ZERO;counts=Counter();seen=[];triggers=set(t for t in invocations(frozen) if t<end)
@@ -119,7 +128,7 @@ def run(root,warmup,repairs,output):
                     elif account.q<0 and mo<proposed<account.sl:account.sl=floor_step(proposed,TICK)+TICK
                     counts['hold']+=1
                 elif not exited:
-                    direction=1 if window[-1][2]>max(x[0] for x in window[:-1]) else -1 if window[-1][2]<min(x[1] for x in window[:-1]) else 0
+                    direction=regime
                     if not direction:counts['no_breakout']+=1
                     else:
                         price=o*(1+slip+spread/2 if direction>0 else 1-slip-spread/2)
@@ -155,13 +164,14 @@ def run(root,warmup,repairs,output):
             if (t+HOUR)%DAY==0:
                 rows=[trade[s] for s in range(t+HOUR-DAY,t+HOUR,HOUR)]
                 daily.append((max(D(x[2]) for x in rows),min(D(x[3]) for x in rows),D(rows[-1][4])))
+                regime=channel_state(daily,regime)
             previous_quote=D(r[7])
         final=account.equity(mc)
     if seen!=sorted(triggers):raise ValueError('frozen invocation mismatch')
     years=(end-start)/31556952000;cagr=float(final/initial)**(1/years)-1
-    result=dict(candidate='L6',qualification='NOT_QUALIFIED',validation_used=False,cagr=cagr,mdd_conservative_envelope=str(mdd),
+    result=dict(candidate='L7',qualification='NOT_QUALIFIED',validation_used=False,cagr=cagr,mdd_conservative_envelope=str(mdd),
                 final_cny=str(final*D(frozen['cny_per_usd'])),counts=dict(counts),fees_usdt=str(account.fees),funding_bound_paid_usdt=str(account.funding),
-                progression_passed=cagr>0 and mdd<D('.2'),code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                progression_passed=cagr>0.024372216259263002 and mdd<D('.2'),code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 limitations=['Proxy dated rules/fees/liquidity and USDT=USD','Adverse interval funding valuation, not exact cashflow',
                              'Hourly conservative envelope and liquidation-first ambiguity','Margin transfer and full-position execution unverified'])
     (output/'inputs.json').write_text(json.dumps(identity,indent=2)+'\n')
