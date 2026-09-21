@@ -93,3 +93,18 @@ class SafetyTests(unittest.TestCase):
         with self.assertRaises(Unknown):self.protect(authorized=True)
         with self.assertRaises(Unknown):reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',instrument=rules(),authorized=True)
         self.assertEqual(self.native.sent,[])
+
+    def test_stop_fill_between_legs_prevents_stale_take_write(self):
+        def send(*args):
+            self.native.send(*args)
+            self.native.q='0'
+        with self.assertRaises(Unknown):self.protect(send,authorized=True)
+        self.assertEqual(len(self.native.sent),1)
+        self.assertEqual(self.native.sent[0][2]['type'],'STOP_MARKET')
+
+    def test_new_entry_remainder_between_legs_stops_writes(self):
+        def send(*args):
+            self.native.send(*args)
+            self.native.remainders=1
+        with self.assertRaises(Unknown):self.protect(send,authorized=True)
+        self.assertEqual(len(self.native.sent),1)

@@ -1,3 +1,17 @@
+# 2026-09-21 最新：D3事件配对与V1/V2
+
+当前完整报告：evidence/impulse-age-20260921/REPORT.md；原件收据originals.json。
+D3原件不变，继续基线。开发配对确认空头延迟损耗，独立仅多头/空头对照已完成。
+V1拒绝兑现后入场失败；V2一次确认失效边界完整窗口稀疏49.65%CAGR/34.64%MDD包络，仍NOT_QUALIFIED。
+V2小幅增益集中少数事件，不提高风险，不合并main。2024+继续标记已使用。
+新增主动成交量信息检查已完成开发覆盖及小样本描述，未实现过滤器，未查看2024+流向。
+下一条研究：开发区流向结果逐事件影响和按时间稳定性检查，再决定独立账户试验；不搜索大量阈值。
+执行下一条：新保护确认后撤旧保护的durable生命周期及离线竞争验证；无testnet不得声称原生通过。
+21项定向检查及V2未来扰动通过。当前无后台研究进程。经济、证据和生产整合未完成。
+复现入口research/replay_impulse_age.py，诊断research/impulse_event_diagnosis.py，research/impulse_flow_diagnosis.py。
+
+---
+
 # 最新追加：D3完整稀疏47.93% CAGR /34.50%MDD，仍未达标
 
 先读evidence/impulse-risk-20260921/REPORT.md、candidate-register.json、verification.json、

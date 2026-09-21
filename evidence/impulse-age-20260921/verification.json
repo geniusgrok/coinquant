@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "cutoff": 1688169600000,
+  "checks": [
+    {
+      "schedule": "sparse",
+      "file": "decisions.csv.gz",
+      "identical_prefix_rows": 411
+    },
+    {
+      "schedule": "sparse",
+      "file": "equity.csv.gz",
+      "identical_prefix_rows": 74004
+    },
+    {
+      "schedule": "sparse",
+      "file": "orders.csv.gz",
+      "identical_prefix_rows": 395
+    },
+    {
+      "schedule": "four_hour",
+      "file": "decisions.csv.gz",
+      "identical_prefix_rows": 7662
+    },
+    {
+      "schedule": "four_hour",
+      "file": "equity.csv.gz",
+      "identical_prefix_rows": 79619
+    },
+    {
+      "schedule": "four_hour",
+      "file": "orders.csv.gz",
+      "identical_prefix_rows": 530
+    }
+  ],
+  "matched_sparse_market_states": 468,
+  "synthetic_paths_not_economic_evidence": true,
+  "targeted_tests": 21,
+  "V1_normal_D3_three_decoded_streams_identical": true,
+  "native_execution_verified": false
+}

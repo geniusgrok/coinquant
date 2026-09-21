@@ -71,6 +71,10 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
                 or D(parent.get('triggerPrice','0'))!=trigger or observed['child'] is not None):
             raise Unknown('native protection not confirmed active; reconcile exposure')
         state.finish(identity,'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
+        observed_account=reader.snapshot(uid)
+        if (observed_account['account_uid']!=str(uid) or D(observed_account['quantity_btc'])!=q
+                or observed_account['possible_entry_remainders']):
+            raise Unknown('exposure changed between protection legs; reconcile before next write')
     after=reader.snapshot(uid)
     if (D(after['quantity_btc'])!=q or after['possible_entry_remainders']
             or not after['native_full_position_protected'] or not after['stop_before_liquidation']):

@@ -25,7 +25,7 @@ class OpportunityTests(unittest.TestCase):
 
     def test_prefix_cannot_depend_on_future_or_rewrite_objects(self):
         rows=[(101,99,100)]*24+[(111,100,110)]+[(112,109,111)]*10
-        for mechanism in ('squeeze','sweep','shock','impulse','impulse_hold','persistent_impulse'):
+        for mechanism in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse'):
             original=self.feed(Opportunities(mechanism),rows)
             prefix=self.feed(Opportunities(mechanism),rows[:26])
             changed=self.feed(Opportunities(mechanism),rows[:26]+[(1000,1,5)]*9)
@@ -59,3 +59,27 @@ class OpportunityTests(unittest.TestCase):
         full=self.feed(Opportunities('impulse_hold',3600000),rows)
         changed=self.feed(Opportunities('impulse_hold',3600000),rows[:23]+[(1000,1,5)]*8)
         self.assertEqual(prefix,full[:23]);self.assertEqual(prefix,changed[:23])
+
+    def test_realization_retires_entry_without_rewriting_prior_state(self):
+        m=Opportunities('impulse_validity')
+        a=self.feed(m,[(101,99,100)]*20+[(116,100,115)])[-1]
+        b=m.update(22*FOUR_HOURS,D(131),D(114),D(130))
+        c=m.update(23*FOUR_HOURS,D(131),D(119),D(120))
+        self.assertTrue(a.entry_open)
+        self.assertFalse(b.entry_open);self.assertFalse(c.entry_open)
+        self.assertEqual((a.identity,a.stop,a.expires),(c.identity,c.stop,c.expires))
+
+    def test_confirmation_is_symmetric_one_time_completed_close_transition(self):
+        for side in (1,-1):
+            m=Opportunities('impulse_confirmation')
+            def bar(close):return (close+1,close-1,close)
+            signal=100+15*side
+            a=self.feed(m,[bar(100)]*20+[bar(signal)])[-1]
+            target=100+30*side
+            b=m.update(22*FOUR_HOURS,*map(D,bar(target)))
+            c=m.update(23*FOUR_HOURS,*map(D,bar(target+side)))
+            self.assertEqual(a.stop,D(100)+D('7.5')*side)
+            self.assertEqual(b.stop,D(signal));self.assertEqual(c.stop,b.stop)
+            self.assertIsNone(b.confirm_at)
+            self.assertEqual(a.expires-a.identity,7*86400000)
+            self.assertEqual((a.identity,a.take,a.expires),(b.identity,b.take,b.expires))
