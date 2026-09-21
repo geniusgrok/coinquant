@@ -15,6 +15,7 @@ from research.linear_forecast import archive_rows, DAY
 from research.audit_binance import repair_rows
 from research.linear_replay import Account, FEE, MMR, LOT, TICK
 from research.minute_evidence import load as minute_load, steps
+from research.edge_allocation import target_fraction
 
 HOUR=3600000
 
@@ -75,7 +76,9 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed'):
+    if allocation not in ('fixed','edge'):raise ValueError('unknown allocation')
+    if lifecycle not in ('persistent','one_campaign'):raise ValueError('unknown lifecycle')
     frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['development_end'])
     series,funding,warm,identity=inputs(root,warmup,repairs)
     if minutes is not None:
@@ -87,17 +90,18 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         rows=[warm[s] for s in range(t,t+DAY,HOUR)]
         daily.append((max(D(r[2]) for r in rows),min(D(r[3]) for r in rows),D(rows[-1][4])))
         regime=channel_state(daily,regime)
+    edge_observations=deque(maxlen=252);day_funding=ZERO;prior_day_direction=regime;previous_daily_close=daily[-1][2]
     initial=D(frozen['initial_cny'])/D(frozen['cny_per_usd'])
     account=Account(initial*(1-D(frozen['initial_conversion_cost'])))
     peak=initial;mdd=ZERO;counts=Counter();seen=[];triggers=decision_times(frozen,end,schedule)
     instrument=json.loads(quantity_rules.read_text())['instrument'] if quantity_rules else None
     if quantity_rules:identity.append(dict(path=str(quantity_rules),sha256=hashlib.sha256(quantity_rules.read_bytes()).hexdigest()))
-    exposure_sum=ZERO;max_exposure=ZERO;holding_hours=0;turnover=ZERO;regime_since=start;delays=[];binding=Counter()
+    exposure_sum=ZERO;max_exposure=ZERO;holding_hours=0;turnover=ZERO;regime_since=start;delays=[];binding=Counter();campaign_epoch=0;last_entry_epoch=-1
     slip=D(frozen['slippage_fraction']);spread=D(frozen['spread_fraction']);previous_quote=D(warm[start-HOUR][7])
     output.mkdir(parents=True,exist_ok=False)
     with gzip.open(output/'equity.csv.gz','wt') as ef,gzip.open(output/'orders.csv.gz','wt') as of,gzip.open(output/'decisions.csv.gz','wt') as df:
         ew=csv.writer(ef);ow=csv.writer(of);dw=csv.writer(df)
-        dw.writerow(['time','regime','equity','quantity','notional','margin','free_wallet','sl','tp','regime_age_hours','action','binding_cap','risk_quantity','exposure_quantity','margin_quantity','notional_quantity','liquidity_quantity','requested_quantity','accepted_quantity'])
+        dw.writerow(['time','regime','equity','quantity','notional','margin','free_wallet','sl','tp','regime_age_hours','action','binding_cap','risk_quantity','exposure_quantity','margin_quantity','notional_quantity','liquidity_quantity','requested_quantity','accepted_quantity','edge_target_fraction','edge_samples'])
         ew.writerow(['time','event','equity_usdt','drawdown']);ow.writerow(['time','event','quantity_btc','price_or_mark','funding_rate','quantity_after'])
         def observe(t,event,mark):
             nonlocal peak,mdd
@@ -126,6 +130,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             r=trade[t];mr=marks[t];bar=tuple(D(x) for x in r[1:5]);mark=tuple(D(x) for x in mr[1:5])
             o,h,lo,c=bar;mo,mh,ml,mc=mark
             observe(t,'open',mo)
+            if t in fund_hours:day_funding+=max(ZERO,D(regime)*fund_hours[t][1])
             charged=False;exited=False;opening_q=account.q
             if account.q and t in fund_hours and fund_hours[t][0]==t:
                 funding_bound(t,mark,opening_q);charged=True
@@ -140,6 +145,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             if t in triggers:
                 seen.append(t);counts['invocations']+=1
                 window=list(daily)
+                edge_target=target_fraction(edge_observations) if allocation=='edge' else D(2)
                 action='hold' if account.q else 'no_signal';caps={};qty=ZERO;raw_qty=ZERO;limiter=''
                 decision_state=[t,regime,str(account.equity(mo)),str(account.q),str(abs(account.q)*mo),str(account.margin),str(account.wallet-account.margin),str(account.sl),str(account.tp),(t-regime_since)//HOUR]
                 if account.q:
@@ -153,7 +159,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     else: counts['hold']+=1
                 elif not exited:
                     direction=regime
-                    if not direction:counts['no_breakout']+=1
+                    if lifecycle=='one_campaign' and last_entry_epoch==campaign_epoch:
+                        counts['campaign_consumed']+=1;action='campaign_consumed'
+                    elif not direction:counts['no_breakout']+=1
+                    elif allocation=='edge' and not edge_target:
+                        counts['no_estimated_edge']+=1;action='no_estimated_edge'
                     else:
                         price=o*(1+slip+spread/2 if direction>0 else 1-slip-spread/2)
                         sl=min(x[1] for x in window[-10:]) if direction>0 else max(x[0] for x in window[-10:])
@@ -165,19 +175,19 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                         else:
                             required_per_btc=max(price/20,unit+price*(D('.01')+MMR+FEE))
                             risk=unit+FEE*(price+sl)+sl*(slip+spread/2)
-                            caps=dict(risk=account.equity(mo)*D('.006')/risk,
-                                exposure=account.equity(mo)*2/price,margin=account.wallet/(required_per_btc+2*price*FEE),
+                            caps=dict(risk=account.equity(mo)*(D('.20') if allocation=='edge' else D('.006'))/risk,
+                                exposure=account.equity(mo)*edge_target/price,margin=account.wallet/(required_per_btc+2*price*FEE),
                                 notional=D('1000000')/price,liquidity=previous_quote/60*D(frozen['volume_participation'])/price)
                             limiter=min(caps,key=caps.get);binding[limiter]+=1;raw_qty=caps[limiter]
                             qty=market_quantity(raw_qty,price,instrument) if instrument else floor_step(raw_qty,LOT)
                             if qty:
                                 account.open(direction*qty,price,sl,tp);account.margin=qty*required_per_btc
-                                turnover+=qty*price;delays.append((t-regime_since)//HOUR);action='entry'
+                                turnover+=qty*price;delays.append((t-regime_since)//HOUR);action='entry';last_entry_epoch=campaign_epoch
                                 liq=account.liquidation()
                                 if not (liq<sl<mo if direction>0 else mo<sl<liq):raise ValueError('unsafe funded stop geometry')
                                 counts['entry']+=1;ow.writerow([t,'entry',str(account.q),str(price),'',str(account.q)])
                             else:counts['size_below_minimum']+=1;action='size_below_minimum'
-                dw.writerow(decision_state+[action,limiter]+[str(caps.get(k,'')) for k in ('risk','exposure','margin','notional','liquidity')]+[str(raw_qty),str(qty)])
+                dw.writerow(decision_state+[action,limiter]+[str(caps.get(k,'')) for k in ('risk','exposure','margin','notional','liquidity')]+[str(raw_qty),str(qty),str(edge_target),len(edge_observations)])
             if not charged and t in fund_hours and (opening_q or account.q):
                 if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
                 funding_bound(t,mark,opening_q or account.q)
@@ -208,9 +218,12 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             if account.equity(mc)<=0:raise ValueError('account insolvent; no reset or truncation')
             if (t+HOUR)%DAY==0:
                 rows=[trade[s] for s in range(t+HOUR-DAY,t+HOUR,HOUR)]
+                observation=D(regime)*(D(rows[-1][4])/previous_daily_close-1)-day_funding
+                if regime!=prior_day_direction:observation-=2*(FEE+slip+spread/2)
+                edge_observations.append(observation);day_funding=ZERO;prior_day_direction=regime;previous_daily_close=D(rows[-1][4])
                 daily.append((max(D(x[2]) for x in rows),min(D(x[3]) for x in rows),D(rows[-1][4])))
                 new_regime=channel_state(daily,regime)
-                if new_regime!=regime:regime_since=t+HOUR
+                if new_regime!=regime:regime_since=t+HOUR;campaign_epoch+=1
                 regime=new_regime
             previous_quote=D(r[7])
         final=account.equity(mc)
@@ -221,7 +234,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 progression_passed=None,progression_status='requires paired refined comparison',code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 limitations=['Proxy dated rules/fees/liquidity and USDT=USD','Adverse interval funding valuation, not exact cashflow',
                              'Minute refinement on six days only; remaining interval liquidation-first ambiguity','Margin transfer and full-position execution unverified'])
-    result.update(schedule=schedule,quantity_rule_scope='2026_snapshot_scenario_NOT_historical' if instrument else 'legacy_hypothetical',
+    result['candidate']=('L18' if allocation=='edge' else 'L17' if lifecycle=='one_campaign' else 'L7' if baseline else 'L9')+'-minute-refined'
+    sources=output/'measured_source';sources.mkdir()
+    source_hashes={}
+    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json')):
+        raw=source.read_bytes();(sources/source.name).write_bytes(raw);source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()
+    result['source_hashes']=source_hashes
+    result.update(schedule=schedule,lifecycle=lifecycle,allocation=allocation,quantity_rule_scope='2026_snapshot_scenario_NOT_historical' if instrument else 'legacy_hypothetical',
         mean_close_exposure=str(exposure_sum/((end-start)//HOUR)),max_close_exposure=str(max_exposure),holding_hours=holding_hours,
         turnover_usdt=str(turnover),binding_caps=dict(binding),mean_entry_regime_age_hours=sum(delays)/len(delays) if delays else None,
         schedule_sha256=hashlib.sha256(json.dumps(seen).encode()).hexdigest())
@@ -237,4 +256,6 @@ if __name__=='__main__':
     p.add_argument('--baseline',action='store_true',help='Exact L7 ratchet comparison, research only')
     p.add_argument('--schedule',choices=('sparse','hourly'),default='sparse')
     p.add_argument('--quantity-rules',type=Path)
-    a=p.parse_args();run(a.root,a.warmup,a.repairs,a.output,a.minutes,a.baseline,a.schedule,a.quantity_rules)
+    p.add_argument('--lifecycle',choices=('persistent','one_campaign'),default='persistent')
+    p.add_argument('--allocation',choices=('fixed','edge'),default='fixed')
+    a=p.parse_args();run(a.root,a.warmup,a.repairs,a.output,a.minutes,a.baseline,a.schedule,a.quantity_rules,a.lifecycle,a.allocation)

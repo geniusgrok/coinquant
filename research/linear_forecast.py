@@ -59,7 +59,7 @@ def archive_rows(root, relative):
     return rows[1:] if not rows[0][0].isdigit() else rows
 
 
-def run(root, warmup, output):
+def run(root, warmup, output, *, predictor=None, candidate='L3'):
     frozen = spec(); start = timestamp(frozen['start']); end = timestamp(frozen['development_end'])
     inputs=[]
     warmup_receipt=json.loads((warmup/'warmup-receipt.json').read_text())
@@ -124,10 +124,13 @@ def run(root, warmup, output):
     for t in invocations(frozen):
         if t >= end: break
         if t+4*DAY >= end: skipped += 1; continue
-        coef, n = forecast(labels,t)
-        if n < 90: skipped += 1; continue
         x = features[t//DAY*DAY]
-        prediction = sum(a*b for a,b in zip(coef,x))
+        if predictor is None:
+            coef, n = forecast(labels,t)
+            prediction = sum(a*b for a,b in zip(coef,x))
+        else:
+            prediction, n = predictor(labels,t,x)
+        if n < 90: skipped += 1; continue
         direction = 1 if prediction > 0 else -1 if prediction < 0 else 0
         forward = float(bars[t+4*DAY][1])/float(bars[t][1])-1
         carry = sum(funding[s] for s in ft[bisect.bisect_right(ft,t):bisect.bisect_right(ft,t+4*DAY)])
@@ -138,7 +141,7 @@ def run(root, warmup, output):
     correlation = statistics.correlation(predictions,targets)
     net = statistics.mean(r['directional_net'] for r in results)
     control = statistics.mean(r['long_control_net'] for r in results)
-    report = {'candidate':'L3','qualification':'NOT_QUALIFIED','scope':'2020-2023 development forecast screen',
+    report = {'candidate':candidate,'qualification':'NOT_QUALIFIED','scope':'2020-2023 development forecast screen',
               'observations':len(results),'skipped_warmup_or_unmatured':skipped,'correlation':correlation,
               'direction_accuracy':statistics.mean(r['prediction']*r['forward_return']>0 for r in results),
               'mean_directional_net':net,'mean_long_control_net':control,
@@ -149,6 +152,12 @@ def run(root, warmup, output):
               'Fixed fee/spread/slippage assumptions, not verified dated native rules'],
               'code_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     output.mkdir(parents=True,exist_ok=False)
+    if predictor is not None:
+        import inspect
+        source=Path(inspect.getfile(predictor))
+        report['predictor_sha256']=hashlib.sha256(source.read_bytes()).hexdigest()
+        (output/'measured_predictor.py').write_bytes(source.read_bytes())
+    (output/'measured_driver.py').write_bytes(Path(__file__).read_bytes())
     identity=json.dumps({'venue':'Binance','symbol':'BTCUSDT','inputs':inputs,
                          'frozen_spec':frozen},indent=2)+'\n'
     (output/'input-identity.json').write_text(identity)

@@ -118,7 +118,9 @@ class BinanceReadOnly:
                                                'origClientOrderId':client_identity})
             identity_field = 'clientOrderId'
         if (not isinstance(parent, dict) or parent.get('symbol') != 'BTCUSDT'
-                or parent.get(identity_field) != client_identity):
+                or parent.get(identity_field) != client_identity
+                or parent.get('side') not in ('BUY','SELL')
+                or parent.get('positionSide') != 'BOTH'):
             raise Unknown('Binance order identity does not match durable intent')
         child = None
         if conditional:
@@ -135,6 +137,74 @@ class BinanceReadOnly:
                         or child.get('positionSide') != parent.get('positionSide')):
                     raise Unknown('conditional child observation conflicts with parent')
         return {'parent':parent, 'child':child, 'resubmit_authorized':False}
+
+    def recover_pending(self, state):
+        """Read-only terminal reconciliation; no missing-order retry inference.
+
+        Binance intents store the original native request fields. Unknown or
+        legacy intent kinds stay pending rather than being guessed/migrated.
+        A canceled conditional parent does not settle a still-active child.
+        """
+        resolved = 0
+        for intent in state.pending():
+            kind, payload = intent['kind'], intent['payload']
+            if kind not in ('binance_order', 'binance_algo'):
+                continue
+            try:
+                conditional = kind == 'binance_algo'
+                observed = self.query_intent(intent['id'], conditional=conditional)
+                parent, child = observed['parent'], observed['child']
+                for field in ('symbol', 'side', 'positionSide'):
+                    if field not in payload or payload[field] != parent.get(field):
+                        raise Unknown('recovered order scope conflicts with durable intent')
+                type_field = 'orderType' if conditional else 'type'
+                if not payload.get('type') or parent.get(type_field) != payload['type']:
+                    raise Unknown('recovered order type conflicts with durable intent')
+                for flag in ('reduceOnly', 'priceProtect'):
+                    if flag in payload:
+                        expected={'true':True,'false':False}.get(payload[flag])
+                        if expected is None or parent.get(flag) is not expected:
+                            raise Unknown('recovered execution flag conflicts with intent')
+                if payload.get('closePosition') == 'true':
+                    if not conditional or parent.get('closePosition') is not True:
+                        raise Unknown('close-all intent is not native close-all')
+                else:
+                    quantity_field = 'quantity' if conditional else 'origQty'
+                    if number(parent.get(quantity_field), positive=True) != number(payload.get('quantity'), positive=True):
+                        raise Unknown('recovered order quantity conflicts with durable intent')
+                if conditional:
+                    if number(parent.get('triggerPrice'), positive=True) != number(payload.get('triggerPrice'), positive=True):
+                        raise Unknown('recovered trigger conflicts with durable intent')
+                    if parent.get('workingType') != payload.get('workingType'):
+                        raise Unknown('recovered trigger source conflicts with durable intent')
+                    parent_terminal = parent.get('algoStatus') in ('FINISHED', 'CANCELED', 'EXPIRED', 'REJECTED')
+                    if not parent_terminal:
+                        continue
+                    if child is None:
+                        # FINISHED without child identity is insufficient evidence.
+                        if parent.get('algoStatus') == 'FINISHED':
+                            continue
+                        state.finish(intent['id'], 'confirmed', {'algo_status': parent['algoStatus'], 'child': None})
+                        resolved += 1
+                        continue
+                order = child if conditional else parent
+                status = order.get('status')
+                if status not in ('NEW', 'PARTIALLY_FILLED', 'FILLED', 'CANCELED', 'EXPIRED', 'EXPIRED_IN_MATCH', 'REJECTED'):
+                    raise Unknown('unknown recovered order status')
+                executed = number(order.get('executedQty'))
+                original = number(order.get('origQty'), positive=True)
+                if not 0 <= executed <= original or (status == 'FILLED' and executed != original):
+                    raise Unknown('inconsistent recovered filled quantity')
+                if status == 'NEW' or status == 'PARTIALLY_FILLED':
+                    continue
+                if status == 'REJECTED' and executed:
+                    raise Unknown('rejected order cannot prove a nonzero fill')
+                state.finish(intent['id'], 'confirmed', {'status': status, 'executed_quantity': str(executed)})
+                resolved += 1
+            except (Blocked, Unknown, KeyError, TypeError, ValueError, ArithmeticError):
+                # Keep independent recoverable intents moving, never erase unknowns.
+                continue
+        return {'resolved': resolved, 'pending': len(state.pending())}
 
     def snapshot(self, expected_uid):
         uid=self.account_identity()

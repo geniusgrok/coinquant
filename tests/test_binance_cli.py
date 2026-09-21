@@ -5,6 +5,7 @@ import unittest
 from unittest.mock import patch
 from pancakequant.cli import observe
 from pancakequant.types import Blocked
+from pancakequant.state import State
 
 
 class BinanceCLI(unittest.TestCase):
@@ -31,3 +32,19 @@ class BinanceCLI(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             config=Path(tmp)/'config.json';config.write_text('{"environment":"live","api_host":"api.bybit.com"}')
             with self.assertRaises(Blocked):observe(config)
+
+    def test_pending_recovery_refreshes_account_and_keeps_unknown_blocked(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config=Path(tmp)/'config.json';directory=Path(tmp)/'state'
+            config.write_text(json.dumps(dict(account_uid='123',state_dir=str(directory))))
+            with State(directory,'binance:BTCUSDT:live:123') as state:
+                state.prepare('pq-unknown','binance_order',{})
+            with patch.dict('os.environ',{'PANCAKEQUANT_BINANCE_KEY':'fake','PANCAKEQUANT_BINANCE_SECRET':'fake'}),patch('pancakequant.cli.BinanceReadOnly') as venue:
+                calls=[]
+                venue.return_value.snapshot.side_effect=lambda uid:(calls.append('snapshot') or {'equity_usdt':'100'})
+                venue.return_value.recover_pending.side_effect=lambda state:(calls.append('recover') or {'resolved':0,'pending':1})
+                result=observe(config)
+                self.assertEqual(calls,['snapshot','recover','snapshot'])
+                self.assertEqual(result['status'],'unknown')
+                self.assertFalse(result['write_attempted'])
+                self.assertEqual(result['pending_intents'],1)

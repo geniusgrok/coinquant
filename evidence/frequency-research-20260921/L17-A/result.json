@@ -1,0 +1,44 @@
+{
+  "candidate": "L9-minute-refined",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "cagr": 0.06504207239585846,
+  "mdd_conservative_envelope": "0.0708109907500659801902614332",
+  "final_cny": "12866.76307597084964418174467",
+  "counts": {
+    "invocations": 35064,
+    "no_breakout": 144,
+    "entry": 25,
+    "funding_charge": 2452,
+    "hold": 28906,
+    "regime_exit": 17,
+    "size_below_minimum": 1333,
+    "ambiguous_funding_credit_omitted": 1170,
+    "take": 1,
+    "campaign_consumed": 4639,
+    "stop": 6
+  },
+  "fees_usdt": "3.16398214201950",
+  "funding_bound_paid_usdt": "104.6532660427878673086",
+  "progression_passed": null,
+  "progression_status": "requires paired refined comparison",
+  "code_sha256": "d898ed84779a7320631fe7d74b83575a1e06c629b43ca042a4ceabc67083c531",
+  "limitations": [
+    "Proxy dated rules/fees/liquidity and USDT=USD",
+    "Adverse interval funding valuation, not exact cashflow",
+    "Minute refinement on six days only; remaining interval liquidation-first ambiguity",
+    "Margin transfer and full-position execution unverified"
+  ],
+  "schedule": "hourly",
+  "lifecycle": "one_campaign",
+  "quantity_rule_scope": "2026_snapshot_scenario_NOT_historical",
+  "mean_close_exposure": "0.05430640186037710623314293050",
+  "max_close_exposure": "0.2863025015319979060438592484",
+  "holding_hours": 28924,
+  "turnover_usdt": "4218.642856026",
+  "binding_caps": {
+    "risk": 1358
+  },
+  "mean_entry_regime_age_hours": 54.0,
+  "schedule_sha256": "c75b176a4954541466ffc0d00241e7eea51e093aaa99561cf5638d79c0933642"
+}

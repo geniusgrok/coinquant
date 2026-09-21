@@ -1,0 +1,7 @@
+# L20: conditional regime memory, registered before measurement
+
+L3's linear mapping failed; L19's funding-only crowding also failed. One remaining distinct structural hypothesis on available information is nonlinearity: a day's move may imply continuation in one established trend state and reversal in another. Test a single local conditional-mean model. This supplies NO new external information and may fail from insufficient samples; it is not evidence that a more complex model is better.
+
+Reuse L3's EXACT three bounded causal features, four-day labels,90matured-label warmup, calendar observations and costs. No neighboring feature/period/ridge/horizon/threshold search. Replace only the global linear predictor by the mean normalized outcome among floor(sqrt(N)) nearest matured feature vectors (Euclidean distance excluding constant intercept). Training eligibility is label maturity<=decision time; tie break by chronological input order. No labels determine distance or neighbor count. Prediction sign chooses direction. One mechanism-only trial; no neighbor-count grid or sign reversal.
+
+Development2020-2023 only. Reuse L3's correlation and cost-adjusted directional-return comparison with constant long. Forecasts overlap and are not independent account trades. If it passes, freeze an executable account integration before validation; otherwise reject this nonlinear memory hypothesis. Do not escalate size to compensate for failed information.
