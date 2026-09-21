@@ -1,0 +1,202 @@
+{
+  "L/sparse": {
+    "cagr": {
+      "old": 0.670920908175068,
+      "new": 0.670920908175068
+    },
+    "mdd_conservative_envelope": {
+      "old": "0.3202405052704247166975364889",
+      "new": "0.3202405052704247166975364889"
+    },
+    "final_cny": {
+      "old": "314775.8183090612726551485800",
+      "new": "314775.8183090612726551485800"
+    },
+    "counts": {
+      "old": {
+        "invocations": 795,
+        "entry": 30,
+        "funding_charge": 464,
+        "inventory_hold": 25,
+        "regime_exit": 22,
+        "ambiguous_funding_credit_omitted": 30,
+        "take": 2,
+        "stop": 6,
+        "protection": 1
+      },
+      "new": {
+        "invocations": 795,
+        "entry": 30,
+        "funding_charge": 464,
+        "inventory_hold": 25,
+        "regime_exit": 22,
+        "ambiguous_funding_credit_omitted": 30,
+        "take": 2,
+        "stop": 6,
+        "protection": 1
+      }
+    },
+    "fees_usdt": {
+      "old": "1421.75339653257900",
+      "new": "1421.75339653257900"
+    },
+    "funding_bound_paid_usdt": {
+      "old": "2325.2307851271187358521",
+      "new": "2325.2307851271187358521"
+    },
+    "schedule_sha256": {
+      "old": "d2cfa986b52fdf3c835c254469d3c23b4ab164b611ba42ff7fb61ebd4a2508ad",
+      "new": "d2cfa986b52fdf3c835c254469d3c23b4ab164b611ba42ff7fb61ebd4a2508ad"
+    },
+    "orders_equal": true
+  },
+  "L/four_hour": {
+    "cagr": {
+      "old": 0.6502080748336907,
+      "new": 0.6502080748336907
+    },
+    "mdd_conservative_envelope": {
+      "old": "0.4022102551353163891719722400",
+      "new": "0.4022102551353163891719722400"
+    },
+    "final_cny": {
+      "old": "289470.4570871809162095903243",
+      "new": "289470.4570871809162095903243"
+    },
+    "counts": {
+      "old": {
+        "invocations": 14724,
+        "entry": 55,
+        "inventory_hold": 1184,
+        "funding_charge": 597,
+        "regime_exit": 23,
+        "ambiguous_funding_credit_omitted": 37,
+        "stop": 30,
+        "take": 1
+      },
+      "new": {
+        "invocations": 14724,
+        "entry": 55,
+        "inventory_hold": 1184,
+        "funding_charge": 597,
+        "regime_exit": 23,
+        "ambiguous_funding_credit_omitted": 37,
+        "stop": 30,
+        "take": 1
+      }
+    },
+    "fees_usdt": {
+      "old": "3681.14739086556225",
+      "new": "3681.14739086556225"
+    },
+    "funding_bound_paid_usdt": {
+      "old": "2935.0108809787891146985",
+      "new": "2935.0108809787891146985"
+    },
+    "schedule_sha256": {
+      "old": "abd4d02a5964f8f8d73c0a8f6398339150d82117ea00b52781c7dfd778569f60",
+      "new": "abd4d02a5964f8f8d73c0a8f6398339150d82117ea00b52781c7dfd778569f60"
+    },
+    "orders_equal": true
+  },
+  "L0/sparse": {
+    "cagr": {
+      "old": 0.48326464360496524,
+      "new": 0.48326464360496524
+    },
+    "mdd_conservative_envelope": {
+      "old": "0.2367100820982501622426107526",
+      "new": "0.2367100820982501622426107526"
+    },
+    "final_cny": {
+      "old": "141379.9760250833695540156571",
+      "new": "141379.9760250833695540156571"
+    },
+    "counts": {
+      "old": {
+        "invocations": 795,
+        "entry": 30,
+        "funding_charge": 464,
+        "inventory_hold": 25,
+        "regime_exit": 22,
+        "ambiguous_funding_credit_omitted": 30,
+        "take": 2,
+        "stop": 6,
+        "protection": 1
+      },
+      "new": {
+        "invocations": 795,
+        "entry": 30,
+        "funding_charge": 464,
+        "inventory_hold": 25,
+        "regime_exit": 22,
+        "ambiguous_funding_credit_omitted": 30,
+        "take": 2,
+        "stop": 6,
+        "protection": 1
+      }
+    },
+    "fees_usdt": {
+      "old": "650.57637011389950",
+      "new": "650.57637011389950"
+    },
+    "funding_bound_paid_usdt": {
+      "old": "1052.6486042699380112503",
+      "new": "1052.6486042699380112503"
+    },
+    "schedule_sha256": {
+      "old": "d2cfa986b52fdf3c835c254469d3c23b4ab164b611ba42ff7fb61ebd4a2508ad",
+      "new": "d2cfa986b52fdf3c835c254469d3c23b4ab164b611ba42ff7fb61ebd4a2508ad"
+    },
+    "orders_equal": true
+  },
+  "L0/four_hour": {
+    "cagr": {
+      "old": 0.44006511082828204,
+      "new": 0.44006511082828204
+    },
+    "mdd_conservative_envelope": {
+      "old": "0.2845039535499523061263137999",
+      "new": "0.2845039535499523061263137999"
+    },
+    "final_cny": {
+      "old": "115915.5271710272987571741782",
+      "new": "115915.5271710272987571741782"
+    },
+    "counts": {
+      "old": {
+        "invocations": 14724,
+        "entry": 55,
+        "inventory_hold": 1184,
+        "funding_charge": 597,
+        "regime_exit": 23,
+        "ambiguous_funding_credit_omitted": 37,
+        "stop": 30,
+        "take": 1
+      },
+      "new": {
+        "invocations": 14724,
+        "entry": 55,
+        "inventory_hold": 1184,
+        "funding_charge": 597,
+        "regime_exit": 23,
+        "ambiguous_funding_credit_omitted": 37,
+        "stop": 30,
+        "take": 1
+      }
+    },
+    "fees_usdt": {
+      "old": "1180.42693953271050",
+      "new": "1180.42693953271050"
+    },
+    "funding_bound_paid_usdt": {
+      "old": "1071.9521813551023555411",
+      "new": "1071.9521813551023555411"
+    },
+    "schedule_sha256": {
+      "old": "abd4d02a5964f8f8d73c0a8f6398339150d82117ea00b52781c7dfd778569f60",
+      "new": "abd4d02a5964f8f8d73c0a8f6398339150d82117ea00b52781c7dfd778569f60"
+    },
+    "orders_equal": true
+  }
+}

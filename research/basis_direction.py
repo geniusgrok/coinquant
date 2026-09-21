@@ -51,11 +51,14 @@ def direction_label(t,u,side,trade,marks,funding):
     entry=float(trade[t][1])*(1+side*friction);exit=float(trade[u][1])*(1-side*friction)
     cost=.00075*(entry+exit);worst=best=0.
     for ft,rate in funding.items():
-        if t<ft<=u:
+        boundary=abs(ft-t)<=15000 or abs(ft-u)<=15000
+        if t<ft<u or boundary:
             r=marks[ft//HOUR*HOUR];rate=float(rate)
             lo,hi=float(r[3]),float(r[2])
-            worst+=side*rate*(hi if side*rate>0 else lo)
-            best+=side*rate*(lo if side*rate>0 else hi)
+            adverse=side*rate*(hi if side*rate>0 else lo)
+            favorable=side*rate*(lo if side*rate>0 else hi)
+            worst+=max(0.,adverse) if boundary else adverse
+            best+=min(0.,favorable) if boundary else favorable
     return (side*(exit-entry)-cost-worst)/entry,(side*(exit-entry)-cost-best)/entry
 
 def make_samples(spot,trade,marks,funding,warm):

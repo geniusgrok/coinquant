@@ -1,0 +1,20 @@
+{
+  "basis_tests": "4 passed; malformed candle, missing data, future perturbation, test-label independence, funding boundary",
+  "initial_test_fixture_failure": "incorrect synthetic range size interrupted; fixed hour step; no historical result affected",
+  "sources": {
+    "basis-direction-boundary-run/result.json": "3c1c1ee91777288d117ef1de212bf8ae7cb9bf7540909a5ad70bd3a9e2bc3d40",
+    "basis-direction-boundary-run/samples.json": "4ff9c2321177e664c0225367d3ea4d78a44aa7cb5559afc64a4fabcfb90e03f7",
+    "basis-direction-boundary-run/predictions.json": "6ae331e4ba0d7e7645326a4ef1bb6c270b049c0f3c8ad3a2c170723647699d13",
+    "minute-refinement/L/sparse/result.json": "78ba6c4e9057cd215a164de32f96904c0aab2c6b06b593052a758dff32556eeb",
+    "minute-refinement/L/four_hour/result.json": "29533ab658b0cee219a475648a0459f7bb452f1f36aaac3b338abfc9c98a3376",
+    "minute-refinement/L0/sparse/result.json": "592a57ba6be5b22283724bbab6367a0033cec044d364da185c5582fe40602234",
+    "minute-refinement/L0/four_hour/result.json": "c621dfa1a42f4965326627cd1509f1da7210fce8c7d05058d625746c63c3c1b7"
+  },
+  "chronology": {
+    "all_24_fit_months_matured_plus_7d_embargo": true
+  },
+  "paired_minute_replays": "4 complete; every decompressed order ledger byte-identical to old ledger; final/CAGR/MDD identical",
+  "production": "unchanged; existing writer gates and protection replacement retained; no native account/testnet validation",
+  "protocol_sha256": "7bddc7933c6198254d0d46cd6e67f6607cca82667fbae13ab96fe58aafdae838",
+  "targeted_tests": "9 passed: 4 information + 5 CLI read-only/unknown/execute-before-credentials"
+}

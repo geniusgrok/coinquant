@@ -20,12 +20,13 @@ class BasisDirectionTests(unittest.TestCase):
         self.assertFalse(valid(row))
     def test_funding_boundary_direction_and_cost(self):
         t=HOUR;u=10*HOUR
-        f={t:.9,t+HOUR:.01,u:.01,u+HOUR:.9}
+        f={t:.01,t+HOUR:.01,u:.01,u+HOUR:.9}
         a=direction_label(t,u,1,self.rows,self.rows,f)
         b=direction_label(t,u,-1,self.rows,self.rows,f)
-        self.assertLess(a[0],-.02);self.assertGreater(b[0],.01)
+        self.assertLess(a[0],-.02);self.assertGreater(b[0],0)
         self.assertLessEqual(a[0],a[1]);self.assertLessEqual(b[0],b[1])
-        self.assertEqual(a,direction_label(t,u,1,self.rows,self.rows,{t+HOUR:.01,u:.01}))
+        self.assertEqual(a,direction_label(t,u,1,self.rows,self.rows,{t:.01,t+HOUR:.01,u:.01}))
+        self.assertLess(a[0],direction_label(t,u,1,self.rows,self.rows,{t+HOUR:.01})[0])
     def test_prediction_does_not_read_test_labels(self):
         rng=np.random.default_rng(7)
         train=[{'x':rng.normal(size=6).tolist(),'gross':float(rng.normal())} for _ in range(80)]

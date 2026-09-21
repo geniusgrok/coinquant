@@ -4,21 +4,21 @@
     "control": {
       "all": {
         "n": 80,
-        "mean_net": -0.0014993077680755384,
+        "mean_net": -0.0015059126668632683,
         "mean_increment": 0.0,
         "mse": 0.008290241499621404,
         "positive": 37
       },
       "2022": {
         "n": 40,
-        "mean_net": -0.007270264601457144,
+        "mean_net": -0.007277876269411393,
         "mean_increment": 0.0,
         "mse": 0.01040158524885645,
         "positive": 18
       },
       "2023": {
         "n": 40,
-        "mean_net": 0.0042716490653060685,
+        "mean_net": 0.004266050935684858,
         "mean_increment": 0.0,
         "mse": 0.006178897750386356,
         "positive": 19
@@ -36,53 +36,53 @@
     "continuation": {
       "all": {
         "n": 80,
-        "mean_net": -0.0044578777381451455,
-        "mean_increment": -0.002958569970069608,
+        "mean_net": -0.0044654531997946525,
+        "mean_increment": -0.0029595405329313844,
         "mse": 0.008641834118507625,
         "positive": 34
       },
       "2022": {
         "n": 40,
-        "mean_net": -0.01318740454159636,
-        "mean_increment": -0.005917139940139216,
+        "mean_net": -0.013196957335274161,
+        "mean_increment": -0.005919081065862769,
         "mse": 0.011097769619538355,
         "positive": 15
       },
       "2023": {
         "n": 40,
-        "mean_net": 0.0042716490653060685,
+        "mean_net": 0.004266050935684858,
         "mean_increment": 0.0,
         "mse": 0.006185898617476891,
         "positive": 19
       },
       "robustness": {
         "month_block_mean_increment_95": [
-          -0.007583378216058267,
+          -0.007586403347056013,
           0.0
         ],
-        "leave_one_month_out_min": -0.0031142841790206396,
-        "drop_best_three_mean_increment": -0.0030738389299424496,
+        "leave_one_month_out_min": -0.0031153058241382993,
+        "drop_best_three_mean_increment": -0.003074847306941698,
         "changed_directions": 3
       }
     },
     "reversal": {
       "all": {
         "n": 80,
-        "mean_net": -0.0014993077680755384,
+        "mean_net": -0.0015059126668632683,
         "mean_increment": 0.0,
         "mse": 0.008325860628877529,
         "positive": 37
       },
       "2022": {
         "n": 40,
-        "mean_net": -0.007270264601457144,
+        "mean_net": -0.007277876269411393,
         "mean_increment": 0.0,
         "mse": 0.01047522191036514,
         "positive": 18
       },
       "2023": {
         "n": 40,
-        "mean_net": 0.0042716490653060685,
+        "mean_net": 0.004266050935684858,
         "mean_increment": 0.0,
         "mse": 0.006176499347389917,
         "positive": 19
@@ -333,8 +333,8 @@
       "score_control_r2": 0.06729601364970861
     }
   ],
-  "source_sha256": "15b9f6048c34683b98135f784777b773567e81d19c5a9182687f5e236eededbe",
-  "protocol_sha256": "800536314e3178ca1bd53440e8718688e1861e7e25e66da05acec77c6b7d53ae",
+  "source_sha256": "9855ce150bc360a799c0e3999147200ddf68849186efc2e5cdc4f26d394d5c25",
+  "protocol_sha256": "99498c396cf7187af50afd11a276be98cb3d77011ed19bb6bd91623a8675954b",
   "limitations": [
     "Retrospective mechanism design; chronological fitting is not independent unseen evidence",
     "No account, margin, liquidation, protection or account CAGR",
