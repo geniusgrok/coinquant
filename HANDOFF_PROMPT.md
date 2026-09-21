@@ -320,3 +320,11 @@ short return and settled funding inputs. research/linear_forecast.py screens onl
 2020-2023 at frozen sparse invocation times. Two tests prove unresolved labels do
 not affect coefficients. L3 has NOT yet been measured; do not infer success.
 It is a forecast diagnostic, not a tradable account or formal CAGR.
+
+## CI cleanup after durable evidence preservation
+
+Removed the one-time public schema, ambiguity acquisition and native-artifact Git
+write hooks. One 10-minute read-only job remains: compile and offline unittest.
+No full-history optimization or network collection runs in CI. Local full suite
+passed 110 tests in 1.323 seconds; one existing ResourceWarning in a replay test
+fixture is not a test failure. Hosted status must be checked separately.
