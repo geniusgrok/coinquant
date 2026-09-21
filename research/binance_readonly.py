@@ -18,7 +18,8 @@ PUBLIC = {'/fapi/v1/time', '/fapi/v1/exchangeInfo', '/fapi/v1/klines',
 PRIVATE = {'/api/v3/account', '/fapi/v3/account', '/fapi/v1/accountConfig',
            '/fapi/v1/symbolConfig', '/fapi/v3/positionRisk', '/fapi/v1/openOrders',
            '/fapi/v1/openAlgoOrders', '/fapi/v1/userTrades',
-           '/fapi/v1/commissionRate', '/fapi/v1/leverageBracket'}
+           '/fapi/v1/commissionRate', '/fapi/v1/leverageBracket',
+           '/fapi/v1/order', '/fapi/v1/algoOrder'}
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -72,6 +73,42 @@ class BinanceReadOnly:
         if type(uid) is not int or uid <= 0:
             raise Unknown('Binance account UID is unavailable')
         return str(uid)  # do not retain or log the raw spot account response
+
+    def query_intent(self, client_identity, *, conditional=False):
+        """Observe a stable identity, including the conditional order's child.
+
+        Missing/expired history remains Unknown. Never authorizes resubmission;
+        a parent trigger/cancel status is not evidence of its child's fill state.
+        """
+        if (not isinstance(client_identity, str) or not 1 <= len(client_identity) <= 36
+                or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.:/'
+                       for c in client_identity)):
+            raise Blocked('invalid stable Binance order identity')
+        if conditional:
+            parent = self.get('/fapi/v1/algoOrder', {'clientAlgoId':client_identity})
+            identity_field = 'clientAlgoId'
+        else:
+            parent = self.get('/fapi/v1/order', {'symbol':'BTCUSDT',
+                                               'origClientOrderId':client_identity})
+            identity_field = 'clientOrderId'
+        if (not isinstance(parent, dict) or parent.get('symbol') != 'BTCUSDT'
+                or parent.get(identity_field) != client_identity):
+            raise Unknown('Binance order identity does not match durable intent')
+        child = None
+        if conditional:
+            actual = parent.get('actualOrderId')
+            if actual is None:
+                raise Unknown('conditional child identity is missing')
+            if actual not in ('', '0', 0):
+                if not str(actual).isdigit() or int(actual) <= 0:
+                    raise Unknown('invalid conditional child identity')
+                child = self.get('/fapi/v1/order', {'symbol':'BTCUSDT','orderId':int(actual)})
+                if (not isinstance(child, dict) or child.get('symbol') != 'BTCUSDT'
+                        or str(child.get('orderId')) != str(actual)
+                        or child.get('side') != parent.get('side')
+                        or child.get('positionSide') != parent.get('positionSide')):
+                    raise Unknown('conditional child observation conflicts with parent')
+        return {'parent':parent, 'child':child, 'resubmit_authorized':False}
 
     def snapshot(self, expected_uid):
         uid=self.account_identity()
