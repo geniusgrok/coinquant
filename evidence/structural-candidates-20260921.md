@@ -31,8 +31,9 @@ MDD stayed at 77.05%. Therefore stop/liquidation ambiguity needs evidence repair
 but cannot explain the economic failure.
 
 The next structural path is to evaluate a stable-settlement BTC linear
-perpetual rather than continue tuning the BTC-settled inverse contract. OKX
-BTCUSDT perpetual launched before the formal 2020 start and, since July 2026,
-attached TP/SL is created on partial fills with remaining parent quantity
-cancelled. Before switching production, official 2020-boundary trade/mark/funding
-history must be proven accessible and the same frozen economic protocol rerun.
+perpetual rather than continue tuning the BTC-settled inverse contract. Current official OKX
+BTCUSDT metadata supports listing before 2020. The earlier assertion that a
+July-2026 update guarantees partial-fill TP/SL and remaining-parent cancellation
+has not been independently substantiated; treat those semantics as UNVERIFIED.
+See `linear-feasibility-20260921.md`. Native boundary history, complete historical
+rules and execution semantics must be verified before any production switch.

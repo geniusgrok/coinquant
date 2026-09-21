@@ -1,0 +1,10 @@
+test_flat_prices_have_no_signal_or_nan (test_sparse_trend.SparseTrendTests.test_flat_prices_have_no_signal_or_nan) ... ok
+test_future_stale_missing_and_short_history_fail_closed (test_sparse_trend.SparseTrendTests.test_future_stale_missing_and_short_history_fail_closed) ... ok
+test_long_short_symmetry_and_bounded_conviction (test_sparse_trend.SparseTrendTests.test_long_short_symmetry_and_bounded_conviction) ... ok
+test_same_complete_candle_produces_same_decision (test_sparse_trend.SparseTrendTests.test_same_complete_candle_produces_same_decision) ... ok
+test_scale_invariance (test_sparse_trend.SparseTrendTests.test_scale_invariance) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.008s
+
+OK

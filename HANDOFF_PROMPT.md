@@ -6,6 +6,16 @@ Repository: `ychenracing/pancakequant`
 Active branch: `research/on-demand-btc-20260920`
 Main must remain unchanged until the active acceptance is genuinely met.
 
+## Continuation update
+
+Read the latest continuation section of PROJECT_STATE.md and
+`evidence/linear-feasibility-20260921.md` before following historical steps below.
+Both old evidence jobs were still queued during this continuation. The existing
+OKX probe has been repaired on the active branch; old job success alone cannot
+prove qualification. L1 signal prototype plus preregistration exists, with ten
+local signal/probe tests passed. Native linear economics and production integration
+are NOT completed. Keep the original frozen economic/safety gates unchanged.
+
 ## 1. Recovery order
 
 Before changing code:

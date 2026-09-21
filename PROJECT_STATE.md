@@ -17,6 +17,31 @@ Formal economics remain frozen:
 
 No live trading, transfers, credential changes, or real account-setting changes are authorized by this work.
 
+## Latest continuation: stable-settlement feasibility and L1
+
+The 2026-09-21 continuation recovered remote HEAD `d67bf03b` and verified main
+still `c886b7c6`. Runs `35559122193` (minutes) and `35559716288` (pre-existing
+OKX probe) were both queued when checked. No new native dataset or economics
+has been produced. Do not confuse the separate OKX probe branch's stale state
+files with this current recovery entry.
+
+New work on this branch:
+- repaired the existing OKX boundary probe to reject false-positive listing,
+  missing boundary, malformed/unconfirmed/duplicate bars and invalid funding;
+- current official instrument metadata supports pre-2020 linear USDT listing;
+- partial-fill/full-position protection and native historical coverage remain
+  unverified; corrected the unsupported historical protection assertion;
+- implemented the isolated L1 causal signal and preregistered its proposed
+  holding/risk lifecycle in `research/linear-hypothesis.md`;
+- 5 probe and 5 signal tests passed locally; production runtime unchanged.
+
+L1 is only a signal prototype, not a completed replay/production trading model.
+No new CAGR or MDD exists. Its 2024-end validation data has not been inspected.
+See `evidence/linear-feasibility-20260921.md` for sources, access failures and
+exact continuation. Native linear history, rule timeline and protection facts
+block meaningful native qualification; implement/measure the remaining linear
+replay after resolving those inputs. Reuse completed inverse evidence.
+
 ## Git / remote state
 
 - `main`: `c886b7c63c6455bd7c933269e32cd35a6fb3e09a` (unchanged)
