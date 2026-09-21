@@ -1,0 +1,126 @@
+{
+  "qualification": "INFORMATION_SCREEN_NOT_ACCOUNT",
+  "advance": false,
+  "evaluation": {
+    "all_invocations": {
+      "all": {
+        "n": 230,
+        "control_mean_net": -0.0025508369786021987,
+        "expanded_mean_net": -0.0025508369786021987,
+        "paired_increment": 0.0,
+        "long_mean_net": -0.00549260600916417,
+        "L_signal_mean_net": 0.002429176781168478,
+        "changed_decisions": 0,
+        "expanded_active": 179,
+        "expanded_active_L_flat": 161,
+        "expanded_L_flat_net_sum": -1.1454031647472551
+      },
+      "2022": {
+        "n": 120,
+        "control_mean_net": -0.015458627661168676,
+        "expanded_mean_net": -0.015458627661168676,
+        "paired_increment": 0.0,
+        "long_mean_net": -0.02792089210203732,
+        "L_signal_mean_net": -0.0011946487043303594,
+        "changed_decisions": 0,
+        "expanded_active": 96,
+        "expanded_active_L_flat": 94,
+        "expanded_L_flat_net_sum": -1.7116774748205978
+      },
+      "2023": {
+        "n": 110,
+        "control_mean_net": 0.011530389220561231,
+        "expanded_mean_net": 0.011530389220561231,
+        "paired_increment": 0.0,
+        "long_mean_net": 0.018974615183061084,
+        "L_signal_mean_net": 0.006382440947167209,
+        "changed_decisions": 0,
+        "expanded_active": 83,
+        "expanded_active_L_flat": 67,
+        "expanded_L_flat_net_sum": 0.5662743100733426
+      },
+      "robustness": {
+        "month_block_95": [
+          0.0,
+          0.0
+        ],
+        "drop_best_increment_event": 0.0,
+        "drop_best_profit_event": 0.0,
+        "drop_best_increment_month": 0.0,
+        "drop_best_profit_month": 0.0,
+        "best_increment_month": "2022-01",
+        "best_profit_month": "2022-07"
+      }
+    },
+    "nonoverlap": {
+      "all": {
+        "n": 80,
+        "control_mean_net": 0.004523820148110057,
+        "expanded_mean_net": 0.004523820148110057,
+        "paired_increment": 0.0,
+        "long_mean_net": -0.002738722565075192,
+        "L_signal_mean_net": 0.0019091563944100692,
+        "changed_decisions": 0,
+        "expanded_active": 67,
+        "expanded_active_L_flat": 60,
+        "expanded_L_flat_net_sum": 0.20917310029599878
+      },
+      "2022": {
+        "n": 40,
+        "control_mean_net": -0.0005875104740023371,
+        "expanded_mean_net": -0.0005875104740023371,
+        "paired_increment": 0.0,
+        "long_mean_net": -0.024490390410944956,
+        "L_signal_mean_net": -0.0006153314649272847,
+        "changed_decisions": 0,
+        "expanded_active": 33,
+        "expanded_active_L_flat": 32,
+        "expanded_L_flat_net_sum": 0.001112839636997832
+      },
+      "2023": {
+        "n": 40,
+        "control_mean_net": 0.009635150770222447,
+        "expanded_mean_net": 0.009635150770222447,
+        "paired_increment": 0.0,
+        "long_mean_net": 0.01901294528079458,
+        "L_signal_mean_net": 0.004433644253747424,
+        "changed_decisions": 0,
+        "expanded_active": 34,
+        "expanded_active_L_flat": 28,
+        "expanded_L_flat_net_sum": 0.20806026065900096
+      },
+      "robustness": {
+        "month_block_95": [
+          0.0,
+          0.0
+        ],
+        "drop_best_increment_event": 0.0,
+        "drop_best_profit_event": 0.0,
+        "drop_best_increment_month": 0.0,
+        "drop_best_profit_month": 0.0,
+        "best_increment_month": "2022-01",
+        "best_profit_month": "2023-11"
+      }
+    }
+  },
+  "samples": 428,
+  "primary_samples": 152,
+  "rejected_spot_hours": [
+    1582110000000,
+    1583312400000,
+    1608559200000,
+    1613012400000,
+    1619323200000,
+    1628816400000,
+    1640318400000,
+    1679659200000
+  ],
+  "source_sha256": "466b4fa78bc8dbe996592d78821269ef7613d38a000f7d61c5c3f21442c85bba",
+  "protocol_sha256": "ca2a869771f0aaead55fbf788f35272a8552b49002770558410059f2a088f45a",
+  "limitations": [
+    "Proxy costs and delayed live-kline availability, not historically proven execution",
+    "Revised archive vintages; not point-in-time raw snapshots",
+    "Sparse observations and reused historical research, not independent future validation",
+    "No continuous account, margin, liquidation, native protection or CNY valuation measured"
+  ]
+}
