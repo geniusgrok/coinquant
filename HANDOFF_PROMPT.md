@@ -301,3 +301,22 @@ September 1-19 funding API returned 57 native settlements, retained exactly.
 Daily funding archive returned 404; use the verified official API tail instead.
 No production exchange change, no live writes, no main merge. All candidates
 remain NOT_QUALIFIED; continue native contract/data feasibility and new alpha.
+
+## Native Binance continuation / L3 preregistration
+
+Binance current instrument confirms BTCUSDT PERPETUAL USDT and pre-2020 listing.
+December 2019 native trade (744 hours) and funding (93 events) restored from the
+official API. Mark starts 2019-12-23; no earlier mark is invented. Formal account
+start remains January 1. See evidence/binance-linear-feasibility-20260921.md.
+
+research/acquire_binance.py is acquiring checksum-verified monthly trade/mark/
+funding and September daily price archives locally, with four bounded workers.
+Known December archive 404s use the separately preserved API warmup evidence.
+Do not reacquire successful archives; the script verifies and reuses cached files.
+
+L3 is preregistered in research/linear-l3-hypothesis.md before measurement. It is
+one expanding ridge forecast using matured four-day labels and causal momentum,
+short return and settled funding inputs. research/linear_forecast.py screens only
+2020-2023 at frozen sparse invocation times. Two tests prove unresolved labels do
+not affect coefficients. L3 has NOT yet been measured; do not infer success.
+It is a forecast diagnostic, not a tradable account or formal CAGR.
