@@ -1,97 +1,57 @@
-# Current continuation — L29 retained, validation not yet used
+# Current state — L29 improvement preserved, formal qualification failed
 
-Best development candidate is now L29: L21 volatility entry size held unchanged
-through the original campaign. Sparse CAGR71.28203330149914%, MDD envelope
-42.43104313829324226747363313%, CNY86072.90004899015608708070151.
-Hourly54.13134%/53.24667%; only sparse is the formal execution schedule.
-L27 anchored invalidation and L28 same-invocation reversal rejected. Read
-research/l27-*, l28-*, l29-* and evidence/return-capture-20260921/summary.json.
-L21 exact control and previous source/evidence remain preserved.
-8 targeted tests passed; six L29 future-perturbation prefixes and468common
-market states match; entire L21 control equity/orders/decisions traces match.
-2024+economics remain unused at this checkpoint. Next freeze L29 and extend
-only replay coverage to the frozen endpoint, then evaluate the continuous
-account without selecting another model on validation. Native qualification,
-historical rules/valuation and exchange write lifecycle still unresolved.
-Full new originals are local pending the next evidence archive receipt; do not
-claim them remotely saved at this checkpoint. No live/testnet account writes.
+ACTIVE / NOT_QUALIFIED. Branch research/on-demand-btc-20260920; do not merge main.
+Formal CNY10000,2020-01-01..2026-09-20exclusive, netCAGR>=150%, continuousMDD<50%,
+original sparse triggers, isolated20x Binance BTCUSDT. No account writes authorized
+or performed. Main last checked c886b7c63c6455bd7c933269e32cd35a6fb3e09a.
 
-## Previous recovery context (superseded candidate selection only)
+## Current research and validation
 
-# Current state — return-first research L21–L26
-
-ACTIVE / NOT_QUALIFIED. Same task and branch research/on-demand-btc-20260920.
-Formal: CNY10000;2020-01-01 through2026-09-20exclusive; cost-net CAGR>=150%,
-continuous full-account MDD<50%; original frozen sparse schedule; Binance BTCUSDT
-USDT perpetual, one-way isolated20x. No real or testnet account actions authorized
-or performed. Production remains read-only and new-risk blocked. Main unchanged;
-last verified main c886b7c63c6455bd7c933269e32cd35a6fb3e09a. Query current refs.
-
-## Current candidate and evidence
-
-Read evidence/return-first-20260921/REPORT.md, summary.json, verification.json,
-and originals.json. Best measured development candidate L21: sparse CAGR42.227355%,
-MDD envelope48.817063%,final CNY40920.89,mean exposure0.578919x,no liquidations.
-Hourly32.8787%/62.0488%. These are2020-2023 diagnostics, NOT formal acceptance.
-2024+economics remain unused. Six future-perturbation prefixes match,468common
-market states match;10targeted offline checks pass. No fresh full local-suite claim.
-
-B1 <=1x protected long35.6457%/80.3482%;B2 <=1x channel56.3935%/59.3256%.
-L22trailing26.5759%/45.4725%;L23long-flat24.7980%/53.2072%;L24fresh breakout
-32.0992%/43.4494%;L25slow mean1.5108%/48.2131%;L26continuous channel
-12.6415%/48.6393%. All sparse,all NOT_QUALIFIED. No new leverage/parameter grid.
-Prior L17sparse6.702496%/7.728925%exactly reproduced. Precise sources and full
-traces accompany each run; initial truncated streams and correctedL24 preserved.
+Read evidence/return-capture-20260921/REPORT.md, verification.json, originals.json.
+L29 preserves L21 entry volatility size without intra-campaign resizing. Original
+six-day-minute development:71.2820%CAGR/42.4310%MDD; L21:42.2274%/48.8171%.
+Frozen before holdout at0eaf76753fd2b9387a56b15391db5b7bb8e89e22.
+2024+HAS NOW BEEN USED for validation/failure analysis. No unseen claim remains.
+Full continuous final24-day-minute comparison:
+L21 CAGR0.2007671113511038, MDD0.5783639800266933205292557952, CNY34187.67525877459802610382740.
+L29 CAGR0.3576612871420546, MDD0.5479327086513183762218691119, CNY78019.33606695087255024475611.
+Both NOT_QUALIFIED. L27 anchored invalidation/L28 same-run reversal rejected.
+All original and failed raw paths preserved; no post-validation strategy retuning.
 
 ## Recovery
 
-Restore the complete archive in originals.json; verify byte length and SHA256,
-then verify its per-file manifest. It contains raw runs, exact measured source,
-current source snapshot, all restored native archive inputs, warmup/mark repairs,
-and original instruction. It does not overwrite newer code automatically.
-The repository's current source may include non-economic integrity guards after
-initial runs; finalL21controls reproduce seven economic/count/schedule fields.
+Restore new originals.json archive and its prior140850994-byte dependency.
+Verify lengths/SHA256/manifests. Never overwrite newer remote source automatically.
+From repo root, use research.persistent_hold_replay with root/minutes=NATIVE_ROOT,
+warmup=evidence/binance-boundary-20260921,repairs=evidence/binance-mark-repair-20260921,
+quantity-rules=evidence/binance-boundary-20260921/current-instrument.json,
+--schedule sparse --allocation volatility --lifecycle one_campaign
+--reference entry_inventory --full-window; repeat --extra-minute-day for each
+raw exit-minute-days.json value. Retain L21 exact control with --reference channel.
+Driver default still historical; do not mistake defaults for L29 selection.
 
-Run from repo root (paths refer to unpacked archive):
+## Evidence
 
-python -m research.persistent_hold_replay --root NATIVE_ROOT --warmup evidence/binance-boundary-20260921 --repairs evidence/binance-mark-repair-20260921 --minutes NATIVE_ROOT --quantity-rules evidence/binance-boundary-20260921/current-instrument.json --schedule sparse --lifecycle one_campaign --allocation volatility --output NEW_OUTPUT
+8targeted tests and minute reconstruction test passed;3invalid-input checks.
+L21 legacy control traces byte-identical. L29six causal prefixes and468shared
+market states match. Expanded-data development/full prefix identical:
+{"decisions": 468, "orders": 2588, "equity": 144340}.795full sparse calls;zero liquidation classifications.
+42exit-day archives independently checksum verified;24unique minute-refined days.
+This is not a full tick path/native historical economics qualification.
 
-This explicitly selectsL21. Driver default fixed allocation remains the historical
-L9reference; do not mistake defaults, rejected explicit options or old evidence
-for production promotion. Both schedules share code and maintain independent accounts.
+## Remaining work
 
-## Current implementation and unresolved work
+Economic target is unmet. Do not rescue with arbitrary parameter/risk grids,
+repeat rejected mechanisms, lower150%/50%, or add phantom exact-funding credits.
+A new causal hypothesis must establish incremental information before another
+model change; report holdout reuse honestly. Existing funding interval and
+full-year failure decomposition are in the evidence. L29simplification is valuable
+but not proven sufficient. Do not revert it blindly to L17 or promote to live.
+Native dated fee/filter/margin rules, USDT valuation, exact funding marks remain.
+Binance production stays read-only; full protected execution and authorized
+testnet validation remain unimplemented/unverified. LegacyBybit cannot substitute.
+No credentials or authorized testnet account were supplied. No live fallback.
 
-funded_target preflights actual incremental order, weighted entry, available wallet,
-full-position protection and funded liquidation boundary. Adds never release old
-allocated margin. Actual reductions release proportionally. No upward lot rounding.
-L21target uses20completed daily returns,7-day absence stress,10%gap/1%funding
-scenario reserves. These are not guaranteed bounds or formal risk qualification.
-Default Binance CLI still does not support the complete protected write lifecycle.
-
-Unresolved: credible150%mechanism; dated economic rules; settlement marks/funding;
-USDT valuation; real protected-entry/partial-fill/margin/unknown recovery lifecycle
-and explicitly authorized testnet account verification. Do not replace testnet by live.
-
-## Next decision
-
-The attachment supersedes the old rule requiring new external information after
-each failure. Same-information structural research is allowed and was performed.
-No current measured mechanism supports150%. Do not continue stop/risk/Kelly/
-neighbor/mean-horizon grids, delete short hedges from gross-PnL attribution, or
-assume more frequent invocation improves return. L21does not bind funding capacity.
-
-Next useful research is a specifically preregistered direction/holding-return
-mechanism grounded in full-path error attribution, or independent input evidence;
-not arbitrary algorithm rotation. No such further advantage has been established
-at this checkpoint. Preserve the target and untouched validation partition.
-A checkpoint, tests or successful push are not completion; do not merge main.
-
-## Remote preservation
-
-Native Git reads work; native write dry-run failed for unavailable credentials.
-Authorized GitHub connector writes with non-forced refs; fetch/readback checks
-complete tree and changed bytes/SHA256/Git objects. Last implementation checkpoint
-before this evidence save:83f41d23fd18bb625ff3d85c20f94aefd49d5cba,CI35583436828passed.
-The commit containing this state is newer: query actual remote branch and Actions.
-Full historical state remains in earlier Git commits and existing evidence receipts.
+Native Git write credentials unavailable. Connector checkpoint writes/readback
+verified13files/complete tree. New final receipt records final evidence identity.
+Always recheck actual remote HEAD and parallel work before the next write.

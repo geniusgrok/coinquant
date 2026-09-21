@@ -17,7 +17,8 @@ def trace(root, name):
 
 
 def analyze(run, native, warmup, repairs, output):
-    series, _, warm, identity = inputs(native, warmup, repairs)
+    result = json.loads((run/'result.json').read_text())
+    series, _, warm, identity = inputs(native, warmup, repairs, result.get('validation_used', False))
     trade = series['klines']; start = min(trade); end = max(trade) + HOUR
     decisions = trace(run, 'decisions'); orders = trace(run, 'orders'); equity = trace(run, 'equity')
     times = [int(r['time']) for r in decisions]
@@ -78,7 +79,22 @@ def analyze(run, native, warmup, repairs, output):
         if r['event'] != 'open': continue
         t = int(r['time']); signal = states[t//DAY*DAY]; q = D(r['quantity'])
         classifications['no_direction' if not signal else 'flat_with_direction' if not q else 'aligned' if q*signal > 0 else 'opposite_waiting_trigger'] += 1
-    out = dict(qualification='DIAGNOSTIC_ONLY', source_hashes=result['source_hashes'],
+    sizing = []
+    previous = None
+    for r in decisions:
+        if previous is not None and r['action'] in ('rebalance_add','rebalance_reduce'):
+            old_target = D(previous['edge_target_fraction'])
+            if old_target and D(previous['equity']) > 0:
+                t, pt = int(r['time']), int(previous['time'])
+                price = max(D(trade[t][1]), D(series['markPriceKlines'][t][1]))
+                old_price = max(D(trade[pt][1]), D(series['markPriceKlines'][pt][1]))
+                sizing.append(dict(time=iso(t), action=r['action'], quantity_before=r['quantity'],
+                    requested=r['requested_quantity'], accepted_delta=r['accepted_quantity'],
+                    equity_factor=str(D(r['equity'])/D(previous['equity'])),
+                    volatility_target_factor=str(D(r['edge_target_fraction'])/old_target),
+                    inverse_price_factor=str(old_price/price), binding=r['binding_cap']))
+        previous = r
+    out = dict(qualification='DIAGNOSTIC_ONLY', sizing_changes=sizing, source_hashes=result['source_hashes'],
                schedule_sha256=result['schedule_sha256'], input_identity=identity,
                actions=dict(Counter(d['action'] for d in decisions)),
                hourly_state_counts=dict(classifications), regime_changes=changes, failed_breakout_intervals=failures,

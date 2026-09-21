@@ -1,0 +1,1215 @@
+{
+  "qualification": "DIAGNOSTIC_ONLY",
+  "sizing_changes": [],
+  "source_hashes": {
+    "/workspace/scratch/07840788e266/pancakequant/research/persistent_hold_replay.py": "85fd761de0b63a4ab1f4d197c63d88aac594e0dbab8fa5e6ab47cf4803ca248b",
+    "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
+    "research/volatility_target.py": "1dceb5aa153990b4697c32ff36a805edf2adae2da13e06ca8255f40421f99c09",
+    "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
+    "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
+    "pancakequant/binance.py": "233849483c012fe6d891e3a8a976e313e193ea3693e50646f0c332ecee9f2917",
+    "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7"
+  },
+  "schedule_sha256": "d2cfa986b52fdf3c835c254469d3c23b4ab164b611ba42ff7fb61ebd4a2508ad",
+  "actions": {
+    "no_signal": 4,
+    "entry": 50,
+    "hold": 626,
+    "regime_exit": 29,
+    "campaign_consumed": 86
+  },
+  "hourly_state_counts": {
+    "no_direction": 144,
+    "flat_with_direction": 9276,
+    "aligned": 48006,
+    "opposite_waiting_trigger": 1470
+  },
+  "regime_changes": [
+    {
+      "time": "2020-01-07T00:00:00Z",
+      "old": 0,
+      "new": 1,
+      "completed_close": "7757.39",
+      "prior_high": "7691",
+      "prior_low": "6427",
+      "first_trigger": "2020-01-10T06:00:00Z"
+    },
+    {
+      "time": "2020-02-27T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "8792.22",
+      "prior_high": "10540.00",
+      "prior_low": "9247.00",
+      "first_trigger": "2020-02-28T05:00:00Z"
+    },
+    {
+      "time": "2020-04-07T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "7325.73",
+      "prior_high": "7290.00",
+      "prior_low": "4913.49",
+      "first_trigger": "2020-04-08T21:00:00Z"
+    },
+    {
+      "time": "2020-09-04T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "10141.08",
+      "prior_high": "12499.42",
+      "prior_low": "11130.00",
+      "first_trigger": "2020-09-04T16:00:00Z"
+    },
+    {
+      "time": "2020-10-11T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "11294.79",
+      "prior_high": "11110.00",
+      "prior_low": "10132.21",
+      "first_trigger": "2020-10-11T03:00:00Z"
+    },
+    {
+      "time": "2021-05-18T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "43566.18",
+      "prior_high": "59654.00",
+      "prior_low": "43866.00",
+      "first_trigger": "2021-05-21T12:00:00Z"
+    },
+    {
+      "time": "2021-07-26T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "35370.66",
+      "prior_high": "35281.55",
+      "prior_low": "29242.24",
+      "first_trigger": "2021-07-26T11:00:00Z"
+    },
+    {
+      "time": "2021-09-22T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "40726.10",
+      "prior_high": "52950.00",
+      "prior_low": "42088.00",
+      "first_trigger": "2021-09-24T23:00:00Z"
+    },
+    {
+      "time": "2021-10-06T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "51455.12",
+      "prior_high": "49544.48",
+      "prior_low": "39503.58",
+      "first_trigger": "2021-10-06T09:00:00Z"
+    },
+    {
+      "time": "2021-11-19T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "56921.05",
+      "prior_high": "69198.70",
+      "prior_low": "58336.68",
+      "first_trigger": "2021-11-19T17:00:00Z"
+    },
+    {
+      "time": "2022-02-08T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "43829.99",
+      "prior_high": "43495.00",
+      "prior_low": "32853.83",
+      "first_trigger": "2022-02-10T13:00:00Z"
+    },
+    {
+      "time": "2022-04-12T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "39505.60",
+      "prior_high": "48200.00",
+      "prior_low": "40852.00",
+      "first_trigger": "2022-04-17T09:00:00Z"
+    },
+    {
+      "time": "2022-07-20T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "23385.90",
+      "prior_high": "22800.00",
+      "prior_low": "18563.00",
+      "first_trigger": "2022-07-20T14:00:00Z"
+    },
+    {
+      "time": "2022-08-20T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "20824.90",
+      "prior_high": "25200.00",
+      "prior_low": "22370.00",
+      "first_trigger": "2022-08-23T02:00:00Z"
+    },
+    {
+      "time": "2022-09-13T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "22386.00",
+      "prior_high": "21925.60",
+      "prior_low": "18500.00",
+      "first_trigger": "2022-09-13T02:00:00Z"
+    },
+    {
+      "time": "2022-11-09T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "18534.00",
+      "prior_high": "21473.70",
+      "prior_low": "18600.00",
+      "first_trigger": "2022-11-10T11:00:00Z"
+    },
+    {
+      "time": "2022-12-14T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "17777.10",
+      "prior_high": "17430.00",
+      "prior_low": "15984.10",
+      "first_trigger": "2022-12-15T11:00:00Z"
+    },
+    {
+      "time": "2023-02-11T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "21618.60",
+      "prior_high": "24281.40",
+      "prior_low": "21684.70",
+      "first_trigger": "2023-02-11T21:00:00Z"
+    },
+    {
+      "time": "2023-02-16T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "24332.60",
+      "prior_high": "24281.40",
+      "prior_low": "21338.00",
+      "first_trigger": "2023-02-20T03:00:00Z"
+    },
+    {
+      "time": "2023-03-09T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "21695.40",
+      "prior_high": "25347.60",
+      "prior_low": "21883.20",
+      "first_trigger": "2023-03-09T06:00:00Z"
+    },
+    {
+      "time": "2023-03-15T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "24682.50",
+      "prior_high": "24588.00",
+      "prior_low": "19521.60",
+      "first_trigger": "2023-03-16T08:00:00Z"
+    },
+    {
+      "time": "2023-06-06T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "25714.70",
+      "prior_high": "28442.00",
+      "prior_low": "25850.00",
+      "first_trigger": "2023-06-10T16:00:00Z"
+    },
+    {
+      "time": "2023-06-21T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "28290.60",
+      "prior_high": "27825.00",
+      "prior_low": "24777.00",
+      "first_trigger": "2023-06-23T06:00:00Z"
+    },
+    {
+      "time": "2023-07-25T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "29163.80",
+      "prior_high": "31850.00",
+      "prior_low": "29400.00",
+      "first_trigger": "2023-07-28T21:00:00Z"
+    },
+    {
+      "time": "2023-10-02T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "27981.40",
+      "prior_high": "27480",
+      "prior_low": "24888.00",
+      "first_trigger": "2023-10-04T07:00:00Z"
+    },
+    {
+      "time": "2024-01-23T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "39567.00",
+      "prior_high": "49027.50",
+      "prior_low": "40300.00",
+      "first_trigger": "2024-01-23T10:00:00Z"
+    },
+    {
+      "time": "2024-02-08T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "44326.20",
+      "prior_high": "43888.00",
+      "prior_low": "38545.00",
+      "first_trigger": "2024-02-08T14:00:00Z"
+    },
+    {
+      "time": "2024-05-02T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "58307.60",
+      "prior_high": "71387.40",
+      "prior_low": "59150.00",
+      "first_trigger": "2024-05-06T09:00:00Z"
+    },
+    {
+      "time": "2024-05-16T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "66175.40",
+      "prior_high": "65500.00",
+      "prior_low": "56537.70",
+      "first_trigger": "2024-05-17T00:00:00Z"
+    },
+    {
+      "time": "2024-06-24T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "63194.90",
+      "prior_high": "72144.00",
+      "prior_low": "63361.20",
+      "first_trigger": "2024-06-27T07:00:00Z"
+    },
+    {
+      "time": "2024-07-16T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "64680.60",
+      "prior_high": "63849.00",
+      "prior_low": "53329.50",
+      "first_trigger": "2024-07-16T15:00:00Z"
+    },
+    {
+      "time": "2024-08-05T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "58144.50",
+      "prior_high": "70081.00",
+      "prior_low": "59800.00",
+      "first_trigger": "2024-08-05T21:00:00Z"
+    },
+    {
+      "time": "2024-08-24T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "64019.90",
+      "prior_high": "62737.20",
+      "prior_low": "48888.00",
+      "first_trigger": "2024-08-30T03:00:00Z"
+    },
+    {
+      "time": "2024-09-07T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "53927.70",
+      "prior_high": "65175.40",
+      "prior_low": "55555.00",
+      "first_trigger": "2024-09-11T01:00:00Z"
+    },
+    {
+      "time": "2024-09-19T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "61735.30",
+      "prior_high": "61345.00",
+      "prior_low": "52510.80",
+      "first_trigger": "2024-09-20T09:00:00Z"
+    },
+    {
+      "time": "2025-02-25T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "91514.50",
+      "prior_high": "101729.30",
+      "prior_low": "93321.60",
+      "first_trigger": "2025-03-01T03:00:00Z"
+    },
+    {
+      "time": "2025-04-23T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "93404.90",
+      "prior_high": "88500.00",
+      "prior_low": "74457.00",
+      "first_trigger": "2025-04-27T03:00:00Z"
+    },
+    {
+      "time": "2025-06-06T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "101458.60",
+      "prior_high": "111959.50",
+      "prior_low": "102038.80",
+      "first_trigger": "2025-06-08T06:00:00Z"
+    },
+    {
+      "time": "2025-07-10T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "111199.90",
+      "prior_high": "110484.00",
+      "prior_low": "98115.40",
+      "first_trigger": "2025-07-13T07:00:00Z"
+    },
+    {
+      "time": "2025-08-02T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "113244.80",
+      "prior_high": "123300.00",
+      "prior_low": "114667.30",
+      "first_trigger": "2025-08-03T17:00:00Z"
+    },
+    {
+      "time": "2025-08-14T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "123323.90",
+      "prior_high": "122450.00",
+      "prior_low": "111850.00",
+      "first_trigger": "2025-08-14T01:00:00Z"
+    },
+    {
+      "time": "2025-08-26T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "110064.00",
+      "prior_high": "124545.60",
+      "prior_low": "110484.00",
+      "first_trigger": "2025-08-26T11:00:00Z"
+    },
+    {
+      "time": "2025-10-02T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "118552.40",
+      "prior_high": "117875.20",
+      "prior_low": "108566.00",
+      "first_trigger": "2025-10-02T00:00:00Z"
+    },
+    {
+      "time": "2025-11-05T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "101450.30",
+      "prior_high": "116380.20",
+      "prior_low": "103470.00",
+      "first_trigger": "2025-11-10T07:00:00Z"
+    },
+    {
+      "time": "2026-01-05T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "91497.10",
+      "prior_high": "90945.10",
+      "prior_low": "84408.60",
+      "first_trigger": "2026-01-08T08:00:00Z"
+    },
+    {
+      "time": "2026-01-26T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "86628.90",
+      "prior_high": "97932.10",
+      "prior_low": "87205.50",
+      "first_trigger": "2026-01-26T06:00:00Z"
+    },
+    {
+      "time": "2026-03-05T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "72641.40",
+      "prior_high": "70938.50",
+      "prior_low": "62401.70",
+      "first_trigger": "2026-03-06T19:00:00Z"
+    },
+    {
+      "time": "2026-05-23T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "75513.10",
+      "prior_high": "82828.70",
+      "prior_low": "76014.20",
+      "first_trigger": "2026-05-25T22:00:00Z"
+    },
+    {
+      "time": "2026-07-15T00:00:00Z",
+      "old": -1,
+      "new": 1,
+      "completed_close": "65014.70",
+      "prior_high": "64691.90",
+      "prior_low": "57758.60",
+      "first_trigger": "2026-07-17T15:00:00Z"
+    },
+    {
+      "time": "2026-09-16T00:00:00Z",
+      "old": 1,
+      "new": -1,
+      "completed_close": "75599.90",
+      "prior_high": "82282.80",
+      "prior_low": "76000.30",
+      "first_trigger": "2026-09-16T01:00:00Z"
+    }
+  ],
+  "failed_breakout_intervals": [
+    {
+      "start": "2020-04-16T00:00:00Z",
+      "direction": 1,
+      "anchor": "6760.00",
+      "close": "6616.89",
+      "end": "2020-09-04T00:00:00Z"
+    },
+    {
+      "start": "2021-09-24T00:00:00Z",
+      "direction": -1,
+      "anchor": "43629.60",
+      "close": "44828.29",
+      "end": "2021-10-06T00:00:00Z"
+    },
+    {
+      "start": "2022-02-18T00:00:00Z",
+      "direction": 1,
+      "anchor": "41609.76",
+      "close": "40491.70",
+      "end": "2022-04-12T00:00:00Z"
+    },
+    {
+      "start": "2022-07-26T00:00:00Z",
+      "direction": 1,
+      "anchor": "21575.00",
+      "close": "21300.00",
+      "end": "2022-08-20T00:00:00Z"
+    },
+    {
+      "start": "2022-09-14T00:00:00Z",
+      "direction": 1,
+      "anchor": "21540.00",
+      "close": "20162.50",
+      "end": "2022-11-09T00:00:00Z"
+    },
+    {
+      "start": "2022-12-17T00:00:00Z",
+      "direction": 1,
+      "anchor": "17076.00",
+      "close": "16624.10",
+      "end": "2023-02-11T00:00:00Z"
+    },
+    {
+      "start": "2023-02-15T00:00:00Z",
+      "direction": -1,
+      "anchor": "21933.80",
+      "close": "22187.40",
+      "end": "2023-02-16T00:00:00Z"
+    },
+    {
+      "start": "2023-03-14T00:00:00Z",
+      "direction": -1,
+      "anchor": "22276.40",
+      "close": "24119.50",
+      "end": "2023-03-15T00:00:00Z"
+    },
+    {
+      "start": "2023-06-07T00:00:00Z",
+      "direction": -1,
+      "anchor": "27125.00",
+      "close": "27221.50",
+      "end": "2023-06-21T00:00:00Z"
+    },
+    {
+      "start": "2023-10-12T00:00:00Z",
+      "direction": 1,
+      "anchor": "26939",
+      "close": "26864.50",
+      "end": "2024-01-23T00:00:00Z"
+    },
+    {
+      "start": "2024-01-27T00:00:00Z",
+      "direction": -1,
+      "anchor": "41692.30",
+      "close": "41806.40",
+      "end": "2024-02-08T00:00:00Z"
+    },
+    {
+      "start": "2024-05-04T00:00:00Z",
+      "direction": -1,
+      "anchor": "60816.70",
+      "close": "62853.70",
+      "end": "2024-05-16T00:00:00Z"
+    },
+    {
+      "start": "2024-08-09T00:00:00Z",
+      "direction": -1,
+      "anchor": "61089.50",
+      "close": "61659.80",
+      "end": "2024-08-24T00:00:00Z"
+    },
+    {
+      "start": "2024-08-28T00:00:00Z",
+      "direction": 1,
+      "anchor": "60301.50",
+      "close": "59384.50",
+      "end": "2024-09-07T00:00:00Z"
+    },
+    {
+      "start": "2024-09-10T00:00:00Z",
+      "direction": -1,
+      "anchor": "57000.00",
+      "close": "57010.00",
+      "end": "2024-09-19T00:00:00Z"
+    },
+    {
+      "start": "2025-06-10T00:00:00Z",
+      "direction": -1,
+      "anchor": "105878.30",
+      "close": "110227.90",
+      "end": "2025-07-10T00:00:00Z"
+    },
+    {
+      "start": "2025-08-08T00:00:00Z",
+      "direction": -1,
+      "anchor": "116000.00",
+      "close": "117419.90",
+      "end": "2025-08-14T00:00:00Z"
+    },
+    {
+      "start": "2025-08-15T00:00:00Z",
+      "direction": 1,
+      "anchor": "118829.00",
+      "close": "118242.20",
+      "end": "2025-08-26T00:00:00Z"
+    },
+    {
+      "start": "2025-09-11T00:00:00Z",
+      "direction": -1,
+      "anchor": "113621.30",
+      "close": "113896.80",
+      "end": "2025-10-02T00:00:00Z"
+    },
+    {
+      "start": "2025-10-11T00:00:00Z",
+      "direction": 1,
+      "anchor": "113899.40",
+      "close": "112714.90",
+      "end": "2025-11-05T00:00:00Z"
+    },
+    {
+      "start": "2026-01-11T00:00:00Z",
+      "direction": 1,
+      "anchor": "90595.70",
+      "close": "90469.60",
+      "end": "2026-01-26T00:00:00Z"
+    },
+    {
+      "start": "2026-03-08T00:00:00Z",
+      "direction": 1,
+      "anchor": "67350.00",
+      "close": "67232.10",
+      "end": "2026-05-23T00:00:00Z"
+    },
+    {
+      "start": "2026-09-19T00:00:00Z",
+      "direction": -1,
+      "anchor": "78223.30",
+      "close": "80863.00",
+      "end": "2026-09-20T00:00:00Z"
+    }
+  ],
+  "exit_intervals": [
+    {
+      "time": "2020-02-28T05:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.131",
+      "next_entry": "2020-03-02T06:00:00Z",
+      "flat_hours": 73.0,
+      "next_quantity": "-0.119",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2020-04-08T21:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.119",
+      "next_entry": "2020-04-11T22:00:00Z",
+      "flat_hours": 73.0,
+      "next_quantity": "0.116",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2020-09-04T16:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.116",
+      "next_entry": "2020-09-05T23:00:00Z",
+      "flat_hours": 31.0,
+      "next_quantity": "-0.125",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2020-10-11T03:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.125",
+      "next_entry": "2020-10-15T16:00:00Z",
+      "flat_hours": 109.0,
+      "next_quantity": "0.168",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2021-03-13T10:12:00Z",
+      "event": "take",
+      "exited_quantity": "0.168",
+      "next_entry": "2021-05-21T12:00:00Z",
+      "flat_hours": 1657.8,
+      "next_quantity": "-0.086",
+      "intervening_actions": {
+        "campaign_consumed": 18
+      }
+    },
+    {
+      "time": "2021-07-26T11:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.086",
+      "next_entry": "2021-07-28T10:00:00Z",
+      "flat_hours": 47.0,
+      "next_quantity": "0.135",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2021-09-24T23:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.135",
+      "next_entry": "2021-09-26T06:00:00Z",
+      "flat_hours": 31.0,
+      "next_quantity": "-0.112",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2021-10-03T17:51:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.112",
+      "next_entry": "2021-10-06T09:00:00Z",
+      "flat_hours": 63.15,
+      "next_quantity": "0.085",
+      "intervening_actions": {
+        "campaign_consumed": 1
+      }
+    },
+    {
+      "time": "2021-11-19T17:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.085",
+      "next_entry": "2021-11-24T06:00:00Z",
+      "flat_hours": 109.0,
+      "next_quantity": "-0.100",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2022-02-10T13:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.100",
+      "next_entry": "2022-02-11T08:00:00Z",
+      "flat_hours": 19.0,
+      "next_quantity": "0.143",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2022-02-24T02:57:00Z",
+      "event": "stop",
+      "exited_quantity": "0.143",
+      "next_entry": "2022-04-17T09:00:00Z",
+      "flat_hours": 1254.05,
+      "next_quantity": "-0.162",
+      "intervening_actions": {
+        "campaign_consumed": 13
+      }
+    },
+    {
+      "time": "2022-07-20T14:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.162",
+      "next_entry": "2022-07-21T09:00:00Z",
+      "flat_hours": 19.0,
+      "next_quantity": "0.312",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2022-08-23T02:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.312",
+      "next_entry": "2022-08-23T21:00:00Z",
+      "flat_hours": 19.0,
+      "next_quantity": "-0.348",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2022-09-13T02:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.348",
+      "next_entry": "2022-09-13T21:00:00Z",
+      "flat_hours": 19.0,
+      "next_quantity": "0.323",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2022-09-19T05:58:00Z",
+      "event": "stop",
+      "exited_quantity": "0.323",
+      "next_entry": "2022-11-10T11:00:00Z",
+      "flat_hours": 1253.0333333333333,
+      "next_quantity": "-0.318",
+      "intervening_actions": {
+        "campaign_consumed": 13
+      }
+    },
+    {
+      "time": "2022-12-15T11:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.318",
+      "next_entry": "2022-12-21T18:00:00Z",
+      "flat_hours": 151.0,
+      "next_quantity": "0.507",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2023-02-11T21:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.507",
+      "next_entry": "2023-02-13T20:00:00Z",
+      "flat_hours": 47.0,
+      "next_quantity": "-0.463",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2023-02-15T20:12:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.463",
+      "next_entry": "2023-02-20T03:00:00Z",
+      "flat_hours": 102.8,
+      "next_quantity": "0.296",
+      "intervening_actions": {}
+    },
+    {
+      "time": "2023-03-09T06:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.296",
+      "next_entry": "2023-03-10T01:00:00Z",
+      "flat_hours": 19.0,
+      "next_quantity": "-0.391",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2023-03-13T15:07:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.391",
+      "next_entry": "2023-03-16T08:00:00Z",
+      "flat_hours": 64.88333333333334,
+      "next_quantity": "0.204",
+      "intervening_actions": {}
+    },
+    {
+      "time": "2023-06-10T16:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.204",
+      "next_entry": "2023-06-12T15:00:00Z",
+      "flat_hours": 47.0,
+      "next_quantity": "-0.246",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2023-06-20T17:07:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.246",
+      "next_entry": "2023-06-23T06:00:00Z",
+      "flat_hours": 60.88333333333333,
+      "next_quantity": "0.182",
+      "intervening_actions": {}
+    },
+    {
+      "time": "2023-07-28T21:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.182",
+      "next_entry": "2023-07-30T20:00:00Z",
+      "flat_hours": 47.0,
+      "next_quantity": "-0.268",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2023-10-04T07:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.268",
+      "next_entry": "2023-10-05T02:00:00Z",
+      "flat_hours": 19.0,
+      "next_quantity": "0.304",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2024-01-23T10:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.304",
+      "next_entry": "2024-01-25T09:00:00Z",
+      "flat_hours": 47.0,
+      "next_quantity": "-0.192",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2024-01-30T02:37:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.192",
+      "next_entry": "2024-02-08T14:00:00Z",
+      "flat_hours": 227.38333333333333,
+      "next_quantity": "0.203",
+      "intervening_actions": {
+        "campaign_consumed": 3
+      }
+    },
+    {
+      "time": "2024-05-06T09:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.203",
+      "next_entry": "2024-05-10T22:00:00Z",
+      "flat_hours": 109.0,
+      "next_quantity": "-0.169",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2024-05-15T18:57:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.169",
+      "next_entry": "2024-05-17T00:00:00Z",
+      "flat_hours": 29.05,
+      "next_quantity": "0.131",
+      "intervening_actions": {}
+    },
+    {
+      "time": "2024-06-24T16:53:00Z",
+      "event": "stop",
+      "exited_quantity": "0.131",
+      "next_entry": "2024-06-27T07:00:00Z",
+      "flat_hours": 62.11666666666667,
+      "next_quantity": "-0.181",
+      "intervening_actions": {}
+    },
+    {
+      "time": "2024-07-16T15:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.181",
+      "next_entry": "2024-07-17T10:00:00Z",
+      "flat_hours": 19.0,
+      "next_quantity": "0.127",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2024-08-05T01:10:00Z",
+      "event": "stop",
+      "exited_quantity": "0.127",
+      "next_entry": "2024-08-05T21:00:00Z",
+      "flat_hours": 19.833333333333332,
+      "next_quantity": "-0.145",
+      "intervening_actions": {}
+    },
+    {
+      "time": "2024-08-30T03:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.145",
+      "next_entry": "2024-09-02T04:00:00Z",
+      "flat_hours": 73.0,
+      "next_quantity": "0.121",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2024-09-04T00:59:00Z",
+      "event": "stop",
+      "exited_quantity": "0.121",
+      "next_entry": "2024-09-11T01:00:00Z",
+      "flat_hours": 168.01666666666668,
+      "next_quantity": "-0.115",
+      "intervening_actions": {
+        "campaign_consumed": 1
+      }
+    },
+    {
+      "time": "2024-09-13T17:46:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.115",
+      "next_entry": "2024-09-20T09:00:00Z",
+      "flat_hours": 159.23333333333332,
+      "next_quantity": "0.108",
+      "intervening_actions": {
+        "campaign_consumed": 1
+      }
+    },
+    {
+      "time": "2025-03-01T03:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.108",
+      "next_entry": "2025-03-01T22:00:00Z",
+      "flat_hours": 19.0,
+      "next_quantity": "-0.106",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2025-04-27T03:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.106",
+      "next_entry": "2025-04-28T10:00:00Z",
+      "flat_hours": 31.0,
+      "next_quantity": "0.070",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2025-06-08T06:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.070",
+      "next_entry": "2025-06-12T19:00:00Z",
+      "flat_hours": 109.0,
+      "next_quantity": "-0.088",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2025-07-09T19:37:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.088",
+      "next_entry": "2025-07-13T07:00:00Z",
+      "flat_hours": 83.38333333333334,
+      "next_quantity": "0.078",
+      "intervening_actions": {}
+    },
+    {
+      "time": "2025-08-03T17:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.078",
+      "next_entry": "2025-08-05T00:00:00Z",
+      "flat_hours": 31.0,
+      "next_quantity": "-0.096",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2025-08-11T01:59:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.096",
+      "next_entry": "2025-08-14T01:00:00Z",
+      "flat_hours": 71.01666666666667,
+      "next_quantity": "0.078",
+      "intervening_actions": {
+        "campaign_consumed": 2
+      }
+    },
+    {
+      "time": "2025-08-20T01:38:00Z",
+      "event": "stop",
+      "exited_quantity": "0.078",
+      "next_entry": "2025-08-26T11:00:00Z",
+      "flat_hours": 153.36666666666667,
+      "next_quantity": "-0.065",
+      "intervening_actions": {
+        "campaign_consumed": 3
+      }
+    },
+    {
+      "time": "2025-10-01T23:58:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.065",
+      "next_entry": "2025-10-02T00:00:00Z",
+      "flat_hours": 0.03333333333333333,
+      "next_quantity": "0.063",
+      "intervening_actions": {}
+    },
+    {
+      "time": "2025-10-10T21:17:00Z",
+      "event": "stop",
+      "exited_quantity": "0.063",
+      "next_entry": "2025-11-10T07:00:00Z",
+      "flat_hours": 729.7166666666667,
+      "next_quantity": "-0.056",
+      "intervening_actions": {
+        "campaign_consumed": 9
+      }
+    },
+    {
+      "time": "2026-01-08T08:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.056",
+      "next_entry": "2026-01-09T15:00:00Z",
+      "flat_hours": 31.0,
+      "next_quantity": "0.099",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2026-01-25T19:20:00Z",
+      "event": "stop",
+      "exited_quantity": "0.099",
+      "next_entry": "2026-01-26T06:00:00Z",
+      "flat_hours": 10.666666666666666,
+      "next_quantity": "-0.078",
+      "intervening_actions": {}
+    },
+    {
+      "time": "2026-03-06T19:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.078",
+      "next_entry": "2026-03-11T08:00:00Z",
+      "flat_hours": 109.0,
+      "next_quantity": "0.089",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2026-03-29T22:49:00Z",
+      "event": "stop",
+      "exited_quantity": "0.089",
+      "next_entry": "2026-05-25T22:00:00Z",
+      "flat_hours": 1367.1833333333334,
+      "next_quantity": "-0.115",
+      "intervening_actions": {
+        "campaign_consumed": 22
+      }
+    },
+    {
+      "time": "2026-07-17T15:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "-0.115",
+      "next_entry": "2026-07-22T04:00:00Z",
+      "flat_hours": 109.0,
+      "next_quantity": "0.147",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2026-09-16T01:00:00Z",
+      "event": "regime_exit",
+      "exited_quantity": "0.147",
+      "next_entry": "2026-09-18T00:00:00Z",
+      "flat_hours": 47.0,
+      "next_quantity": "-0.140",
+      "intervening_actions": {
+        "regime_exit": 1
+      }
+    },
+    {
+      "time": "2026-09-18T13:47:00Z",
+      "event": "stop",
+      "exited_quantity": "-0.140",
+      "next_entry": null,
+      "flat_hours": 34.21666666666667,
+      "next_quantity": null,
+      "intervening_actions": {}
+    }
+  ],
+  "drawdown": {
+    "fraction": "0.5479327086513183762218691119",
+    "peak": {
+      "time": "1710399600000",
+      "event": "conservative_envelope",
+      "equity_usdt": "15933.93217096570480721679315",
+      "drawdown": "0",
+      "quantity": "0.203",
+      "mark": "73834.21434437",
+      "margin": "1616.633444142500000000",
+      "fees": "231.30912186902175",
+      "funding": "2994.0024226897426067980"
+    },
+    "trough": {
+      "time": "1760131020000",
+      "event": "conservative_envelope",
+      "equity_usdt": "7203.20955706208436864709315",
+      "drawdown": "0.5479327086513183762218691119",
+      "quantity": "0.063",
+      "mark": "106535.80000000",
+      "margin": "1419.254762940000000000",
+      "fees": "443.03331122987175",
+      "funding": "3989.3826374254030453677"
+    },
+    "recovery": null,
+    "exact_recorded_equity_delta": "-8730.72261390362043856970000",
+    "telescoping_components": {
+      "fees": "-211.72418936085000",
+      "funding": "-995.3802147356604385697",
+      "long_mark_execution": "-2995.13072244547000000000000",
+      "flat_to_entry_execution": "344.13291472071000000000000",
+      "short_mark_execution": "-4872.62040208235000000000000"
+    }
+  },
+  "limitations": [
+    "Components describe recorded mark/execution changes, not independent causal effects.",
+    "High/low envelope ordering is conservative, not an observed tick path.",
+    "No posthoc directional gap return is labeled recoverable profit."
+  ],
+  "input_identity_location": "runs/L29-full-final/inputs.json in originals archive",
+  "input_identity_sha256": "919e9504e51c4b6f3e47840d07520d93154353420cafb240bde8b776823f9684"
+}

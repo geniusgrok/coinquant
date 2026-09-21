@@ -10,5 +10,20 @@
   ],
   "L29_future_perturbation_prefixes": 6,
   "common_market_states": 468,
-  "validation_used": false
+  "validation_used": true,
+  "development_prefix_with_expanded_inputs": {
+    "decisions": 468,
+    "orders": 2588,
+    "equity": 144340
+  },
+  "full_invocations": 795,
+  "final_minute_days": 24,
+  "minute_reconstruction_test_passed": true,
+  "final_L29_no_intra_campaign_resizing": true,
+  "invalid_configuration_guards_checked": 3,
+  "checkpoint_commit": "0eaf76753fd2b9387a56b15391db5b7bb8e89e22",
+  "checkpoint_tree": "34cc744f9a06cccd06d63ef2e2684185c14c1998",
+  "checkpoint_files_byte_and_git_oid_verified": 13,
+  "exit_day_minute_archives_verified": 42,
+  "new_minute_archives": 36
 }

@@ -8,9 +8,9 @@ from pancakequant.research import timestamp
 
 HOUR=3600000
 
-def load(root, hourly):
+def load(root, hourly, extra_days=()):
     tables={k:{} for k in ('klines','markPriceKlines')};identity=[]
-    for day in DATES:
+    for day in dict.fromkeys((*DATES, *extra_days)):
         begin=timestamp(day+'T00:00:00Z')
         for kind in tables:
             path=f'daily/{kind}/BTCUSDT/1m/BTCUSDT-1m-{day}.zip'

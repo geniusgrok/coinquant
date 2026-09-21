@@ -11,7 +11,9 @@ from research.persistent_hold_replay import inputs
 HOUR=3600000
 
 def run(root,warmup,repairs,evidence,output):
-    series,funding,_,_=inputs(root,warmup,repairs)
+    measured=json.loads((evidence/'result.json').read_text())
+    full_window=measured.get('validation_used',False)
+    series,funding,_,_=inputs(root,warmup,repairs,full_window)
     changes=[]
     with gzip.open(evidence/'orders.csv.gz','rt') as stream:
         for row in csv.DictReader(stream):
@@ -35,7 +37,7 @@ def run(root,warmup,repairs,evidence,output):
         records.append([ft,str(lo),str(hi),len(qs)])
     measured=json.loads((evidence/'result.json').read_text())
     result={'scope':'fixed measured inventory only; account feedback NOT replayed',
-            'qualification':'NOT_QUALIFIED','validation_used':False,
+            'qualification':'NOT_QUALIFIED','validation_used':full_window,
             'net_funding_cost_lower_usdt':str(total_low),'net_funding_cost_upper_usdt':str(total_high),
             'old_adverse_debits_only_usdt':measured['funding_bound_paid_usdt'],
             'inventory_ambiguous_events':ambiguous,'events':len(records),

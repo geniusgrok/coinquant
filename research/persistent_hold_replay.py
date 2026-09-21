@@ -1,4 +1,4 @@
-"""L9 native Binance development account diagnostic, never qualification."""
+"""Continuous Binance research account diagnostic, never native qualification."""
 import argparse
 from collections import Counter, deque
 import csv
@@ -21,25 +21,42 @@ from research.volatility_target import target_fraction as volatility_fraction, f
 HOUR=3600000
 
 
-def inputs(root,warmup,repairs):
+def inputs(root,warmup,repairs,full_window=False):
     series={'klines':{},'markPriceKlines':{}};funding={};identity=[]
-    for year in range(2020,2024):
-        for month in range(1,13):
-            for kind in ('klines','markPriceKlines','fundingRate'):
+    end=timestamp(spec()['end' if full_window else 'development_end'])
+    if full_window:
+        from research.acquire_binance import paths
+        selected=[p for p in paths() if '2019-12' not in p]
+    else:
+        selected=[]
+        for year in range(2020,2024):
+            for month in range(1,13):
                 date=f'{year}-{month:02}'
-                path=(f'monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-{date}.zip' if kind=='fundingRate'
-                      else f'monthly/{kind}/BTCUSDT/1h/BTCUSDT-1h-{date}.zip')
-                raw=(root/path).read_bytes();identity.append(dict(path=path,sha256=hashlib.sha256(raw).hexdigest()))
-                for r in archive_rows(root,path):
-                    t=int(r[0])
-                    if kind=='fundingRate':
-                        if t in funding:raise ValueError('duplicate funding')
-                        funding[t]=D(r[2])
-                    else:
-                        if t in series[kind]:raise ValueError('duplicate price')
-                        series[kind][t]=r
+                for kind in ('klines','markPriceKlines','fundingRate'):
+                    selected.append(f'monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-{date}.zip' if kind=='fundingRate'
+                                    else f'monthly/{kind}/BTCUSDT/1h/BTCUSDT-1h-{date}.zip')
+    for path in selected:
+        kind='fundingRate' if '/fundingRate/' in path else 'markPriceKlines' if '/markPriceKlines/' in path else 'klines'
+        raw=(root/path).read_bytes();identity.append(dict(path=path,sha256=hashlib.sha256(raw).hexdigest()))
+        for r in archive_rows(root,path):
+            t=int(r[0])
+            if kind=='fundingRate':
+                if D(r[1])!=8:raise ValueError('unsupported funding interval')
+                if t in funding:raise ValueError('duplicate funding')
+                funding[t]=D(r[2])
+            else:
+                if t in series[kind]:raise ValueError('duplicate price')
+                series[kind][t]=r
+    if full_window:
+        raw=(warmup/'september-funding.json').read_bytes()
+        receipt=json.loads((warmup/'september-funding-receipt.json').read_text())
+        if hashlib.sha256(raw).hexdigest()!=receipt['sha256']:raise ValueError('tail funding identity')
+        identity.append(dict(path='september-funding.json',sha256=receipt['sha256']))
+        for r in json.loads(raw):
+            t=int(r['fundingTime'])
+            if r['symbol']!='BTCUSDT' or t in funding:raise ValueError('invalid tail funding')
+            funding[t]=D(r['fundingRate'])
     rows,receipt=repair_rows(repairs)
-    end=timestamp('2024-01-01T00:00:00Z')
     for r in rows:
         t=int(r[0])
         if t>=end:continue
@@ -89,16 +106,20 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed'):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=()):
     if allocation not in ('fixed','edge','unit','volatility'):raise ValueError('unknown allocation')
     if lifecycle not in ('persistent','one_campaign','fresh_breakout'):raise ValueError('unknown lifecycle')
     if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory'):raise ValueError('unknown reference')
     if protection not in ('fixed','trailing'):raise ValueError('unknown protection')
+    if reference in ('anchored','same_run_reversal','entry_inventory') and (allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline):
+        raise ValueError('return-capture candidates require their frozen L21 controls')
+    if minute_days and minutes is None:raise ValueError('extra minute days require original minute data')
     targeting=allocation in ('unit','volatility')
-    frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['development_end'])
-    series,funding,warm,identity=inputs(root,warmup,repairs)
+    frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['end' if full_window else 'development_end'])
+    series,funding,warm,identity=inputs(root,warmup,repairs,True) if full_window else inputs(root,warmup,repairs)
+    minute_identity=[]
     if minutes is not None:
-        minutes,minute_identity=minute_load(minutes,series);identity.extend(minute_identity)
+        minutes,minute_identity=minute_load(minutes,series,minute_days);identity.extend(minute_identity)
     trade=series['klines'];marks=series['markPriceKlines']
     fund_hours={t//HOUR*HOUR:(t,r) for t,r in funding.items()}
     daily=deque(maxlen=21);closes=deque(maxlen=200);regime=0;anchor=None
@@ -300,11 +321,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         pending.replace(output/(name+'.csv.gz'))
     if seen!=sorted(triggers):raise ValueError('frozen invocation mismatch')
     years=(end-start)/31556952000;cagr=float(final/initial)**(1/years)-1
-    result=dict(candidate=('L7' if baseline else 'L9')+'-minute-refined',qualification='NOT_QUALIFIED',validation_used=False,cagr=cagr,mdd_conservative_envelope=str(mdd),
+    result=dict(candidate=('L7' if baseline else 'L9')+'-minute-refined',qualification='NOT_QUALIFIED',validation_used=full_window,window_end_exclusive=iso(end),cagr=cagr,mdd_conservative_envelope=str(mdd),
                 final_cny=str(final*D(frozen['cny_per_usd'])),counts=dict(counts),fees_usdt=str(account.fees),funding_bound_paid_usdt=str(account.funding),
                 progression_passed=None,progression_status='requires paired refined comparison',code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 limitations=['Proxy dated rules/fees/liquidity and USDT=USD','Adverse interval funding valuation, not exact cashflow',
-                             'Minute refinement on six days only; remaining interval liquidation-first ambiguity','Margin transfer and full-position execution unverified'])
+                             f'Minute refinement on {len(minute_identity)//2} days only; remaining interval liquidation-first ambiguity','Margin transfer and full-position execution unverified'])
     result['reference']=reference
     result['candidate']=('L18' if allocation=='edge' else 'L17' if lifecycle=='one_campaign' else 'L7' if baseline else 'L9')+'-minute-refined'
     if targeting:result['candidate']='L21' if allocation=='volatility' else 'B1' if reference=='long' else 'B2'
@@ -342,4 +363,6 @@ if __name__=='__main__':
     p.add_argument('--allocation',choices=('fixed','edge','unit','volatility'),default='fixed')
     p.add_argument('--reference',choices=('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory'),default='channel')
     p.add_argument('--protection',choices=('fixed','trailing'),default='fixed')
-    a=p.parse_args();run(a.root,a.warmup,a.repairs,a.output,a.minutes,a.baseline,a.schedule,a.quantity_rules,a.lifecycle,a.allocation,a.reference,a.protection)
+    p.add_argument('--full-window',action='store_true',help='Frozen candidate validation; continuous account, no annual resets')
+    p.add_argument('--extra-minute-day',action='append',default=[])
+    a=p.parse_args();run(a.root,a.warmup,a.repairs,a.output,a.minutes,a.baseline,a.schedule,a.quantity_rules,a.lifecycle,a.allocation,a.reference,a.protection,a.full_window,a.extra_minute_day)

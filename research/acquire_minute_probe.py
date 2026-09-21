@@ -1,7 +1,8 @@
-"""Native minute evidence for six development stop/liquidation ambiguities only."""
+"""Native minute evidence for explicit exit dates; verified originals are reused."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import csv
+from datetime import date
 from decimal import Decimal
 import hashlib
 import io
@@ -32,14 +33,18 @@ def validate(raw, checksum, day):
     return len(rows)
 
 
-def run(root):
+def run(root, days=DATES):
+    days=tuple(dict.fromkeys(days))
+    if any(date.fromisoformat(day).isoformat()!=day for day in days):raise ValueError("invalid minute date")
     root.mkdir(parents=True,exist_ok=True)
     def one(item):
         day,kind=item
         path=f'daily/{kind}/BTCUSDT/1m/BTCUSDT-1m-{day}.zip'
         target=root/path; receipt=dict(path=path,source=BASE+path)
         try:
-            raw=download(BASE+path); checksum=download(BASE+path+'.CHECKSUM')
+            checksum_path=Path(str(target)+'.CHECKSUM')
+            raw=target.read_bytes() if target.exists() else download(BASE+path)
+            checksum=checksum_path.read_bytes() if checksum_path.exists() else download(BASE+path+'.CHECKSUM')
             target.parent.mkdir(parents=True,exist_ok=True)
             target.write_bytes(raw); Path(str(target)+'.CHECKSUM').write_bytes(checksum)
             receipt.update(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
@@ -48,7 +53,7 @@ def run(root):
             receipt.update(status='unavailable',error=f'{type(exc).__name__}: {exc}')
         return receipt
     with ThreadPoolExecutor(max_workers=3) as pool:
-        records=list(pool.map(one,[(d,k) for d in DATES for k in ('klines','markPriceKlines')]))
+        records=list(pool.map(one,[(d,k) for d in days for k in ('klines','markPriceKlines')]))
     (root/'receipt.json').write_text(json.dumps(records,indent=2)+'\n')
     print(json.dumps({'verified':sum(r['status']=='verified' for r in records),'total':len(records)}))
     return all(r['status']=='verified' for r in records)
@@ -56,4 +61,6 @@ def run(root):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True)
-    raise SystemExit(0 if run(p.parse_args().output) else 1)
+    p.add_argument('--day',action='append',help='Explicit evidence date; defaults to original six development days')
+    a=p.parse_args()
+    raise SystemExit(0 if run(a.output,a.day or DATES) else 1)
