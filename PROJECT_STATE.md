@@ -44,7 +44,10 @@ remove them again after Binance originals are durable. No optimization runs in C
 
 ## Current production / migration code
 
-The prior production path is still Bybit inverse. Do NOT call it Binance-capable.
+The default CLI now uses Binance read-only observation. Bybit is no longer reachable
+through run/status; legacy modules remain only for historical research. Binance
+run reports blocked after observation; --execute is rejected before credentials
+or network access. No approved production alpha or write lifecycle exists.
 Original validated runtime reference: 14b89f70daa0a53dcebd437e2938dcc621c2898a,
 91 tests in run 35557150822. Correctness fixes must not be removed for better metrics.
 
@@ -52,7 +55,7 @@ pancakequant/data.py and replay.py now support verified per-tick resolution, cau
 volume normalization and complete 4h signal aggregation. Minute refinement is a
 replay correction, not a profitable new strategy.
 
-research/binance_readonly.py is a migration component, not yet production run_once:
+pancakequant/binance.py now serves the default read-only CLI:
 bounded GET-only, exact Binance HMAC query, fixed official hosts, no redirects,
 no caller signing-field overrides, errors scrubbed, UID read from Spot account
 schema. No private request or real credential was used; tests use fake credentials.
@@ -135,7 +138,7 @@ research/linear-hypothesis.md. Exact source/full traces are durable in the origi
 receipts below. research/linear_replay.py and sparse_trend.py currently contain the
 rejected L2 research implementation, not an approved production strategy.
 
-**L3 preregistered, implemented, NOT YET MEASURED.**
+**L3 measured and rejected; see latest result below.**
 research/linear-l3-hypothesis.md and linear_forecast.py: one expanding ridge model
 predicts four-day returns using causal 20-day momentum, one-day return and most
 recent settled funding. Only matured labels enter training; fixed ridge 10, minimum
@@ -232,3 +235,5 @@ L3 development screen is now measured and rejected: 437 overlapping four-day obs
 L4 was preregistered at a6712e6263be0bfbb91e89a92350870cb8af7603 and also rejected: 466 overlapping development observations, correlation 0.0259375, mean directional net -0.332363% versus constant-long +0.0672466%. No validation used. Exact evidence is in evidence/l4-development-20260921/. Do not reverse its sign or tune its lookback following failure. Four-file native mark capture run 35567111349 was queued at last check. Latest full local suite: 118 tests passed.
 
 Binance research reader now supports stable ordinary/conditional order identity queries and conditional child reconciliation; see evidence/binance-intent-query-20260921.md. This grants no resubmission permission and is not a production write lifecycle. Full local suite: 120 tests passed. Mark capture 35567111349 remains queued; continue independent work rather than duplicate acquisition.
+
+Default CLI migration: Binance-only status with UID-bound durable report and lock; obsolete configs rejected. research/binance_readonly.py moved to pancakequant/binance.py without a compatibility shim. run/--execute remain explicitly blocked pending real qualification. Three CLI safety checks plus nine adapter/intent checks passed (12 targeted). No private request executed. README and config.example.json now describe only actual supported behavior.

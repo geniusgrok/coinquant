@@ -10,7 +10,7 @@ research/on-demand-btc-20260920。以远端实际状态为准。
 
 最新用户明确选择：**只支持 Binance**。目标 BTCUSDT U 本位永续，一个统一模型，
 一个适配器、一套配置，偶尔人工/Agent 触发 run_once。保留旧交易所研究证据，
-不再研发 OKX，也不保留多交易所生产兼容层。当前 Bybit 生产路径尚未完成替换，
+不再研发 OKX，也不保留多交易所生产兼容层。当前默认 CLI 已换为 Binance 只读观察，run 与 --execute 均明确阻止交易，
 不得声称已经支持 Binance 自动交易。
 
 冻结验收：初始人民币 10000，2020-01-01 UTC 至 2026-09-20 exclusive，
@@ -36,7 +36,7 @@ CAGR > 200%，完整账户连续 MDD < 20%，交易所固定 20x，原稀疏不�
    使用 linear_forecast.py。L3 已事前登记但尚未测量；不缩短开发窗口来代替。
    这是单模型四天预测诊断，不是账户 CAGR。失败按登记拒绝，不调邻近参数。
    通过后才制定可执行账户候选并完整回放。2024-终点不得用于调参；边界只做数据核验。
-5. 同时推进 Binance 统一生产迁移。research/binance_readonly.py 已有只读签名/UID/
+5. 同时推进 Binance 统一生产迁移。pancakequant/binance.py 已有只读签名/UID/
    模式检查与 USDT 账户解码；8 项相关定向测试通过，未调用真实私有 API。
    仍须完成一致性对账、历史恢复和真实 Binance 保护生命周期。官方 close-all TP/SL
    并不等于原子入场/部分成交保护；禁止用普通独立止损单冒充已经证明的原子保护。
@@ -86,3 +86,5 @@ L3 development screen is now measured and rejected: 437 overlapping four-day obs
 L4 was preregistered at a6712e6263be0bfbb91e89a92350870cb8af7603 and also rejected: 466 overlapping development observations, correlation 0.0259375, mean directional net -0.332363% versus constant-long +0.0672466%. No validation used. Exact evidence is in evidence/l4-development-20260921/. Do not reverse its sign or tune its lookback following failure. Four-file native mark capture run 35567111349 was queued at last check. Latest full local suite: 118 tests passed.
 
 Binance research reader now supports stable ordinary/conditional order identity queries and conditional child reconciliation; see evidence/binance-intent-query-20260921.md. This grants no resubmission permission and is not a production write lifecycle. Full local suite: 120 tests passed. Mark capture 35567111349 remains queued; continue independent work rather than duplicate acquisition.
+
+最新默认入口：Binance status 可对账并保存报告；run 只观察后 blocked，--execute 在凭据/网络前拒绝。旧 Bybit 不再经 CLI 调用，历史模块仍保留。完整生产交易尚未完成，不得把此迁移当成验收。12 项受影响定向检查通过。

@@ -1,5 +1,5 @@
 import unittest
-from research.binance_readonly import BinanceReadOnly
+from pancakequant.binance import BinanceReadOnly
 from pancakequant.types import Unknown
 
 

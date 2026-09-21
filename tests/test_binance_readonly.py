@@ -5,7 +5,7 @@ import unittest
 from decimal import Decimal
 from urllib.error import URLError
 
-from research.binance_readonly import BinanceReadOnly, NoRedirect, validate_account_mode, account_report
+from pancakequant.binance import BinanceReadOnly, NoRedirect, validate_account_mode, account_report
 from pancakequant.types import Blocked, Unknown
 
 

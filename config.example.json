@@ -1,18 +1,4 @@
 {
-  "environment": "testnet",
-  "api_host": "",
   "account_uid": "",
-  "max_position_usd": "0",
-  "state_dir": "~/.pancakequant/testnet",
-  "model": {
-    "trend_bars": 120,
-    "channel_bars": 24,
-    "atr_bars": 24,
-    "risk_fraction": "0.006",
-    "atr_multiple": "2",
-    "reward_multiple": "3",
-    "max_effective_leverage": "2",
-    "liquidity_fraction": "0.05",
-    "slippage_fraction": "0.001"
-  }
+  "state_dir": "~/.pancakequant/binance-btcusdt"
 }

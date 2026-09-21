@@ -1,7 +1,7 @@
-"""Binance migration probe: bounded GET only, no order or account-setting writes.
+"""Binance bounded observation adapter; no order or account-setting writes.
 
-Not yet wired into production run_once. Private reads require explicitly supplied
-credentials; raw identity/balance responses must never be printed or persisted.
+Private reads require explicitly supplied credentials; raw identity/balance
+responses must never be printed or persisted.
 """
 import hashlib
 import hmac
