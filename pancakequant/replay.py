@@ -130,6 +130,65 @@ def hosted_exit_price(position, trigger_price, trade_open, slip, *, adverse_gap)
     return reference * (1 + slip)
 
 
+LIQUIDATION_REASON = 'liquidation takeover at bankruptcy price'
+STOP_REASON = 'hosted_stop'
+TAKE_REASON = 'hosted_take_profit'
+
+
+def _pending_exit_terms(position, reason):
+    """Recover a previously triggered native exit without losing its price.
+
+    A full-position TP/SL is a market exit once triggered. If the conservative
+    replay cannot fill it fully in one base bar, later bars must keep the same
+    protector identity while allowing newly known adverse gaps. Liquidation is
+    an exchange takeover, not a user market order.
+    """
+    if not position.quantity:
+        raise Blocked('pending native exit requires an open position')
+    if reason == LIQUIDATION_REASON:
+        return ZERO, False, True
+    if reason == STOP_REASON:
+        return position.stop_loss, True, False
+    if reason == TAKE_REASON:
+        return position.take_profit, True, False
+    raise Blocked('unknown pending native exit state')
+
+
+def _open_exit_terms(position, mark_open):
+    """Return an already-crossed native exit at the known bar open.
+
+    Known open information wins before the manual invocation and before later
+    high/low extrema. This prevents a later intrabar low/high from rewriting a
+    stop that was already executable at the open into a liquidation.
+    """
+    if not position.quantity:
+        return None
+    if min(position.liquidation, position.stop_loss, position.take_profit, mark_open) <= 0:
+        raise Blocked('open position lacks valid native protection geometry')
+    long = position.quantity > 0
+    if (long and mark_open <= position.liquidation) or (not long and mark_open >= position.liquidation):
+        return LIQUIDATION_REASON, ZERO, False, True
+    if (long and mark_open <= position.stop_loss) or (not long and mark_open >= position.stop_loss):
+        return STOP_REASON, position.stop_loss, True, False
+    if (long and mark_open >= position.take_profit) or (not long and mark_open <= position.take_profit):
+        return TAKE_REASON, position.take_profit, False, False
+    return None
+
+
+def liquidation_takeover(account, rules):
+    """Fully transfer the isolated position at bankruptcy, independent of book capacity."""
+    p = account.position
+    if not p.quantity:
+        raise Blocked('liquidation takeover requires an open position')
+    price = bankruptcy_price(p.quantity, p.entry, p.margin_btc, rules.taker_fee)
+    delta = -p.quantity
+    fee_before = account.fees
+    account.fill(delta, price, rules)
+    if account.position.quantity:
+        raise Blocked('liquidation takeover must close the full isolated position')
+    return delta, price, account.fees - fee_before
+
+
 def activate_entry(account, mark, trade, rules, capacity, spread, slip, *, at_open=False):
     """Return (target, execution_price, reason) without any signal evaluation.
 
@@ -250,15 +309,29 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                 # Existing parent may have triggered before this invocation. Its
                 # real fill wins; later sizing sees the resulting account.
                 activate(at_open=True)
-                # A protection already crossed at invocation open wins the race;
-                # the new decision may not revive or resize the previous trade.
+                # Known open crossings execute before a new manual decision and
+                # before later base-bar extrema can alter their causal ordering.
+                protection_crossed_at_open = False
                 p = account.position
-                if p.quantity and ((p.quantity > 0 and (mark.open <= p.stop_loss or mark.open >= p.take_profit)) or
-                                   (p.quantity < 0 and (mark.open >= p.stop_loss or mark.open <= p.take_profit))):
-                    account.exit_pending = 'protection crossed before invocation'
+                open_exit = _open_exit_terms(p, mark.open) if p.quantity else None
+                if open_exit:
+                    reason, exit_reference, adverse_gap, liquidation = open_exit
+                    if liquidation:
+                        delta, price, fee = liquidation_takeover(account, rules)
+                        account.liquidations += 1
+                        fills_count += 1
+                        orders.writerow([t, iso(t), 'native_exit', str(delta), str(price), str(fee),
+                                         str(account.position.quantity), '0', '0', reason])
+                        statistics.observe(t, 'after_native_exit', account.equity(mark.open),
+                                           account.equity(mark.open) / mark.open, fx)
+                    else:
+                        execute(-p.quantity, hosted_exit_price(
+                            p, exit_reference, bar.open, slip, adverse_gap=adverse_gap),
+                            'native_exit', reason)
+                    protection_crossed_at_open = True
                 if t in triggers:
                     actual_triggers.append(t)
-                    if not account.exit_pending:
+                    if not protection_crossed_at_open and not account.exit_pending:
                         snapshot = Snapshot('historical-dedicated-btc', t, account.wallet,
                                             max(ZERO, account.wallet - account.position.margin_btc),
                                             mark.open, bar.open * (1 - spread / 2), bar.open * (1 + spread / 2),
@@ -324,31 +397,40 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                     liq_hit = mark.low <= p.liquidation if long else mark.high >= p.liquidation
                     stop_hit = mark.low <= p.stop_loss if long else mark.high >= p.stop_loss
                     take_hit = mark.high >= p.take_profit if long else mark.low <= p.take_profit
+                    pending_before_bar = bool(account.exit_pending)
                     exit_reference = ZERO
                     adverse_gap = False
-                    liquidation_takeover = False
+                    if pending_before_bar:
+                        exit_reference, adverse_gap, _ = _pending_exit_terms(
+                            p, account.exit_pending)
                     if liq_hit:
+                        # Exchange liquidation takes over the whole isolated
+                        # position at bankruptcy; it is not constrained by the
+                        # user's market-order participation proxy.
+                        reason = LIQUIDATION_REASON
+                        delta, price, fee = liquidation_takeover(account, rules)
                         account.liquidations += 1
-                        account.exit_pending = 'liquidation takeover at bankruptcy price'
-                        liquidation_takeover = True
-                    elif stop_hit:
-                        account.exit_pending = 'hosted_stop'
-                        exit_reference, adverse_gap = p.stop_loss, True
-                    elif take_hit and not account.exit_pending:
-                        account.exit_pending = 'hosted_take_profit'
-                        exit_reference = p.take_profit
-                    if account.exit_pending:
-                        # Liquidation is triggered by mark at the liquidation
-                        # threshold, but the isolated account is taken over at
-                        # bankruptcy: it cannot lose more than the allocated
-                        # position margin due solely to a later bar extreme.
-                        price = (bankruptcy_price(
-                            p.quantity, p.entry, p.margin_btc, rules.taker_fee)
-                            if liquidation_takeover else hosted_exit_price(
+                        fills_count += 1
+                        orders.writerow([t, iso(t), 'native_exit', str(delta), str(price), str(fee),
+                                         str(account.position.quantity), '0', '0', reason])
+                        statistics.observe(t, 'after_native_exit', account.equity(mark.open),
+                                           account.equity(mark.open) / mark.open, fx)
+                    else:
+                        if stop_hit and not pending_before_bar:
+                            account.exit_pending = STOP_REASON
+                            exit_reference, adverse_gap = p.stop_loss, True
+                        elif take_hit and not pending_before_bar:
+                            account.exit_pending = TAKE_REASON
+                            exit_reference = p.take_profit
+                        if account.exit_pending:
+                            # A native full-position market protector can remain
+                            # partially filled in this conservative liquidity
+                            # model. Preserve its trigger identity across bars.
+                            price = hosted_exit_price(
                                 p, exit_reference, bar.open, slip,
-                                adverse_gap=adverse_gap))
-                        reason = account.exit_pending
-                        execute(-p.quantity, price, 'native_exit', reason)
+                                adverse_gap=adverse_gap)
+                            reason = account.exit_pending
+                            execute(-p.quantity, price, 'native_exit', reason)
                 final_mark = mark.close
                 statistics.observe(t + step, 'close', account.equity(mark.close), account.equity(mark.close) / mark.close, fx)
                 if account.wallet <= 0 or account.equity(mark.close) <= 0:

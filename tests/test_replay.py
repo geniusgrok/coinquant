@@ -9,9 +9,11 @@ import tempfile
 import unittest
 
 from pancakequant.data import Dataset, HOUR, MINUTE
-from pancakequant.replay import Account, _replay
+from pancakequant.replay import (Account, LIQUIDATION_REASON, STOP_REASON, TAKE_REASON,
+                                _open_exit_terms, _pending_exit_terms, _replay,
+                                liquidation_takeover)
 from pancakequant.research import digest, invocations, iso, spec, timestamp
-from pancakequant.types import Blocked, ModelConfig
+from pancakequant.types import Blocked, ModelConfig, Position
 from test_model import sample
 
 
@@ -76,6 +78,42 @@ class ReplayTests(unittest.TestCase):
         self.assertAlmostEqual(a.wallet, before + D(500) * (D(1) / 10000 - D(1) / 11000) - D(500) * r.taker_fee / 11000)
         a.fill(D(-500), D(11000), r)
         self.assertEqual(a.position.quantity, 0)
+
+    def test_open_native_protection_has_causal_precedence(self):
+        long = Position(D(1000), D(10000), D('.005'), D(9500), D(11000), D(9800))
+        self.assertEqual(
+            _open_exit_terms(long, D(9400)),
+            (LIQUIDATION_REASON, D(0), False, True),
+        )
+        self.assertEqual(
+            _open_exit_terms(long, D(9700)),
+            (STOP_REASON, D(9800), True, False),
+        )
+        self.assertEqual(
+            _open_exit_terms(long, D(11100)),
+            (TAKE_REASON, D(11000), False, False),
+        )
+        self.assertIsNone(_open_exit_terms(long, D(10000)))
+
+    def test_partial_native_exit_keeps_protector_identity_across_bars(self):
+        p = Position(D(1000), D(10000), D('.005'), D(9500), D(11000), D(9800))
+        self.assertEqual(_pending_exit_terms(p, STOP_REASON), (D(9800), True, False))
+        self.assertEqual(_pending_exit_terms(p, TAKE_REASON), (D(11000), True, False))
+        self.assertEqual(_pending_exit_terms(p, LIQUIDATION_REASON), (D(0), False, True))
+        with self.assertRaisesRegex(Blocked, 'unknown pending'):
+            _pending_exit_terms(p, 'lost-state')
+
+    def test_liquidation_takeover_is_full_even_without_user_order_capacity(self):
+        r = sample().rules
+        a = Account(D('1'))
+        a.fill(D(1000), D(10000), r, D(12000), D(9800))
+        before, margin = a.wallet, a.position.margin_btc
+        delta, price, fee = liquidation_takeover(a, r)
+        self.assertEqual(delta, D(-1000))
+        self.assertGreater(price, 0)
+        self.assertGreater(fee, 0)
+        self.assertEqual(a.position.quantity, 0)
+        self.assertAlmostEqual(a.wallet, before - margin)
 
     def test_liquidation_takeover_consumes_only_isolated_position_margin(self):
         from pancakequant.model import bankruptcy_price
