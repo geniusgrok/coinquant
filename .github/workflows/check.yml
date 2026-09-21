@@ -31,3 +31,13 @@ jobs:
         run: |
           python -m compileall -q pancakequant research tests
           python -m unittest discover -s tests -v
+      - name: Requested development minute evidence only
+        if: github.event.head_commit.message == 'Acquire six development ambiguity days'
+        run: python -m research.acquire_minute_probe --output "$RUNNER_TEMP/binance-minute-probe"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && github.event.head_commit.message == 'Acquire six development ambiguity days'
+        with:
+          name: binance-minute-probe-${{ github.sha }}
+          path: ${{ runner.temp }}/binance-minute-probe/
+          if-no-files-found: error
+          retention-days: 30

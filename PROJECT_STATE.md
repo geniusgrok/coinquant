@@ -3,6 +3,14 @@
 Formal target: cost-net CAGR >=150% (inclusive), full-account continuous MDD <50% (exclusive).
 All other frozen conditions unchanged. This supersedes historical >200%/<20% references below, which describe past experiments only.
 L7 exact source 6152f426b2e6746cfa0db9c18941307e257aa9cf remains the development comparison; active L8 is rejected.
+L7 exact replay reproduced all five outputs (decompressed traces compared byte-for-byte).
+L9 CAGR7.3992%/MDD8.0618%, rejected:5 liquidation classifications versus2.
+L10 long-only CAGR4.2209%/MDD17.3621%, rejected. L11 reversal exit equals L7 exactly, rejected.
+Measured sources, hypotheses and results: evidence/holding-structure-20260921/.
+Complete originals: libfile_d0681c1a37ec81918c49894e03ca667a; receipt in that directory.
+research/persistent_hold_replay.py contains rejected L11; native_channel_replay.py remains rejected L8.
+Next: six development ambiguity days of native minute trade/mark evidence, then resolve ordering against hourly candles.
+Public archive host timed out locally; requested bounded hosted acquisition, no full-history optimization.
 Latest lightweight CI 35568398097 completed successfully. No testnet account validation or live operations performed.
 
 # Pancakequant current recovery state
