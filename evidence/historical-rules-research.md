@@ -101,6 +101,28 @@ Together with the 2020-10-07 capture, these are contemporaneous API observations
 spanning 2020-06 through 2022-01. They substantially constrain that regime but
 still do not establish a value for 2020-01-01 before the first captured point.
 
+## Dated BTCUSD V5 specification capture (2024-04-26)
+
+Bybit.Net issue #207 includes a full raw V5 inverse-instruments response with
+exchange timestamp `1714136377870` and GitHub issue creation date
+**2024-04-26**. BTCUSD fields in that response are:
+
+- tickSize: **0.50**
+- minOrderQty / qtyStep: **1 / 1**
+- maxOrderQty: **1,943,695**
+- maxMktOrderQty: **1,000,000**
+- maxLeverage: **100**
+- fundingInterval: **480 minutes**
+- settleCoin: **BTC**
+
+Source:
+- https://github.com/JKorf/Bybit.Net/issues/207
+
+The current 2026 official `api.manepa.jp` instrument response instead has
+tickSize **0.10**, maxOrderQty **25,000,000** and maxMktOrderQty **5,000,000**.
+Therefore those specification changes occurred after 2024-04-26; their exact
+effective timestamps are still unverified and must not be invented.
+
 ## BTCUSD inverse margin/risk facts
 
 Current Bybit inverse-contract documentation states:
