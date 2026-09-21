@@ -70,6 +70,11 @@ class BinanceReadTests(unittest.TestCase):
         self.assertEqual(Decimal(r['equity_usdt']),1200);self.assertEqual(r['quantity_btc'],'0.02')
         self.assertTrue(r['native_full_position_protected']);self.assertEqual(r['possible_entry_remainders'],1)
         self.assertTrue(r['stop_before_liquidation'])
+        mismatched=dict(p,isolatedWallet='99')
+        with self.assertRaises(Unknown):account_report(123,config,symbol,a,[mismatched],[],algos,'110000')
+        for bad_id in (None, 0, True, 1, '01'):
+            invalid=[algos[0],dict(algos[1],algoId=bad_id)]
+            with self.assertRaises(Unknown):account_report(123,config,symbol,a,[p],[],invalid,'110000')
         algos[0]['triggerPrice']='94000'
         self.assertFalse(account_report(123,config,symbol,a,[p],[],algos,'110000')['stop_before_liquidation'])
         algos[0]['workingType']='CONTRACT_PRICE'

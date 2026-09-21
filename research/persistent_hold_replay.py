@@ -1,4 +1,4 @@
-"""L11 native Binance development account diagnostic, never qualification."""
+"""L9 native Binance development account diagnostic, never qualification."""
 import argparse
 from collections import Counter, deque
 import csv
@@ -13,6 +13,7 @@ from pancakequant.types import ZERO, floor_step
 from research.linear_forecast import archive_rows, DAY
 from research.audit_binance import repair_rows
 from research.linear_replay import Account, FEE, MMR, LOT, TICK
+from research.minute_evidence import load as minute_load, steps
 
 HOUR=3600000
 
@@ -65,9 +66,11 @@ def channel_state(window, previous):
     return previous
 
 
-def run(root,warmup,repairs,output):
+def run(root,warmup,repairs,output,minutes=None,baseline=False):
     frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['development_end'])
     series,funding,warm,identity=inputs(root,warmup,repairs)
+    if minutes is not None:
+        minutes,minute_identity=minute_load(minutes,series);identity.extend(minute_identity)
     trade=series['klines'];marks=series['markPriceKlines']
     fund_hours={t//HOUR*HOUR:(t,r) for t,r in funding.items()}
     daily=deque(maxlen=21);regime=0
@@ -123,13 +126,14 @@ def run(root,warmup,repairs,output):
                 seen.append(t);counts['invocations']+=1
                 window=list(daily)
                 if account.q:
-                    if account.q*regime<0:
-                        close(t,'regime_exit',o);exited=True
-                    else:
+                    if baseline:
                         proposed=min(x[1] for x in window[-10:]) if account.q>0 else max(x[0] for x in window[-10:])
                         if account.q>0 and account.sl<proposed<mo:account.sl=floor_step(proposed,TICK)
                         elif account.q<0 and mo<proposed<account.sl:account.sl=floor_step(proposed,TICK)+TICK
                         counts['hold']+=1
+                    elif account.q*regime<0:
+                        close(t,'regime_exit',o);exited=True
+                    else: counts['hold']+=1
                 elif not exited:
                     direction=regime
                     if not direction:counts['no_breakout']+=1
@@ -155,13 +159,27 @@ def run(root,warmup,repairs,output):
             if not charged and t in fund_hours and (opening_q or account.q):
                 if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
                 funding_bound(t,mark,opening_q or account.q)
-            if account.q:
-                for price in sorted((mh,ml),key=account.equity,reverse=True):observe(t,'conservative_envelope',price)
+            for st,sbar,smark in steps(t,bar,mark,minutes):
+                if not account.q:break
+                so,sh,slo,sc=sbar;smo,smh,sml,smc=smark
                 long=account.q>0;liq=account.liquidation()
-                if (long and ml<=liq) or (not long and mh>=liq):close(t,'liquidation',account.liquidation(ZERO),True)
-                elif (long and ml<=account.sl) or (not long and mh>=account.sl):
-                    close(t,'stop',min(account.sl,o) if long else max(account.sl,o))
-                elif (long and mh>=account.tp) or (not long and ml<=account.tp):close(t,'take',account.tp)
+                # Each native subinterval resolves only BEFORE later intervals.
+                # Remaining within-minute ambiguity is still liquidation-first.
+                if st>t and ((long and smo<=liq) or (not long and smo>=liq)):
+                    close(st,'liquidation',account.liquidation(ZERO),True)
+                elif st>t and ((long and smo<=account.sl) or (not long and smo>=account.sl)):
+                    close(st,'stop_gap',so)
+                elif st>t and ((long and smo>=account.tp) or (not long and smo<=account.tp)):
+                    close(st,'take_gap',so)
+                else:
+                    for price in sorted((smh,sml),key=account.equity,reverse=True):observe(st,'conservative_envelope',price)
+                    hit_liq=(long and sml<=liq) or (not long and smh>=liq)
+                    hit_stop=(long and sml<=account.sl) or (not long and smh>=account.sl)
+                    if hit_liq:
+                        if hit_stop:counts['unresolved_same_interval_stop_liquidation']+=1
+                        close(st,'liquidation',account.liquidation(ZERO),True)
+                    elif hit_stop:close(st,'stop',min(account.sl,so) if long else max(account.sl,so))
+                    elif (long and smh>=account.tp) or (not long and sml<=account.tp):close(st,'take',account.tp)
             observe(t+HOUR,'close',mc)
             if account.equity(mc)<=0:raise ValueError('account insolvent; no reset or truncation')
             if (t+HOUR)%DAY==0:
@@ -172,11 +190,11 @@ def run(root,warmup,repairs,output):
         final=account.equity(mc)
     if seen!=sorted(triggers):raise ValueError('frozen invocation mismatch')
     years=(end-start)/31556952000;cagr=float(final/initial)**(1/years)-1
-    result=dict(candidate='L11',qualification='NOT_QUALIFIED',validation_used=False,cagr=cagr,mdd_conservative_envelope=str(mdd),
+    result=dict(candidate=('L7' if baseline else 'L9')+'-minute-refined',qualification='NOT_QUALIFIED',validation_used=False,cagr=cagr,mdd_conservative_envelope=str(mdd),
                 final_cny=str(final*D(frozen['cny_per_usd'])),counts=dict(counts),fees_usdt=str(account.fees),funding_bound_paid_usdt=str(account.funding),
-                progression_passed=cagr>0.04863302406009273 and mdd<D('.5') and D(str(cagr))/mdd>D('0.04863302406009273')/D('0.1136320269446116339717390128') and counts['liquidation']<=2,code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                progression_passed=None,progression_status='requires paired refined comparison',code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 limitations=['Proxy dated rules/fees/liquidity and USDT=USD','Adverse interval funding valuation, not exact cashflow',
-                             'Hourly conservative envelope and liquidation-first ambiguity','Margin transfer and full-position execution unverified'])
+                             'Minute refinement on six days only; remaining interval liquidation-first ambiguity','Margin transfer and full-position execution unverified'])
     (output/'inputs.json').write_text(json.dumps(identity,indent=2)+'\n')
     (output/'invocations.json').write_text(json.dumps(seen)+'\n')
     (output/'result.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
@@ -185,4 +203,6 @@ def run(root,warmup,repairs,output):
 if __name__=='__main__':
     p=argparse.ArgumentParser()
     for name in ('root','warmup','repairs','output'):p.add_argument('--'+name,type=Path,required=True)
-    a=p.parse_args();run(a.root,a.warmup,a.repairs,a.output)
+    p.add_argument('--minutes',type=Path)
+    p.add_argument('--baseline',action='store_true',help='Exact L7 ratchet comparison, research only')
+    a=p.parse_args();run(a.root,a.warmup,a.repairs,a.output,a.minutes,a.baseline)

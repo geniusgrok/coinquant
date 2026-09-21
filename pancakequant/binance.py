@@ -244,6 +244,8 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
     liquidation=number(pos.get('liquidationPrice'),positive=True) if q else number(0)
     isolated=number(pos.get('isolatedWallet')) if q else number(0)
     if isolated<0:raise Unknown('invalid isolated USDT wallet')
+    if q and number(ap[0].get('isolatedWallet')) != isolated:
+        raise Unknown('account and position isolated margins disagree')
     if q:
         position_mark=number(pos.get('markPrice'),positive=True)
         if abs(number(pos.get('unRealizedProfit'))-q*(position_mark-entry))>number('.00000001'):
@@ -254,7 +256,14 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
         raise Blocked('foreign orders affect the single-symbol account')
     close_side='SELL' if q>0 else 'BUY'
     protective=[]
+    algo_ids=set()
     for a in algos:
+        identity=a.get('algoId')
+        if (isinstance(identity,bool) or not str(identity).isascii()
+                or not str(identity).isdigit() or int(identity)<=0
+                or int(identity) in algo_ids):
+            raise Unknown('missing or duplicate native protective order identity')
+        algo_ids.add(int(identity))
         if (a.get('algoStatus')=='NEW' and a.get('side')==close_side
                 and a.get('positionSide')=='BOTH' and a.get('closePosition') is True
                 and a.get('workingType')=='MARK_PRICE' and a.get('priceProtect') is False

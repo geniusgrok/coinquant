@@ -1,54 +1,50 @@
-# Current authorization — 2026-09-21
+# Current research continuation — 2026-09-21
 
-Formal target: cost-net CAGR >=150% (inclusive), full-account continuous MDD <50% (exclusive).
-All other frozen conditions unchanged. This supersedes historical >200%/<20% references below, which describe past experiments only.
-L7 exact source 6152f426b2e6746cfa0db9c18941307e257aa9cf remains the development comparison; active L8 is rejected.
-L7 exact replay reproduced all five outputs (decompressed traces compared byte-for-byte).
-L9 CAGR7.3992%/MDD8.0618%, rejected:5 liquidation classifications versus2.
-L10 long-only CAGR4.2209%/MDD17.3621%, rejected. L11 reversal exit equals L7 exactly, rejected.
-Measured sources, hypotheses and results: evidence/holding-structure-20260921/.
-Complete originals: libfile_d0681c1a37ec81918c49894e03ca667a; receipt in that directory.
-research/persistent_hold_replay.py contains rejected L11; native_channel_replay.py remains rejected L8.
-Next: six development ambiguity days of native minute trade/mark evidence, then resolve ordering against hourly candles.
-Public archive host timed out locally; requested bounded hosted acquisition, no full-history optimization.
-Latest lightweight CI 35568398097 completed successfully. No testnet account validation or live operations performed.
+Status ACTIVE / NOT_QUALIFIED. Formal CAGR>=150%, continuous full-account MDD<50%;
+CNY10000,2020-01-01 to2026-09-20 exclusive, original sparse invocations,20x venue.
+Current authorization overrides historical >200%/<20% references below.
+No live trades, transfers, credentials changes, or private account operations.
 
-# Continue Pancakequant
+Current structural reference: L9-minute-refined, risk.006. Development CAGR
+7.5049226211%, MDD envelope8.0618161772%,32entries,1unresolved-minute liquidation.
+Paired refined L7: CAGR4.9194253680%,MDD11.1621736074%,72entries,0liquidations.
+L9 now passes its originally registered development progression screen after
+native minute evidence; it does NOT meet formal economic or execution acceptance.
+L10 and L11 rejected. L12 risk.012/.024 are exhausted diagnostic probes, not promoted
+models (CAGR14.20749%/26.00499%,MDD13.33047%/21.01016%). No more adjacent risk levels.
 
-继续 ychenracing/pancakequant 当前改造，全程中文，不重新立项或重复确认已有授权。
-先核验远端 AGENTS.md、完整 PROJECT_STATE.md、本文件、实际 main/研究分支HEAD与Actions。
-研究分支 research/on-demand-btc-20260920；最新已核验代码/数据3f79f2f53c3aaaf482e5a39850a5de8470f9ce90，
-main c886b7c63c6455bd7c933269e32cd35a6fb3e09a未变。以远端实际状态为准，不使用.transfer覆盖代码。
+Current research entry: research/persistent_hold_replay.py (L9, --baseline for paired
+L7); --minutes requires verified six-day originals. Historical
+research/native_channel_replay.py still contains rejected L8; do not run it as best.
+2024+economics remain unused. No validation was inspected to tune these experiments.
 
-最终仅Binance BTCUSDT，一个模型/适配器/配置，按需run_once，无daemon。
-冻结CNY10000、2020-01-01至2026-09-20exclusive、CAGR>200%、连续完整账户MDD<20%、
-交易所20x、原稀疏人工触发序列、真实成本/funding/保证金/强平/抵押风险。
-不改目标、窗口或口径，不增加杠杆凑收益，不把proxy当native。无真实交易/划转/密钥/账户设置授权。
-经济和必要交易安全未通过，不合并main；checkpoint/CI/数据齐备不是任务完成。
+Evidence/report: evidence/holding-structure-20260921/REPORT.md.
+Exact source/traces preserved in libfile_aa659204e9a4819185536e52262c7263,
+20150124bytes,SHA2563ab5f018755a9f522539b58eb1a6c46c895ded53344847f13d79b2c24b2c7b80.
+Minute originals libfile_1cddc9283d948191a2ab3d4bb6b90a69,612670bytes,
+SHA256f0d67d6c275ec0bacf40ee9deb785fb3020ebe916cd33fd529fc7fb8e59eccb0.
+Earlier L7 reproduction/L9-L11 originals libfile_d0681c1a37ec81918c49894e03ca667a;
+all receipts beside REPORT.md. Restore these; do not recrawl full history.
 
-最新真实结果：Binance全窗口trade/mark各58896小时，funding7362次，完整性核验已通过。
-月度mark缺216小时，由6段官方API原生响应补齐，无插值，不覆盖月度原件。
-全部278档案原件和API补页已保全，恢复回执详见PROJECT_STATE.md，禁止重新全量下载。
-临时采集CI已移除。新简单CI35568398097最后queued，读取实况；排队时继续独立工作。
-早期1000次funding官方API的markPrice全部为空，原件已保存；精确估值缺口仍在，不得伪填。
+Verified recovery branch research/on-demand-btc-20260920; prior saved commit
+7ac1942e97dda74412b69e5f50eb9bebd70d99ae. Query actual branch HEAD on recovery.
+Native Git reads work; writes use authorized GitHub connector, verifying complete
+tree and changed remote bytes/SHA256/Git blob IDs. Main is not the research branch.
+Lightweight hosted check35574493320 succeeded at7ac1942.14latest focused offline
+checks passed; original L7 driver-equivalence and all native-minute/hour rebuilds pass.
+Binance observer rejects inconsistent isolated margin and invalid/duplicate algo IDs.
+CLI remains GET-only; no completed protected write lifecycle or testnet verification.
 
-默认CLI已切换Binance GET-only观察，旧Bybit不再经CLI调用。status对账并保存报告；
-run额外读取120根完整4h行情后blocked，--execute在凭据/网络前拒绝。
-无已验收生产alpha、完整写生命周期或真实testnet验证，不能称已完成自动交易迁移。
-历史Bybit模块仍为研究保留。当前观察器是真实Binance只读API，没有测试网自动回退。
+Next highest-value work: establish executable dated sizing/rule boundaries for L9,
+then preregister entry/capital-allocation structural change. Do not scale the same
+risk grid indefinitely. Funding exact marks, historical rules and USDT valuation
+are unresolved; no invented historical constants. Full testnet validation requires
+an explicitly authorized account, which has not been supplied. Continue independent
+research/engineering without changing the frozen economic target or using2024+.
 
-L1/L2账户代理和L3/L4原生预测诊断均已失败。L3/L4不是CAGR/MDD，不能据此声称账户收益。
-不做相邻参数微调、不反转L4信号找漂亮结果。2024-end未用于经济调参。
-下一步：完整Binance账户回放（资金费/历史规则/USDT估值诚实处理）、新的结构性alpha，
-以及原生保护/部分成交/余单/未知结果/保证金的真实生命周期。独立TP/SL不证明原子入场保护。
-继续同一研究分支及时提交并回读字节、hash、tree核验。任务尚未完成。
+## Earlier recovery history (superseded when inconsistent with the above)
 
-L5 preregistered at59a73abc4fa33d5443614b4313ad44cfc2321acb then measured and rejected: online Bayesian change-point drift,467development observations,364active,correlation-0.00601996,mean net-0.197441% vs constant-long+0.0710532%. Forecast diagnostics only,NOT_QUALIFIED,no2024+validation. Exact source/hypothesis/observations/result in evidence/l5-development-20260921/. No adjacent hazard/prior/cost-threshold tuning or signal reversal. The one targeted posterior-update/symmetry check passed.
 
-L6 native channel-persistence account diagnostic measured. Corrected latest development CAGR2.43722%,conservative continuous MDD6.47025%,final CNY11011.13,22entries,21stops,1liquidation,468original invocations. It passes the preregistered positive-return/sub20%development screen but is nowhere near final CAGR>200%; NOT_QUALIFIED,2024+unused. Corrected funding ordering removes future within-hour mark influence on earlier opening checks; exact-hour funding uses opening mark. Entry/exit events and allinvocations match the initial run. Full old/corrected sources and traces are durable; receipts under evidence/l6-development-20260921/ and evidence/l6-corrected-development-20260921/. Initial attribution:22closedtrades,10winners,mean562.36holding hours,mean unweighted signed underlying trade return9.93%; these are not leveraged account returns. No channel/reward/risk/leverage parameters changed in correctness repair.
-
-L7 persistent channel state measured: development CAGR4.86330%,conservative MDD11.36320%,72entries,2liquidations,468invocations; paired progression gate passed, final economic target still far away. Exact full originals Library libfile_5b982c646b348191a1e0d2c571db6002; receipt/result in evidence/l7-development-20260921/. L8 now preregistered in research/linear-l8-hypothesis.md: current-equity stop-risk reallocation at manual triggers, unchanged0.006risk/2xcap/20xsetting/channels/costs. research/native_channel_replay.py contains L8; older exact sources remain archived. Three targeted resize-accounting/state checks passed. Measure L8 once, preserve result; no2024+validation.
-
-L8 measured and rejected: development CAGR3.59120%,conservative MDD12.43447%,72entries,215adds,160reductions,17liquidations,468invocations. Fees51.298USDT versus L7's28.867USDT. Failed both paired objectives; no risk/cap/channel tuning. Full originals Library libfile_dbe5691260688191b5c954a260ed9479,receipt in evidence/l8-development-20260921/. L7 is the better current development baseline,not a qualified production candidate. Active research/native_channel_replay.py contains rejected L8 for reproducibility; exact L7 source is at6152f426b2e6746cfa0db9c18941307e257aa9cf and in its original archive. None of L6-L8 used2024+economic validation.
-
-Rule qualification clarification: the reused hypothetical BTC lot0.0001 and fixed rule constants are NOT established conservative bounds on historical Binance execution. Only market inputs are native. Fee/funding/mark-envelope stress assumptions do not make unverified quantity/minimum/risk rules native or uniformly conservative. Do not promote any of these development figures as production-feasible economics. Close historical rules/USDT/execution gaps before formal validation; do not silently backfill current instrument rules.
+恢复时先读远端AGENTS.md、PROJECT_STATE.md和上述REPORT.md，核验main与研究分支实际HEAD及最新Actions。
+不得将历史被拒绝候选误作当前最优。按照同一授权继续研究和实施，无需重复确认。
+从完整证据恢复准确源文件及参数，逐项关闭真实经济/执行缺口；通过全部正式验收才合并main。

@@ -1,0 +1,29 @@
+{
+  "candidate": "L7-minute-refined",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "cagr": 0.04919425368014463,
+  "mdd_conservative_envelope": "0.1116217360740106654968025830",
+  "final_cny": "12117.84313899990673366348006",
+  "counts": {
+    "invocations": 468,
+    "no_breakout": 4,
+    "entry": 72,
+    "funding_charge": 2683,
+    "hold": 386,
+    "stop": 71,
+    "unsafe_geometry": 6,
+    "ambiguous_funding_credit_omitted": 1065,
+    "take": 1
+  },
+  "fees_usdt": "28.884944262072600",
+  "funding_bound_paid_usdt": "79.75518997080433964286",
+  "progression_passed": true,
+  "code_sha256": "aaafcabf35d21a62efe69397c8069235edc0c0af19f2cb8bfae7513afa6eb043",
+  "limitations": [
+    "Proxy dated rules/fees/liquidity and USDT=USD",
+    "Adverse interval funding valuation, not exact cashflow",
+    "Minute refinement on six days only; remaining interval liquidation-first ambiguity",
+    "Margin transfer and full-position execution unverified"
+  ]
+}
