@@ -1,3 +1,23 @@
+# Current continuation — L29 retained, validation not yet used
+
+Best development candidate is now L29: L21 volatility entry size held unchanged
+through the original campaign. Sparse CAGR71.28203330149914%, MDD envelope
+42.43104313829324226747363313%, CNY86072.90004899015608708070151.
+Hourly54.13134%/53.24667%; only sparse is the formal execution schedule.
+L27 anchored invalidation and L28 same-invocation reversal rejected. Read
+research/l27-*, l28-*, l29-* and evidence/return-capture-20260921/summary.json.
+L21 exact control and previous source/evidence remain preserved.
+8 targeted tests passed; six L29 future-perturbation prefixes and468common
+market states match; entire L21 control equity/orders/decisions traces match.
+2024+economics remain unused at this checkpoint. Next freeze L29 and extend
+only replay coverage to the frozen endpoint, then evaluate the continuous
+account without selecting another model on validation. Native qualification,
+historical rules/valuation and exchange write lifecycle still unresolved.
+Full new originals are local pending the next evidence archive receipt; do not
+claim them remotely saved at this checkpoint. No live/testnet account writes.
+
+## Previous recovery context (superseded candidate selection only)
+
 # Current state — return-first research L21–L26
 
 ACTIVE / NOT_QUALIFIED. Same task and branch research/on-demand-btc-20260920.

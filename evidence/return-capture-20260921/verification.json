@@ -1,0 +1,14 @@
+{
+  "archive_bytes": 140850994,
+  "archive_sha256": "001813d77bb3d4ceba82c2a73f37f5513ffd6eef91cd42f5cd344fe9401b4357",
+  "manifest_files_verified": 1183,
+  "targeted_tests": 8,
+  "L21_full_decompressed_traces_identical": [
+    "equity",
+    "orders",
+    "decisions"
+  ],
+  "L29_future_perturbation_prefixes": 6,
+  "common_market_states": 468,
+  "validation_used": false
+}

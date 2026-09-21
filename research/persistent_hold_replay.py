@@ -69,6 +69,18 @@ def channel_state(window, previous):
     return previous
 
 
+def anchored_state(window, previous, anchor):
+    """Invalidate the original breakout using only completed daily data."""
+    breakout = channel_state(window, 0)
+    if breakout and breakout != previous:
+        return breakout, window[-1][1 if breakout > 0 else 0]
+    if previous and anchor is not None:
+        close = window[-1][2]
+        if (previous > 0 and close < anchor) or (previous < 0 and close > anchor):
+            return 0, None
+    return previous, anchor
+
+
 def decision_times(frozen, end, schedule):
     if schedule == 'sparse':
         return set(t for t in invocations(frozen) if t < end)
@@ -80,7 +92,7 @@ def decision_times(frozen, end, schedule):
 def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed'):
     if allocation not in ('fixed','edge','unit','volatility'):raise ValueError('unknown allocation')
     if lifecycle not in ('persistent','one_campaign','fresh_breakout'):raise ValueError('unknown lifecycle')
-    if reference not in ('channel','long','long_flat','slow_mean','channel_position'):raise ValueError('unknown reference')
+    if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory'):raise ValueError('unknown reference')
     if protection not in ('fixed','trailing'):raise ValueError('unknown protection')
     targeting=allocation in ('unit','volatility')
     frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['development_end'])
@@ -89,12 +101,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         minutes,minute_identity=minute_load(minutes,series);identity.extend(minute_identity)
     trade=series['klines'];marks=series['markPriceKlines']
     fund_hours={t//HOUR*HOUR:(t,r) for t,r in funding.items()}
-    daily=deque(maxlen=21);closes=deque(maxlen=200);regime=0
+    daily=deque(maxlen=21);closes=deque(maxlen=200);regime=0;anchor=None
     for t in range(min(warm),start,DAY):
         rows=[warm[s] for s in range(t,t+DAY,HOUR)]
         daily.append((max(D(r[2]) for r in rows),min(D(r[3]) for r in rows),D(rows[-1][4])))
         closes.append(D(rows[-1][4]))
-        regime=channel_state(daily,regime)
+        if reference=='anchored':regime,anchor=anchored_state(daily,regime,anchor)
+        else:regime=channel_state(daily,regime)
     if reference=='slow_mean':regime=0
     if reference=='channel_position':regime=channel_position(daily)[0]
     daily_returns=deque((daily[i][2]/daily[i-1][2]-1 for i in range(1,len(daily))),maxlen=20)
@@ -165,6 +178,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 if targeting:
                     if account.q and account.q*direction<=0:
                         close(t,'regime_exit',o);exited=True;action='regime_exit'
+                        if reference=='same_run_reversal':exited=False
+                    if reference=='entry_inventory' and account.q and not exited:
+                        counts['inventory_hold']+=1
                     elif not exited and direction:
                         consumed=(not account.q and lifecycle in ('one_campaign','fresh_breakout') and last_entry_epoch==campaign_epoch)
                         if consumed:
@@ -265,6 +281,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 daily.append((max(D(x[2]) for x in rows),min(D(x[3]) for x in rows),D(rows[-1][4])))
                 closes.append(D(rows[-1][4]))
                 new_regime=channel_state(daily,regime)
+                if reference=='anchored':new_regime,anchor=anchored_state(daily,regime,anchor)
                 if reference=='channel_position':new_regime=channel_position(daily)[0]
                 if reference=='slow_mean':
                     mean=sum(closes,ZERO)/len(closes)
@@ -297,6 +314,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if targeting and lifecycle=='fresh_breakout':result['candidate']='L24'
     if targeting and reference=='slow_mean':result['candidate']='L25'
     if targeting and reference=='channel_position':result['candidate']='L26'
+    if targeting and reference=='anchored':result['candidate']='L27'
+    if targeting and reference=='same_run_reversal':result['candidate']='L28'
+    if targeting and reference=='entry_inventory':result['candidate']='L29'
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
     for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json')):
@@ -320,6 +340,6 @@ if __name__=='__main__':
     p.add_argument('--quantity-rules',type=Path)
     p.add_argument('--lifecycle',choices=('persistent','one_campaign','fresh_breakout'),default='persistent')
     p.add_argument('--allocation',choices=('fixed','edge','unit','volatility'),default='fixed')
-    p.add_argument('--reference',choices=('channel','long','long_flat','slow_mean','channel_position'),default='channel')
+    p.add_argument('--reference',choices=('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory'),default='channel')
     p.add_argument('--protection',choices=('fixed','trailing'),default='fixed')
     a=p.parse_args();run(a.root,a.warmup,a.repairs,a.output,a.minutes,a.baseline,a.schedule,a.quantity_rules,a.lifecycle,a.allocation,a.reference,a.protection)

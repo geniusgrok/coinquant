@@ -1,14 +1,10 @@
-继续 ychenracing/pancakequant 的同一收益优先任务，使用 research/on-demand-btc-20260920。
-先核验远端 main／研究分支和并行修改，再读完整 AGENTS.md、PROJECT_STATE.md、
-evidence/return-first-20260921/REPORT.md 与 originals.json，按原件长度／SHA256恢复。
-不要覆盖更新代码。当前最佳开发区候选是明确指定 --allocation volatility 的L21，
-不是driver默认L9，也不是后续被拒绝的L22–L26。
-
-正式150%成本后CAGR／连续MDD<50%、原窗口、原稀疏触发保持不变。
-L21开发区42.2274%／48.8171%，未正式达标，未合并main；2024+经济验证未使用。
-本轮完成账户参照、波动率目标仓位、五项后续机制及完整证据；生产仍只读。
-详尽命令、10项定向验证、6项因果前缀、故障／修复和剩余缺口见PROJECT_STATE。
-不重复旧参数搜索，不根据毛利删空头，不把逐小时收益当稀疏结果。
-新假设应由方向／持仓收益归因支持；旧“每次失败必须寻找外部信息”的限制已撤销。
-当前没有证明足够的新优势，不可虚构或降低目标。无真实资金或账户变更授权。
-继续必要研究、验证与远端保存；正式经济及交易安全通过前不合并、不宣布项目完成。
+继续 ychenracing/pancakequant 同一研究分支 research/on-demand-btc-20260920。
+先核验远端及完整 PROJECT_STATE.md。当前保留 L29：L21入场仓位但持仓期间
+不再增减数量，显式 --allocation volatility --lifecycle one_campaign
+--reference entry_inventory。开发区稀疏71.2820% CAGR／42.4310%回撤包络；
+逐小时54.1313%／53.2467%。不是正式达标，不能合并main。
+L27/L28失败证据与L21精确对照均保留。2024+尚未使用；下一步冻结L29，
+仅扩展原回放覆盖完整窗口，连续账户验证，禁止用验证结果再挑模型却称unseen。
+原件恢复入口仍见evidence/return-first-20260921/originals.json。
+新原件此checkpoint尚待持久保存，后续以return-capture新收据为准。
+保持150%／<50%目标、原触发、不做真实账户操作。不要恢复失败候选为默认。
