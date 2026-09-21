@@ -37,5 +37,10 @@
   "synthetic_paths_not_economic_evidence": true,
   "targeted_tests": 21,
   "V1_normal_D3_three_decoded_streams_identical": true,
-  "native_execution_verified": false
+  "native_execution_verified": false,
+  "code_commit": "f2bd1babc6de100c5d23a3a21db6d3a714324747",
+  "remote_tree_files_byte_verified": 430,
+  "actions_run": 35599064688,
+  "actions_conclusion": "success",
+  "raw_archive_files_verified": 266
 }

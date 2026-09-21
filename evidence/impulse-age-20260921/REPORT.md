@@ -80,3 +80,12 @@ Binance补上两保护单之间的仓位/残余入场回读，出现成交竞争
 省略full-window为开发区；candidate支持D3/long/short/V1/V2，另一模式four_hour。
 精确历史复现需使用各账户measured_source对应源码；当前源码保留所有候选，默认生产未改变。
 诊断：`python -m research.impulse_event_diagnosis --native <native> --runs <D3-development> --output <newdir>`。
+
+### 保存后继续的流向稳定性复核
+
+已经执行上述下一步，结果见flow-stability.json，复现research/impulse_flow_stability.py，输入仍是已保存原件。
+按预先固定的2020–21/2022–23两段检查（不恢复独立验证身份）：空头流向一致组后段均值-1.704%，不一致-0.613%。
+去掉全开发区最好的一次同向空头事件，同向均值变为-1.738%，不一致原均值-0.066%。
+多头两段仍有同向优势，但各组仅4–6例；不能事后仅挑多头把统一信息假设改成删除空头。
+结论：暂不实现成交量过滤器，避免把一个事件主导的描述变为策略。未再次查看完整窗口。
+剩余工程优先项是研究V2所需的保护替换生命周期；尚未实现，不声称后台继续。
