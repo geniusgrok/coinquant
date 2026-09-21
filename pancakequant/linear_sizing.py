@@ -16,7 +16,7 @@ def target_fraction(returns, friction, absence_days=7):
     return D('.20')/(D('2.33')*rms*D(absence_days).sqrt()+GAP+FUNDING_RESERVE+2*(FEE+friction))
 
 
-def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, instrument, intended_add=None):
+def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, instrument, intended_add=None, *, fee=FEE, maintenance=MMR, notional_limit=D('1000000')):
     """Atomically model a filled target delta after funding/protection preflight.
 
     Allocation is market-volatility based, never inverse stop-distance. Capital
@@ -27,9 +27,13 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
         raise ValueError('invalid target')
     if account.q and account.q*direction <= 0:
         raise ValueError('close opposite position first')
+    fee,maintenance,notional_limit=D(fee),D(maintenance),D(notional_limit)
+    if not (fee.is_finite() and maintenance.is_finite() and notional_limit.is_finite() and 0<=fee<D('.05') and 0<=maintenance<D('.05') and notional_limit>0):
+        raise ValueError('invalid economic preflight')
+    if account.q and fee!=FEE:raise ValueError('non-default fee requires native reduction accounting')
     old = abs(account.q)
     requested = max(ZERO, account.equity(mark)*fraction/max(price, mark))
-    raw = min(requested, D('1000000')/max(price, mark))
+    raw = min(requested, notional_limit/max(price, mark))
     delta = min(abs(raw-old), capacity)
     size_reason = ('liquidity_cap' if capacity < abs(raw-old) else
                    'notional_cap' if raw < requested else 'target')
@@ -56,15 +60,15 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
         quantity = old+amount
         entry = (old*account.entry+amount*price)/quantity
         q = direction*quantity
-        fee = amount*price*FEE
+        entry_fee = amount*price*fee
         required = max(account.margin, quantity*entry/20,
-                       q*entry-(q-quantity*(MMR+FEE))*boundary)
-        reserve = quantity*max(price, mark)*(FUNDING_RESERVE+FEE)
-        if required+reserve+fee > account.wallet:
+                       q*entry-(q-quantity*(maintenance+fee))*boundary)
+        reserve = quantity*max(price, mark)*(FUNDING_RESERVE+fee)
+        if required+reserve+entry_fee > account.wallet:
             return None
-        trial = replace(account, wallet=account.wallet-fee, q=q, entry=entry,
-                        margin=required, sl=sl, tp=tp, fees=account.fees+fee)
-        liq = trial.liquidation()
+        trial = replace(account, wallet=account.wallet-entry_fee, q=q, entry=entry,
+                        margin=required, sl=sl, tp=tp, fees=account.fees+entry_fee)
+        liq = trial.liquidation(maintenance)
         if not (liq < sl < mark if direction > 0 else mark < sl < liq):
             return None
         return trial

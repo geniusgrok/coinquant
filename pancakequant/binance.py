@@ -386,6 +386,7 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
     entries += [a for a in algos if a.get('closePosition') is not True and a.get('reduceOnly') is not True]
     return {'status':'read_only_migration_observation','account_uid':str(uid),'symbol':'BTCUSDT',
             'wallet_usdt':str(wallet),'equity_usdt':str(wallet+q*(mark-entry)),
+            'available_usdt':str(number(account['availableBalance'])) if 'availableBalance' in account else None,
             'native_account_equity_usdt':str(wallet+unrealized),
             'quantity_btc':str(q),'entry':str(entry),'native_full_position_protected':protected,
             'isolated_wallet_usdt':str(isolated),'native_liquidation_price':str(liquidation),

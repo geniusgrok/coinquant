@@ -41,6 +41,11 @@ def observe(config_path, *, decision=False, execute=False):
                 model,market,reconstructed=advance(state,venue)
                 model_preview=preview(model,snapshot)
                 model_preview['reconstructed_market_only']=reconstructed
+                if model_preview['action']=='enter' and not recovery['pending']:
+                    replacement=state.get('binance_protection_replacement')
+                    if not replacement or replacement.get('done'):
+                        from .native_preview import entry_preview
+                        model_preview.update(entry_preview(venue,model,snapshot))
             except (Blocked,Unknown) as exc:
                 model_error=str(exc)
         report=dict(status='blocked' if decision else 'read_only',exchange='Binance',symbol='BTCUSDT',
