@@ -43,8 +43,27 @@ jobs:
       - name: One requested public schema probe
         if: github.event.head_commit.message == 'Check public BTCUSD endpoints'
         run: python research/probe.py --output "$RUNNER_TEMP/pancakequant-check/public"
-      - name: One-time native BTCUSD history acquisition
-        if: github.event.head_commit.message == 'Acquire native BTCUSD history'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: checked-source-${{ github.sha }}
+          path: ${{ runner.temp }}/pancakequant-check/
+          if-no-files-found: error
+          retention-days: 30
+
+  acquire:
+    if: github.event.head_commit.message == 'Acquire native BTCUSD history'
+    runs-on: macos-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - name: Acquire public native BTCUSD history
         shell: bash
         run: |
           set -euo pipefail
@@ -86,13 +105,6 @@ jobs:
           PY
       - uses: actions/upload-artifact@v4
         if: always()
-        with:
-          name: checked-source-${{ github.sha }}
-          path: ${{ runner.temp }}/pancakequant-check/
-          if-no-files-found: error
-          retention-days: 30
-      - uses: actions/upload-artifact@v4
-        if: always() && github.event.head_commit.message == 'Acquire native BTCUSD history'
         with:
           name: native-btcusd-history-${{ github.sha }}
           path: ${{ runner.temp }}/pancakequant-history/
