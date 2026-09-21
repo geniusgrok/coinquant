@@ -8,17 +8,13 @@ Main must remain unchanged until the active acceptance is genuinely met.
 
 ## Continuation update
 
-Read the latest continuation section of PROJECT_STATE.md and
-`evidence/linear-feasibility-20260921.md` before following historical steps below.
-Minute acquisition finished during this continuation: artifact 10622037487 is
-preserved in `evidence/ambiguous-minutes-20260921/`, verified at 729363 bytes and
-11520 bars with zero integrity errors. Exact baseline pre-exit snapshots are not
-in the active branch, so the eight event orderings remain unresolved. OKX probe
-35559716288 was still queued. See the minute evidence README for reconstruction. The existing
-OKX probe has been repaired on the active branch; old job success alone cannot
-prove qualification. L1 signal prototype plus preregistration exists, with ten
-local signal/probe tests passed. Native linear economics and production integration
-are NOT completed. Keep the original frozen economic/safety gates unchanged.
+Read the latest PROJECT_STATE.md section and `evidence/continuation-results-20260921.md`.
+The old missing baseline-state blocker is resolved. Full native-minute refinement
+was measured: CAGR 44.121475%, MDD 77.049869%, liquidations 8 -> 2. L1 development
+proxy failed (0.583756% CAGR, 1.355090% MDD, ten entries); do not advance it to
+validation or treat its low activity as success. Complete original evidence and
+exact measured source recovery are in `evidence/native-refinement-originals.json`.
+OKX probe 35559716288 remained queued. Continue authorized structural research.
 
 ## 1. Recovery order
 

@@ -243,7 +243,9 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
     history, chunk = deque(maxlen=501), []
     triggers = set(invocations(frozen, stress=stress))
     actual_triggers, decisions, fills_count, margin_index = [], 0, 0, 0
-    previous_volume, last_funding = ZERO, ZERO
+    previous_volume_per_minute, last_funding = ZERO, ZERO
+    chunk_duration = 0
+    expected_tick = dataset.warmup_start
     final_mark = None
     observed_start = False
     with gzip.open(directory / 'equity.csv.gz', 'wt', encoding='utf-8', newline='') as eqfile, \
@@ -253,6 +255,11 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
         orders.writerow(['time', 'utc', 'event', 'delta_usd_contracts', 'price', 'fee_btc', 'quantity_after', 'tp', 'sl', 'reason'])
         for tick in dataset.ticks():
             bar, mark, t = tick.trade, tick.mark, tick.trade.time
+            step = dataset.interval if tick.interval_ms is None else tick.interval_ms
+            if type(step) is not int or step not in (MINUTE, dataset.interval) or t != expected_tick or t % step or mark.time != t:
+                raise Blocked('invalid refined execution interval or continuity')
+            expected_tick = t + step
+            liquidity_scale = D(liquidity_basis) / D(step)
             while margin_index + 1 < len(dataset.tiers) and dataset.tiers[margin_index + 1]['time'] <= t:
                 margin_index += 1
             row = dataset.tiers[margin_index]
@@ -335,8 +342,8 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                         snapshot = Snapshot('historical-dedicated-btc', t, account.wallet,
                                             max(ZERO, account.wallet - account.position.margin_btc),
                                             mark.open, bar.open * (1 - spread / 2), bar.open * (1 + spread / 2),
-                                            previous_volume * liquidity_scale * depth_fraction,
-                                            previous_volume * liquidity_scale * depth_fraction,
+                                            previous_volume_per_minute * depth_fraction,
+                                            previous_volume_per_minute * depth_fraction,
                                             account.position, rules, funding_rate=last_funding)
                         try:
                             target = decide(list(history), snapshot, cfg, notional_limit=notional_limit)
@@ -436,12 +443,13 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                 if account.wallet <= 0 or account.equity(mark.close) <= 0:
                     raise Blocked('account insolvent in conservative replay; cannot reset or silently truncate')
             chunk.append(bar)
+            chunk_duration += step
             if t + step == (chunk[0].time // INTERVAL_MS + 1) * INTERVAL_MS:
-                if len(chunk) != INTERVAL_MS // step:
+                if chunk_duration != INTERVAL_MS:
                     raise Blocked('incomplete signal aggregation')
-                history.append(aggregate(chunk)); chunk = []
-            previous_volume = bar.volume
-        if not observed_start or statistics is None or actual_triggers != sorted(triggers):
+                history.append(aggregate(chunk)); chunk = []; chunk_duration = 0
+            previous_volume_per_minute = bar.volume * liquidity_scale
+        if not observed_start or statistics is None or actual_triggers != sorted(triggers) or expected_tick != dataset.end:
             raise Blocked('incomplete account or invocation coverage')
         statistics.close_year()
     final = account.equity(final_mark)

@@ -22,6 +22,7 @@ SUPPORTED_INTERVALS = (MINUTE, HOUR)
 class Tick:
     trade: Bar
     mark: Bar
+    interval_ms: int | None = None  # optional verified finer execution resolution
 
 
 class Dataset:

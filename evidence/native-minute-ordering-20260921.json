@@ -1,0 +1,388 @@
+{
+  "qualification": "NOT_QUALIFIED",
+  "baseline_result": {
+    "initial_equity_usd": "1433.445142054413577592385539",
+    "final_equity_btc": "0.2038094903825683471883041890",
+    "final_equity_usd": "16549.48143808743289226721949",
+    "final_equity_cny": "115452.4924083855493430345766",
+    "cagr": 0.4392074800343406,
+    "mdd": "0.7705119333829854577554200902",
+    "drawdown_start": "2021-11-10T14:00:00Z",
+    "drawdown_end": "2022-11-21T21:00:00Z",
+    "yearly": [
+      {
+        "year": "2020",
+        "return": "3.109384179459942266188690143",
+        "mdd": "0.6326280651637420565323541772",
+        "ending_usd": "5890.576788882116719974613890"
+      },
+      {
+        "year": "2021",
+        "return": "0.585509100668753049080494933",
+        "mdd": "0.5616344894704996114671388450",
+        "ending_usd": "9339.563106960716075189608535"
+      },
+      {
+        "year": "2022",
+        "return": "-0.6296806389665526480578157451",
+        "mdd": "0.6747781171235303038373661173",
+        "ending_usd": "3458.621042101250683291398707"
+      },
+      {
+        "year": "2023",
+        "return": "1.504140903096495148864855039",
+        "mdd": "0.2436140957370812650536672843",
+        "ending_usd": "8660.874419835967055811370423"
+      },
+      {
+        "year": "2024",
+        "return": "1.267967006002899725156636199",
+        "mdd": "0.3308014953873488600128621750",
+        "ending_usd": "19642.57742732247937011681398"
+      },
+      {
+        "year": "2025",
+        "return": "-0.0840859328661920903745717529",
+        "mdd": "0.3516762473519059295515335008",
+        "ending_usd": "17990.91298044966122561293256"
+      },
+      {
+        "year": "2026",
+        "return": "-0.0801199774535400752123405422",
+        "mdd": "0.4153183606441156773067520825",
+        "ending_usd": "16549.48143808743289226721949"
+      }
+    ],
+    "fees_btc": "0.009076807663738305609923288641",
+    "net_funding_paid_btc": "0.003578368275999584782388062362",
+    "liquidation_events": 8,
+    "fills": 537,
+    "decisions": 795,
+    "invocations": 795,
+    "longest_interval_hours": 151.0,
+    "longest_tail_without_invocation_hours": 48.0,
+    "economic_numbers_meet_limits": false,
+    "qualification": "NOT_QUALIFIED",
+    "limitations": [
+      "Base-bar extrema are a conservative account-drawdown envelope, not a known tick path.",
+      "Liquidity uses previous-base-bar volume normalized to a one-minute activity proxy; spread/slippage/conversion are frozen modeling assumptions.",
+      "Native FOK/partial-fill/offline-order integration and historical source authenticity remain unverified."
+    ],
+    "status": "measured",
+    "provenance": "proxy",
+    "output_files": {
+      "orders.csv.gz": {
+        "bytes": 30613,
+        "sha256": "ea9d2970cce3a3616df6a8348acbb7a58d1d56e5848ef684f5f872c0cdc15067"
+      },
+      "identity.json": {
+        "bytes": 122877,
+        "sha256": "ceaa48dc92f9eed0d48e783b97359adc644a9cf8d3a9d0c6cbb8580354bf08d9"
+      },
+      "invocations.csv": {
+        "bytes": 28630,
+        "sha256": "2c385775cf9cc33af2ec99f68314ae76c38fd16e5bf28f449eef9731f983f8b8"
+      },
+      "equity.csv.gz": {
+        "bytes": 10023755,
+        "sha256": "f6ad2ef81b9e2b3661583266eeda913760dbbf774990c109dab79a5b438845c5"
+      }
+    }
+  },
+  "events": [
+    {
+      "time": 1581778800000,
+      "utc": "2020-02-15T15:00:00Z",
+      "position": {
+        "quantity": "316",
+        "entry": "10292.3091",
+        "margin_btc": "0.001535126845345132512586509863",
+        "liquidation": "9858.561787928571428571428572",
+        "take_profit": "11291.5",
+        "stop_loss": "10057.0",
+        "leverage": "20",
+        "index": 0
+      },
+      "hour_mark": {
+        "time": 1581778800000,
+        "open": "10239.83",
+        "high": "10242.85",
+        "low": "9763.37",
+        "close": "9976.16",
+        "volume": "0"
+      },
+      "minute_file_sha256": "eeb99f7c81b5580937454fb536f71d5cb52fa0e818533c7f38184318d872cdfe",
+      "first_stop_ms": 1581781920000,
+      "first_liquidation_ms": 1581782040000,
+      "status": "stop_trigger_precedes_liquidation_level",
+      "note": "trigger order only; not proof of complete stop fill",
+      "stop_execution": {
+        "status": "fully_stopped_before_liquidation_level",
+        "remaining": "0",
+        "fills": [
+          {
+            "time": 1581781920000,
+            "quantity": "316",
+            "price": "10046.9430"
+          }
+        ]
+      }
+    },
+    {
+      "time": 1604318400000,
+      "utc": "2020-11-02T12:00:00Z",
+      "position": {
+        "quantity": "393",
+        "entry": "13883.75535",
+        "margin_btc": "0.001415323124373550705069143990",
+        "liquidation": "13298.65423167857142857142857",
+        "take_profit": "15487.5",
+        "stop_loss": "13349.5",
+        "leverage": "20",
+        "index": 0
+      },
+      "hour_mark": {
+        "time": 1604318400000,
+        "open": "13423.38",
+        "high": "13436.68",
+        "low": "13220.61",
+        "close": "13313.09",
+        "volume": "0"
+      },
+      "minute_file_sha256": "3982b5c840e8133bb0122ce84f5d99bd985fce62624b636c96a9c5833cf3f493",
+      "first_stop_ms": 1604320680000,
+      "first_liquidation_ms": 1604320860000,
+      "status": "stop_trigger_precedes_liquidation_level",
+      "note": "trigger order only; not proof of complete stop fill",
+      "stop_execution": {
+        "status": "fully_stopped_before_liquidation_level",
+        "remaining": "0",
+        "fills": [
+          {
+            "time": 1604320680000,
+            "quantity": "393",
+            "price": "13331.1555"
+          }
+        ]
+      }
+    },
+    {
+      "time": 1635962400000,
+      "utc": "2021-11-03T18:00:00Z",
+      "position": {
+        "quantity": "1855",
+        "entry": "63487.7598",
+        "margin_btc": "0.001460911525185048346909855843",
+        "liquidation": "60812.20420842857142857142857",
+        "take_profit": "70643.0",
+        "stop_loss": "61103.0",
+        "leverage": "20",
+        "index": 0
+      },
+      "hour_mark": {
+        "time": 1635962400000,
+        "open": "62529.9",
+        "high": "63240.46",
+        "low": "60572.07",
+        "close": "63191.4",
+        "volume": "0"
+      },
+      "minute_file_sha256": "0a31051c515013ac3f5b728e9c98c3e11a718454942d5de392d6ad29e5f72cad",
+      "first_stop_ms": 1635962400000,
+      "first_liquidation_ms": 1635962400000,
+      "status": "still_ambiguous_within_same_minute",
+      "note": "trigger order only; not proof of complete stop fill",
+      "stop_execution": {
+        "status": "unresolved_same_minute",
+        "remaining": "1855",
+        "fills": []
+      }
+    },
+    {
+      "time": 1702260000000,
+      "utc": "2023-12-11T02:00:00Z",
+      "position": {
+        "quantity": "286",
+        "entry": "44589.49455",
+        "margin_btc": "0.0003207033437879595789228339662",
+        "liquidation": "42710.36585110714285714285714",
+        "take_profit": "47262.5",
+        "stop_loss": "43160.5",
+        "leverage": "20",
+        "index": 0
+      },
+      "hour_mark": {
+        "time": 1702260000000,
+        "open": "43258.5",
+        "high": "43268.45",
+        "low": "40370.59",
+        "close": "41991.19",
+        "volume": "0"
+      },
+      "minute_file_sha256": "d52868720cafd2ea72949114e9f9fac87d605a41de084d2e49dd7647a0566319",
+      "first_stop_ms": 1702260240000,
+      "first_liquidation_ms": 1702260420000,
+      "status": "stop_trigger_precedes_liquidation_level",
+      "note": "trigger order only; not proof of complete stop fill",
+      "stop_execution": {
+        "status": "fully_stopped_before_liquidation_level",
+        "remaining": "0",
+        "fills": [
+          {
+            "time": 1702260240000,
+            "quantity": "286",
+            "price": "43117.3395"
+          }
+        ]
+      }
+    },
+    {
+      "time": 1704988800000,
+      "utc": "2024-01-11T16:00:00Z",
+      "position": {
+        "quantity": "1487",
+        "entry": "48053.30055",
+        "margin_btc": "0.001547240234261078243458970895",
+        "liquidation": "46028.19716967857142857142856",
+        "take_profit": "53200.0",
+        "stop_loss": "46338.0",
+        "leverage": "20",
+        "index": 0
+      },
+      "hour_mark": {
+        "time": 1704988800000,
+        "open": "46772.96",
+        "high": "47021",
+        "low": "45764.5",
+        "close": "46017.32",
+        "volume": "0"
+      },
+      "minute_file_sha256": "593fa0b46132ecbbf07408a889cb4fec4a5f979f7e808268f0ba0cf11db6f08e",
+      "first_stop_ms": 1704989280000,
+      "first_liquidation_ms": 1704989700000,
+      "status": "stop_trigger_precedes_liquidation_level",
+      "note": "trigger order only; not proof of complete stop fill",
+      "stop_execution": {
+        "status": "fully_stopped_before_liquidation_level",
+        "remaining": "0",
+        "fills": [
+          {
+            "time": 1704989280000,
+            "quantity": "1487",
+            "price": "46291.6620"
+          }
+        ]
+      }
+    },
+    {
+      "time": 1710471600000,
+      "utc": "2024-03-15T03:00:00Z",
+      "position": {
+        "quantity": "1352",
+        "entry": "70524.99225",
+        "margin_btc": "0.0009585254509545869535349009555",
+        "liquidation": "67552.86757660714285714285714",
+        "take_profit": "78547.0",
+        "stop_loss": "67851.0",
+        "leverage": "20",
+        "index": 0
+      },
+      "hour_mark": {
+        "time": 1710471600000,
+        "open": "69054.43",
+        "high": "69509.54",
+        "low": "66693.31",
+        "close": "68226.18",
+        "volume": "0"
+      },
+      "minute_file_sha256": "b4604a3a2d4c55c432519e3112797cd3c7ab18aa9cbe7eee4b60951819778d7f",
+      "first_stop_ms": 1710472980000,
+      "first_liquidation_ms": 1710473100000,
+      "status": "stop_trigger_precedes_liquidation_level",
+      "note": "trigger order only; not proof of complete stop fill",
+      "stop_execution": {
+        "status": "fully_stopped_before_liquidation_level",
+        "remaining": "0",
+        "fills": [
+          {
+            "time": 1710472980000,
+            "quantity": "1352",
+            "price": "67783.1490"
+          }
+        ]
+      }
+    },
+    {
+      "time": 1724792400000,
+      "utc": "2024-08-27T21:00:00Z",
+      "position": {
+        "quantity": "2070",
+        "entry": "63677.9688",
+        "margin_btc": "0.001625365914623834546682337016",
+        "liquidation": "60994.39725771428571428571429",
+        "take_profit": "70407.0",
+        "stop_loss": "61435.0",
+        "leverage": "20",
+        "index": 0
+      },
+      "hour_mark": {
+        "time": 1724792400000,
+        "open": "61847.64",
+        "high": "61947",
+        "low": "59835.04",
+        "close": "60395.52",
+        "volume": "0"
+      },
+      "minute_file_sha256": "33a6c62bfc9966fa53b3c0da45cce1787e3c21d2684381fba70469f4877763a7",
+      "first_stop_ms": 1724793420000,
+      "first_liquidation_ms": 1724794620000,
+      "status": "stop_trigger_precedes_liquidation_level",
+      "note": "trigger order only; not proof of complete stop fill",
+      "stop_execution": {
+        "status": "fully_stopped_before_liquidation_level",
+        "remaining": "0",
+        "fills": [
+          {
+            "time": 1724793420000,
+            "quantity": "2070",
+            "price": "61373.5650"
+          }
+        ]
+      }
+    },
+    {
+      "time": 1733436000000,
+      "utc": "2024-12-05T22:00:00Z",
+      "position": {
+        "quantity": "790",
+        "entry": "98901.67230",
+        "margin_btc": "0.000399386573365352488584765821",
+        "liquidation": "94733.67325307142857142857143",
+        "take_profit": "108266.5",
+        "stop_loss": "95780.5",
+        "leverage": "20",
+        "index": 0
+      },
+      "hour_mark": {
+        "time": 1733436000000,
+        "open": "99074.84",
+        "high": "99194.5",
+        "low": "91381.94",
+        "close": "96752.87",
+        "volume": "0"
+      },
+      "minute_file_sha256": "0f009cf84f5dd5b2796feeb49def9d39569f75c63156d549e0a045c6e97bd077",
+      "first_stop_ms": 1733437680000,
+      "first_liquidation_ms": 1733437680000,
+      "status": "still_ambiguous_within_same_minute",
+      "note": "trigger order only; not proof of complete stop fill",
+      "stop_execution": {
+        "status": "unresolved_same_minute",
+        "remaining": "790",
+        "fills": []
+      }
+    }
+  ],
+  "observer_sha256": "d36c001e2ca6a8396614fc31fefe2a11825a3229bc64297a38875a7dbced267f",
+  "scope": "Exact baseline states; native minute trigger and conditional execution diagnostics, not a changed full-account replay"
+}

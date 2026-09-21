@@ -17,33 +17,28 @@ Formal economics remain frozen:
 
 No live trading, transfers, credential changes, or real account-setting changes are authorized by this work.
 
-## Latest continuation: stable-settlement feasibility and L1
+## Latest continuation: measured native refinement and rejected L1
 
-The 2026-09-21 continuation recovered remote HEAD `d67bf03b` and verified main
-still `c886b7c6`. Run `35559122193` minute acquisition completed successfully during this
-continuation; its separate check job and `35559716288` OKX probe were still queued.
-The 729363-byte minute ZIP passed all integrity checks and is now preserved in
-`evidence/ambiguous-minutes-20260921/` as 23 deterministic parts plus manifest.
-It contains 11520 minute bars. No new economics has been produced.
-Exact baseline event snapshots remain missing, so ordering is still unresolved. Do not confuse the separate OKX probe branch's stale state
-files with this current recovery entry.
+See `evidence/continuation-results-20260921.md` and its linked JSON results.
 
-New work on this branch:
-- repaired the existing OKX boundary probe to reject false-positive listing,
-  missing boundary, malformed/unconfirmed/duplicate bars and invalid funding;
-- current official instrument metadata supports pre-2020 linear USDT listing;
-- partial-fill/full-position protection and native historical coverage remain
-  unverified; corrected the unsupported historical protection assertion;
-- implemented the isolated L1 causal signal and preregistered its proposed
-  holding/risk lifecycle in `research/linear-hypothesis.md`;
-- 5 probe and 5 signal tests passed locally; production runtime unchanged.
+- The baseline was reproduced exactly from the preserved native archive without
+  reacquisition. Eight exact event states were recovered.
+- Native minute execution resolves six events; two remain conservative within-minute
+  ambiguities. Full refined proxy result: CAGR 44.121475%, MDD 77.049869%, two
+  liquidations, 537 fills, unchanged 795 manual invocation schedule.
+- Shared research replay supports verified minute/hour execution while retaining
+  four-hour signal aggregation. Production adapter/execution/model are unchanged.
+- L1 development-only linear-account proxy: CAGR 0.583756%, MDD 1.355090%; ten
+  entries. Rejected for validation progression; 2024-end L1 data uninspected.
+- 23 targeted checks passed across replay, native-parent replay, mixed resolution
+  and linear accounting. Exact measured source and complete traces are persisted;
+  restore via `evidence/native-refinement-originals.json`.
+- OKX run 35559716288 was still queued at the latest check. Historical linear
+  data/rules and execution protection semantics are not yet established.
 
-L1 is only a signal prototype, not a completed replay/production trading model.
-No new CAGR or MDD exists. Its 2024-end validation data has not been inspected.
-See `evidence/linear-feasibility-20260921.md` for sources, access failures and
-exact continuation. Native linear history, rule timeline and protection facts
-block meaningful native qualification; implement/measure the remaining linear
-replay after resolving those inputs. Reuse completed inverse evidence.
+All original economic and safety acceptance remains in force. No candidate
+qualifies and main remains unchanged. Continue structural participation research
+on this branch; never present cross-venue proxy as native qualification.
 
 ## Git / remote state
 

@@ -1,0 +1,41 @@
+{
+  "qualification": "NOT_QUALIFIED",
+  "provenance": "hypothetical_linear_account_on_Bybit_inverse_market_and_funding_proxy",
+  "candidate": "L1",
+  "scope": "2020-2023 development only",
+  "cagr": 0.005837559681430182,
+  "mdd": "0.0135509022508212712942886980",
+  "final_cny": "10235.55987562145751696599999",
+  "fees_usdt": "0.9933349764242280363626454539",
+  "net_funding_paid_usdt": "1.88561672466732",
+  "counts": {
+    "decisions": 468,
+    "no_direction": 306,
+    "unsafe_initial_stop": 127,
+    "entry": 10,
+    "hold": 22,
+    "take": 4,
+    "stop": 1,
+    "manual_close": 3,
+    "liquidation": 2
+  },
+  "invocations": 468,
+  "holding_hours": 1973,
+  "yearly": {
+    "2020": "0.011581140421733763941600000",
+    "2021": "0",
+    "2022": "-0.0008188245185975118001549561",
+    "2023": "0.012666948993825545879364614"
+  },
+  "data_manifest_sha256": "2dac528cbfd0a0be96117aa60cdee55f0e8fe66eec3d29c1af1a75503380689f",
+  "code_sha256": "c040feba3120d99d33329b1dd860040a4a281d2e139010bc9c29b916eaae4016",
+  "signal_sha256": "746a72b049c28991db1ab0f06ac30c7b2fbc6ca26cc7ff3101886813bdf76e69",
+  "validation_inspected": false,
+  "limitations": [
+    "Not native linear data/rules or execution validation",
+    "USDT=USD assumption; no stablecoin depeg series",
+    "Hourly conservative exit ambiguity and liquidity proxy",
+    "No guarantee of atomic attached native protection",
+    "No continuous favorable mark-path assumption"
+  ]
+}
