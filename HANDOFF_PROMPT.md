@@ -1,3 +1,9 @@
+# Current task override
+
+Continue the return-first attachment and L21 hypothesis. The older requirement
+for new external information after each failure is superseded. Current entry is
+PROJECT_STATE.md. Main is unchanged. This is not a completion checkpoint.
+
 # Current continuation — frequency redesign, L17–L20
 
 Task remains NOT_QUALIFIED; do not describe this checkpoint as delivery. Formal150%cost-net CAGR / continuous MDD<50%, full2020-01-01to2026-09-20exclusive, CNY10000, original sparse schedule, BinanceBTCUSDT isolated20x. Research frequency is free; formal schedule unchanged. No real/testnet account operations authorized or performed.

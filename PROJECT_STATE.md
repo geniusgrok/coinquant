@@ -1,3 +1,13 @@
+# Active mandate — return-first L21 continuation
+
+The user attachment PANCAKEQUANT_RETURN_FIRST_CONTINUATION_PROMPT.md supersedes
+the historical stop condition requiring new external information. First measure
+executable <=1x long/channel references, then preregistered volatility target
+allocation with invocation-time resizing. Same research branch; unchanged formal
+150%/50% target and sparse schedule. See research/l21-volatility-target-hypothesis.md.
+Restored original archives verified by length/SHA256. No new economic results yet.
+2024+ economics remain unused; no account operations.
+
 # Current continuation — frequency redesign, L17–L20
 
 Task remains NOT_QUALIFIED; do not describe this checkpoint as delivery. Formal150%cost-net CAGR / continuous MDD<50%, full2020-01-01to2026-09-20exclusive, CNY10000, original sparse schedule, BinanceBTCUSDT isolated20x. Research frequency is free; formal schedule unchanged. No real/testnet account operations authorized or performed.
