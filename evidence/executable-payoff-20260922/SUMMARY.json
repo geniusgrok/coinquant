@@ -1,0 +1,145 @@
+{
+  "qualification": "REJECTED_DEVELOPMENT",
+  "labels": {
+    "total": 468,
+    "eligible": 457,
+    "status_counts": {
+      "unmatured_at_window_end": 2,
+      "eligible": 457,
+      "unfunded_or_unsafe": 9
+    },
+    "sign_changes": 27,
+    "mean_terminal": 0.01090041872420625,
+    "mean_protected": 0.019198079895028995,
+    "mean_abs_difference": 0.05162488627355639,
+    "rank_correlation": 0.914610037079934,
+    "protected_exits": {
+      "stop": 148,
+      "payoff_expiry": 308,
+      "take": 1
+    },
+    "hypothetical_liquidation_scenarios": 36,
+    "protected_liquidation_stop_ambiguous": 0,
+    "largest_differences": [
+      {
+        "t": 1678410000000,
+        "terminal": 0.8559761965817109,
+        "protected": -0.025446783695055025
+      },
+      {
+        "t": 1583391600000,
+        "terminal": -1.0067987607354474,
+        "protected": -0.15985382619886535
+      },
+      {
+        "t": 1626642000000,
+        "terminal": 0.5771556511773107,
+        "protected": -0.06087155880380563
+      },
+      {
+        "t": 1654660800000,
+        "terminal": -0.678986774173076,
+        "protected": -0.09896694859636757
+      },
+      {
+        "t": 1654729200000,
+        "terminal": -0.6942514074190733,
+        "protected": -0.11960213578288996
+      },
+      {
+        "t": 1626530400000,
+        "terminal": 0.515672398346857,
+        "protected": -0.05380643370240391
+      },
+      {
+        "t": 1686582000000,
+        "terminal": 0.42097043881693524,
+        "protected": -0.06670649930656655
+      },
+      {
+        "t": 1667422800000,
+        "terminal": -0.6495711801731245,
+        "protected": -0.20358583726194399
+      },
+      {
+        "t": 1651665600000,
+        "terminal": -0.5658920486438999,
+        "protected": -0.1275388650750596
+      },
+      {
+        "t": 1667534400000,
+        "terminal": -0.6335247466469606,
+        "protected": -0.19596515743710985
+      }
+    ]
+  },
+  "accounts": {
+    "L36": {
+      "cagr": 0.8956597011039795,
+      "mdd_conservative_envelope": "0.2425160178524597063540699551",
+      "final_cny": "129141.0536281560232102672553",
+      "counts": {
+        "invocations": 468,
+        "entry": 20,
+        "funding_charge": 333,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      },
+      "fees_usdt": "422.39634864578400",
+      "funding_bound_paid_usdt": "714.1183960796999009393",
+      "holding_hours": 2838,
+      "mean_close_exposure": "0.1675502075405853822783914553",
+      "max_close_exposure": "3.994481132775391092892232289"
+    },
+    "B0": {
+      "cagr": 0.011108738865748924,
+      "mdd_conservative_envelope": "0.8914269090345453772844785174",
+      "final_cny": "10451.81827029470509755561875",
+      "counts": {
+        "invocations": 468,
+        "cold_or_missing": 104,
+        "entry": 97,
+        "ambiguous_funding_credit_omitted": 175,
+        "funding_charge": 1740,
+        "inventory_hold": 137,
+        "payoff_expiry": 58,
+        "flat_prediction": 67,
+        "stop": 38,
+        "protection": 5,
+        "take": 1
+      },
+      "fees_usdt": "674.22189971720700",
+      "funding_bound_paid_usdt": "1802.8647645242012885302",
+      "holding_hours": 15183,
+      "mean_close_exposure": "1.010370530080177846391819216",
+      "max_close_exposure": "4.311679707010123466409682789"
+    },
+    "B1": {
+      "cagr": 0.1451256663085596,
+      "mdd_conservative_envelope": "0.9043716208837445864159950487",
+      "final_cny": "17195.60377445432409165940967",
+      "counts": {
+        "invocations": 468,
+        "cold_or_missing": 104,
+        "entry": 102,
+        "ambiguous_funding_credit_omitted": 198,
+        "funding_charge": 1960,
+        "inventory_hold": 151,
+        "payoff_expiry": 67,
+        "flat_prediction": 39,
+        "stop": 34,
+        "protection": 5,
+        "take": 1
+      },
+      "fees_usdt": "908.71585344865875",
+      "funding_bound_paid_usdt": "2146.5546128782915249836",
+      "holding_hours": 17110,
+      "mean_close_exposure": "1.180970190279515588179702860",
+      "max_close_exposure": "4.314257966652949795980598721"
+    }
+  },
+  "full_window_run": false
+}
