@@ -1,0 +1,2 @@
+time,launch_ms,funding_interval_ms,tick,step,minimum,maximum,market_maximum,risk_limit_btc,maintenance_rate,taker_fee
+1576022400000,1542211200000,28800000,0.5,1,1,1000000,1000000,150,0.005,0.00075
