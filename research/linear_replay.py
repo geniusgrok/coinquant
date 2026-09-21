@@ -1,4 +1,4 @@
-"""L1 development-only linear-account diagnostic on explicitly proxy venue data.
+"""L2 development-only linear-account diagnostic on explicitly proxy venue data.
 
 Native Bybit inverse prices/funding are reused as a market proxy, not relabeled
 OKX data. USDT=USD and linear lot/rules below are explicit research assumptions.
@@ -150,7 +150,7 @@ def run(manifest, output):
                         elif value.direction:
                             direction=value.direction
                             price=bar.open*(1+slip+spread/2 if direction>0 else 1-slip-spread/2)
-                            distance=mark.open*value.daily_rms*2
+                            distance=min(mark.open*value.daily_rms*2,mark.open*D('.015'))
                             stop=floor_step(mark.open-distance,TICK) if direction>0 and mark.open>distance else (
                                 floor_step(mark.open+distance,TICK)+TICK if direction<0 else ZERO)
                             unit=abs(price-stop)
@@ -208,7 +208,7 @@ def run(manifest, output):
     annual[last_year]=str(last_equity/year_initial-1)
     years=(end-dataset.start)/31556952000
     result={'qualification':'NOT_QUALIFIED','provenance':'hypothetical_linear_account_on_Bybit_inverse_market_and_funding_proxy',
-        'candidate':'L1','scope':'2020-2023 development only','cagr':float(last_equity/initial)**(1/years)-1,
+        'candidate':'L2','scope':'2020-2023 development only','cagr':float(last_equity/initial)**(1/years)-1,
         'mdd':str(mdd),'final_cny':str(last_equity*D(frozen['cny_per_usd'])),'fees_usdt':str(account.fees),
         'net_funding_paid_usdt':str(account.funding),'counts':dict(counts),'invocations':len(actual),
         'holding_hours':hold_hours,'yearly':annual,'data_manifest_sha256':digest(manifest),

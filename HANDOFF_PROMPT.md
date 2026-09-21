@@ -281,3 +281,23 @@ There is no accepted local-only strategy candidate that must be reconstructed. H
 The only active asynchronous external state to inspect first is GitHub Actions run `35559122193`.
 
 Continue until either the active acceptance is genuinely met or a concrete external blocker makes further work impossible. Do not stop at a plan, PR, checkpoint, or partial test result.
+
+## 2026-09-21 continuation: L2 rejected; native linear boundaries
+
+L2 development proxy measured CAGR -1.096052%, MDD 15.974647%, 297 entries,
+244 stops and five liquidations. Rejected, no validation run or adjacent tuning.
+See evidence/l2-development-20260921.json and research/linear-hypothesis.md.
+
+OKX probe run 35559716288 finished: both official hosts return empty 2020 mark
+and funding data, although start trade and end trade/mark/funding are available.
+All 15 original response/report files are preserved under
+evidence/okx-boundary-probe-20260921/. Original ZIP SHA256
+fddc78d56d85f7b6fb382a6d3a85923c0da6a7e2a1fd9bb53c4ba0661de75c15.
+This rejects the tested API coverage path, not every possible archival source.
+
+Binance official public archives returned January 2020 BTCUSDT linear trade,
+mark and funding ZIPs; January mark/funding and September 19 trade/mark checksums also passed.
+September 1-19 funding API returned 57 native settlements, retained exactly.
+Daily funding archive returned 404; use the verified official API tail instead.
+No production exchange change, no live writes, no main merge. All candidates
+remain NOT_QUALIFIED; continue native contract/data feasibility and new alpha.

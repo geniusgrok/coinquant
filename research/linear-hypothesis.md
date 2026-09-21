@@ -1,6 +1,6 @@
 # L1 stable-settlement trend hypothesis — preregistered 2026-09-21
 
-Status: signal implemented and unit-checked; economic result NOT_MEASURED;
+Status: L1 and L2 measured on development only and rejected;
 qualification NOT_QUALIFIED. No production import or execution adapter changed.
 
 ## Why this experiment
@@ -65,4 +65,36 @@ inputs and necessary execution safety. Nothing measured here meets those gates.
 OKX listing/linear USDT settlement is supported by a current official instrument
 response, but 2020 trade/mark/funding coverage and native partial-fill/full-position
 protection remain unverified. See `evidence/linear-feasibility-20260921.md`.
-No linear economics were run, and 2024-end market data was not inspected for L1.
+The preregistration above predates the measurements. L1 and L2 development proxy
+results are now preserved; neither received chronological validation.
+
+## L2 preregistration after L1 development diagnosis
+
+L1 was measured on 2020-2023 only and rejected: 306/468 no-direction decisions,
+127 unsafe initial stops, ten entries and 0.583756% diagnostic CAGR. This section
+is written before L2 measurement. The 2024-end segment remains uninspected.
+
+L2 tests whether a directly liquidation-safe entry process can participate often
+enough for the same trend signal to matter. Remove L1's hard one-RMS entry
+threshold; use signed score with conviction abs(score)/(1+abs(score)). Separate
+the multi-day trend measurement horizon from entry loss tolerance: bound the
+initial two-daily-RMS stop distance at 1.5% of current mark. The bound leaves
+substantial room inside the approximately 4% initial liquidation distance at 20x;
+it is an engineering hypothesis, not a fitted optimum. Same-direction stop
+updates remain tightening-only; TP stays anchored at entry. Do not increase the
+0.006 risk ceiling, 2x effective cap or 20x exchange setting.
+
+Measure the same development data, costs and sparse schedule once. Inspect net
+returns and stop churn. If increased participation merely increases losses, reject
+this route instead of searching adjacent cap/score values. This is a two-part
+structural participation test, not a claim to isolate each part's contribution.
+L1 exact source/results remain in the previous evidence archive and Git revision.
+
+## L2 result — rejected
+
+CAGR -1.096052%, continuous account MDD 15.974647%, final CNY 9568.73.
+297 entries, 244 stop exits, 33 take exits and five liquidations across the same
+468 development invocations. More participation produced losses after costs.
+Do not tune neighboring stop caps or conviction thresholds. Both L1 and L2 remain
+NOT_QUALIFIED and research-only. Native linear data and a different causal alpha
+structure are still needed; 2024-end was not used in either experiment.
