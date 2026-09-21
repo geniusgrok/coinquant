@@ -116,11 +116,13 @@
     1679659200000
   ],
   "source_sha256": "466b4fa78bc8dbe996592d78821269ef7613d38a000f7d61c5c3f21442c85bba",
-  "protocol_sha256": "ca2a869771f0aaead55fbf788f35272a8552b49002770558410059f2a088f45a",
+  "protocol_sha256": "8a3ea530b97bb6e2cb248fda25d5304d6a524d9adec4c6549488f5abcdff901f",
   "limitations": [
     "Proxy costs and delayed live-kline availability, not historically proven execution",
     "Revised archive vintages; not point-in-time raw snapshots",
     "Sparse observations and reused historical research, not independent future validation",
     "No continuous account, margin, liquidation, native protection or CNY valuation measured"
-  ]
+  ],
+  "executed_protocol_copy_sha256": "ca2a869771f0aaead55fbf788f35272a8552b49002770558410059f2a088f45a",
+  "protocol_identity_note": "Local copy had one extra final newline; canonical remote protocol restored after byte verification; semantics and computations unchanged"
 }
