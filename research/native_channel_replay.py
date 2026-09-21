@@ -1,4 +1,4 @@
-"""L7 native Binance development account diagnostic, never qualification."""
+"""L8 native Binance development account diagnostic, never qualification."""
 import argparse
 from collections import Counter, deque
 import csv
@@ -65,6 +65,26 @@ def channel_state(window, previous):
     return previous
 
 
+def resize(account, target, price, mark):
+    """Same-direction filled quantity change; reserve wallet before additions."""
+    old=abs(account.q)
+    if not old or target<0 or price<=0:raise ValueError('invalid resize')
+    direction=D(1) if account.q>0 else D(-1)
+    if target<old:
+        amount=old-target;account.close(amount,price)
+        return 'rebalance_reduce',amount
+    if target==old:return None,ZERO
+    if not (account.sl<price<account.tp if direction>0 else account.tp<price<account.sl):return None,ZERO
+    added=target-old;fee=added*price*FEE
+    entry=(old*account.entry+added*price)/target;q=direction*target
+    boundary=account.sl-direction*mark*D('.01')
+    margin=max(target*entry/20,q*entry-(q-target*(MMR+FEE))*boundary)
+    if margin+fee>account.wallet:return None,ZERO
+    account.wallet-=fee;account.fees+=fee
+    account.q=q;account.entry=entry;account.margin=margin
+    return 'rebalance_add',added
+
+
 def run(root,warmup,repairs,output):
     frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['development_end'])
     series,funding,warm,identity=inputs(root,warmup,repairs)
@@ -127,6 +147,18 @@ def run(root,warmup,repairs,output):
                     if account.q>0 and account.sl<proposed<mo:account.sl=floor_step(proposed,TICK)
                     elif account.q<0 and mo<proposed<account.sl:account.sl=floor_step(proposed,TICK)+TICK
                     counts['hold']+=1
+                    risk=abs(mo-account.sl)+FEE*(mo+account.sl)+mo*(slip+spread/2)+account.sl*(slip+spread/2)
+                    target=floor_step(min(account.equity(mo)*D('.006')/risk,account.equity(mo)*2/mo,D('1000000')/mo),LOT)
+                    capacity=floor_step(previous_quote/60*D(frozen['volume_participation'])/o,LOT)
+                    old=abs(account.q);target=max(ZERO,min(target,old+capacity))
+                    target=max(target,old-capacity)
+                    direction=D(1) if account.q>0 else D(-1)
+                    execution_side=direction if target>old else -direction
+                    price=o*(1+slip+spread/2 if execution_side>0 else 1-slip-spread/2)
+                    event,amount=resize(account,target,price,mo)
+                    if event:
+                        counts[event]+=1;ow.writerow([t,event,str(direction*amount),str(price),'',str(account.q)])
+                    elif target>old:counts['unfunded_or_unsafe_add']+=1
                 elif not exited:
                     direction=regime
                     if not direction:counts['no_breakout']+=1
@@ -151,7 +183,8 @@ def run(root,warmup,repairs,output):
                             else:counts['size_below_minimum']+=1
             if not charged and t in fund_hours and (opening_q or account.q):
                 if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
-                funding_bound(t,mark,opening_q or account.q)
+                funding_q=opening_q if abs(opening_q)>=abs(account.q) else account.q
+                funding_bound(t,mark,funding_q)
             if account.q:
                 for price in sorted((mh,ml),key=account.equity,reverse=True):observe(t,'conservative_envelope',price)
                 long=account.q>0;liq=account.liquidation()
@@ -169,9 +202,9 @@ def run(root,warmup,repairs,output):
         final=account.equity(mc)
     if seen!=sorted(triggers):raise ValueError('frozen invocation mismatch')
     years=(end-start)/31556952000;cagr=float(final/initial)**(1/years)-1
-    result=dict(candidate='L7',qualification='NOT_QUALIFIED',validation_used=False,cagr=cagr,mdd_conservative_envelope=str(mdd),
+    result=dict(candidate='L8',qualification='NOT_QUALIFIED',validation_used=False,cagr=cagr,mdd_conservative_envelope=str(mdd),
                 final_cny=str(final*D(frozen['cny_per_usd'])),counts=dict(counts),fees_usdt=str(account.fees),funding_bound_paid_usdt=str(account.funding),
-                progression_passed=cagr>0.024372216259263002 and mdd<D('.2'),code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                progression_passed=cagr>0.04863302406009273 and mdd<=D('0.1136320269446116339717390128'),code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 limitations=['Proxy dated rules/fees/liquidity and USDT=USD','Adverse interval funding valuation, not exact cashflow',
                              'Hourly conservative envelope and liquidation-first ambiguity','Margin transfer and full-position execution unverified'])
     (output/'inputs.json').write_text(json.dumps(identity,indent=2)+'\n')
