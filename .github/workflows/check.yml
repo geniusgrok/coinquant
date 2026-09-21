@@ -1,7 +1,7 @@
 name: Check
 on:
   push:
-    branches: [main, research/on-demand-btc-20260920]
+    branches: [main, research/on-demand-btc-20260920, research/okx-linear-feasibility-20260921]
     paths:
       - 'pancakequant/**'
       - 'tests/**'
@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   check:
-    if: github.event.head_commit.message != 'Preserve native BTCUSD artifact'
+    if: github.ref != 'refs/heads/research/okx-linear-feasibility-20260921' && github.event.head_commit.message != 'Preserve native BTCUSD artifact'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -100,6 +100,28 @@ jobs:
         with:
           name: ambiguous-btcusd-minutes-${{ github.sha }}
           path: ${{ runner.temp }}/ambiguous-btcusd/
+          if-no-files-found: error
+          retention-days: 30
+
+  probe-okx-linear-history:
+    if: github.ref == 'refs/heads/research/okx-linear-feasibility-20260921'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - name: Probe OKX BTC-USDT-SWAP native history boundaries
+        run: python -m research.probe_okx --output "$RUNNER_TEMP/okx-probe"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: okx-linear-probe-${{ github.sha }}
+          path: ${{ runner.temp }}/okx-probe/
           if-no-files-found: error
           retention-days: 30
 
