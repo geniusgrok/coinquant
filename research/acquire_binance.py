@@ -6,6 +6,8 @@ dated costs/rules, USDT collateral risk and execution safety remain separate gat
 import argparse
 import concurrent.futures
 import csv
+import calendar
+from datetime import datetime, timezone
 import hashlib
 import io
 import json
@@ -68,6 +70,12 @@ def acquire(root, path):
             if gaps:
                 record['hour_gaps']=gaps
                 raise ValueError("hour gap")
+            date=Path(path).stem.removeprefix('BTCUSDT-1h-')
+            begin=datetime.strptime(date, '%Y-%m' if path.startswith('monthly/') else '%Y-%m-%d').replace(tzinfo=timezone.utc)
+            days=calendar.monthrange(begin.year,begin.month)[1] if path.startswith('monthly/') else 1
+            first=int(begin.timestamp()*1000)
+            if times!=list(range(first,first+days*86400000,3600000)):
+                raise ValueError("archive boundary coverage gap")
             from decimal import Decimal
             for row in rows:
                 o, h, low, close = map(Decimal, row[1:5])

@@ -29,11 +29,13 @@ def observe(config_path, *, decision=False, execute=False):
     with State(config['state_dir'],identity) as state:
         venue=BinanceReadOnly(key=key,secret=secret)
         snapshot=venue.snapshot(config['account_uid'])
+        market=venue.completed_market() if decision else None
         report=dict(status='blocked' if decision else 'read_only',exchange='Binance',symbol='BTCUSDT',
                     actual=snapshot,qualification='NOT_QUALIFIED',write_attempted=False,
                     reason='No qualified production alpha or write lifecycle' if decision else 'Account observation only')
         # Unknown intents are retained. This observer never confirms/retries them.
         report['pending_intents']=len(state.pending())
+        if market is not None:report['market']=market
         state.report(report)
         return report
 

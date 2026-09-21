@@ -88,3 +88,11 @@ L4 was preregistered at a6712e6263be0bfbb91e89a92350870cb8af7603 and also reject
 Binance research reader now supports stable ordinary/conditional order identity queries and conditional child reconciliation; see evidence/binance-intent-query-20260921.md. This grants no resubmission permission and is not a production write lifecycle. Full local suite: 120 tests passed. Mark capture 35567111349 remains queued; continue independent work rather than duplicate acquisition.
 
 最新默认入口：Binance status 可对账并保存报告；run 只观察后 blocked，--execute 在凭据/网络前拒绝。旧 Bybit 不再经 CLI 调用，历史模块仍保留。完整生产交易尚未完成，不得把此迁移当成验收。12 项受影响定向检查通过。
+
+Binance run now also reads exactly 120 completed native four-hour trade candles using verified server time and exact endpoints; rejects forming, missing, duplicate or invalid bars. Four affected market/CLI checks passed. It still makes no approved model decision and sends no writes. The data capture run 35567111349 just completed with failure; inspect its raw artifact and semantic gap records next.
+
+## Native Binance coverage completed
+
+35567111349 finished with semantic failure and retained four authentic gapped mark ZIPs. Original artifact 10624731223: 83,138 bytes, SHA256 fa8f5344769b188a562fb231fcb444321232777f2cc0b86355726887dd41ccc5; durable Library libfile_9caad5300ce881919da75dd17c284395. Exact receipt evidence/binance-mark-gaps-20260921.json. Five gaps initially totaled 192h; full-window checking found an additional 24h at 2022-07-31, which file-internal continuity had missed. Six official fapi.binance.com markPriceKlines responses now restore all 216h, preserving native monthly originals; raw responses/receipts are in evidence/binance-mark-repair-20260921/. Collector now checks month/day boundaries too.
+
+Full audit passed: 58,896 trade hours, 58,896 mark hours, 7,362 funding events, zero missing/duplicate/out-of-window hours; funding offsets preserved (max47ms). See evidence/binance-native-coverage-20260921.json. Status remains NOT_QUALIFIED: dated rules, USDT valuation, exact funding marked cashflow and entry protection remain unresolved. No economic validation was run. Temporary data-acquisition workflow hooks are removed; one lightweight offline CI remains. Do not re-download complete history.

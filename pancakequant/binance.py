@@ -67,6 +67,32 @@ class BinanceReadOnly:
             raise Unknown('unexpected Binance read response')
         return result
 
+    def completed_market(self):
+        """Exactly 120 completed native four-hour trade bars, no forming candle."""
+        response = self.get('/fapi/v1/time')
+        now = response.get('serverTime') if isinstance(response, dict) else None
+        if type(now) is not int or abs(int(self.clock()*1000)-now) > 15000:
+            raise Unknown('Binance server time is missing or local clock is stale')
+        interval = 4*60*60*1000
+        end = now//interval*interval
+        rows = self.get('/fapi/v1/klines', {'symbol':'BTCUSDT','interval':'4h',
+                                         'startTime':end-120*interval,'endTime':end-1,'limit':120})
+        if not isinstance(rows, list) or len(rows) != 120:
+            raise Unknown('complete Binance market history unavailable')
+        candles=[]
+        for offset, row in enumerate(rows):
+            if (not isinstance(row, list) or len(row) < 11
+                    or type(row[0]) is not int or row[0] != end-(120-offset)*interval
+                    or type(row[6]) is not int or row[6] != row[0]+interval-1
+                    or row[6] >= now):
+                raise Unknown('Binance candle sequence is incomplete or still forming')
+            o,h,l,c,v = [number(x) for x in row[1:6]]
+            if not 0 < l <= min(o,c) <= max(o,c) <= h or v < 0:
+                raise Unknown('invalid native Binance candle values')
+            candles.append({'time':row[0],'open':str(o),'high':str(h),'low':str(l),
+                            'close':str(c),'volume':str(v)})
+        return {'server_time':now,'complete_through':end,'interval_ms':interval,'candles':candles}
+
     def account_identity(self):
         raw = self.get('/api/v3/account', {'omitZeroBalances':'true'})
         uid = raw.get('uid') if isinstance(raw,dict) else None

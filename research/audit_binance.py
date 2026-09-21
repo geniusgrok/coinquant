@@ -4,6 +4,7 @@ from decimal import Decimal
 import hashlib
 import json
 from pathlib import Path
+from urllib.parse import urlsplit, parse_qs
 
 from pancakequant.research import spec, timestamp
 from research.acquire_binance import paths
@@ -12,7 +13,27 @@ from research.linear_forecast import archive_rows
 HOUR = 3600000
 
 
-def audit(root, tail, output):
+def repair_rows(directory):
+    """Exact original official API responses; supplement gaps, never overwrite."""
+    receipt=json.loads((directory/'receipt.json').read_text());result=[]
+    for item in receipt:
+        name=item['file']
+        if Path(name).name!=name:raise ValueError('invalid repair path')
+        raw=(directory/name).read_bytes()
+        if len(raw)!=item['bytes'] or hashlib.sha256(raw).hexdigest()!=item['sha256']:
+            raise ValueError('repair identity mismatch')
+        url=urlsplit(item['url']);q=parse_qs(url.query)
+        if (url.scheme!='https' or url.netloc!='fapi.binance.com'
+                or url.path!='/fapi/v1/markPriceKlines' or q.get('symbol')!=['BTCUSDT']
+                or q.get('interval')!=['1h']):raise ValueError('invalid native repair source')
+        rows=json.loads(raw)
+        expected=list(range(int(q['startTime'][0]),int(q['endTime'][0])+1,HOUR))
+        if [r[0] for r in rows]!=expected:raise ValueError('incomplete native repair')
+        result.extend(rows)
+    return result,receipt
+
+
+def audit(root, tail, output, repairs=None):
     frozen=spec();start=timestamp(frozen['start']);end=timestamp(frozen['end'])
     times={'klines':[], 'markPriceKlines':[]};funding=[];receipts=[]
     for relative in paths():
@@ -36,6 +57,18 @@ def audit(root, tail, output):
                     raise ValueError('invalid price/volume')
                 if int(row[6])!=t+HOUR-1:raise ValueError('incomplete hourly close time')
                 times[kind].append(t)
+    repair_identity=[]
+    if repairs is not None:
+        restored,repair_identity=repair_rows(repairs)
+        seen=set(times['markPriceKlines'])
+        for row in restored:
+            t=int(row[0]);o,h,low,c=map(Decimal,row[1:5]);volume=Decimal(row[5])
+            if (t in seen or not start<=t<end or t%HOUR
+                    or not all(x.is_finite() for x in (o,h,low,c,volume))
+                    or not (0<low<=min(o,c)<=max(o,c)<=h) or volume<0
+                    or int(row[6])!=t+HOUR-1):raise ValueError('invalid or overlapping mark repair')
+            seen.add(t);times['markPriceKlines'].append(t)
+        times['markPriceKlines'].sort()
     expected=list(range(start,end,HOUR))
     for kind,ts in times.items():
         if ts!=expected:raise ValueError(f'{kind}: missing, duplicate or out-of-window hour')
@@ -59,7 +92,7 @@ def audit(root, tail, output):
             'formal_start':frozen['start'],'formal_end_exclusive':frozen['end'],
             'trade_hours':len(times['klines']),'mark_hours':len(times['markPriceKlines']),
             'funding_events':len(funding),'maximum_funding_offset_ms':max(offsets),
-            'nonzero_funding_offsets':sum(x!=0 for x in offsets),'archives':receipts,
+            'nonzero_funding_offsets':sum(x!=0 for x in offsets),'archives':receipts,'native_mark_repairs':repair_identity,
             'tail_sha256':hashlib.sha256(raw).hexdigest(),
             'unresolved':['dated fee/risk/filter timeline','stablecoin collateral risk',
                           'exact funding price at offset timestamps','native entry protection lifecycle'],
@@ -71,4 +104,5 @@ def audit(root, tail, output):
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True)
     p.add_argument('--tail',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
-    a=p.parse_args();audit(a.root,a.tail,a.output)
+    p.add_argument('--repairs',type=Path)
+    a=p.parse_args();audit(a.root,a.tail,a.output,a.repairs)

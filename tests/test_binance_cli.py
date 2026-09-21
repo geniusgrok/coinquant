@@ -19,6 +19,7 @@ class BinanceCLI(unittest.TestCase):
             config.write_text(json.dumps(dict(account_uid='123',state_dir=str(Path(tmp)/'state'))))
             with patch.dict('os.environ',{'PANCAKEQUANT_BINANCE_KEY':'fake','PANCAKEQUANT_BINANCE_SECRET':'fake'}),patch('pancakequant.cli.BinanceReadOnly') as venue:
                 venue.return_value.snapshot.return_value={'equity_usdt':'100'}
+                venue.return_value.completed_market.return_value={'candles':[]}
                 result=observe(config)
                 self.assertEqual(result['status'],'read_only')
                 self.assertFalse(result['write_attempted'])

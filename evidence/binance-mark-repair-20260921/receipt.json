@@ -1,0 +1,56 @@
+[
+  {
+    "file": "gap-0.json",
+    "url": "https://fapi.binance.com/fapi/v1/markPriceKlines?symbol=BTCUSDT&interval=1h&startTime=1625097600000&endTime=1625183999999&limit=1000",
+    "sha256": "7a17e9a733326a5d6abd1f9d006fae8ec58f22b4620a305eb70897c647493b8c",
+    "bytes": 2908,
+    "expected_rows": 24,
+    "rows": 24,
+    "complete": true
+  },
+  {
+    "file": "gap-1.json",
+    "url": "https://fapi.binance.com/fapi/v1/markPriceKlines?symbol=BTCUSDT&interval=1h&startTime=1627084800000&endTime=1627430399999&limit=1000",
+    "sha256": "3dff6634eedfa103379fdf97450bda0e9624291f82d0400d8bc8f86edc393f0a",
+    "bytes": 11665,
+    "expected_rows": 96,
+    "rows": 96,
+    "complete": true
+  },
+  {
+    "file": "gap-2.json",
+    "url": "https://fapi.binance.com/fapi/v1/markPriceKlines?symbol=BTCUSDT&interval=1h&startTime=1664668800000&endTime=1664755199999&limit=1000",
+    "sha256": "c39ba975f97771196b9f99c0fe8b3509dac44f7ee9ff6c8e50ff436c4a94d184",
+    "bytes": 2935,
+    "expected_rows": 24,
+    "rows": 24,
+    "complete": true
+  },
+  {
+    "file": "gap-3.json",
+    "url": "https://fapi.binance.com/fapi/v1/markPriceKlines?symbol=BTCUSDT&interval=1h&startTime=1677196800000&endTime=1677283199999&limit=1000",
+    "sha256": "0866c1975da38d78fb38c0c2ec9f7751f05013e9a818c19d7797d69fa6ff2265",
+    "bytes": 2899,
+    "expected_rows": 24,
+    "rows": 24,
+    "complete": true
+  },
+  {
+    "file": "gap-4.json",
+    "url": "https://fapi.binance.com/fapi/v1/markPriceKlines?symbol=BTCUSDT&interval=1h&startTime=1782691200000&endTime=1782777599999&limit=1000",
+    "sha256": "c3db577183d1815b6a6702c2d3dbe2fbe076942b982c74f26313ab375539b674",
+    "bytes": 2953,
+    "expected_rows": 24,
+    "rows": 24,
+    "complete": true
+  },
+  {
+    "file": "gap-5.json",
+    "url": "https://fapi.binance.com/fapi/v1/markPriceKlines?symbol=BTCUSDT&interval=1h&startTime=1659225600000&endTime=1659311999999&limit=1000",
+    "sha256": "73e400e9db3b345246df8f6b162d7fef194deaea40537eaa0faa29811ae0519f",
+    "bytes": 2899,
+    "expected_rows": 24,
+    "rows": 24,
+    "complete": true
+  }
+]
