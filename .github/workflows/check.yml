@@ -52,6 +52,57 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  acquire-ambiguous-minutes:
+    if: github.event.head_commit.message == 'Acquire ambiguous BTCUSD minutes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - name: Acquire native 1m ambiguity windows
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/ambiguous-btcusd"
+          mkdir -p "$root"
+          for day in             2020-02-15             2020-11-02             2021-11-03             2023-12-11             2024-01-11             2024-03-15             2024-08-27             2024-12-05
+          do
+            next="$(date -u -d "$day + 1 day" +%F)"
+            python -m research.acquire_v5               --output "$root/$day"               --api-host api.manepa.jp               --start "$day"               --end "$next"               --interval-minutes 1               --shard-days 1               --timeout 8               --pause 0.02
+          done
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          root = Path(os.environ["RUNNER_TEMP"]) / "ambiguous-btcusd"
+          rows = []
+          for child in sorted(p for p in root.iterdir() if p.is_dir()):
+              result = json.loads((child / "v5-result.json").read_text())
+              inventory = child / "v5-inventory.json"
+              assert result["status"] == "complete", (child.name, result)
+              assert result["failed_shards"] == 0, (child.name, result)
+              h = hashlib.sha256(inventory.read_bytes()).hexdigest()
+              rows.append({
+                  "day": child.name,
+                  "complete_shards": result["complete_shards"],
+                  "inventory_sha256": h,
+              })
+          assert len(rows) == 8, rows
+          (root / "SUMMARY.json").write_text(json.dumps(rows, indent=2) + "\n")
+          print(json.dumps(rows, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ambiguous-btcusd-minutes-${{ github.sha }}
+          path: ${{ runner.temp }}/ambiguous-btcusd/
+          if-no-files-found: error
+          retention-days: 30
+
   preserve-native-history:
     if: github.event.head_commit.message == 'Preserve native BTCUSD artifact'
     runs-on: ubuntu-latest
