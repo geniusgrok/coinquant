@@ -1,3 +1,17 @@
+# 最新追加：D3完整稀疏47.93% CAGR /34.50%MDD，仍未达标
+
+先读evidence/impulse-risk-20260921/REPORT.md、candidate-register.json、verification.json、
+originals.json，再读下文A–E及L29历史。D3是D2相同模型的固定2.4风险预算配置，
+完整窗期末人民币138,871.75；正常4h50.10%/35.58%。收益与回撤优于L29代理基线，
+仍远低于150%。没有追加本金或提高交易所20x设置。不是正式资格。
+F小时识别开发稀疏4.64%/33.78%，拒绝继续周期/阈值搜索，未看全窗。
+2024+又用于D3时间顺序复核并启发F，没有独立未见区间。生产仍只读，无账户写入。
+D3复现：research.measure_mechanisms --mechanism impulse_hold --risk-scale 2.4；
+需--native/--output，完整窗显式--full-window。所有新逐笔和权益原件及实测源码已保留。
+下一条可执行步骤：检查D3完整归因的单位风险收益不足，定义不同收益来源再开发检验；
+同时按EXECUTION_STATUS继续原生生命周期与历史经济证据。无依据放大/搜索不继续。
+
+---
 # 当前状态：独立机制A/B/C失败，D2保留诊断，正式未达标
 
 ACTIVE / NOT_QUALIFIED。研究分支research/on-demand-btc-20260920；禁止合并main。

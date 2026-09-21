@@ -9,10 +9,18 @@ from .binance import market_quantity
 from .types import Blocked, Unknown
 
 
-def _gate(reader, state, uid, authorized):
+def _gate(reader, state, uid, authorized, *, canceling_entry=False):
     if authorized is not True:raise Blocked('explicit operation authorization required')
     if state.identity != f'binance:BTCUSDT:live:{uid}':
         raise Blocked('state and native reader account scope differ')
+    reader.recover_pending(state)
+    if not canceling_entry:
+        for pending in state.pending():
+            kind,payload=pending['kind'],pending['payload']
+            safe=(kind=='binance_margin' or
+                  kind=='binance_order' and payload.get('reduceOnly')=='true' or
+                  kind=='binance_algo' and (payload.get('closePosition')=='true' or payload.get('reduceOnly')=='true'))
+            if not safe:raise Unknown('unsettled possible entry intent; reconcile before reporting safety')
     snapshot=reader.snapshot(uid)
     if snapshot['account_uid']!=str(uid):raise Blocked('account mismatch')
     return snapshot
@@ -76,7 +84,7 @@ def cancel_entry(reader,state,send,uid,epoch,entry_id,*,authorized=False):
     Does not assume cancel ACK means zero fill; conditional entries are unsupported.
     After terminality the caller must read full exposure before risk removal.
     """
-    _gate(reader,state,uid,authorized)
+    _gate(reader,state,uid,authorized,canceling_entry=True)
     row=state.db.execute('SELECT kind FROM intents WHERE id=?',(entry_id,)).fetchone()
     if not row or row[0]!='binance_order':raise Blocked('entry ownership is not durable')
     original=reader.query_intent(entry_id)['parent']

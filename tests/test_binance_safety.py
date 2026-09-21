@@ -86,3 +86,10 @@ class SafetyTests(unittest.TestCase):
         result=add_margin(self.native,self.state,self.native.send,'123',100,'40',authorized=True)
         self.assertEqual(result['isolated_wallet_usdt'],'40')
         self.assertEqual(self.state.pending(),[])
+
+    def test_no_open_order_is_not_proof_unknown_entry_cannot_arrive(self):
+        payload=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='MARKET',quantity='.003')
+        self.state.prepare('pq-unknown-entry','binance_order',payload)
+        with self.assertRaises(Unknown):self.protect(authorized=True)
+        with self.assertRaises(Unknown):reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',instrument=rules(),authorized=True)
+        self.assertEqual(self.native.sent,[])

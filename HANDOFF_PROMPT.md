@@ -1,3 +1,11 @@
+最新追加先读evidence/impulse-risk-20260921/REPORT.md及登记/验证/原件清单。
+D3（D2模型risk_scale2.4）完整窗稀疏47.93%CAGR、34.50%MDD、¥138,871.75；
+4h50.10%/35.58%。比L29代理口径改善但仍NOT_QUALIFIED，禁止合并main。
+F小时冲击开发稀疏4.64%/33.78%，拒绝继续周期/阈值搜索。D3看了已用2024+并启发F。
+复现用research.measure_mechanisms --mechanism impulse_hold --risk-scale 2.4，配native/output；
+完整窗另加--full-window。新原件依赖A–E归档，完整保留所有失败与精确实测版本。
+任务未完成；下一机制须提升收益来源，不能机械增加风险。执行安全未原生验证，生产只读。
+
 继续同一任务ychenracing/pancakequant，研究分支research/on-demand-btc-20260920。
 先读取远端最新AGENTS.md、完整PROJECT_STATE.md、本文件，再核验HEAD/main/Actions/本地差异。
 最新研究入口evidence/mechanisms-20260921/REPORT.md及candidate-register.json、sources.json、

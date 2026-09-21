@@ -18,14 +18,16 @@ class Opportunity:
     expires: int | None
 
 class Opportunities:
-    def __init__(self, mechanism):
+    def __init__(self, mechanism, interval=FOUR_HOURS):
         if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','persistent_impulse'):raise ValueError('unknown mechanism')
+        if interval not in (3600000,FOUR_HOURS):raise ValueError('unsupported completed interval')
+        self.interval=interval
         self.mechanism=mechanism;self.bars=deque(maxlen=21);self.tr=deque(maxlen=14)
         self.ema=None;self.last=None;self.active=None;self.box=None;self.contraction=0
         self.armed=None;self.pivots=[];self.count=0
 
     def update(self, end, high, low, close):
-        if self.last is not None and end!=self.last+FOUR_HOURS:raise ValueError('incomplete model clock')
+        if self.last is not None and end!=self.last+self.interval:raise ValueError('incomplete model clock')
         if not 0<low<=close<=high:raise ValueError('invalid completed candle')
         prior=self.bars[-1][3] if self.bars else close
         prior_atr=sum(self.tr)/14 if len(self.tr)==14 else None

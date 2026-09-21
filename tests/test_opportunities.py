@@ -4,7 +4,7 @@ from pancakequant.opportunities import Opportunities, FOUR_HOURS
 
 class OpportunityTests(unittest.TestCase):
     def feed(self, model, rows):
-        return [model.update((i+1)*FOUR_HOURS,*map(D,row)) for i,row in enumerate(rows)]
+        return [model.update((i+1)*model.interval,*map(D,row)) for i,row in enumerate(rows)]
 
     def test_sweep_waits_for_right_bars_and_next_sweep(self):
         rows=[(101,90,100),(103,91,100),(105,92,100),(110,93,100),
@@ -44,3 +44,18 @@ class OpportunityTests(unittest.TestCase):
         b=m.update(80*FOUR_HOURS,D(116),D(90),D(95))
         self.assertEqual(b.direction,-1)
         self.assertEqual(b.identity,80*FOUR_HOURS)
+
+    def test_hourly_resolution_keeps_seven_calendar_days(self):
+        m=Opportunities('impulse_hold',3600000)
+        for i in range(20):m.update((i+1)*3600000,D(101),D(99),D(100))
+        a=m.update(21*3600000,D(120),D(99),D(115))
+        self.assertEqual((a.direction,a.stop),(1,D('107.5')))
+        self.assertEqual(a.expires-a.identity,7*24*3600000)
+        with self.assertRaises(ValueError):m.update(25*3600000,D(120),D(99),D(115))
+
+    def test_hourly_future_deletion_and_perturbation(self):
+        rows=[(101,99,100)]*20+[(120,99,115)]+[(116,114,115)]*10
+        prefix=self.feed(Opportunities('impulse_hold',3600000),rows[:23])
+        full=self.feed(Opportunities('impulse_hold',3600000),rows)
+        changed=self.feed(Opportunities('impulse_hold',3600000),rows[:23]+[(1000,1,5)]*8)
+        self.assertEqual(prefix,full[:23]);self.assertEqual(prefix,changed[:23])
