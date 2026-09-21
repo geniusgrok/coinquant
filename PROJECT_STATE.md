@@ -50,3 +50,9 @@ CLI只有120根完成4h行情，研究使用完整机会/已消费campaign/日�
 
 总目标未完成：CAGR差82.9079个百分点，规则/估值/研究生产一致性/原生安全均有缺口。
 没有后台任务；CI通过、文件保存及本轮研究完成不代表正式合格。
+
+## 保存后的CI修复
+经济证据提交e4b525c的CI仅失败于新研究检查未安装numpy，其余192项通过。
+新增requirements-research.txt固定numpy==2.3.5，并在原唯一10分钟CI中安装；生产无numpy导入。
+复现研究前执行python -m pip install -r requirements-research.txt。经济源码及结果不变，原件仍有效。
+最新CI结果需按当前HEAD核验，不把旧失败或旧成功误作最新状态。
