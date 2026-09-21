@@ -1,3 +1,10 @@
+# Current authorization — 2026-09-21
+
+Formal target: cost-net CAGR >=150% (inclusive), full-account continuous MDD <50% (exclusive).
+All other frozen conditions unchanged. This supersedes historical >200%/<20% references below, which describe past experiments only.
+L7 exact source 6152f426b2e6746cfa0db9c18941307e257aa9cf remains the development comparison; active L8 is rejected.
+Latest lightweight CI 35568398097 completed successfully. No testnet account validation or live operations performed.
+
 # Pancakequant current recovery state
 
 Status: ACTIVE / NOT_QUALIFIED. Economic and production execution work is incomplete.

@@ -1,3 +1,10 @@
+# Current authorization — 2026-09-21
+
+Formal target: cost-net CAGR >=150% (inclusive), full-account continuous MDD <50% (exclusive).
+All other frozen conditions unchanged. This supersedes historical >200%/<20% references below, which describe past experiments only.
+L7 exact source 6152f426b2e6746cfa0db9c18941307e257aa9cf remains the development comparison; active L8 is rejected.
+Latest lightweight CI 35568398097 completed successfully. No testnet account validation or live operations performed.
+
 # Continue Pancakequant
 
 继续 ychenracing/pancakequant 当前改造，全程中文，不重新立项或重复确认已有授权。

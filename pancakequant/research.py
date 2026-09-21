@@ -37,7 +37,8 @@ def spec():
             or value['leverage'] != 20 or value['symbol'] != 'BTCUSD'
             or value.get('bar_interval_ms') != 3_600_000
             or value.get('liquidity_activity_basis_ms') != 60_000
-            or value['cagr_minimum_exclusive'] != '2' or value['mdd_maximum_exclusive'] != '0.20'):
+            or value['cagr_minimum_inclusive'] != '1.5' or value['mdd_maximum_exclusive'] != '0.5'
+            or value['end'] != '2026-09-20T00:00:00Z'):
         raise Blocked('formal economic mandate changed; do not silently qualify')
     if timestamp(value['end']) > int(datetime.now(timezone.utc).timestamp() * 1000):
         raise Blocked('research endpoint is in the future')
@@ -65,3 +66,9 @@ def invocations(value, *, stress=False):
 def source_identity():
     root = Path(__file__).resolve().parent
     return {p.name: digest(p) for p in sorted(root.glob('*.py'))}
+
+
+def economic_limits(cagr, mdd, frozen):
+    """Numeric gate only: provenance/execution qualification remains separate."""
+    return (number(cagr) >= number(frozen['cagr_minimum_inclusive'])
+            and 0 <= number(mdd) < number(frozen['mdd_maximum_exclusive']))

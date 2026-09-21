@@ -1,7 +1,7 @@
 {
   "start": "2020-01-01T00:00:00Z",
   "end": "2026-09-20T00:00:00Z",
-  "endpoint_status": "locked_upper_bound; native complete coverage has not been obtained",
+  "endpoint_status": "locked; Binance trade/mark/funding coverage verified; historical economic rules unresolved",
   "development_end": "2024-01-01T00:00:00Z",
   "initial_cny": "10000",
   "cny_per_usd": "6.9762",
@@ -30,10 +30,17 @@
   "volume_participation": "0.01",
   "book_proxy_fraction": "0.10",
   "cost_status": "spread, slippage, conversion and depth are explicit modeling assumptions; fees, funding and margin tiers must come from identified input records",
-  "cagr_minimum_exclusive": "2",
-  "mdd_maximum_exclusive": "0.20",
+  "mdd_maximum_exclusive": "0.5",
   "qualification_status": "NOT_MEASURED",
   "bar_interval_ms": 3600000,
   "liquidity_activity_basis_ms": 60000,
-  "bar_interval_status": "frozen before native economic measurement; native 60m trade/mark extrema rebuild the 4h signal clock"
+  "bar_interval_status": "frozen before native economic measurement; native 60m trade/mark extrema rebuild the 4h signal clock",
+  "cagr_minimum_inclusive": "1.5",
+  "legacy_contract_scope": "Bybit fields identify historical inverse replay only; current target Binance BTCUSDT USDT perpetual",
+  "production_target": {
+    "venue": "binance",
+    "symbol": "BTCUSDT",
+    "settlement_coin": "USDT",
+    "contract_type": "PERPETUAL"
+  }
 }

@@ -15,7 +15,7 @@ from pathlib import Path
 from .data import Dataset, MINUTE
 from .model import bankruptcy_price, decide, liquidation_price, validate_risk_increase
 from .pending import validate_target
-from .research import digest, invocations, iso, source_identity, spec, timestamp
+from .research import economic_limits, digest, invocations, iso, source_identity, spec, timestamp
 from .types import Bar, Blocked, INTERVAL_MS, Position, Snapshot, ZERO, floor_step, serial
 
 
@@ -463,7 +463,7 @@ def _replay(dataset, cfg, frozen, directory, *, stress=False, notional_limit=Non
                 liquidation_events=account.liquidations, fills=fills_count, decisions=decisions,
                 invocations=len(actual_triggers), longest_interval_hours=max(gaps, default=0) / 3_600_000,
                 longest_tail_without_invocation_hours=(dataset.end - actual_triggers[-1]) / 3_600_000,
-                economic_numbers_meet_limits=cagr > 2 and statistics.mdd < D('.20'),
+                economic_numbers_meet_limits=economic_limits(cagr, statistics.mdd, frozen),
                 qualification='NOT_QUALIFIED',
                 limitations=['Base-bar extrema are a conservative account-drawdown envelope, not a known tick path.',
                              'Liquidity uses previous-base-bar volume normalized to a one-minute activity proxy; spread/slippage/conversion are frozen modeling assumptions.',
