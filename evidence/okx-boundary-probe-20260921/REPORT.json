@@ -1,0 +1,271 @@
+{
+  "purpose": "OKX BTC-USDT-SWAP 2020-2026 native-history feasibility only",
+  "formal_window": {
+    "start": "2020-01-01T00:00:00Z",
+    "end_exclusive": "2026-09-20T00:00:00Z"
+  },
+  "attempts": [
+    {
+      "host": "openapi.okx.com",
+      "requests": {
+        "instrument": {
+          "source": "https://openapi.okx.com/api/v5/public/instruments?instType=SWAP&instId=BTC-USDT-SWAP",
+          "status": "downloaded",
+          "bytes": 1117,
+          "sha256": "1a6eeb4c4cc625067010d0110718feaee4a6f03becc60f661b800acb4f5ac4e2",
+          "instrument": {
+            "instId": "BTC-USDT-SWAP",
+            "instType": "SWAP",
+            "ctType": "linear",
+            "settleCcy": "USDT",
+            "ctVal": "0.01",
+            "ctValCcy": "BTC",
+            "tickSz": "0.1",
+            "lotSz": "0.01",
+            "minSz": "0.01",
+            "lever": "100",
+            "state": "live",
+            "listTime": "1573557408000"
+          }
+        },
+        "start_trade": {
+          "source": "https://openapi.okx.com/api/v5/market/history-candles?instId=BTC-USDT-SWAP&bar=1H&after=1577923200000&limit=100",
+          "status": "downloaded",
+          "bytes": 9298,
+          "sha256": "8e3b270e6561efe08951a6878630abf5a6f8efb668932466a7f06b99968302b6",
+          "rows": 100,
+          "first_ts": 1577563200000,
+          "last_ts": 1577919600000
+        },
+        "start_mark": {
+          "source": "https://openapi.okx.com/api/v5/market/history-mark-price-candles?instId=BTC-USDT-SWAP&bar=1H&after=1577923200000&limit=100",
+          "status": "unavailable",
+          "bytes": 31,
+          "sha256": "fc24d69479edbb84f22c7d5bd4525349734056ad3baf7a5adf7e553f68c06a3a",
+          "error_type": "ValueError",
+          "http_status": null,
+          "error": "OKX data list is empty"
+        },
+        "start_funding": {
+          "source": "https://openapi.okx.com/api/v5/public/funding-rate-history?instId=BTC-USDT-SWAP&after=1577923200000&limit=100",
+          "status": "unavailable",
+          "bytes": 31,
+          "sha256": "fc24d69479edbb84f22c7d5bd4525349734056ad3baf7a5adf7e553f68c06a3a",
+          "error_type": "ValueError",
+          "http_status": null,
+          "error": "OKX data list is empty"
+        },
+        "end_trade": {
+          "source": "https://openapi.okx.com/api/v5/market/history-candles?instId=BTC-USDT-SWAP&bar=1H&after=1789862400000&limit=100",
+          "status": "downloaded",
+          "bytes": 10165,
+          "sha256": "181acfb72d9a6475ae1ce4532465ad515e239c72c1aebbcb72146fd6df1fdc78",
+          "rows": 100,
+          "first_ts": 1789502400000,
+          "last_ts": 1789858800000
+        },
+        "end_mark": {
+          "source": "https://openapi.okx.com/api/v5/market/history-mark-price-candles?instId=BTC-USDT-SWAP&bar=1H&after=1789862400000&limit=100",
+          "status": "downloaded",
+          "bytes": 6152,
+          "sha256": "dc44ad9b17218586da0de27ed64663505e670bb3d6ea61c7bc22dfd8f73b7d9a",
+          "rows": 100,
+          "first_ts": 1789502400000,
+          "last_ts": 1789858800000
+        },
+        "end_funding": {
+          "source": "https://openapi.okx.com/api/v5/public/funding-rate-history?instId=BTC-USDT-SWAP&after=1789862400000&limit=100",
+          "status": "downloaded",
+          "bytes": 19292,
+          "sha256": "20aa810bf3eb2936dca6020e36a4899b31e31427463019def9a6e67a9f67bebe",
+          "rows": 100,
+          "first_ts": 1786982400000,
+          "last_ts": 1789833600000
+        }
+      },
+      "checks": [
+        {
+          "name": "instrument_id",
+          "passed": true
+        },
+        {
+          "name": "instrument_swap",
+          "passed": true
+        },
+        {
+          "name": "instrument_linear",
+          "passed": true
+        },
+        {
+          "name": "instrument_usdt_settlement",
+          "passed": true
+        },
+        {
+          "name": "listed_before_formal_start",
+          "passed": true
+        },
+        {
+          "name": "instrument_live",
+          "passed": true
+        },
+        {
+          "name": "start_trade_covers_start",
+          "passed": true
+        },
+        {
+          "name": "start_mark_covers_start",
+          "passed": false
+        },
+        {
+          "name": "start_funding_covers_start",
+          "passed": false
+        },
+        {
+          "name": "end_trade_covers_end",
+          "passed": true
+        },
+        {
+          "name": "end_mark_covers_end",
+          "passed": true
+        },
+        {
+          "name": "end_funding_present_before_end",
+          "passed": true
+        }
+      ],
+      "passed": false
+    },
+    {
+      "host": "www.okx.com",
+      "requests": {
+        "instrument": {
+          "source": "https://www.okx.com/api/v5/public/instruments?instType=SWAP&instId=BTC-USDT-SWAP",
+          "status": "downloaded",
+          "bytes": 1117,
+          "sha256": "1a6eeb4c4cc625067010d0110718feaee4a6f03becc60f661b800acb4f5ac4e2",
+          "instrument": {
+            "instId": "BTC-USDT-SWAP",
+            "instType": "SWAP",
+            "ctType": "linear",
+            "settleCcy": "USDT",
+            "ctVal": "0.01",
+            "ctValCcy": "BTC",
+            "tickSz": "0.1",
+            "lotSz": "0.01",
+            "minSz": "0.01",
+            "lever": "100",
+            "state": "live",
+            "listTime": "1573557408000"
+          }
+        },
+        "start_trade": {
+          "source": "https://www.okx.com/api/v5/market/history-candles?instId=BTC-USDT-SWAP&bar=1H&after=1577923200000&limit=100",
+          "status": "downloaded",
+          "bytes": 9298,
+          "sha256": "8e3b270e6561efe08951a6878630abf5a6f8efb668932466a7f06b99968302b6",
+          "rows": 100,
+          "first_ts": 1577563200000,
+          "last_ts": 1577919600000
+        },
+        "start_mark": {
+          "source": "https://www.okx.com/api/v5/market/history-mark-price-candles?instId=BTC-USDT-SWAP&bar=1H&after=1577923200000&limit=100",
+          "status": "unavailable",
+          "bytes": 31,
+          "sha256": "fc24d69479edbb84f22c7d5bd4525349734056ad3baf7a5adf7e553f68c06a3a",
+          "error_type": "ValueError",
+          "http_status": null,
+          "error": "OKX data list is empty"
+        },
+        "start_funding": {
+          "source": "https://www.okx.com/api/v5/public/funding-rate-history?instId=BTC-USDT-SWAP&after=1577923200000&limit=100",
+          "status": "unavailable",
+          "bytes": 31,
+          "sha256": "fc24d69479edbb84f22c7d5bd4525349734056ad3baf7a5adf7e553f68c06a3a",
+          "error_type": "ValueError",
+          "http_status": null,
+          "error": "OKX data list is empty"
+        },
+        "end_trade": {
+          "source": "https://www.okx.com/api/v5/market/history-candles?instId=BTC-USDT-SWAP&bar=1H&after=1789862400000&limit=100",
+          "status": "downloaded",
+          "bytes": 10165,
+          "sha256": "181acfb72d9a6475ae1ce4532465ad515e239c72c1aebbcb72146fd6df1fdc78",
+          "rows": 100,
+          "first_ts": 1789502400000,
+          "last_ts": 1789858800000
+        },
+        "end_mark": {
+          "source": "https://www.okx.com/api/v5/market/history-mark-price-candles?instId=BTC-USDT-SWAP&bar=1H&after=1789862400000&limit=100",
+          "status": "downloaded",
+          "bytes": 6152,
+          "sha256": "dc44ad9b17218586da0de27ed64663505e670bb3d6ea61c7bc22dfd8f73b7d9a",
+          "rows": 100,
+          "first_ts": 1789502400000,
+          "last_ts": 1789858800000
+        },
+        "end_funding": {
+          "source": "https://www.okx.com/api/v5/public/funding-rate-history?instId=BTC-USDT-SWAP&after=1789862400000&limit=100",
+          "status": "downloaded",
+          "bytes": 19292,
+          "sha256": "20aa810bf3eb2936dca6020e36a4899b31e31427463019def9a6e67a9f67bebe",
+          "rows": 100,
+          "first_ts": 1786982400000,
+          "last_ts": 1789833600000
+        }
+      },
+      "checks": [
+        {
+          "name": "instrument_id",
+          "passed": true
+        },
+        {
+          "name": "instrument_swap",
+          "passed": true
+        },
+        {
+          "name": "instrument_linear",
+          "passed": true
+        },
+        {
+          "name": "instrument_usdt_settlement",
+          "passed": true
+        },
+        {
+          "name": "listed_before_formal_start",
+          "passed": true
+        },
+        {
+          "name": "instrument_live",
+          "passed": true
+        },
+        {
+          "name": "start_trade_covers_start",
+          "passed": true
+        },
+        {
+          "name": "start_mark_covers_start",
+          "passed": false
+        },
+        {
+          "name": "start_funding_covers_start",
+          "passed": false
+        },
+        {
+          "name": "end_trade_covers_end",
+          "passed": true
+        },
+        {
+          "name": "end_mark_covers_end",
+          "passed": true
+        },
+        {
+          "name": "end_funding_present_before_end",
+          "passed": true
+        }
+      ],
+      "passed": false
+    }
+  ],
+  "selected_host": null,
+  "passed": false
+}

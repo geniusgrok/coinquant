@@ -1,0 +1,58 @@
+{
+  "candidate": "L21",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": true,
+  "window_end_exclusive": "2026-09-20T00:00:00Z",
+  "cagr": 0.20080062257463394,
+  "mdd_conservative_envelope": "0.5951502227630062986745819751",
+  "final_cny": "34194.08630604993064481288383",
+  "counts": {
+    "invocations": 795,
+    "entry": 50,
+    "funding_charge": 4142,
+    "minimum_or_unchanged": 246,
+    "rebalance_reduce": 168,
+    "rebalance_add": 212,
+    "regime_exit": 29,
+    "ambiguous_funding_credit_omitted": 2048,
+    "take": 1,
+    "campaign_consumed": 86,
+    "stop": 20
+  },
+  "fees_usdt": "347.95291315826250",
+  "funding_bound_paid_usdt": "1821.1272139964345779489",
+  "progression_passed": null,
+  "progression_status": "requires paired refined comparison",
+  "code_sha256": "8f7924e839817edaf0e08e1a3a0f0eba93f09c7e0882bee469a6c240b3e6b772",
+  "limitations": [
+    "Proxy dated rules/fees/liquidity and USDT=USD",
+    "Adverse interval funding valuation, not exact cashflow",
+    "Minute refinement on six days only; remaining interval liquidation-first ambiguity",
+    "Margin transfer and full-position execution unverified"
+  ],
+  "reference": "channel",
+  "protection": "fixed",
+  "source_hashes": {
+    "/workspace/scratch/07840788e266/pancakequant/research/persistent_hold_replay.py": "8f7924e839817edaf0e08e1a3a0f0eba93f09c7e0882bee469a6c240b3e6b772",
+    "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
+    "research/volatility_target.py": "1dceb5aa153990b4697c32ff36a805edf2adae2da13e06ca8255f40421f99c09",
+    "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
+    "research/minute_evidence.py": "452d583950190d57306e6d7aee14490d0b3ecdec3dcb846e8f0b8f25f352a8af",
+    "pancakequant/binance.py": "233849483c012fe6d891e3a8a976e313e193ea3693e50646f0c332ecee9f2917",
+    "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7"
+  },
+  "schedule": "sparse",
+  "lifecycle": "one_campaign",
+  "allocation": "volatility",
+  "quantity_rule_scope": "2026_snapshot_scenario_NOT_historical",
+  "mean_close_exposure": "0.6144225287953877299763138582",
+  "max_close_exposure": "1.287539287934791701724231151",
+  "holding_hours": 49476,
+  "turnover_usdt": "463937.217544350",
+  "binding_caps": {
+    "target": 430,
+    "minimum_or_unchanged": 246
+  },
+  "mean_entry_regime_age_hours": 82.34,
+  "schedule_sha256": "d2cfa986b52fdf3c835c254469d3c23b4ab164b611ba42ff7fb61ebd4a2508ad"
+}

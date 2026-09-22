@@ -1,0 +1,22 @@
+{
+  "candidate": "L20",
+  "qualification": "NOT_QUALIFIED",
+  "scope": "2020-2023 development forecast screen",
+  "observations": 437,
+  "skipped_warmup_or_unmatured": 31,
+  "correlation": -0.03627586908579509,
+  "direction_accuracy": 0.4576659038901602,
+  "mean_directional_net": -0.006272228318540185,
+  "mean_long_control_net": 0.0008842111156446208,
+  "progression_passed": false,
+  "validation_used": false,
+  "limitations": [
+    "Overlapping forward labels, not independent trades or account CAGR",
+    "Funding rates summed as return deduction; not exact marked contract funding cashflows",
+    "No TP/SL, margin, liquidation or collateral-risk account replay",
+    "Fixed fee/spread/slippage assumptions, not verified dated native rules"
+  ],
+  "code_sha256": "511157e3b89d73521ddebf772627334ba77228b3c2dd4bc17415d2a6980415ca",
+  "predictor_sha256": "33cab28d423a345f3220e11dbd5f72fbb9450da600ffe8baab5442daf4a53e71",
+  "input_identity_sha256": "06ba0f34896c7ad76c808f621d48859826c2e78e7e9076242e12566fc9ffe2b4"
+}

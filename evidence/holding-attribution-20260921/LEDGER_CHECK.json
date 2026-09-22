@@ -1,0 +1,32 @@
+{
+  "../constrained-full": {
+    "close_points": 58896,
+    "max_equity_error_usdt": "0",
+    "fees": "2401.28145910177275",
+    "funding": "4805.5980700227875682484",
+    "input_sha256": {
+      "orders.csv.gz": "4b86c2946525ee8a9233e36ef42866698ce3438af435b45f428c4a14b6a5d54a",
+      "equity.csv.gz": "350674ba5c2ae358f79133f0cabbbedcbf083afd9970fe6c011054fc56a48071"
+    }
+  },
+  "../data-restored/PANCAKEQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921/minute-refinement/L/sparse": {
+    "close_points": 58896,
+    "max_equity_error_usdt": "0",
+    "fees": "1421.75339653257900",
+    "funding": "2325.2307851271187358521",
+    "input_sha256": {
+      "orders.csv.gz": "a256e36ba9bed2212757826345dd8b41379a2e5880991b9a553407f79b06abad",
+      "equity.csv.gz": "6d81f264ef68d4d553044ed0b62c29f72f4e971e6b352caa843a4088be55112e"
+    }
+  },
+  "../data-restored/PANCAKEQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921/minute-refinement/L/four_hour": {
+    "close_points": 58896,
+    "max_equity_error_usdt": "0",
+    "fees": "3681.14739086556225",
+    "funding": "2935.0108809787891146985",
+    "input_sha256": {
+      "orders.csv.gz": "26778a4646383b0acd57d8ef3669ff34f98e3d9d947c0f2f430c398af1f94d1d",
+      "equity.csv.gz": "ba62b8bdaa65e33cdf5edce1568b1fbbc88c43c6bf8c9b9fb88a553303b2369b"
+    }
+  }
+}

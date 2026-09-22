@@ -1,0 +1,40 @@
+{
+  "run": 35566270075,
+  "source": "a92066e1d1f1fc86b286faf4298e3db23226af43",
+  "tests_passed": 117,
+  "archives_requested": 203,
+  "archives_verified": 199,
+  "failed": [
+    {
+      "path": "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2021-07.zip",
+      "source": "https://data.binance.vision/data/futures/um/monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2021-07.zip",
+      "status": "unavailable",
+      "error": "ValueError: hour gap"
+    },
+    {
+      "path": "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2022-10.zip",
+      "source": "https://data.binance.vision/data/futures/um/monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2022-10.zip",
+      "status": "unavailable",
+      "error": "ValueError: hour gap"
+    },
+    {
+      "path": "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2023-02.zip",
+      "source": "https://data.binance.vision/data/futures/um/monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2023-02.zip",
+      "status": "unavailable",
+      "error": "ValueError: hour gap"
+    },
+    {
+      "path": "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2026-06.zip",
+      "source": "https://data.binance.vision/data/futures/um/monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2026-06.zip",
+      "status": "unavailable",
+      "error": "ValueError: hour gap"
+    }
+  ],
+  "artifact_id": 10623839632,
+  "artifact_sha256": "5885db22836f20fcb3582df1faf8495b3fd3c38392cd6445445bd3277a80388c",
+  "artifact_bytes": 3349763,
+  "library_original": {
+    "id": "libfile_ff11258400548191a698659cad84933c",
+    "path": "/pancakequant/binance-native-remainder.zip"
+  }
+}

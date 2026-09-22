@@ -1,0 +1,110 @@
+{
+  "qualification": "ECONOMIC_PROXY_IMPROVED_NOT_QUALIFIED",
+  "archive": {
+    "file_name": "PANCAKEQUANT_BOUNDED_EXECUTION_20260922.zip",
+    "bytes": 48866772,
+    "sha256": "854fba74875a4e7bc07a9b709edf82b377d7157a01d8d73db42db44aa41095c1",
+    "manifest_files": 2077,
+    "manifest_sha256": "d09c04e21ffe03d81cac207876921b8cc5acba2caf3d860a7096b7baab52d68c",
+    "uncompressed_bytes": 56264857,
+    "all_files_crc_size_sha256_verified": true,
+    "source_commit": "0ca8c3f649f6b962a5020a2648b9610c5e51c4e1",
+    "source_tree": "44ad2f4da7d67517714962217461435e721b2235",
+    "library_file_id": "libfile_54a5fcf3af5c8191af73244b14ef6ec5",
+    "file_id": "file_0000000083d481fd961f6fa15939f45b",
+    "library_path": "/pancakequant/PANCAKEQUANT_BOUNDED_EXECUTION_20260922.zip",
+    "persistent_readback_byte_for_byte_equal": true,
+    "persistent_readback_manifest_files_verified": 2077
+  },
+  "remote_source_readback": {
+    "source_commit": "0ca8c3f649f6b962a5020a2648b9610c5e51c4e1",
+    "source_tree": "44ad2f4da7d67517714962217461435e721b2235",
+    "artifact_id": 10689527280,
+    "artifact_sha256": "db3688bb0f1ea61e8f6a2e7b005f1997dd3b5973b9a73d62753dbc30c971ae17",
+    "archive_sha256": "ca4e8bc31ccbb1bcbc5797bfc6c6dd5063066d176a43226bfa4ce3e7771396c0",
+    "all_files": 676,
+    "byte_for_byte_checked": true,
+    "git_blob_oid_verified": true,
+    "checked_bytes": 21906917,
+    "workflow_run_id": 35717213681,
+    "check_run_id": 106711422657,
+    "ci_conclusion": "success",
+    "ci_started_at": "2026-09-22T10:39:51Z",
+    "ci_completed_at": "2026-09-22T10:40:14Z"
+  },
+  "delivery_file_identities": {
+    "pancakequant/linear_sizing.py": {
+      "bytes": 4664,
+      "sha256": "cee1d102c84bfd985d2fb14fe8fdcb2443c846100ebdb2ca86a35081665a4acc",
+      "git_blob": "e5089798bc09236a37a96552d20f44d67b4c02b2"
+    },
+    "research/persistent_hold_replay.py": {
+      "bytes": 42249,
+      "sha256": "7ad63974b0a4a2a6e2d51e10a21cbda1e6d04f10fda633115e95cca5d8c97a15",
+      "git_blob": "628710805ea74564895342718e2aedf15ddef604"
+    },
+    "research/verify_account_ledger.py": {
+      "bytes": 2508,
+      "sha256": "50e9fbce7d46b7dd46dbfa1a502ad1565b45eec698704435df768469920108d7",
+      "git_blob": "c584613422ad215ece67ff167c7186bf895e8dcd"
+    },
+    "research/bounded_execution.py": {
+      "bytes": 12752,
+      "sha256": "4a273aa35daab1e654b7cfda5c7c3f07b45c6255d18069e82b5e27b68ca4178e",
+      "git_blob": "fca46025172bd09907e93be5b0b0fe2d2bd22109"
+    },
+    "research/bounded_execution_data.py": {
+      "bytes": 6490,
+      "sha256": "d8c164d645396afaa5d1f36765a81c932f0ea3f80a737b2e4b03dbdc8cacf3a7",
+      "git_blob": "52579b63a83d555fb2f0666c1ea062b3fc074585"
+    },
+    "research/bounded_execution_report.py": {
+      "bytes": 11375,
+      "sha256": "de6298ce5ab0c5208f99e05cfddb2a92242b6ecb9d54f8ccab5a3167783f2ab2",
+      "git_blob": "38030f3f927ed44160ae0f517136660893b1c514"
+    },
+    "research/bounded_execution_replay.py": {
+      "bytes": 4890,
+      "sha256": "dfccfa01306054712b84dd7535529195374e0732e3a10658b55acbb5c01946ac",
+      "git_blob": "e7de92ee47732b7085ee5c6b68001974a4a7ba7e"
+    },
+    "tests/test_bounded_execution.py": {
+      "bytes": 11509,
+      "sha256": "6fb38a3fd1a32a87c1e433a6ce8b99b7f8a7840acc09ccce0a3eecac3adff939",
+      "git_blob": "4582e95e6c767344689b5e97efca61f277adb417"
+    },
+    ".github/workflows/check.yml": {
+      "bytes": 2118,
+      "sha256": "5151491c443a9448b96e0742b35b00ae909a02972b76cef1e282633114072f8f",
+      "git_blob": "e03cfedb4cd2d287a2bda701d37a5067e4b654c0"
+    },
+    "PROJECT_STATE.md": {
+      "bytes": 18869,
+      "sha256": "d867a9ec9323079c41c1a88d3409940997868cbae70868baef07fb2a00f7f183",
+      "git_blob": "c026af9a0739df76574066586eb7dd4db1396f92"
+    },
+    "evidence/bounded-execution-20260922/REPORT.md": {
+      "bytes": 9008,
+      "sha256": "4c48189a6c05b2b89089bb9b1e3ee3afa6fb169d46253456676ddf21a3cc6e68",
+      "git_blob": "c1f8e89364c3cacf0fbbbaee70d0a92375281344"
+    },
+    "evidence/bounded-execution-20260922/SUMMARY.json": {
+      "bytes": 17125,
+      "sha256": "70152ad6607bcd0fb5eac5eddf36594137333a1578f2356cbbe85833747b7191",
+      "git_blob": "9a68936d582c48e2af13c7609b7f841337d0df66"
+    }
+  },
+  "contents": {
+    "source": "complete source snapshot; exact per-account measured_source retained separately",
+    "inputs": "all original development/full hourly, funding, warmup, repairs, minute and quantity-rule dependencies, plus new entry minutes and official mark repair",
+    "accounts": "six paired continuous accounts, one optimistic capacity diagnostic, original L3.6 controls, failed full candidate prefix",
+    "traces": "all orders, child events, decisions, equity, inputs, frozen invocations, costs/attribution, logs and failure evidence"
+  },
+  "retrieval": "Materialize archive.file_id or archive.library_file_id through Files; verify ZIP length/SHA256, then all MANIFEST.json paths/lengths/SHA256 and ZIP CRC. No summary substitutes for originals. Do not overwrite newer repository code with source/ from this archive.",
+  "preservation_scope": "Binary originals persist in personal Library, not all as Git blobs. Code, protocol, report, summary and this exact recovery index persist on research branch. CI artifact is only independent source readback and expires; it is not the persistent originals dependency.",
+  "source_snapshot_note": "Archive source code matches source_commit; its PROJECT_STATE/REPORT/SUMMARY are the subsequent evidence-save draft and are independently hashed. This index is outside the ZIP to avoid self-hash recursion.",
+  "main": "c886b7c63c6455bd7c933269e32cd35a6fb3e09a",
+  "main_modified": false,
+  "native_execution_enabled": false,
+  "background_research_or_trading_tasks": false
+}

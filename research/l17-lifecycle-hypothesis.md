@@ -1,0 +1,5 @@
+# L17: one entry per directional regime
+
+Registered after frequency pair and before L17 measurement. A72/B37entries but only19/16regime exits; same-direction stale entries after stops are a plausible source of turnover and repeated loss. Test ownership of one campaign per regime, not a cooldown threshold. Once a regime has produced an actual entry, another entry requires a subsequent daily regime reversal. Rejected orders do not consume the campaign. Market-only regime transitions update at every completed day in both schedules. No research account state enters B.
+
+Keep L9 risk, signal, stop, take, cost, quantity snapshot and all input data unchanged. Test A/B development2020-2023 only. Compare gross PnL, fees, funding, time exposed, net account return and MDD envelope. Retain evidence even if returns fall; no imposed CAGR/MDD dominance gate. A large return decrease identifies missed same-regime continuation as the cost of blanket suppression; do not optimize cooldown length on these outcomes.

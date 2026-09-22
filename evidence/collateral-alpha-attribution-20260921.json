@@ -1,0 +1,18 @@
+{
+  "status": "measured_diagnostic",
+  "qualification": "NOT_QUALIFIED",
+  "source": "proxy baseline equity.csv.gz over native Bybit market/funding history",
+  "initial_btc": 0.19997588507599842,
+  "final_btc": 0.20380949038256835,
+  "btc_equity_multiple": 1.019170337989068,
+  "btc_equity_cagr": 0.002830221703560065,
+  "btc_equity_mdd": 0.0840497704068236,
+  "btc_equity_drawdown_start": "2023-02-02T00:00:00Z",
+  "btc_equity_drawdown_end": "2025-11-12T12:00:00Z",
+  "initial_mark": 7168.09,
+  "final_mark": 81200.74,
+  "btc_price_multiple": 11.328086003384445,
+  "btc_price_cagr": 0.43514569952776627,
+  "usd_equity_multiple": 11.545249240838556,
+  "interpretation": "Almost all USD CAGR in the current inverse system comes from BTC collateral appreciation; the trading strategy adds only about 1.9% BTC units over the full window. A stable-settlement redesign therefore also requires a new alpha model, not merely a contract swap."
+}

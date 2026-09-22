@@ -1,0 +1,81 @@
+{
+  "qualification": "INFORMATION_SCREEN_NOT_ACCOUNT",
+  "completed_hours": 35025,
+  "missing_or_rejected_spot_hours": 39,
+  "rejected_candles": [
+    {
+      "file": "BTCUSDT-1h-2020-02.zip",
+      "open": 1582110000000,
+      "close": 1582112132286,
+      "reason": "nonstandard_hour_close"
+    },
+    {
+      "file": "BTCUSDT-1h-2020-03.zip",
+      "open": 1583312400000,
+      "close": 1583313706694,
+      "reason": "nonstandard_hour_close"
+    },
+    {
+      "file": "BTCUSDT-1h-2020-12.zip",
+      "open": 1608559200000,
+      "close": 1608558440521,
+      "reason": "nonstandard_hour_close"
+    },
+    {
+      "file": "BTCUSDT-1h-2021-02.zip",
+      "open": 1613012400000,
+      "close": 1613014854773,
+      "reason": "nonstandard_hour_close"
+    },
+    {
+      "file": "BTCUSDT-1h-2021-04.zip",
+      "open": 1619323200000,
+      "close": 1619323258146,
+      "reason": "nonstandard_hour_close"
+    },
+    {
+      "file": "BTCUSDT-1h-2021-08.zip",
+      "open": 1628816400000,
+      "close": 1628819999000,
+      "reason": "nonstandard_hour_close"
+    },
+    {
+      "file": "BTCUSDT-1h-2021-12.zip",
+      "open": 1640318400000,
+      "close": 1640321994362,
+      "reason": "nonstandard_hour_close"
+    },
+    {
+      "file": "BTCUSDT-1h-2023-03.zip",
+      "open": 1679659200000,
+      "close": 1679661581646,
+      "reason": "nonstandard_hour_close"
+    }
+  ],
+  "cost_scale": "0.0037",
+  "excess_hours": 37,
+  "sparse_visible_unique_episodes": [
+    {
+      "time": 1581440400000,
+      "event": 1581436800000,
+      "side": -1,
+      "basis": "0.004735756527320618544596345"
+    },
+    {
+      "time": 1611050400000,
+      "event": 1611046800000,
+      "side": -1,
+      "basis": "0.003984606928070272062341185"
+    }
+  ],
+  "max_absolute_close_basis": "0.0257305551373458095039711593",
+  "limitations": [
+    "Close-to-close relative price is not simultaneous executable bid/ask",
+    "Convergence is not guaranteed; unhedged BTC market risk remains",
+    "No account returns, protection, funding, margin or liquidation inferred",
+    "Only development used"
+  ],
+  "episodes": 24,
+  "missing_hours": 31,
+  "archives_verified": 48
+}

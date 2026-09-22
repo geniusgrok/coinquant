@@ -1,0 +1,75 @@
+{
+  "status": "structural_research_checkpoint",
+  "qualification": "NOT_QUALIFIED",
+  "basis": {
+    "native_history_artifact_sha256": "717841c3267f5de40d0c0b103aeff3c067054eb7752ccf5b8cc1bcad11228159",
+    "native_history_inventory_sha256": "43caf20501d1c076af42d74ee279be833be5fba6dfbb3ee1e43e668869a3ab47",
+    "market_funding": "native Bybit BTCUSD inverse via api.manepa.jp",
+    "rules": "conservative proxy only",
+    "baseline_runtime": "36fad1849bca116efffc23c8d3abb770508f2de8",
+    "frozen_trigger_schedule": true,
+    "formal_targets": {"cagr_gt": 2.0, "mdd_lt": 0.20}
+  },
+  "baseline": {
+    "cagr": 0.4392074800343406,
+    "mdd": 0.7705119333829855,
+    "final_cny": 115452.49240838555,
+    "liquidations": 8,
+    "fills": 537
+  },
+  "research": [
+    {
+      "id": "H3_immediate_bearish_collateral_hedge",
+      "change": "When bearish trend is known at a manual invocation, enter BTCUSD short hedge immediately instead of waiting for a second downside channel trigger; bull entry remains breakout-based.",
+      "result": {
+        "cagr": 0.4138,
+        "mdd": 0.780,
+        "final_cny": 102427.7,
+        "liquidations": 12,
+        "fills": 697
+      },
+      "decision": "REJECT",
+      "reason": "More churn and liquidations; both return and drawdown worsened. Do not turn collateral hedge into the same 20x trend trade/TP-SL lifecycle."
+    },
+    {
+      "id": "M1b_immediate_fill_extra_isolated_margin",
+      "change": "Keep the existing stop safe at initial 20x, but for immediately filled positions allocate extra isolated margin to move liquidation farther away. Do not assume future hosted FOK fills can receive margin after the process exits.",
+      "result": {
+        "cagr": 0.4401,
+        "mdd": 0.7711,
+        "final_cny": 115936.8,
+        "liquidations": 5,
+        "fills": 538,
+        "absence_cagr": 0.4438,
+        "absence_mdd": 0.7710,
+        "absence_liquidations": 5
+      },
+      "decision": "SAFETY_VALUE_ONLY",
+      "reason": "Liquidations fell from 8 to 5, but MDD did not improve and CAGR moved only marginally. Useful execution capability, not an economic-target path."
+    },
+    {
+      "id": "exposure_sensitivity",
+      "change": "Keep signal/exit/data/costs/schedule fixed and change only risk_fraction / max_effective_leverage.",
+      "results": [
+        {"risk_fraction": 0.006, "max_effective_leverage": 2, "cagr": 0.4392074800343406, "mdd": 0.7705119333829855},
+        {"risk_fraction": 0.015, "max_effective_leverage": 4, "cagr": 0.4412, "mdd": 0.7633, "final_cny": 116535, "liquidations": 8, "fills": 538},
+        {"risk_fraction": 0.03, "max_effective_leverage": 6, "cagr": 0.4279, "mdd": 0.7708, "final_cny": 109480, "liquidations": 8, "fills": 539}
+      ],
+      "decision": "STOP_LEVERAGE_SCALING",
+      "reason": "Increasing risk/exposure does not approach the 200% CAGR target and eventually worsens return; do not chase acceptance by leverage."
+    }
+  ],
+  "additional_findings": {
+    "2022_position_time_share": {
+      "long": 0.083,
+      "short": 0.122,
+      "flat": 0.795
+    },
+    "interpretation": "The dominant drawdown is not solved by simple short hedging, extra margin, or larger risk budgets. Further work should change the economic exposure/exit structure rather than tune neighboring parameters."
+  },
+  "replay_correctness_discovered_during_research": [
+    "A protector already crossed at the known bar open must execute before the manual invocation and before later bar extrema.",
+    "A partially filled native TP/SL must preserve its trigger identity and reference price across base bars.",
+    "Exchange liquidation takeover must close the full isolated position at bankruptcy and must not be constrained by the user-order liquidity participation proxy."
+  ]
+}

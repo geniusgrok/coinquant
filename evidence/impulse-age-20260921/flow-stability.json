@@ -1,0 +1,53 @@
+{
+  "qualification": "DESCRIPTIVE_ONLY",
+  "split": "2022-01-01T00:00:00Z",
+  "sides": {
+    "1": {
+      "2020-21": {
+        "aligned": {
+          "n": 6,
+          "mean": "0.03837274544525532116394994587"
+        },
+        "opposed": {
+          "n": 5,
+          "mean": "0.00712313516871628280747446698"
+        }
+      },
+      "2022-23": {
+        "aligned": {
+          "n": 4,
+          "mean": "0.0448363506301792705937581855"
+        },
+        "opposed": {
+          "n": 5,
+          "mean": "0.00487429058778365853025182726"
+        }
+      },
+      "remove_best_aligned_mean": "0.03343924117484935944038670191"
+    },
+    "-1": {
+      "2020-21": {
+        "aligned": {
+          "n": 3,
+          "mean": "0.0659737810168533606921649192"
+        },
+        "opposed": {
+          "n": 4,
+          "mean": "0.0048013587602347318439348408"
+        }
+      },
+      "2022-23": {
+        "aligned": {
+          "n": 5,
+          "mean": "-0.01704404800185241043622386902"
+        },
+        "opposed": {
+          "n": 4,
+          "mean": "-0.006127279598924524512486227675"
+        }
+      },
+      "remove_best_aligned_mean": "-0.01737691644647993048349805533"
+    }
+  },
+  "conclusion": "Short-side apparent flow advantage reverses after removing one best event and in2022-23; no uniform entry filter justified."
+}

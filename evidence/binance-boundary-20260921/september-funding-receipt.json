@@ -1,0 +1,8 @@
+{
+  "source": "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&startTime=1788220800000&endTime=1789862399999&limit=1000",
+  "sha256": "1650928a95d0d4ac62eba3700f5f07620ba3fbf682d20ff4247a33e7014df2ec",
+  "rows": 57,
+  "first_ts": 1788220800005,
+  "last_ts": 1789833600000,
+  "note": "Actual settlement timestamps retained, including millisecond offsets; not rounded silently."
+}

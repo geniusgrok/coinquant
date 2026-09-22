@@ -1,0 +1,54 @@
+{
+  "risk_comparison": {
+    "passed": true,
+    "checks": [
+      {
+        "window": "development",
+        "schedule": "four_hour",
+        "identical_decisions_except_account_and_size": 8766,
+        "identical_trade_events_and_prices": 114,
+        "schedule_sha256": "b201857b10042d51b444b747a2996e89590243a42073b97b250b2ac848ac8b6a",
+        "risk_scale": "2.4"
+      },
+      {
+        "window": "development",
+        "schedule": "sparse",
+        "identical_decisions_except_account_and_size": 468,
+        "identical_trade_events_and_prices": 72,
+        "schedule_sha256": "311b36c48c3f2e676bdcb85253ab516b1f2f656ab93a255a691a4de8a9b08a99",
+        "risk_scale": "2.4"
+      },
+      {
+        "window": "-full",
+        "schedule": "four_hour",
+        "identical_decisions_except_account_and_size": 14724,
+        "identical_trade_events_and_prices": 197,
+        "schedule_sha256": "abd4d02a5964f8f8d73c0a8f6398339150d82117ea00b52781c7dfd778569f60",
+        "risk_scale": "2.4"
+      },
+      {
+        "window": "-full",
+        "schedule": "sparse",
+        "identical_decisions_except_account_and_size": 795,
+        "identical_trade_events_and_prices": 106,
+        "schedule_sha256": "d2cfa986b52fdf3c835c254469d3c23b4ab164b611ba42ff7fb61ebd4a2508ad",
+        "risk_scale": "2.4"
+      }
+    ]
+  },
+  "signal_tests": 7,
+  "unaffected_binance_and_ledger_tests_reused_from": "0e2bed716e5223a5956945102a238ef5079769db",
+  "prior_ci": {
+    "run_id": 35593841452,
+    "status": "success"
+  },
+  "prior_remote_tree_verified_files": 413,
+  "validation_views": [
+    {
+      "candidate": "D3",
+      "purpose": "already-used full chronological follow-up after development risk budget"
+    }
+  ],
+  "subsequent_safety_tests": 17,
+  "subsequent_safety_change": "Unsettled possible entry intent blocks safety success even when native open orders are empty; terminal read reconciliation required."
+}

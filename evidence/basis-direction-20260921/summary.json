@@ -1,0 +1,345 @@
+{
+  "qualification": "INFORMATION_SCREEN_NOT_ACCOUNT",
+  "evaluation": {
+    "control": {
+      "all": {
+        "n": 80,
+        "mean_net": -0.0015059126668632683,
+        "mean_increment": 0.0,
+        "mse": 0.008290241499621404,
+        "positive": 37
+      },
+      "2022": {
+        "n": 40,
+        "mean_net": -0.007277876269411393,
+        "mean_increment": 0.0,
+        "mse": 0.01040158524885645,
+        "positive": 18
+      },
+      "2023": {
+        "n": 40,
+        "mean_net": 0.004266050935684858,
+        "mean_increment": 0.0,
+        "mse": 0.006178897750386356,
+        "positive": 19
+      },
+      "robustness": {
+        "month_block_mean_increment_95": [
+          0.0,
+          0.0
+        ],
+        "leave_one_month_out_min": 0.0,
+        "drop_best_three_mean_increment": 0.0,
+        "changed_directions": 0
+      }
+    },
+    "continuation": {
+      "all": {
+        "n": 80,
+        "mean_net": -0.0044654531997946525,
+        "mean_increment": -0.0029595405329313844,
+        "mse": 0.008641834118507625,
+        "positive": 34
+      },
+      "2022": {
+        "n": 40,
+        "mean_net": -0.013196957335274161,
+        "mean_increment": -0.005919081065862769,
+        "mse": 0.011097769619538355,
+        "positive": 15
+      },
+      "2023": {
+        "n": 40,
+        "mean_net": 0.004266050935684858,
+        "mean_increment": 0.0,
+        "mse": 0.006185898617476891,
+        "positive": 19
+      },
+      "robustness": {
+        "month_block_mean_increment_95": [
+          -0.007586403347056013,
+          0.0
+        ],
+        "leave_one_month_out_min": -0.0031153058241382993,
+        "drop_best_three_mean_increment": -0.003074847306941698,
+        "changed_directions": 3
+      }
+    },
+    "reversal": {
+      "all": {
+        "n": 80,
+        "mean_net": -0.0015059126668632683,
+        "mean_increment": 0.0,
+        "mse": 0.008325860628877529,
+        "positive": 37
+      },
+      "2022": {
+        "n": 40,
+        "mean_net": -0.007277876269411393,
+        "mean_increment": 0.0,
+        "mse": 0.01047522191036514,
+        "positive": 18
+      },
+      "2023": {
+        "n": 40,
+        "mean_net": 0.004266050935684858,
+        "mean_increment": 0.0,
+        "mse": 0.006176499347389917,
+        "positive": 19
+      },
+      "robustness": {
+        "month_block_mean_increment_95": [
+          0.0,
+          0.0
+        ],
+        "leave_one_month_out_min": 0.0,
+        "drop_best_three_mean_increment": 0.0,
+        "changed_directions": 0
+      }
+    }
+  },
+  "diagnostics": {
+    "valid_hours": 35025,
+    "rejected_spot": [
+      1582110000000,
+      1583312400000,
+      1608559200000,
+      1613012400000,
+      1619323200000,
+      1628816400000,
+      1640318400000,
+      1679659200000
+    ],
+    "missing_hours": [
+      1581213600000,
+      1582110000000,
+      1582113600000,
+      1582117200000,
+      1582120800000,
+      1582124400000,
+      1582128000000,
+      1583312400000,
+      1583316000000,
+      1587780000000,
+      1587783600000,
+      1593309600000,
+      1593313200000,
+      1593316800000,
+      1606716000000,
+      1608559200000,
+      1608562800000,
+      1608566400000,
+      1608570000000,
+      1608861600000,
+      1613012400000,
+      1613016000000,
+      1614996000000,
+      1618884000000,
+      1618887600000,
+      1619323200000,
+      1619326800000,
+      1619330400000,
+      1619334000000,
+      1628816400000,
+      1628820000000,
+      1628823600000,
+      1628827200000,
+      1628830800000,
+      1632898800000,
+      1632902400000,
+      1640318400000,
+      1679659200000,
+      1679662800000
+    ],
+    "omitted_samples": 14,
+    "samples": 452,
+    "nonoverlap_samples": 157,
+    "close_vwap_correlation": 0.8250333688554842,
+    "close_minus_vwap_abs_quantiles": [
+      0.0001680587527568278,
+      0.0007778317599083965,
+      0.0014575654657118882,
+      0.027999060104599405
+    ],
+    "close_sign_disagreement": 0.09715917201998572
+  },
+  "training": [
+    {
+      "month": "2022-01",
+      "n": 76,
+      "max_training_exit": 1640235600000,
+      "slope": 0.0011507891927047627,
+      "score_control_r2": 0.15812999391589722
+    },
+    {
+      "month": "2022-02",
+      "n": 79,
+      "max_training_exit": 1643061600000,
+      "slope": -0.003856044438629577,
+      "score_control_r2": 0.15142536080741187
+    },
+    {
+      "month": "2022-03",
+      "n": 82,
+      "max_training_exit": 1645196400000,
+      "slope": 0.0021939533952490334,
+      "score_control_r2": 0.16107652823731722
+    },
+    {
+      "month": "2022-04",
+      "n": 85,
+      "max_training_exit": 1648029600000,
+      "slope": 0.0028516527031959152,
+      "score_control_r2": 0.15108538804059457
+    },
+    {
+      "month": "2022-05",
+      "n": 88,
+      "max_training_exit": 1650297600000,
+      "slope": 0.003652749601565715,
+      "score_control_r2": 0.15593227315769187
+    },
+    {
+      "month": "2022-06",
+      "n": 91,
+      "max_training_exit": 1653069600000,
+      "slope": 0.003158922147969782,
+      "score_control_r2": 0.15044661224392442
+    },
+    {
+      "month": "2022-07",
+      "n": 94,
+      "max_training_exit": 1655384400000,
+      "slope": 0.010648847905922089,
+      "score_control_r2": 0.133873043603438
+    },
+    {
+      "month": "2022-08",
+      "n": 98,
+      "max_training_exit": 1658325600000,
+      "slope": 0.013135711463317176,
+      "score_control_r2": 0.20743657478172406
+    },
+    {
+      "month": "2022-09",
+      "n": 101,
+      "max_training_exit": 1660827600000,
+      "slope": 0.01134534802856964,
+      "score_control_r2": 0.18537012816923126
+    },
+    {
+      "month": "2022-10",
+      "n": 105,
+      "max_training_exit": 1663797600000,
+      "slope": -7.306177117198075e-05,
+      "score_control_r2": 0.08886758521750782
+    },
+    {
+      "month": "2022-11",
+      "n": 108,
+      "max_training_exit": 1666375200000,
+      "slope": -0.0006144317204113703,
+      "score_control_r2": 0.07968039314193809
+    },
+    {
+      "month": "2022-12",
+      "n": 111,
+      "max_training_exit": 1668751200000,
+      "slope": -0.0013751589256417746,
+      "score_control_r2": 0.08920192875972754
+    },
+    {
+      "month": "2023-01",
+      "n": 115,
+      "max_training_exit": 1671714000000,
+      "slope": -0.0006024420754382625,
+      "score_control_r2": 0.0916555594365579
+    },
+    {
+      "month": "2023-02",
+      "n": 118,
+      "max_training_exit": 1674108000000,
+      "slope": 0.0008292034974985529,
+      "score_control_r2": 0.08599590520408362
+    },
+    {
+      "month": "2023-03",
+      "n": 122,
+      "max_training_exit": 1676862000000,
+      "slope": 0.00040805203553980775,
+      "score_control_r2": 0.07322211224961905
+    },
+    {
+      "month": "2023-04",
+      "n": 125,
+      "max_training_exit": 1678953600000,
+      "slope": 0.001521003118380796,
+      "score_control_r2": 0.07560468988559388
+    },
+    {
+      "month": "2023-05",
+      "n": 128,
+      "max_training_exit": 1682154000000,
+      "slope": 0.0009292056935235087,
+      "score_control_r2": 0.07374536893366812
+    },
+    {
+      "month": "2023-06",
+      "n": 131,
+      "max_training_exit": 1684508400000,
+      "slope": 0.0005895806178387304,
+      "score_control_r2": 0.0732113133952379
+    },
+    {
+      "month": "2023-07",
+      "n": 135,
+      "max_training_exit": 1687500000000,
+      "slope": 0.00021059594814099502,
+      "score_control_r2": 0.07354209459207206
+    },
+    {
+      "month": "2023-08",
+      "n": 138,
+      "max_training_exit": 1689490800000,
+      "slope": -0.00037394596010278665,
+      "score_control_r2": 0.06709388162300023
+    },
+    {
+      "month": "2023-09",
+      "n": 142,
+      "max_training_exit": 1692781200000,
+      "slope": -0.0008495339368143347,
+      "score_control_r2": 0.06684992011387236
+    },
+    {
+      "month": "2023-10",
+      "n": 145,
+      "max_training_exit": 1694941200000,
+      "slope": -0.0007743826638043908,
+      "score_control_r2": 0.06679541368040831
+    },
+    {
+      "month": "2023-11",
+      "n": 149,
+      "max_training_exit": 1697911200000,
+      "slope": -0.0009741697872526093,
+      "score_control_r2": 0.06485521047303366
+    },
+    {
+      "month": "2023-12",
+      "n": 153,
+      "max_training_exit": 1700643600000,
+      "slope": -0.0008532868841935704,
+      "score_control_r2": 0.06729601364970861
+    }
+  ],
+  "source_sha256": "9855ce150bc360a799c0e3999147200ddf68849186efc2e5cdc4f26d394d5c25",
+  "protocol_sha256": "99498c396cf7187af50afd11a276be98cb3d77011ed19bb6bd91623a8675954b",
+  "limitations": [
+    "Retrospective mechanism design; chronological fitting is not independent unseen evidence",
+    "No account, margin, liquidation, protection or account CAGR",
+    "VWAP is not simultaneous executable bid/ask",
+    "One-hour publication delay and open execution are assumptions",
+    "2024+ not examined for this mechanism"
+  ]
+}

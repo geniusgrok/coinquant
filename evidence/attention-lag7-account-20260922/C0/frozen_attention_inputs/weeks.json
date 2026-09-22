@@ -1,0 +1,1964 @@
+[
+  {
+    "period_start": 1572220800000,
+    "period_end": 1572825600000,
+    "available_at": null,
+    "assumed_available_at": 1572998400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": null,
+    "attention": null
+  },
+  {
+    "period_start": 1572825600000,
+    "period_end": 1573430400000,
+    "available_at": null,
+    "assumed_available_at": 1573603200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 53789,
+    "attention": null
+  },
+  {
+    "period_start": 1573430400000,
+    "period_end": 1574035200000,
+    "available_at": null,
+    "assumed_available_at": 1574208000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 48582,
+    "attention": null
+  },
+  {
+    "period_start": 1574035200000,
+    "period_end": 1574640000000,
+    "available_at": null,
+    "assumed_available_at": 1574812800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44003,
+    "attention": null
+  },
+  {
+    "period_start": 1574640000000,
+    "period_end": 1575244800000,
+    "available_at": null,
+    "assumed_available_at": 1575417600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 48266,
+    "attention": null
+  },
+  {
+    "period_start": 1575244800000,
+    "period_end": 1575849600000,
+    "available_at": null,
+    "assumed_available_at": 1576022400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 46704,
+    "attention": -1956.0
+  },
+  {
+    "period_start": 1575849600000,
+    "period_end": 1576454400000,
+    "available_at": null,
+    "assumed_available_at": 1576627200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39561,
+    "attention": -7327.75
+  },
+  {
+    "period_start": 1576454400000,
+    "period_end": 1577059200000,
+    "available_at": null,
+    "assumed_available_at": 1577232000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 41934,
+    "attention": -2699.5
+  },
+  {
+    "period_start": 1577059200000,
+    "period_end": 1577664000000,
+    "available_at": null,
+    "assumed_available_at": 1577836800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 56185,
+    "attention": 12068.75
+  },
+  {
+    "period_start": 1577664000000,
+    "period_end": 1578268800000,
+    "available_at": null,
+    "assumed_available_at": 1578441600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 68205,
+    "attention": 22109.0
+  },
+  {
+    "period_start": 1578268800000,
+    "period_end": 1578873600000,
+    "available_at": null,
+    "assumed_available_at": 1579046400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 85295,
+    "attention": 33823.75
+  },
+  {
+    "period_start": 1578873600000,
+    "period_end": 1579478400000,
+    "available_at": null,
+    "assumed_available_at": 1579651200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 69102,
+    "attention": 6197.25
+  },
+  {
+    "period_start": 1579478400000,
+    "period_end": 1580083200000,
+    "available_at": null,
+    "assumed_available_at": 1580256000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 36818,
+    "attention": -32878.75
+  },
+  {
+    "period_start": 1580083200000,
+    "period_end": 1580688000000,
+    "available_at": null,
+    "assumed_available_at": 1580860800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 34989,
+    "attention": -29866.0
+  },
+  {
+    "period_start": 1580688000000,
+    "period_end": 1581292800000,
+    "available_at": null,
+    "assumed_available_at": 1581465600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 36091,
+    "attention": -20460.0
+  },
+  {
+    "period_start": 1581292800000,
+    "period_end": 1581897600000,
+    "available_at": null,
+    "assumed_available_at": 1582070400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39933,
+    "attention": -4317.0
+  },
+  {
+    "period_start": 1581897600000,
+    "period_end": 1582502400000,
+    "available_at": null,
+    "assumed_available_at": 1582675200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 50667,
+    "attention": 13709.25
+  },
+  {
+    "period_start": 1582502400000,
+    "period_end": 1583107200000,
+    "available_at": null,
+    "assumed_available_at": 1583280000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39478,
+    "attention": -942.0
+  },
+  {
+    "period_start": 1583107200000,
+    "period_end": 1583712000000,
+    "available_at": null,
+    "assumed_available_at": 1583884800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 41945,
+    "attention": 402.75
+  },
+  {
+    "period_start": 1583712000000,
+    "period_end": 1584316800000,
+    "available_at": null,
+    "assumed_available_at": 1584489600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 46646,
+    "attention": 3640.25
+  },
+  {
+    "period_start": 1584316800000,
+    "period_end": 1584921600000,
+    "available_at": null,
+    "assumed_available_at": 1585094400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39825,
+    "attention": -4859.0
+  },
+  {
+    "period_start": 1584921600000,
+    "period_end": 1585526400000,
+    "available_at": null,
+    "assumed_available_at": 1585699200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39800,
+    "attention": -2173.5
+  },
+  {
+    "period_start": 1585526400000,
+    "period_end": 1586131200000,
+    "available_at": null,
+    "assumed_available_at": 1586304000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44428,
+    "attention": 2374.0
+  },
+  {
+    "period_start": 1586131200000,
+    "period_end": 1586736000000,
+    "available_at": null,
+    "assumed_available_at": 1586908800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44382,
+    "attention": 1707.25
+  },
+  {
+    "period_start": 1586736000000,
+    "period_end": 1587340800000,
+    "available_at": null,
+    "assumed_available_at": 1587513600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 48166,
+    "attention": 6057.25
+  },
+  {
+    "period_start": 1587340800000,
+    "period_end": 1587945600000,
+    "available_at": null,
+    "assumed_available_at": 1588118400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 50959,
+    "attention": 6765.0
+  },
+  {
+    "period_start": 1587945600000,
+    "period_end": 1588550400000,
+    "available_at": null,
+    "assumed_available_at": 1588723200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 59337,
+    "attention": 12353.25
+  },
+  {
+    "period_start": 1588550400000,
+    "period_end": 1589155200000,
+    "available_at": null,
+    "assumed_available_at": 1589328000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 59953,
+    "attention": 9242.0
+  },
+  {
+    "period_start": 1589155200000,
+    "period_end": 1589760000000,
+    "available_at": null,
+    "assumed_available_at": 1589932800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 60734,
+    "attention": 6130.25
+  },
+  {
+    "period_start": 1589760000000,
+    "period_end": 1590364800000,
+    "available_at": null,
+    "assumed_available_at": 1590537600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 50772,
+    "attention": -6973.75
+  },
+  {
+    "period_start": 1590364800000,
+    "period_end": 1590969600000,
+    "available_at": null,
+    "assumed_available_at": 1591142400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 42960,
+    "attention": -14739.0
+  },
+  {
+    "period_start": 1590969600000,
+    "period_end": 1591574400000,
+    "available_at": null,
+    "assumed_available_at": 1591747200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 40007,
+    "attention": -13597.75
+  },
+  {
+    "period_start": 1591574400000,
+    "period_end": 1592179200000,
+    "available_at": null,
+    "assumed_available_at": 1592352000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39667,
+    "attention": -8951.25
+  },
+  {
+    "period_start": 1592179200000,
+    "period_end": 1592784000000,
+    "available_at": null,
+    "assumed_available_at": 1592956800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 34927,
+    "attention": -8424.5
+  },
+  {
+    "period_start": 1592784000000,
+    "period_end": 1593388800000,
+    "available_at": null,
+    "assumed_available_at": 1593561600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 35980,
+    "attention": -3410.25
+  },
+  {
+    "period_start": 1593388800000,
+    "period_end": 1593993600000,
+    "available_at": null,
+    "assumed_available_at": 1594166400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 34784,
+    "attention": -2861.25
+  },
+  {
+    "period_start": 1593993600000,
+    "period_end": 1594598400000,
+    "available_at": null,
+    "assumed_available_at": 1594771200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 37394,
+    "attention": 1054.5
+  },
+  {
+    "period_start": 1594598400000,
+    "period_end": 1595203200000,
+    "available_at": null,
+    "assumed_available_at": 1595376000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 56541,
+    "attention": 20769.75
+  },
+  {
+    "period_start": 1595203200000,
+    "period_end": 1595808000000,
+    "available_at": null,
+    "assumed_available_at": 1595980800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 50951,
+    "attention": 9776.25
+  },
+  {
+    "period_start": 1595808000000,
+    "period_end": 1596412800000,
+    "available_at": null,
+    "assumed_available_at": 1596585600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 57248,
+    "attention": 12330.5
+  },
+  {
+    "period_start": 1596412800000,
+    "period_end": 1597017600000,
+    "available_at": null,
+    "assumed_available_at": 1597190400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 48899,
+    "attention": -1634.5
+  },
+  {
+    "period_start": 1597017600000,
+    "period_end": 1597622400000,
+    "available_at": null,
+    "assumed_available_at": 1597795200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 49869,
+    "attention": -3540.75
+  },
+  {
+    "period_start": 1597622400000,
+    "period_end": 1598227200000,
+    "available_at": null,
+    "assumed_available_at": 1598400000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 48876,
+    "attention": -2865.75
+  },
+  {
+    "period_start": 1598227200000,
+    "period_end": 1598832000000,
+    "available_at": null,
+    "assumed_available_at": 1599004800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44983,
+    "attention": -6240.0
+  },
+  {
+    "period_start": 1598832000000,
+    "period_end": 1599436800000,
+    "available_at": null,
+    "assumed_available_at": 1599609600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44321,
+    "attention": -3835.75
+  },
+  {
+    "period_start": 1599436800000,
+    "period_end": 1600041600000,
+    "available_at": null,
+    "assumed_available_at": 1600214400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 41815,
+    "attention": -5197.25
+  },
+  {
+    "period_start": 1600041600000,
+    "period_end": 1600646400000,
+    "available_at": null,
+    "assumed_available_at": 1600819200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39820,
+    "attention": -5178.75
+  },
+  {
+    "period_start": 1600646400000,
+    "period_end": 1601251200000,
+    "available_at": null,
+    "assumed_available_at": 1601424000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 36508,
+    "attention": -6226.75
+  },
+  {
+    "period_start": 1601251200000,
+    "period_end": 1601856000000,
+    "available_at": null,
+    "assumed_available_at": 1602028800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 31423,
+    "attention": -9193.0
+  },
+  {
+    "period_start": 1601856000000,
+    "period_end": 1602460800000,
+    "available_at": null,
+    "assumed_available_at": 1602633600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 34848,
+    "attention": -2543.5
+  },
+  {
+    "period_start": 1602460800000,
+    "period_end": 1603065600000,
+    "available_at": null,
+    "assumed_available_at": 1603238400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44362,
+    "attention": 8712.25
+  },
+  {
+    "period_start": 1603065600000,
+    "period_end": 1603670400000,
+    "available_at": null,
+    "assumed_available_at": 1603843200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44431,
+    "attention": 7645.75
+  },
+  {
+    "period_start": 1603670400000,
+    "period_end": 1604275200000,
+    "available_at": null,
+    "assumed_available_at": 1604448000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 45757,
+    "attention": 6991.0
+  },
+  {
+    "period_start": 1604275200000,
+    "period_end": 1604880000000,
+    "available_at": null,
+    "assumed_available_at": 1605052800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 50547,
+    "attention": 8197.5
+  },
+  {
+    "period_start": 1604880000000,
+    "period_end": 1605484800000,
+    "available_at": null,
+    "assumed_available_at": 1605657600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 49498,
+    "attention": 3223.75
+  },
+  {
+    "period_start": 1605484800000,
+    "period_end": 1606089600000,
+    "available_at": null,
+    "assumed_available_at": 1606262400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 73344,
+    "attention": 25785.75
+  },
+  {
+    "period_start": 1606089600000,
+    "period_end": 1606694400000,
+    "available_at": null,
+    "assumed_available_at": 1606867200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 74103,
+    "attention": 19316.5
+  },
+  {
+    "period_start": 1606694400000,
+    "period_end": 1607299200000,
+    "available_at": null,
+    "assumed_available_at": 1607472000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 79952,
+    "attention": 18079.0
+  },
+  {
+    "period_start": 1607299200000,
+    "period_end": 1607904000000,
+    "available_at": null,
+    "assumed_available_at": 1608076800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 62292,
+    "attention": -6932.25
+  },
+  {
+    "period_start": 1607904000000,
+    "period_end": 1608508800000,
+    "available_at": null,
+    "assumed_available_at": 1608681600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 110293,
+    "attention": 37870.25
+  },
+  {
+    "period_start": 1608508800000,
+    "period_end": 1609113600000,
+    "available_at": null,
+    "assumed_available_at": 1609286400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 91033,
+    "attention": 9373.0
+  },
+  {
+    "period_start": 1609113600000,
+    "period_end": 1609718400000,
+    "available_at": null,
+    "assumed_available_at": 1609891200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 160110,
+    "attention": 74217.5
+  },
+  {
+    "period_start": 1609718400000,
+    "period_end": 1610323200000,
+    "available_at": null,
+    "assumed_available_at": 1610496000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 225774,
+    "attention": 119842.0
+  },
+  {
+    "period_start": 1610323200000,
+    "period_end": 1610928000000,
+    "available_at": null,
+    "assumed_available_at": 1611100800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 224438,
+    "attention": 77635.5
+  },
+  {
+    "period_start": 1610928000000,
+    "period_end": 1611532800000,
+    "available_at": null,
+    "assumed_available_at": 1611705600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 128389,
+    "attention": -46949.75
+  },
+  {
+    "period_start": 1611532800000,
+    "period_end": 1612137600000,
+    "available_at": null,
+    "assumed_available_at": 1612310400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 150137,
+    "attention": -34540.75
+  },
+  {
+    "period_start": 1612137600000,
+    "period_end": 1612742400000,
+    "available_at": null,
+    "assumed_available_at": 1612915200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 134024,
+    "attention": -48160.5
+  },
+  {
+    "period_start": 1612742400000,
+    "period_end": 1613347200000,
+    "available_at": null,
+    "assumed_available_at": 1613520000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 282403,
+    "attention": 123156.0
+  },
+  {
+    "period_start": 1613347200000,
+    "period_end": 1613952000000,
+    "available_at": null,
+    "assumed_available_at": 1614124800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 247478,
+    "attention": 73739.75
+  },
+  {
+    "period_start": 1613952000000,
+    "period_end": 1614556800000,
+    "available_at": null,
+    "assumed_available_at": 1614729600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 208967,
+    "attention": 5456.5
+  },
+  {
+    "period_start": 1614556800000,
+    "period_end": 1615161600000,
+    "available_at": null,
+    "assumed_available_at": 1615334400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 139483,
+    "attention": -78735.0
+  },
+  {
+    "period_start": 1615161600000,
+    "period_end": 1615766400000,
+    "available_at": null,
+    "assumed_available_at": 1615939200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 145203,
+    "attention": -74379.75
+  },
+  {
+    "period_start": 1615766400000,
+    "period_end": 1616371200000,
+    "available_at": null,
+    "assumed_available_at": 1616544000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 128644,
+    "attention": -56638.75
+  },
+  {
+    "period_start": 1616371200000,
+    "period_end": 1616976000000,
+    "available_at": null,
+    "assumed_available_at": 1617148800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 120239,
+    "attention": -35335.25
+  },
+  {
+    "period_start": 1616976000000,
+    "period_end": 1617580800000,
+    "available_at": null,
+    "assumed_available_at": 1617753600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 108347,
+    "attention": -25045.25
+  },
+  {
+    "period_start": 1617580800000,
+    "period_end": 1618185600000,
+    "available_at": null,
+    "assumed_available_at": 1618358400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 112505,
+    "attention": -13103.25
+  },
+  {
+    "period_start": 1618185600000,
+    "period_end": 1618790400000,
+    "available_at": null,
+    "assumed_available_at": 1618963200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 158386,
+    "attention": 40952.25
+  },
+  {
+    "period_start": 1618790400000,
+    "period_end": 1619395200000,
+    "available_at": null,
+    "assumed_available_at": 1619568000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 134728,
+    "attention": 9858.75
+  },
+  {
+    "period_start": 1619395200000,
+    "period_end": 1620000000000,
+    "available_at": null,
+    "assumed_available_at": 1620172800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 153958,
+    "attention": 25466.5
+  },
+  {
+    "period_start": 1620000000000,
+    "period_end": 1620604800000,
+    "available_at": null,
+    "assumed_available_at": 1620777600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 168786,
+    "attention": 28891.75
+  },
+  {
+    "period_start": 1620604800000,
+    "period_end": 1621209600000,
+    "available_at": null,
+    "assumed_available_at": 1621382400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 239383,
+    "attention": 85418.5
+  },
+  {
+    "period_start": 1621209600000,
+    "period_end": 1621814400000,
+    "available_at": null,
+    "assumed_available_at": 1621987200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 261960,
+    "attention": 87746.25
+  },
+  {
+    "period_start": 1621814400000,
+    "period_end": 1622419200000,
+    "available_at": null,
+    "assumed_available_at": 1622592000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 209078,
+    "attention": 3056.25
+  },
+  {
+    "period_start": 1622419200000,
+    "period_end": 1623024000000,
+    "available_at": null,
+    "assumed_available_at": 1623196800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 122689,
+    "attention": -97112.75
+  },
+  {
+    "period_start": 1623024000000,
+    "period_end": 1623628800000,
+    "available_at": null,
+    "assumed_available_at": 1623801600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 150087,
+    "attention": -58190.5
+  },
+  {
+    "period_start": 1623628800000,
+    "period_end": 1624233600000,
+    "available_at": null,
+    "assumed_available_at": 1624406400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 111644,
+    "attention": -74309.5
+  },
+  {
+    "period_start": 1624233600000,
+    "period_end": 1624838400000,
+    "available_at": null,
+    "assumed_available_at": 1625011200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 106992,
+    "attention": -41382.5
+  },
+  {
+    "period_start": 1624838400000,
+    "period_end": 1625443200000,
+    "available_at": null,
+    "assumed_available_at": 1625616000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 81995,
+    "attention": -40858.0
+  },
+  {
+    "period_start": 1625443200000,
+    "period_end": 1626048000000,
+    "available_at": null,
+    "assumed_available_at": 1626220800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 81516,
+    "attention": -31163.5
+  },
+  {
+    "period_start": 1626048000000,
+    "period_end": 1626652800000,
+    "available_at": null,
+    "assumed_available_at": 1626825600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 81551,
+    "attention": -13985.75
+  },
+  {
+    "period_start": 1626652800000,
+    "period_end": 1627257600000,
+    "available_at": null,
+    "assumed_available_at": 1627430400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 77907,
+    "attention": -10106.5
+  },
+  {
+    "period_start": 1627257600000,
+    "period_end": 1627862400000,
+    "available_at": null,
+    "assumed_available_at": 1628035200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 89016,
+    "attention": 8273.75
+  },
+  {
+    "period_start": 1627862400000,
+    "period_end": 1628467200000,
+    "available_at": null,
+    "assumed_available_at": 1628640000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 88261,
+    "attention": 5763.5
+  },
+  {
+    "period_start": 1628467200000,
+    "period_end": 1629072000000,
+    "available_at": null,
+    "assumed_available_at": 1629244800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 87053,
+    "attention": 2869.25
+  },
+  {
+    "period_start": 1629072000000,
+    "period_end": 1629676800000,
+    "available_at": null,
+    "assumed_available_at": 1629849600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 86413,
+    "attention": 853.75
+  },
+  {
+    "period_start": 1629676800000,
+    "period_end": 1630281600000,
+    "available_at": null,
+    "assumed_available_at": 1630454400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 85603,
+    "attention": -2082.75
+  },
+  {
+    "period_start": 1630281600000,
+    "period_end": 1630886400000,
+    "available_at": null,
+    "assumed_available_at": 1631059200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 82597,
+    "attention": -4235.5
+  },
+  {
+    "period_start": 1630886400000,
+    "period_end": 1631491200000,
+    "available_at": null,
+    "assumed_available_at": 1631664000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 118337,
+    "attention": 32920.5
+  },
+  {
+    "period_start": 1631491200000,
+    "period_end": 1632096000000,
+    "available_at": null,
+    "assumed_available_at": 1632268800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 104342,
+    "attention": 11104.5
+  },
+  {
+    "period_start": 1632096000000,
+    "period_end": 1632700800000,
+    "available_at": null,
+    "assumed_available_at": 1632873600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 184066,
+    "attention": 86346.25
+  },
+  {
+    "period_start": 1632700800000,
+    "period_end": 1633305600000,
+    "available_at": null,
+    "assumed_available_at": 1633478400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 124061,
+    "attention": 1725.5
+  },
+  {
+    "period_start": 1633305600000,
+    "period_end": 1633910400000,
+    "available_at": null,
+    "assumed_available_at": 1634083200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 111160,
+    "attention": -21541.5
+  },
+  {
+    "period_start": 1633910400000,
+    "period_end": 1634515200000,
+    "available_at": null,
+    "assumed_available_at": 1634688000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 109294,
+    "attention": -21613.25
+  },
+  {
+    "period_start": 1634515200000,
+    "period_end": 1635120000000,
+    "available_at": null,
+    "assumed_available_at": 1635292800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 114666,
+    "attention": -17479.25
+  },
+  {
+    "period_start": 1635120000000,
+    "period_end": 1635724800000,
+    "available_at": null,
+    "assumed_available_at": 1635897600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 124352,
+    "attention": 9556.75
+  },
+  {
+    "period_start": 1635724800000,
+    "period_end": 1636329600000,
+    "available_at": null,
+    "assumed_available_at": 1636502400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 105908,
+    "attention": -8960.0
+  },
+  {
+    "period_start": 1636329600000,
+    "period_end": 1636934400000,
+    "available_at": null,
+    "assumed_available_at": 1637107200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 122644,
+    "attention": 9089.0
+  },
+  {
+    "period_start": 1636934400000,
+    "period_end": 1637539200000,
+    "available_at": null,
+    "assumed_available_at": 1637712000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 116489,
+    "attention": -403.5
+  },
+  {
+    "period_start": 1637539200000,
+    "period_end": 1638144000000,
+    "available_at": null,
+    "assumed_available_at": 1638316800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 108835,
+    "attention": -8513.25
+  },
+  {
+    "period_start": 1638144000000,
+    "period_end": 1638748800000,
+    "available_at": null,
+    "assumed_available_at": 1638921600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 101202,
+    "attention": -12267.0
+  },
+  {
+    "period_start": 1638748800000,
+    "period_end": 1639353600000,
+    "available_at": null,
+    "assumed_available_at": 1639526400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 94770,
+    "attention": -17522.5
+  },
+  {
+    "period_start": 1639353600000,
+    "period_end": 1639958400000,
+    "available_at": null,
+    "assumed_available_at": 1640131200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 79813,
+    "attention": -25511.0
+  },
+  {
+    "period_start": 1639958400000,
+    "period_end": 1640563200000,
+    "available_at": null,
+    "assumed_available_at": 1640736000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 69690,
+    "attention": -26465.0
+  },
+  {
+    "period_start": 1640563200000,
+    "period_end": 1641168000000,
+    "available_at": null,
+    "assumed_available_at": 1641340800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 71832,
+    "attention": -14536.75
+  },
+  {
+    "period_start": 1641168000000,
+    "period_end": 1641772800000,
+    "available_at": null,
+    "assumed_available_at": 1641945600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 88578,
+    "attention": 9551.75
+  },
+  {
+    "period_start": 1641772800000,
+    "period_end": 1642377600000,
+    "available_at": null,
+    "assumed_available_at": 1642550400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 80150,
+    "attention": 2671.75
+  },
+  {
+    "period_start": 1642377600000,
+    "period_end": 1642982400000,
+    "available_at": null,
+    "assumed_available_at": 1643155200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 94148,
+    "attention": 16585.5
+  },
+  {
+    "period_start": 1642982400000,
+    "period_end": 1643587200000,
+    "available_at": null,
+    "assumed_available_at": 1643760000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 103408,
+    "attention": 19731.0
+  },
+  {
+    "period_start": 1643587200000,
+    "period_end": 1644192000000,
+    "available_at": null,
+    "assumed_available_at": 1644364800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 92927,
+    "attention": 1356.0
+  },
+  {
+    "period_start": 1644192000000,
+    "period_end": 1644796800000,
+    "available_at": null,
+    "assumed_available_at": 1644969600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 85180,
+    "attention": -7478.25
+  },
+  {
+    "period_start": 1644796800000,
+    "period_end": 1645401600000,
+    "available_at": null,
+    "assumed_available_at": 1645574400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 76190,
+    "attention": -17725.75
+  },
+  {
+    "period_start": 1645401600000,
+    "period_end": 1646006400000,
+    "available_at": null,
+    "assumed_available_at": 1646179200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 86787,
+    "attention": -2639.25
+  },
+  {
+    "period_start": 1646006400000,
+    "period_end": 1646611200000,
+    "available_at": null,
+    "assumed_available_at": 1646784000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 71454,
+    "attention": -13817.0
+  },
+  {
+    "period_start": 1646611200000,
+    "period_end": 1647216000000,
+    "available_at": null,
+    "assumed_available_at": 1647388800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 68293,
+    "attention": -11609.75
+  },
+  {
+    "period_start": 1647216000000,
+    "period_end": 1647820800000,
+    "available_at": null,
+    "assumed_available_at": 1647993600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 61324,
+    "attention": -14357.0
+  },
+  {
+    "period_start": 1647820800000,
+    "period_end": 1648425600000,
+    "available_at": null,
+    "assumed_available_at": 1648598400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 61558,
+    "attention": -10406.5
+  },
+  {
+    "period_start": 1648425600000,
+    "period_end": 1649030400000,
+    "available_at": null,
+    "assumed_available_at": 1649203200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 69492,
+    "attention": 3834.75
+  },
+  {
+    "period_start": 1649030400000,
+    "period_end": 1649635200000,
+    "available_at": null,
+    "assumed_available_at": 1649808000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 65698,
+    "attention": 531.25
+  },
+  {
+    "period_start": 1649635200000,
+    "period_end": 1650240000000,
+    "available_at": null,
+    "assumed_available_at": 1650412800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 60913,
+    "attention": -3605.0
+  },
+  {
+    "period_start": 1650240000000,
+    "period_end": 1650844800000,
+    "available_at": null,
+    "assumed_available_at": 1651017600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 56678,
+    "attention": -7737.25
+  },
+  {
+    "period_start": 1650844800000,
+    "period_end": 1651449600000,
+    "available_at": null,
+    "assumed_available_at": 1651622400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 61746,
+    "attention": -1449.25
+  },
+  {
+    "period_start": 1651449600000,
+    "period_end": 1652054400000,
+    "available_at": null,
+    "assumed_available_at": 1652227200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 52910,
+    "attention": -8348.75
+  },
+  {
+    "period_start": 1652054400000,
+    "period_end": 1652659200000,
+    "available_at": null,
+    "assumed_available_at": 1652832000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 92001,
+    "attention": 33939.25
+  },
+  {
+    "period_start": 1652659200000,
+    "period_end": 1653264000000,
+    "available_at": null,
+    "assumed_available_at": 1653436800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 63486,
+    "attention": -2347.75
+  },
+  {
+    "period_start": 1653264000000,
+    "period_end": 1653868800000,
+    "available_at": null,
+    "assumed_available_at": 1654041600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 48345,
+    "attention": -19190.75
+  },
+  {
+    "period_start": 1653868800000,
+    "period_end": 1654473600000,
+    "available_at": null,
+    "assumed_available_at": 1654646400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44628,
+    "attention": -19557.5
+  },
+  {
+    "period_start": 1654473600000,
+    "period_end": 1655078400000,
+    "available_at": null,
+    "assumed_available_at": 1655251200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44799,
+    "attention": -17316.0
+  },
+  {
+    "period_start": 1655078400000,
+    "period_end": 1655683200000,
+    "available_at": null,
+    "assumed_available_at": 1655856000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 93697,
+    "attention": 43382.5
+  },
+  {
+    "period_start": 1655683200000,
+    "period_end": 1656288000000,
+    "available_at": null,
+    "assumed_available_at": 1656460800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 60134,
+    "attention": 2266.75
+  },
+  {
+    "period_start": 1656288000000,
+    "period_end": 1656892800000,
+    "available_at": null,
+    "assumed_available_at": 1657065600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 48947,
+    "attention": -11867.5
+  },
+  {
+    "period_start": 1656892800000,
+    "period_end": 1657497600000,
+    "available_at": null,
+    "assumed_available_at": 1657670400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44236,
+    "attention": -17658.25
+  },
+  {
+    "period_start": 1657497600000,
+    "period_end": 1658102400000,
+    "available_at": null,
+    "assumed_available_at": 1658275200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 45984,
+    "attention": -15769.5
+  },
+  {
+    "period_start": 1658102400000,
+    "period_end": 1658707200000,
+    "available_at": null,
+    "assumed_available_at": 1658880000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 46694,
+    "attention": -3131.25
+  },
+  {
+    "period_start": 1658707200000,
+    "period_end": 1659312000000,
+    "available_at": null,
+    "assumed_available_at": 1659484800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 43139,
+    "attention": -3326.25
+  },
+  {
+    "period_start": 1659312000000,
+    "period_end": 1659916800000,
+    "available_at": null,
+    "assumed_available_at": 1660089600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 42216,
+    "attention": -2797.25
+  },
+  {
+    "period_start": 1659916800000,
+    "period_end": 1660521600000,
+    "available_at": null,
+    "assumed_available_at": 1660694400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 41167,
+    "attention": -3341.25
+  },
+  {
+    "period_start": 1660521600000,
+    "period_end": 1661126400000,
+    "available_at": null,
+    "assumed_available_at": 1661299200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44859,
+    "attention": 1555.0
+  },
+  {
+    "period_start": 1661126400000,
+    "period_end": 1661731200000,
+    "available_at": null,
+    "assumed_available_at": 1661904000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44519,
+    "attention": 1673.75
+  },
+  {
+    "period_start": 1661731200000,
+    "period_end": 1662336000000,
+    "available_at": null,
+    "assumed_available_at": 1662508800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 43522,
+    "attention": 331.75
+  },
+  {
+    "period_start": 1662336000000,
+    "period_end": 1662940800000,
+    "available_at": null,
+    "assumed_available_at": 1663113600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 47773,
+    "attention": 4256.25
+  },
+  {
+    "period_start": 1662940800000,
+    "period_end": 1663545600000,
+    "available_at": null,
+    "assumed_available_at": 1663718400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 43727,
+    "attention": -1441.25
+  },
+  {
+    "period_start": 1663545600000,
+    "period_end": 1664150400000,
+    "available_at": null,
+    "assumed_available_at": 1664323200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 42258,
+    "attention": -2627.25
+  },
+  {
+    "period_start": 1664150400000,
+    "period_end": 1664755200000,
+    "available_at": null,
+    "assumed_available_at": 1664928000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39290,
+    "attention": -5030.0
+  },
+  {
+    "period_start": 1664755200000,
+    "period_end": 1665360000000,
+    "available_at": null,
+    "assumed_available_at": 1665532800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 38611,
+    "attention": -4651.0
+  },
+  {
+    "period_start": 1665360000000,
+    "period_end": 1665964800000,
+    "available_at": null,
+    "assumed_available_at": 1666137600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39603,
+    "attention": -1368.5
+  },
+  {
+    "period_start": 1665964800000,
+    "period_end": 1666569600000,
+    "available_at": null,
+    "assumed_available_at": 1666742400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 40007,
+    "attention": 66.5
+  },
+  {
+    "period_start": 1666569600000,
+    "period_end": 1667174400000,
+    "available_at": null,
+    "assumed_available_at": 1667347200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 42462,
+    "attention": 3084.25
+  },
+  {
+    "period_start": 1667174400000,
+    "period_end": 1667779200000,
+    "available_at": null,
+    "assumed_available_at": 1667952000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 44662,
+    "attention": 4491.25
+  },
+  {
+    "period_start": 1667779200000,
+    "period_end": 1668384000000,
+    "available_at": null,
+    "assumed_available_at": 1668556800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 63979,
+    "attention": 22295.5
+  },
+  {
+    "period_start": 1668384000000,
+    "period_end": 1668988800000,
+    "available_at": null,
+    "assumed_available_at": 1669161600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 60898,
+    "attention": 13120.5
+  },
+  {
+    "period_start": 1668988800000,
+    "period_end": 1669593600000,
+    "available_at": null,
+    "assumed_available_at": 1669766400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 50706,
+    "attention": -2294.25
+  },
+  {
+    "period_start": 1669593600000,
+    "period_end": 1670198400000,
+    "available_at": null,
+    "assumed_available_at": 1670371200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 47251,
+    "attention": -7810.25
+  },
+  {
+    "period_start": 1670198400000,
+    "period_end": 1670803200000,
+    "available_at": null,
+    "assumed_available_at": 1670976000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39469,
+    "attention": -16239.5
+  },
+  {
+    "period_start": 1670803200000,
+    "period_end": 1671408000000,
+    "available_at": null,
+    "assumed_available_at": 1671580800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 46217,
+    "attention": -3364.0
+  },
+  {
+    "period_start": 1671408000000,
+    "period_end": 1672012800000,
+    "available_at": null,
+    "assumed_available_at": 1672185600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 37245,
+    "attention": -8665.75
+  },
+  {
+    "period_start": 1672012800000,
+    "period_end": 1672617600000,
+    "available_at": null,
+    "assumed_available_at": 1672790400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 38062,
+    "attention": -4483.5
+  },
+  {
+    "period_start": 1672617600000,
+    "period_end": 1673222400000,
+    "available_at": null,
+    "assumed_available_at": 1673395200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 41681,
+    "attention": 1432.75
+  },
+  {
+    "period_start": 1673222400000,
+    "period_end": 1673827200000,
+    "available_at": null,
+    "assumed_available_at": 1674000000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 40801,
+    "attention": -0.25
+  },
+  {
+    "period_start": 1673827200000,
+    "period_end": 1674432000000,
+    "available_at": null,
+    "assumed_available_at": 1674604800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39648,
+    "attention": 200.75
+  },
+  {
+    "period_start": 1674432000000,
+    "period_end": 1675036800000,
+    "available_at": null,
+    "assumed_available_at": 1675209600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 37275,
+    "attention": -2773.0
+  },
+  {
+    "period_start": 1675036800000,
+    "period_end": 1675641600000,
+    "available_at": null,
+    "assumed_available_at": 1675814400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 37745,
+    "attention": -2106.25
+  },
+  {
+    "period_start": 1675641600000,
+    "period_end": 1676246400000,
+    "available_at": null,
+    "assumed_available_at": 1676419200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 35402,
+    "attention": -3465.25
+  },
+  {
+    "period_start": 1676246400000,
+    "period_end": 1676851200000,
+    "available_at": null,
+    "assumed_available_at": 1677024000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 36211,
+    "attention": -1306.5
+  },
+  {
+    "period_start": 1676851200000,
+    "period_end": 1677456000000,
+    "available_at": null,
+    "assumed_available_at": 1677628800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 36759,
+    "attention": 100.75
+  },
+  {
+    "period_start": 1677456000000,
+    "period_end": 1678060800000,
+    "available_at": null,
+    "assumed_available_at": 1678233600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 35986,
+    "attention": -543.25
+  },
+  {
+    "period_start": 1678060800000,
+    "period_end": 1678665600000,
+    "available_at": null,
+    "assumed_available_at": 1678838400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 38410,
+    "attention": 2320.5
+  },
+  {
+    "period_start": 1678665600000,
+    "period_end": 1679270400000,
+    "available_at": null,
+    "assumed_available_at": 1679443200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 43215,
+    "attention": 6373.5
+  },
+  {
+    "period_start": 1679270400000,
+    "period_end": 1679875200000,
+    "available_at": null,
+    "assumed_available_at": 1680048000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 42046,
+    "attention": 3453.5
+  },
+  {
+    "period_start": 1679875200000,
+    "period_end": 1680480000000,
+    "available_at": null,
+    "assumed_available_at": 1680652800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 38624,
+    "attention": -1290.25
+  },
+  {
+    "period_start": 1680480000000,
+    "period_end": 1681084800000,
+    "available_at": null,
+    "assumed_available_at": 1681257600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 35897,
+    "attention": -4676.75
+  },
+  {
+    "period_start": 1681084800000,
+    "period_end": 1681689600000,
+    "available_at": null,
+    "assumed_available_at": 1681862400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39208,
+    "attention": -737.5
+  },
+  {
+    "period_start": 1681689600000,
+    "period_end": 1682294400000,
+    "available_at": null,
+    "assumed_available_at": 1682467200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 34750,
+    "attention": -4193.75
+  },
+  {
+    "period_start": 1682294400000,
+    "period_end": 1682899200000,
+    "available_at": null,
+    "assumed_available_at": 1683072000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 37445,
+    "attention": 325.25
+  },
+  {
+    "period_start": 1682899200000,
+    "period_end": 1683504000000,
+    "available_at": null,
+    "assumed_available_at": 1683676800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 35913,
+    "attention": -912.0
+  },
+  {
+    "period_start": 1683504000000,
+    "period_end": 1684108800000,
+    "available_at": null,
+    "assumed_available_at": 1684281600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 34000,
+    "attention": -2829.0
+  },
+  {
+    "period_start": 1684108800000,
+    "period_end": 1684713600000,
+    "available_at": null,
+    "assumed_available_at": 1684886400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 34151,
+    "attention": -1376.0
+  },
+  {
+    "period_start": 1684713600000,
+    "period_end": 1685318400000,
+    "available_at": null,
+    "assumed_available_at": 1685491200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 32976,
+    "attention": -2401.25
+  },
+  {
+    "period_start": 1685318400000,
+    "period_end": 1685923200000,
+    "available_at": null,
+    "assumed_available_at": 1686096000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 33758,
+    "attention": -502.0
+  },
+  {
+    "period_start": 1685923200000,
+    "period_end": 1686528000000,
+    "available_at": null,
+    "assumed_available_at": 1686700800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 33834,
+    "attention": 112.75
+  },
+  {
+    "period_start": 1686528000000,
+    "period_end": 1687132800000,
+    "available_at": null,
+    "assumed_available_at": 1687305600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 32858,
+    "attention": -821.75
+  },
+  {
+    "period_start": 1687132800000,
+    "period_end": 1687737600000,
+    "available_at": null,
+    "assumed_available_at": 1687910400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 40466,
+    "attention": 7109.5
+  },
+  {
+    "period_start": 1687737600000,
+    "period_end": 1688342400000,
+    "available_at": null,
+    "assumed_available_at": 1688515200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 35554,
+    "attention": 325.0
+  },
+  {
+    "period_start": 1688342400000,
+    "period_end": 1688947200000,
+    "available_at": null,
+    "assumed_available_at": 1689120000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 33480,
+    "attention": -2198.0
+  },
+  {
+    "period_start": 1688947200000,
+    "period_end": 1689552000000,
+    "available_at": null,
+    "assumed_available_at": 1689724800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 32480,
+    "attention": -3109.5
+  },
+  {
+    "period_start": 1689552000000,
+    "period_end": 1690156800000,
+    "available_at": null,
+    "assumed_available_at": 1690329600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 30811,
+    "attention": -4684.0
+  },
+  {
+    "period_start": 1690156800000,
+    "period_end": 1690761600000,
+    "available_at": null,
+    "assumed_available_at": 1690934400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 33234,
+    "attention": 152.75
+  },
+  {
+    "period_start": 1690761600000,
+    "period_end": 1691366400000,
+    "available_at": null,
+    "assumed_available_at": 1691539200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 32681,
+    "attention": 179.75
+  },
+  {
+    "period_start": 1691366400000,
+    "period_end": 1691971200000,
+    "available_at": null,
+    "assumed_available_at": 1692144000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 32135,
+    "attention": -166.5
+  },
+  {
+    "period_start": 1691971200000,
+    "period_end": 1692576000000,
+    "available_at": null,
+    "assumed_available_at": 1692748800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 40007,
+    "attention": 7791.75
+  },
+  {
+    "period_start": 1692576000000,
+    "period_end": 1693180800000,
+    "available_at": null,
+    "assumed_available_at": 1693353600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39197,
+    "attention": 4682.75
+  },
+  {
+    "period_start": 1693180800000,
+    "period_end": 1693785600000,
+    "available_at": null,
+    "assumed_available_at": 1693958400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 37415,
+    "attention": 1410.0
+  },
+  {
+    "period_start": 1693785600000,
+    "period_end": 1694390400000,
+    "available_at": null,
+    "assumed_available_at": 1694563200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 40148,
+    "attention": 2959.5
+  },
+  {
+    "period_start": 1694390400000,
+    "period_end": 1694995200000,
+    "available_at": null,
+    "assumed_available_at": 1695168000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 40427,
+    "attention": 1235.25
+  },
+  {
+    "period_start": 1694995200000,
+    "period_end": 1695600000000,
+    "available_at": null,
+    "assumed_available_at": 1695772800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 42501,
+    "attention": 3204.25
+  },
+  {
+    "period_start": 1695600000000,
+    "period_end": 1696204800000,
+    "available_at": null,
+    "assumed_available_at": 1696377600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 37973,
+    "attention": -2149.75
+  },
+  {
+    "period_start": 1696204800000,
+    "period_end": 1696809600000,
+    "available_at": null,
+    "assumed_available_at": 1696982400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 33493,
+    "attention": -6769.25
+  },
+  {
+    "period_start": 1696809600000,
+    "period_end": 1697414400000,
+    "available_at": null,
+    "assumed_available_at": 1697587200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 35455,
+    "attention": -3143.5
+  },
+  {
+    "period_start": 1697414400000,
+    "period_end": 1698019200000,
+    "available_at": null,
+    "assumed_available_at": 1698192000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 43911,
+    "attention": 6555.5
+  },
+  {
+    "period_start": 1698019200000,
+    "period_end": 1698624000000,
+    "available_at": null,
+    "assumed_available_at": 1698796800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 57889,
+    "attention": 20181.0
+  },
+  {
+    "period_start": 1698624000000,
+    "period_end": 1699228800000,
+    "available_at": null,
+    "assumed_available_at": 1699401600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 41572,
+    "attention": -1115.0
+  },
+  {
+    "period_start": 1699228800000,
+    "period_end": 1699833600000,
+    "available_at": null,
+    "assumed_available_at": 1700006400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 42068,
+    "attention": -2638.75
+  },
+  {
+    "period_start": 1699833600000,
+    "period_end": 1700438400000,
+    "available_at": null,
+    "assumed_available_at": 1700611200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 38355,
+    "attention": -8005.0
+  },
+  {
+    "period_start": 1700438400000,
+    "period_end": 1701043200000,
+    "available_at": null,
+    "assumed_available_at": 1701216000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 47568,
+    "attention": 2597.0
+  },
+  {
+    "period_start": 1701043200000,
+    "period_end": 1701648000000,
+    "available_at": null,
+    "assumed_available_at": 1701820800000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 46410,
+    "attention": 4019.25
+  },
+  {
+    "period_start": 1701648000000,
+    "period_end": 1702252800000,
+    "available_at": null,
+    "assumed_available_at": 1702425600000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 59593,
+    "attention": 15992.75
+  },
+  {
+    "period_start": 1702252800000,
+    "period_end": 1702857600000,
+    "available_at": null,
+    "assumed_available_at": 1703030400000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 37669,
+    "attention": -10312.5
+  },
+  {
+    "period_start": 1702857600000,
+    "period_end": 1703462400000,
+    "available_at": null,
+    "assumed_available_at": 1703635200000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 36860,
+    "attention": -10950.0
+  },
+  {
+    "period_start": 1703462400000,
+    "period_end": 1704067200000,
+    "available_at": null,
+    "assumed_available_at": 1704240000000,
+    "vintage_status": "RETROSPECTIVE_PROXY",
+    "count": 39981,
+    "attention": -5152.0
+  }
+]

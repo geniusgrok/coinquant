@@ -1,0 +1,166 @@
+{
+  "scope": "current-rule compatibility diagnostic ONLY; NOT historical backfill",
+  "source": "evidence/binance-boundary-20260921/current-instrument.json",
+  "snapshot_server_time": 1789963379787,
+  "paths": {
+    "l9-minute-refined": {
+      "orders": 32,
+      "incompatible_with_20260921_snapshot": 28,
+      "examples": [
+        {
+          "time": "1578636000000",
+          "q": "0.0094",
+          "notional": "72.9135728016",
+          "reasons": [
+            "step"
+          ]
+        },
+        {
+          "time": "1583128800000",
+          "q": "0.0061",
+          "notional": "52.7823934302",
+          "reasons": [
+            "step"
+          ]
+        },
+        {
+          "time": "1586642400000",
+          "q": "0.0116",
+          "notional": "79.6473918636",
+          "reasons": [
+            "step"
+          ]
+        },
+        {
+          "time": "1599346800000",
+          "q": "0.0041",
+          "notional": "40.8948191617",
+          "reasons": [
+            "step",
+            "min_notional"
+          ]
+        }
+      ]
+    },
+    "l13-development": {
+      "orders": 265,
+      "incompatible_with_20260921_snapshot": 237,
+      "examples": [
+        {
+          "time": "1578636000000",
+          "q": "0.0094",
+          "notional": "72.9135728016",
+          "reasons": [
+            "step"
+          ]
+        },
+        {
+          "time": "1579028400000",
+          "q": "0.0024",
+          "notional": "21.0949389360",
+          "reasons": [
+            "step",
+            "min_notional"
+          ]
+        },
+        {
+          "time": "1579572000000",
+          "q": "0.0102",
+          "notional": "88.4449925910",
+          "reasons": [
+            "step"
+          ]
+        },
+        {
+          "time": "1579741200000",
+          "q": "0.0031",
+          "notional": "26.8897752519",
+          "reasons": [
+            "step",
+            "min_notional"
+          ]
+        }
+      ]
+    },
+    "l14-development": {
+      "orders": 67,
+      "incompatible_with_20260921_snapshot": 65,
+      "examples": [
+        {
+          "time": "1578636000000",
+          "q": "0.0094",
+          "notional": "72.9135728016",
+          "reasons": [
+            "step"
+          ]
+        },
+        {
+          "time": "1579028400000",
+          "q": "0.0024",
+          "notional": "21.0949389360",
+          "reasons": [
+            "step",
+            "min_notional"
+          ]
+        },
+        {
+          "time": "1579572000000",
+          "q": "0.0102",
+          "notional": "88.4449925910",
+          "reasons": [
+            "step"
+          ]
+        },
+        {
+          "time": "1579741200000",
+          "q": "0.0031",
+          "notional": "26.8897752519",
+          "reasons": [
+            "step",
+            "min_notional"
+          ]
+        }
+      ]
+    },
+    "l15-development": {
+      "orders": 210,
+      "incompatible_with_20260921_snapshot": 196,
+      "examples": [
+        {
+          "time": "1578636000000",
+          "q": "0.0094",
+          "notional": "72.9135728016",
+          "reasons": [
+            "step"
+          ]
+        },
+        {
+          "time": "1579028400000",
+          "q": "0.0024",
+          "notional": "21.0949389360",
+          "reasons": [
+            "step",
+            "min_notional"
+          ]
+        },
+        {
+          "time": "1579572000000",
+          "q": "0.0102",
+          "notional": "88.4449925910",
+          "reasons": [
+            "step"
+          ]
+        },
+        {
+          "time": "1579741200000",
+          "q": "0.0031",
+          "notional": "26.8897752519",
+          "reasons": [
+            "step",
+            "min_notional"
+          ]
+        }
+      ]
+    }
+  }
+}

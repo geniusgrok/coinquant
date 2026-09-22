@@ -1,0 +1,10 @@
+{
+  "bytes": 1277873,
+  "sha256": "96376c2b0ff1b4a9510d9c44317dd37d983fcba8ee3ac3dea3f57f3db7a170da",
+  "source_commit": "267493fb44b52fa031dc7ecd134f188ff881be8c",
+  "contents": "full account equity and order traces, input identities, invocations, attribution, exact source and specification",
+  "library_original": {
+    "id": "libfile_6e0232a4142c819197713bbbdec97546",
+    "path": "/pancakequant/binance-l6-development-originals.zip"
+  }
+}

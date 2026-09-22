@@ -1,0 +1,118 @@
+{
+  "qualification": "NOT_QUALIFIED",
+  "archive_inventory": {
+    "qualification": "NOT_QUALIFIED",
+    "records": [
+      {
+        "path": "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2021-07.zip",
+        "source": "https://data.binance.vision/data/futures/um/monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2021-07.zip",
+        "sha256": "569b41a00797933a3e2dd9ceaed3e2d4f7bc0526ce2dd06d1190835732958ca7",
+        "bytes": 19625,
+        "rows": 624,
+        "first_ts": 1625184000000,
+        "last_ts": 1627772400000,
+        "hour_gaps": [
+          {
+            "previous": 1627081200000,
+            "next": 1627430400000
+          }
+        ],
+        "status": "unavailable",
+        "error": "ValueError: hour gap"
+      },
+      {
+        "path": "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2022-10.zip",
+        "source": "https://data.binance.vision/data/futures/um/monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2022-10.zip",
+        "sha256": "9804dbd86adbd447d60edf955fd668de3e426fa3c6596a13d69ae539a2549864",
+        "bytes": 21128,
+        "rows": 720,
+        "first_ts": 1664582400000,
+        "last_ts": 1667257200000,
+        "hour_gaps": [
+          {
+            "previous": 1664665200000,
+            "next": 1664755200000
+          }
+        ],
+        "status": "unavailable",
+        "error": "ValueError: hour gap"
+      },
+      {
+        "path": "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2023-02.zip",
+        "source": "https://data.binance.vision/data/futures/um/monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2023-02.zip",
+        "sha256": "f15d23370f252082d8741819800b82f62ac8bbc9001b53ab6abb5d65ccb3ed3d",
+        "bytes": 20177,
+        "rows": 648,
+        "first_ts": 1675209600000,
+        "last_ts": 1677625200000,
+        "hour_gaps": [
+          {
+            "previous": 1677193200000,
+            "next": 1677283200000
+          }
+        ],
+        "status": "unavailable",
+        "error": "ValueError: hour gap"
+      },
+      {
+        "path": "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2026-06.zip",
+        "source": "https://data.binance.vision/data/futures/um/monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2026-06.zip",
+        "sha256": "7d1d36168726c482372301b51ac2b035a974a82b6ece309c3dbcd196b872edba",
+        "bytes": 20367,
+        "rows": 696,
+        "first_ts": 1780272000000,
+        "last_ts": 1782860400000,
+        "hour_gaps": [
+          {
+            "previous": 1782687600000,
+            "next": 1782777600000
+          }
+        ],
+        "status": "unavailable",
+        "error": "ValueError: hour gap"
+      }
+    ],
+    "funding_tail": "separate official September API response required"
+  },
+  "missing_hours": 192,
+  "ranges": [
+    {
+      "start": 1625097600000,
+      "end_exclusive": 1625184000000,
+      "start_utc": "2021-07-01T00:00:00+00:00",
+      "end_exclusive_utc": "2021-07-02T00:00:00+00:00"
+    },
+    {
+      "start": 1627084800000,
+      "end_exclusive": 1627430400000,
+      "start_utc": "2021-07-24T00:00:00+00:00",
+      "end_exclusive_utc": "2021-07-28T00:00:00+00:00"
+    },
+    {
+      "start": 1664668800000,
+      "end_exclusive": 1664755200000,
+      "start_utc": "2022-10-02T00:00:00+00:00",
+      "end_exclusive_utc": "2022-10-03T00:00:00+00:00"
+    },
+    {
+      "start": 1677196800000,
+      "end_exclusive": 1677283200000,
+      "start_utc": "2023-02-24T00:00:00+00:00",
+      "end_exclusive_utc": "2023-02-25T00:00:00+00:00"
+    },
+    {
+      "start": 1782691200000,
+      "end_exclusive": 1782777600000,
+      "start_utc": "2026-06-29T00:00:00+00:00",
+      "end_exclusive_utc": "2026-06-30T00:00:00+00:00"
+    }
+  ],
+  "run": 35567111349,
+  "artifact_id": 10624731223,
+  "artifact_bytes": 83138,
+  "artifact_sha256": "fa8f5344769b188a562fb231fcb444321232777f2cc0b86355726887dd41ccc5",
+  "library_original": {
+    "id": "libfile_9caad5300ce881919da75dd17c284395",
+    "path": "/pancakequant/binance-mark-gaps.zip"
+  }
+}

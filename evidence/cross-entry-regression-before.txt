@@ -1,0 +1,15 @@
+test_consumed_conditional_cannot_reenter_as_ioc_after_local_state_loss (test_pending.CrossEntryIdentityTests.test_consumed_conditional_cannot_reenter_as_ioc_after_local_state_loss) ... FAIL
+
+======================================================================
+FAIL: test_consumed_conditional_cannot_reenter_as_ioc_after_local_state_loss (test_pending.CrossEntryIdentityTests.test_consumed_conditional_cannot_reenter_as_ioc_after_local_state_loss)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/pancakequant/tests/test_pending.py", line 205, in test_consumed_conditional_cannot_reenter_as_ioc_after_local_state_loss
+    self.assertEqual(v.s.position.quantity, 0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Decimal('100') != 0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.015s
+
+FAILED (failures=1)

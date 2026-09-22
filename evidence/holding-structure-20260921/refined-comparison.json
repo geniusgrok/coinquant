@@ -1,0 +1,75 @@
+{
+  "baseline": {
+    "candidate": "L7-minute-refined",
+    "qualification": "NOT_QUALIFIED",
+    "validation_used": false,
+    "cagr": 0.04919425368014463,
+    "mdd_conservative_envelope": "0.1116217360740106654968025830",
+    "final_cny": "12117.84313899990673366348006",
+    "counts": {
+      "invocations": 468,
+      "no_breakout": 4,
+      "entry": 72,
+      "funding_charge": 2683,
+      "hold": 386,
+      "stop": 71,
+      "unsafe_geometry": 6,
+      "ambiguous_funding_credit_omitted": 1065,
+      "take": 1
+    },
+    "fees_usdt": "28.884944262072600",
+    "funding_bound_paid_usdt": "79.75518997080433964286",
+    "progression_passed": null,
+    "progression_status": "requires paired refined comparison",
+    "code_sha256": "52d7e148bc16a12562987faa79d7f4152024f5cb662dea36ca9a40fcf5eb3dcb",
+    "limitations": [
+      "Proxy dated rules/fees/liquidity and USDT=USD",
+      "Adverse interval funding valuation, not exact cashflow",
+      "Minute refinement on six days only; remaining interval liquidation-first ambiguity",
+      "Margin transfer and full-position execution unverified"
+    ]
+  },
+  "candidate": {
+    "candidate": "L9-minute-refined",
+    "qualification": "NOT_QUALIFIED",
+    "validation_used": false,
+    "cagr": 0.07504922621119725,
+    "mdd_conservative_envelope": "0.0806181617717035660996195333",
+    "final_cny": "13357.21711178416429565424139",
+    "counts": {
+      "invocations": 468,
+      "no_breakout": 4,
+      "entry": 32,
+      "funding_charge": 2944,
+      "hold": 413,
+      "regime_exit": 18,
+      "ambiguous_funding_credit_omitted": 1189,
+      "take": 1,
+      "stop": 11,
+      "unresolved_same_interval_stop_liquidation": 1,
+      "liquidation": 1,
+      "unsafe_geometry": 1
+    },
+    "fees_usdt": "5.851516299612895984488366275",
+    "funding_bound_paid_usdt": "110.10983263543139082821",
+    "progression_passed": null,
+    "progression_status": "requires paired refined comparison",
+    "code_sha256": "52d7e148bc16a12562987faa79d7f4152024f5cb662dea36ca9a40fcf5eb3dcb",
+    "limitations": [
+      "Proxy dated rules/fees/liquidity and USDT=USD",
+      "Adverse interval funding valuation, not exact cashflow",
+      "Minute refinement on six days only; remaining interval liquidation-first ambiguity",
+      "Margin transfer and full-position execution unverified"
+    ]
+  },
+  "progression_passed": true,
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "minute_originals": {
+    "library_file_id": "libfile_1cddc9283d948191a2ab3d4bb6b90a69",
+    "bytes": 612670,
+    "sha256": "f0d67d6c275ec0bacf40ee9deb785fb3020ebe916cd33fd529fc7fb8e59eccb0",
+    "run_id": 35574493320,
+    "artifact_id": 10626554494
+  }
+}

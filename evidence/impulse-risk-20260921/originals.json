@@ -1,0 +1,40 @@
+{
+  "filename": "PANCAKEQUANT_D3_RISK_AND_F_FAILURE_20260921.zip",
+  "bytes": 17872633,
+  "sha256": "199eafa1af71d9c32e851630c6972432d28a502a74d15635338a77daa4b9f14e",
+  "files": 133,
+  "dependency": {
+    "filename": "PANCAKEQUANT_MECHANISMS_A_E_20260921.zip",
+    "bytes": 52016878,
+    "sha256": "a7e573f54ca66816f2425c2d399c542e04f828c7aadd5f76ed0fc321e0549458",
+    "files": 779,
+    "dependency": {
+      "filename": "PANCAKEQUANT_L29_RETURN_CAPTURE_20260921.zip",
+      "bytes": 141577623,
+      "sha256": "79d3fdbc28cedfbaaa144c1541b3b7b73293d7a97b81052a341d4be017628abe",
+      "files": 794,
+      "dependency": {
+        "filename": "PANCAKEQUANT_RETURN_FIRST_L21_L26_20260921.zip",
+        "bytes": 140850994,
+        "sha256": "001813d77bb3d4ceba82c2a73f37f5513ffd6eef91cd42f5cd344fe9401b4357",
+        "files": 1183,
+        "library_file_id": "libfile_b035708d7d408191b6931ca60b9a7ba2",
+        "qualification": "NOT_QUALIFIED",
+        "remote_readback": "byte-for-byte, length, SHA256 and all1183manifest entries verified",
+        "contents": "all raw account and synthetic causality paths; exact measured/current sources; complete restored native inputs; frozen spec/invocations; failed and corrected originals"
+      },
+      "library_file_id": "libfile_b0443a40b4a08191b23b3c841d807615",
+      "qualification": "NOT_QUALIFIED",
+      "validation_used": true,
+      "remote_readback": "byte-for-byte,length,SHA256,and all794manifest entries verified"
+    },
+    "library_file_id": "libfile_26280c2cccc881918019e55335a50136",
+    "qualification": "NOT_QUALIFIED",
+    "remote_readback": "byte-for-byte,length,SHA256 and all779manifest entries verified",
+    "validation_used": true
+  },
+  "library_file_id": "libfile_d1bd110983dc8191b0e1afb6e168a484",
+  "qualification": "NOT_QUALIFIED",
+  "remote_readback": "byte-for-byte,length,SHA256 and all133manifest entries verified",
+  "validation_used": true
+}

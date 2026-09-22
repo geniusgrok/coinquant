@@ -1,0 +1,55 @@
+{
+  "candidate": "L29",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "window_end_exclusive": "2024-01-01T00:00:00Z",
+  "cagr": 0.7128323919590878,
+  "mdd_conservative_envelope": "0.4242992034803186989385882734",
+  "final_cny": "86075.32407571465694327373213",
+  "counts": {
+    "invocations": 468,
+    "entry": 25,
+    "funding_charge": 2539,
+    "inventory_hold": 377,
+    "regime_exit": 17,
+    "ambiguous_funding_credit_omitted": 1150,
+    "take": 1,
+    "campaign_consumed": 45,
+    "stop": 6
+  },
+  "fees_usdt": "203.53305324640425",
+  "funding_bound_paid_usdt": "2491.7962381917067641232",
+  "progression_passed": null,
+  "progression_status": "requires paired refined comparison",
+  "code_sha256": "f07eca9cffc4d009771df88f9928231675866ba8760a44a8396307c5ea70a0aa",
+  "limitations": [
+    "Proxy dated rules/fees/liquidity and USDT=USD",
+    "Adverse interval funding valuation, not exact cashflow",
+    "Minute refinement on 10 days only; remaining interval liquidation-first ambiguity",
+    "Margin transfer and full-position execution unverified"
+  ],
+  "reference": "entry_inventory",
+  "protection": "fixed",
+  "source_hashes": {
+    "/workspace/scratch/07840788e266/pancakequant/research/persistent_hold_replay.py": "f07eca9cffc4d009771df88f9928231675866ba8760a44a8396307c5ea70a0aa",
+    "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
+    "research/volatility_target.py": "1dceb5aa153990b4697c32ff36a805edf2adae2da13e06ca8255f40421f99c09",
+    "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
+    "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
+    "pancakequant/binance.py": "233849483c012fe6d891e3a8a976e313e193ea3693e50646f0c332ecee9f2917",
+    "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7"
+  },
+  "schedule": "sparse",
+  "lifecycle": "one_campaign",
+  "allocation": "volatility",
+  "quantity_rule_scope": "2026_snapshot_scenario_NOT_historical",
+  "mean_close_exposure": "0.5869994975307275121308776945",
+  "max_close_exposure": "1.200888034747351325720035079",
+  "holding_hours": 29503,
+  "turnover_usdt": "271377.404328539",
+  "binding_caps": {
+    "target": 25
+  },
+  "mean_entry_regime_age_hours": 82.56,
+  "schedule_sha256": "311b36c48c3f2e676bdcb85253ab516b1f2f656ab93a255a691a4de8a9b08a99"
+}

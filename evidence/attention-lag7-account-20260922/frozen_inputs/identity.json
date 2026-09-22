@@ -1,0 +1,99 @@
+{
+  "status": "POST_HOC_EXPLORATORY / RETROSPECTIVE_PROXY",
+  "purpose": "saved C0/C1/C2_lag7 predictions only; no labels or fits regenerated",
+  "archives": [
+    {
+      "name": "PANCAKEQUANT_ATTENTION_EVIDENCE_20260922.zip",
+      "bytes": 3373375,
+      "sha256": "ffd0195d2b7e47c8b9a7ee1bf7fae2f50a6fc3523eec96bca89d7e46157dfa56"
+    },
+    {
+      "name": "PANCAKEQUANT_EXECUTABLE_PAYOFF_EVIDENCE_20260922.zip",
+      "bytes": 53179721,
+      "sha256": "0b46f6fccff4c68d7accc23ef126fbaefb6fdbb3143d3dfb6c74e5912c0c892f"
+    },
+    {
+      "name": "PANCAKEQUANT_RETURN_FIRST_L21_L26_20260921.zip",
+      "bytes": 140850994,
+      "sha256": "001813d77bb3d4ceba82c2a73f37f5513ffd6eef91cd42f5cd344fe9401b4357"
+    },
+    {
+      "name": "PANCAKEQUANT_L29_RETURN_CAPTURE_20260921.zip",
+      "bytes": 141577623,
+      "sha256": "79d3fdbc28cedfbaaa144c1541b3b7b73293d7a97b81052a341d4be017628abe"
+    },
+    {
+      "name": "PANCAKEQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921.zip",
+      "bytes": 15486668,
+      "sha256": "b33a6e53e23e6b52ba6d01b22fc2e8a20d2538a526d8dc6a615c6423ed8a452f"
+    }
+  ],
+  "files": [
+    {
+      "name": "lag7_predictions.json",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/attention/extracted-20260922/attention/screen/lag7_predictions.json",
+      "bytes": 135611,
+      "sha256": "f7e4d38caa9bcbc6c8085ab5b29ddec3ff4e6884c57c2045d0316024e4219282"
+    },
+    {
+      "name": "lag7_fits.json",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/attention/extracted-20260922/attention/screen/lag7_fits.json",
+      "bytes": 157862,
+      "sha256": "455d1b95f7b8f254ea2ee849cad743a45f6bebc72880004fd173222d863888c0"
+    },
+    {
+      "name": "weeks.json",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/attention/extracted-20260922/attention/screen/weeks.json",
+      "bytes": 51548,
+      "sha256": "413133e6b048506ca5df5cabeb7a22bfdd41126505c707e1fc1c3e2669e4067b"
+    },
+    {
+      "name": "labels.json",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/attention/extracted-20260922/recovery/payoff/runs/executable-payoff/scenarios/labels.json",
+      "bytes": 873548,
+      "sha256": "03c4ba9c6ef54260175e72b86dd35888b826c16c9900420146ded8d6c7b9e329"
+    },
+    {
+      "name": "prior_B1_inputs.json",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/payoff/extracted-20260922/runs/executable-payoff-accounts/B1/inputs.json",
+      "bytes": 29544,
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f"
+    },
+    {
+      "name": "prior_B1_result.json",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/payoff/extracted-20260922/runs/executable-payoff-accounts/B1/result.json",
+      "bytes": 3217,
+      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065"
+    },
+    {
+      "name": "prior_B1/inputs.json",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/payoff/extracted-20260922/runs/executable-payoff-accounts/B1/inputs.json",
+      "bytes": 29544,
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f"
+    },
+    {
+      "name": "prior_B1/result.json",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/payoff/extracted-20260922/runs/executable-payoff-accounts/B1/result.json",
+      "bytes": 3217,
+      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065"
+    },
+    {
+      "name": "prior_B1/orders.csv.gz",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/payoff/extracted-20260922/runs/executable-payoff-accounts/B1/orders.csv.gz",
+      "bytes": 31997,
+      "sha256": "50af2da789bef02d31fd7022e61f0a9e75bd9b06259b718f4830436812d3fd5f"
+    },
+    {
+      "name": "prior_B1/equity.csv.gz",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/payoff/extracted-20260922/runs/executable-payoff-accounts/B1/equity.csv.gz",
+      "bytes": 3208777,
+      "sha256": "919aa2f45d63974a02884d1618c2e7210fe3101a8c7e1b8ff1b23eff32bab659"
+    },
+    {
+      "name": "prior_B1/decisions.csv.gz",
+      "source": "/workspace/scratch/a2bf2234d2b8/verified-inputs/payoff/extracted-20260922/runs/executable-payoff-accounts/B1/decisions.csv.gz",
+      "bytes": 25507,
+      "sha256": "4b53febaeb581744a648a3e05a9e35888060731a77c272a4e165f41fe458b3c5"
+    }
+  ]
+}

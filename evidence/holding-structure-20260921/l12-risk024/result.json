@@ -1,0 +1,33 @@
+{
+  "candidate": "l12-risk024",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "cagr": 0.26004991281725154,
+  "mdd_conservative_envelope": "0.2101016336777897661170405796",
+  "final_cny": "25209.21023407541641632506173",
+  "counts": {
+    "invocations": 468,
+    "no_breakout": 4,
+    "entry": 32,
+    "funding_charge": 2944,
+    "hold": 413,
+    "regime_exit": 18,
+    "ambiguous_funding_credit_omitted": 1189,
+    "take": 1,
+    "stop": 11,
+    "unresolved_same_interval_stop_liquidation": 1,
+    "liquidation": 1,
+    "unsafe_geometry": 1
+  },
+  "fees_usdt": "36.88974821302582256067050288",
+  "funding_bound_paid_usdt": "540.84078125384890494251",
+  "progression_passed": null,
+  "progression_status": "requires paired refined comparison",
+  "code_sha256": "ebffbff01850dda068e1ef5ec62d17f5eb3cb2acdf0311a3cb68dc64d0fc664b",
+  "limitations": [
+    "Proxy dated rules/fees/liquidity and USDT=USD",
+    "Adverse interval funding valuation, not exact cashflow",
+    "Minute refinement on six days only; remaining interval liquidation-first ambiguity",
+    "Margin transfer and full-position execution unverified"
+  ]
+}

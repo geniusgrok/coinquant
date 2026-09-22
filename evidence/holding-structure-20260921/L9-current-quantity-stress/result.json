@@ -1,0 +1,34 @@
+{
+  "candidate": "L9-current-quantity-stress",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "cagr": 0.06198385367261694,
+  "mdd_conservative_envelope": "0.0772892456301187834565543051",
+  "final_cny": "12719.61014729750136638996993",
+  "counts": {
+    "invocations": 468,
+    "no_breakout": 4,
+    "entry": 37,
+    "funding_charge": 2785,
+    "hold": 382,
+    "regime_exit": 16,
+    "ambiguous_funding_credit_omitted": 1022,
+    "size_below_minimum": 27,
+    "take": 1,
+    "stop": 18,
+    "unresolved_same_interval_stop_liquidation": 1,
+    "liquidation": 1,
+    "unsafe_geometry": 2
+  },
+  "fees_usdt": "10.10773578023391443582687015",
+  "funding_bound_paid_usdt": "103.5991741250484384063",
+  "progression_passed": null,
+  "progression_status": "requires paired refined comparison",
+  "code_sha256": "07c8bc4dbde97b95944b640687bf2851643a6d5960ab9954f2cc311055e0516d",
+  "limitations": [
+    "2026 quantity filters stress only, NOT dated historical rules; proxy fees/liquidity and USDT=USD",
+    "Adverse interval funding valuation, not exact cashflow",
+    "Minute refinement on six days only; remaining interval liquidation-first ambiguity",
+    "Margin transfer and full-position execution unverified"
+  ]
+}

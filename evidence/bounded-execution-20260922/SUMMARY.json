@@ -1,0 +1,452 @@
+{
+  "status": "ECONOMIC_PROXY_IMPROVED_NOT_QUALIFIED",
+  "protocol_commit": "dfaa3f3801aaa951d9ba05d02ed8064541b5fe83",
+  "formal_target": {
+    "cagr": 1.5,
+    "mdd_exclusive": 0.5,
+    "years": 6.718823795149798,
+    "required_terminal_cny": 4717248.980685025,
+    "cagr_gap_percentage_points": 75.02508277368356,
+    "additional_terminal_multiple": 10.994544326144462
+  },
+  "preserved_control": "Original L3.6 67.0920908% /32.0240505%/314775.8183 CNY remains unchanged; new paired instantaneous control includes required entry-minute chronology and preregistered exit impact.",
+  "native_execution_enabled": false,
+  "main_modified": false,
+  "tests": {
+    "total": 53,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "remaining_limits": [
+    "Historical fee/bracket/FX/USDT valuation not fully verified; constant CNY conversion",
+    "Synchronous minute-open IOC fill/protection assumptions, not native end-to-end evidence",
+    "Linear prior-hour capacity exit impact is a declared proxy, not calibrated order-book impact",
+    "Outside existing minute-refined windows, mark envelope and adverse funding interval ambiguity remain",
+    "Full historical window has been reused; not independent holdout"
+  ],
+  "accounts": {
+    "development-instant": {
+      "cagr": 0.8952949793462432,
+      "mdd": "0.2425126937403393852737884797",
+      "final_cny": "129041.6941762126043963321151",
+      "counts": {
+        "invocations": 468,
+        "entry": 20,
+        "funding_charge": 332,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      },
+      "ledger_error": "0",
+      "annual": {
+        "2020": "2.813467950043454853335732468",
+        "2021": "0.229325857656743943144986957",
+        "2022": "-0.1445335656745462423547651068",
+        "2023": "2.217658616135914673866611388"
+      },
+      "recovery": {
+        "fraction": "0.2425126937403393852737884797",
+        "peak": "2021-07-26T19:00:00Z",
+        "trough": "2021-10-12T20:00:00Z",
+        "recovery": "2023-01-14T00:00:00Z",
+        "recovery_days": 536.2083333333334
+      },
+      "costs": {
+        "entry_fees": "204.26540485077450",
+        "exit_fees": "217.9154487635115783993132408",
+        "funding": "712.4704296778506210531",
+        "base_slippage": "562.93384260",
+        "spread": "56.293384260",
+        "extra_exit_impact": "5.330702823895467582345638575"
+      },
+      "maximum_notional_usdt": "41684.91485595846",
+      "maximum_margin_usdt": "5263.684979540000000000",
+      "maximum_actual_exposure": "4.020058946734897896117681782",
+      "mean_close_exposure": "0.1675391119793752021201648187",
+      "maximum_margin_equity": "0.6008908152633476765195949687",
+      "minimum_free_wallet_usdt": "926.883477181901782356193153",
+      "execution": {
+        "filled_btc": "12.239",
+        "raw_target_btc": "14.63926596815557036929644606",
+        "raw_target_fill_fraction": "0.8360391857503778549511023989",
+        "raw_unfilled_btc": "2.40026596815557036929644606",
+        "liquidity_limited_parents": 4,
+        "unfinished_parents": null,
+        "confirmed_children": 0,
+        "last_fill_delay_ms": {
+          "mean": 0,
+          "maximum": 0
+        },
+        "window_active_ms": {
+          "mean": 0,
+          "maximum": 0
+        },
+        "delay_price_cost_usdt": "0"
+      },
+      "insolvent_observations": 0,
+      "positive_trades": 15
+    },
+    "development-five-minute": {
+      "cagr": 1.034462716506516,
+      "mdd": "0.2420755045567167631281549095",
+      "final_cny": "171326.3950410768093742905846",
+      "counts": {
+        "invocations": 468,
+        "deferred_entry": 20,
+        "entry": 20,
+        "funding_charge": 329,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "rebalance_add": 13,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      },
+      "ledger_error": "0",
+      "annual": {
+        "2020": "3.868141373038026765360223470",
+        "2021": "0.236915490625063747235286127",
+        "2022": "-0.1419888499955439414232246529",
+        "2023": "2.316103941633761572534812357"
+      },
+      "recovery": {
+        "fraction": "0.2420755045567167631281549095",
+        "peak": "2021-07-26T19:00:00Z",
+        "trough": "2021-10-12T20:00:00Z",
+        "recovery": "2023-01-14T00:00:00Z",
+        "recovery_days": 536.2083333333334
+      },
+      "costs": {
+        "entry_fees": "293.14310411361375",
+        "exit_fees": "311.6802496763269284520263420",
+        "funding": "984.6835590072972612684",
+        "base_slippage": "806.54289925",
+        "spread": "80.654289925",
+        "extra_exit_impact": "83.50527720742873063154401278"
+      },
+      "maximum_notional_usdt": "57929.53436223768",
+      "maximum_margin_usdt": "8873.44426531870945575000000",
+      "maximum_actual_exposure": "4.010889393691696607023600746",
+      "mean_close_exposure": "0.1908050562761253455072271828",
+      "maximum_margin_equity": "0.6001189474491819170823074937",
+      "minimum_free_wallet_usdt": "935.442571745864084169493153",
+      "execution": {
+        "filled_btc": "16.990",
+        "raw_target_btc": "17.29837156683840934302208227",
+        "raw_target_fill_fraction": "0.9821733759361737521569648504",
+        "raw_unfilled_btc": "0.30837156683840934302208227",
+        "liquidity_limited_parents": 14,
+        "unfinished_parents": 11,
+        "confirmed_children": 33,
+        "last_fill_delay_ms": {
+          "mean": 99000.0,
+          "maximum": 300000
+        },
+        "window_active_ms": {
+          "mean": 174000.0,
+          "maximum": 300000
+        },
+        "delay_price_cost_usdt": "-88.221517038"
+      },
+      "insolvent_observations": 0,
+      "positive_trades": 15
+    },
+    "stress-instant": {
+      "cagr": 0.8601033019894362,
+      "mdd": "0.2461618096102329415867674509",
+      "final_cny": "119721.0160129042586802111961",
+      "counts": {
+        "invocations": 468,
+        "entry": 20,
+        "funding_charge": 332,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      },
+      "ledger_error": "0",
+      "annual": {
+        "2020": "2.724047595058742615406573752",
+        "2021": "0.215420338951560761497870745",
+        "2022": "-0.1522354589267982267453070804",
+        "2023": "2.119991592781854712873732228"
+      },
+      "recovery": {
+        "fraction": "0.2461618096102329415867674509",
+        "peak": "2021-07-26T19:00:00Z",
+        "trough": "2021-10-12T20:00:00Z",
+        "recovery": "2023-01-14T00:00:00Z",
+        "recovery_days": 536.2083333333334
+      },
+      "costs": {
+        "entry_fees": "195.97252198344150",
+        "exit_fees": "208.5905199566677835790663150",
+        "funding": "690.0950720556678814724",
+        "base_slippage": "1078.92587336",
+        "spread": "53.946293668",
+        "extra_exit_impact": "7.821575336955227911580024721"
+      },
+      "maximum_notional_usdt": "38822.13175864808",
+      "maximum_margin_usdt": "4991.736008800000000000",
+      "maximum_actual_exposure": "4.032732662275663153248777135",
+      "mean_close_exposure": "0.1683813851372181318907057648",
+      "maximum_margin_equity": "0.6057531493237555858101302276",
+      "minimum_free_wallet_usdt": "923.483898848981782356193153",
+      "execution": {
+        "filled_btc": "11.813",
+        "raw_target_btc": "14.06689568937171932864741167",
+        "raw_target_fill_fraction": "0.8397730573153637410837950395",
+        "raw_unfilled_btc": "2.25389568937171932864741167",
+        "liquidity_limited_parents": 4,
+        "unfinished_parents": null,
+        "confirmed_children": 0,
+        "last_fill_delay_ms": {
+          "mean": 0,
+          "maximum": 0
+        },
+        "window_active_ms": {
+          "mean": 0,
+          "maximum": 0
+        },
+        "delay_price_cost_usdt": "0"
+      },
+      "insolvent_observations": 0,
+      "positive_trades": 15
+    },
+    "stress-five-minute": {
+      "cagr": 0.9718642706581411,
+      "mdd": "0.2454003030902915537451353853",
+      "final_cny": "151193.2114091540356227213462",
+      "counts": {
+        "invocations": 468,
+        "deferred_entry": 20,
+        "entry": 20,
+        "rebalance_add": 14,
+        "funding_charge": 329,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      },
+      "ledger_error": "0",
+      "annual": {
+        "2020": "3.522248401324264105919369637",
+        "2021": "0.228600744888144025541984013",
+        "2022": "-0.1495039073165592146263671130",
+        "2023": "2.199593315520229250993726644"
+      },
+      "recovery": {
+        "fraction": "0.2454003030902915537451353853",
+        "peak": "2021-07-26T19:00:00Z",
+        "trough": "2021-10-12T20:00:00Z",
+        "recovery": "2023-01-14T00:00:00Z",
+        "recovery_days": 536.2083333333334
+      },
+      "costs": {
+        "entry_fees": "266.29693087638300",
+        "exit_fees": "282.5644840689785355622733711",
+        "funding": "900.5037648219326881298",
+        "base_slippage": "1463.94892344",
+        "spread": "73.197446172",
+        "extra_exit_impact": "110.2331469272859169688385614"
+      },
+      "maximum_notional_usdt": "50126.48721350672",
+      "maximum_margin_usdt": "7729.08795693000000000000001",
+      "maximum_actual_exposure": "3.891867240938160355299931414",
+      "mean_close_exposure": "0.1891202832433450265535827697",
+      "maximum_margin_equity": "0.6054973013497284355218365109",
+      "minimum_free_wallet_usdt": "931.378684154521764959193153",
+      "execution": {
+        "filled_btc": "15.576",
+        "raw_target_btc": "16.03965165970213849916118780",
+        "raw_target_fill_fraction": "0.9710934084144101256675915754",
+        "raw_unfilled_btc": "0.46365165970213849916118780",
+        "liquidity_limited_parents": 13,
+        "unfinished_parents": 10,
+        "confirmed_children": 34,
+        "last_fill_delay_ms": {
+          "mean": 162000.0,
+          "maximum": 360000
+        },
+        "window_active_ms": {
+          "mean": 159000.0,
+          "maximum": 300000
+        },
+        "delay_price_cost_usdt": "-96.942051690"
+      },
+      "insolvent_observations": 0,
+      "positive_trades": 15
+    },
+    "full-instant": {
+      "cagr": 0.6689357378093377,
+      "mdd": "0.3201369200248629890224127434",
+      "final_cny": "312271.6623204934249877633515",
+      "counts": {
+        "invocations": 795,
+        "entry": 30,
+        "funding_charge": 462,
+        "inventory_hold": 25,
+        "regime_exit": 22,
+        "ambiguous_funding_credit_omitted": 30,
+        "take": 2,
+        "stop": 6,
+        "protection": 1
+      },
+      "ledger_error": "0",
+      "annual": {
+        "2020": "2.813467950043454853335732468",
+        "2021": "0.229325857656743943144986957",
+        "2022": "-0.1445335656745462423547651068",
+        "2023": "2.217658616135914673866611388",
+        "2024": "0.815757138389976505751295739",
+        "2025": "0.123234744445741250926305632",
+        "2026": "0.186517723710046064488308011"
+      },
+      "recovery": {
+        "fraction": "0.3201369200248629890224127434",
+        "peak": "2024-03-05T15:04:00Z",
+        "trough": "2024-03-05T19:57:00Z",
+        "recovery": "2024-03-08T15:00:00Z",
+        "recovery_days": 2.9972222222222222
+      },
+      "costs": {
+        "entry_fees": "692.47915904083950",
+        "exit_fees": "727.7766366173949012707531828",
+        "funding": "2312.6296012045699151586",
+        "base_slippage": "1894.05160100",
+        "spread": "189.405160100",
+        "extra_exit_impact": "322.7902834927983056624229711"
+      },
+      "maximum_notional_usdt": "123929.76320000000",
+      "maximum_margin_usdt": "19794.056785486246392000",
+      "maximum_actual_exposure": "4.020058946734897896117681782",
+      "mean_close_exposure": "0.1389758341281461394126762981",
+      "maximum_margin_equity": "0.6585732868393415455780005330",
+      "minimum_free_wallet_usdt": "926.883477181901782356193153",
+      "execution": {
+        "filled_btc": "20.894",
+        "raw_target_btc": "25.50740560426565562613114369",
+        "raw_target_fill_fraction": "0.8191346593283424180104400128",
+        "raw_unfilled_btc": "4.61340560426565562613114369",
+        "liquidity_limited_parents": 9,
+        "unfinished_parents": null,
+        "confirmed_children": 0,
+        "last_fill_delay_ms": {
+          "mean": 0,
+          "maximum": 0
+        },
+        "window_active_ms": {
+          "mean": 0,
+          "maximum": 0
+        },
+        "delay_price_cost_usdt": "0"
+      },
+      "insolvent_observations": 0,
+      "positive_trades": 21
+    },
+    "full-five-minute": {
+      "cagr": 0.7497491722631644,
+      "mdd": "0.3197655712979730703483728160",
+      "final_cny": "429053.6142973792674535602451",
+      "counts": {
+        "invocations": 795,
+        "deferred_entry": 30,
+        "entry": 30,
+        "funding_charge": 459,
+        "inventory_hold": 25,
+        "regime_exit": 22,
+        "rebalance_add": 32,
+        "ambiguous_funding_credit_omitted": 30,
+        "take": 2,
+        "stop": 6,
+        "unfunded_parent:protection": 1
+      },
+      "ledger_error": "0",
+      "annual": {
+        "2020": "3.868141373038026765360223470",
+        "2021": "0.236915490625063747235286127",
+        "2022": "-0.1419888499955439414232246529",
+        "2023": "2.316103941633761572534812357",
+        "2024": "0.918251618945491509382014252",
+        "2025": "0.122991188734717760060025639",
+        "2026": "0.162533203808430388456124978"
+      },
+      "recovery": {
+        "fraction": "0.3197655712979730703483728160",
+        "peak": "2024-03-05T15:04:00Z",
+        "trough": "2024-03-05T19:57:00Z",
+        "recovery": "2024-03-08T15:00:00Z",
+        "recovery_days": 2.9972222222222222
+      },
+      "costs": {
+        "entry_fees": "1083.47276028729375",
+        "exit_fees": "1132.733033099782388379572726",
+        "funding": "3393.6877439634945588300",
+        "base_slippage": "2955.99187795",
+        "spread": "295.599187795",
+        "extra_exit_impact": "973.9236342701488272363656827"
+      },
+      "maximum_notional_usdt": "170098.07840000000",
+      "maximum_margin_usdt": "27226.9122038647140760000000",
+      "maximum_actual_exposure": "4.010889393691696607023600746",
+      "mean_close_exposure": "0.1598392402055080442402230608",
+      "maximum_margin_equity": "0.6583962607372724471554058589",
+      "minimum_free_wallet_usdt": "935.442571745864084169493153",
+      "execution": {
+        "filled_btc": "30.553",
+        "raw_target_btc": "32.23680464093699813140719597",
+        "raw_target_fill_fraction": "0.9477676320686336950715679680",
+        "raw_unfilled_btc": "1.68380464093699813140719597",
+        "liquidity_limited_parents": 24,
+        "unfinished_parents": 20,
+        "confirmed_children": 62,
+        "last_fill_delay_ms": {
+          "mean": 124000.0,
+          "maximum": 300000
+        },
+        "window_active_ms": {
+          "mean": 212000.0,
+          "maximum": 300000
+        },
+        "delay_price_cost_usdt": "147.501993912"
+      },
+      "insolvent_observations": 0,
+      "positive_trades": 21
+    }
+  },
+  "comparison": {
+    "development": {
+      "cagr_delta": 0.13916773716027264,
+      "terminal_cny_delta": "42284.7008648642049779584695",
+      "terminal_ratio": "1.327682468327813674074177999",
+      "mdd_delta": "-0.0004371891836226221456335702",
+      "net_usdt_delta": "6061.279903796365496682788546",
+      "largest_positive_increment_share": "0.3621701615286117193253765123",
+      "note": "Exact descriptive decomposition of two continuous accounts. Quantity contribution includes inherited compounding and exposure changes, not isolated execution alpha."
+    },
+    "stress": {
+      "cagr_delta": 0.11176096866870489,
+      "terminal_cny_delta": "31472.1953962497769425101501",
+      "terminal_ratio": "1.262879454621881194679775809",
+      "mdd_delta": "-0.0007615065199413878416320656",
+      "net_usdt_delta": "4511.366560054152252302134402",
+      "largest_positive_increment_share": "0.3633168600750678202005371233",
+      "note": "Exact descriptive decomposition of two continuous accounts. Quantity contribution includes inherited compounding and exposure changes, not isolated execution alpha."
+    },
+    "full": {
+      "cagr_delta": 0.08081343445382672,
+      "terminal_cny_delta": "116781.9519768858424657968936",
+      "terminal_ratio": "1.373975502961357898239866110",
+      "mdd_delta": "-0.0003713487268899186740399274",
+      "net_usdt_delta": "16740.05217408988309764583780",
+      "largest_positive_increment_share": "0.3497729600613184374991398943",
+      "note": "Exact descriptive decomposition of two continuous accounts. Quantity contribution includes inherited compounding and exposure changes, not isolated execution alpha."
+    }
+  },
+  "raw_details": "See original archive: FULL_SUMMARY.json, COMPARISON.json, per-account ATTRIBUTION.json and complete traces; no raw input or trajectory replaced by this summary."
+}

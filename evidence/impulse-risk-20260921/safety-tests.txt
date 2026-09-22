@@ -1,0 +1,22 @@
+test_cancel_fill_race_returns_real_exposure (tests.test_binance_safety.SafetyTests.test_cancel_fill_race_returns_real_exposure) ... ok
+test_default_does_not_write (tests.test_binance_safety.SafetyTests.test_default_does_not_write) ... ok
+test_model_margin_target_readback (tests.test_binance_safety.SafetyTests.test_model_margin_target_readback) ... ok
+test_no_open_order_is_not_proof_unknown_entry_cannot_arrive (tests.test_binance_safety.SafetyTests.test_no_open_order_is_not_proof_unknown_entry_cannot_arrive) ... ok
+test_partial_exposure_close_all_and_idempotent_recovery (tests.test_binance_safety.SafetyTests.test_partial_exposure_close_all_and_idempotent_recovery) ... ok
+test_reduce_only_never_reverses (tests.test_binance_safety.SafetyTests.test_reduce_only_never_reverses) ... ok
+test_remainder_blocks_protection (tests.test_binance_safety.SafetyTests.test_remainder_blocks_protection) ... ok
+test_timeout_after_acceptance_is_queried (tests.test_binance_safety.SafetyTests.test_timeout_after_acceptance_is_queried) ... ok
+test_unknown_margin_blocks_different_epoch (tests.test_binance_safety.SafetyTests.test_unknown_margin_blocks_different_epoch) ... ok
+test_unknown_missing_never_retries (tests.test_binance_safety.SafetyTests.test_unknown_missing_never_retries) ... ok
+test_canceled_parent_cannot_hide_working_child (tests.test_binance_recovery.RecoveryTests.test_canceled_parent_cannot_hide_working_child) ... ok
+test_payload_mismatch_and_legacy_intent_stay_unknown (tests.test_binance_recovery.RecoveryTests.test_payload_mismatch_and_legacy_intent_stay_unknown) ... ok
+test_terminal_partial_fill_and_unknown_are_independent (tests.test_binance_recovery.RecoveryTests.test_terminal_partial_fill_and_unknown_are_independent) ... ok
+test_execution_blocked_before_credentials_or_network (tests.test_binance_cli.BinanceCLI.test_execution_blocked_before_credentials_or_network) ... ok
+test_legacy_configuration_never_selects_old_exchange (tests.test_binance_cli.BinanceCLI.test_legacy_configuration_never_selects_old_exchange) ... ok
+test_observation_saves_bound_account_report_without_decision (tests.test_binance_cli.BinanceCLI.test_observation_saves_bound_account_report_without_decision) ... ok
+test_pending_recovery_refreshes_account_and_keeps_unknown_blocked (tests.test_binance_cli.BinanceCLI.test_pending_recovery_refreshes_account_and_keeps_unknown_blocked) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.020s
+
+OK

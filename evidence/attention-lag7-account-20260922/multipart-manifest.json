@@ -1,0 +1,1105 @@
+{
+  "source_commit": "48d260d73049d27f5989785575f9cdff2eb18998",
+  "source_tree": "2075122e102c8a2728a643093765226c15958a2a",
+  "files": [
+    {
+      "path": "PROJECT_STATE.md",
+      "git_blob": "0797204a6049a409945a10b6300f957cfb133a35",
+      "sha256": "94447ff5dd5051643382ea1c08cfae8e9ef133e715a583bf0dba9090fc34ad8b",
+      "size": 15712
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/ACCOUNT_AUDIT.json",
+      "git_blob": "2e7b8e5ea78ed26c183a1e944856bd6d42b40016",
+      "sha256": "293e54317aa3d9215b4b081c8cf59c382cf57a9a8f37562b5493756ded44558c",
+      "size": 23085
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/attribution.json",
+      "git_blob": "b7e85dcc22a0983b35d3d37de8e2a08787d03020",
+      "sha256": "a13931e7ae5ae6a45ac77c8463bf42ed7ddef7bbdbbc435178de5e60de3c1879",
+      "size": 2911
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/decisions.csv.gz",
+      "git_blob": "1063e5f406923fb2277141d4d9bb06539c913d6e",
+      "sha256": "0658335999bb47ffe2ee3c20831e98d85b73bb5483dfe15c706732e0fb4dc002",
+      "size": 26632
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/equity.csv.gz",
+      "git_blob": "5798ea7f54d5e9acefb3ceaedb8f9e7102038343",
+      "sha256": "8f80dabf7fec9c11e5c01c8633dca5c21d627e70f1a0a876bff2662218092a96",
+      "size": 3209045
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/identity.json",
+      "git_blob": "f5d1894e40045fc88bfc244693248ea71d9077cf",
+      "sha256": "3831bc4eed6948869b4fd4aca6a506f51ea158cfcbbfcc7400adf23d09f787f9",
+      "size": 2861
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/labels.json",
+      "git_blob": "0c6458417adc53a465a079bd29fbf6cea7fe8c63",
+      "sha256": "03c4ba9c6ef54260175e72b86dd35888b826c16c9900420146ded8d6c7b9e329",
+      "size": 873548
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/lag7_fits.json",
+      "git_blob": "0f12d2a7f260ff51596fe684cce8f310854c2847",
+      "sha256": "455d1b95f7b8f254ea2ee849cad743a45f6bebc72880004fd173222d863888c0",
+      "size": 157862
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/lag7_predictions.json",
+      "git_blob": "ecd1e2ab80b114cdd44675a33e28e0aa266e9f1c",
+      "sha256": "f7e4d38caa9bcbc6c8085ab5b29ddec3ff4e6884c57c2045d0316024e4219282",
+      "size": 135611
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/prior_B1_inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/prior_B1_result.json",
+      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
+      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
+      "size": 3217
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/weeks.json",
+      "git_blob": "c21f86ca1fc890f6b42a0b1b50d8a8e9782429d5",
+      "sha256": "413133e6b048506ca5df5cabeb7a22bfdd41126505c707e1fc1c3e2669e4067b",
+      "size": 51548
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/invocations.json",
+      "git_blob": "7cfa8baca7580b523d0b0e2104bb6545244c5354",
+      "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd",
+      "size": 7021
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/binance.py",
+      "git_blob": "6c95546521193a8c7b6454c568073d76a7fc7d7b",
+      "sha256": "f77cfd587456c85502e1b1e8eb96fa85daa4642bb3f6bf44265bda2ce951a810",
+      "size": 26061
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/campaign.py",
+      "git_blob": "817a60ab2395776a3c6321a0f4b50f06af81d13e",
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1",
+      "size": 5857
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/edge_allocation.py",
+      "git_blob": "71b7eaa0f594b8893e4fbc5cf176e46d00588269",
+      "sha256": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
+      "size": 417
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/linear_account.py",
+      "git_blob": "4c2fdfaaeedebbb76495d1ea53a8c373a9d5e72b",
+      "sha256": "9ae28aa1146f7c4eb403cf4776918f86272786c1422c0127314d3a364bf5cf8b",
+      "size": 2106
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/linear_replay.py",
+      "git_blob": "bbd27e312a961f3f50ffe94671af10d27e27f616",
+      "sha256": "e3f8c827dd3d476719b78e721ba1ec46e38d8fb3647acffb3c1dd894ec059247",
+      "size": 11131
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/linear_sizing.py",
+      "git_blob": "78758749e791e1585e186ee45ab7eedb53489e11",
+      "sha256": "d308f6e067d05ce6135c3a48b40a2313f8f9bd30506b6e364fc93832b47ba188",
+      "size": 4460
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/minute_evidence.py",
+      "git_blob": "cceeb048fb32e0c3772d67ff039e2b8fa8cc0f33",
+      "sha256": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
+      "size": 1615
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/native_trail.py",
+      "git_blob": "382d2eb2df537b6c9e1fef8278ff0271d1f77d8e",
+      "sha256": "eeafdb810ffac2d63a62dd35924edd85ebaf631c8c0da5ee6cc47fe8f5c6ecb7",
+      "size": 1621
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/opportunities.py",
+      "git_blob": "d4d0d7f638937182202ba371aadd82099c4dc7df",
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82",
+      "size": 6849
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/persistent_hold_replay.py",
+      "git_blob": "a9efec516e09e56bf5147975531e69bef56f7843",
+      "sha256": "aeed3f01539aef3fdd58dd8df728268066ce9701e53b77b3fe99abed2c7eabb0",
+      "size": 36223
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/spec.json",
+      "git_blob": "44e43360369a7548af3bab3decfe7e6e766e9c17",
+      "sha256": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
+      "size": 1917
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/measured_source/volatility_target.py",
+      "git_blob": "3a3e56ef996891b89ae323035678a828628c9c5b",
+      "sha256": "cb296e3800c5a8523dca6d1f1cd4cf860c6f30ac0be7817f8d3f5a7e61de1a69",
+      "size": 575
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/orders.csv.gz",
+      "git_blob": "391a9564b9843e44945f6da297a653972c8f80db",
+      "sha256": "679329cbea81bdde3d4d56409fd99c3e592b5006b2b2d94f5d1ff41a946670cb",
+      "size": 33977
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C0/result.json",
+      "git_blob": "64e76d0d0658e7feb19abac36f3283a922623d5e",
+      "sha256": "2134194e301bbdcf7acfef0dd5b9adde98c4a617b6d04fe8adc2361245592067",
+      "size": 3190
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/ACCOUNT_AUDIT.json",
+      "git_blob": "9092147e630c79d17348032f5036d1ae9ad6b941",
+      "sha256": "149611a9b6270b9180c6edfbfc85708786a11eca7a7940a18b5512b7e55617fe",
+      "size": 19936
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/attribution.json",
+      "git_blob": "c2036a195fbdd73ac126f5a4cdc61a70b0764303",
+      "sha256": "c982a265a8dd03ea7f80e681bfb94a44c37a9c0748c847ef337a32336ec4f208",
+      "size": 2940
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/decisions.csv.gz",
+      "git_blob": "c71d752e39e083b0a09056e27af83e644883d250",
+      "sha256": "dd731db40617f554b05cf9c805978f778aea914087a2af6ef18907b495979843",
+      "size": 25507
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/equity.csv.gz",
+      "git_blob": "167bc539005ac30e922a39a5a85de7e3ec3f1b47",
+      "sha256": "e19de8bee5a50aab2025eb1204f4aef0ac65c38034c58889a0c7856df65bac3e",
+      "size": 3206877
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/identity.json",
+      "git_blob": "f5d1894e40045fc88bfc244693248ea71d9077cf",
+      "sha256": "3831bc4eed6948869b4fd4aca6a506f51ea158cfcbbfcc7400adf23d09f787f9",
+      "size": 2861
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/labels.json",
+      "git_blob": "0c6458417adc53a465a079bd29fbf6cea7fe8c63",
+      "sha256": "03c4ba9c6ef54260175e72b86dd35888b826c16c9900420146ded8d6c7b9e329",
+      "size": 873548
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/lag7_fits.json",
+      "git_blob": "0f12d2a7f260ff51596fe684cce8f310854c2847",
+      "sha256": "455d1b95f7b8f254ea2ee849cad743a45f6bebc72880004fd173222d863888c0",
+      "size": 157862
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/lag7_predictions.json",
+      "git_blob": "ecd1e2ab80b114cdd44675a33e28e0aa266e9f1c",
+      "sha256": "f7e4d38caa9bcbc6c8085ab5b29ddec3ff4e6884c57c2045d0316024e4219282",
+      "size": 135611
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/prior_B1_inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/prior_B1_result.json",
+      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
+      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
+      "size": 3217
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/weeks.json",
+      "git_blob": "c21f86ca1fc890f6b42a0b1b50d8a8e9782429d5",
+      "sha256": "413133e6b048506ca5df5cabeb7a22bfdd41126505c707e1fc1c3e2669e4067b",
+      "size": 51548
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/invocations.json",
+      "git_blob": "7cfa8baca7580b523d0b0e2104bb6545244c5354",
+      "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd",
+      "size": 7021
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/binance.py",
+      "git_blob": "6c95546521193a8c7b6454c568073d76a7fc7d7b",
+      "sha256": "f77cfd587456c85502e1b1e8eb96fa85daa4642bb3f6bf44265bda2ce951a810",
+      "size": 26061
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/campaign.py",
+      "git_blob": "817a60ab2395776a3c6321a0f4b50f06af81d13e",
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1",
+      "size": 5857
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/edge_allocation.py",
+      "git_blob": "71b7eaa0f594b8893e4fbc5cf176e46d00588269",
+      "sha256": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
+      "size": 417
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/linear_account.py",
+      "git_blob": "4c2fdfaaeedebbb76495d1ea53a8c373a9d5e72b",
+      "sha256": "9ae28aa1146f7c4eb403cf4776918f86272786c1422c0127314d3a364bf5cf8b",
+      "size": 2106
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/linear_replay.py",
+      "git_blob": "bbd27e312a961f3f50ffe94671af10d27e27f616",
+      "sha256": "e3f8c827dd3d476719b78e721ba1ec46e38d8fb3647acffb3c1dd894ec059247",
+      "size": 11131
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/linear_sizing.py",
+      "git_blob": "78758749e791e1585e186ee45ab7eedb53489e11",
+      "sha256": "d308f6e067d05ce6135c3a48b40a2313f8f9bd30506b6e364fc93832b47ba188",
+      "size": 4460
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/minute_evidence.py",
+      "git_blob": "cceeb048fb32e0c3772d67ff039e2b8fa8cc0f33",
+      "sha256": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
+      "size": 1615
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/native_trail.py",
+      "git_blob": "382d2eb2df537b6c9e1fef8278ff0271d1f77d8e",
+      "sha256": "eeafdb810ffac2d63a62dd35924edd85ebaf631c8c0da5ee6cc47fe8f5c6ecb7",
+      "size": 1621
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/opportunities.py",
+      "git_blob": "d4d0d7f638937182202ba371aadd82099c4dc7df",
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82",
+      "size": 6849
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/persistent_hold_replay.py",
+      "git_blob": "a9efec516e09e56bf5147975531e69bef56f7843",
+      "sha256": "aeed3f01539aef3fdd58dd8df728268066ce9701e53b77b3fe99abed2c7eabb0",
+      "size": 36223
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/spec.json",
+      "git_blob": "44e43360369a7548af3bab3decfe7e6e766e9c17",
+      "sha256": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
+      "size": 1917
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/measured_source/volatility_target.py",
+      "git_blob": "3a3e56ef996891b89ae323035678a828628c9c5b",
+      "sha256": "cb296e3800c5a8523dca6d1f1cd4cf860c6f30ac0be7817f8d3f5a7e61de1a69",
+      "size": 575
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/orders.csv.gz",
+      "git_blob": "ecb5bb432208bb4e55440ae5c86c53899b8d7d06",
+      "sha256": "8952937e718fd775a1529cf1f25e7822d5aba39880b88e822dce80408ac21626",
+      "size": 31931
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1/result.json",
+      "git_blob": "455461ca5b7269ac6043232db2cd89e1b291cf54",
+      "sha256": "731852574934b7ff08ef67e2e19400a305ddbd32f2249d4450b3ed98098a6ed3",
+      "size": 3217
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C1_B1_COMPARISON.json",
+      "git_blob": "2267eaa5a9d79587c95c5a639191dbcd8a15e2b4",
+      "sha256": "84a4f9dfeea63ee979cc37673b7c5b0f24373e69303ae5b854b4a41cc34715a1",
+      "size": 1127
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/ACCOUNT_AUDIT.json",
+      "git_blob": "455db309e7f39a2ad9ddf436e6d77f1ddd490999",
+      "sha256": "ad05e4450bd29f803d7e2edce9d8d70253a46110cf3207daedf118527d67dbe7",
+      "size": 19372
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/attribution.json",
+      "git_blob": "90c625b4681ed22a4cff2e16eaecb76f4c1ac781",
+      "sha256": "23f98697cee48f6331489c42fd0d50477b8da341dcd0f0213c8c37909082a6b5",
+      "size": 2943
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/decisions.csv.gz",
+      "git_blob": "f6fa2a7e825b611459a6ebee98cf70ee6ee772ce",
+      "sha256": "79c2243468e8ba52ac0d72ad0750fa1734dcdc67ae379f015cac354b628bf298",
+      "size": 25059
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/equity.csv.gz",
+      "git_blob": "4a2caea30b9fa6a88a0672bd5e053df2ab918904",
+      "sha256": "cfb316477769e778a88df231dfe508e24becd21d5f23e5f03ed2b89e76a1ca92",
+      "size": 3065320
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/identity.json",
+      "git_blob": "f5d1894e40045fc88bfc244693248ea71d9077cf",
+      "sha256": "3831bc4eed6948869b4fd4aca6a506f51ea158cfcbbfcc7400adf23d09f787f9",
+      "size": 2861
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/labels.json",
+      "git_blob": "0c6458417adc53a465a079bd29fbf6cea7fe8c63",
+      "sha256": "03c4ba9c6ef54260175e72b86dd35888b826c16c9900420146ded8d6c7b9e329",
+      "size": 873548
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/lag7_fits.json",
+      "git_blob": "0f12d2a7f260ff51596fe684cce8f310854c2847",
+      "sha256": "455d1b95f7b8f254ea2ee849cad743a45f6bebc72880004fd173222d863888c0",
+      "size": 157862
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/lag7_predictions.json",
+      "git_blob": "ecd1e2ab80b114cdd44675a33e28e0aa266e9f1c",
+      "sha256": "f7e4d38caa9bcbc6c8085ab5b29ddec3ff4e6884c57c2045d0316024e4219282",
+      "size": 135611
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/prior_B1_inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/prior_B1_result.json",
+      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
+      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
+      "size": 3217
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/weeks.json",
+      "git_blob": "c21f86ca1fc890f6b42a0b1b50d8a8e9782429d5",
+      "sha256": "413133e6b048506ca5df5cabeb7a22bfdd41126505c707e1fc1c3e2669e4067b",
+      "size": 51548
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/invocations.json",
+      "git_blob": "7cfa8baca7580b523d0b0e2104bb6545244c5354",
+      "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd",
+      "size": 7021
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/binance.py",
+      "git_blob": "6c95546521193a8c7b6454c568073d76a7fc7d7b",
+      "sha256": "f77cfd587456c85502e1b1e8eb96fa85daa4642bb3f6bf44265bda2ce951a810",
+      "size": 26061
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/campaign.py",
+      "git_blob": "817a60ab2395776a3c6321a0f4b50f06af81d13e",
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1",
+      "size": 5857
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/edge_allocation.py",
+      "git_blob": "71b7eaa0f594b8893e4fbc5cf176e46d00588269",
+      "sha256": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
+      "size": 417
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/linear_account.py",
+      "git_blob": "4c2fdfaaeedebbb76495d1ea53a8c373a9d5e72b",
+      "sha256": "9ae28aa1146f7c4eb403cf4776918f86272786c1422c0127314d3a364bf5cf8b",
+      "size": 2106
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/linear_replay.py",
+      "git_blob": "bbd27e312a961f3f50ffe94671af10d27e27f616",
+      "sha256": "e3f8c827dd3d476719b78e721ba1ec46e38d8fb3647acffb3c1dd894ec059247",
+      "size": 11131
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/linear_sizing.py",
+      "git_blob": "78758749e791e1585e186ee45ab7eedb53489e11",
+      "sha256": "d308f6e067d05ce6135c3a48b40a2313f8f9bd30506b6e364fc93832b47ba188",
+      "size": 4460
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/minute_evidence.py",
+      "git_blob": "cceeb048fb32e0c3772d67ff039e2b8fa8cc0f33",
+      "sha256": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
+      "size": 1615
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/native_trail.py",
+      "git_blob": "382d2eb2df537b6c9e1fef8278ff0271d1f77d8e",
+      "sha256": "eeafdb810ffac2d63a62dd35924edd85ebaf631c8c0da5ee6cc47fe8f5c6ecb7",
+      "size": 1621
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/opportunities.py",
+      "git_blob": "d4d0d7f638937182202ba371aadd82099c4dc7df",
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82",
+      "size": 6849
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/persistent_hold_replay.py",
+      "git_blob": "a9efec516e09e56bf5147975531e69bef56f7843",
+      "sha256": "aeed3f01539aef3fdd58dd8df728268066ce9701e53b77b3fe99abed2c7eabb0",
+      "size": 36223
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/spec.json",
+      "git_blob": "44e43360369a7548af3bab3decfe7e6e766e9c17",
+      "sha256": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
+      "size": 1917
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/volatility_target.py",
+      "git_blob": "3a3e56ef996891b89ae323035678a828628c9c5b",
+      "sha256": "cb296e3800c5a8523dca6d1f1cd4cf860c6f30ac0be7817f8d3f5a7e61de1a69",
+      "size": 575
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/orders.csv.gz",
+      "git_blob": "1793b5b9613b400dee67778695fdd3262bf4bc7c",
+      "sha256": "539aaad82ac712f8127954f8c0b86e56ff507f41605b7e3a06df0bada4f30298",
+      "size": 30510
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/C2_lag7/result.json",
+      "git_blob": "a0cb96ae1d2c4e319fe565bb89a4bb3cc3bb0d64",
+      "sha256": "55f2cac592149388e5e9ef4e3d66edf67e3a56e24b844efc09fda8e07708b705",
+      "size": 3220
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/CHANGED_SIGNAL_ATTRIBUTION.json",
+      "git_blob": "8134804bcf69ac448b9bec92ee16a85062402c83",
+      "sha256": "a6d0f6d273025ec69e6f8de1ee97e2dd467a4a57984eaf292041b499c0663c5e",
+      "size": 10989
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/INTEGRITY_NOTE.md",
+      "git_blob": "103910c478c6ae69660d5f02b5dcabc5a92fdbe6",
+      "sha256": "5759899487bfca340bd9fc85d34a6d06ba913fe274f032b2d0bdc4f2b9f06de0",
+      "size": 1242
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/ACCOUNT_AUDIT.json",
+      "git_blob": "bbe3ea90253a651187d69a2a96d753c2054123a0",
+      "sha256": "4b96e97b71f89ea3b3dfdc34d1285fde548c6f5371c1f360d32cc6e9ddce7dad",
+      "size": 5104
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/attribution.json",
+      "git_blob": "7c8c0542093310bcf731c374ef6a74be3d0c00a9",
+      "sha256": "afc3320439c3935cc3ad267cb3fd14004267b8e9ad861e43cc321f2ad5e9e3d3",
+      "size": 2877
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/decisions.csv.gz",
+      "git_blob": "7933ee22a6218ad610be2748260630a7d910eb99",
+      "sha256": "b41bf8914cccc29e20c17dee72db4a0b92dc5d605c9e941d3f0cc58a13756ffc",
+      "size": 13635
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/decisions.csv.gz.partial",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/equity.csv.gz",
+      "git_blob": "2a07d90665f9395261b7051315fdb36d7986ef4f",
+      "sha256": "44e53ed3c6af4810c4a87c935e4a02999f3e4e873e08da9cc7df876389b36acc",
+      "size": 1023135
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/equity.csv.gz.partial",
+      "git_blob": "6adb9ef3cc13574f75ad5f24bb7cc51ff0865694",
+      "sha256": "85be91c414ad2d09a4de477a33b54a6372b8f15e22237250a25c1c422ce8108a",
+      "size": 558559
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/identity.json",
+      "git_blob": "f5d1894e40045fc88bfc244693248ea71d9077cf",
+      "sha256": "3831bc4eed6948869b4fd4aca6a506f51ea158cfcbbfcc7400adf23d09f787f9",
+      "size": 2861
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/labels.json",
+      "git_blob": "0c6458417adc53a465a079bd29fbf6cea7fe8c63",
+      "sha256": "03c4ba9c6ef54260175e72b86dd35888b826c16c9900420146ded8d6c7b9e329",
+      "size": 873548
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/lag7_fits.json",
+      "git_blob": "0f12d2a7f260ff51596fe684cce8f310854c2847",
+      "sha256": "455d1b95f7b8f254ea2ee849cad743a45f6bebc72880004fd173222d863888c0",
+      "size": 157862
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/lag7_predictions.json",
+      "git_blob": "ecd1e2ab80b114cdd44675a33e28e0aa266e9f1c",
+      "sha256": "f7e4d38caa9bcbc6c8085ab5b29ddec3ff4e6884c57c2045d0316024e4219282",
+      "size": 135611
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/prior_B1_inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/prior_B1_result.json",
+      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
+      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
+      "size": 3217
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/weeks.json",
+      "git_blob": "c21f86ca1fc890f6b42a0b1b50d8a8e9782429d5",
+      "sha256": "413133e6b048506ca5df5cabeb7a22bfdd41126505c707e1fc1c3e2669e4067b",
+      "size": 51548
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/invocations.json",
+      "git_blob": "7cfa8baca7580b523d0b0e2104bb6545244c5354",
+      "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd",
+      "size": 7021
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/binance.py",
+      "git_blob": "6c95546521193a8c7b6454c568073d76a7fc7d7b",
+      "sha256": "f77cfd587456c85502e1b1e8eb96fa85daa4642bb3f6bf44265bda2ce951a810",
+      "size": 26061
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/campaign.py",
+      "git_blob": "817a60ab2395776a3c6321a0f4b50f06af81d13e",
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1",
+      "size": 5857
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/edge_allocation.py",
+      "git_blob": "71b7eaa0f594b8893e4fbc5cf176e46d00588269",
+      "sha256": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
+      "size": 417
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/linear_account.py",
+      "git_blob": "4c2fdfaaeedebbb76495d1ea53a8c373a9d5e72b",
+      "sha256": "9ae28aa1146f7c4eb403cf4776918f86272786c1422c0127314d3a364bf5cf8b",
+      "size": 2106
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/linear_replay.py",
+      "git_blob": "bbd27e312a961f3f50ffe94671af10d27e27f616",
+      "sha256": "e3f8c827dd3d476719b78e721ba1ec46e38d8fb3647acffb3c1dd894ec059247",
+      "size": 11131
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/linear_sizing.py",
+      "git_blob": "78758749e791e1585e186ee45ab7eedb53489e11",
+      "sha256": "d308f6e067d05ce6135c3a48b40a2313f8f9bd30506b6e364fc93832b47ba188",
+      "size": 4460
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/minute_evidence.py",
+      "git_blob": "cceeb048fb32e0c3772d67ff039e2b8fa8cc0f33",
+      "sha256": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
+      "size": 1615
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/native_trail.py",
+      "git_blob": "382d2eb2df537b6c9e1fef8278ff0271d1f77d8e",
+      "sha256": "eeafdb810ffac2d63a62dd35924edd85ebaf631c8c0da5ee6cc47fe8f5c6ecb7",
+      "size": 1621
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/opportunities.py",
+      "git_blob": "d4d0d7f638937182202ba371aadd82099c4dc7df",
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82",
+      "size": 6849
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/persistent_hold_replay.py",
+      "git_blob": "a9efec516e09e56bf5147975531e69bef56f7843",
+      "sha256": "aeed3f01539aef3fdd58dd8df728268066ce9701e53b77b3fe99abed2c7eabb0",
+      "size": 36223
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/spec.json",
+      "git_blob": "44e43360369a7548af3bab3decfe7e6e766e9c17",
+      "sha256": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
+      "size": 1917
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/volatility_target.py",
+      "git_blob": "3a3e56ef996891b89ae323035678a828628c9c5b",
+      "sha256": "cb296e3800c5a8523dca6d1f1cd4cf860c6f30ac0be7817f8d3f5a7e61de1a69",
+      "size": 575
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/orders.csv.gz",
+      "git_blob": "08dcbb9ef279597659707586c339e3e5cac1087f",
+      "sha256": "78fac7ffd2190970ece3694d665d826f50a15bcd4e4fcf34fee9ed62c957213a",
+      "size": 5546
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/orders.csv.gz.partial",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/L3.6/result.json",
+      "git_blob": "76305ee8e145fcda9897dadc6031f11e4daf9ba5",
+      "sha256": "ad356274598b6a36af0188add23e42e05d315077f04ea14c7fa0508e6ccacac7",
+      "size": 3018
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/NATIVE_INPUT_CHECK.json",
+      "git_blob": "419f10e4353a34392ac9054960eef5d8e9822552",
+      "sha256": "b0b53fa89948a1ef98f70d0dfcd9641c0bf78ead2acd93709375064d05f4f1e2",
+      "size": 214
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/REPORT.md",
+      "git_blob": "61c264ecb9beed28b8b78e3d7a4a2ba92c1a5044",
+      "sha256": "1fcecd1873b0488e892a7763a84968e84eb2aa9712e8a62b41633bf75db75c92",
+      "size": 1856
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/SUMMARY.json",
+      "git_blob": "aaa1e60b34f4ddbc2d43c7a56ca1a4b9ec081365",
+      "sha256": "d23964208325cc08cf2967b2a1431d96145d9558e66144c8abc8bfb733a2d9f5",
+      "size": 138014
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/identity.json",
+      "git_blob": "399a217b211eb6b90d10ac2271e019ed6bdf13c6",
+      "sha256": "5477c5f13649e4a07a1d41b23f0becd0a4fb52368933b2dfff8d25f4e25519ed",
+      "size": 4360
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/labels.json",
+      "git_blob": "0c6458417adc53a465a079bd29fbf6cea7fe8c63",
+      "sha256": "03c4ba9c6ef54260175e72b86dd35888b826c16c9900420146ded8d6c7b9e329",
+      "size": 873548
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/lag7_fits.json",
+      "git_blob": "0f12d2a7f260ff51596fe684cce8f310854c2847",
+      "sha256": "455d1b95f7b8f254ea2ee849cad743a45f6bebc72880004fd173222d863888c0",
+      "size": 157862
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/lag7_predictions.json",
+      "git_blob": "ecd1e2ab80b114cdd44675a33e28e0aa266e9f1c",
+      "sha256": "f7e4d38caa9bcbc6c8085ab5b29ddec3ff4e6884c57c2045d0316024e4219282",
+      "size": 135611
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1/decisions.csv.gz",
+      "git_blob": "96a9ca066292a47f697b46a393c8ee2a8744b86f",
+      "sha256": "4b53febaeb581744a648a3e05a9e35888060731a77c272a4e165f41fe458b3c5",
+      "size": 25507
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1/equity.csv.gz",
+      "git_blob": "f35720fc20148fe10683f98007743afcfa73cfd1",
+      "sha256": "919aa2f45d63974a02884d1618c2e7210fe3101a8c7e1b8ff1b23eff32bab659",
+      "size": 3208777
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1/inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1/orders.csv.gz",
+      "git_blob": "554e7dcced69e72cebc29d9bc9646b6c24f4213f",
+      "sha256": "50af2da789bef02d31fd7022e61f0a9e75bd9b06259b718f4830436812d3fd5f",
+      "size": 31997
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1/result.json",
+      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
+      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
+      "size": 3217
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1_inputs.json",
+      "git_blob": "daa3bde1c2405febdda2ace8a3ef9fd0907bc085",
+      "sha256": "b54a9d0391f2575d21b9e7137dcd7dbeb14c9413220077592e64a1449fb60f4f",
+      "size": 29544
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1_result.json",
+      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
+      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
+      "size": 3217
+    },
+    {
+      "path": "evidence/attention-lag7-account-20260922/frozen_inputs/weeks.json",
+      "git_blob": "c21f86ca1fc890f6b42a0b1b50d8a8e9782429d5",
+      "sha256": "413133e6b048506ca5df5cabeb7a22bfdd41126505c707e1fc1c3e2669e4067b",
+      "size": 51548
+    },
+    {
+      "path": "research/attention_lag7_account.py",
+      "git_blob": "ecdfdf4b2bd4eb6f1aaf80b657f5b870da6d51cd",
+      "sha256": "bb6056ece8a63c9902f88bcae0acb6ba508265bbdcbe8bbf6ad62cb7432802fd",
+      "size": 18009
+    },
+    {
+      "path": "tests/test_attention_lag7_account.py",
+      "git_blob": "37322ca08a857634c09caeec81805463d3205f77",
+      "sha256": "aa67a728bcd892e50e3d32a5354d67fa5a07405b46c49f657b6cf62c8a45b22d",
+      "size": 6862
+    }
+  ],
+  "multipart": [
+    {
+      "git_blob": "5798ea7f54d5e9acefb3ceaedb8f9e7102038343",
+      "sha256": "8f80dabf7fec9c11e5c01c8633dca5c21d627e70f1a0a876bff2662218092a96",
+      "size": 3209045,
+      "paths": [
+        "evidence/attention-lag7-account-20260922/C0/equity.csv.gz"
+      ],
+      "parts": [
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/5798ea7f54d5e9acefb3ceaedb8f9e7102038343.part000",
+          "offset": 0,
+          "size": 524288,
+          "git_blob": "291480849878a6e71f0237f0a44ec425ed751283",
+          "sha256": "9adfd2e02a88d0d684a26643e110041924a5731fd628945c4f383a70516473ba"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/5798ea7f54d5e9acefb3ceaedb8f9e7102038343.part001",
+          "offset": 524288,
+          "size": 524288,
+          "git_blob": "624ba333225240da69e4af14e29eb3de54fa9fc5",
+          "sha256": "296642fc4df2060ab74e4e2b9625b1150de87460c4df8553590ef2f0b2a2332a"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/5798ea7f54d5e9acefb3ceaedb8f9e7102038343.part002",
+          "offset": 1048576,
+          "size": 524288,
+          "git_blob": "16d76532de38b231f56aa4de0a4a0fb77df48b2f",
+          "sha256": "e58a07ebf1739baf848f853259721f87ca44d4faf96ee4d12fc1c4a17be71951"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/5798ea7f54d5e9acefb3ceaedb8f9e7102038343.part003",
+          "offset": 1572864,
+          "size": 524288,
+          "git_blob": "0c8960eab3eda49e65b0df63e22ffc6bf2dbf4e0",
+          "sha256": "45e7b9a6028a2f3487491729f3ef017df140ff4870d0f7ec77619c236b3fac52"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/5798ea7f54d5e9acefb3ceaedb8f9e7102038343.part004",
+          "offset": 2097152,
+          "size": 524288,
+          "git_blob": "6e4bd1f6e7ec208c878981f4b255cdb64a39231a",
+          "sha256": "bce19ca4ab67abe0e7c4281585ca70084cb305cc1b5b83d25f88e188b3347104"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/5798ea7f54d5e9acefb3ceaedb8f9e7102038343.part005",
+          "offset": 2621440,
+          "size": 524288,
+          "git_blob": "5c24173c17f49bc7b431858e679216e3dadf58fe",
+          "sha256": "dbcb038634dd807d91f56f6ffba2a437137de36dd22c6c898ebb353e08377148"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/5798ea7f54d5e9acefb3ceaedb8f9e7102038343.part006",
+          "offset": 3145728,
+          "size": 63317,
+          "git_blob": "a5abb0de74f62da49681e5558f49d915b8511b99",
+          "sha256": "6f4e8a68581a2c01bcd9ff447fb50b050431d48b8446d43f4d9063e08b9dc621"
+        }
+      ]
+    },
+    {
+      "git_blob": "0c6458417adc53a465a079bd29fbf6cea7fe8c63",
+      "sha256": "03c4ba9c6ef54260175e72b86dd35888b826c16c9900420146ded8d6c7b9e329",
+      "size": 873548,
+      "paths": [
+        "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/labels.json",
+        "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/labels.json",
+        "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/labels.json",
+        "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/labels.json",
+        "evidence/attention-lag7-account-20260922/frozen_inputs/labels.json"
+      ],
+      "parts": [
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/0c6458417adc53a465a079bd29fbf6cea7fe8c63.part000",
+          "offset": 0,
+          "size": 524288,
+          "git_blob": "f68c7a6b358de2a699334a30be4a6f1b34376544",
+          "sha256": "6fef373796807baa5457f2e377d24ef664a66c04f8a547545364217df9516f3b"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/0c6458417adc53a465a079bd29fbf6cea7fe8c63.part001",
+          "offset": 524288,
+          "size": 349260,
+          "git_blob": "2c5f7ecca73e79ac8a6bd7b5841daee888f42f7a",
+          "sha256": "b13211037d2211f08a482180ece4da61fa5ed5338bfa57578726942207118987"
+        }
+      ]
+    },
+    {
+      "git_blob": "167bc539005ac30e922a39a5a85de7e3ec3f1b47",
+      "sha256": "e19de8bee5a50aab2025eb1204f4aef0ac65c38034c58889a0c7856df65bac3e",
+      "size": 3206877,
+      "paths": [
+        "evidence/attention-lag7-account-20260922/C1/equity.csv.gz"
+      ],
+      "parts": [
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/167bc539005ac30e922a39a5a85de7e3ec3f1b47.part000",
+          "offset": 0,
+          "size": 524288,
+          "git_blob": "475cb1278ff315f6e6742f5f5452f7b9c1a9681c",
+          "sha256": "32907e974dedd2f0737eee9de2d3231421eb0c75dacc5e5e737c343361cb67d2"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/167bc539005ac30e922a39a5a85de7e3ec3f1b47.part001",
+          "offset": 524288,
+          "size": 524288,
+          "git_blob": "011a52042efe33ee57af968b65f1816f06bef329",
+          "sha256": "8d8e9dca89ec2d9bb151c269b7c0996b4851938ceee87811996e81d6c67bda38"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/167bc539005ac30e922a39a5a85de7e3ec3f1b47.part002",
+          "offset": 1048576,
+          "size": 524288,
+          "git_blob": "60140f86384a61f6a4809227543719307209b8bc",
+          "sha256": "3f2f1b24f590532d299ebbe1674233c539ae7a1a64e5f1b0ab3b0dc03d211056"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/167bc539005ac30e922a39a5a85de7e3ec3f1b47.part003",
+          "offset": 1572864,
+          "size": 524288,
+          "git_blob": "c51e721d4c19e38fdae00b3412bde406b47d7217",
+          "sha256": "42ff56c52c255899cb441442d447e8152b132a60547044f41d27fb8ef29785de"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/167bc539005ac30e922a39a5a85de7e3ec3f1b47.part004",
+          "offset": 2097152,
+          "size": 524288,
+          "git_blob": "3e0b583ef8b01499631f478a73a6719795bd0eac",
+          "sha256": "5f3a90c649dc3aa25ee586fb8f4291b86d8058de9c7ed61f6f427e3e1fe76160"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/167bc539005ac30e922a39a5a85de7e3ec3f1b47.part005",
+          "offset": 2621440,
+          "size": 524288,
+          "git_blob": "9cda9cb9487a39029ab8723ae182358b1319893f",
+          "sha256": "54ee7ea8791410b887b55ab54a3596b47e8f9edf4fa48194207623b76dba3f7c"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/167bc539005ac30e922a39a5a85de7e3ec3f1b47.part006",
+          "offset": 3145728,
+          "size": 61149,
+          "git_blob": "3a9ccb2fb4e35307639d589afe9c8d122554a08f",
+          "sha256": "05075a4ca7af308e23c2dd41387ce502f00508d1323cb9014fc4ab3241abf4eb"
+        }
+      ]
+    },
+    {
+      "git_blob": "4a2caea30b9fa6a88a0672bd5e053df2ab918904",
+      "sha256": "cfb316477769e778a88df231dfe508e24becd21d5f23e5f03ed2b89e76a1ca92",
+      "size": 3065320,
+      "paths": [
+        "evidence/attention-lag7-account-20260922/C2_lag7/equity.csv.gz"
+      ],
+      "parts": [
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/4a2caea30b9fa6a88a0672bd5e053df2ab918904.part000",
+          "offset": 0,
+          "size": 524288,
+          "git_blob": "a66a98f1ae14e04354a6e79b732da37bc055f199",
+          "sha256": "aabc538a31a79d6a8ad5a898db5706b2164b42f61d025921d7063e448994e09c"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/4a2caea30b9fa6a88a0672bd5e053df2ab918904.part001",
+          "offset": 524288,
+          "size": 524288,
+          "git_blob": "851e2c1f2c62bce101725afe025547431023a19d",
+          "sha256": "a3761e756037de111c84ec31e5f5a837308ce65c3f556a6f99528298c2f6133d"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/4a2caea30b9fa6a88a0672bd5e053df2ab918904.part002",
+          "offset": 1048576,
+          "size": 524288,
+          "git_blob": "042b4d7f95c8645dfd69722f330de66f15a8d072",
+          "sha256": "e92e41fedd3d514aa9e4a304aed761357e5358c03b60eee56a2b9ec264ae6982"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/4a2caea30b9fa6a88a0672bd5e053df2ab918904.part003",
+          "offset": 1572864,
+          "size": 524288,
+          "git_blob": "5907c28a0b6fdcbb991a39150fa1978f9322fa24",
+          "sha256": "a5b112f4f9080d529b785a9308414ec990b50e16f2b3911bc97dfc75fcf75c22"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/4a2caea30b9fa6a88a0672bd5e053df2ab918904.part004",
+          "offset": 2097152,
+          "size": 524288,
+          "git_blob": "c76c064669ce687edf7a581a4c1c7230293d6fbd",
+          "sha256": "d5691c10daa9cbaca0e8a8eb2b2a649d93a91c3d19a382871ef039735b9bb80e"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/4a2caea30b9fa6a88a0672bd5e053df2ab918904.part005",
+          "offset": 2621440,
+          "size": 443880,
+          "git_blob": "53ddfb5d143fb4248fac2f31b0341fd0118b69e3",
+          "sha256": "0f931965427b23b3c89bc042c6304e4bf7ed1123769dd43fe181f8ad3ac3c8a8"
+        }
+      ]
+    },
+    {
+      "git_blob": "2a07d90665f9395261b7051315fdb36d7986ef4f",
+      "sha256": "44e53ed3c6af4810c4a87c935e4a02999f3e4e873e08da9cc7df876389b36acc",
+      "size": 1023135,
+      "paths": [
+        "evidence/attention-lag7-account-20260922/L3.6/equity.csv.gz"
+      ],
+      "parts": [
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/2a07d90665f9395261b7051315fdb36d7986ef4f.part000",
+          "offset": 0,
+          "size": 524288,
+          "git_blob": "cbbd94d939613e58096fa40c4cfcb9f7c67c4642",
+          "sha256": "658d35a78059b6a573908660d07af5d4f2dc7b2c81b69de22a8262ba653e4d9b"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/2a07d90665f9395261b7051315fdb36d7986ef4f.part001",
+          "offset": 524288,
+          "size": 498847,
+          "git_blob": "82cb684dd9f43ec2a7f038673c76a5c6a24beb77",
+          "sha256": "b71491a146f89fa11ff01c1bfb0fd9a6bcfc388042758d431ea323db38c93069"
+        }
+      ]
+    },
+    {
+      "git_blob": "6adb9ef3cc13574f75ad5f24bb7cc51ff0865694",
+      "sha256": "85be91c414ad2d09a4de477a33b54a6372b8f15e22237250a25c1c422ce8108a",
+      "size": 558559,
+      "paths": [
+        "evidence/attention-lag7-account-20260922/L3.6/equity.csv.gz.partial"
+      ],
+      "parts": [
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/6adb9ef3cc13574f75ad5f24bb7cc51ff0865694.part000",
+          "offset": 0,
+          "size": 524288,
+          "git_blob": "cbbd94d939613e58096fa40c4cfcb9f7c67c4642",
+          "sha256": "658d35a78059b6a573908660d07af5d4f2dc7b2c81b69de22a8262ba653e4d9b"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/6adb9ef3cc13574f75ad5f24bb7cc51ff0865694.part001",
+          "offset": 524288,
+          "size": 34271,
+          "git_blob": "4663991b1a8a63db689add180802cd90576fa014",
+          "sha256": "4e6069a427e33a6ad6dec2465a49e3f69acfa3cadb0af788fd5bb38efeee52f6"
+        }
+      ]
+    },
+    {
+      "git_blob": "f35720fc20148fe10683f98007743afcfa73cfd1",
+      "sha256": "919aa2f45d63974a02884d1618c2e7210fe3101a8c7e1b8ff1b23eff32bab659",
+      "size": 3208777,
+      "paths": [
+        "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1/equity.csv.gz"
+      ],
+      "parts": [
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/f35720fc20148fe10683f98007743afcfa73cfd1.part000",
+          "offset": 0,
+          "size": 524288,
+          "git_blob": "44304e718b32b9621949754221548327b015e3b1",
+          "sha256": "cf9611587b244f8e6f11595ea6e2eaffe5e9cc4541fd358764f025a8bb56a8d2"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/f35720fc20148fe10683f98007743afcfa73cfd1.part001",
+          "offset": 524288,
+          "size": 524288,
+          "git_blob": "011a52042efe33ee57af968b65f1816f06bef329",
+          "sha256": "8d8e9dca89ec2d9bb151c269b7c0996b4851938ceee87811996e81d6c67bda38"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/f35720fc20148fe10683f98007743afcfa73cfd1.part002",
+          "offset": 1048576,
+          "size": 524288,
+          "git_blob": "60140f86384a61f6a4809227543719307209b8bc",
+          "sha256": "3f2f1b24f590532d299ebbe1674233c539ae7a1a64e5f1b0ab3b0dc03d211056"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/f35720fc20148fe10683f98007743afcfa73cfd1.part003",
+          "offset": 1572864,
+          "size": 524288,
+          "git_blob": "c51e721d4c19e38fdae00b3412bde406b47d7217",
+          "sha256": "42ff56c52c255899cb441442d447e8152b132a60547044f41d27fb8ef29785de"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/f35720fc20148fe10683f98007743afcfa73cfd1.part004",
+          "offset": 2097152,
+          "size": 524288,
+          "git_blob": "3e0b583ef8b01499631f478a73a6719795bd0eac",
+          "sha256": "5f3a90c649dc3aa25ee586fb8f4291b86d8058de9c7ed61f6f427e3e1fe76160"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/f35720fc20148fe10683f98007743afcfa73cfd1.part005",
+          "offset": 2621440,
+          "size": 524288,
+          "git_blob": "9cda9cb9487a39029ab8723ae182358b1319893f",
+          "sha256": "54ee7ea8791410b887b55ab54a3596b47e8f9edf4fa48194207623b76dba3f7c"
+        },
+        {
+          "path": "evidence/attention-lag7-account-20260922/.remote-multipart/f35720fc20148fe10683f98007743afcfa73cfd1.part006",
+          "offset": 3145728,
+          "size": 63049,
+          "git_blob": "4636df6e3a3b5c44c4c1f4965bb09dd149f4309a",
+          "sha256": "ad04535a93aa5c8fad572cc838736771a148789fc68ec4555aac648dfa88cad6"
+        }
+      ]
+    }
+  ]
+}

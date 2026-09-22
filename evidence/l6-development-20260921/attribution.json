@@ -1,0 +1,233 @@
+{
+  "candidate": "L6",
+  "closed_trades": 22,
+  "winning_trades": 10,
+  "mean_holding_hours": 562.3636363636364,
+  "mean_underlying_signed_return": 0.09931768047713573,
+  "median_underlying_signed_return": -0.007407450830588269,
+  "gross_signed_return_sum": 2.184988970496986,
+  "trades": [
+    {
+      "start": 1580446800000,
+      "end": 1582146000000,
+      "side": "long",
+      "hours": 472.0,
+      "gross_return": 0.00059433092083409,
+      "net_pnl_usdt": "-2.74503612225770421200",
+      "funding": "2.68512530471770421200",
+      "event": "stop"
+    },
+    {
+      "start": 1588273200000,
+      "end": 1591891200000,
+      "side": "long",
+      "hours": 1005.0,
+      "gross_return": 0.06560351121513126,
+      "net_pnl_usdt": "1.80356221480160640440",
+      "funding": "0.58833063143679359560",
+      "event": "stop"
+    },
+    {
+      "start": 1595739600000,
+      "end": 1599134400000,
+      "side": "long",
+      "hours": 943.0,
+      "gross_return": 0.14814552307132786,
+      "net_pnl_usdt": "12.56866523158144848504",
+      "funding": "5.73548546855447651496",
+      "event": "stop"
+    },
+    {
+      "start": 1599235200000,
+      "end": 1600513200000,
+      "side": "short",
+      "hours": 355.0,
+      "gross_return": -0.06568411906352217,
+      "net_pnl_usdt": "-3.61024379379162564840",
+      "funding": "0.03820581600920064840",
+      "event": "stop"
+    },
+    {
+      "start": 1602385200000,
+      "end": 1611266400000,
+      "side": "long",
+      "hours": 2467.0,
+      "gross_return": 1.6751545337927793,
+      "net_pnl_usdt": "136.42992368883683910300",
+      "funding": "23.28697864305636089700",
+      "event": "stop"
+    },
+    {
+      "start": 1612710000000,
+      "end": 1614322800000,
+      "side": "long",
+      "hours": 448.0,
+      "gross_return": 0.17034360130829213,
+      "net_pnl_usdt": "3.98639744441368435500",
+      "funding": "3.12476576617044064500",
+      "event": "stop"
+    },
+    {
+      "start": 1627297200000,
+      "end": 1631026800000,
+      "side": "long",
+      "hours": 1036.0,
+      "gross_return": 0.20368799998208595,
+      "net_pnl_usdt": "6.94840763879933077750",
+      "funding": "0.85635226106516922250",
+      "event": "stop"
+    },
+    {
+      "start": 1633510800000,
+      "end": 1637056800000,
+      "side": "long",
+      "hours": 985.0,
+      "gross_return": 0.16900888549567636,
+      "net_pnl_usdt": "5.65315179290669199726",
+      "funding": "1.99298815074038300274",
+      "event": "stop"
+    },
+    {
+      "start": 1637341200000,
+      "end": 1640282400000,
+      "side": "short",
+      "hours": 817.0,
+      "gross_return": 0.13531446439605901,
+      "net_pnl_usdt": "6.22391361707292000000",
+      "funding": "0.00018615609008000000",
+      "event": "stop"
+    },
+    {
+      "start": 1648573200000,
+      "end": 1649264400000,
+      "side": "long",
+      "hours": 192.0,
+      "gross_return": -0.0842079917174811,
+      "net_pnl_usdt": "-5.43458836968358381811",
+      "funding": "0.14274364357408381811",
+      "event": "stop"
+    },
+    {
+      "start": 1652209200000,
+      "end": 1653890400000,
+      "side": "short",
+      "hours": 467.0,
+      "gross_return": 0.023853921061621913,
+      "net_pnl_usdt": "0.73880189835794440736",
+      "funding": "0.03839246260705559264",
+      "event": "stop"
+    },
+    {
+      "start": 1655121600000,
+      "end": 1657242000000,
+      "side": "short",
+      "hours": 589.0,
+      "gross_return": 0.0751107702734039,
+      "net_pnl_usdt": "1.89459328058737172007",
+      "funding": "0.02526874536537827993",
+      "event": "stop"
+    },
+    {
+      "start": 1658325600000,
+      "end": 1660888800000,
+      "side": "long",
+      "hours": 712.0,
+      "gross_return": -0.05099526508724545,
+      "net_pnl_usdt": "-2.61073362789375962969",
+      "funding": "0.23896137817500962969",
+      "event": "stop"
+    },
+    {
+      "start": 1661792400000,
+      "end": 1662699600000,
+      "side": "short",
+      "hours": 252.0,
+      "gross_return": -0.015409232582010627,
+      "net_pnl_usdt": "-1.11369605531289223296",
+      "funding": "0.01535746084889223296",
+      "event": "stop"
+    },
+    {
+      "start": 1663034400000,
+      "end": 1663552800000,
+      "side": "long",
+      "hours": 144.0,
+      "gross_return": -0.14703183322140195,
+      "net_pnl_usdt": "-8.29766263771451169100",
+      "funding": "0.03994965743951169100",
+      "event": "stop"
+    },
+    {
+      "start": 1668078000000,
+      "end": 1669766400000,
+      "side": "short",
+      "hours": 469.0,
+      "gross_return": -0.02778864489222158,
+      "net_pnl_usdt": "-0.91327435158170488302",
+      "funding": "0.04919976796070488302",
+      "event": "stop"
+    },
+    {
+      "start": 1673470800000,
+      "end": 1675911600000,
+      "side": "long",
+      "hours": 678.0,
+      "gross_return": 0.27887800708531085,
+      "net_pnl_usdt": "39.68014543757522961990",
+      "funding": "1.69407407539477038010",
+      "event": "stop"
+    },
+    {
+      "start": 1676149200000,
+      "end": 1676491200000,
+      "side": "short",
+      "hours": 95.0,
+      "gross_return": -0.09744713940983378,
+      "net_pnl_usdt": "-7.713206238042000",
+      "funding": "0",
+      "event": "stop"
+    },
+    {
+      "start": 1678341600000,
+      "end": 1678719600000,
+      "side": "short",
+      "hours": 105.0,
+      "gross_return": -0.12168412312993417,
+      "net_pnl_usdt": "-10.71860056836264456240000000",
+      "funding": "0.01563539554264456240",
+      "event": "liquidation"
+    },
+    {
+      "start": 1686844800000,
+      "end": 1687197600000,
+      "side": "short",
+      "hours": 98.0,
+      "gross_return": -0.0806202510340538,
+      "net_pnl_usdt": "-7.577681679285250",
+      "funding": "0",
+      "event": "stop"
+    },
+    {
+      "start": 1694480400000,
+      "end": 1694534400000,
+      "side": "short",
+      "hours": 15.0,
+      "gross_return": -0.05227097250103933,
+      "net_pnl_usdt": "-9.48550468497100000000",
+      "funding": "0.00650243655600000000",
+      "event": "stop"
+    },
+    {
+      "start": 1694548800000,
+      "end": 1694649600000,
+      "side": "short",
+      "hours": 28.0,
+      "gross_return": -0.017567005466792834,
+      "net_pnl_usdt": "-9.483760999545500",
+      "funding": "0",
+      "event": "stop"
+    }
+  ],
+  "qualification": "NOT_QUALIFIED",
+  "note": "Unweighted underlying trade returns are exposure diagnostics, not an executable account return or leverage recommendation"
+}

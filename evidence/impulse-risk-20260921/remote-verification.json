@@ -1,0 +1,34 @@
+{
+  "code_commit": "ca995cbfbcd532f7c5a80385769971e797c0d3b3",
+  "code_tree": "4848b6a8c63707d55a2e95f7db68ddbaba8dd4c6",
+  "all_remote_tree_files_verified": 420,
+  "verification": "Fetched remote Git objects compared byte-for-byte, SHA256 and Git blob SHA1 to local files before mixed reset; clean worktree",
+  "ci": {
+    "run_id": 35594835944,
+    "head_sha": "ca995cbfbcd532f7c5a80385769971e797c0d3b3",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "main_unchanged": "c886b7c63c6455bd7c933269e32cd35a6fb3e09a",
+  "current_price_check": {
+    "scope": "2026_snapshot_NOT_historical",
+    "checks": [
+      {
+        "schedule": "four_hour",
+        "entries": 99,
+        "current_snapshot_price_violations": []
+      },
+      {
+        "schedule": "sparse",
+        "entries": 53,
+        "current_snapshot_price_violations": []
+      }
+    ]
+  },
+  "qualification": "NOT_QUALIFIED",
+  "production": "read-only; no account writes or main merge",
+  "archives": [
+    "libfile_26280c2cccc881918019e55335a50136",
+    "libfile_d1bd110983dc8191b0e1afb6e168a484"
+  ]
+}

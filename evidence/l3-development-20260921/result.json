@@ -1,0 +1,21 @@
+{
+  "candidate": "L3",
+  "qualification": "NOT_QUALIFIED",
+  "scope": "2020-2023 development forecast screen",
+  "observations": 437,
+  "skipped_warmup_or_unmatured": 31,
+  "correlation": -0.01617211483459602,
+  "direction_accuracy": 0.4919908466819222,
+  "mean_directional_net": -0.004347395236891659,
+  "mean_long_control_net": 0.0008842111156446208,
+  "progression_passed": false,
+  "validation_used": false,
+  "limitations": [
+    "Overlapping forward labels, not independent trades or account CAGR",
+    "Funding rates summed as return deduction; not exact marked contract funding cashflows",
+    "No TP/SL, margin, liquidation or collateral-risk account replay",
+    "Fixed fee/spread/slippage assumptions, not verified dated native rules"
+  ],
+  "code_sha256": "656d1b76e26eb3d90b5b561c024b3e83930ec96bd72d292837ba73fb0694bbd6",
+  "input_identity_sha256": "ff809b421f1f89ba40d6a5c0b3c007a63e415a6d64c7e351434559d1a7898561"
+}

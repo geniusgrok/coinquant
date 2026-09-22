@@ -1,0 +1,97 @@
+{
+  "qualification": "RETURN_IMPROVED_NOT_PROMOTED_HOLDING_BUFFER_SHORTFALL",
+  "archive": {
+    "file_name": "PANCAKEQUANT_EXECUTION_RISK_FRONTIER_20260922.zip",
+    "bytes": 30109407,
+    "sha256": "fe46a9df34a4e9d80080aa25d79375f9f97517f2e73bfb45f110c24d6293d236",
+    "manifest_files": 964,
+    "manifest_sha256": "c81fc082118efb7be914782588939af267ecc9a47b2690245f3cf28bf0401839",
+    "raw_bytes": 38250558,
+    "all_members_crc_size_sha256_verified": true,
+    "library_file_id": "libfile_0a41df6a55f08191a0f2178ac0f977d5",
+    "file_id": "file_00000000ae708206911a7d3f9dd50119",
+    "library_path": "/pancakequant/PANCAKEQUANT_EXECUTION_RISK_FRONTIER_20260922.zip",
+    "persistent_readback_byte_equal": true,
+    "persistent_readback_manifest_verified": true
+  },
+  "dependency": {
+    "file_name": "PANCAKEQUANT_BOUNDED_EXECUTION_20260922.zip",
+    "bytes": 48866772,
+    "sha256": "854fba74875a4e7bc07a9b709edf82b377d7157a01d8d73db42db44aa41095c1",
+    "library_file_id": "libfile_54a5fcf3af5c8191af73244b14ef6ec5",
+    "file_id": "file_0000000083d481fd961f6fa15939f45b",
+    "library_path": "/pancakequant/PANCAKEQUANT_BOUNDED_EXECUTION_20260922.zip",
+    "member_files": 2077,
+    "current_task_raw_crc_hash_verified": true,
+    "extract_to": "originals/",
+    "note": "Complete unchanged historical originals, not a summary. Reused fixed dependency stays persistently recoverable in Library."
+  },
+  "source_readback": {
+    "commit": "b27c12e7fa9471d3862dedfbe24daacaca15fcfb",
+    "tree": "198ced1a23dc7afd9cef33070f01d9b176cd4737",
+    "files": 683,
+    "bytes": 21973477,
+    "artifact_sha256": "a83cede5b96f7fcdce218ddb7b29f060be412f7686d61c7e6ba8d5e15a0c874b",
+    "archive_sha256": "c0dbd895ec9eaeb5693ac4764846ba7ca9e4e4478b7b74a69261949bd18d10d0",
+    "changed_files_byte_equal": true,
+    "all_git_blob_oids_verified": true,
+    "artifact_id": 10692673264,
+    "workflow_run": 35726197338,
+    "final_source_commit": "37ef18f01c2169882007891383d9951b267bdbe1",
+    "final_source_tree": "c23e09423dee1d0cff9393775b77f3936b0987b4",
+    "restored_workflow_blob": "e03cfedb4cd2d287a2bda701d37a5067e4b654c0",
+    "ci_run": 35726407489,
+    "ci_job": 106741019775,
+    "ci_conclusion": "success",
+    "ci_started": "2026-09-22T12:18:59Z",
+    "ci_completed": "2026-09-22T12:19:18Z"
+  },
+  "delivery_files": {
+    "research/bounded_execution.py": {
+      "bytes": 13657,
+      "sha256": "c81627c12acd302520c9cfe94d2da9d59d8bf29ffd8b000eea8af1b7e05b9eb9",
+      "git_blob": "823cda4b8f57204d8a54f5d28ca1aa2027a3daa5"
+    },
+    "research/bounded_execution_replay.py": {
+      "bytes": 9591,
+      "sha256": "0ef0b8742d5e09e81af89742965016b89c3928d0d9b4c2461045fb3b35a6b33e",
+      "git_blob": "86ca3d1982887fceaf15e7e3625206ef4191d3b5"
+    },
+    "research/persistent_hold_replay.py": {
+      "bytes": 42547,
+      "sha256": "de0ac26d3a204a51a3904a5c6b05132670065d25576432b0ea03821c0c62e61a",
+      "git_blob": "5d86a8069716261ee96e29a93e0886f47df7dc0d"
+    },
+    "research/execution_risk_audit.py": {
+      "bytes": 8015,
+      "sha256": "cab7c1e622fdf48e4148f96ce1c95057e0149dca0af0af6a336436267f914061",
+      "git_blob": "8d839ed8ae97433bcbb20e0478c684a3eeec0f60"
+    },
+    "tests/test_execution_risk_frontier.py": {
+      "bytes": 6365,
+      "sha256": "f2fa1a4d0886cdedfd1f6eb0d8e3406a04208b605d45c62fbd95840169cb891e",
+      "git_blob": "1b89bd9b12b409cff13ff204748e666664d7b9c3"
+    },
+    "PROJECT_STATE.md": {
+      "bytes": 3881,
+      "sha256": "5d0961033dee9ea88dbf80b66305de6f3abb52b0896eee92f0b974ddcc566d1a",
+      "git_blob": "688361f5312c8a13ff0e3e2deda43d727f13fee2"
+    },
+    "evidence/execution-risk-frontier-20260922/REPORT.md": {
+      "bytes": 12930,
+      "sha256": "b66936ffb63afb3271a63f2033acde3072c846c5dba9d7647b367f48aca8e4fb",
+      "git_blob": "561b51ff4fceaea62dd5ff9ff97ce6bde594949e"
+    },
+    "evidence/execution-risk-frontier-20260922/SUMMARY.json": {
+      "bytes": 6713,
+      "sha256": "2ed49d88735bcf62f00993531ef710d67a75521d6c41a214eb33a8551dbd2cda",
+      "git_blob": "afa10840a100911a4d6affb5efb56569c591f3b2"
+    }
+  },
+  "preservation_scope": "Complete new originals persist in Library; full old input dependency is fixed by exact Library IDs and SHA256. Git contains code/protocol/selection/report/summary/state/recovery index; CI artifact is only independent source readback, not the persistent originals dependency.",
+  "retrieval": "Materialize archive.file_id, verify total length/SHA256/ZIP CRC and every MANIFEST.json path/length/hash. Extract the fixed dependency into sibling originals/ as described by README.md. Do not replace newer repository source with a stale archive.",
+  "main": "c886b7c63c6455bd7c933269e32cd35a6fb3e09a",
+  "main_modified": false,
+  "native_execution_enabled": false,
+  "background_research_or_trading_tasks": false
+}

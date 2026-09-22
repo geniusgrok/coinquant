@@ -1,0 +1,41 @@
+{
+  "base_commit": "a500eb63837aa0ae276548d691ce3f8c6958f62a",
+  "verification": "34 affected offline tests and 7 CLI smoke checks passed; no native API or economic qualification",
+  "files": {
+    "pancakequant/pending.py": {
+      "bytes": 8979,
+      "sha256": "c192d7a11a9beb1283ad7b66d0513f33461f0fe112b17d1966d3ca511e50332e",
+      "git_blob_oid": "b06586377c57d6724dc4e35ec05ae331bb080598"
+    },
+    "pancakequant/execution.py": {
+      "bytes": 19782,
+      "sha256": "1f8733c3f1fbdc3c52b8a0afe09cdb62e71a1ed72412c1a4f955491ede27c556",
+      "git_blob_oid": "c1c116fc2dd4a43b3063cf3bce2374af32d241e2"
+    },
+    "tests/test_pending.py": {
+      "bytes": 10925,
+      "sha256": "6b1b929904099a977857da7d28a3187bd8f12544512b2cc244d6ef906bcd0ef7",
+      "git_blob_oid": "7e4326ba69eb8e939cd088691a4f9b1fc9eea0f4"
+    },
+    "evidence/entry-safety-final-tests.txt": {
+      "bytes": 5420,
+      "sha256": "0a55d89351ef52e9244c716a9a928da1ce8611ad2a9fcc588a8eb0b543e96d86",
+      "git_blob_oid": "5eed3657e7862588691cf0403fe54d0550fe9cf0"
+    },
+    "evidence/cli-after-entry-smoke.txt": {
+      "bytes": 2111,
+      "sha256": "d61f6fc87c0a0803c9d6e8080c87836f041ea8c3b591e67fdb26f210b9afbda3",
+      "git_blob_oid": "c7ee2f223de92eee7c65aecfe6e71818df52d0ae"
+    },
+    "evidence/cross-entry-regression-before.txt": {
+      "bytes": 938,
+      "sha256": "e7af28f95fafe4a4a5c208f19453fad5f79a4850bd01ee93ee4a8a8bb59a18f8",
+      "git_blob_oid": "cb61a2daf68f86601dfffa6a009793b4c431e9d7"
+    },
+    "evidence/pending-protection-regression-before.txt": {
+      "bytes": 947,
+      "sha256": "2bfd8ab4d45cef88f16b459ce27fc9fe8c0efb7ca10faa76410ca7df5961f3d2",
+      "git_blob_oid": "cb7173b485960f9138899a84c7ee6bae07fa1930"
+    }
+  }
+}

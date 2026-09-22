@@ -1,0 +1,9 @@
+# L18: causal net-edge allocation, registered before measurement
+
+L17 removes repeated entry costs but still binds the legacy0.6%fixed stop budget on every feasible attempt. A low-risk-positive result does not justify multiplying size. Replace fixed risk fraction with an estimate of the channel's trailing net directional return per unit exposure. This is an allocation-model change, not a leverage grid or independent signal overlay.
+
+Use up to252completed daily observations, at least60. Each daily observation uses the PREVIOUS completed-day channel direction, next completed-day close/previous close return, adverse funding rate cost, and round-trip fee/spread/slippage allowance on a direction change. Flat periods contribute zero. All observations depend only on completed market history, not A/B trades. No future daily return enters a same-day entry. Missing early samples mean no new exposure.
+
+Target fraction = max(0,mean(net return))/mean(net return squared) *0.5*n/(n+252), capped by existing2xaccount notional. This is half-Kelly with one-year prior-equivalent shrinkage, not optimized parameters. Stop-loss risk cap20%of current equity follows three full campaign losses consuming48.8%, leaving little gap budget under50%; it is a ceiling, NOT a guarantee. Real sizing also respects actual stop geometry, margin reserve, quantity filters, depth and per-order cap. No forced upsizing. Target is evaluated at new campaign entry only; no profit reinvestment/adds or margin reduction. L17 lifecycle, signal/protection/exit are otherwise identical.
+
+Run A/B on2020-2023 only. Evaluate raw CAGR, drawdown, sample availability, edge veto, binding caps and concentration. No requirement to beat L9CAGR/MDD ratio. If insufficient net edge or drawdown breaches budget, attribute before a distinct next hypothesis; no neighbor search in lookbacks, shrinkage, risk or leverage. All historical rules/funding/valuation/execution limitations remain NOT_QUALIFIED.
