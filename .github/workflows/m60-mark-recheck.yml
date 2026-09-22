@@ -1,0 +1,40 @@
+name: M60 mark source recheck
+on:
+  push:
+    branches: [research/m60-20260923]
+    paths: ['.github/workflows/m60-mark-recheck.yml']
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Fetch exact official monthly alternative with checksum
+        run: |
+          python - <<'PY'
+          import hashlib,json,pathlib,urllib.request,zipfile
+          out=pathlib.Path('mark-recheck');out.mkdir()
+          path='data/futures/um/monthly/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-09.zip'
+          url='https://data.binance.vision/'+path
+          record={'path':path,'url':url}
+          try:
+              raw=urllib.request.urlopen(url,timeout=40).read()
+              checksum=urllib.request.urlopen(url+'.CHECKSUM',timeout=40).read()
+              sha=hashlib.sha256(raw).hexdigest()
+              assert sha==checksum.decode().split()[0]
+              p=out/path;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(raw)
+              pathlib.Path(str(p)+'.CHECKSUM').write_bytes(checksum)
+              with zipfile.ZipFile(p) as z:assert z.testzip() is None
+              record.update(status='verified',bytes=len(raw),sha256=sha)
+          except Exception as e:record.update(status='unavailable',error=repr(e))
+          (out/'RECEIPT.json').write_text(json.dumps([record],indent=2)+'\n')
+          print(json.dumps(record))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: coinquant-m60-mark-recheck
+          path: mark-recheck/
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error
