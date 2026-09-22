@@ -1,7 +1,0 @@
-{
-  "purpose": "temporary file-based readback of finalized source and evidence; remove after verification",
-  "evidence_commit": "60426ba7ccbe6ee262538d01987b69d9ac688f0e",
-  "expected_clean_tree": "337085fe71b9176bab19ff6ea3fae5160b750371",
-  "archive_sha256": "fe46a9df34a4e9d80080aa25d79375f9f97517f2e73bfb45f110c24d6293d236",
-  "no_economic_code_or_configuration_change": true
-}
