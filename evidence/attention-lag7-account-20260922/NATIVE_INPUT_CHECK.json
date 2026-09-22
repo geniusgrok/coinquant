@@ -1,0 +1,9 @@
+{
+  "shared_raw_records": 174,
+  "prior_b1_raw_records": 174,
+  "current_minute_records": 22,
+  "prior_b1_minute_records": 22,
+  "minute_identity_equal": true,
+  "complete_identity_equal": true,
+  "passed": true
+}

@@ -1,0 +1,26 @@
+{
+  "purpose": "C1 control versus archived B1; archived B1 is not reused as this run's result",
+  "frozen_prior_B1_snapshot": "frozen_inputs/prior_B1",
+  "raw_input_identity_equal": true,
+  "decompressed_trace_equal": false,
+  "current_C1": {
+    "cagr_percent": 16.88311725219691,
+    "final_cny": "18664.34302070775004114091927",
+    "entries": 101
+  },
+  "archived_B1": {
+    "cagr_percent": 14.51256663085596,
+    "final_cny": "17195.60377445432409165940967",
+    "entries": 102
+  },
+  "first_and_only_decision_difference": {
+    "t": 1703833200000,
+    "utc": "2023-12-29T00:00:00Z",
+    "saved_lag7_last_prediction_t": 1703026800000,
+    "saved_lag7_last_expiry_u": 1703833200000,
+    "current_C1_action": "cold_or_missing",
+    "archived_B1_action": "entry",
+    "interpretation": "The frozen saved C1 file has no prediction at the tail invocation. The current control therefore keeps that invocation cold rather than regenerating or borrowing an old prediction."
+  },
+  "conclusion": "C1 is a newly executed same-engine control over exactly the saved lag7 prediction coverage, not a claim of byte-equivalence to B1."
+}
