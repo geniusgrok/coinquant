@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "repository": "geniusgrok/coinquant",
+  "economic_source_commit": "580e56e4ba2c0c112f91b4d45ca0910447c0ca86",
+  "status": "M60 rejected; complete account bundle available in conversation; whole-bundle Library persistence incomplete",
+  "complete_bundle": {
+    "file_name": "COINQUANT_M60_CORE_REDESIGN_20260923.zip",
+    "bytes": 217458618,
+    "sha256": "e0681fc623cf473185f72696788e5370b02ebdf89b2d116c3780ec91cd03419d",
+    "members": 931,
+    "manifest_members": 930,
+    "contains_complete_dependencies": true,
+    "persistence": "complete conversation download; whole-bundle Library import failed",
+    "library_file_id": null,
+    "file_id": null,
+    "library_error": "Cannot use ConversionTreeTransaction when not in context",
+    "fallback_error": "Drive file runtime registration unavailable; no Drive file created"
+  },
+  "persisted_components": [
+    {"file_name": "COINQUANT_M60_DEVELOPMENT_MINUTES_20260923.zip", "file_id": "file_00000000189081f5b59a606a16a9d213", "library_file_id": "libfile_f238bff2ad6c819183809199ef661478", "bytes": 30232711, "sha256": "76d6fd297e3f07fb73b5db8824b21c0cddf5349748afa6ee70e7f52d4e20c3e1", "readback_byte_identical": true},
+    {"file_name": "COINQUANT_M60_PUBLISHED_SOURCE_20260923.zip", "file_id": "file_00000000ee3882468ee2b6d4564919b2", "library_file_id": "libfile_ea6f7aade75c8191999f13fc8bbca63a", "bytes": 16738690, "sha256": "cc8a7bd40edad30b67ae758a2e738e6630f54a15cd6673766f23cee17ea84995", "readback_byte_identical": true},
+    {"file_name": "COINQUANT_M60_PROTECTION_MINUTES_20260923.zip", "file_id": "file_000000009fd082069c4b2ef5b87e8eb3", "library_file_id": "libfile_b6057b4e31bc8191979c45b8060481da", "bytes": 755861, "sha256": "b4701cbc7e8e6d91ba01997c093382c5e5f8a656c8868d79f072d35b05565781", "readback_byte_identical": true},
+    {"file_name": "COINQUANT_M60_MARK_RECHECK_20260923.zip", "file_id": "file_000000008b888206b33e9d441f37dc3e", "library_file_id": "libfile_dec4645a5afc8191937b52f06c35abf8", "bytes": 1116642, "sha256": "1c6adee31bf3640837c07e8d6fd83f9523f3b1b8e3900d757156248e61617b40", "readback_byte_identical": true},
+    {"file_name": "COINQUANT_M60_WARMUP_PROBE_20260923.zip", "file_id": "file_00000000de5481fb94653a254d3606cc", "library_file_id": "libfile_6b23bff662d8819185867ef506e3be4a", "bytes": 1013, "sha256": "edd70f1dbd6fef0cfdf00901b9fdc11240a3d5d4b5ac10ac8122840a42697cf6", "readback_byte_identical": true}
+  ],
+  "retained_dependency_index": "evidence/sustainable-capital-exit-20260922/originals.json",
+  "account_paths": ["results/accounts/M60-development", "results/accounts/SX60-development", "results/first-pass/M60-development", "results/first-pass/SX60-development"],
+  "scope": "Bundle contains complete dependencies, new data, source, all valid accounts and interrupted partial. Library component records do not contain new account trajectories; do not substitute their hashes for the downloadable complete bundle."
+}

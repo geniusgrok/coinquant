@@ -1,0 +1,6 @@
+{
+  "requested_hours": [1583679600000,1593284400000,1599134400000,1632182400000,1637913600000,1671231600000,1678251600000,1692230400000],
+  "refined_hours": [1583679600000,1593284400000,1632182400000,1637913600000,1671231600000,1678251600000,1692230400000],
+  "unresolved_hours": [1599134400000],
+  "reason": "Official daily and monthly minute mark lows disagree with frozen hourly original by 0.00006247 USDT. Keep original hourly proxy for this hour, preserve both originals, no tolerance/price changes. Economic risk rejection is assessed also on completed hourly closes; no formal qualification claimed."
+}
