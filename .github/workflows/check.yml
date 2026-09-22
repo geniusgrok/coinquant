@@ -25,6 +25,25 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
+      - name: Acquire frozen public minute originals only
+        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[bounded-minutes]')
+        env:
+          OUTPUT: ${{ runner.temp }}/pancakequant-workspace/entry-minutes
+        run: |
+          mkdir -p "$RUNNER_TEMP/pancakequant-workspace"
+          set +e
+          timeout 240s python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from research.acquire_minute_probe import run
+          request = json.loads(Path('evidence/bounded-execution-20260922/MINUTE_REQUEST.json').read_text())
+          complete = run(Path(os.environ['OUTPUT']), days=tuple(request['days']))
+          raise SystemExit(0 if complete else 1)
+          PY
+          status=$?
+          set -e
+          echo "$status" > "$RUNNER_TEMP/pancakequant-workspace/acquisition-exit-code.txt"
+          cp evidence/bounded-execution-20260922/MINUTE_REQUEST.json "$RUNNER_TEMP/pancakequant-workspace/"
       - name: Export exact workspace for offline research
         if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[workspace-export]')
         run: |
@@ -35,6 +54,11 @@ jobs:
           git ls-tree -r HEAD > "$RUNNER_TEMP/pancakequant-workspace/TREE.txt"
           cd "$RUNNER_TEMP/pancakequant-workspace"
           sha256sum workspace.tar.gz > SHA256SUMS
+          if [ -d entry-minutes ]; then
+            tar -czf entry-minutes.tar.gz entry-minutes
+            sha256sum entry-minutes.tar.gz >> SHA256SUMS
+            rm -rf entry-minutes
+          fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[workspace-export]')
         with:
@@ -43,6 +67,9 @@ jobs:
           compression-level: 0
           retention-days: 3
           if-no-files-found: error
+      - name: Require complete requested originals
+        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[bounded-minutes]')
+        run: test "$(cat "$RUNNER_TEMP/pancakequant-workspace/acquisition-exit-code.txt")" = 0
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
