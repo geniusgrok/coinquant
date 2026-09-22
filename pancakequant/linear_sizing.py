@@ -16,7 +16,7 @@ def target_fraction(returns, friction, absence_days=7):
     return D('.20')/(D('2.33')*rms*D(absence_days).sqrt()+GAP+FUNDING_RESERVE+2*(FEE+friction))
 
 
-def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, instrument, intended_add=None, *, fee=FEE, maintenance=MMR, notional_limit=D('1000000')):
+def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, instrument, intended_add=None, *, fee=FEE, maintenance=MMR, notional_limit=D('1000000'), target_quantity=None):
     """Atomically model a filled target delta after funding/protection preflight.
 
     Allocation is market-volatility based, never inverse stop-distance. Capital
@@ -32,7 +32,10 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
         raise ValueError('invalid economic preflight')
     if account.q and fee!=FEE:raise ValueError('non-default fee requires native reduction accounting')
     old = abs(account.q)
-    requested = max(ZERO, account.equity(mark)*fraction/max(price, mark))
+    requested = (max(ZERO, account.equity(mark)*fraction/max(price, mark))
+                 if target_quantity is None else D(target_quantity))
+    if not requested.is_finite() or requested < ZERO:
+        raise ValueError('invalid fixed quantity target')
     raw = min(requested, notional_limit/max(price, mark))
     delta = min(abs(raw-old), capacity)
     size_reason = ('liquidity_cap' if capacity < abs(raw-old) else

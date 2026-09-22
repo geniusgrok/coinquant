@@ -1,5 +1,6 @@
 """Continuous Binance research account diagnostic, never native qualification."""
 import argparse
+from contextlib import nullcontext
 from collections import Counter, deque
 import csv
 from decimal import Decimal as D
@@ -108,7 +109,11 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None):
+    if (entry_capacity_unlimited or execution is not None) and (reference!='impulse_hold' or entry_side!='long' or D(risk_scale)!=D('3.6') or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
+        raise ValueError('capacity reference requires the frozen L3.6 control')
+    if execution is not None and (entry_capacity_unlimited or native_trail_order):
+        raise ValueError('execution study cannot mix other diagnostic mechanisms')
     if entry_side not in ('both','long','short'):raise ValueError('invalid diagnostic entry side')
     if native_trail_order not in (None,'low_first','high_first'):raise ValueError('unknown native trailing path')
     if native_trail_order and (reference!='impulse_hold' or entry_side!='long'):raise ValueError('T requires frozen persistent long entry')
@@ -176,26 +181,41 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if quantity_rules:identity.append(dict(path=str(quantity_rules),sha256=hashlib.sha256(quantity_rules.read_bytes()).hexdigest()))
     exposure_sum=ZERO;max_exposure=ZERO;holding_hours=0;turnover=ZERO;regime_since=start;delays=[];binding=Counter();campaign_epoch=0;last_entry_epoch=-1
     slip=D(frozen['slippage_fraction']);spread=D(frozen['spread_fraction']);previous_quote=D(prior[start-HOUR][7])
+    if execution is not None:
+        from research.bounded_execution import BoundedEntry, exit_fill
+        if execution.stress:slip*=2
+    entry_window=None;parent_entries=[];exit_events=[]
     output.mkdir(parents=True,exist_ok=False)
-    with gzip.open(output/'equity.csv.gz.partial','wt') as ef,gzip.open(output/'orders.csv.gz.partial','wt') as of,gzip.open(output/'decisions.csv.gz.partial','wt') as df:
+    with gzip.open(output/'equity.csv.gz.partial','wt') as ef,gzip.open(output/'orders.csv.gz.partial','wt') as of,gzip.open(output/'decisions.csv.gz.partial','wt') as df, (open(output/'execution.jsonl.partial','w') if execution is not None else nullcontext(None)) as xf:
         ew=csv.writer(ef);ow=csv.writer(of);dw=csv.writer(df)
         dw.writerow(['time','regime','equity','quantity','notional','margin','free_wallet','sl','tp','regime_age_hours','action','binding_cap','risk_quantity','exposure_quantity','margin_quantity','notional_quantity','liquidity_quantity','requested_quantity','accepted_quantity','edge_target_fraction','edge_samples'])
-        ew.writerow(['time','event','equity_usdt','drawdown','quantity','mark','margin','fees','funding']);ow.writerow(['time','event','quantity_btc','price_or_mark','funding_rate','quantity_after'])
+        ew.writerow(['time','event','equity_usdt','drawdown','quantity','mark','margin','fees','funding']+(['wallet','average_entry','sl','tp'] if execution is not None else []));ow.writerow(['time','event','quantity_btc','price_or_mark','funding_rate','quantity_after'])
+        def execution_record(kind,value):
+            if xf is not None:
+                xf.write(json.dumps(dict(kind=kind,**value),default=str)+'\n');xf.flush()
         def observe(t,event,mark):
             nonlocal peak,mdd
             eq=account.equity(mark);peak=max(peak,eq);dd=1-eq/peak;mdd=max(mdd,dd)
-            ew.writerow([t,event,str(eq),str(dd),str(account.q),str(mark),str(account.margin),str(account.fees),str(account.funding)])
+            ew.writerow([t,event,str(eq),str(dd),str(account.q),str(mark),str(account.margin),str(account.fees),str(account.funding)]+([str(account.wallet),str(account.entry),str(account.sl),str(account.tp)] if execution is not None else []))
         def close(t,event,reference,bankruptcy=False):
             nonlocal turnover
             q=account.q
             price=reference if bankruptcy else reference*(1-slip-spread/2 if q>0 else 1+slip+spread/2)
+            if execution is not None:
+                if bankruptcy:raise ValueError('liquidation impact is not established for this execution study')
+                price,exit_record=exit_fill(reference,q,previous_quote,slip,spread)
+                exit_record.update(time=t,event=event);exit_events.append(exit_record)
+                execution_record('exit',exit_record)
+                if entry_window is not None and not entry_window.terminal_reason:
+                    entry_window.finish('protection_or_exit:'+event,t)
+                    execution_record('mother_stop',entry_window.record())
             turnover+=abs(q)*price
             account.close(abs(q),price);counts[event]+=1
             ow.writerow([t,event,str(q),str(price),'',str(account.q)])
-        def funding_bound(t,mark,q):
+        def funding_bound(t,mark,q,price_override=None):
             ft,rate=fund_hours[t]
             if q*rate>0:
-                p=mark[0] if ft==t else mark[1]
+                p=price_override if price_override is not None else mark[0] if ft==t else mark[1]
                 # Offset settlement follows the invocation. Charge old exposure
                 # even if it might already have exited: explicit adverse bound.
                 cost=q*p*rate
@@ -215,7 +235,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             observe(t,'open',mo)
             if t in fund_hours:day_funding+=max(ZERO,D(regime)*fund_hours[t][1])
             charged=False;exited=False;opening_q=account.q
-            if account.q and t in fund_hours and fund_hours[t][0]==t:
+            minute_funding=execution is not None and t in execution.refined_hours
+            if (account.q or minute_funding) and t in fund_hours and fund_hours[t][0]==t:
                 funding_bound(t,mark,opening_q);charged=True
             if account.q and not hypothetical:
                 long=account.q>0;liq=account.liquidation()
@@ -240,7 +261,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 if reference=='channel_position':edge_target*=channel_position(daily)[1]
                 action='hold' if account.q else 'no_signal';caps={};qty=ZERO;raw_qty=ZERO;limiter=''
                 decision_state=[t,regime,str(account.equity(mo)),str(account.q),str(abs(account.q)*mo),str(account.margin),str(account.wallet-account.margin),str(account.sl),str(account.tp),(t-regime_since)//HOUR]
-                if mechanism and not account.q and opportunity and opportunity.entry_limit is not None and (not opportunity.entry_open or opportunity.direction*(o*(1+D(opportunity.direction)*(slip+spread/2))-opportunity.entry_limit)>=0):
+                if mechanism and not account.q and opportunity and opportunity.entry_limit is not None and (not opportunity.entry_open or opportunity.direction*(o*(1+D(opportunity.direction)*(D(frozen['slippage_fraction'])+spread/2))-opportunity.entry_limit)>=0):
                     direction=0;action='edge_realized';counts[action]+=1
                 if reference=='impulse_confirmation' and account.q and opportunity and campaign_epoch==last_entry_epoch:
                     proposed=floor_step(opportunity.stop,TICK)+(TICK if account.q<0 else ZERO)
@@ -298,7 +319,19 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                             if min(sl,tp)<=0:
                                 action='unsafe_geometry';counts[action]+=1
                             else:
-                                change=funded_target(account,direction,edge_target,price,mo,sl,tp,previous_quote/60*D(frozen['volume_participation'])/price,instrument,intended_add=adding)
+                                if execution is not None and execution.sliced:
+                                    entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
+                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress)
+                                    if entry_window.maximum and (t not in execution.refined_hours or minutes is None or t not in minutes['klines']):
+                                        raise ValueError(f'missing bounded entry minute path at {t}')
+                                    parent_entries.append(entry_window)
+                                    execution_record('mother_created',entry_window.record())
+                                    change=dict(requested=str(entry_window.raw_target),accepted='0',amount=ZERO,event='',
+                                                reason=entry_window.terminal_reason or 'deferred_entry')
+                                else:
+                                    change=funded_target(account,direction,edge_target,price,mo,sl,tp,
+                                        D('Infinity') if entry_capacity_unlimited and not account.q else previous_quote/60*D(frozen['volume_participation'])/price,
+                                        instrument,intended_add=adding)
                                 action=change['event'] or change['reason'];limiter=change['reason'];binding[limiter]+=1
                                 raw_qty=D(change['requested']);qty=D(change['accepted']);counts[action]+=1
                                 if change['event']:
@@ -347,39 +380,62 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                 counts['entry']+=1;ow.writerow([t,'entry',str(account.q),str(price),'',str(account.q)])
                             else:counts['size_below_minimum']+=1;action='size_below_minimum'
                 dw.writerow(decision_state+[action,limiter]+[str(caps.get(k,'')) for k in ('risk','exposure','margin','notional','liquidity')]+[str(raw_qty),str(qty),str(edge_target),len(edge_observations)])
-            if not charged and t in fund_hours and (opening_q or account.q):
+            if not minute_funding and not charged and t in fund_hours and (opening_q or account.q):
                 if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
                 charge_q=(max((opening_q,account.q),key=lambda q:q*fund_hours[t][1]) if targeting else opening_q or account.q)
                 funding_bound(t,mark,charge_q)
             for st,sbar,smark in steps(t,bar,mark,minutes):
-                if not account.q:break
+                active_entry=entry_window is not None and entry_window.call_time==t and entry_window.available(st)
+                if not account.q and not active_entry:break
                 if hypothetical:
                     observe(st,'hypothetical_envelope_high',smark[1]);observe(st,'hypothetical_envelope_low',smark[2])
                     if smark[2]<=account.liquidation():counts['hypothetical_liquidation_crossing']+=1
                     continue
                 so,sh,slo,sc=sbar;smo,smh,sml,smc=smark
-                long=account.q>0;liq=account.liquidation()
-                # Each native subinterval resolves only BEFORE later intervals.
-                # Remaining within-minute ambiguity is still liquidation-first.
-                if st>t and ((long and smo<=liq) or (not long and smo>=liq)):
-                    close(st,'liquidation',account.liquidation(ZERO),True)
-                elif st>t and ((long and smo<=account.sl) or (not long and smo>=account.sl)):
-                    close(st,'stop_gap',so)
-                elif st>t and ((long and smo>=account.tp) or (not long and smo<=account.tp)):
-                    close(st,'take_gap',so)
-                else:
-                    for price in sorted((smh,sml),key=account.equity,reverse=True):observe(st,'conservative_envelope',price)
-                    hit_liq=(long and sml<=liq) or (not long and smh>=liq)
-                    hit_stop=(long and sml<=account.sl) or (not long and smh>=account.sl)
-                    if hit_liq:
-                        if hit_stop:counts['unresolved_same_interval_stop_liquidation']+=1
+                if minute_funding and not charged and t in fund_hours and fund_hours[t][0]==st:
+                    funding_bound(t,smark,account.q,price_override=smo);charged=True
+                # Existing net exposure meets opening protection BEFORE another child.
+                if account.q and st>t:
+                    long=account.q>0;liq=account.liquidation()
+                    if (long and smo<=liq) or (not long and smo>=liq):
                         close(st,'liquidation',account.liquidation(ZERO),True)
-                    elif native_trail_order:
-                        from research.native_trail import step as trail_step
-                        trail_peak,trigger=trail_step(trail_peak,smark,account.sl,native_trail_order)
-                        if trigger is not None:close(st,'native_trail_or_stop',min(trigger,so))
-                    elif hit_stop:close(st,'stop',min(account.sl,so) if long else max(account.sl,so))
-                    elif (long and smh>=account.tp) or (not long and sml<=account.tp):close(st,'take',account.tp)
+                        continue
+                    if (long and smo<=account.sl) or (not long and smo>=account.sl):
+                        close(st,'stop_gap',so)
+                        continue
+                    if (long and smo>=account.tp) or (not long and smo<=account.tp):
+                        close(st,'take_gap',so)
+                        continue
+                if active_entry and st>=entry_window.start:
+                    child=entry_window.attempt(st,account,so,smo,execution.minute_quotes,instrument)
+                    execution_record('child',child)
+                    amount=D(child['accepted'])
+                    if amount:
+                        turnover+=amount*D(child['price']);counts[child['event']]+=1
+                        binding[child['reason']]+=1
+                        ow.writerow([st,child['event'],str(amount),child['price'],'',str(account.q)])
+                        observe(st,'slice_confirmed',smo)
+                        if child['event']=='entry':
+                            last_entry_epoch=entry_window.campaign
+                            delays.append((t-regime_since)//HOUR)
+                if minute_funding and not charged and t in fund_hours and st<fund_hours[t][0]<st+60000:
+                    if account.q:observe(st,'pre_offset_possible_peak',smh)
+                    funding_bound(t,smark,account.q,price_override=smh);charged=True
+                if not account.q:continue
+                long=account.q>0;liq=account.liquidation()
+                # Only after the current child: minute extrema cannot size that child.
+                for price in sorted((smh,sml),key=account.equity,reverse=True):observe(st,'conservative_envelope',price)
+                hit_liq=(long and sml<=liq) or (not long and smh>=liq)
+                hit_stop=(long and sml<=account.sl) or (not long and smh>=account.sl)
+                if hit_liq:
+                    if hit_stop:counts['unresolved_same_interval_stop_liquidation']+=1
+                    close(st,'liquidation',account.liquidation(ZERO),True)
+                elif native_trail_order:
+                    from research.native_trail import step as trail_step
+                    trail_peak,trigger=trail_step(trail_peak,smark,account.sl,native_trail_order)
+                    if trigger is not None:close(st,'native_trail_or_stop',min(trigger,so))
+                elif hit_stop:close(st,'stop',min(account.sl,so) if long else max(account.sl,so))
+                elif (long and smh>=account.tp) or (not long and sml<=account.tp):close(st,'take',account.tp)
             observe(t+HOUR,'close',mc)
             exposure=abs(account.q)*mc/account.equity(mc) if account.equity(mc)>0 else ZERO
             exposure_sum+=exposure;max_exposure=max(max_exposure,exposure);holding_hours+=bool(account.q)
@@ -406,6 +462,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 regime=new_regime
             previous_quote=D(r[7])
         final=account.equity(mc)
+        if execution is not None:
+            for parent in parent_entries:
+                parent.available(end)
+                execution_record('mother_final',parent.record())
     # Publish only fully closed, CRC-verified streams; never pair a result with
     # a partially persisted trace. Partial files remain available for diagnosis.
     for name in ('equity','orders','decisions'):
@@ -413,6 +473,12 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         with gzip.open(pending,'rb') as stream:
             while stream.read(1024*1024):pass
         pending.replace(output/(name+'.csv.gz'))
+    if execution is not None:
+        pending=output/'execution.jsonl.partial'
+        with pending.open() as stream:
+            for line in stream:json.loads(line)
+        pending.replace(output/'execution.jsonl')
+        (output/'execution_summary.json').write_text(json.dumps(dict(configuration=execution.configuration(),parents=[p.record() for p in parent_entries],exits=exit_events),indent=2)+'\n')
     if seen!=sorted(triggers):raise ValueError('frozen invocation mismatch')
     years=(end-start)/31556952000;cagr=(float(final/initial)**(1/years)-1 if final>0 else -1) if not (payoff and payoff.get('scenario')) else None
     result=dict(candidate=('L7' if baseline else 'L9')+'-minute-refined',qualification='NOT_QUALIFIED',validation_used=full_window,window_end_exclusive=iso(end),cagr=cagr,mdd_conservative_envelope=str(mdd),
@@ -420,6 +486,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 progression_passed=None,progression_status='requires paired refined comparison',code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                 limitations=['Proxy dated rules/fees/liquidity and USDT=USD','Adverse interval funding valuation, not exact cashflow',
                              f'Minute refinement on {len(minute_identity)//2} days only; remaining interval liquidation-first ambiguity','Margin transfer and full-position execution unverified'])
+    if entry_capacity_unlimited:
+        result['entry_execution']='same_price_capacity_reference_NOT_tradable'
+        result['limitations'].append('Entry capacity alone removed; optimistic diagnostic, not an execution bound')
     result['reference']=reference
     result['candidate']=('L18' if allocation=='edge' else 'L17' if lifecycle=='one_campaign' else 'L7' if baseline else 'L9')+'-minute-refined'
     if targeting:result['candidate']='L21' if allocation=='volatility' else 'B1' if reference=='long' else 'B2'
@@ -441,9 +510,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['limitations'].append('OHLC path scenario, not native tick or protective-write evidence')
     if payoff is not None:
         result.update(candidate=payoff['name'],scenario=bool(payoff.get('scenario')),terminal_label=hypothetical,entry_time=entry_time,final_equity_usdt=str(final))
+    if execution is not None:
+        result['execution']=execution.configuration()
+        result['candidate']='L3.6-five-minute' if execution.sliced else 'L3.6-instant-impact-control'
+        result['limitations'].extend(['Causal minute capacity is not order-book depth; IOC fills and immediate protection are proxies', 'Additional exit impact is the preregistered linear stress, not historical calibration'])
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
-    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json'),Path('pancakequant/opportunities.py'),Path('pancakequant/campaign.py'),Path('pancakequant/linear_account.py'),Path('pancakequant/linear_sizing.py'),Path('research/native_trail.py')):
+    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json'),Path('pancakequant/opportunities.py'),Path('pancakequant/campaign.py'),Path('pancakequant/linear_account.py'),Path('pancakequant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ()):
         raw=source.read_bytes()
         if not (payoff and payoff.get('scenario')):(sources/source.name).write_bytes(raw)
         source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()

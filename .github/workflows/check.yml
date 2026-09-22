@@ -25,56 +25,24 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - name: Public mark minute gap evidence
-        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[bounded-mark-repair]')
-        env:
-          OUTPUT: ${{ runner.temp }}/bounded-mark-repair
+      - name: Export exact workspace for offline research
+        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[workspace-export]')
         run: |
-          python3 - <<'PY'
-          import csv, hashlib, io, json, os, urllib.request, zipfile
-          from pathlib import Path
-          root=Path(os.environ['OUTPUT']);root.mkdir()
-          records=[];available=False
-          base='https://data.binance.vision/data/futures/um/'
-          path='monthly/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-02.zip'
-          def get(url):
-              with urllib.request.urlopen(url,timeout=30) as response:return response.read()
-          try:
-              raw=get(base+path);(root/'monthly.zip').write_bytes(raw)
-              checksum=get(base+path+'.CHECKSUM');(root/'monthly.zip.CHECKSUM').write_bytes(checksum)
-              digest=hashlib.sha256(raw).hexdigest()
-              assert digest==checksum.decode().split()[0]
-              with zipfile.ZipFile(io.BytesIO(raw)) as z:
-                  assert len(z.namelist())==1 and z.testzip() is None
-                  rows=list(csv.reader(io.StringIO(z.read(z.namelist()[0]).decode())))
-              selected=[r for r in rows if r[0].isdigit() and 1612972800000<=int(r[0])<1612976400000]
-              available=[int(r[0]) for r in selected]==list(range(1612972800000,1612976400000,60000))
-              records.append(dict(source=base+path,sha256=digest,bytes=len(raw),required_rows=len(selected),complete_required_hour=available))
-          except Exception as e:records.append(dict(source=base+path,error=repr(e)))
-          if not available:
-              url='https://fapi.binance.com/fapi/v1/markPriceKlines?symbol=BTCUSDT&interval=1m&startTime=1612972800000&endTime=1612976399999&limit=60'
-              try:
-                  raw=get(url);(root/'required-hour.json').write_bytes(raw)
-                  rows=json.loads(raw)
-                  available=[int(r[0]) for r in rows]==list(range(1612972800000,1612976400000,60000))
-                  records.append(dict(source=url,sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw),required_rows=len(rows),complete_required_hour=available))
-              except Exception as e:records.append(dict(source=url,error=repr(e)))
-          (root/'RECEIPT.json').write_text(json.dumps(dict(available=available,records=records),indent=2)+'\n')
-          print(json.dumps(dict(available=available,records=records)))
-          PY
+          set -eu
+          mkdir -p "$RUNNER_TEMP/pancakequant-workspace"
+          git archive --format=tar HEAD | gzip -1 > "$RUNNER_TEMP/pancakequant-workspace/workspace.tar.gz"
+          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/pancakequant-workspace/IDENTITY.txt"
+          git ls-tree -r HEAD > "$RUNNER_TEMP/pancakequant-workspace/TREE.txt"
+          cd "$RUNNER_TEMP/pancakequant-workspace"
+          sha256sum workspace.tar.gz > SHA256SUMS
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[bounded-mark-repair]')
+        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[workspace-export]')
         with:
-          name: bounded-mark-repair-${{ github.sha }}
-          path: ${{ runner.temp }}/bounded-mark-repair/
+          name: bounded-execution-workspace-${{ github.sha }}
+          path: ${{ runner.temp }}/pancakequant-workspace/
           compression-level: 0
           retention-days: 3
           if-no-files-found: error
-      - name: Require complete requested mark hour
-        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[bounded-mark-repair]')
-        env:
-          OUTPUT: ${{ runner.temp }}/bounded-mark-repair
-        run: python3 -c "import json,os; from pathlib import Path; assert json.loads((Path(os.environ['OUTPUT'])/'RECEIPT.json').read_text())['available']"
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'

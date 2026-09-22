@@ -17,6 +17,10 @@ def verify(path):
                 if event=='entry':
                     assert q==0
                     q=amount;entry=price;cost=abs(amount)*price*D('.00075');wallet-=cost;fees+=cost
+                elif event=='rebalance_add':
+                    assert amount*q>0
+                    entry=(abs(q)*entry+abs(amount)*price)/abs(q+amount)
+                    q+=amount;cost=abs(amount)*price*D('.00075');wallet-=cost;fees+=cost
                 elif event=='funding_adverse_bound':
                     cost=amount*price*D(a['funding_rate']);wallet-=cost;funding+=cost
                 else:
