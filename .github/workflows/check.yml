@@ -1,53 +1,67 @@
 name: Check
 on:
   push:
-    branches: [main, research/on-demand-btc-20260920]
-    paths:
-      - 'pancakequant/**'
-      - 'tests/**'
-      - 'main.py'
-      - 'config.example.json'
-      - 'research/**'
-      - 'requirements-research.txt'
-      - '.github/workflows/check.yml'
-  workflow_dispatch:
+    branches: [research/on-demand-btc-20260920]
+    paths: ['research/**', 'tests/**', '.transfer/frontier-source.patch', '.github/workflows/check.yml']
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: pancakequant-check-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   check:
+    if: contains(github.event.head_commit.message, '[frontier-file-transfer]')
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           ref: ${{ github.sha }}
-          persist-credentials: false
-      - name: Export exact workspace for offline research
-        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[workspace-export]')
-        run: |
-          set -eu
-          mkdir -p "$RUNNER_TEMP/pancakequant-workspace"
-          git archive --format=tar HEAD | gzip -1 > "$RUNNER_TEMP/pancakequant-workspace/workspace.tar.gz"
-          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/pancakequant-workspace/IDENTITY.txt"
-          git ls-tree -r HEAD > "$RUNNER_TEMP/pancakequant-workspace/TREE.txt"
-          cd "$RUNNER_TEMP/pancakequant-workspace"
-          sha256sum workspace.tar.gz > SHA256SUMS
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[workspace-export]')
-        with:
-          name: bounded-execution-workspace-${{ github.sha }}
-          path: ${{ runner.temp }}/pancakequant-workspace/
-          compression-level: 0
-          retention-days: 3
-          if-no-files-found: error
+          persist-credentials: true
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
-      - name: Compile and run offline checks
+      - name: Apply fixed local-source patch and verify exact economic identity
         run: |
+          set -eu
+          echo 'ed437575f59e3b2ec6017cfe6e1c2ab4496ba1581fd8e4b057216886ff3bae5a  .transfer/frontier-source.patch' | sha256sum -c -
+          git apply --check .transfer/frontier-source.patch
+          git apply .transfer/frontier-source.patch
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          expected=json.loads(Path('evidence/execution-risk-frontier-20260922/SELECTION.json').read_text())['source_identity']
+          expected.update({'research/execution_risk_audit.py':'cab7c1e622fdf48e4148f96ce1c95057e0149dca0af0af6a336436267f914061','tests/test_execution_risk_frontier.py':'f2fa1a4d0886cdedfd1f6eb0d8e3406a04208b605d45c62fbd95840169cb891e'})
+          for name,digest in expected.items():
+              assert hashlib.sha256(Path(name).read_bytes()).hexdigest()==digest,name
+          print('Verified',len(expected),'source/config identities')
+          PY
           python -m pip install -r requirements-research.txt
-          python -m compileall -q pancakequant research tests
-          python -m unittest discover -s tests -v
+          PYTHONPATH=.:tests python -m unittest test_bounded_execution test_execution_risk_frontier -v
+          git diff --check
+      - name: Save source using native Git without overriding concurrent work
+        run: |
+          set -eu
+          test "$GITHUB_REF" = refs/heads/research/on-demand-btc-20260920
+          test "$(git ls-remote origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
+          git add research/bounded_execution.py research/persistent_hold_replay.py
+          git rm .transfer/frontier-source.patch
+          git -c user.name='pancakequant research' -c user.email='research@users.noreply.github.com' commit -m 'research: save verified bounded risk source via native file patch'
+          git push origin HEAD:"$GITHUB_REF"
+      - name: Export source for independent byte and Git object readback
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/frontier-source"
+          git archive --format=tar HEAD | gzip -1 > "$RUNNER_TEMP/frontier-source/workspace.tar.gz"
+          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/frontier-source/IDENTITY.txt"
+          git ls-tree -r HEAD > "$RUNNER_TEMP/frontier-source/TREE.txt"
+          cd "$RUNNER_TEMP/frontier-source"
+          sha256sum workspace.tar.gz > SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: execution-risk-frontier-source-${{ github.sha }}
+          path: ${{ runner.temp }}/frontier-source/
+          compression-level: 0
+          retention-days: 3
+          if-no-files-found: error

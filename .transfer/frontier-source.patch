@@ -1,0 +1,84 @@
+diff --git a/research/bounded_execution.py b/research/bounded_execution.py
+index fca4602..823cda4 100644
+--- a/research/bounded_execution.py
++++ b/research/bounded_execution.py
+@@ -20,2 +20,15 @@ WINDOW = 5 * MINUTE
+ PARTICIPATION = D('.01')
++RISK_SCALES = (D('3.6'), D('4.8'), D('6.0'))
++
++
++def risk_scale(value) -> D:
++    """Only the preregistered research budgets, never an exchange leverage setting."""
++    try:
++        result = D(str(value))
++        if not result.is_finite() or result not in RISK_SCALES:
++            raise ValueError('risk scale must be one of 3.6, 4.8, 6.0')
++    except ArithmeticError as exc:
++        raise ValueError('invalid research risk scale') from exc
++    return result
++
+ 
+@@ -69,2 +82,3 @@ class BoundedEntry:
+     liquidity_limited: bool = False
++    risk_scale: D = D('3.6')
+ 
+@@ -72,3 +86,3 @@ class BoundedEntry:
+     def identity(self) -> str:
+-        return client_id('research:binance:BTCUSDT:L3.6', self.call_time, 'bounded-entry')
++        return client_id(f'research:binance:BTCUSDT:L{self.risk_scale:.1f}', self.call_time, 'bounded-entry')
+ 
+@@ -78,3 +92,5 @@ class BoundedEntry:
+                instrument: dict | None, slippage: D, spread: D,
+-               entry_limit: D | None = None, *, stress: bool = False) -> BoundedEntry:
++               entry_limit: D | None = None, *, stress: bool = False,
++               budget: D = D('3.6')) -> BoundedEntry:
++        selected_budget = risk_scale(budget)
+         if account.q or account.wallet <= 0:
+@@ -91,3 +107,4 @@ class BoundedEntry:
+                      D(change['requested']), budget, price, quote, stop, take, entry_limit,
+-                     previous_hour_quote, slippage, spread, account.fees, account.funding)
++                     previous_hour_quote, slippage, spread, account.fees, account.funding,
++                     risk_scale=selected_budget)
+         if not maximum:
+@@ -211,3 +228,4 @@ class BoundedEntry:
+         from dataclasses import fields
+-        values = {f.name: record[f.name] for f in fields(cls)}
++        values = {f.name: record[f.name] for f in fields(cls) if f.name != 'risk_scale'}
++        values['risk_scale'] = risk_scale(record.get('risk_scale', '3.6'))
+         for name in ('maximum', 'raw_target', 'risk_budget', 'original_price', 'original_quote',
+@@ -243,5 +261,9 @@ class ExecutionStudy:
+     minute_quotes: Mapping[int, D]
++    risk_scale: D = D('3.6')
++
++    def __post_init__(self):
++        object.__setattr__(self, 'risk_scale', risk_scale(self.risk_scale))
+ 
+     def configuration(self) -> dict:
+-        return dict(mode='five_minute' if self.sliced else 'instant_control',
++        return dict(mode='five_minute' if self.sliced else 'instant_control', risk_scale=str(self.risk_scale),
+                     fixed_window_seconds=300, decision_delay_seconds=(120 if self.stress else 60) if self.sliced else 0,
+diff --git a/research/persistent_hold_replay.py b/research/persistent_hold_replay.py
+index 6287108..5d86a80 100644
+--- a/research/persistent_hold_replay.py
++++ b/research/persistent_hold_replay.py
+@@ -112,4 +112,8 @@ def decision_times(frozen, end, schedule):
+ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None):
+-    if (entry_capacity_unlimited or execution is not None) and (reference!='impulse_hold' or entry_side!='long' or D(risk_scale)!=D('3.6') or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
+-        raise ValueError('capacity reference requires the frozen L3.6 control')
++    if (entry_capacity_unlimited or execution is not None) and (reference!='impulse_hold' or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
++        raise ValueError('execution study requires the frozen long impulse control')
++    if entry_capacity_unlimited and D(risk_scale)!=D('3.6'):
++        raise ValueError('unlimited capacity diagnostic remains fixed at 3.6')
++    if execution is not None and D(risk_scale)!=execution.risk_scale:
++        raise ValueError('account risk scale does not match execution study')
+     if execution is not None and (entry_capacity_unlimited or native_trail_order):
+@@ -323,3 +327,3 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
+                                     entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
+-                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress)
++                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale)
+                                     if entry_window.maximum and (t not in execution.refined_hours or minutes is None or t not in minutes['klines']):
+@@ -514,3 +518,3 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
+         result['execution']=execution.configuration()
+-        result['candidate']='L3.6-five-minute' if execution.sliced else 'L3.6-instant-impact-control'
++        result['candidate']=f'L{risk_scale:.1f}-'+('five-minute' if execution.sliced else 'instant-impact-control')
+         result['limitations'].extend(['Causal minute capacity is not order-book depth; IOC fills and immediate protection are proxies', 'Additional exit impact is the preregistered linear stress, not historical calibration'])
