@@ -1,0 +1,22 @@
+{
+  "status": "research-complete-source-publication-blocked",
+  "new_originals": {
+    "name": "PANCAKEQUANT_SUSTAINABLE_CAPITAL_EXIT_20260922.zip",
+    "library_file_id": "libfile_0f102b0356a48191b1b5d2865074ad0b",
+    "file_id": "file_0000000087a082308588b1ebea6afa39",
+    "bytes": 41734473,
+    "sha256": "d18021568ef10c5c091b1dc5488372a1d87e8b8bc0baadb5f0fe288df68956ab",
+    "manifest_members": 899,
+    "library_readback_byte_equal": true,
+    "all_member_hashes_verified": true,
+    "scope": "Complete new implementation and tests, 9 valid plus 9 superseded continuous accounts, all budgets/reductions/exit children/orders/equity/decisions, source identities, validation and failure logs, 44 official minute archives and checksums. Old inputs remain fixed dependencies below."
+  },
+  "git_scope": "Protocol, acquisition, reviewed development selection, report, recovery index and root state; temporary minute-acquisition workflow steps removed. New capital/planned-exit engine source and tests are NOT published: source create_tree was blocked by platform safety checking. No bypass attempted.",
+  "archive_document_correction": "Pre-publication archive REPORT section 5 and root state describe intended Git scope. This current remote index/report supersedes that storage claim only; research bytes and results are unchanged.",
+  "development_selection_commit": "e0157b673dceefbdc9b8d24ef1f3ab7e134075f8",
+  "main_unchanged": "c886b7c63c6455bd7c933269e32cd35a6fb3e09a",
+  "dependencies": [
+    {"name":"PANCAKEQUANT_EXECUTION_RISK_FRONTIER_20260922.zip","library_file_id":"libfile_0a41df6a55f08191a0f2178ac0f977d5","file_id":"file_00000000ae708206911a7d3f9dd50119","bytes":30109407,"sha256":"fe46a9df34a4e9d80080aa25d79375f9f97517f2e73bfb45f110c24d6293d236","manifest_members":964,"verified":true},
+    {"name":"PANCAKEQUANT_BOUNDED_EXECUTION_20260922.zip","library_file_id":"libfile_54a5fcf3af5c8191af73244b14ef6ec5","file_id":"file_0000000083d481fd961f6fa15939f45b","bytes":48866772,"sha256":"854fba74875a4e7bc07a9b709edf82b377d7157a01d8d73db42db44aa41095c1","manifest_members":2077,"verified":true}
+  ]
+}
