@@ -53,7 +53,12 @@ class Account:
             self.entry = self.margin = self.sl = self.tp = ZERO
 
     def pay_funding(self, mark, rate):
-        cost = self.q * mark * rate
+        self.apply_funding_cost(self.q * mark * rate)
+
+    def apply_funding_cost(self, cost):
+        """Post an actual or explicitly bounded settlement, including collateral draw."""
+        if not cost.is_finite():
+            raise ValueError('nonfinite funding cashflow')
         self.wallet -= cost; self.funding += cost
         if self.q and self.wallet < self.margin:
             self.margin = max(ZERO, self.wallet)

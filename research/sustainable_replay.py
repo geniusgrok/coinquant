@@ -1,0 +1,125 @@
+"""Run the frozen capital/exit experiment on the shared continuous account."""
+import argparse
+import contextlib
+import hashlib
+import json
+from decimal import Decimal as D
+from pathlib import Path
+
+from pancakequant.research import iso
+from research.bounded_execution import ExecutionStudy
+from research.bounded_execution_data import _rows, validate_hour, MINUTE, HOUR
+from research.bounded_execution_replay import prepare, SOURCES, digest, input_identity
+from research.persistent_hold_replay import run
+from research.verify_account_ledger import verify
+from research.execution_risk_audit import audit, buffer_audit
+
+PROTOCOL = 'evidence/sustainable-capital-exit-20260922/PROTOCOL.md'
+NEW_SOURCES = ('pancakequant/capital.py','research/planned_exit.py',
+               'research/sustainable_replay.py','research/execution_risk_audit.py',PROTOCOL)
+
+
+def source_identity():
+    return {name:digest(name) for name in (*SOURCES,*NEW_SOURCES)}
+
+
+def exit_minutes(root, prepared):
+    cache,(original,identities),old_quotes,validation,_=prepared
+    receipt=json.loads((root/'RECEIPT.json').read_text())
+    if not receipt['complete']:raise ValueError('incomplete planned exit originals')
+    hours=[t for t in receipt['request']['exit_hours_ms'] if t in cache[0]['klines']]
+    tables={kind:dict(values) for kind,values in original.items()}
+    quotes=dict(old_quotes); identities=list(identities);checks=[]
+    for record in receipt['records']:
+        selected=[t for t in hours if iso(t)[:10]==record['day']]
+        if not selected:continue
+        path=root/record['path'];raw=path.read_bytes()
+        sha=hashlib.sha256(raw).hexdigest()
+        if (sha!=record['sha256'] or len(raw)!=record['bytes']
+                or Path(str(path)+'.CHECKSUM').read_text().split()[0]!=sha):
+            raise ValueError('planned exit archive identity mismatch')
+        rows=_rows(raw);source={int(r[0]):r for r in rows}
+        if len(source)!=len(rows):raise ValueError('duplicate exit minute')
+        kind=record['kind']
+        for t in selected:
+            chunk=[source[x] for x in range(t,t+HOUR,MINUTE) if x in source]
+            check=validate_hour(chunk,cache[0][kind][t],trade=kind=='klines')
+            checks.append(dict(check,kind=kind))
+            for r in chunk:
+                tm=int(r[0]);values=tuple(map(D,r[1:5]))
+                if tm in tables[kind] and tables[kind][tm]!=values:
+                    raise ValueError('overlapping minute revisions differ')
+                tables[kind][tm]=values
+            if kind=='klines':
+                for tm in range(t-MINUTE,t+HOUR,MINUTE):
+                    if tm not in source:raise ValueError('missing published exit volume')
+                    quotes[tm]=D(source[tm][7])
+        identities.append(dict(path=str(path),source=record['source'],sha256=sha,bytes=len(raw)))
+    if len(checks)!=2*len(hours):raise ValueError('planned exit hour coverage mismatch')
+    combined=dict(hours=sorted(set(validation['hours'])|set(hours)),
+                  entry_checks=validation,exit_checks=checks)
+    return cache,(tables,identities),quotes,combined,input_identity(cache[3]+identities)
+
+
+def run_account(root, output, prepared, label, *, full=False, stress=False):
+    modes={'S60':'instant','SC60':'prepared','SX60':'sliced'}
+    cache,minutes,quotes,validation,data_id=prepared
+    cfg=ExecutionStudy(True,stress,frozenset(validation['hours']),quotes,D(6),True,modes[label])
+    output.parent.mkdir(parents=True,exist_ok=True)
+    invocation=output.with_suffix('.invocation.json')
+    if output.exists() or invocation.exists():raise ValueError('refusing to overwrite account evidence')
+    frozen=dict(label=label,full_window=full,configuration=cfg.configuration(),
+                protocol_sha256=digest(PROTOCOL),source_identity=source_identity(),
+                input_identity=data_id,minute_validation=validation)
+    invocation.write_text(json.dumps(frozen,indent=2)+'\n')
+    try:
+        with output.with_suffix('.log').open('w') as log,contextlib.redirect_stdout(log):
+            result=run(root/'native',root/'warmup',root/'repairs',output,
+                allocation='volatility',reference='impulse_hold',lifecycle='one_campaign',
+                entry_side='long',short_risk_scale=D(0),risk_scale=D(6),
+                quantity_rules=root/'quantity/current-instrument.json',cached_inputs=cache,
+                cached_minutes=minutes,execution=cfg,full_window=full)
+        result['candidate']=label
+        result['protocol_sha256']=digest(PROTOCOL)
+        for name in NEW_SOURCES:
+            path=output/'measured_source'/name
+            path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(Path(name).read_bytes())
+        result['complete_source_identity']=source_identity()
+        (output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+        ledger=verify(output);(output/'LEDGER_AUDIT.json').write_text(json.dumps(ledger,indent=2)+'\n')
+        risk=audit(output);buffer=buffer_audit(output)
+        print(json.dumps(dict(label=label,full=full,stress=stress,cagr=result['cagr'],mdd=result['mdd_conservative_envelope'],
+            final_cny=result['final_cny'],ledger=ledger['max_equity_error_usdt'],
+            risk=risk['passed'],buffer=buffer['original_gap_maintained'],counts=result['counts'])),flush=True)
+        return result
+    except BaseException:
+        import traceback
+        output.with_suffix('.failure.txt').write_text(traceback.format_exc())
+        raise
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--input-root',type=Path,required=True);p.add_argument('--baseline',type=Path,required=True)
+    p.add_argument('--entry-minutes',type=Path,required=True);p.add_argument('--request',type=Path,required=True)
+    p.add_argument('--mark-repair',type=Path,required=True);p.add_argument('--exit-minutes',type=Path)
+    p.add_argument('--output',type=Path,required=True);p.add_argument('--labels',nargs='+',choices=('S60','SC60','SX60'),required=True)
+    p.add_argument('--full-window',action='store_true');p.add_argument('--stress',action='store_true')
+    p.add_argument('--selection',type=Path)
+    a=p.parse_args()
+    if a.full_window and any(x!='S60' for x in a.labels):
+        if not a.selection:p.error('planned-exit full run requires frozen development selection')
+        selection=json.loads(a.selection.read_text())
+        if not selection['advance'] or selection['source_identity']!=source_identity():
+            raise ValueError('source or development selection ineligible')
+        for name,sha in selection['files'].items():
+            if digest(a.selection.parent/name)!=sha:raise ValueError('development evidence changed')
+    prepared=prepare(a.input_root,a.baseline,a.entry_minutes,a.request,a.mark_repair,full=a.full_window)
+    refined=exit_minutes(a.exit_minutes,prepared) if any(x!='S60' for x in a.labels) else None
+    for label in a.labels:
+        stage=('full' if a.full_window else 'development')+('-stress' if a.stress else '')
+        run_account(a.input_root,a.output/(label+'-'+stage),prepared if label=='S60' else refined,
+                    label,full=a.full_window,stress=a.stress)
+
+
+if __name__=='__main__':main()

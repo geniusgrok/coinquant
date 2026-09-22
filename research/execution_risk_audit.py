@@ -96,8 +96,14 @@ def buffer_audit(path: Path) -> dict:
         previous = r
         if not q:
             continue
-        eligible = [c for c in children if int(c['time'])<=t and D(c['quantity_after'])==q
-                    and D(c['entry_price'])==D(r['average_entry'])]
+        if 'gap_anchor_child' in r:
+            eligible = [c for c in children if c['child_id']==r['gap_anchor_child']
+                        and int(c['time'])<=t and q<=D(c['quantity_after'])
+                        and D(c['entry_price'])==D(r['average_entry'])
+                        and D(c['mark'])==D(r['gap_anchor_mark'])]
+        else:
+            eligible = [c for c in children if int(c['time'])<=t and D(c['quantity_after'])==q
+                        and D(c['entry_price'])==D(r['average_entry'])]
         if not eligible:
             raise ValueError('saved holding has no causal confirmed child anchor')
         child = eligible[-1]; parent = parents[child['parent_id']]

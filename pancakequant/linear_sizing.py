@@ -16,7 +16,7 @@ def target_fraction(returns, friction, absence_days=7):
     return D('.20')/(D('2.33')*rms*D(absence_days).sqrt()+GAP+FUNDING_RESERVE+2*(FEE+friction))
 
 
-def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, instrument, intended_add=None, *, fee=FEE, maintenance=MMR, notional_limit=D('1000000'), target_quantity=None):
+def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, instrument, intended_add=None, *, fee=FEE, maintenance=MMR, notional_limit=D('1000000'), target_quantity=None, capital=None):
     """Atomically model a filled target delta after funding/protection preflight.
 
     Allocation is market-volatility based, never inverse stop-distance. Capital
@@ -66,7 +66,8 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
         entry_fee = amount*price*fee
         required = max(account.margin, quantity*entry/20,
                        q*entry-(q-quantity*(maintenance+fee))*boundary)
-        reserve = quantity*max(price, mark)*(FUNDING_RESERVE+fee)
+        reserve = (quantity*max(price, mark)*(FUNDING_RESERVE+fee) if capital is None
+                   else capital.reserve(quantity, entry, price, mark))
         if required+reserve+entry_fee > account.wallet:
             return None
         trial = replace(account, wallet=account.wallet-entry_fee, q=q, entry=entry,
