@@ -1,15 +1,21 @@
-# Coinquant：基于 main 继续
+# Coinquant：从实时main恢复，不重复M60失败实验
 
-继续 geniusgrok/coinquant，全程中文，使用 personal / geniusgrok GitHub 连接。遵循当前 AGENTS.md；实际可用时采用 PonyTail，不增加不必要流程。main 是开发集成基线，不是实盘资格。
+继续geniusgrok/coinquant，全程中文，仅用personal / geniusgrok连接。先读实时main、AGENTS.md、PROJECT_STATE.md、evidence/multiscale-core-20260923/{REPORT.md,SELECTION.json,originals.json}，再看仍适用的SX60原件。实际可用时主动使用PonyTail；不可用就独立执行，不虚称调用，不新增强制TDD/审批。
 
-先读取实时 main、AGENTS.md、PROJECT_STATE.md、evidence/sustainable-capital-exit-20260922/{REPORT.md,SELECTION.json,originals.json} 及对应源码。包名和入口为 coinquant，凭据环境变量为 COINQUANT_BINANCE_KEY、COINQUANT_BINANCE_SECRET。仅使用当前接口，不增加别名或回退入口。
+目标不变：CNY10000无追加，2020-01-01至2026-09-20 exclusive，成本后CAGR≥150%、连续MDD<50%，Binance BTCUSDT USDT永续、交易所20x、原冻结normal795/absence787。research/invocation_draws.json的SHA绑定不得因名字或路径重置。原3.6生产默认不改，execute在凭据/网络前阻止；不授权实盘/Testnet/划转/凭据或账户安全变更。保留真实state，不能建空目录假定无持仓。
 
-冻结调用数列位于 research/invocation_draws.json，由 research/spec.json 的 SHA-256 约束；完整正常795次、缺席压力787次。历史经济摘要中的源码哈希属于记录的测量，不是当前源码的新验证。复用经济证据前仍须核对语义、配置和数据身份；CI 状态查询实际 SHA。
+M60唯一首轮已真实实现、事前协议冻结并跑开发：61.508976% CAGR、90.743866% MDD、终值68046.18元；仅完成小时收盘MDD90.377543%。同口径SX60开发控制162.179152%/37.209136%/472527.41元。开发硬风险失败，未运行M60全窗、联合压力或原缺席账户，不能用后段盈利抹去前缀、不能填假全窗数字。没有第二经济候选或结构修订。经济源码580e56e、事前协议36ab3cf；后续报告/分析入库不改变经济实现。
 
-保留原目标：人民币10000无追加，2020-01-01至2026-09-20 exclusive，净CAGR>=150%、完整连续MDD<50%，仅Binance BTCUSDT永续、交易所20x、原冻结稀疏调用。研究候选SX60保存结果102.626204%/39.885115%，压力99.750168%/39.655504%；这些是已保存经济结果，不是当前源码的新回放。B36默认/参考不自动替换，execute阻止不撤。
+新增分钟影响原SX60持仓17小时，受影响开发控制已补验并保持原指标。7个保护小时分钟精细化后，两账户CAGR/MDD/终值不变；独立现金ledger误差0、原GAP通过、284项离线测试通过。development_hard_checks_passed只指账本/资金，不能盖过MDD失败。
 
-已知风险：实际历史GAP缓冲通过，七日规划仍不保证21日有仓离线；同率21日静态预算主/压力各一子单不足8083.80/7152.63 USDT。历史规则/费用/盘口/完整FX与USDT估值/原生部分成交、撤单未知、迟到成交和重启仍未验证，不能宣称实盘可用。
+2020-09-03 12时官方hour与日/月minute mark low相差0.00006247 USDT，保留全部原件和原hour代理，不改价、不放宽容差；不是全部止损分钟已闭合。2019额外日线月档404/接口451，按2019年12月真实数据冷启动，2020-02-24 00:01 UTC才有85收盘，起点仍2020-01-01。
 
-收益优先，但不要重做已完成的flow、B0/B1、attention/lag7、T、预算网格、资金/退出实验。新经济改造须解释与旧路线的实质差异和证据来源，修改前冻结必要比较口径；复用身份适用的原件，仅运行受影响路径，不以改写风险审计或增加未授权调用制造达标。允许基于main进行正常修改、必要验证、提交、推送、PR及合并；不授权实盘/Testnet、划转、凭据或账户设置。
+M60最长持仓58.04天、有仓无调用最长6.29天，不是58天无调用。21日同率静态预算2子单不足、最差-333.859111 USDT；滚动未来资金预算最差-111.997919 USDT。原787会删除M60有仓/入场/退出调用，未跑不能称通过。真实费用/规则/盘口/完整FX-USDT/原生执行资格仍未闭合。
 
-及时保存真实源码、配置、结果和完整原件，核验远端字节、tree、commit、ref；不以报告代源码，不以摘要代原件。当前没有后台研究或交易任务。
+完整总包COINQUANT_M60_CORE_REDESIGN_20260923.zip：217458618字节、931成员、SHA256 e0681fc623cf473185f72696788e5370b02ebdf89b2d116c3780ec91cd03419d。包含三份旧完整依赖、新数据、首版/最终账户、中断partial、源码测试和复现说明；随本轮对话提供下载。总包Library导入被内部ConversionTreeTransaction错误阻止，尚未持久入库。五份新数据/发布源码组件已存Library并回读一致，真实ID在originals.json，但它们不包含新账户轨迹。先找本轮对话总包；不能以组件摘要替代，也不能为规避保存问题重跑已经完成的经济实验。
+
+数据独立解开，不运行旧源码覆盖脚本。复现入口为本证据目录reproduce.py，已存在输出拒绝覆盖；diagnose.py只读原账户。当前包coinquant、凭据COINQUANT_BINANCE_KEY/SECRET、cq-订单身份不变。历史原件中的测量hash不当当前hash。
+
+保留较优研究参考SX60旧全窗102.626204%/39.885115%、压力99.750168%/39.655504%；不是本轮新全窗结果。150%需要终值4717248.98元，相对SX60约4.102561倍，不把百分点差当终值差。
+
+不要重做M60此版本、flow/basis/B0B1/attention/lag7/T/旧预算/资金退出九账户。后续需新独立机制依据再冻结研究；没有依据不编造最佳替代，也不宣称150%不可能。既有授权允许真实修复、验证、及时提交推送和正常PR合并main；不强推、不覆盖并行工作。主线集成不等于晋级，不解除execute。当前没有后台研究或交易任务。

@@ -1,0 +1,19 @@
+{
+  "candidate": "M60",
+  "status": "REJECTED_DEVELOPMENT_RISK_FAILURE",
+  "selected_research": "SX60",
+  "production_default": "unchanged 3.6",
+  "execute": "BLOCKED",
+  "qualification": "NOT_QUALIFIED",
+  "economic_source_commit": "580e56e4ba2c0c112f91b4d45ca0910447c0ca86",
+  "protocol_commit": "36ab3cfb52f5cb0560f41f32326a9ca2d33a3b26",
+  "development": {
+    "M60": {"cagr": 0.6150897596111609, "mdd_conservative_envelope": "0.9074386607539290134300811356", "final_cny": "68046.18080397221609693836054", "invocations": 468, "ledger_error_usdt": "0"},
+    "SX60": {"cagr": 1.621791521634055, "mdd_conservative_envelope": "0.3720913583781855744812129575", "final_cny": "472527.4051232058609321245863", "invocations": 468, "ledger_error_usdt": "0"}
+  },
+  "full_window": {"run": false, "reason": "Development MDD 90.743866%; completed hourly close MDD also 90.377543%. Do not erase a failed prefix with later profits."},
+  "stress": {"run": false, "reason": "Development risk failure. Original absence sequence unchanged and not claimed passed."},
+  "data_scope": {"warmup": "Cold start; first complete 85-close signal 2020-02-24T00:01Z; start remains 2020-01-01", "unresolved_mark_minute_hour": 1599134400000, "official_low_discrepancy_usdt": "0.00006247", "tolerance_relaxed": false},
+  "economic_revisions": 0,
+  "whole_account_bundle_library_persistence": "INCOMPLETE: complete conversation download exists; container upload failed; component Library saves verified"
+}
