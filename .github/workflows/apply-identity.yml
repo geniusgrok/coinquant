@@ -1,0 +1,67 @@
+name: Coinquant Identity Update
+on:
+  push:
+    branches: [refactor/coinquant-identity]
+    paths: [.github/workflows/apply-identity.yml]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - name: Apply exact reviewed edit and publish branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, runpy, shutil, subprocess, urllib.request
+          def git(*args):
+              return subprocess.check_output(['git', *args]).decode().strip()
+          assert os.environ['GITHUB_REPOSITORY'] == 'geniusgrok/coinquant'
+          assert git('ls-remote', 'origin', 'refs/heads/main').split()[0] == 'e0084bb97393ea1ad4456b4d208a716de2bea85e'
+          assert git('ls-remote', 'origin', 'refs/heads/refactor/coinquant-identity').split()[0] == os.environ['GITHUB_SHA']
+          assert hashlib.sha256(Path('.automation/apply_identity.py').read_bytes()).hexdigest() == '257440273b6893150e105f2009dcfd4128cab9f4b0f99a66db95fe5cf9427c7f'
+          assert hashlib.sha256(Path('.automation/finalize_identity.py').read_bytes()).hexdigest() == '0a8d80153a9bfa012b9137e26f59eb60090efba57fdece7990c78aa3ce11fc82'
+          edited = runpy.run_path('.automation/apply_identity.py')
+          runpy.run_path('.automation/finalize_identity.py')
+          shutil.rmtree('.automation')
+          git('add', '-A')
+          git('diff', '--cached', '--check')
+          subprocess.run(['git', 'diff', '--cached', '--quiet', '--', '.github/workflows'], check=True)
+          publisher = '.github/workflows/apply-identity.yml'
+          git('rm', '--cached', publisher)
+          clean_tree = git('write-tree')
+          assert clean_tree == '3874f4e060286cd4b36b10d4a3123a5db7f6472e', clean_tree
+          git('add', publisher)
+          git('config', 'user.name', 'geniusgrok')
+          git('config', 'user.email', '332557824+geniusgrok@users.noreply.github.com')
+          git('commit', '-m', 'refactor: use Coinquant identity and preserve frozen invocation times')
+          head = git('rev-parse', 'HEAD')
+          git('push', 'origin', 'HEAD:refs/heads/refactor/coinquant-identity')
+          assert git('ls-remote', 'origin', 'refs/heads/refactor/coinquant-identity').split()[0] == head
+          print('PUBLISHED_COMMIT=' + head + ' CLEAN_TREE=' + clean_tree)
+          def api(path, payload=None):
+              request = urllib.request.Request('https://api.github.com/repos/geniusgrok/coinquant/' + path,
+                  data=None if payload is None else json.dumps(payload).encode(),
+                  method='GET' if payload is None else 'PATCH',
+                  headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                           'Accept': 'application/vnd.github+json', 'User-Agent': 'coinquant'})
+              with urllib.request.urlopen(request, timeout=30) as response:
+                  return json.load(response)
+          releases = api('releases?per_page=100')
+          for release in releases:
+              update = {key: edited['rename'](release.get(key) or '') for key in ('name', 'body')}
+              if any(update[key] != (release.get(key) or '') for key in update):
+                  api('releases/' + str(release['id']), update)
+              actual = api('releases/' + str(release['id']))
+              assert all(actual[key] == update[key] for key in update)
+              print('RELEASE_VERIFIED=' + release['tag_name'])
+          PY
