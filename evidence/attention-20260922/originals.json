@@ -1,0 +1,17 @@
+{
+  "file_name": "PANCAKEQUANT_ATTENTION_EVIDENCE_20260922.zip",
+  "bytes": 3373375,
+  "sha256": "ffd0195d2b7e47c8b9a7ee1bf7fae2f50a6fc3523eec96bca89d7e46157dfa56",
+  "manifest_files": 575,
+  "source_commit": "28d507bd750706e2ef7c59ec33ee6ae046804251",
+  "library_file_id": "libfile_ab23678fc8dc81918df9d4b3384eebcc",
+  "file_id": "file_0000000031c082069d8cb7f9f64ae475",
+  "remote_readback": "byte-identical; total length, SHA256 and all575 manifest members verified",
+  "protocol_commit": "c0fd62b7360eecd4385ed28600f16d1e5a42f4aa",
+  "qualification": "NOT_QUALIFIED",
+  "screen_status": "RETROSPECTIVE_PROXY_NO_PRIMARY_INCREMENT",
+  "google_status": "DATA_VERIFIABILITY_BLOCKED",
+  "continuous_account_run": false,
+  "full_window_run": false,
+  "dependencies": "DEPENDENCIES.json retains verified payoff originals; no repeated account runs"
+}
