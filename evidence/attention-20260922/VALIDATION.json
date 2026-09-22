@@ -1,0 +1,14 @@
+{
+  "checks": "PASS",
+  "invocations": 468,
+  "common_predictions": 362,
+  "C1_vs_saved_B1_max_abs": 0.0,
+  "actual_future_label_and_attention_prefix_months": [
+    "2021-01",
+    "2022-01",
+    "2023-01"
+  ],
+  "monthly_common_training_sets": 48,
+  "labels_sha256": "03c4ba9c6ef54260175e72b86dd35888b826c16c9900420146ded8d6c7b9e329",
+  "source_scope": "No account or production code changed; no full suite"
+}
