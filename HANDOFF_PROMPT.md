@@ -1,3 +1,19 @@
+# 当前：关注度主代理检验未获增量，未晋级账户
+
+恢复f1e2496；预结果协议c0fd62b7360eecd4385ed28600f16d1e5a42f4aa；实际HEAD需远端读取，main仍c886b7c。
+先读evidence/attention-20260922/{REPORT.md,DATA_CONTRACT.md,PROTOCOL.md,SUMMARY.json,VALIDATION.json,originals.json}。
+Google API访问/覆盖与网站429阻塞；唯一替代英文维基Bitcoin/user访问量2019-11至2023-12共1522日，历史vintage未证实。
+RETROSPECTIVE_PROXY：127原primary情景C2−C1 -0.096175百分点、C2−C0 -0.078785百分点，C2 MSE更高；355依赖样本亦负。
+额外7日滞后诊断C2−C1 +0.620742百分点，C2−C0区间跨0；只作诊断，不按结果换主滞后。
+冻结主继续条件失败：没有新账户/全窗/生产整合，没有新CAGR；不是全体关注度无alpha，也不是Google已测经济失败。
+原标签/调用/source身份核验，C1与旧B1共同362预测最大差0；3定向检查、48月训练行和3真实未来扰动边界通过；未跑全套/旧账户，CI未确认。
+旧L3.6完整67.09209%/32.02405%仅代理，正式150%/<50%及历史规则/估值/原生保护缺口不变。
+无实盘/Testnet写、main不合并、执行阻止不撤、无后台任务。
+下一直接动作是取得同一关注度的逐期历史发布/vintage证据后核验原定义；不搜索窗口/符号，不自动换数据大类。
+本轮受限筛选完成，总项目NOT_QUALIFIED。原件及恢复身份见originals回执。
+
+---
+
 # 当前：保护后净收益训练有配对增量，但账户不及L，拒绝晋级
 
 本轮恢复a1a301f；协议bf1e3725b27aba1cd9d8d6ce8282c64c9d59cdd4。实际HEAD重新核验，main仍c886b7c。
