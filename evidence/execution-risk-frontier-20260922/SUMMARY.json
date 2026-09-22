@@ -1,0 +1,208 @@
+{
+  "status": "RETURN_IMPROVED_HOLDING_BUFFER_SHORTFALL_NOT_PROMOTED",
+  "research_default": "3.6",
+  "selected_exploratory_budget": "6.0",
+  "protocol_commit": "7ad7c5253b799e24986472583ac1d8a4c55ba378",
+  "selection_commit": "4a00a96d4a693e80c6c621d9b974e445be29234d",
+  "source_commit": "37ef18f01c2169882007891383d9951b267bdbe1",
+  "main_modified": false,
+  "native_execution_enabled": false,
+  "formal": {
+    "cagr": 1.5,
+    "mdd_exclusive": 0.5,
+    "cagr_gap_pp": 48.491505793745176,
+    "required_terminal_cny": 4717248.980685025
+  },
+  "full_comparison": {
+    "baseline_cagr": 0.7497491722631644,
+    "candidate_cagr": 1.0150849420625483,
+    "baseline_mdd": "0.3197655712979730703483728160",
+    "candidate_mdd": "0.4179832390192798548038182932",
+    "baseline_final_cny": "429053.6142973792674535602451",
+    "candidate_final_cny": "1107881.862742929067781182262",
+    "terminal_delta_cny": "678828.2484455498003276220169",
+    "terminal_ratio": "2.582152499885598094302088308"
+  },
+  "new_accounts": {
+    "3.6/full-stress-five-minute": {
+      "cagr": 0.6983909789389382,
+      "mdd_conservative_envelope": "0.3196150113171645195150441847",
+      "final_cny": "351222.7188575863389441397275",
+      "risk_scale": "3.6",
+      "mean_close_exposure": "0.1609873351593048685149252940",
+      "counts": {
+        "invocations": 795,
+        "deferred_entry": 30,
+        "entry": 30,
+        "rebalance_add": 29,
+        "funding_charge": 459,
+        "inventory_hold": 25,
+        "regime_exit": 22,
+        "ambiguous_funding_credit_omitted": 30,
+        "take": 2,
+        "stop": 6,
+        "unfunded_parent:protection": 1
+      }
+    },
+    "4.8/development-five-minute": {
+      "cagr": 1.3832461822258288,
+      "mdd_conservative_envelope": "0.3097413118833636441509456278",
+      "final_cny": "322631.3783619568643897096958",
+      "risk_scale": "4.8",
+      "mean_close_exposure": "0.2348035581917949789846147368",
+      "counts": {
+        "invocations": 468,
+        "deferred_entry": 20,
+        "entry": 20,
+        "funding_charge": 329,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "rebalance_add": 27,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      }
+    },
+    "4.8/development-instant": {
+      "cagr": 1.1189982757934578,
+      "mdd_conservative_envelope": "0.3106469365167407870862531324",
+      "final_cny": "201627.2379164707166499967704",
+      "risk_scale": "4.8",
+      "mean_close_exposure": "0.1911403207642993033897253513",
+      "counts": {
+        "invocations": 468,
+        "entry": 20,
+        "funding_charge": 332,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      }
+    },
+    "4.8/stress-five-minute": {
+      "cagr": 1.2905357184136763,
+      "mdd_conservative_envelope": "0.3143236282272013104816281895",
+      "final_cny": "275282.0148278246305837983486",
+      "risk_scale": "4.8",
+      "mean_close_exposure": "0.2328361599534601958590764578",
+      "counts": {
+        "invocations": 468,
+        "deferred_entry": 20,
+        "entry": 20,
+        "rebalance_add": 26,
+        "funding_charge": 329,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      }
+    },
+    "6.0/development-five-minute": {
+      "cagr": 1.6066594567207018,
+      "mdd_conservative_envelope": "0.3719818574945480407165053239",
+      "final_cny": "461712.2150456574097252348529",
+      "risk_scale": "6.0",
+      "mean_close_exposure": "0.2614729202178383065384206693",
+      "counts": {
+        "invocations": 468,
+        "deferred_entry": 20,
+        "entry": 20,
+        "funding_charge": 329,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "rebalance_add": 40,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      }
+    },
+    "6.0/development-instant": {
+      "cagr": 1.2700594889180503,
+      "mdd_conservative_envelope": "0.3736611773603099987908666849",
+      "final_cny": "265569.5010067602864359442822",
+      "risk_scale": "6.0",
+      "mean_close_exposure": "0.2054107499370435027935431249",
+      "counts": {
+        "invocations": 468,
+        "entry": 20,
+        "funding_charge": 332,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      }
+    },
+    "6.0/full-five-minute": {
+      "cagr": 1.0150849420625483,
+      "mdd_conservative_envelope": "0.4179832390192798548038182932",
+      "final_cny": "1107881.862742929067781182262",
+      "risk_scale": "6.0",
+      "mean_close_exposure": "0.2019210880640988400438213913",
+      "counts": {
+        "invocations": 795,
+        "deferred_entry": 30,
+        "entry": 30,
+        "funding_charge": 459,
+        "inventory_hold": 25,
+        "regime_exit": 22,
+        "rebalance_add": 71,
+        "ambiguous_funding_credit_omitted": 30,
+        "take": 2,
+        "stop": 6,
+        "unfunded_parent:protection": 1
+      }
+    },
+    "6.0/full-stress-five-minute": {
+      "cagr": 0.9733227002046503,
+      "mdd_conservative_envelope": "0.4178309707954584388482292085",
+      "final_cny": "962463.1223604994544213936394",
+      "risk_scale": "6.0",
+      "mean_close_exposure": "0.2103545873577343966600686169",
+      "counts": {
+        "invocations": 795,
+        "deferred_entry": 30,
+        "entry": 30,
+        "rebalance_add": 67,
+        "funding_charge": 459,
+        "inventory_hold": 25,
+        "regime_exit": 22,
+        "ambiguous_funding_credit_omitted": 30,
+        "take": 2,
+        "stop": 6,
+        "unfunded_parent:protection": 1
+      }
+    },
+    "6.0/stress-five-minute": {
+      "cagr": 1.5400248650386263,
+      "mdd_conservative_envelope": "0.3780258447483232157626903154",
+      "final_cny": "416279.5961489808667884029075",
+      "risk_scale": "6.0",
+      "mean_close_exposure": "0.2655304498911931018149065299",
+      "counts": {
+        "invocations": 468,
+        "deferred_entry": 20,
+        "entry": 20,
+        "rebalance_add": 36,
+        "funding_charge": 329,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      }
+    }
+  },
+  "validation": {
+    "new_accounts": 9,
+    "ledger_max_error_usdt": "0",
+    "targeted_tests": 17,
+    "new_tests": 5,
+    "old_checks_reused_not_all_rerun": true,
+    "full_6_original_gap_maintained": false,
+    "full_6_gap_shortfall_usdt": "1296.57234635484573217394677",
+    "stress_6_gap_shortfall_usdt": "1100.67130630735236937242235"
+  }
+}
