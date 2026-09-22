@@ -1,6 +1,10 @@
-# Pancakequant engineering rules
+# Coinquant engineering rules
 
-Repository: ychenracing/pancakequant.
+Repository: geniusgrok/coinquant.
+
+## Repository migration: 2026-09-23 (Asia/Tokyo)
+
+The user migrated this project from ychenracing/pancakequant to geniusgrok/coinquant. Use the personal GitHub connection (geniusgrok) for current repository work. The source repository is preserved and must not be modified for coinquant tasks. Original branches, tags, commits and research evidence retain their identities. The Python package and PANCAKEQUANT environment-variable names remain unchanged; this migration does not change strategy, configuration, trading permissions or economic qualification.
 
 ## Current mandate
 

@@ -1,6 +1,8 @@
-# Pancakequant：基于 main 继续
+# Coinquant：基于 main 继续
 
-继续 ychenracing/pancakequant，全程中文。用户已明确授权研究成果并入main、后续从main开发；不再把旧“150%达标才可合并”当阻塞。main是开发集成基线，不是实盘资格。遵循最新AGENTS，实际可用时采用PonyTail，不增加不必要流程。
+继续 geniusgrok/coinquant，使用 personal / geniusgrok GitHub 连接，全程中文。用户已明确授权研究成果并入main、后续从main开发；不再把旧“150%达标才可合并”当阻塞。main是开发集成基线，不是实盘资格。遵循最新AGENTS，实际可用时采用PonyTail，不增加不必要流程。
+
+仓库已由 ychenracing/pancakequant 迁移；旧仓库保留，不再作为本项目写入目标。全部原始分支、1.0.0标签、提交历史及发布说明已保全并回读核验；包名和环境变量不改名。迁移与核验记录见 PROJECT_STATE.md。外置Library原件仍按原索引读取，本次没有将其重新上传为Git对象。
 
 先读取实时main、AGENTS.md、PROJECT_STATE.md、evidence/sustainable-capital-exit-20260922/{REPORT.md,SELECTION.json,originals.json,SOURCE_RESTORATION.json,SOURCE_READBACK.json}及对应源码。源码恢复提交79e18895935de9525d9b78355a87448491f5a6d8仅为身份线索，不代替当前main核验。不要用旧包覆盖新源码。
 

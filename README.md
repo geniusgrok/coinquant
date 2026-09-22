@@ -1,4 +1,11 @@
-# Pancakequant
+# Coinquant
+
+当前仓库为 `geniusgrok/coinquant`，由 `ychenracing/pancakequant` 迁移而来。后续开发使用 personal / geniusgrok 连接；旧仓库保留，不自动同步或继续写入。Python 包名、命令和 `PANCAKEQUANT_*` 环境变量保持不变，迁移不改变策略及交易权限。
+
+```sh
+git clone https://github.com/geniusgrok/coinquant.git
+cd coinquant
+```
 
 个人使用、按需运行的 Binance BTCUSDT U 本位永续项目。用户主动触发一次运行，完成后退出，不依赖常驻守护进程。
 
