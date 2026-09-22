@@ -13,17 +13,21 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           persist-credentials: false
-      - name: Fetch public market archives, never account endpoints
+      - name: Fetch public market originals without account access
         run: |
           python - <<'PY'
-          import concurrent.futures, hashlib, json, pathlib, time, urllib.error, urllib.request, zipfile
+          import concurrent.futures, datetime, hashlib, json, pathlib, time, urllib.error, urllib.request, zipfile
           out=pathlib.Path('m60-data');out.mkdir()
-          request=pathlib.Path('research/m60-data-request.json')
-          paths=json.loads(request.read_text())['paths'] if request.exists() else [f'data/futures/um/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2019-{m:02d}.zip' for m in (10,11)]
-          paths=sorted(set(paths));(out/'REQUEST.json').write_text(json.dumps(paths,indent=2))
+          request=json.loads(pathlib.Path('research/m60-data-request.json').read_text())
+          (out/'REQUEST.json').write_text(json.dumps(request,indent=2))
+          paths=[]
+          for kind,offsets in request.get('day_offsets',{}).items():
+              if kind not in ('klines','markPriceKlines'):raise ValueError('invalid public series')
+              for n in offsets:
+                  if type(n) is not int or not -1<=n<=2454:raise ValueError('date outside frozen data scope')
+                  day=str(datetime.date(2020,1,1)+datetime.timedelta(days=n))
+                  paths.append(f'data/futures/um/daily/{kind}/BTCUSDT/1m/BTCUSDT-1m-{day}.zip')
           def fetch(path):
-              if not path.startswith('data/futures/um/') or '/BTCUSDT/' not in path or not path.endswith('.zip') or '..' in path:
-                  raise ValueError('only explicit BTCUSDT public archive paths allowed')
               target=out/path;target.parent.mkdir(parents=True,exist_ok=True)
               url='https://data.binance.vision/'+path
               record={'path':path,'url':url,'retrieved_at_ms':int(time.time()*1000)}
@@ -40,9 +44,25 @@ jobs:
                   record.update(status='unavailable',error=repr(exc))
               return record
           with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-              receipts=list(pool.map(fetch,paths))
+              receipts=list(pool.map(fetch,sorted(set(paths))))
+          missing={r['path'].replace('/daily/','/monthly/')[:-7]+'.zip' for r in receipts if r['status']=='unavailable'}
+          # Monthly fallback retains actual source and does not synthesize any minute.
+          with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+              receipts.extend(pool.map(fetch,sorted(missing)))
+          if request.get('warmup_rest'):
+              start=int(datetime.datetime(2019,10,8,tzinfo=datetime.timezone.utc).timestamp()*1000)
+              end=int(datetime.datetime(2019,12,1,tzinfo=datetime.timezone.utc).timestamp()*1000)-1
+              url=f'https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1d&startTime={start}&endTime={end}&limit=100'
+              record={'path':'warmup-daily.json','url':url,'retrieved_at_ms':int(time.time()*1000)}
+              try:
+                  raw=urllib.request.urlopen(url,timeout=40).read();rows=json.loads(raw)
+                  if not isinstance(rows,list):raise ValueError('unexpected official response')
+                  (out/record['path']).write_bytes(raw)
+                  record.update(status='received',bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),rows=len(rows))
+              except Exception as exc:record.update(status='unavailable',error=repr(exc))
+              receipts.append(record)
           (out/'RECEIPT.json').write_text(json.dumps(receipts,indent=2)+'\n')
-          print(json.dumps({'requested':len(paths),'verified':sum(r['status']=='verified' for r in receipts),'unavailable':[r for r in receipts if r['status']!='verified']},indent=2))
+          print(json.dumps({'requested':len(paths),'verified':sum(r['status']=='verified' for r in receipts),'unavailable':[r for r in receipts if r['status']=='unavailable']},indent=2))
           PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
