@@ -1,0 +1,150 @@
+name: Import Pancakequant
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/import-pancakequant.yml]
+permissions:
+  contents: write
+concurrency:
+  group: coinquant-initial-migration
+  cancel-in-progress: false
+jobs:
+  import:
+    if: github.repository == 'geniusgrok/coinquant'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Transfer and verify original Git objects
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+          import urllib.request
+          
+          SOURCE = 'ychenracing/pancakequant'
+          TARGET = 'geniusgrok/coinquant'
+          REFS = {
+              'refs/heads/main': 'f94276236c7a8fa5e2551405822d575be5438a47',
+              'refs/heads/evidence/native-btcusd-20260920': '230f9d60361bfec144d066c5684b5c3b96f996bb',
+              'refs/heads/research/okx-linear-feasibility-20260921': 'c098178d7834b161185fa399950932bb607fee22',
+              'refs/heads/research/on-demand-btc-20260920': 'f926dc50004b43841e2d12769750387dcb7c0e14',
+              'refs/tags/1.0.0': 'c886b7c63c6455bd7c933269e32cd35a6fb3e09a',
+          }
+          
+          def git(*args, cwd=None, data=None):
+              return subprocess.check_output(['git', *args], cwd=cwd, input=data).decode().strip()
+          
+          def api(path, payload=None):
+              data = None if payload is None else json.dumps(payload).encode()
+              request = urllib.request.Request('https://api.github.com/' + path, data=data,
+                  headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                           'Accept': 'application/vnd.github+json', 'User-Agent': 'coinquant-migration'})
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  return json.load(response)
+          
+          assert os.environ['GITHUB_REPOSITORY'] == TARGET
+          source_url = f'https://github.com/{SOURCE}.git'
+          target_url = f'https://github.com/{TARGET}.git'
+          actual = dict(line.split()[::-1] for line in git('ls-remote', '--heads', '--tags', source_url).splitlines() if not line.endswith('^{}'))
+          assert actual == REFS, ('Source refs changed', actual)
+          root = Path.cwd()
+          out = root / 'migration-evidence'
+          out.mkdir()
+          git('init', '--bare', 'source.git')
+          src = root / 'source.git'
+          git('fetch', '--no-tags', source_url, *[f'{sha}:{ref}' for ref, sha in REFS.items()], cwd=src)
+          git('fsck', '--full', '--no-reflogs', cwd=src)
+          # Repository-scoped ephemeral token remains within GitHub's runner.
+          askpass = root / 'askpass.sh'
+          askpass.write_text('#!/bin/sh\ncase "$1" in *Username*) echo x-access-token;; *) printf "%s\\n" "$GH_TOKEN";; esac\n')
+          askpass.chmod(0o700)
+          os.environ['GIT_ASKPASS'] = str(askpass)
+          os.environ['GIT_TERMINAL_PROMPT'] = '0'
+          bootstrap = os.environ['GITHUB_SHA']
+          target_refs = dict(line.split()[::-1] for line in git('ls-remote', '--heads', '--tags', target_url).splitlines() if not line.endswith('^{}'))
+          assert target_refs == {'refs/heads/main': bootstrap}, ('Unexpected destination refs', target_refs)
+          git('fetch', '--no-tags', target_url, f'{bootstrap}:refs/bootstrap/main', cwd=src)
+          # An unchanged-tree merge transports every original Git object without rewriting
+          # target history or adding/modifying workflow files through the runner token.
+          tree = git('rev-parse', bootstrap + '^{tree}', cwd=src)
+          git('config', 'user.name', 'coinquant migration', cwd=src)
+          git('config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com', cwd=src)
+          parents = list(dict.fromkeys([bootstrap, *REFS.values()]))
+          args = [item for parent in parents for item in ('-p', parent)]
+          carrier = git('commit-tree', tree, *args, cwd=src,
+              data=b'chore: preserve complete pancakequant Git history for migration\n\nSource main: f94276236c7a8fa5e2551405822d575be5438a47\nNo source refs or trading configuration changed.\n')
+          git('push', '--atomic', target_url, f'{carrier}:refs/heads/main', cwd=src)
+          # Idempotent publication: never overwrite an existing reference.
+          for ref, sha in REFS.items():
+              if ref == 'refs/heads/main':
+                  continue
+              result = api(f'repos/{TARGET}/git/refs', {'ref': ref, 'sha': sha})
+              assert result['object']['sha'] == sha
+          # Verify by a fresh independent clone of the published destination.
+          git('clone', '--bare', target_url, 'destination.git')
+          dst = root / 'destination.git'
+          git('fsck', '--full', '--no-reflogs', cwd=dst)
+          for ref, sha in REFS.items():
+              if ref == 'refs/heads/main':
+                  subprocess.run(['git', 'merge-base', '--is-ancestor', sha, 'refs/heads/main'], cwd=dst, check=True)
+              else:
+                  assert git('rev-parse', ref, cwd=dst) == sha
+          objects = sorted(set(git('rev-list', '--objects', '--no-object-names', *REFS.values(), cwd=src).splitlines()))
+          left = subprocess.Popen(['git', 'cat-file', '--batch'], cwd=src, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+          right = subprocess.Popen(['git', 'cat-file', '--batch'], cwd=dst, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+          manifest = []
+          for oid in objects:
+              for process in (left, right):
+                  process.stdin.write((oid + '\n').encode())
+                  process.stdin.flush()
+              headers = [process.stdout.readline() for process in (left, right)]
+              assert headers[0] == headers[1]
+              parsed_oid, kind, size_text = headers[0].decode().split()
+              size = int(size_text)
+              object_hash = hashlib.sha1(f'{kind} {size}\0'.encode())
+              content_hash = hashlib.sha256()
+              remaining = size
+              while remaining:
+                  count = min(262144, remaining)
+                  a = left.stdout.read(count)
+                  b = right.stdout.read(count)
+                  assert len(a) == count and a == b, ('Object content mismatch', oid)
+                  object_hash.update(a)
+                  content_hash.update(a)
+                  remaining -= count
+              assert left.stdout.read(1) == right.stdout.read(1) == b'\n'
+              assert object_hash.hexdigest() == oid == parsed_oid
+              manifest.append({'oid': oid, 'type': kind, 'length': size, 'sha256': content_hash.hexdigest()})
+          for process in (left, right):
+              process.stdin.close()
+              assert process.wait(timeout=20) == 0
+          (out / 'objects.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          summary = {'source': SOURCE, 'target': TARGET, 'source_refs': REFS, 'carrier_commit': carrier,
+              'source_main_tree': git('rev-parse', REFS['refs/heads/main'] + '^{tree}', cwd=src),
+              'objects_verified': len(manifest), 'bytes_verified': sum(row['length'] for row in manifest),
+              'all_original_objects_byte_equal': True, 'all_original_object_ids_verified': True,
+              'verification': 'Independent destination clone; every original reachable object compared byte-for-byte, SHA-256 and Git SHA-1 verified',
+              'next_step': 'Publish the original source tree to target main through a normal fast-forward commit, removing bootstrap files'}
+          (out / 'summary.json').write_text(json.dumps(summary, indent=2) + '\n')
+          git('bundle', 'create', str(out / 'pancakequant-original.bundle'), *REFS.keys(), cwd=src)
+          git('bundle', 'verify', str(out / 'pancakequant-original.bundle'), cwd=src)
+          bundle = out / 'pancakequant-original.bundle'
+          with bundle.open('rb') as file:
+              digest = hashlib.file_digest(file, 'sha256').hexdigest()
+          (out / 'bundle.sha256').write_text(digest + '  ' + bundle.name + '\n')
+          print('MIGRATION_VERIFIED ' + json.dumps(summary, sort_keys=True))
+          askpass.unlink()
+          PY
+      - name: Preserve verified full Git bundle and object manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: pancakequant-migration-evidence
+          path: migration-evidence/
+          if-no-files-found: error
+          retention-days: 30
