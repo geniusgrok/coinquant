@@ -9,9 +9,9 @@ import hashlib
 import json
 from pathlib import Path
 
-from pancakequant.research import invocations, spec, timestamp, iso
-from pancakequant.types import ZERO, floor_step
-from pancakequant.binance import market_quantity
+from coinquant.research import invocations, spec, timestamp, iso
+from coinquant.types import ZERO, floor_step
+from coinquant.binance import market_quantity
 from research.linear_forecast import archive_rows, DAY
 from research.audit_binance import repair_rows
 from research.linear_replay import Account, FEE, MMR, LOT, TICK
@@ -153,7 +153,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing')
     opportunities={};fractions={}
     if mechanism:
-        from pancakequant.campaign import Campaign, disposition
+        from coinquant.campaign import Campaign, disposition
         model_interval=DAY if reference=='swing' else HOUR if reference=='hourly_impulse_hold' else 4*HOUR
         model=Campaign('impulse_hold' if reference=='hourly_impulse_hold' else reference,model_interval)
         for bt in range(min(warm),end,model_interval):
@@ -196,7 +196,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         from research.planned_exit import PlannedExit
     funding_times=sorted(funding)
     if sustainable:
-        from pancakequant.capital import CapitalBudget, sustain_position
+        from coinquant.capital import CapitalBudget, sustain_position
 
     output.mkdir(parents=True,exist_ok=False)
     with gzip.open(output/'equity.csv.gz.partial','wt') as ef,gzip.open(output/'orders.csv.gz.partial','wt') as of,gzip.open(output/'decisions.csv.gz.partial','wt') as df, (open(output/'execution.jsonl.partial','w') if execution is not None else nullcontext(None)) as xf:
@@ -577,7 +577,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['limitations'].extend(['Causal minute capacity is not order-book depth; IOC fills and immediate protection are proxies', 'Additional exit impact is the preregistered linear stress, not historical calibration'])
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
-    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json'),Path('pancakequant/opportunities.py'),Path('pancakequant/campaign.py'),Path('pancakequant/linear_account.py'),Path('pancakequant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ()):
+    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('research/invocation_draws.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ()):
         raw=source.read_bytes()
         if not (payoff and payoff.get('scenario')):(sources/source.name).write_bytes(raw)
         source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()

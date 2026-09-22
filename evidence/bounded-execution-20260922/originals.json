@@ -1,7 +1,7 @@
 {
   "qualification": "ECONOMIC_PROXY_IMPROVED_NOT_QUALIFIED",
   "archive": {
-    "file_name": "PANCAKEQUANT_BOUNDED_EXECUTION_20260922.zip",
+    "file_name": "COINQUANT_BOUNDED_EXECUTION_20260922.zip",
     "bytes": 48866772,
     "sha256": "854fba74875a4e7bc07a9b709edf82b377d7157a01d8d73db42db44aa41095c1",
     "manifest_files": 2077,
@@ -12,7 +12,7 @@
     "source_tree": "44ad2f4da7d67517714962217461435e721b2235",
     "library_file_id": "libfile_54a5fcf3af5c8191af73244b14ef6ec5",
     "file_id": "file_0000000083d481fd961f6fa15939f45b",
-    "library_path": "/pancakequant/PANCAKEQUANT_BOUNDED_EXECUTION_20260922.zip",
+    "library_path": "/coinquant/COINQUANT_BOUNDED_EXECUTION_20260922.zip",
     "persistent_readback_byte_for_byte_equal": true,
     "persistent_readback_manifest_files_verified": 2077
   },
@@ -33,7 +33,7 @@
     "ci_completed_at": "2026-09-22T10:40:14Z"
   },
   "delivery_file_identities": {
-    "pancakequant/linear_sizing.py": {
+    "coinquant/linear_sizing.py": {
       "bytes": 4664,
       "sha256": "cee1d102c84bfd985d2fb14fe8fdcb2443c846100ebdb2ca86a35081665a4acc",
       "git_blob": "e5089798bc09236a37a96552d20f44d67b4c02b2"

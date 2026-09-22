@@ -1,5 +1,5 @@
 import unittest
-from pancakequant.research import economic_limits, spec
+from coinquant.research import economic_limits, spec
 
 class AcceptanceTests(unittest.TestCase):
     def test_authorized_exact_boundaries(self):

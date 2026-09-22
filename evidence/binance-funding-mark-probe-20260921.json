@@ -19,6 +19,6 @@
   "conclusion": "Historical rates exist but markPrice is empty for these events. Do not download all remaining pages expecting this to solve early funding mark valuation.",
   "library_original": {
     "id": "libfile_ed7f7d619fb88191844e84635e1d4ee7",
-    "path": "/pancakequant/binance-funding-mark-probe.zip"
+    "path": "/coinquant/binance-funding-mark-probe.zip"
   }
 }

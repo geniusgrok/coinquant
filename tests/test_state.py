@@ -2,9 +2,9 @@ import json
 import tempfile
 import unittest
 
-from pancakequant.state import State, client_id
-from pancakequant.types import Blocked, Unknown
-from pancakequant.config import Config
+from coinquant.state import State, client_id
+from coinquant.types import Blocked, Unknown
+from coinquant.config import Config
 
 
 class StateTests(unittest.TestCase):
@@ -54,6 +54,7 @@ class StateTests(unittest.TestCase):
                     self.assertEqual(json.load(stream)['status'], 'unknown')
 
     def test_deterministic_id_scope(self):
+        self.assertTrue(client_id('live:123', 123, 'increase').startswith('cq-'))
         self.assertEqual(client_id('live:123', 123, 'increase'), client_id('live:123', 123, 'increase'))
         self.assertNotEqual(client_id('live:123', 123, 'increase'), client_id('testnet:123', 123, 'increase'))
         self.assertLessEqual(len(client_id('live:123', 123, 'increase')), 36)

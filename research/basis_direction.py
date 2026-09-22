@@ -4,8 +4,8 @@ from pathlib import Path
 from datetime import datetime, timezone
 import numpy as np
 from research.persistent_hold_replay import inputs, HOUR
-from pancakequant.research import spec, invocations, timestamp
-from pancakequant.opportunities import Opportunities
+from coinquant.research import spec, invocations, timestamp
+from coinquant.opportunities import Opportunities
 from decimal import Decimal as D
 
 DAY=24*HOUR

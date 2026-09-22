@@ -8,7 +8,7 @@ import math
 from pathlib import Path
 from statistics import mean
 from research.persistent_hold_replay import inputs,channel_state
-from pancakequant.research import spec,invocations,timestamp
+from coinquant.research import spec,invocations,timestamp
 from research.linear_forecast import DAY
 HOUR=3600000
 

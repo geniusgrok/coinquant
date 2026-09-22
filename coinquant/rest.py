@@ -58,9 +58,9 @@ class Rest:
             raise Blocked('transport is read-only')
         parameters = parameters or {}
         body = urlencode(sorted(parameters.items())) if method == 'GET' else json.dumps(parameters, separators=(',', ':'))
-        headers = {'Content-Type': 'application/json', 'User-Agent': 'pancakequant'}
+        headers = {'Content-Type': 'application/json', 'User-Agent': 'coinquant'}
         if private:
-            prefix = 'PANCAKEQUANT_' + self.environment.upper()
+            prefix = 'COINQUANT_' + self.environment.upper()
             key, secret = os.getenv(prefix + '_KEY', ''), os.getenv(prefix + '_SECRET', '')
             if not key or not secret:
                 raise Blocked('matching environment credentials are not configured')

@@ -1,15 +1,15 @@
 {
-  "filename": "PANCAKEQUANT_MECHANISMS_A_E_20260921.zip",
+  "filename": "COINQUANT_MECHANISMS_A_E_20260921.zip",
   "bytes": 52016878,
   "sha256": "a7e573f54ca66816f2425c2d399c542e04f828c7aadd5f76ed0fc321e0549458",
   "files": 779,
   "dependency": {
-    "filename": "PANCAKEQUANT_L29_RETURN_CAPTURE_20260921.zip",
+    "filename": "COINQUANT_L29_RETURN_CAPTURE_20260921.zip",
     "bytes": 141577623,
     "sha256": "79d3fdbc28cedfbaaa144c1541b3b7b73293d7a97b81052a341d4be017628abe",
     "files": 794,
     "dependency": {
-      "filename": "PANCAKEQUANT_RETURN_FIRST_L21_L26_20260921.zip",
+      "filename": "COINQUANT_RETURN_FIRST_L21_L26_20260921.zip",
       "bytes": 140850994,
       "sha256": "001813d77bb3d4ceba82c2a73f37f5513ffd6eef91cd42f5cd344fe9401b4357",
       "files": 1183,

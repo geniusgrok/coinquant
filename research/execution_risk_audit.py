@@ -4,8 +4,8 @@ from decimal import Decimal as D
 import json
 from pathlib import Path
 
-from pancakequant.linear_account import FEE, MMR
-from pancakequant.linear_sizing import FUNDING_RESERVE, GAP
+from coinquant.linear_account import FEE, MMR
+from coinquant.linear_sizing import FUNDING_RESERVE, GAP
 from research.opportunity_attribution import rows
 
 

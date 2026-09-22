@@ -12,7 +12,7 @@ class Config:
     api_host: str = ''
     account_uid: str = ''
     max_position_usd: D = D(0)
-    state_dir: str = '~/.pancakequant/testnet'
+    state_dir: str = '~/.coinquant/testnet'
     model: ModelConfig = field(default_factory=ModelConfig)
 
     def __post_init__(self):

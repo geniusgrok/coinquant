@@ -29,7 +29,7 @@ class SpotFlowTests(unittest.TestCase):
         self.assertTrue(all(v>=0 for v in first[2]['expanded_beta'][7:]))
         self.assertTrue(all(abs(v)<1e-10 for v in first[2]['expanded_beta'][7:]))
     def test_unmatured_training_labels_do_not_change_decision(self):
-        from pancakequant.research import timestamp
+        from coinquant.research import timestamp
         boundary=timestamp('2022-01-01T00:00:00Z');rng=np.random.default_rng(8)
         samples=[dict(t=boundary-(50-i)*10*DAY,u=boundary-(50-i)*10*DAY+7*DAY,month='2021-01',primary=True,x=rng.normal(size=8).tolist(),gross=.01,long=.01,short=-.02,L_side=0) for i in range(40)]
         samples += [dict(samples[0],t=boundary-2*DAY,u=boundary+9*DAY,month='2021-12',gross=1e9)]

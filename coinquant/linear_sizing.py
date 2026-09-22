@@ -1,8 +1,8 @@
 """Shared pure target sizing. Native writes and historical rules are not qualified."""
 from dataclasses import replace
 from decimal import Decimal as D
-from pancakequant.types import ZERO, floor_step
-from pancakequant.binance import market_quantity
+from coinquant.types import ZERO, floor_step
+from coinquant.binance import market_quantity
 from .linear_account import FEE, MMR, LOT
 
 GAP = D('.10')

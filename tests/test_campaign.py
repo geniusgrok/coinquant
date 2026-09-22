@@ -3,11 +3,11 @@ import json
 import unittest
 import tempfile
 from unittest.mock import Mock
-from pancakequant.campaign import Campaign, ORIGIN
-from pancakequant.opportunities import Opportunity
-from pancakequant.types import Blocked
-from pancakequant.state import State
-from pancakequant.linear_preview import advance, preview
+from coinquant.campaign import Campaign, ORIGIN
+from coinquant.opportunities import Opportunity
+from coinquant.types import Blocked
+from coinquant.state import State
+from coinquant.linear_preview import advance, preview
 
 
 class CampaignTests(unittest.TestCase):

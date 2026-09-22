@@ -4,7 +4,7 @@ test_unknown_parent_reconciliation_does_not_skip_existing_position_protection (t
 FAIL: test_unknown_parent_reconciliation_does_not_skip_existing_position_protection (test_pending.CrossEntryIdentityTests.test_unknown_parent_reconciliation_does_not_skip_existing_position_protection)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/mnt/data/pancakequant/tests/test_pending.py", line 223, in test_unknown_parent_reconciliation_does_not_skip_existing_position_protection
+  File "/mnt/data/coinquant/tests/test_pending.py", line 223, in test_unknown_parent_reconciliation_does_not_skip_existing_position_protection
     self.assertTrue(coverage(v.s))
     ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
 AssertionError: False is not true

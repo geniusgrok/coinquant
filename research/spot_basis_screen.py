@@ -3,7 +3,7 @@ import argparse,csv,io,json,zipfile,hashlib
 from pathlib import Path
 from decimal import Decimal as D
 from research.persistent_hold_replay import inputs,HOUR
-from pancakequant.research import invocations,spec,timestamp
+from coinquant.research import invocations,spec,timestamp
 
 def run(native,spot,output):
     manifest=json.loads((spot/'manifest.json').read_text())

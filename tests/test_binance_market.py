@@ -1,6 +1,6 @@
 import unittest
-from pancakequant.binance import BinanceReadOnly
-from pancakequant.types import Unknown
+from coinquant.binance import BinanceReadOnly
+from coinquant.types import Unknown
 
 
 class NativeMarket(unittest.TestCase):

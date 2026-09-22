@@ -2,32 +2,32 @@
   "base_integrated": "d12feef30afe9b17bbc21f3d8512b645ab2509ea",
   "validation": "44 offline tests passed; no native API or economic qualification",
   "files": {
-    "pancakequant/types.py": {
+    "coinquant/types.py": {
       "bytes": 7267,
       "sha256": "2252185de1e7e047ee3c10747f919055874feda02223a0c5f38bb21185c8b332",
       "git_blob_oid": "180a21064bd7bb431b40e1a03a5cb8a23a7882b3"
     },
-    "pancakequant/model.py": {
+    "coinquant/model.py": {
       "bytes": 8633,
       "sha256": "24e5349b6591f56c0f3ec1de27b976f0d067f5562380f4964944e9f9156b535c",
       "git_blob_oid": "67c02a7ecef6b749ed2e10e0568413ae5eb9a30d"
     },
-    "pancakequant/bybit.py": {
+    "coinquant/bybit.py": {
       "bytes": 9142,
       "sha256": "537d56a8ff52d0c84de842e8f4ab70bcb78e8e0d3a9520711917bf9251ba53f8",
       "git_blob_oid": "3be00dd5f682dd8f8f781e37052d6ee868906a47"
     },
-    "pancakequant/execution.py": {
+    "coinquant/execution.py": {
       "bytes": 19426,
       "sha256": "9fce8c3cc9e2b1ba82e8a670aa9ef3765b758fdd27a3f398cacdb1fb5e347b73",
       "git_blob_oid": "d8d6efcce3ceddd6f426f561ddab7dde0477ed16"
     },
-    "pancakequant/pending.py": {
+    "coinquant/pending.py": {
       "bytes": 8830,
       "sha256": "597627ee9f797b1c1cfe55a1d13ca27942ce97f54f6a0250ee787ee5259d1b97",
       "git_blob_oid": "d8b2fb8840adf53c7d8f5225d7234a162fe361ff"
     },
-    "pancakequant/replay.py": {
+    "coinquant/replay.py": {
       "bytes": 22226,
       "sha256": "acf5f66ba3317bbfc9b4f2cb7597dc86f264041836213bcbc8be9465de98cd58",
       "git_blob_oid": "b7c4f1f8ab8b270dd95d145d2858352263447d17"

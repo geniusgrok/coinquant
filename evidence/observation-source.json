@@ -3,7 +3,7 @@
   "run": "python -m unittest discover -s tests -v",
   "result": "27 offline tests passed",
   "files": {
-    "pancakequant/execution.py": {
+    "coinquant/execution.py": {
       "bytes": 17429,
       "sha256": "8ec119d78f95756d36a5c68425f1f19dc80cb963f65e426764e736dbddabf3de",
       "git_blob_oid": "11befc505507264131178498fc6504917f17ab47"

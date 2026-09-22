@@ -1,14 +1,12 @@
 # Coinquant：基于 main 继续
 
-继续 geniusgrok/coinquant，使用 personal / geniusgrok GitHub 连接，全程中文。用户已明确授权研究成果并入main、后续从main开发；不再把旧“150%达标才可合并”当阻塞。main是开发集成基线，不是实盘资格。遵循最新AGENTS，实际可用时采用PonyTail，不增加不必要流程。
+继续 geniusgrok/coinquant，全程中文，使用 personal / geniusgrok GitHub 连接。遵循当前 AGENTS.md；实际可用时采用 PonyTail，不增加不必要流程。main 是开发集成基线，不是实盘资格。
 
-仓库已由 ychenracing/pancakequant 迁移；旧仓库保留，不再作为本项目写入目标。全部原始分支、1.0.0标签、提交历史及发布说明已保全并回读核验；包名和环境变量不改名。迁移与核验记录见 PROJECT_STATE.md。外置Library原件仍按原索引读取，本次没有将其重新上传为Git对象。
+先读取实时 main、AGENTS.md、PROJECT_STATE.md、evidence/sustainable-capital-exit-20260922/{REPORT.md,SELECTION.json,originals.json} 及对应源码。包名和入口为 coinquant，凭据环境变量为 COINQUANT_BINANCE_KEY、COINQUANT_BINANCE_SECRET。仅使用当前接口，不增加别名或回退入口。
 
-先读取实时main、AGENTS.md、PROJECT_STATE.md、evidence/sustainable-capital-exit-20260922/{REPORT.md,SELECTION.json,originals.json,SOURCE_RESTORATION.json,SOURCE_READBACK.json}及对应源码。源码恢复提交79e18895935de9525d9b78355a87448491f5a6d8仅为身份线索，不代替当前main核验。不要用旧包覆盖新源码。
+冻结调用数列位于 research/invocation_draws.json，由 research/spec.json 的 SHA-256 约束；完整正常795次、缺席压力787次。历史经济摘要中的源码哈希属于记录的测量，不是当前源码的新验证。复用经济证据前仍须核对语义、配置和数据身份；CI 状态查询实际 SHA。
 
-原Library-only的资金与计划退出实现已经恢复；699文件工作区Git对象/tree核验、16个经济源码与Library逐字节一致，266离线检查通过。首次Actions push缺workflows权限，后来通过授权连接器完成快进；CI状态按最新SHA查，不能引用失败整条运行当成功。临时恢复发布器已删除，CI只读。
-
-保留原目标：人民币10000无追加，2020-01-01至2026-09-20 exclusive，净CAGR>=150%、完整连续MDD<50%，仅Binance BTCUSDT永续、交易所20x、原冻结稀疏调用。研究候选SX60保存结果102.626204%/39.885115%，压力99.750168%/39.655504%；本次源码迁移没有新经济回放。B36默认/参考不自动替换，execute阻止不撤。
+保留原目标：人民币10000无追加，2020-01-01至2026-09-20 exclusive，净CAGR>=150%、完整连续MDD<50%，仅Binance BTCUSDT永续、交易所20x、原冻结稀疏调用。研究候选SX60保存结果102.626204%/39.885115%，压力99.750168%/39.655504%；这些是已保存经济结果，不是当前源码的新回放。B36默认/参考不自动替换，execute阻止不撤。
 
 已知风险：实际历史GAP缓冲通过，七日规划仍不保证21日有仓离线；同率21日静态预算主/压力各一子单不足8083.80/7152.63 USDT。历史规则/费用/盘口/完整FX与USDT估值/原生部分成交、撤单未知、迟到成交和重启仍未验证，不能宣称实盘可用。
 

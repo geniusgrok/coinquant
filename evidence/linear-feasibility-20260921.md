@@ -17,7 +17,7 @@ Later in this continuation the minute acquisition completed successfully. Artifa
 not present in the active branch, so event ordering remains unresolved. The check
 job and OKX probe remained queued at the later inspection. These are time-specific
 observations, not promises about later asynchronous state. Existing native
-BTCUSD archive was not downloaded again or reacquired. No .transfer restoration.
+BTCUSD archive was not downloaded again or reacquired.
 The OKX branch has stale recovery documents; do not merge that branch wholesale.
 Only its public probe source was copied and repaired on the active branch.
 

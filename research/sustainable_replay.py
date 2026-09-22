@@ -6,7 +6,7 @@ import json
 from decimal import Decimal as D
 from pathlib import Path
 
-from pancakequant.research import iso
+from coinquant.research import iso
 from research.bounded_execution import ExecutionStudy
 from research.bounded_execution_data import _rows, validate_hour, MINUTE, HOUR
 from research.bounded_execution_replay import prepare, SOURCES, digest, input_identity
@@ -15,7 +15,7 @@ from research.verify_account_ledger import verify
 from research.execution_risk_audit import audit, buffer_audit
 
 PROTOCOL = 'evidence/sustainable-capital-exit-20260922/PROTOCOL.md'
-NEW_SOURCES = ('pancakequant/capital.py','research/planned_exit.py',
+NEW_SOURCES = ('coinquant/capital.py','research/planned_exit.py',
                'research/sustainable_replay.py','research/execution_risk_audit.py',PROTOCOL)
 
 

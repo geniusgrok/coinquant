@@ -11,7 +11,7 @@ from unittest.mock import patch
 from research.bounded_execution import BoundedEntry, ExecutionStudy, risk_scale, MINUTE
 from research.bounded_execution_replay import digest, source_identity, verify_selection
 from research.persistent_hold_replay import run
-from pancakequant.linear_account import Account
+from coinquant.linear_account import Account
 import test_bounded_execution as fixtures
 T = fixtures.T
 
@@ -47,7 +47,7 @@ class BudgetRoutingTests(unittest.TestCase):
         cfg=ExecutionStudy(True,False,frozenset([T]),{t:D(10000) for t in range(T-MINUTE,T+3600000,MINUTE)},D('4.8'))
         with tempfile.TemporaryDirectory() as directory:
             out=Path(directory)/'measured'
-            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('pancakequant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
+            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('coinquant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
                 r=run(Path('.'),Path('.'),Path('.'),out,allocation='volatility',reference='impulse_hold',lifecycle='one_campaign',entry_side='long',risk_scale=D('4.8'),cached_inputs=cached,cached_minutes=(minutes,[]),execution=cfg)
             parent=json.loads((out/'execution_summary.json').read_text())['parents'][0]
             self.assertEqual(parent['risk_scale'],'4.8');self.assertEqual(r['risk_scale'],'4.8')

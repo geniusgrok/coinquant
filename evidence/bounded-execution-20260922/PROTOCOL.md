@@ -1,6 +1,6 @@
 # 固定5分钟入场执行协议（计算前）
 
-恢复代码 ab38247ba545aedc60616971278462f7f560aaad；main c886b7c63c6455bd7c933269e32cd35a6fb3e09a。0334e5e 只添加当前源码及原件的文件式导出，不是经济改动。以当前用户 PANCAKEQUANT_RETURN_FIRST_BOUNDED_EXECUTION_PROMPT_20260922.md 为任务依据。本协议保存时尚未运行本候选或容量取消账户。
+恢复代码 ab38247ba545aedc60616971278462f7f560aaad；main c886b7c63c6455bd7c933269e32cd35a6fb3e09a。0334e5e 只添加当前源码及原件的文件式导出，不是经济改动。以当前用户 COINQUANT_RETURN_FIRST_BOUNDED_EXECUTION_PROMPT_20260922.md 为任务依据。本协议保存时尚未运行本候选或容量取消账户。
 
 ## 问题与去重
 
@@ -36,7 +36,7 @@ L12 是风险倍增；L13–L15 是跨人工调用的利润再投资/权益底�
 
 ## 实施与验证清单
 
-- 在现有research/persistent_hold_replay.py接入可选入场执行钩子，默认路径保持；复用pancakequant/linear_account.py、linear_sizing.py与现有campaign/intent身份，不复制账本。
+- 在现有research/persistent_hold_replay.py接入可选入场执行钩子，默认路径保持；复用coinquant/linear_account.py、linear_sizing.py与现有campaign/intent身份，不复制账本。
 - 新research/bounded_execution.py负责冻结母目标、因果片单容量、逐片预算、到期/未知阻止和退出压力；小型驱动负责只恢复所需原件、原事件归因和配对运行。
 - 定向检查累计数量、母目标/止损预算、费用/保证金、未来成交量扰动不改变当前单、止损中止、未决/未知/保护未确认、截止/重启，以及独立连续现金账本。原生未验证项单列；不新增覆盖率或全仓测试门槛。
 - 输出完整逐片/逐笔/决定/权益/日志/失败件、输入清单及配置，报告CAGR/MDD包络/人民币终值/逐年/恢复期、目标完成率/余量/耗时/延迟、成本/funding/敞口/止损风险/保证金与余量、强平/歧义/中途停止及盈亏事件贡献。

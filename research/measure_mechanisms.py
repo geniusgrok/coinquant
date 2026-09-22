@@ -4,7 +4,7 @@ from pathlib import Path
 from decimal import Decimal as D
 from research.persistent_hold_replay import inputs,run,HOUR
 from research.target_attribution import summarize
-from pancakequant.opportunities import Opportunities
+from coinquant.opportunities import Opportunities
 
 
 def measure(native,output,mechanism,full_window=False,risk_scale=D(1)):

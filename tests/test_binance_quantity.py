@@ -1,7 +1,7 @@
 from decimal import Decimal as D
 import unittest
-from pancakequant.binance import market_quantity
-from pancakequant.types import Unknown,Blocked
+from coinquant.binance import market_quantity
+from coinquant.types import Unknown,Blocked
 
 def instrument():
     return {'symbol':'BTCUSDT','filters':[

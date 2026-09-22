@@ -1,27 +1,27 @@
 {
-  "filename": "PANCAKEQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921.zip",
+  "filename": "COINQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921.zip",
   "bytes": 15486668,
   "sha256": "b33a6e53a23e6b52ba6d01b22fc2e8a20d2538a526d8dc6a615c6423ed8a452f",
   "files": 313,
   "qualification": "NOT_QUALIFIED",
   "dependencies": [
     {
-      "filename": "PANCAKEQUANT_SPOT_BASIS_SCREEN_20260921.zip",
+      "filename": "COINQUANT_SPOT_BASIS_SCREEN_20260921.zip",
       "bytes": 2154160,
       "sha256": "e96deb4af7612d39357f00c838fb09a5e7bf584065c86d35616d3f94c043327b"
     },
     {
-      "filename": "PANCAKEQUANT_DIRECTION_RISK_AND_PROTECTION_20260921.zip",
+      "filename": "COINQUANT_DIRECTION_RISK_AND_PROTECTION_20260921.zip",
       "bytes": 16280350,
       "sha256": "820d68c695bcd7c27482ad56c74e46caf67a4e418ee63ae9e616b13f4243735a"
     },
     {
-      "filename": "PANCAKEQUANT_RETURN_FIRST_L21_L26_20260921.zip",
+      "filename": "COINQUANT_RETURN_FIRST_L21_L26_20260921.zip",
       "bytes": 140850994,
       "sha256": "001813d77bb3d4ceba82c2a73f37f5513ffd6eef91cd42f5cd344fe9401b4357"
     },
     {
-      "filename": "PANCAKEQUANT_L29_RETURN_CAPTURE_20260921.zip",
+      "filename": "COINQUANT_L29_RETURN_CAPTURE_20260921.zip",
       "bytes": 141577623,
       "sha256": "79d3fdbc28cedfbaaa144c1541b3b7b73293d7a97b81052a341d4be017628abe"
     }

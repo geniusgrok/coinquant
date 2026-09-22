@@ -3,7 +3,7 @@ import argparse,json,bisect
 from decimal import Decimal as D
 from pathlib import Path
 from research.persistent_hold_replay import inputs,HOUR
-from pancakequant.research import invocations,spec,timestamp
+from coinquant.research import invocations,spec,timestamp
 
 def screen(native,output):
     series,funding,_,identity=inputs(native,Path('evidence/binance-boundary-20260921'),Path('evidence/binance-mark-repair-20260921'))

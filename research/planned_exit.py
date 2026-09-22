@@ -6,11 +6,11 @@ remainder. A stop or unknown response never authorizes replacement exposure.
 from __future__ import annotations
 from dataclasses import dataclass, field, asdict
 from decimal import Decimal as D
-from pancakequant.binance import market_quantity
-from pancakequant.types import ZERO, floor_step, serial
-from pancakequant.linear_account import LOT
-from pancakequant.state import client_id
-from pancakequant.capital import CapitalBudget, capital_surplus
+from coinquant.binance import market_quantity
+from coinquant.types import ZERO, floor_step, serial
+from coinquant.linear_account import LOT
+from coinquant.state import client_id
+from coinquant.capital import CapitalBudget, capital_surplus
 from research.bounded_execution import MINUTE, WINDOW, PARTICIPATION, exit_fill
 
 

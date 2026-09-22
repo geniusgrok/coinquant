@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import patch
 from pathlib import Path
 
-from pancakequant.research import invocations, spec, timestamp
+from coinquant.research import invocations, spec, timestamp
 import research.attention_lag7_account as lag7
 from research.attention_lag7_account import DAY, copy_frozen_inputs, prediction_streams, verify_native_inputs, write_report
 

@@ -13,7 +13,7 @@
   "note": "Acquisition only. Economic replay and tuning are not run in GitHub Actions.",
   "attempt": 4,
   "previous_run_id": 35548663656,
-  "previous_failure": "workflow invoked research/acquire_v5.py as a file, so repository root was absent from sys.path and pancakequant could not be imported",
+  "previous_failure": "workflow invoked research/acquire_v5.py as a file, so repository root was absent from sys.path and coinquant could not be imported",
   "execution": "python -m research.acquire_v5",
   "previous_status": "check succeeded; macOS acquisition remained queued",
   "runner": "ubuntu-latest",

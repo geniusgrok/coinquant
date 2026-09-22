@@ -5,7 +5,7 @@ from decimal import Decimal as D
 import gzip
 import json
 from pathlib import Path
-from pancakequant.research import iso
+from coinquant.research import iso
 
 
 def summarize(root):

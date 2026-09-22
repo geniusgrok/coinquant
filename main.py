@@ -1,5 +1,5 @@
-"""The same CLI entrypoint as python -m pancakequant; no legacy bot modes."""
-from pancakequant.cli import main
+"""The same CLI entrypoint as python -m coinquant; no legacy bot modes."""
+from coinquant.cli import main
 
 if __name__ == '__main__':
     raise SystemExit(main())

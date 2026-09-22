@@ -1,7 +1,7 @@
 {
   "qualification": "RETURN_IMPROVED_NOT_PROMOTED_HOLDING_BUFFER_SHORTFALL",
   "archive": {
-    "file_name": "PANCAKEQUANT_EXECUTION_RISK_FRONTIER_20260922.zip",
+    "file_name": "COINQUANT_EXECUTION_RISK_FRONTIER_20260922.zip",
     "bytes": 30109407,
     "sha256": "fe46a9df34a4e9d80080aa25d79375f9f97517f2e73bfb45f110c24d6293d236",
     "manifest_files": 964,
@@ -10,17 +10,17 @@
     "all_members_crc_size_sha256_verified": true,
     "library_file_id": "libfile_0a41df6a55f08191a0f2178ac0f977d5",
     "file_id": "file_00000000ae708206911a7d3f9dd50119",
-    "library_path": "/pancakequant/PANCAKEQUANT_EXECUTION_RISK_FRONTIER_20260922.zip",
+    "library_path": "/coinquant/COINQUANT_EXECUTION_RISK_FRONTIER_20260922.zip",
     "persistent_readback_byte_equal": true,
     "persistent_readback_manifest_verified": true
   },
   "dependency": {
-    "file_name": "PANCAKEQUANT_BOUNDED_EXECUTION_20260922.zip",
+    "file_name": "COINQUANT_BOUNDED_EXECUTION_20260922.zip",
     "bytes": 48866772,
     "sha256": "854fba74875a4e7bc07a9b709edf82b377d7157a01d8d73db42db44aa41095c1",
     "library_file_id": "libfile_54a5fcf3af5c8191af73244b14ef6ec5",
     "file_id": "file_0000000083d481fd961f6fa15939f45b",
-    "library_path": "/pancakequant/PANCAKEQUANT_BOUNDED_EXECUTION_20260922.zip",
+    "library_path": "/coinquant/COINQUANT_BOUNDED_EXECUTION_20260922.zip",
     "member_files": 2077,
     "current_task_raw_crc_hash_verified": true,
     "extract_to": "originals/",

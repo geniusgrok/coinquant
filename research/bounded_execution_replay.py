@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 from decimal import Decimal as D
 
-from pancakequant.research import timestamp
+from coinquant.research import timestamp
 from research.bounded_execution import ExecutionStudy, risk_scale
 from research.bounded_execution_data import load_entry_minutes
 from research.minute_evidence import load as load_original_minutes
@@ -22,8 +22,8 @@ from research.verify_account_ledger import verify
 SOURCES = ('research/persistent_hold_replay.py', 'research/bounded_execution.py',
            'research/bounded_execution_data.py', 'research/bounded_execution_replay.py',
            'research/minute_evidence.py', 'research/verify_account_ledger.py',
-           'pancakequant/linear_account.py', 'pancakequant/linear_sizing.py',
-           'pancakequant/campaign.py', 'pancakequant/opportunities.py', 'research/spec.json')
+           'coinquant/linear_account.py', 'coinquant/linear_sizing.py',
+           'coinquant/campaign.py', 'coinquant/opportunities.py', 'research/spec.json', 'research/invocation_draws.json')
 
 
 def digest(path):

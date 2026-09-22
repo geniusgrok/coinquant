@@ -3,7 +3,7 @@ import csv,gzip,json
 from collections import defaultdict
 from decimal import Decimal as D
 from pathlib import Path
-from pancakequant.research import iso,spec
+from coinquant.research import iso,spec
 from research.linear_replay import FEE
 
 

@@ -2,8 +2,8 @@ from dataclasses import replace
 from decimal import Decimal as D
 import unittest
 
-from pancakequant.linear_account import Account, FEE
-from pancakequant.capital import CapitalBudget, HOUR
+from coinquant.linear_account import Account, FEE
+from coinquant.capital import CapitalBudget, HOUR
 from research.planned_exit import PlannedExit, MINUTE
 
 

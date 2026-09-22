@@ -8,9 +8,9 @@ from dataclasses import replace
 from decimal import Decimal as D
 from pathlib import Path
 
-from pancakequant.capital import CapitalBudget
-from pancakequant.linear_account import FEE
-from pancakequant.research import invocations, spec, timestamp, iso
+from coinquant.capital import CapitalBudget
+from coinquant.linear_account import FEE
+from coinquant.research import invocations, spec, timestamp, iso
 
 
 def rows(path,name):

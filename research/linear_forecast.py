@@ -10,7 +10,7 @@ from pathlib import Path
 import statistics
 import zipfile
 
-from pancakequant.research import invocations, spec, timestamp
+from coinquant.research import invocations, spec, timestamp
 
 DAY = 86400000
 

@@ -10,10 +10,10 @@ from dataclasses import asdict, dataclass, field, replace
 from decimal import Decimal as D
 from typing import Mapping
 
-from pancakequant.linear_account import Account, FEE
-from pancakequant.linear_sizing import funded_target
-from pancakequant.state import client_id
-from pancakequant.types import ZERO, serial
+from coinquant.linear_account import Account, FEE
+from coinquant.linear_sizing import funded_target
+from coinquant.state import client_id
+from coinquant.types import ZERO, serial
 
 MINUTE = 60_000
 WINDOW = 5 * MINUTE
@@ -173,7 +173,7 @@ class BoundedEntry:
                       volume_minute=volume_time, volume_available_at=volume_time+2*MINUTE,
                       completed_minute_quote=str(minute_quote), capacity=str(capacity))
 
-        from pancakequant.capital import CapitalBudget
+        from coinquant.capital import CapitalBudget
         capital = CapitalBudget.restore(self.capital) if self.capital is not None else None
 
         def preview(cap: D):

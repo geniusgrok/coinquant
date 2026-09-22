@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 import zipfile
 
-from pancakequant.research import timestamp
+from coinquant.research import timestamp
 from research.minute_evidence import load, steps
 
 class MinuteEvidenceTests(unittest.TestCase):

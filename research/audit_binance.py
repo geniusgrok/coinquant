@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from urllib.parse import urlsplit, parse_qs
 
-from pancakequant.research import spec, timestamp
+from coinquant.research import spec, timestamp
 from research.acquire_binance import paths
 from research.linear_forecast import archive_rows
 

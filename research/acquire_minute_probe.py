@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 import zipfile
 from research.acquire_binance import BASE, download
-from pancakequant.research import timestamp
+from coinquant.research import timestamp
 
 DATES = ('2021-05-13', '2022-11-08', '2023-02-15', '2023-03-13', '2023-06-05', '2023-06-20')
 

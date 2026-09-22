@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 from decimal import Decimal as D
 import research.persistent_hold_replay as replay
-from pancakequant.research import timestamp
+from coinquant.research import timestamp
 
 
 def run(root,output,allocation="edge",reference="channel",research_schedule="hourly",minute_days=(),risk_scale=D(1)):

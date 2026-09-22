@@ -7,7 +7,7 @@ from decimal import Decimal as D
 import gzip
 import json
 from pathlib import Path
-from pancakequant.research import iso
+from coinquant.research import iso
 from research.persistent_hold_replay import inputs, channel_state, DAY, HOUR
 
 

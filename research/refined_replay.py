@@ -14,11 +14,11 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-from pancakequant import replay
-from pancakequant.config import load
-from pancakequant.data import Dataset, Tick, MINUTE
-from pancakequant.research import digest, iso
-from pancakequant.types import Bar, Blocked, D
+from coinquant import replay
+from coinquant.config import load
+from coinquant.data import Dataset, Tick, MINUTE
+from coinquant.research import digest, iso
+from coinquant.types import Bar, Blocked, D
 
 
 class RefinedDataset(Dataset):

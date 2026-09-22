@@ -21,8 +21,8 @@ def observe(config_path, *, decision=False, execute=False):
             or int(config['account_uid']) <= 0
             or not isinstance(config['state_dir'],str) or not config['state_dir'].strip()):
         raise Blocked('explicit Binance UID and persistent state_dir required; obsolete venue configuration refused')
-    key=os.environ.get('PANCAKEQUANT_BINANCE_KEY','')
-    secret=os.environ.get('PANCAKEQUANT_BINANCE_SECRET','')
+    key=os.environ.get('COINQUANT_BINANCE_KEY','')
+    secret=os.environ.get('COINQUANT_BINANCE_SECRET','')
     if not key or not secret:
         raise Blocked('explicit Binance read credentials required')
     identity='binance:BTCUSDT:live:'+config['account_uid']
@@ -70,7 +70,7 @@ def observe(config_path, *, decision=False, execute=False):
 
 
 def main(argv=None):
-    parser=argparse.ArgumentParser(description='Bounded Binance BTCUSDT observation; research migration incomplete.')
+    parser=argparse.ArgumentParser(prog='coinquant', description='Coinquant Binance BTCUSDT observation; execution requires economic and safety qualification.')
     commands=parser.add_subparsers(dest='command',required=True)
     for name in ('status','run'):
         command=commands.add_parser(name)

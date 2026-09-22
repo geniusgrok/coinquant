@@ -1,7 +1,7 @@
 """Research imports the shared linear sizing without copying its formulas."""
 from decimal import Decimal as D
-from pancakequant.types import ZERO
-from pancakequant.linear_sizing import target_fraction, funded_target, GAP, FUNDING_RESERVE
+from coinquant.types import ZERO
+from coinquant.linear_sizing import target_fraction, funded_target, GAP, FUNDING_RESERVE
 
 def channel_position(window):
     if len(window)<21:return 0,ZERO

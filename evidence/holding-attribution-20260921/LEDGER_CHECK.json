@@ -9,7 +9,7 @@
       "equity.csv.gz": "350674ba5c2ae358f79133f0cabbbedcbf083afd9970fe6c011054fc56a48071"
     }
   },
-  "../data-restored/PANCAKEQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921/minute-refinement/L/sparse": {
+  "../data-restored/COINQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921/minute-refinement/L/sparse": {
     "close_points": 58896,
     "max_equity_error_usdt": "0",
     "fees": "1421.75339653257900",
@@ -19,7 +19,7 @@
       "equity.csv.gz": "6d81f264ef68d4d553044ed0b62c29f72f4e971e6b352caa843a4088be55112e"
     }
   },
-  "../data-restored/PANCAKEQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921/minute-refinement/L/four_hour": {
+  "../data-restored/COINQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921/minute-refinement/L/four_hour": {
     "close_points": 58896,
     "max_equity_error_usdt": "0",
     "fees": "3681.14739086556225",

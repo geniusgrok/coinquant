@@ -1,9 +1,9 @@
-# Binance 执行迁移：新增离线安全操作，生产仍只读
+# Binance 执行能力：新增离线安全操作，生产仍只读
 
 2026-09-21复核官方USDⓈ-M REST Trade规范：
 https://developers.binance.com/en/docs/catalog/core-trading-derivatives-trading-usd-s-m-futures/api/rest-api/trade
 
-新增pancakequant/binance_safety.py，仅复用原BinanceReadOnly与durable State，
+新增coinquant/binance_safety.py，仅复用原BinanceReadOnly与durable State，
 通过注入sender验证原生请求协议；没有接入生产网络writer或开启CLI执行。
 默认authorization=False在任何写前拒绝。当前reader身份命名仍live，未伪造testnet兼容。
 

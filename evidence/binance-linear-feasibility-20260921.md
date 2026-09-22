@@ -25,7 +25,7 @@ risk only after its terminal state is established; it cannot by itself prove ato
 TP/SL protection. Historical costs, risk tiers and stablecoin collateral risk remain
 unqualified. Native public history acquisition is an evidence task, not acceptance.
 
-## Binance-only migration, verified read surface
+## Binance-only execution, verified read surface
 
 The user selected Binance exclusively. The research read transport now signs the
 exact Binance query string, restricts hosts and endpoint paths, rejects redirects,

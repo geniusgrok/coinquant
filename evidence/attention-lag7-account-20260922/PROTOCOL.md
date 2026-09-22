@@ -8,8 +8,8 @@
 
 ## 已核验输入
 
-- 关注度归档：`PANCAKEQUANT_ATTENTION_EVIDENCE_20260922.zip`，3,373,375 bytes，SHA-256 `ffd0195d2b7e47c8b9a7ee1bf7fae2f50a6fc3523eec96bca89d7e46157dfa56`；575 个登记成员均逐字节通过。复用其中 `lag7_predictions.json`、`lag7_fits.json`、`weeks.json` 和 `labels.json`，不重训旧月份或重做标签。
-- payoff 归档：`PANCAKEQUANT_EXECUTABLE_PAYOFF_EVIDENCE_20260922.zip`，53,179,721 bytes，SHA-256 `0b46f6fccff4c68d7accc23ef126fbaefb6fdbb3143d3dfb6c74e5912c0c892f`；6,179 个登记成员均逐字节通过。
+- 关注度归档：`COINQUANT_ATTENTION_EVIDENCE_20260922.zip`，3,373,375 bytes，SHA-256 `ffd0195d2b7e47c8b9a7ee1bf7fae2f50a6fc3523eec96bca89d7e46157dfa56`；575 个登记成员均逐字节通过。复用其中 `lag7_predictions.json`、`lag7_fits.json`、`weeks.json` 和 `labels.json`，不重训旧月份或重做标签。
+- payoff 归档：`COINQUANT_EXECUTABLE_PAYOFF_EVIDENCE_20260922.zip`，53,179,721 bytes，SHA-256 `0b46f6fccff4c68d7accc23ef126fbaefb6fdbb3143d3dfb6c74e5912c0c892f`；6,179 个登记成员均逐字节通过。
 - 完整 Binance 开发输入来自已核验 native 归档；为与旧 B1 输入一致，补齐 2021-01-02、2021-03-13、2021-10-03、2022-02-24、2022-09-19 的分钟流。合并后 22 个分钟原件的路径与 SHA-256 均等于旧 B1 `inputs.json`。不重新下载行情。
 
 ## 账户映射

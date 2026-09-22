@@ -8,9 +8,9 @@ import json
 from pathlib import Path
 from decimal import Decimal as D
 import numpy as np
-from pancakequant.research import spec, invocations, timestamp, iso
-from pancakequant.opportunities import Opportunities
-from pancakequant.types import floor_step
+from coinquant.research import spec, invocations, timestamp, iso
+from coinquant.opportunities import Opportunities
+from coinquant.types import floor_step
 from research.persistent_hold_replay import run as replay, inputs, HOUR, DAY, TICK
 from research.minute_evidence import load as load_minutes
 

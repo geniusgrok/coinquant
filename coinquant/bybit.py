@@ -122,12 +122,12 @@ class Bybit:
         return self.write('/v5/order/create', payload)
 
     def cancel(self, link: str):
-        if not link.startswith('pq-'):
+        if not link.startswith('cq-'):
             raise Blocked('unowned order cannot be cancelled')
         return self.write('/v5/order/cancel', dict(SCOPE, orderLinkId=link))
 
     def amend(self, link: str, target):
-        if not link.startswith('pq-') or not target.trigger_price:
+        if not link.startswith('cq-') or not target.trigger_price:
             raise Blocked('only owned conditional entries use ordinary-order amendment')
         order = self.lookup(link)
         if (not order or order.get('orderStatus') != 'Untriggered'

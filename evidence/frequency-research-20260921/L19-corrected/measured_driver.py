@@ -7,10 +7,10 @@ import csv
 import json
 from pathlib import Path
 from statistics import median
-from pancakequant.research import spec, timestamp, invocations, digest
+from coinquant.research import spec, timestamp, invocations, digest
 from research.persistent_hold_replay import inputs, channel_state, HOUR, DAY
 from research.linear_replay import FEE
-from pancakequant.types import ZERO
+from coinquant.types import ZERO
 
 
 def direction(rates):

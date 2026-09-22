@@ -2,12 +2,12 @@
   "base_commit": "a500eb63837aa0ae276548d691ce3f8c6958f62a",
   "verification": "34 affected offline tests and 7 CLI smoke checks passed; no native API or economic qualification",
   "files": {
-    "pancakequant/pending.py": {
+    "coinquant/pending.py": {
       "bytes": 8979,
       "sha256": "c192d7a11a9beb1283ad7b66d0513f33461f0fe112b17d1966d3ca511e50332e",
       "git_blob_oid": "b06586377c57d6724dc4e35ec05ae331bb080598"
     },
-    "pancakequant/execution.py": {
+    "coinquant/execution.py": {
       "bytes": 19782,
       "sha256": "1f8733c3f1fbdc3c52b8a0afe09cdb62e71a1ed72412c1a4f955491ede27c556",
       "git_blob_oid": "c1c116fc2dd4a43b3063cf3bce2374af32d241e2"

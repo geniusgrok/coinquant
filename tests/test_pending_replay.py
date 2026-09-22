@@ -7,10 +7,10 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from pancakequant.data import Dataset
-from pancakequant.replay import Account, activate_entry, hosted_exit_price, _replay
-from pancakequant.research import invocations
-from pancakequant.types import Bar, D, ModelConfig
+from coinquant.data import Dataset
+from coinquant.replay import Account, activate_entry, hosted_exit_price, _replay
+from coinquant.research import invocations
+from coinquant.types import Bar, D, ModelConfig
 from test_pending import target
 from test_model import sample
 from test_replay import dataset_fixture
@@ -86,7 +86,7 @@ class PendingReplayTests(unittest.TestCase):
             output = path / 'output'; output.mkdir()
             def decision(bars, snapshot, cfg, **kwargs):
                 return t if snapshot.time == start else flat
-            with patch('pancakequant.replay.decide', side_effect=decision) as model:
+            with patch('coinquant.replay.decide', side_effect=decision) as model:
                 result = _replay(dataset, ModelConfig(), frozen, output)
             allowed = set(invocations(frozen))
             self.assertEqual({call.args[1].time for call in model.call_args_list}, allowed)
