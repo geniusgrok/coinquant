@@ -4,29 +4,34 @@ Repository: ychenracing/pancakequant.
 
 ## Current mandate
 
-Implement the user's PANCAKEQUANT_REDESIGN_PROMPT: one manually triggered BTC perpetual system, one quantitative model, one Binance exchange adapter, one current configuration.
-The user selected Binance exclusively on 2026-09-21. Target BTCUSDT USDT-settled
-linear perpetual. Retire other production adapters during migration; retained
-Bybit/OKX evidence is historical research, not required exchange support. All existing code, strategy, risk, dependencies and architecture may be replaced. Do not preserve obsolete interfaces or capabilities as acceptance conditions.
+Maintain one manually triggered BTC perpetual system, one quantitative model, one Binance exchange adapter, and one current configuration. Binance BTCUSDT USDT-settled linear perpetual is the only target market. All existing strategy, risk, dependencies and architecture may be replaced when evidence supports the change. Retained Bybit/OKX evidence is historical research, not a production support requirement.
 
-The economic targets are cost-net CAGR >= 150% and continuous full-account MDD < 50%, from 2020-01-01T00:00:00Z through 2026-09-20T00:00:00Z exclusive. Research may decide hourly or at another preregistered causal frequency; formal acceptance still uses the original frozen sparse invocation sequence. Both modes share model, market, costs and account implementation, with independent account paths. Research-frequency success is not formal acceptance. Start with CNY 10,000, explicitly freeze conversion and settlement assumptions, include real contract history, costs, funding, liquidation and sparse irregular manual triggers. Do not move the window, lower targets, fabricate data or call diagnostic replay formal acceptance.
+Economic targets remain cost-net CAGR >= 150% and continuous full-account MDD < 50%, from 2020-01-01T00:00:00Z through 2026-09-20T00:00:00Z exclusive. Start with CNY 10,000 and no additions; include contract history, costs, funding, liquidation, CNY/USDT valuation and the original frozen sparse invocation sequence. Research-frequency success does not substitute for sparse acceptance. Do not move the window, lower targets, fabricate data, or describe proxy results as production qualification.
+
+## Development integration authorization: 2026-09-22
+
+The user explicitly requested merging the research work into main and basing subsequent development on main. This replaces the old requirement to reach the economic targets before any main integration. Main is now the canonical development/integration baseline, not a certification that the model is safe or profitable in production.
+
+Restore and verify the previously Library-only sustainable-capital/planned-exit implementation before claiming that main contains it. Preserve all existing evidence, failed results and original identities. Read the real remote HEAD before writes; use normal fast-forward or PR merge operations and respect GitHub protection. Do not force push, overwrite parallel work, or delete the historical research branch. New work starts from current main; short-lived branches may be used for isolated changes, then normally merged back.
+
+This authorization does not promote SX60 to a live default, change the existing 3.6 reference/default paths, enable execute, relax trading safety, or authorize any real/Testnet order or account modification. Economic qualification remains NOT_QUALIFIED until its evidence actually passes. Keep development integration, research candidate selection, and production enablement separate.
 
 ## Execution safety
 
-Default read-only; live execution requires explicit current authorization and matching configured account. This engineering task does not authorize trading, transfers, credentials or real account-setting changes. Only BTC exposure and owned orders may be changed. Reconcile exchange positions, ordinary orders, conditional orders and fills before deciding. Unknown responses are not failures or successes: persist intent and query by stable identity before any retry. Never assume an unavailable account query means an empty account.
+Default read-only. Live execution requires explicit current authorization and a matching configured account. This engineering task does not authorize trading, transfers, credentials or real account-setting changes. Reconcile positions, ordinary and conditional orders, and fills before deciding. Unknown responses are neither failure nor success: persist intent and query stable identity before any retry. An unavailable account query never means an empty account.
 
-Use one-way isolated positions with exchange leverage fixed at 20; effective account leverage may be lower. Newly filled exposure needs native full-position TP and SL, including partial fills. Protection must survive process exit. Do not leave an entry remainder able to reopen unprotected exposure after a stop. Keep valid protection during amendments. When safety cannot be established, stop new exposure, report uncertainty, and use only authorized risk reduction. No background daemon is an acceptable substitute.
+The intended execution uses one-way isolated positions with exchange leverage fixed at 20, not necessarily 20x account exposure. Filled exposure needs native full-position TP/SL including partial fills. Protection must survive process exit. Do not leave entry remainders able to reopen unprotected exposure after a stop. Keep valid protection during amendments. Unknown funds, orders or protection stop new exposure; only explicitly authorized risk reduction is allowed. Do not invent offline client actions or substitute a background daemon for run_once.
 
 ## Engineering and verification
 
-Read current code and real call paths. Reuse only what serves this mandate. Keep the production path small and coherent; no obsolete adapter/strategy compatibility. Apply available PonyTail where relevant; do not add mandatory TDD, coverage targets, exhaustive tests or approval gates. Use targeted funds, orders, idempotency, protection, data-causality and sparse-trigger tests. Missing live/testnet checks remain unverified.
+Understand real call paths. Reuse shared account, sizing, campaign and execution components. Keep the production path small; avoid obsolete strategy/adapter compatibility and unrelated refactors. Apply available PonyTail when relevant; absence of the skill is not a reason to invent its use or block independent work. No mandatory TDD, coverage target or redundant approval process.
 
-One lightweight CI workflow at most, one Python environment, timeout-minutes: 10, no secrets, scheduled trading, long optimization or full historical research. Report queued checks honestly; do not wait when independent work remains.
+Use risk-driven, minimum necessary validation for funds, orders, idempotency, protection, causality and sparse execution. Reuse evidence only when source/config/input identities still apply. A code publication/merge need not repeat unchanged economic accounts. Missing native checks remain unverified. Neither accounting identity nor unit tests prove economic or live-trading qualification.
 
-## Remote preservation and integration
+Keep one lightweight CI workflow, one Python environment, timeout-minutes: 10; no real-account secrets, scheduled trading, optimization or full historical research in CI. One-time exact-source recovery may write only the authorized research branch, check fixed before/after hashes and offline tests, then remove its publisher and restore contents: read in the same commit. Do not leave temporary acquisition/publishing steps on main.
 
-Work on research/on-demand-btc-20260920. Main may receive the redesign only after economic targets and necessary trading-safety checks actually pass. A checkpoint is not completion.
+## Preservation and recovery
 
-Commit meaningful work promptly. Prefer native Git, then authorized connectors. Read the current branch before writes and preserve concurrent work. Verify remote commit, tree and file identities. Large originals must remain recoverable without transferring full archives/base64/huge JSON through model context; use file-backed transfer or deterministic verified parts.
+Preserve meaningful code, configuration, reports and recovery state promptly. Prefer native Git and file-backed/programmatic transfers, then authorized connectors. Large originals must remain fully recoverable without full archives/Base64/huge JSON in model context. Use deterministic patches or verified parts when necessary, with fixed source versions and length/hash checks; verify remote bytes, Git objects, tree, commit and target ref. Unknown writes require remote-state inspection before retry.
 
-The .transfer packet is historical recovery evidence, not current source. Its exporter is read-only. Never run a restoration that blindly overwrites later files. Preserve packet and current snapshot independently; reconcile intentionally. Keep PROJECT_STATE.md as the single current recovery entry.
+The old .transfer packet is historical evidence, not current source. Do not blindly restore it over newer code. Keep PROJECT_STATE.md as the current recovery entry and HANDOFF_PROMPT.md as the concise continuation entry; no duplicate progress systems. Main integration, a PR, or a checkpoint is not completion of the 150%/<50% objective.

@@ -1,0 +1,152 @@
+--- a/research/persistent_hold_replay.py
++++ b/research/persistent_hold_replay.py
+@@ -189,18 +189,27 @@
+         from research.bounded_execution import BoundedEntry, exit_fill
+         if execution.stress:slip*=2
+     entry_window=None;parent_entries=[];exit_events=[]
++    sustainable=execution is not None and execution.sustainable
++    capital=None;gap_anchor_mark=None;gap_anchor_child=''
++    planned_window=None;planned_parents=[]
++    if execution is not None and execution.planned_exit!='instant':
++        from research.planned_exit import PlannedExit
++    funding_times=sorted(funding)
++    if sustainable:
++        from pancakequant.capital import CapitalBudget, sustain_position
++
+     output.mkdir(parents=True,exist_ok=False)
+     with gzip.open(output/'equity.csv.gz.partial','wt') as ef,gzip.open(output/'orders.csv.gz.partial','wt') as of,gzip.open(output/'decisions.csv.gz.partial','wt') as df, (open(output/'execution.jsonl.partial','w') if execution is not None else nullcontext(None)) as xf:
+         ew=csv.writer(ef);ow=csv.writer(of);dw=csv.writer(df)
+         dw.writerow(['time','regime','equity','quantity','notional','margin','free_wallet','sl','tp','regime_age_hours','action','binding_cap','risk_quantity','exposure_quantity','margin_quantity','notional_quantity','liquidity_quantity','requested_quantity','accepted_quantity','edge_target_fraction','edge_samples'])
+-        ew.writerow(['time','event','equity_usdt','drawdown','quantity','mark','margin','fees','funding']+(['wallet','average_entry','sl','tp'] if execution is not None else []));ow.writerow(['time','event','quantity_btc','price_or_mark','funding_rate','quantity_after'])
++        ew.writerow(['time','event','equity_usdt','drawdown','quantity','mark','margin','fees','funding']+(['wallet','average_entry','sl','tp'] if execution is not None else [])+(['gap_anchor_child','gap_anchor_mark'] if sustainable else []));ow.writerow(['time','event','quantity_btc','price_or_mark','funding_rate','quantity_after'])
+         def execution_record(kind,value):
+             if xf is not None:
+                 xf.write(json.dumps(dict(kind=kind,**value),default=str)+'\n');xf.flush()
+         def observe(t,event,mark):
+             nonlocal peak,mdd
+             eq=account.equity(mark);peak=max(peak,eq);dd=1-eq/peak;mdd=max(mdd,dd)
+-            ew.writerow([t,event,str(eq),str(dd),str(account.q),str(mark),str(account.margin),str(account.fees),str(account.funding)]+([str(account.wallet),str(account.entry),str(account.sl),str(account.tp)] if execution is not None else []))
++            ew.writerow([t,event,str(eq),str(dd),str(account.q),str(mark),str(account.margin),str(account.fees),str(account.funding)]+([str(account.wallet),str(account.entry),str(account.sl),str(account.tp)] if execution is not None else [])+([gap_anchor_child,str(gap_anchor_mark)] if sustainable else []))
+         def close(t,event,reference,bankruptcy=False):
+             nonlocal turnover
+             q=account.q
+@@ -210,6 +219,9 @@
+                 price,exit_record=exit_fill(reference,q,previous_quote,slip,spread)
+                 exit_record.update(time=t,event=event);exit_events.append(exit_record)
+                 execution_record('exit',exit_record)
++                if planned_window is not None and not planned_window.terminal_reason:
++                    planned_window.finish('protection_or_exit:'+event)
++                    execution_record('planned_stop',planned_window.record())
+                 if entry_window is not None and not entry_window.terminal_reason:
+                     entry_window.finish('protection_or_exit:'+event,t)
+                     execution_record('mother_stop',entry_window.record())
+@@ -223,10 +235,10 @@
+                 # Offset settlement follows the invocation. Charge old exposure
+                 # even if it might already have exited: explicit adverse bound.
+                 cost=q*p*rate
+-                account.wallet-=cost;account.funding+=cost
+-                if account.q and account.wallet<account.margin:account.margin=max(ZERO,account.wallet)
++                account.apply_funding_cost(cost)
+                 ow.writerow([ft,'funding_adverse_bound',str(q),str(p),str(rate),str(account.q)])
+                 counts['funding_charge']+=1
++                if sustainable:observe(ft,'funding_settled',p)
+             elif q:counts['ambiguous_funding_credit_omitted']+=1
+         for t in range(start,end,HOUR):
+             opportunity=opportunities.get(t//model_interval*model_interval) if mechanism else None
+@@ -267,6 +279,28 @@
+                 decision_state=[t,regime,str(account.equity(mo)),str(account.q),str(abs(account.q)*mo),str(account.margin),str(account.wallet-account.margin),str(account.sl),str(account.tp),(t-regime_since)//HOUR]
+                 if mechanism and not account.q and opportunity and opportunity.entry_limit is not None and (not opportunity.entry_open or opportunity.direction*(o*(1+D(opportunity.direction)*(D(frozen['slippage_fraction'])+spread/2))-opportunity.entry_limit)>=0):
+                     direction=0;action='edge_realized';counts[action]+=1
++                if sustainable:
++                    capital=CapitalBudget.from_history(t,funding,previous_quote,slip,spread,times=funding_times)
++                    execution_record('capital_budget',dict(time=t,quantity=str(account.q),wallet=str(account.wallet),
++                        mark=str(mo),reference=str(o),gap_anchor_child=gap_anchor_child,budget=capital.record()))
++                    immediate_signal_exit=(execution.planned_exit=='instant' and account.q
++                        and disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit')
++                    if account.q and not immediate_signal_exit:
++                        original_q=account.q
++                        change=sustain_position(account,capital,o,mo,gap_anchor_mark,instrument,
++                            lambda q: exit_fill(o,q,previous_quote,slip,spread)[0])
++                        if change['amount']:
++                            delta=change['amount']*(1 if original_q>0 else -1)
++                            price=change['price'];event=change['reason']
++                            _,record=exit_fill(o,delta,previous_quote,slip,spread)
++                            record.update(time=t,event=event,quantity_after=str(account.q),
++                                original_anchor=gap_anchor_child,capital_before=str(change['before']),capital_after=str(change['after']))
++                            exit_events.append(record);execution_record('risk_reduction',record)
++                            turnover+=abs(delta)*price;counts[event]+=1
++                            ow.writerow([t,event,str(delta),str(price),'',str(account.q)])
++                            observe(t,event,mo)
++                            action=event
++                            if not account.q:exited=True
+                 if reference=='impulse_confirmation' and account.q and opportunity and campaign_epoch==last_entry_epoch:
+                     proposed=floor_step(opportunity.stop,TICK)+(TICK if account.q<0 else ZERO)
+                     if account.q*(proposed-account.sl)>0:
+@@ -305,7 +339,16 @@
+                                 ow.writerow([t,change['event'],str(change['amount']),str(price),'',str(account.q)])
+                 elif targeting:
+                     if account.q and (trail_invalid if native_trail_order else disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit' if mechanism else account.q*direction<=0):
+-                        close(t,'regime_exit',o);exited=True;action='regime_exit'
++                        if sustainable and execution.planned_exit!='instant':
++                            if t not in execution.refined_hours or minutes is None or t not in minutes['klines']:
++                                raise ValueError(f'missing planned exit minute path at {t}')
++                            planned_window=PlannedExit.freeze(account,t,last_entry_epoch,o,gap_anchor_mark,
++                                gap_anchor_child,capital,sliced=execution.planned_exit=='sliced',stress=execution.stress)
++                            planned_parents.append(planned_window)
++                            execution_record('planned_created',planned_window.record())
++                        else:
++                            close(t,'regime_exit',o)
++                        exited=True;action='regime_exit'
+                         if reference=='same_run_reversal':exited=False
+                     if (reference=='entry_inventory' or mechanism) and account.q and not exited:
+                         counts['inventory_hold']+=1
+@@ -325,7 +368,7 @@
+                             else:
+                                 if execution is not None and execution.sliced:
+                                     entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
+-                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale)
++                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale,capital=capital)
+                                     if entry_window.maximum and (t not in execution.refined_hours or minutes is None or t not in minutes['klines']):
+                                         raise ValueError(f'missing bounded entry minute path at {t}')
+                                     parent_entries.append(entry_window)
+@@ -418,10 +461,20 @@
+                         turnover+=amount*D(child['price']);counts[child['event']]+=1
+                         binding[child['reason']]+=1
+                         ow.writerow([st,child['event'],str(amount),child['price'],'',str(account.q)])
++                        if sustainable:
++                            gap_anchor_mark=smo;gap_anchor_child=child['child_id']
+                         observe(st,'slice_confirmed',smo)
+                         if child['event']=='entry':
+                             last_entry_epoch=entry_window.campaign
+                             delays.append((t-regime_since)//HOUR)
++                if planned_window is not None and not planned_window.terminal_reason and planned_window.call_time==t:
++                    child=planned_window.attempt(st,account,so,smo,execution.minute_quotes,instrument)
++                    execution_record('planned_child',child)
++                    if D(child['accepted']):
++                        amount=D(child['accepted']);price=D(child['fill_price']);event=child['event']
++                        turnover+=amount*price;counts[event]+=1;exit_events.append(child)
++                        ow.writerow([st,event,str(amount),str(price),'',str(account.q)])
++                        observe(st,event,smo)
+                 if minute_funding and not charged and t in fund_hours and st<fund_hours[t][0]<st+60000:
+                     if account.q:observe(st,'pre_offset_possible_peak',smh)
+                     funding_bound(t,smark,account.q,price_override=smh);charged=True
+@@ -467,6 +520,10 @@
+             previous_quote=D(r[7])
+         final=account.equity(mc)
+         if execution is not None:
++            for planned in planned_parents:
++                if not planned.terminal_reason or planned.unresolved:
++                    raise ValueError('unresolved planned exit cannot be published as successful')
++                execution_record('planned_final',planned.record())
+             for parent in parent_entries:
+                 parent.available(end)
+                 execution_record('mother_final',parent.record())
+@@ -482,7 +539,7 @@
+         with pending.open() as stream:
+             for line in stream:json.loads(line)
+         pending.replace(output/'execution.jsonl')
+-        (output/'execution_summary.json').write_text(json.dumps(dict(configuration=execution.configuration(),parents=[p.record() for p in parent_entries],exits=exit_events),indent=2)+'\n')
++        (output/'execution_summary.json').write_text(json.dumps(dict(configuration=execution.configuration(),parents=[p.record() for p in parent_entries],planned_exits=[p.record() for p in planned_parents],exits=exit_events),indent=2)+'\n')
+     if seen!=sorted(triggers):raise ValueError('frozen invocation mismatch')
+     years=(end-start)/31556952000;cagr=(float(final/initial)**(1/years)-1 if final>0 else -1) if not (payoff and payoff.get('scenario')) else None
+     result=dict(candidate=('L7' if baseline else 'L9')+'-minute-refined',qualification='NOT_QUALIFIED',validation_used=full_window,window_end_exclusive=iso(end),cagr=cagr,mdd_conservative_envelope=str(mdd),

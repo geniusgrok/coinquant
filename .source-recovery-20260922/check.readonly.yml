@@ -1,55 +1,52 @@
 name: Check
 on:
   push:
-    branches: [research/on-demand-btc-20260920]
-    paths: ['.source-recovery-20260922/**', '.github/workflows/check.yml']
+    branches: [main, research/on-demand-btc-20260920]
+    paths:
+      - 'pancakequant/**'
+      - 'tests/**'
+      - 'main.py'
+      - 'config.example.json'
+      - 'research/**'
+      - 'requirements-research.txt'
+      - '.github/workflows/check.yml'
+  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
   group: pancakequant-check-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
-  restore:
-    if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[restore-library-source]')
+  check:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           ref: ${{ github.sha }}
-          fetch-depth: 2
-          persist-credentials: true
+          persist-credentials: false
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
-      - name: Apply hash-pinned source recovery
-        run: python .source-recovery-20260922/restore.py apply
       - name: Compile and run offline checks
         run: |
-          set -eu
           python -m pip install -r requirements-research.txt
           python -m compileall -q pancakequant research tests
-          python -m unittest discover -s tests -v > "$RUNNER_TEMP/source-check.log" 2>&1
-          tail -n 5 "$RUNNER_TEMP/source-check.log"
-      - name: Publish verified sources and remove one-time write job
-        run: python .source-recovery-20260922/restore.py publish
-      - name: Export restored source and verification log
-        if: always()
+          python -m unittest discover -s tests -v
+      - name: Export exact workspace for verification
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[workspace-export]')
         run: |
           set -eu
           mkdir -p "$RUNNER_TEMP/pancakequant-workspace"
           git archive --format=tar HEAD | gzip -1 > "$RUNNER_TEMP/pancakequant-workspace/workspace.tar.gz"
           git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/pancakequant-workspace/IDENTITY.txt"
           git ls-tree -r HEAD > "$RUNNER_TEMP/pancakequant-workspace/TREE.txt"
-          if test -f "$RUNNER_TEMP/source-check.log"; then cp "$RUNNER_TEMP/source-check.log" "$RUNNER_TEMP/pancakequant-workspace/"; fi
           cd "$RUNNER_TEMP/pancakequant-workspace"
           sha256sum workspace.tar.gz > SHA256SUMS
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[workspace-export]')
         with:
-          name: pancakequant-source-restore-${{ github.run_id }}
+          name: pancakequant-workspace-${{ github.sha }}
           path: ${{ runner.temp }}/pancakequant-workspace/
           compression-level: 0
           retention-days: 3
