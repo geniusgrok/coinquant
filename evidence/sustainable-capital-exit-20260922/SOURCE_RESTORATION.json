@@ -3,7 +3,7 @@
   "archive_members": 899,
   "restored_files": [
     {
-      "path": "pancakequant/linear_account.py",
+      "path": "coinquant/linear_account.py",
       "before": "9ae28aa1146f7c4eb403cf4776918f86272786c1422c0127314d3a364bf5cf8b",
       "after": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339",
       "bytes": 2347,
@@ -12,7 +12,7 @@
       "patch_sha256": "090148a14d9b15c6717d18a2e4bafa9164da179b9be1f530ce4638bcbd4630de"
     },
     {
-      "path": "pancakequant/linear_sizing.py",
+      "path": "coinquant/linear_sizing.py",
       "before": "cee1d102c84bfd985d2fb14fe8fdcb2443c846100ebdb2ca86a35081665a4acc",
       "after": "58cc303eed5dd8dce30bcb3a6e7737304e39bd5af224e732ac2fbe6bae1f1602",
       "bytes": 4769,

@@ -4,7 +4,7 @@ from collections import Counter,defaultdict
 from decimal import Decimal as D
 from pathlib import Path
 from research.persistent_hold_replay import inputs,HOUR
-from pancakequant.opportunities import Opportunities
+from coinquant.opportunities import Opportunities
 from research.linear_replay import FEE
 
 

@@ -10,8 +10,8 @@ import numpy as np
 from research.basis_direction import valid, direction_label, month, DAY
 from research.persistent_hold_replay import inputs, HOUR
 from research.linear_forecast import archive_rows
-from pancakequant.research import spec, invocations, timestamp
-from pancakequant.opportunities import Opportunities
+from coinquant.research import spec, invocations, timestamp
+from coinquant.opportunities import Opportunities
 
 HURDLE = .0037
 NCONTROL = 6

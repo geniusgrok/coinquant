@@ -2,9 +2,9 @@ import unittest
 from dataclasses import replace
 from decimal import Decimal as D
 
-from pancakequant.capital import CapitalBudget, HOUR, capital_surplus, gap_margin, sustain_position
-from pancakequant.linear_account import Account, FEE
-from pancakequant.linear_sizing import funded_target
+from coinquant.capital import CapitalBudget, HOUR, capital_surplus, gap_margin, sustain_position
+from coinquant.linear_account import Account, FEE
+from coinquant.linear_sizing import funded_target
 from research.bounded_execution import BoundedEntry, exit_fill
 
 

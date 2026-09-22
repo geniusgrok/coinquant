@@ -3,7 +3,7 @@ import argparse,bisect,csv,gzip,hashlib,json
 from datetime import datetime,timezone
 from pathlib import Path
 from research.persistent_hold_replay import inputs,HOUR
-from pancakequant.research import spec,timestamp
+from coinquant.research import spec,timestamp
 
 
 def read_rows(p):return list(csv.DictReader(gzip.open(p,'rt')))

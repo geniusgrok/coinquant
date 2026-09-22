@@ -8,10 +8,10 @@
     "research/bounded_execution_replay.py": "0ef0b8742d5e09e81af89742965016b89c3928d0d9b4c2461045fb3b35a6b33e",
     "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
     "research/verify_account_ledger.py": "50e9fbce7d46b7dd46dbfa1a502ad1565b45eec698704435df768469920108d7",
-    "pancakequant/linear_account.py": "9ae28aa1146f7c4eb403cf4776918f86272786c1422c0127314d3a364bf5cf8b",
-    "pancakequant/linear_sizing.py": "cee1d102c84bfd985d2fb14fe8fdcb2443c846100ebdb2ca86a35081665a4acc",
-    "pancakequant/campaign.py": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1",
-    "pancakequant/opportunities.py": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82",
+    "coinquant/linear_account.py": "9ae28aa1146f7c4eb403cf4776918f86272786c1422c0127314d3a364bf5cf8b",
+    "coinquant/linear_sizing.py": "cee1d102c84bfd985d2fb14fe8fdcb2443c846100ebdb2ca86a35081665a4acc",
+    "coinquant/campaign.py": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1",
+    "coinquant/opportunities.py": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82",
     "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7"
   },
   "candidates": [

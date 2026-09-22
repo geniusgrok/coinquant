@@ -23,7 +23,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, build_opener
 
-from pancakequant.rest import NoRedirect, OFFICIAL_HOSTS
+from coinquant.rest import NoRedirect, OFFICIAL_HOSTS
 
 SYMBOL = "BTCUSD"
 CATEGORY = "inverse"
@@ -90,7 +90,7 @@ def _request_json(host: str, path: str, params: dict, raw_path: Path,
     host = _official_live_host(host)
     query = urlencode(sorted((key, str(value)) for key, value in params.items()))
     url = f"https://{host}{path}?{query}"
-    request = Request(url, headers={"User-Agent": "pancakequant-historical-research"})
+    request = Request(url, headers={"User-Agent": "coinquant-historical-research"})
     transport = opener or build_opener(NoRedirect())
     with transport.open(request, timeout=timeout) as response:
         payload = response.read(5_000_001)

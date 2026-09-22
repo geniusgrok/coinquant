@@ -2,12 +2,12 @@
   "qualification": "DIAGNOSTIC_ONLY",
   "sizing_changes": [],
   "source_hashes": {
-    "/workspace/scratch/07840788e266/pancakequant/research/persistent_hold_replay.py": "85fd761de0b63a4ab1f4d197c63d88aac594e0dbab8fa5e6ab47cf4803ca248b",
+    "/workspace/scratch/07840788e266/coinquant/research/persistent_hold_replay.py": "85fd761de0b63a4ab1f4d197c63d88aac594e0dbab8fa5e6ab47cf4803ca248b",
     "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
     "research/volatility_target.py": "1dceb5aa153990b4697c32ff36a805edf2adae2da13e06ca8255f40421f99c09",
     "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
     "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-    "pancakequant/binance.py": "233849483c012fe6d891e3a8a976e313e193ea3693e50646f0c332ecee9f2917",
+    "coinquant/binance.py": "233849483c012fe6d891e3a8a976e313e193ea3693e50646f0c332ecee9f2917",
     "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7"
   },
   "schedule_sha256": "d2cfa986b52fdf3c835c254469d3c23b4ab164b611ba42ff7fb61ebd4a2508ad",

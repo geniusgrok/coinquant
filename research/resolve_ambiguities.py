@@ -11,11 +11,11 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-from pancakequant import replay
-from pancakequant.config import load
-from pancakequant.data import Dataset
-from pancakequant.research import digest, iso, spec
-from pancakequant.types import D, serial
+from coinquant import replay
+from coinquant.config import load
+from coinquant.data import Dataset
+from coinquant.research import digest, iso, spec
+from coinquant.types import D, serial
 
 
 def classify(position, rows):

@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from research.persistent_hold_replay import inputs, channel_state, HOUR
 from research.linear_forecast import DAY
-from pancakequant.research import iso
+from coinquant.research import iso
 
 
 def run(root, output):

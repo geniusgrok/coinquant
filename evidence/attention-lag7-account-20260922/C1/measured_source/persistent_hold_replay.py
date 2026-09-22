@@ -8,9 +8,9 @@ import hashlib
 import json
 from pathlib import Path
 
-from pancakequant.research import invocations, spec, timestamp, iso
-from pancakequant.types import ZERO, floor_step
-from pancakequant.binance import market_quantity
+from coinquant.research import invocations, spec, timestamp, iso
+from coinquant.types import ZERO, floor_step
+from coinquant.binance import market_quantity
 from research.linear_forecast import archive_rows, DAY
 from research.audit_binance import repair_rows
 from research.linear_replay import Account, FEE, MMR, LOT, TICK
@@ -144,7 +144,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing')
     opportunities={};fractions={}
     if mechanism:
-        from pancakequant.campaign import Campaign, disposition
+        from coinquant.campaign import Campaign, disposition
         model_interval=DAY if reference=='swing' else HOUR if reference=='hourly_impulse_hold' else 4*HOUR
         model=Campaign('impulse_hold' if reference=='hourly_impulse_hold' else reference,model_interval)
         for bt in range(min(warm),end,model_interval):
@@ -443,7 +443,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result.update(candidate=payoff['name'],scenario=bool(payoff.get('scenario')),terminal_label=hypothetical,entry_time=entry_time,final_equity_usdt=str(final))
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
-    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('pancakequant/binance.py'),Path('research/spec.json'),Path('pancakequant/opportunities.py'),Path('pancakequant/campaign.py'),Path('pancakequant/linear_account.py'),Path('pancakequant/linear_sizing.py'),Path('research/native_trail.py')):
+    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py')):
         raw=source.read_bytes()
         if not (payoff and payoff.get('scenario')):(sources/source.name).write_bytes(raw)
         source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()

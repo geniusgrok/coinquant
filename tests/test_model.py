@@ -2,8 +2,8 @@ import unittest
 from dataclasses import replace
 from decimal import Decimal as D
 
-from pancakequant.model import bankruptcy_price, decide, liquidation_price, protected, repair_target, _reward_from_stop, _safe_new_entry_stop, validate_bars, validate_risk_increase
-from pancakequant.types import Bar, Blocked, INTERVAL_MS, ModelConfig, Position, Rules, Snapshot, Target, number
+from coinquant.model import bankruptcy_price, decide, liquidation_price, protected, repair_target, _reward_from_stop, _safe_new_entry_stop, validate_bars, validate_risk_increase
+from coinquant.types import Bar, Blocked, INTERVAL_MS, ModelConfig, Position, Rules, Snapshot, Target, number
 
 
 def sample(position=None):

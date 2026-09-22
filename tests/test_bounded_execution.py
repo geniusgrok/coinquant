@@ -9,11 +9,11 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from pancakequant.linear_account import Account, LOT
-from pancakequant.linear_sizing import funded_target
-from pancakequant.opportunities import Opportunity
-from pancakequant.research import spec, timestamp
-from pancakequant.state import State
+from coinquant.linear_account import Account, LOT
+from coinquant.linear_sizing import funded_target
+from coinquant.opportunities import Opportunity
+from coinquant.research import spec, timestamp
+from coinquant.state import State
 from research.bounded_execution import BoundedEntry, ExecutionStudy, MINUTE, exit_fill
 from research.bounded_execution_data import validate_hour
 from research.persistent_hold_replay import run
@@ -135,7 +135,7 @@ class TimelineTests(unittest.TestCase):
         execution=ExecutionStudy(True,False,frozenset([T]),{t:D(10000) for t in range(T-MINUTE,T+HOUR,MINUTE)})
         with tempfile.TemporaryDirectory() as directory:
             output=Path(directory)/'out'
-            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('pancakequant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
+            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('coinquant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
                 run(Path('.'),Path('.'),Path('.'),output,allocation='volatility',reference='impulse_hold',lifecycle='one_campaign',entry_side='long',risk_scale=D('3.6'),cached_inputs=cached,cached_minutes=(minutes,[]),execution=execution)
             summary=json.loads((output/'execution_summary.json').read_text())
             parent=summary['parents'][0]
@@ -158,7 +158,7 @@ class TimelineTests(unittest.TestCase):
         frozen,model,cached,minutes=self.fixture()
         with tempfile.TemporaryDirectory() as directory:
             output=Path(directory)/'out'
-            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('pancakequant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
+            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('coinquant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
                 run(Path('.'),Path('.'),Path('.'),output,allocation='volatility',reference='impulse_hold',lifecycle='one_campaign',entry_side='long',risk_scale=D('3.6'),cached_inputs=cached,cached_minutes=(minutes,[]))
             for name,digest in expected.items():
                 with gzip.open(output/(name+'.csv.gz'),'rb') as stream:self.assertEqual(hashlib.sha256(stream.read()).hexdigest(),digest,name)
@@ -169,7 +169,7 @@ class TimelineTests(unittest.TestCase):
         execution=ExecutionStudy(True,False,frozenset(),{})
         with tempfile.TemporaryDirectory() as directory:
             output=Path(directory)/'out'
-            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('pancakequant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
+            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('coinquant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
                 result=run(Path('.'),Path('.'),Path('.'),output,allocation='volatility',reference='impulse_hold',lifecycle='one_campaign',entry_side='long',risk_scale=D('3.6'),cached_inputs=cached,cached_minutes=({k:{} for k in minutes},[]),execution=execution)
             self.assertEqual(result['counts']['unfunded_parent:protection'],1)
             self.assertNotIn('entry',result['counts'])
@@ -181,7 +181,7 @@ class TimelineTests(unittest.TestCase):
         execution=ExecutionStudy(True,False,frozenset([T]),{t:D(10000) for t in range(T-MINUTE,T+HOUR,MINUTE)})
         with tempfile.TemporaryDirectory() as directory:
             output=Path(directory)/'out'
-            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('pancakequant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
+            with patch('research.persistent_hold_replay.spec',return_value=frozen),patch('research.persistent_hold_replay.decision_times',return_value=[T]),patch('coinquant.campaign.Campaign',model),contextlib.redirect_stdout(io.StringIO()):
                 result=run(Path('.'),Path('.'),Path('.'),output,allocation='volatility',reference='impulse_hold',lifecycle='one_campaign',entry_side='long',risk_scale=D('3.6'),cached_inputs=cached,cached_minutes=(minutes,[]),execution=execution)
             self.assertEqual(D(result['funding_bound_paid_usdt']),D(0))
             self.assertEqual(verify(output)['close_points'],4)

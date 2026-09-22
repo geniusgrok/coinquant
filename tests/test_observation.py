@@ -3,9 +3,9 @@ from dataclasses import replace
 import tempfile
 import unittest
 
-from pancakequant.config import Config
-from pancakequant.execution import run_once
-from pancakequant.types import D, Position, Unknown
+from coinquant.config import Config
+from coinquant.execution import run_once
+from coinquant.types import D, Position, Unknown
 from test_execution import FakeVenue
 
 

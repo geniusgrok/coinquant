@@ -1,7 +1,7 @@
 import unittest
 from decimal import Decimal as D
 from research.linear_replay import Account, FEE
-from pancakequant.types import Blocked
+from coinquant.types import Blocked
 
 
 class LinearAccountTests(unittest.TestCase):

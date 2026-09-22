@@ -6,7 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import numpy as np
-from pancakequant.research import timestamp, iso
+from coinquant.research import timestamp, iso
 from research.executable_payoff import fit_targets, rank, DAY
 
 

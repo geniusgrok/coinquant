@@ -117,7 +117,7 @@ class Execution:
             return snapshot
         for order in entry_orders(snapshot):
             link = order.get('orderLinkId', '')
-            if not link.startswith('pq-'):
+            if not link.startswith('cq-'):
                 raise Blocked('unowned BTC entry remains; it was not altered')
             self.cancel(link)
         return self.observe() if entry_orders(snapshot) else snapshot

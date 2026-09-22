@@ -14,7 +14,7 @@
   "contract_type": "InversePerpetual",
   "settlement_coin": "BTC",
   "leverage": 20,
-  "seed": "pancakequant-20260920-before-economic-observations",
+  "invocation_draws_sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf",
   "gap_hours": [
     19,
     31,

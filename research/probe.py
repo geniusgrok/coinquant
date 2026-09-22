@@ -64,7 +64,7 @@ def main():
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 raise TimeoutError('public probe deadline')
-            request = Request(url, headers={'User-Agent': 'pancakequant-public-research'})
+            request = Request(url, headers={'User-Agent': 'coinquant-public-research'})
             with urlopen(request, timeout=min(5, max(.1, remaining))) as response, temporary.open('wb') as stream:
                 count, digest = 0, hashlib.sha256()
                 while True:

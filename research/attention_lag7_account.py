@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 import shutil
 
-from pancakequant.research import invocations, spec, timestamp
+from coinquant.research import invocations, spec, timestamp
 from research.executable_payoff import RULES, WARM, REPAIR, account, load
 from research.payoff_audit import audit
 from research.persistent_hold_replay import DAY, run as replay
@@ -21,15 +21,15 @@ from research.target_attribution import summarize
 
 
 ARCHIVES = [
-    dict(name='PANCAKEQUANT_ATTENTION_EVIDENCE_20260922.zip', bytes=3373375,
+    dict(name='COINQUANT_ATTENTION_EVIDENCE_20260922.zip', bytes=3373375,
          sha256='ffd0195d2b7e47c8b9a7ee1bf7fae2f50a6fc3523eec96bca89d7e46157dfa56'),
-    dict(name='PANCAKEQUANT_EXECUTABLE_PAYOFF_EVIDENCE_20260922.zip', bytes=53179721,
+    dict(name='COINQUANT_EXECUTABLE_PAYOFF_EVIDENCE_20260922.zip', bytes=53179721,
          sha256='0b46f6fccff4c68d7accc23ef126fbaefb6fdbb3143d3dfb6c74e5912c0c892f'),
-    dict(name='PANCAKEQUANT_RETURN_FIRST_L21_L26_20260921.zip', bytes=140850994,
+    dict(name='COINQUANT_RETURN_FIRST_L21_L26_20260921.zip', bytes=140850994,
          sha256='001813d77bb3d4ceba82c2a73f37f5513ffd6eef91cd42f5cd344fe9401b4357'),
-    dict(name='PANCAKEQUANT_L29_RETURN_CAPTURE_20260921.zip', bytes=141577623,
+    dict(name='COINQUANT_L29_RETURN_CAPTURE_20260921.zip', bytes=141577623,
          sha256='79d3fdbc28cedfbaaa144c1541b3b7b73293d7a97b81052a341d4be017628abe'),
-    dict(name='PANCAKEQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921.zip', bytes=15486668,
+    dict(name='COINQUANT_BASIS_DIRECTION_ECONOMIC_EVIDENCE_20260921.zip', bytes=15486668,
          sha256='b33a6e53e23e6b52ba6d01b22fc2e8a20d2538a526d8dc6a615c6423ed8a452f'),
 ]
 INPUT_FILES = ('lag7_predictions.json', 'lag7_fits.json', 'weeks.json')

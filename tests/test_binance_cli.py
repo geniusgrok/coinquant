@@ -3,14 +3,14 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
-from pancakequant.cli import observe
-from pancakequant.types import Blocked
-from pancakequant.state import State
+from coinquant.cli import observe
+from coinquant.types import Blocked
+from coinquant.state import State
 
 
 class BinanceCLI(unittest.TestCase):
     def test_execution_blocked_before_credentials_or_network(self):
-        with patch('pancakequant.cli.BinanceReadOnly') as venue:
+        with patch('coinquant.cli.BinanceReadOnly') as venue:
             with self.assertRaises(Blocked):observe('/nonexistent',execute=True)
             venue.assert_not_called()
 
@@ -18,7 +18,7 @@ class BinanceCLI(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             config=Path(tmp)/'config.json'
             config.write_text(json.dumps(dict(account_uid='123',state_dir=str(Path(tmp)/'state'))))
-            with patch.dict('os.environ',{'PANCAKEQUANT_BINANCE_KEY':'fake','PANCAKEQUANT_BINANCE_SECRET':'fake'}),patch('pancakequant.cli.BinanceReadOnly') as venue:
+            with patch.dict('os.environ',{'COINQUANT_BINANCE_KEY':'fake','COINQUANT_BINANCE_SECRET':'fake'}),patch('coinquant.cli.BinanceReadOnly') as venue:
                 venue.return_value.snapshot.return_value={'equity_usdt':'100'}
                 venue.return_value.completed_market.return_value={'candles':[]}
                 result=observe(config)
@@ -38,8 +38,8 @@ class BinanceCLI(unittest.TestCase):
             config=Path(tmp)/'config.json';directory=Path(tmp)/'state'
             config.write_text(json.dumps(dict(account_uid='123',state_dir=str(directory))))
             with State(directory,'binance:BTCUSDT:live:123') as state:
-                state.prepare('pq-unknown','binance_order',{})
-            with patch.dict('os.environ',{'PANCAKEQUANT_BINANCE_KEY':'fake','PANCAKEQUANT_BINANCE_SECRET':'fake'}),patch('pancakequant.cli.BinanceReadOnly') as venue:
+                state.prepare('cq-unknown','binance_order',{})
+            with patch.dict('os.environ',{'COINQUANT_BINANCE_KEY':'fake','COINQUANT_BINANCE_SECRET':'fake'}),patch('coinquant.cli.BinanceReadOnly') as venue:
                 calls=[]
                 venue.return_value.snapshot.side_effect=lambda uid:(calls.append('snapshot') or {'equity_usdt':'100'})
                 venue.return_value.recover_pending.side_effect=lambda state:(calls.append('recover') or {'resolved':0,'pending':1})
@@ -53,9 +53,19 @@ class BinanceCLI(unittest.TestCase):
             directory=Path(tmp)/'state';config=Path(tmp)/'config.json'
             config.write_text(json.dumps(dict(account_uid='123',state_dir=str(directory))))
             with State(directory,'binance:BTCUSDT:live:123') as state:
-                state.set('binance_protection_replacement',dict(done=False,request={'old_ids':['pq-old']}))
-            with patch.dict('os.environ',{'PANCAKEQUANT_BINANCE_KEY':'fake','PANCAKEQUANT_BINANCE_SECRET':'fake'}),patch('pancakequant.cli.BinanceReadOnly') as venue:
+                state.set('binance_protection_replacement',dict(done=False,request={'old_ids':['cq-old']}))
+            with patch.dict('os.environ',{'COINQUANT_BINANCE_KEY':'fake','COINQUANT_BINANCE_SECRET':'fake'}),patch('coinquant.cli.BinanceReadOnly') as venue:
                 venue.return_value.snapshot.return_value={'equity_usdt':'100'}
                 result=observe(config)
                 self.assertEqual(result['status'],'unknown');self.assertEqual(result['pending_intents'],0)
                 self.assertFalse(result['protection_replacement']['done']);self.assertFalse(result['write_attempted'])
+
+
+    def test_missing_named_credentials_blocks_before_network(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config = Path(tmp) / 'config.json'
+            config.write_text(json.dumps(dict(account_uid='123', state_dir=str(Path(tmp)/'state'))))
+            with patch.dict('os.environ', {}, clear=True), patch('coinquant.cli.BinanceReadOnly') as venue:
+                with self.assertRaisesRegex(Blocked, 'read credentials required'):
+                    observe(config)
+                venue.assert_not_called()

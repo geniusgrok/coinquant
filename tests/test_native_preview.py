@@ -3,12 +3,12 @@ import json
 from pathlib import Path
 from unittest import TestCase
 from unittest.mock import Mock
-from pancakequant.campaign import Campaign, ORIGIN
-from pancakequant.opportunities import Opportunity
-from pancakequant.native_preview import entry_preview
-from pancakequant.linear_account import Account
-from pancakequant.linear_sizing import funded_target
-from pancakequant.types import Unknown
+from coinquant.campaign import Campaign, ORIGIN
+from coinquant.opportunities import Opportunity
+from coinquant.native_preview import entry_preview
+from coinquant.linear_account import Account
+from coinquant.linear_sizing import funded_target
+from coinquant.types import Unknown
 
 
 class NativePreviewTests(TestCase):

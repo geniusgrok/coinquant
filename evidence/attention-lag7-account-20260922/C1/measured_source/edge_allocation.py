@@ -1,6 +1,6 @@
 """Causal market-only estimate; no replay account feedback or fitted constants."""
 from decimal import Decimal as D
-from pancakequant.types import ZERO
+from coinquant.types import ZERO
 
 
 def target_fraction(observations):

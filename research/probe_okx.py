@@ -2,7 +2,7 @@
 
 No account credentials are read. The probe verifies that the same linear USDT
 perpetual covers the frozen 2020 start and 2026 endpoint for trade candles,
-mark-price candles and funding history before Pancakequant considers changing
+mark-price candles and funding history before Coinquant considers changing
 its production exchange/contract.
 """
 from __future__ import annotations
@@ -29,7 +29,7 @@ class NoRedirect(HTTPRedirectHandler):
 
 
 def _get(url: str, output: Path) -> tuple[dict, dict]:
-    request = Request(url, headers={"User-Agent": "pancakequant-public-research"})
+    request = Request(url, headers={"User-Agent": "coinquant-public-research"})
     with build_opener(NoRedirect).open(request, timeout=8) as response:
         payload = response.read(5_000_001)
     if not payload or len(payload) > 5_000_000:

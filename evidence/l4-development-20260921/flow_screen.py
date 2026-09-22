@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 import statistics
 
-from pancakequant.research import invocations, timestamp
+from coinquant.research import invocations, timestamp
 from research.linear_forecast import archive_rows, DAY
 
 

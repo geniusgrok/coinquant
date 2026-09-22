@@ -1,10 +1,10 @@
 import unittest
-from pancakequant.binance_safety import replace_protection
-from pancakequant.state import client_id
-from pancakequant.types import Unknown,Blocked
+from coinquant.binance_safety import replace_protection
+from coinquant.state import client_id
+from coinquant.types import Unknown,Blocked
 from tests.test_binance_safety import Native,rules
-from pancakequant.state import State
-from pancakequant.binance_safety import protect_existing
+from coinquant.state import State
+from coinquant.binance_safety import protect_existing
 import tempfile
 
 class ReplacementTests(unittest.TestCase):
@@ -105,7 +105,7 @@ class ReplacementTests(unittest.TestCase):
         self.assertEqual(n,len(self.native.sent))
 
     def test_authorized_reduce_remains_available_with_unknown_owned_cancel(self):
-        from pancakequant.binance_safety import reduce_existing
+        from coinquant.binance_safety import reduce_existing
         def send(*a):
             if a[0]=='DELETE':raise TimeoutError()
             return self.native.send(*a)

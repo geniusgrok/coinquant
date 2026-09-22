@@ -8,8 +8,8 @@ import hashlib
 import json
 from pathlib import Path
 
-from pancakequant.research import invocations, spec, timestamp, iso
-from pancakequant.types import ZERO, floor_step
+from coinquant.research import invocations, spec, timestamp, iso
+from coinquant.types import ZERO, floor_step
 from research.linear_forecast import archive_rows, DAY
 from research.audit_binance import repair_rows
 from research.linear_replay import Account, FEE, MMR, LOT, TICK

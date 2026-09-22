@@ -126,7 +126,7 @@ def completed(record: dict | None, path: Path) -> bool:
 
 def _open(url: str, offset: int, timeout: float):
     headers = {
-        "User-Agent": "pancakequant-historical-research",
+        "User-Agent": "coinquant-historical-research",
         "Accept-Encoding": "identity",
     }
     if offset:

@@ -4,13 +4,13 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
-from pancakequant.bybit import Bybit
-from pancakequant.config import Config
-from pancakequant.execution import run_once, coverage
-from pancakequant.model import decide
-from pancakequant.pending import record, valid
-from pancakequant.state import State, client_id
-from pancakequant.types import D, ModelConfig, Position, Target, Unknown
+from coinquant.bybit import Bybit
+from coinquant.config import Config
+from coinquant.execution import run_once, coverage
+from coinquant.model import decide
+from coinquant.pending import record, valid
+from coinquant.state import State, client_id
+from coinquant.types import D, ModelConfig, Position, Target, Unknown
 from test_execution import FakeVenue, protectors
 from test_model import history, sample
 
@@ -70,7 +70,7 @@ class PendingTests(unittest.TestCase):
         return Config(account_uid='12345', max_position_usd=D(10000), state_dir=path)
 
     def invoke(self, venue, config, t):
-        with patch('pancakequant.execution.decide', return_value=t):
+        with patch('coinquant.execution.decide', return_value=t):
             return run_once(venue, config, execute=True)
 
     def test_hosted_entry_survives_exit_and_same_candle_does_not_duplicate(self):
@@ -160,7 +160,7 @@ class PendingTests(unittest.TestCase):
 
     def test_unsafe_gtc_and_existing_position_never_qualify_as_hosted_entry(self):
         t, s = target(), sample()
-        row = record('pq-fixture', t)
+        row = record('cq-fixture', t)
         self.assertTrue(valid(row, s, D(1000)))
         self.assertFalse(valid(dict(row, timeInForce='GTC'), s, D(1000)))
         self.assertFalse(valid(dict(row, stopLoss='1'), s, D(1000)))
@@ -186,20 +186,20 @@ class PendingTests(unittest.TestCase):
         modeled_trigger_fill = (
             t.trigger_price * (1 + half_spread) * (1 + ModelConfig().slippage_fraction))
         self.assertGreaterEqual(t.entry, modeled_trigger_fill)
-        self.assertTrue(valid(record('pq-model', t), snapshot, D(100)))
+        self.assertTrue(valid(record('cq-model', t), snapshot, D(100)))
 
     def test_adapter_serializes_fok_trigger_and_native_full_protectors(self):
         venue = Bybit(Config(max_position_usd=D(1000)))
         requests = []
         venue.write = lambda path, data: requests.append((path, data))
-        venue.place('pq-test', D(100), target())
+        venue.place('cq-test', D(100), target())
         payload = requests[-1][1]
         self.assertEqual(payload['timeInForce'], 'FOK')
         self.assertEqual(payload['triggerPrice'], '31000')
         self.assertEqual(payload['tpslMode'], 'Full')
         self.assertEqual(payload['slOrderType'], 'Market')
         venue.lookup = lambda link: record(link, target())
-        venue.amend('pq-test', target(quantity=D(80)))
+        venue.amend('cq-test', target(quantity=D(80)))
         self.assertEqual(requests[-1][0], '/v5/order/amend')
         self.assertEqual(requests[-1][1]['qty'], '80')
 
@@ -209,12 +209,12 @@ class CrossEntryIdentityTests(unittest.TestCase):
         v = ConditionalVenue()
         with TemporaryDirectory() as first, TemporaryDirectory() as lost:
             config = Config(account_uid='12345', max_position_usd=D(10000), state_dir=first)
-            with patch('pancakequant.execution.decide', return_value=target()):
+            with patch('coinquant.execution.decide', return_value=target()):
                 run_once(v, config, execute=True)
             v.trigger(next(iter(v.records)))
             v.s = replace(v.s, position=Position(), orders=(), mark=D(30745))
             immediate = replace(target(), trigger_price=D(0))
-            with patch('pancakequant.execution.decide', return_value=immediate):
+            with patch('coinquant.execution.decide', return_value=immediate):
                 report = run_once(v, replace(config, state_dir=lost), execute=True)
         self.assertEqual(v.s.position.quantity, 0)
         self.assertEqual(len(v.writes), 1)
@@ -224,11 +224,11 @@ class CrossEntryIdentityTests(unittest.TestCase):
         v = ConditionalVenue()
         with TemporaryDirectory() as path:
             config = Config(account_uid='12345', max_position_usd=D(10000), state_dir=path)
-            with patch('pancakequant.execution.decide', return_value=target()):
+            with patch('coinquant.execution.decide', return_value=target()):
                 run_once(v, config, execute=True)
             v.trigger(next(iter(v.records)))
             v.s = replace(v.s, orders=())
-            link = 'pq-unresolved-parent'
+            link = 'cq-unresolved-parent'
             with State(path, 'testnet:12345') as state:
                 state.prepare(link, 'entry', {'link': link, 'expected': record(link, target())})
             writes_before = len(v.writes)

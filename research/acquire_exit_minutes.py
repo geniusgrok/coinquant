@@ -8,7 +8,7 @@ import time
 import urllib.request
 import zipfile
 
-from pancakequant.research import iso
+from coinquant.research import iso
 
 BASE = 'https://data.binance.vision/data/futures/um/'
 

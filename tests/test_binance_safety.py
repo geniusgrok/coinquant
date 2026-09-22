@@ -1,10 +1,10 @@
 import tempfile
 import unittest
 from decimal import Decimal as D
-from pancakequant.state import State
-from pancakequant.binance import BinanceReadOnly
-from pancakequant.binance_safety import protect_existing,cancel_entry,reduce_existing,add_margin
-from pancakequant.types import Blocked,Unknown
+from coinquant.state import State
+from coinquant.binance import BinanceReadOnly
+from coinquant.binance_safety import protect_existing,cancel_entry,reduce_existing,add_margin
+from coinquant.types import Blocked,Unknown
 from tests.test_binance_quantity import instrument
 
 def rules():
@@ -67,10 +67,10 @@ class SafetyTests(unittest.TestCase):
         self.assertEqual(self.native.sent,[])
     def test_cancel_fill_race_returns_real_exposure(self):
         p=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='LIMIT',quantity='.01')
-        self.state.prepare('pq-entry','binance_order',p)
-        self.native.orders['pq-entry']=dict(p,reduceOnly=False,status='PARTIALLY_FILLED',origQty='.01',executedQty='.003')
+        self.state.prepare('cq-entry','binance_order',p)
+        self.native.orders['cq-entry']=dict(p,reduceOnly=False,status='PARTIALLY_FILLED',origQty='.01',executedQty='.003')
         self.native.remainders=1
-        r=cancel_entry(self.native,self.state,self.native.send,'123',100,'pq-entry',authorized=True)
+        r=cancel_entry(self.native,self.state,self.native.send,'123',100,'cq-entry',authorized=True)
         self.assertEqual(r['quantity_btc'],'.01');self.assertEqual(self.state.pending(),[])
     def test_reduce_only_never_reverses(self):
         reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',instrument=rules(),authorized=True)
@@ -89,7 +89,7 @@ class SafetyTests(unittest.TestCase):
 
     def test_no_open_order_is_not_proof_unknown_entry_cannot_arrive(self):
         payload=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='MARKET',quantity='.003')
-        self.state.prepare('pq-unknown-entry','binance_order',payload)
+        self.state.prepare('cq-unknown-entry','binance_order',payload)
         with self.assertRaises(Unknown):self.protect(authorized=True)
         with self.assertRaises(Unknown):reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',instrument=rules(),authorized=True)
         self.assertEqual(self.native.sent,[])

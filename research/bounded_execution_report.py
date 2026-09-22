@@ -5,7 +5,7 @@ import json
 from decimal import Decimal as D
 from pathlib import Path
 
-from pancakequant.research import iso, spec
+from coinquant.research import iso, spec
 from research.opportunity_attribution import rows
 from research.verify_account_ledger import verify
 

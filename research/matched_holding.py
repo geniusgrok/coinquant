@@ -2,12 +2,12 @@
 import argparse,csv,gzip,json
 from decimal import Decimal as D
 from pathlib import Path
-from pancakequant.campaign import Campaign
-from pancakequant.linear_account import Account,FEE,MMR,TICK
-from pancakequant.types import floor_step
+from coinquant.campaign import Campaign
+from coinquant.linear_account import Account,FEE,MMR,TICK
+from coinquant.types import floor_step
 from research.persistent_hold_replay import inputs,decision_times,HOUR
 from research.minute_evidence import load,steps
-from pancakequant.research import spec,timestamp
+from coinquant.research import spec,timestamp
 
 
 def run(native,baseline,output):

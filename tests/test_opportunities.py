@@ -1,6 +1,6 @@
 import unittest
 from decimal import Decimal as D
-from pancakequant.opportunities import Opportunities, FOUR_HOURS
+from coinquant.opportunities import Opportunities, FOUR_HOURS
 
 class OpportunityTests(unittest.TestCase):
     def feed(self, model, rows):

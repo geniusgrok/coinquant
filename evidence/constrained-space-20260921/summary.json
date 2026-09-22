@@ -35,14 +35,14 @@
       "short_risk_scale": "0",
       "protection": "fixed",
       "source_hashes": {
-        "/workspace/scratch/29640956c44c/pancakequant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
+        "/workspace/scratch/29640956c44c/coinquant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
         "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
         "research/volatility_target.py": "05bc2aec5f340ebc4cdcf8a76a3913de8b5585c9005d516da88f623b1a47498f",
         "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
         "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-        "pancakequant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
+        "coinquant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
         "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
-        "pancakequant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
+        "coinquant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
       },
       "schedule": "sparse",
       "lifecycle": "one_campaign",
@@ -210,14 +210,14 @@
       "short_risk_scale": "0",
       "protection": "fixed",
       "source_hashes": {
-        "/workspace/scratch/29640956c44c/pancakequant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
+        "/workspace/scratch/29640956c44c/coinquant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
         "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
         "research/volatility_target.py": "05bc2aec5f340ebc4cdcf8a76a3913de8b5585c9005d516da88f623b1a47498f",
         "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
         "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-        "pancakequant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
+        "coinquant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
         "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
-        "pancakequant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
+        "coinquant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
       },
       "schedule": "sparse",
       "lifecycle": "one_campaign",
@@ -385,14 +385,14 @@
       "short_risk_scale": "0",
       "protection": "fixed",
       "source_hashes": {
-        "/workspace/scratch/29640956c44c/pancakequant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
+        "/workspace/scratch/29640956c44c/coinquant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
         "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
         "research/volatility_target.py": "05bc2aec5f340ebc4cdcf8a76a3913de8b5585c9005d516da88f623b1a47498f",
         "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
         "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-        "pancakequant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
+        "coinquant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
         "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
-        "pancakequant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
+        "coinquant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
       },
       "schedule": "sparse",
       "lifecycle": "one_campaign",
@@ -561,14 +561,14 @@
       "short_risk_scale": "0",
       "protection": "fixed",
       "source_hashes": {
-        "/workspace/scratch/29640956c44c/pancakequant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
+        "/workspace/scratch/29640956c44c/coinquant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
         "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
         "research/volatility_target.py": "05bc2aec5f340ebc4cdcf8a76a3913de8b5585c9005d516da88f623b1a47498f",
         "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
         "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-        "pancakequant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
+        "coinquant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
         "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
-        "pancakequant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
+        "coinquant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
       },
       "schedule": "sparse",
       "lifecycle": "one_campaign",
@@ -779,14 +779,14 @@
       "short_risk_scale": "0",
       "protection": "fixed",
       "source_hashes": {
-        "/workspace/scratch/29640956c44c/pancakequant/research/persistent_hold_replay.py": "5b97747c4c92cb4ed0083f0b587965059c044ddc0b864d36f1a2e8f05af0b8cc",
+        "/workspace/scratch/29640956c44c/coinquant/research/persistent_hold_replay.py": "5b97747c4c92cb4ed0083f0b587965059c044ddc0b864d36f1a2e8f05af0b8cc",
         "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
         "research/volatility_target.py": "05bc2aec5f340ebc4cdcf8a76a3913de8b5585c9005d516da88f623b1a47498f",
         "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
         "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-        "pancakequant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
+        "coinquant/binance.py": "b15d5f455476e9ee41263d6a8e1d01ee0b1c008e45fdeebc615533fb5eaa7ac9",
         "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
-        "pancakequant/opportunities.py": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+        "coinquant/opportunities.py": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
       },
       "schedule": "sparse",
       "lifecycle": "one_campaign",

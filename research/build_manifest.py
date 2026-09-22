@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 import sys
 
-from pancakequant.research import spec
+from coinquant.research import spec
 from research.acquire_v5 import _checkpoint_complete, sha256
 
 MINUTE_MS = 60_000
@@ -173,7 +173,7 @@ def build(root: Path, rules: Path, rules_source: str, rules_provenance: str,
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build strict Pancakequant replay manifest")
+    parser = argparse.ArgumentParser(description="Build strict Coinquant replay manifest")
     parser.add_argument("--root", required=True)
     parser.add_argument("--rules", default="rules.csv",
                         help="rules CSV path inside --root")

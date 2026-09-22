@@ -4,7 +4,7 @@ import hashlib
 from pathlib import Path
 from research.acquire_minute_probe import DATES, validate
 from research.linear_forecast import archive_rows
-from pancakequant.research import timestamp
+from coinquant.research import timestamp
 
 HOUR=3600000
 

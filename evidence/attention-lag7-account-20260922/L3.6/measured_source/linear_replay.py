@@ -12,13 +12,13 @@ import gzip
 import json
 from pathlib import Path
 
-from pancakequant.data import Dataset
-from pancakequant.replay import aggregate
-from pancakequant.research import digest, invocations, iso, spec, timestamp
-from pancakequant.types import Blocked, ZERO, floor_step, serial
+from coinquant.data import Dataset
+from coinquant.replay import aggregate
+from coinquant.research import digest, invocations, iso, spec, timestamp
+from coinquant.types import Blocked, ZERO, floor_step, serial
 from research.sparse_trend import signal
 
-from pancakequant.linear_account import Account, FEE, MMR, LOT, TICK
+from coinquant.linear_account import Account, FEE, MMR, LOT, TICK
 
 
 def run(manifest, output):

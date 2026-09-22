@@ -5,8 +5,8 @@ import unittest
 from decimal import Decimal
 from urllib.error import URLError
 
-from pancakequant.binance import BinanceReadOnly, NoRedirect, validate_account_mode, account_report
-from pancakequant.types import Blocked, Unknown
+from coinquant.binance import BinanceReadOnly, NoRedirect, validate_account_mode, account_report
+from coinquant.types import Blocked, Unknown
 
 
 class Opener:

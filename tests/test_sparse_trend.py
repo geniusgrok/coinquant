@@ -1,6 +1,6 @@
 import unittest
 from decimal import Decimal as D
-from pancakequant.types import Bar, Blocked, INTERVAL_MS
+from coinquant.types import Bar, Blocked, INTERVAL_MS
 from research.sparse_trend import signal
 
 

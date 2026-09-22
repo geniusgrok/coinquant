@@ -6,13 +6,13 @@ import json
 import time
 import unittest
 
-from pancakequant import decode
-from pancakequant.bybit import Bybit
-from pancakequant.config import Config
-from pancakequant.execution import coverage, run_once
-from pancakequant.model import decide
-from pancakequant.rest import Rest
-from pancakequant.types import Blocked, Unknown
+from coinquant import decode
+from coinquant.bybit import Bybit
+from coinquant.config import Config
+from coinquant.execution import coverage, run_once
+from coinquant.model import decide
+from coinquant.rest import Rest
+from coinquant.types import Blocked, Unknown
 from test_execution import FakeVenue
 from test_model import sample, history
 
@@ -73,7 +73,7 @@ class AdapterTests(unittest.TestCase):
         venue = Bybit(cfg, execute=True, rest=capture)
         venue.uid, venue.read_only_key = '12345', False
         target = decide(history(), sample(), cfg.model)
-        venue.place('pq-test', target.quantity, target)
+        venue.place('cq-test', target.quantity, target)
         payload = capture.calls[-1][2]
         self.assertEqual(payload['symbol'], 'BTCUSD')
         self.assertEqual(payload['category'], 'inverse')
@@ -86,7 +86,7 @@ class AdapterTests(unittest.TestCase):
         self.assertGreater(D(payload['takeProfit']), 0)
         self.assertGreater(D(payload['stopLoss']), 0)
         self.assertIs(payload['reduceOnly'], False)
-        venue.place('pq-reduce', -target.quantity, target, reduce_only=True)
+        venue.place('cq-reduce', -target.quantity, target, reduce_only=True)
         payload = capture.calls[-1][2]
         self.assertIs(payload['reduceOnly'], True)
         self.assertNotIn('stopLoss', payload)

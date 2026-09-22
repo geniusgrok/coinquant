@@ -52,13 +52,25 @@ def spec():
 def invocations(value, *, stress=False):
     """No price, signal, profit, local PRNG state or parameter search is consulted."""
     start, end = timestamp(value['start']), timestamp(value['end'])
+    schedule_path = SPEC_PATH.with_name('invocation_draws.json')
+    try:
+        raw = schedule_path.read_bytes()
+        draws = json.loads(raw)
+    except (OSError, ValueError) as exc:
+        raise Blocked('frozen invocation sequence unavailable') from exc
+    if (hashlib.sha256(raw).hexdigest() != value.get('invocation_draws_sha256')
+            or not isinstance(draws, list) or not draws
+            or any(type(draw) is not int or not 0 <= draw < 2**64 for draw in draws)):
+        raise Blocked('frozen invocation sequence identity invalid')
     current, index, skip_until = start, 0, -1
     while current < end:
+        if index >= len(draws):
+            raise Blocked('requested window exceeds frozen invocation sequence')
         if stress and index == value['stress_skip_after_trigger']:
             skip_until = current + value['stress_absence_days'] * 86_400_000
         if current >= skip_until:
             yield current
-        draw = int.from_bytes(hashlib.sha256(f'{value["seed"]}|{index}'.encode()).digest()[:8], 'big')
+        draw = draws[index]
         current += value['gap_hours'][draw % len(value['gap_hours'])] * 3_600_000
         index += 1
 

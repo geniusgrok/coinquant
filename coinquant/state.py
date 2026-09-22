@@ -19,7 +19,7 @@ from .types import Blocked, Unknown, serial, number
 def client_id(account: str, candle: int, operation: str) -> str:
     # Independent of local state and parameters: lost state cannot change an ID.
     identity = f'BTCUSD|{account}|{candle}|{operation}'.encode()
-    return 'pq-' + hashlib.sha256(identity).hexdigest()[:30]
+    return 'cq-' + hashlib.sha256(identity).hexdigest()[:30]
 
 
 class State:

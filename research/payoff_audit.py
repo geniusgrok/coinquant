@@ -6,7 +6,7 @@ from pathlib import Path
 from decimal import Decimal as D
 from datetime import datetime,timezone
 from research.verify_account_ledger import verify
-from pancakequant.research import spec
+from coinquant.research import spec
 
 
 def audit(path):

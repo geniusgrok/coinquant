@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 from decimal import Decimal as D
 import numpy as np
-from pancakequant.research import spec,invocations,timestamp
-from pancakequant.linear_account import Account,FEE
+from coinquant.research import spec,invocations,timestamp
+from coinquant.linear_account import Account,FEE
 from research.executable_payoff import account,fit_targets,predict,orders,HOUR,DAY
 
 class ExecutablePayoffTests(unittest.TestCase):

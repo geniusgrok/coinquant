@@ -157,9 +157,9 @@ manifest is not formal native qualification.
 After a strict manifest exists:
 
 ```sh
-python -m pancakequant backtest --config config.json \
+python -m coinquant backtest --config config.json \
   --manifest data/v5/manifest.json --output results/base
-python -m pancakequant backtest --config config.json \
+python -m coinquant backtest --config config.json \
   --manifest data/v5/manifest.json --output results/absence --stress-absence
 ```
 

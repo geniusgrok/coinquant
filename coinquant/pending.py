@@ -18,7 +18,7 @@ def valid(order, snapshot, cap):
     try:
         if snapshot.position.quantity or snapshot.position.index != 0:
             return False
-        if (order['symbol'] != SYMBOL or not order['orderLinkId'].startswith('pq-')
+        if (order['symbol'] != SYMBOL or not order['orderLinkId'].startswith('cq-')
                 or order['orderStatus'] != 'Untriggered' or order['stopOrderType'] != 'Stop'
                 or order['orderType'] != 'Limit' or order['timeInForce'] != 'FOK'
                 or order['positionIdx'] != 0 or order['reduceOnly'] is not False
@@ -72,7 +72,7 @@ def validate_target(snapshot, target, cap, cfg):
     validate_risk_increase(snapshot, target, cfg, notional_limit=cap)
     if target.quantity * (target.trigger_price - snapshot.mark) <= 0:
         raise Blocked('conditional trigger has already crossed; reconcile and decide again')
-    row = record('pq-validation', target)
+    row = record('cq-validation', target)
     if not valid(row, snapshot, cap):
         raise Blocked('conditional entry lacks a safe full native FOK protection contract')
 

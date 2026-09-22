@@ -1,12 +1,10 @@
 {
-  "source_commit": "48d260d73049d27f5989785575f9cdff2eb18998",
-  "source_tree": "2075122e102c8a2728a643093765226c15958a2a",
   "files": [
     {
       "path": "PROJECT_STATE.md",
-      "git_blob": "0797204a6049a409945a10b6300f957cfb133a35",
-      "sha256": "94447ff5dd5051643382ea1c08cfae8e9ef133e715a583bf0dba9090fc34ad8b",
-      "size": 15712
+      "git_blob": "f7d5698676890bd91b72db6a800e4f2e1d63f851",
+      "sha256": "ea6389798da07b537a2e3fcb583e35194aa37a0c81e1b2165cea8d93cefd0067",
+      "size": 3194
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/ACCOUNT_AUDIT.json",
@@ -34,9 +32,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/identity.json",
-      "git_blob": "f5d1894e40045fc88bfc244693248ea71d9077cf",
-      "sha256": "3831bc4eed6948869b4fd4aca6a506f51ea158cfcbbfcc7400adf23d09f787f9",
-      "size": 2861
+      "git_blob": "2eb9b7c0f879a96ffaf2f062afd833b5186b197c",
+      "sha256": "feb5aef8345009a6192d887739676140ccdb8585a87f637ab2580791fce7d2f4",
+      "size": 2846
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/labels.json",
@@ -64,9 +62,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/prior_B1_result.json",
-      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
-      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
-      "size": 3217
+      "git_blob": "2cecdd8cdc82986bb5fad302a14b19bbfb339699",
+      "sha256": "c386587cfc2100687eb8d90eee6e87c71e8c037d0e6410d2c125d597602688c3",
+      "size": 3199
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/frozen_attention_inputs/weeks.json",
@@ -88,9 +86,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/binance.py",
-      "git_blob": "6c95546521193a8c7b6454c568073d76a7fc7d7b",
-      "sha256": "f77cfd587456c85502e1b1e8eb96fa85daa4642bb3f6bf44265bda2ce951a810",
-      "size": 26061
+      "git_blob": "d17aa6ddbf6afe65eb6bf12af27ad79821be6eb0",
+      "sha256": "be190884f651bda265ad185777180647810455ad62809d8b00109c3d488f65d2",
+      "size": 26039
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/campaign.py",
@@ -100,9 +98,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/edge_allocation.py",
-      "git_blob": "71b7eaa0f594b8893e4fbc5cf176e46d00588269",
-      "sha256": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
-      "size": 417
+      "git_blob": "5bdc59ce58c8cd02d2db5dc38d630767583e38ce",
+      "sha256": "cf2913e84a80c855394a787cf9833ebac1e3948c730c11f4feba76feb902cb82",
+      "size": 414
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/linear_account.py",
@@ -112,21 +110,21 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/linear_replay.py",
-      "git_blob": "bbd27e312a961f3f50ffe94671af10d27e27f616",
-      "sha256": "e3f8c827dd3d476719b78e721ba1ec46e38d8fb3647acffb3c1dd894ec059247",
-      "size": 11131
+      "git_blob": "733ee62259592599284793cace18f410eac05462",
+      "sha256": "60d25c10fc078d11f1d13a25be000416cccdeedbc06d6d2346650cde00d87084",
+      "size": 11116
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/linear_sizing.py",
-      "git_blob": "78758749e791e1585e186ee45ab7eedb53489e11",
-      "sha256": "d308f6e067d05ce6135c3a48b40a2313f8f9bd30506b6e364fc93832b47ba188",
-      "size": 4460
+      "git_blob": "9b1372cf6aeaeec10b536e93613017866217403f",
+      "sha256": "ce07d743087d254028b1d9cb20daf878b4f44f2a67d8731d0edeac91fabf7445",
+      "size": 4454
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/minute_evidence.py",
-      "git_blob": "cceeb048fb32e0c3772d67ff039e2b8fa8cc0f33",
-      "sha256": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-      "size": 1615
+      "git_blob": "a2be5791d3c9d596a250083467bfd83a111bcd01",
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24",
+      "size": 1612
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/native_trail.py",
@@ -142,21 +140,21 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/persistent_hold_replay.py",
-      "git_blob": "a9efec516e09e56bf5147975531e69bef56f7843",
-      "sha256": "aeed3f01539aef3fdd58dd8df728268066ce9701e53b77b3fe99abed2c7eabb0",
-      "size": 36223
+      "git_blob": "0b5800b220dd092ba2d3f859f0f23ce448a75cb2",
+      "sha256": "4db7016c6d8bfdbb54d9186af4e07a6dfd775ac075dcb7da7f7d145a5723f2d4",
+      "size": 36196
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/spec.json",
-      "git_blob": "44e43360369a7548af3bab3decfe7e6e766e9c17",
-      "sha256": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
-      "size": 1917
+      "git_blob": "fd59a3ae0978ba11948f4cc8e076d80e558a0b58",
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9",
+      "size": 1950
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/measured_source/volatility_target.py",
-      "git_blob": "3a3e56ef996891b89ae323035678a828628c9c5b",
-      "sha256": "cb296e3800c5a8523dca6d1f1cd4cf860c6f30ac0be7817f8d3f5a7e61de1a69",
-      "size": 575
+      "git_blob": "343b04f85d01db36841a17c28856299b48830c44",
+      "sha256": "8a2916ad10c26393d5091d2fbef144451353494ce25fcfbf04608b269fbe1ea5",
+      "size": 569
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/orders.csv.gz",
@@ -166,9 +164,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C0/result.json",
-      "git_blob": "64e76d0d0658e7feb19abac36f3283a922623d5e",
-      "sha256": "2134194e301bbdcf7acfef0dd5b9adde98c4a617b6d04fe8adc2361245592067",
-      "size": 3190
+      "git_blob": "4c7b1be09649bbb97d4e7eeaff51491712c31c49",
+      "sha256": "50c45cceca1967b68d38dfee7ca79b2ac41ef3934a2c7de8724e3675b19518ae",
+      "size": 3172
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/ACCOUNT_AUDIT.json",
@@ -196,9 +194,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/identity.json",
-      "git_blob": "f5d1894e40045fc88bfc244693248ea71d9077cf",
-      "sha256": "3831bc4eed6948869b4fd4aca6a506f51ea158cfcbbfcc7400adf23d09f787f9",
-      "size": 2861
+      "git_blob": "2eb9b7c0f879a96ffaf2f062afd833b5186b197c",
+      "sha256": "feb5aef8345009a6192d887739676140ccdb8585a87f637ab2580791fce7d2f4",
+      "size": 2846
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/labels.json",
@@ -226,9 +224,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/prior_B1_result.json",
-      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
-      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
-      "size": 3217
+      "git_blob": "2cecdd8cdc82986bb5fad302a14b19bbfb339699",
+      "sha256": "c386587cfc2100687eb8d90eee6e87c71e8c037d0e6410d2c125d597602688c3",
+      "size": 3199
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/frozen_attention_inputs/weeks.json",
@@ -250,9 +248,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/binance.py",
-      "git_blob": "6c95546521193a8c7b6454c568073d76a7fc7d7b",
-      "sha256": "f77cfd587456c85502e1b1e8eb96fa85daa4642bb3f6bf44265bda2ce951a810",
-      "size": 26061
+      "git_blob": "d17aa6ddbf6afe65eb6bf12af27ad79821be6eb0",
+      "sha256": "be190884f651bda265ad185777180647810455ad62809d8b00109c3d488f65d2",
+      "size": 26039
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/campaign.py",
@@ -262,9 +260,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/edge_allocation.py",
-      "git_blob": "71b7eaa0f594b8893e4fbc5cf176e46d00588269",
-      "sha256": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
-      "size": 417
+      "git_blob": "5bdc59ce58c8cd02d2db5dc38d630767583e38ce",
+      "sha256": "cf2913e84a80c855394a787cf9833ebac1e3948c730c11f4feba76feb902cb82",
+      "size": 414
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/linear_account.py",
@@ -274,21 +272,21 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/linear_replay.py",
-      "git_blob": "bbd27e312a961f3f50ffe94671af10d27e27f616",
-      "sha256": "e3f8c827dd3d476719b78e721ba1ec46e38d8fb3647acffb3c1dd894ec059247",
-      "size": 11131
+      "git_blob": "733ee62259592599284793cace18f410eac05462",
+      "sha256": "60d25c10fc078d11f1d13a25be000416cccdeedbc06d6d2346650cde00d87084",
+      "size": 11116
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/linear_sizing.py",
-      "git_blob": "78758749e791e1585e186ee45ab7eedb53489e11",
-      "sha256": "d308f6e067d05ce6135c3a48b40a2313f8f9bd30506b6e364fc93832b47ba188",
-      "size": 4460
+      "git_blob": "9b1372cf6aeaeec10b536e93613017866217403f",
+      "sha256": "ce07d743087d254028b1d9cb20daf878b4f44f2a67d8731d0edeac91fabf7445",
+      "size": 4454
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/minute_evidence.py",
-      "git_blob": "cceeb048fb32e0c3772d67ff039e2b8fa8cc0f33",
-      "sha256": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-      "size": 1615
+      "git_blob": "a2be5791d3c9d596a250083467bfd83a111bcd01",
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24",
+      "size": 1612
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/native_trail.py",
@@ -304,21 +302,21 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/persistent_hold_replay.py",
-      "git_blob": "a9efec516e09e56bf5147975531e69bef56f7843",
-      "sha256": "aeed3f01539aef3fdd58dd8df728268066ce9701e53b77b3fe99abed2c7eabb0",
-      "size": 36223
+      "git_blob": "0b5800b220dd092ba2d3f859f0f23ce448a75cb2",
+      "sha256": "4db7016c6d8bfdbb54d9186af4e07a6dfd775ac075dcb7da7f7d145a5723f2d4",
+      "size": 36196
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/spec.json",
-      "git_blob": "44e43360369a7548af3bab3decfe7e6e766e9c17",
-      "sha256": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
-      "size": 1917
+      "git_blob": "fd59a3ae0978ba11948f4cc8e076d80e558a0b58",
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9",
+      "size": 1950
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/measured_source/volatility_target.py",
-      "git_blob": "3a3e56ef996891b89ae323035678a828628c9c5b",
-      "sha256": "cb296e3800c5a8523dca6d1f1cd4cf860c6f30ac0be7817f8d3f5a7e61de1a69",
-      "size": 575
+      "git_blob": "343b04f85d01db36841a17c28856299b48830c44",
+      "sha256": "8a2916ad10c26393d5091d2fbef144451353494ce25fcfbf04608b269fbe1ea5",
+      "size": 569
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/orders.csv.gz",
@@ -328,9 +326,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1/result.json",
-      "git_blob": "455461ca5b7269ac6043232db2cd89e1b291cf54",
-      "sha256": "731852574934b7ff08ef67e2e19400a305ddbd32f2249d4450b3ed98098a6ed3",
-      "size": 3217
+      "git_blob": "1ca97801cce22850df6540aa5e180cd817b2e31a",
+      "sha256": "d8dfb66dd2f818d7843bd50a0e81bfb0c710f5a8030418d88d23be8111b30038",
+      "size": 3199
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C1_B1_COMPARISON.json",
@@ -364,9 +362,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/identity.json",
-      "git_blob": "f5d1894e40045fc88bfc244693248ea71d9077cf",
-      "sha256": "3831bc4eed6948869b4fd4aca6a506f51ea158cfcbbfcc7400adf23d09f787f9",
-      "size": 2861
+      "git_blob": "2eb9b7c0f879a96ffaf2f062afd833b5186b197c",
+      "sha256": "feb5aef8345009a6192d887739676140ccdb8585a87f637ab2580791fce7d2f4",
+      "size": 2846
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/labels.json",
@@ -394,9 +392,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/prior_B1_result.json",
-      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
-      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
-      "size": 3217
+      "git_blob": "2cecdd8cdc82986bb5fad302a14b19bbfb339699",
+      "sha256": "c386587cfc2100687eb8d90eee6e87c71e8c037d0e6410d2c125d597602688c3",
+      "size": 3199
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/frozen_attention_inputs/weeks.json",
@@ -418,9 +416,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/binance.py",
-      "git_blob": "6c95546521193a8c7b6454c568073d76a7fc7d7b",
-      "sha256": "f77cfd587456c85502e1b1e8eb96fa85daa4642bb3f6bf44265bda2ce951a810",
-      "size": 26061
+      "git_blob": "d17aa6ddbf6afe65eb6bf12af27ad79821be6eb0",
+      "sha256": "be190884f651bda265ad185777180647810455ad62809d8b00109c3d488f65d2",
+      "size": 26039
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/campaign.py",
@@ -430,9 +428,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/edge_allocation.py",
-      "git_blob": "71b7eaa0f594b8893e4fbc5cf176e46d00588269",
-      "sha256": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
-      "size": 417
+      "git_blob": "5bdc59ce58c8cd02d2db5dc38d630767583e38ce",
+      "sha256": "cf2913e84a80c855394a787cf9833ebac1e3948c730c11f4feba76feb902cb82",
+      "size": 414
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/linear_account.py",
@@ -442,21 +440,21 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/linear_replay.py",
-      "git_blob": "bbd27e312a961f3f50ffe94671af10d27e27f616",
-      "sha256": "e3f8c827dd3d476719b78e721ba1ec46e38d8fb3647acffb3c1dd894ec059247",
-      "size": 11131
+      "git_blob": "733ee62259592599284793cace18f410eac05462",
+      "sha256": "60d25c10fc078d11f1d13a25be000416cccdeedbc06d6d2346650cde00d87084",
+      "size": 11116
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/linear_sizing.py",
-      "git_blob": "78758749e791e1585e186ee45ab7eedb53489e11",
-      "sha256": "d308f6e067d05ce6135c3a48b40a2313f8f9bd30506b6e364fc93832b47ba188",
-      "size": 4460
+      "git_blob": "9b1372cf6aeaeec10b536e93613017866217403f",
+      "sha256": "ce07d743087d254028b1d9cb20daf878b4f44f2a67d8731d0edeac91fabf7445",
+      "size": 4454
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/minute_evidence.py",
-      "git_blob": "cceeb048fb32e0c3772d67ff039e2b8fa8cc0f33",
-      "sha256": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-      "size": 1615
+      "git_blob": "a2be5791d3c9d596a250083467bfd83a111bcd01",
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24",
+      "size": 1612
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/native_trail.py",
@@ -472,21 +470,21 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/persistent_hold_replay.py",
-      "git_blob": "a9efec516e09e56bf5147975531e69bef56f7843",
-      "sha256": "aeed3f01539aef3fdd58dd8df728268066ce9701e53b77b3fe99abed2c7eabb0",
-      "size": 36223
+      "git_blob": "0b5800b220dd092ba2d3f859f0f23ce448a75cb2",
+      "sha256": "4db7016c6d8bfdbb54d9186af4e07a6dfd775ac075dcb7da7f7d145a5723f2d4",
+      "size": 36196
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/spec.json",
-      "git_blob": "44e43360369a7548af3bab3decfe7e6e766e9c17",
-      "sha256": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
-      "size": 1917
+      "git_blob": "fd59a3ae0978ba11948f4cc8e076d80e558a0b58",
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9",
+      "size": 1950
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/measured_source/volatility_target.py",
-      "git_blob": "3a3e56ef996891b89ae323035678a828628c9c5b",
-      "sha256": "cb296e3800c5a8523dca6d1f1cd4cf860c6f30ac0be7817f8d3f5a7e61de1a69",
-      "size": 575
+      "git_blob": "343b04f85d01db36841a17c28856299b48830c44",
+      "sha256": "8a2916ad10c26393d5091d2fbef144451353494ce25fcfbf04608b269fbe1ea5",
+      "size": 569
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/orders.csv.gz",
@@ -496,9 +494,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/C2_lag7/result.json",
-      "git_blob": "a0cb96ae1d2c4e319fe565bb89a4bb3cc3bb0d64",
-      "sha256": "55f2cac592149388e5e9ef4e3d66edf67e3a56e24b844efc09fda8e07708b705",
-      "size": 3220
+      "git_blob": "bb81fc1d89b47db1a5774c7234f401238c22d7fa",
+      "sha256": "a9303118c6ddc9758dc469ac7dc18058d3cb3d7dfb5114c4e69af09366f4560b",
+      "size": 3202
     },
     {
       "path": "evidence/attention-lag7-account-20260922/CHANGED_SIGNAL_ATTRIBUTION.json",
@@ -550,9 +548,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/identity.json",
-      "git_blob": "f5d1894e40045fc88bfc244693248ea71d9077cf",
-      "sha256": "3831bc4eed6948869b4fd4aca6a506f51ea158cfcbbfcc7400adf23d09f787f9",
-      "size": 2861
+      "git_blob": "2eb9b7c0f879a96ffaf2f062afd833b5186b197c",
+      "sha256": "feb5aef8345009a6192d887739676140ccdb8585a87f637ab2580791fce7d2f4",
+      "size": 2846
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/labels.json",
@@ -580,9 +578,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/prior_B1_result.json",
-      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
-      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
-      "size": 3217
+      "git_blob": "2cecdd8cdc82986bb5fad302a14b19bbfb339699",
+      "sha256": "c386587cfc2100687eb8d90eee6e87c71e8c037d0e6410d2c125d597602688c3",
+      "size": 3199
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/frozen_attention_inputs/weeks.json",
@@ -604,9 +602,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/binance.py",
-      "git_blob": "6c95546521193a8c7b6454c568073d76a7fc7d7b",
-      "sha256": "f77cfd587456c85502e1b1e8eb96fa85daa4642bb3f6bf44265bda2ce951a810",
-      "size": 26061
+      "git_blob": "d17aa6ddbf6afe65eb6bf12af27ad79821be6eb0",
+      "sha256": "be190884f651bda265ad185777180647810455ad62809d8b00109c3d488f65d2",
+      "size": 26039
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/campaign.py",
@@ -616,9 +614,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/edge_allocation.py",
-      "git_blob": "71b7eaa0f594b8893e4fbc5cf176e46d00588269",
-      "sha256": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
-      "size": 417
+      "git_blob": "5bdc59ce58c8cd02d2db5dc38d630767583e38ce",
+      "sha256": "cf2913e84a80c855394a787cf9833ebac1e3948c730c11f4feba76feb902cb82",
+      "size": 414
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/linear_account.py",
@@ -628,21 +626,21 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/linear_replay.py",
-      "git_blob": "bbd27e312a961f3f50ffe94671af10d27e27f616",
-      "sha256": "e3f8c827dd3d476719b78e721ba1ec46e38d8fb3647acffb3c1dd894ec059247",
-      "size": 11131
+      "git_blob": "733ee62259592599284793cace18f410eac05462",
+      "sha256": "60d25c10fc078d11f1d13a25be000416cccdeedbc06d6d2346650cde00d87084",
+      "size": 11116
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/linear_sizing.py",
-      "git_blob": "78758749e791e1585e186ee45ab7eedb53489e11",
-      "sha256": "d308f6e067d05ce6135c3a48b40a2313f8f9bd30506b6e364fc93832b47ba188",
-      "size": 4460
+      "git_blob": "9b1372cf6aeaeec10b536e93613017866217403f",
+      "sha256": "ce07d743087d254028b1d9cb20daf878b4f44f2a67d8731d0edeac91fabf7445",
+      "size": 4454
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/minute_evidence.py",
-      "git_blob": "cceeb048fb32e0c3772d67ff039e2b8fa8cc0f33",
-      "sha256": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
-      "size": 1615
+      "git_blob": "a2be5791d3c9d596a250083467bfd83a111bcd01",
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24",
+      "size": 1612
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/native_trail.py",
@@ -658,21 +656,21 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/persistent_hold_replay.py",
-      "git_blob": "a9efec516e09e56bf5147975531e69bef56f7843",
-      "sha256": "aeed3f01539aef3fdd58dd8df728268066ce9701e53b77b3fe99abed2c7eabb0",
-      "size": 36223
+      "git_blob": "0b5800b220dd092ba2d3f859f0f23ce448a75cb2",
+      "sha256": "4db7016c6d8bfdbb54d9186af4e07a6dfd775ac075dcb7da7f7d145a5723f2d4",
+      "size": 36196
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/spec.json",
-      "git_blob": "44e43360369a7548af3bab3decfe7e6e766e9c17",
-      "sha256": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
-      "size": 1917
+      "git_blob": "fd59a3ae0978ba11948f4cc8e076d80e558a0b58",
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9",
+      "size": 1950
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/measured_source/volatility_target.py",
-      "git_blob": "3a3e56ef996891b89ae323035678a828628c9c5b",
-      "sha256": "cb296e3800c5a8523dca6d1f1cd4cf860c6f30ac0be7817f8d3f5a7e61de1a69",
-      "size": 575
+      "git_blob": "343b04f85d01db36841a17c28856299b48830c44",
+      "sha256": "8a2916ad10c26393d5091d2fbef144451353494ce25fcfbf04608b269fbe1ea5",
+      "size": 569
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/orders.csv.gz",
@@ -688,9 +686,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/L3.6/result.json",
-      "git_blob": "76305ee8e145fcda9897dadc6031f11e4daf9ba5",
-      "sha256": "ad356274598b6a36af0188add23e42e05d315077f04ea14c7fa0508e6ccacac7",
-      "size": 3018
+      "git_blob": "1bee8d46dba0c4f60e90d06d7eedf7c0682470f8",
+      "sha256": "e88c2dec3dce65338b6750c35af1004a4a907b9d7c920cc0e749520e08eaf7c7",
+      "size": 3000
     },
     {
       "path": "evidence/attention-lag7-account-20260922/NATIVE_INPUT_CHECK.json",
@@ -706,15 +704,15 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/SUMMARY.json",
-      "git_blob": "aaa1e60b34f4ddbc2d43c7a56ca1a4b9ec081365",
-      "sha256": "d23964208325cc08cf2967b2a1431d96145d9558e66144c8abc8bfb733a2d9f5",
-      "size": 138014
+      "git_blob": "add6637a4c02bbd272f3ab1f0f405fe19111a2aa",
+      "sha256": "dc7acedbca9a1be83ceb8821b6c7471eb727dd9651d282089eff5b100a84b8ba",
+      "size": 137927
     },
     {
       "path": "evidence/attention-lag7-account-20260922/frozen_inputs/identity.json",
-      "git_blob": "399a217b211eb6b90d10ac2271e019ed6bdf13c6",
-      "sha256": "5477c5f13649e4a07a1d41b23f0becd0a4fb52368933b2dfff8d25f4e25519ed",
-      "size": 4360
+      "git_blob": "90901f69d3fa4a0fc11f28e62cee17463b36d73b",
+      "sha256": "423165cb7edd821eae609e0d5ab354732ae559be65fae88e90f3c2a81578c9fd",
+      "size": 4345
     },
     {
       "path": "evidence/attention-lag7-account-20260922/frozen_inputs/labels.json",
@@ -760,9 +758,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1/result.json",
-      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
-      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
-      "size": 3217
+      "git_blob": "2cecdd8cdc82986bb5fad302a14b19bbfb339699",
+      "sha256": "c386587cfc2100687eb8d90eee6e87c71e8c037d0e6410d2c125d597602688c3",
+      "size": 3199
     },
     {
       "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1_inputs.json",
@@ -772,9 +770,9 @@
     },
     {
       "path": "evidence/attention-lag7-account-20260922/frozen_inputs/prior_B1_result.json",
-      "git_blob": "d4606c264d68cd24759b827912f69c0bafb02a42",
-      "sha256": "3be7eedec00d1c542a6f469bafacfa2a0afc56a0fe50921ae28e9489f5893065",
-      "size": 3217
+      "git_blob": "2cecdd8cdc82986bb5fad302a14b19bbfb339699",
+      "sha256": "c386587cfc2100687eb8d90eee6e87c71e8c037d0e6410d2c125d597602688c3",
+      "size": 3199
     },
     {
       "path": "evidence/attention-lag7-account-20260922/frozen_inputs/weeks.json",
@@ -784,15 +782,15 @@
     },
     {
       "path": "research/attention_lag7_account.py",
-      "git_blob": "ecdfdf4b2bd4eb6f1aaf80b657f5b870da6d51cd",
-      "sha256": "bb6056ece8a63c9902f88bcae0acb6ba508265bbdcbe8bbf6ad62cb7432802fd",
-      "size": 18009
+      "git_blob": "ce8adf63cad7f46ce9d66ca6c5bc8b8b5a74fe7f",
+      "sha256": "264bae75e0b9e9993073a19fb9f101b008c373f1af55fa0265ca009f88c06f9a",
+      "size": 17991
     },
     {
       "path": "tests/test_attention_lag7_account.py",
-      "git_blob": "37322ca08a857634c09caeec81805463d3205f77",
-      "sha256": "aa67a728bcd892e50e3d32a5354d67fa5a07405b46c49f657b6cf62c8a45b22d",
-      "size": 6862
+      "git_blob": "c024cc03e47303b2a673cd566daca49de8a9351e",
+      "sha256": "e42d2c4835f93833933eea364e37fac725f8a16d40f0d4d93a591bb5f9a0e129",
+      "size": 6859
     }
   ],
   "multipart": [
@@ -1101,5 +1099,8 @@
         }
       ]
     }
-  ]
+  ],
+  "measurement_commit": "48d260d73049d27f5989785575f9cdff2eb18998",
+  "measurement_tree": "2075122e102c8a2728a643093765226c15958a2a",
+  "file_index_scope": "Current stored file bytes; economic result source identities refer to their recorded measurements."
 }

@@ -8,12 +8,12 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from pancakequant.data import Dataset, HOUR, MINUTE
-from pancakequant.replay import (Account, LIQUIDATION_REASON, STOP_REASON, TAKE_REASON,
+from coinquant.data import Dataset, HOUR, MINUTE
+from coinquant.replay import (Account, LIQUIDATION_REASON, STOP_REASON, TAKE_REASON,
                                 _open_exit_terms, _pending_exit_terms, _replay,
                                 liquidation_takeover)
-from pancakequant.research import digest, invocations, iso, spec, timestamp
-from pancakequant.types import Blocked, ModelConfig, Position
+from coinquant.research import digest, invocations, iso, spec, timestamp
+from coinquant.types import Blocked, ModelConfig, Position
 from test_model import sample
 
 
@@ -116,7 +116,7 @@ class ReplayTests(unittest.TestCase):
         self.assertAlmostEqual(a.wallet, before - margin)
 
     def test_liquidation_takeover_consumes_only_isolated_position_margin(self):
-        from pancakequant.model import bankruptcy_price
+        from coinquant.model import bankruptcy_price
 
         r = sample().rules
         a = Account(D('1'))

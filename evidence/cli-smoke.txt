@@ -1,4 +1,4 @@
-$ python -m pancakequant --help
+$ python -m coinquant --help
 usage: __main__.py [-h] {run,status,backtest} ...
 
 On-demand BTC perpetual research and bounded execution.
@@ -10,7 +10,7 @@ options:
   -h, --help            show this help message and exit
 EXIT=0; EXPECTED=0
 
-$ python -m pancakequant status --config config.example.json
+$ python -m coinquant status --config config.example.json
 {
   "status": "blocked",
   "reason": "matching environment credentials are not configured"
@@ -18,7 +18,7 @@ $ python -m pancakequant status --config config.example.json
 blocked: matching environment credentials are not configured
 EXIT=2; EXPECTED=2
 
-$ python -m pancakequant run --config config.example.json
+$ python -m coinquant run --config config.example.json
 {
   "status": "blocked",
   "reason": "matching environment credentials are not configured"
@@ -26,7 +26,7 @@ $ python -m pancakequant run --config config.example.json
 blocked: matching environment credentials are not configured
 EXIT=2; EXPECTED=2
 
-$ python -m pancakequant backtest --config config.example.json --manifest data/absent.json --output results/absent
+$ python -m coinquant backtest --config config.example.json --manifest data/absent.json --output results/absent
 {
   "status": "blocked",
   "reason": "dataset manifest is missing or invalid; no synthetic fallback"

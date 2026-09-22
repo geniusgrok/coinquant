@@ -3,10 +3,10 @@ from unittest import TestCase
 from unittest.mock import Mock
 from decimal import Decimal as D
 from time import time
-from pancakequant.state import State
-from pancakequant.campaign import Campaign
-from pancakequant.ownership import reconcile
-from pancakequant.types import Unknown
+from coinquant.state import State
+from coinquant.campaign import Campaign
+from coinquant.ownership import reconcile
+from coinquant.types import Unknown
 
 
 class OwnershipTests(TestCase):
@@ -15,8 +15,8 @@ class OwnershipTests(TestCase):
         m=Campaign();m.last=epoch;m.model.last=epoch
         flat=dict(account_uid='123',quantity_btc='0.00000000',possible_entry_remainders=0)
         p=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='LIMIT',quantity='.01')
-        state.prepare('pq-entry','binance_order',p,campaign=epoch,flat_snapshot=flat)
-        start=state.get('entry_campaigns')['pq-entry']['prepared_at'];now=start+1000
+        state.prepare('cq-entry','binance_order',p,campaign=epoch,flat_snapshot=flat)
+        start=state.get('entry_campaigns')['cq-entry']['prepared_at'];now=start+1000
         order=dict(p,orderId=1,origQty='.01',executedQty='.003',status='PARTIALLY_FILLED')
         snapshot=dict(flat,quantity_btc='.003',entry='100',wallet_usdt='999',possible_entry_remainders=1,native_full_position_protected=False)
         trade=dict(symbol='BTCUSDT',positionSide='BOTH',side='BUY',orderId=1,id=11,time=start,qty='.003')
@@ -53,20 +53,20 @@ class OwnershipTests(TestCase):
             entry=r.query_intent.return_value['parent']
             entry['status']='CANCELED'
             payload=dict(symbol='BTCUSDT',side='SELL',positionSide='BOTH',type='MARKET',quantity='.003',reduceOnly='true')
-            state.prepare('pq-exit','binance_order',payload)
+            state.prepare('cq-exit','binance_order',payload)
             exit_order=dict(payload,orderId=2,reduceOnly=True)
-            r.query_intent.side_effect=lambda identity,**kw:dict(parent=entry if identity=='pq-entry' else exit_order,child=None)
+            r.query_intent.side_effect=lambda identity,**kw:dict(parent=entry if identity=='cq-entry' else exit_order,child=None)
             r.get.return_value=[t,dict(t,id=12,orderId=2,side='SELL')]
             s.update(quantity_btc='0',entry='0',possible_entry_remainders=0)
             reconcile(state,r,m,s)
             self.assertEqual(m.consumed,m.last);self.assertIsNone(m.position_campaign)
             self.assertEqual(state.get('entry_campaigns'),{})
-            self.assertIn('pq-entry',state.get('settled_entry_campaigns'))
+            self.assertIn('cq-entry',state.get('settled_entry_campaigns'))
             r.query_intent.reset_mock()
             self.assertEqual(reconcile(state,r,m,s)['status'],'flat_without_entry_journal')
             r.query_intent.assert_not_called()
             # A still-visible original opportunity cannot reopen after its stop.
-            from pancakequant.campaign import disposition
+            from coinquant.campaign import disposition
             self.assertEqual(disposition(type('Opportunity',(),dict(direction=1,identity=m.last))(),D(0),m.consumed),'consumed')
 
     def test_history_older_than_three_months_is_not_inferred(self):
@@ -79,7 +79,7 @@ class OwnershipTests(TestCase):
     def test_cumulative_fill_cannot_regress(self):
         with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
             self.fixture(state)
-            state.finish('pq-entry','partial',{'executed_quantity':'.003'})
+            state.finish('cq-entry','partial',{'executed_quantity':'.003'})
             for result in ({'executed_quantity':'.002'},{}):
-                with self.assertRaises(Unknown):state.finish('pq-entry','confirmed',result)
+                with self.assertRaises(Unknown):state.finish('cq-entry','confirmed',result)
             self.assertEqual(state.pending()[0]['status'],'partial')

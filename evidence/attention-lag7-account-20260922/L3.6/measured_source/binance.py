@@ -11,7 +11,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
-from pancakequant.types import Blocked, Unknown, number
+from coinquant.types import Blocked, Unknown, number
 
 PUBLIC = {'/fapi/v1/time', '/fapi/v1/exchangeInfo', '/fapi/v1/klines',
           '/fapi/v1/premiumIndex', '/fapi/v1/depth'}
@@ -43,7 +43,7 @@ class BinanceReadOnly:
             raise Blocked('caller cannot override request signing fields')
         if 'symbol' in params and params['symbol'] != 'BTCUSDT':
             raise Blocked('only BTCUSDT is supported')
-        headers = {'User-Agent':'pancakequant'}
+        headers = {'User-Agent':'coinquant'}
         if private:
             if not self.key or not self.secret:
                 raise Blocked('explicit Binance credentials required for private reads')
@@ -165,7 +165,7 @@ class BinanceReadOnly:
         """Read-only terminal reconciliation; no missing-order retry inference.
 
         Binance intents store the original native request fields. Unknown or
-        legacy intent kinds stay pending rather than being guessed/migrated.
+        unsupported intent kinds stay pending; never infer resolution.
         A canceled conditional parent does not settle a still-active child.
         """
         resolved = 0
@@ -388,7 +388,7 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
                 and (number(a['trigger'])>liquidation if q>0 else number(a['trigger'])<liquidation)]
     entries=[o for o in orders if o.get('reduceOnly') is not True]
     entries += [a for a in algos if a.get('closePosition') is not True and a.get('reduceOnly') is not True]
-    return {'status':'read_only_migration_observation','account_uid':str(uid),'symbol':'BTCUSDT',
+    return {'status':'read_only_observation','account_uid':str(uid),'symbol':'BTCUSDT',
             'wallet_usdt':str(wallet),'equity_usdt':str(wallet+q*(mark-entry)),
             'available_usdt':str(number(account['availableBalance'])) if 'availableBalance' in account else None,
             'native_account_equity_usdt':str(wallet+unrealized),

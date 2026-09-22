@@ -15,7 +15,7 @@ from decimal import Decimal as D
 from pathlib import Path
 import zipfile
 
-from pancakequant.research import iso
+from coinquant.research import iso
 from research.acquire_minute_probe import validate
 from research.linear_forecast import archive_rows
 
