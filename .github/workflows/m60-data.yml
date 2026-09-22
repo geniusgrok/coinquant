@@ -1,0 +1,53 @@
+name: M60 data acquisition
+on:
+  push:
+    branches: [research/m60-20260923]
+    paths: ['.github/workflows/m60-data.yml', 'research/m60-data-request.json']
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - name: Fetch public market archives, never account endpoints
+        run: |
+          python - <<'PY'
+          import concurrent.futures, hashlib, json, pathlib, time, urllib.error, urllib.request, zipfile
+          out=pathlib.Path('m60-data');out.mkdir()
+          request=pathlib.Path('research/m60-data-request.json')
+          paths=json.loads(request.read_text())['paths'] if request.exists() else [f'data/futures/um/monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2019-{m:02d}.zip' for m in (10,11)]
+          paths=sorted(set(paths));(out/'REQUEST.json').write_text(json.dumps(paths,indent=2))
+          def fetch(path):
+              if not path.startswith('data/futures/um/') or '/BTCUSDT/' not in path or not path.endswith('.zip') or '..' in path:
+                  raise ValueError('only explicit BTCUSDT public archive paths allowed')
+              target=out/path;target.parent.mkdir(parents=True,exist_ok=True)
+              url='https://data.binance.vision/'+path
+              record={'path':path,'url':url,'retrieved_at_ms':int(time.time()*1000)}
+              try:
+                  raw=urllib.request.urlopen(url,timeout=40).read()
+                  checksum=urllib.request.urlopen(url+'.CHECKSUM',timeout=40).read()
+                  digest=hashlib.sha256(raw).hexdigest()
+                  if checksum.decode().split()[0]!=digest:raise ValueError('official checksum mismatch')
+                  target.write_bytes(raw);target.with_name(target.name+'.CHECKSUM').write_bytes(checksum)
+                  with zipfile.ZipFile(target) as z:
+                      if z.testzip() is not None:raise ValueError('ZIP CRC failure')
+                  record.update(status='verified',bytes=len(raw),sha256=digest,checksum_sha256=hashlib.sha256(checksum).hexdigest())
+              except Exception as exc:
+                  record.update(status='unavailable',error=repr(exc))
+              return record
+          with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+              receipts=list(pool.map(fetch,paths))
+          (out/'RECEIPT.json').write_text(json.dumps(receipts,indent=2)+'\n')
+          print(json.dumps({'requested':len(paths),'verified':sum(r['status']=='verified' for r in receipts),'unavailable':[r for r in receipts if r['status']!='verified']},indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: coinquant-m60-data-${{ github.sha }}
+          path: m60-data/
+          compression-level: 0
+          retention-days: 7
+          if-no-files-found: error
