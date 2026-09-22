@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           ref: research/m60-20260923
-      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
       - name: Verify exact patch base and target bytes
@@ -23,13 +23,14 @@ jobs:
           git apply --check --unidiff-zero .m60-publication/shared.patch
           git apply --unidiff-zero .m60-publication/shared.patch
           python - <<'PY'
-          import hashlib,pathlib,subprocess
+          import subprocess
           expected={'coinquant/multiscale.py':'14cc6890784c9de7719e4444fe2293da89ab3813','research/multiscale_data.py':'447584efffcfbcab1fa48f4b23648cb5f0b64e90','research/multiscale_replay.py':'c76c8112f685472ec85266ecba26c413ef84bef9','tests/test_multiscale.py':'970109edd6566f1262972f56f81c884892f0be9d','research/persistent_hold_replay.py':'b7a1d38f1dd813a9cb0090b2faa835c2a268f72d'}
           for path,oid in expected.items():
               assert subprocess.check_output(['git','hash-object',path],text=True).strip()==oid,path
           PY
+          python -m pip install -r requirements-research.txt
           python -m compileall -q coinquant research tests
-          python -m unittest discover -s tests > /tmp/m60-tests.log 2>&1
+          python -m unittest discover -s tests > /tmp/m60-tests.log 2>&1 || { cat /tmp/m60-tests.log; exit 1; }
           tail -5 /tmp/m60-tests.log
       - name: Commit actual source and remove publishing scaffolding
         run: |
