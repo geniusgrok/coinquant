@@ -25,6 +25,24 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
+      - name: Export exact workspace for offline research
+        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[workspace-export]')
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/pancakequant-workspace"
+          git archive --format=tar HEAD | gzip -1 > "$RUNNER_TEMP/pancakequant-workspace/workspace.tar.gz"
+          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/pancakequant-workspace/IDENTITY.txt"
+          git ls-tree -r HEAD > "$RUNNER_TEMP/pancakequant-workspace/TREE.txt"
+          cd "$RUNNER_TEMP/pancakequant-workspace"
+          sha256sum workspace.tar.gz > SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: github.ref == 'refs/heads/research/on-demand-btc-20260920' && contains(github.event.head_commit.message, '[workspace-export]')
+        with:
+          name: bounded-execution-workspace-${{ github.sha }}
+          path: ${{ runner.temp }}/pancakequant-workspace/
+          compression-level: 0
+          retention-days: 3
+          if-no-files-found: error
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
