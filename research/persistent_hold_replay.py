@@ -110,8 +110,12 @@ def decision_times(frozen, end, schedule):
 
 
 def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None):
-    if (entry_capacity_unlimited or execution is not None) and (reference!='impulse_hold' or entry_side!='long' or D(risk_scale)!=D('3.6') or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
-        raise ValueError('capacity reference requires the frozen L3.6 control')
+    if (entry_capacity_unlimited or execution is not None) and (reference!='impulse_hold' or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
+        raise ValueError('execution study requires the frozen long impulse control')
+    if entry_capacity_unlimited and D(risk_scale)!=D('3.6'):
+        raise ValueError('unlimited capacity diagnostic remains fixed at 3.6')
+    if execution is not None and D(risk_scale)!=execution.risk_scale:
+        raise ValueError('account risk scale does not match execution study')
     if execution is not None and (entry_capacity_unlimited or native_trail_order):
         raise ValueError('execution study cannot mix other diagnostic mechanisms')
     if entry_side not in ('both','long','short'):raise ValueError('invalid diagnostic entry side')
@@ -321,7 +325,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                             else:
                                 if execution is not None and execution.sliced:
                                     entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
-                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress)
+                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale)
                                     if entry_window.maximum and (t not in execution.refined_hours or minutes is None or t not in minutes['klines']):
                                         raise ValueError(f'missing bounded entry minute path at {t}')
                                     parent_entries.append(entry_window)
@@ -512,7 +516,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result.update(candidate=payoff['name'],scenario=bool(payoff.get('scenario')),terminal_label=hypothetical,entry_time=entry_time,final_equity_usdt=str(final))
     if execution is not None:
         result['execution']=execution.configuration()
-        result['candidate']='L3.6-five-minute' if execution.sliced else 'L3.6-instant-impact-control'
+        result['candidate']=f'L{risk_scale:.1f}-'+('five-minute' if execution.sliced else 'instant-impact-control')
         result['limitations'].extend(['Causal minute capacity is not order-book depth; IOC fills and immediate protection are proxies', 'Additional exit impact is the preregistered linear stress, not historical calibration'])
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}

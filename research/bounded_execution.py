@@ -18,6 +18,19 @@ from pancakequant.types import ZERO, serial
 MINUTE = 60_000
 WINDOW = 5 * MINUTE
 PARTICIPATION = D('.01')
+RISK_SCALES = (D('3.6'), D('4.8'), D('6.0'))
+
+
+def risk_scale(value) -> D:
+    """Only the preregistered research budgets, never an exchange leverage setting."""
+    try:
+        result = D(str(value))
+        if not result.is_finite() or result not in RISK_SCALES:
+            raise ValueError('risk scale must be one of 3.6, 4.8, 6.0')
+    except ArithmeticError as exc:
+        raise ValueError('invalid research risk scale') from exc
+    return result
+
 
 
 def exit_fill(reference: D, quantity: D, previous_hour_quote: D,
@@ -67,16 +80,19 @@ class BoundedEntry:
     first_fill: int | None = None
     last_fill: int | None = None
     liquidity_limited: bool = False
+    risk_scale: D = D('3.6')
 
     @property
     def identity(self) -> str:
-        return client_id('research:binance:BTCUSDT:L3.6', self.call_time, 'bounded-entry')
+        return client_id(f'research:binance:BTCUSDT:L{self.risk_scale:.1f}', self.call_time, 'bounded-entry')
 
     @classmethod
     def freeze(cls, account: Account, call_time: int, campaign: int, fraction: D,
                quote: D, mark: D, stop: D, take: D, previous_hour_quote: D,
                instrument: dict | None, slippage: D, spread: D,
-               entry_limit: D | None = None, *, stress: bool = False) -> BoundedEntry:
+               entry_limit: D | None = None, *, stress: bool = False,
+               budget: D = D('3.6')) -> BoundedEntry:
+        selected_budget = risk_scale(budget)
         if account.q or account.wallet <= 0:
             raise ValueError('mother intent requires the reconciled flat account')
         price = quote * (1 + slippage + spread / 2)
@@ -89,7 +105,8 @@ class BoundedEntry:
         start = call_time + MINUTE * (2 if stress else 1)
         result = cls(call_time, campaign, start, start + WINDOW, maximum,
                      D(change['requested']), budget, price, quote, stop, take, entry_limit,
-                     previous_hour_quote, slippage, spread, account.fees, account.funding)
+                     previous_hour_quote, slippage, spread, account.fees, account.funding,
+                     risk_scale=selected_budget)
         if not maximum:
             result.finish('unfunded_parent:' + change['reason'], call_time)
         return result
@@ -209,7 +226,8 @@ class BoundedEntry:
     def restore(cls, record: dict) -> BoundedEntry:
         """Use with the existing State meta store; never create a fresh deadline."""
         from dataclasses import fields
-        values = {f.name: record[f.name] for f in fields(cls)}
+        values = {f.name: record[f.name] for f in fields(cls) if f.name != 'risk_scale'}
+        values['risk_scale'] = risk_scale(record.get('risk_scale', '3.6'))
         for name in ('maximum', 'raw_target', 'risk_budget', 'original_price', 'original_quote',
                      'stop', 'take', 'previous_hour_quote', 'slippage', 'spread',
                      'starting_fees', 'starting_funding', 'filled'):
@@ -241,9 +259,13 @@ class ExecutionStudy:
     stress: bool
     refined_hours: frozenset[int]
     minute_quotes: Mapping[int, D]
+    risk_scale: D = D('3.6')
+
+    def __post_init__(self):
+        object.__setattr__(self, 'risk_scale', risk_scale(self.risk_scale))
 
     def configuration(self) -> dict:
-        return dict(mode='five_minute' if self.sliced else 'instant_control',
+        return dict(mode='five_minute' if self.sliced else 'instant_control', risk_scale=str(self.risk_scale),
                     fixed_window_seconds=300, decision_delay_seconds=(120 if self.stress else 60) if self.sliced else 0,
                     volume_publication_lag_seconds=60, participation='0.01',
                     cost_multiplier=2 if self.stress else 1,
