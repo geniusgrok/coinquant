@@ -1,0 +1,19 @@
+{
+  "candidate": "L5",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "scope": "2020-2023 development overlapping forecast screen",
+  "observations": 467,
+  "active_observations": 364,
+  "correlation": -0.006019960791525247,
+  "mean_directional_net": -0.0019744093314079817,
+  "mean_long_control_net": 0.0007105321505660554,
+  "progression_passed": false,
+  "code_sha256": "e5db5aef87c3958f00a25c84207163653d3d1d85333ea836f0d527f56e0d6cda",
+  "input_identity_sha256": "ff809b421f1f89ba40d6a5c0b3c007a63e415a6d64c7e351434559d1a7898561",
+  "limitations": [
+    "Not account CAGR/MDD or executable trades",
+    "Fixed proxy costs and funding rate-sum approximation",
+    "No margin/liquidation/protection/USDT valuation model"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "scope": "fixed measured inventory only; account feedback NOT replayed",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "net_funding_cost_lower_usdt": "731.04094359882752814893",
+  "net_funding_cost_upper_usdt": "739.13799225962638909116",
+  "old_adverse_debits_only_usdt": "760.37802892003424083732",
+  "inventory_ambiguous_events": 17,
+  "events": 4383,
+  "limitations": [
+    "Hourly mark interval, exact-hour opening-mark convention unchanged",
+    "Inventory is measured scenario, not native account history",
+    "No claim these cash intervals bound strategy CAGR or MDD under changed cashflow"
+  ]
+}

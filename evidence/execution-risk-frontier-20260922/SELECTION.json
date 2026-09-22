@@ -1,0 +1,73 @@
+{
+  "protocol_commit": "7ad7c5253b799e24986472583ac1d8a4c55ba378",
+  "selected_risk_scale": "6.0",
+  "source_identity": {
+    "research/persistent_hold_replay.py": "de0ac26d3a204a51a3904a5c6b05132670065d25576432b0ea03821c0c62e61a",
+    "research/bounded_execution.py": "c81627c12acd302520c9cfe94d2da9d59d8bf29ffd8b000eea8af1b7e05b9eb9",
+    "research/bounded_execution_data.py": "d8c164d645396afaa5d1f36765a81c932f0ea3f80a737b2e4b03dbdc8cacf3a7",
+    "research/bounded_execution_replay.py": "0ef0b8742d5e09e81af89742965016b89c3928d0d9b4c2461045fb3b35a6b33e",
+    "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
+    "research/verify_account_ledger.py": "50e9fbce7d46b7dd46dbfa1a502ad1565b45eec698704435df768469920108d7",
+    "pancakequant/linear_account.py": "9ae28aa1146f7c4eb403cf4776918f86272786c1422c0127314d3a364bf5cf8b",
+    "pancakequant/linear_sizing.py": "cee1d102c84bfd985d2fb14fe8fdcb2443c846100ebdb2ca86a35081665a4acc",
+    "pancakequant/campaign.py": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1",
+    "pancakequant/opportunities.py": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82",
+    "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7"
+  },
+  "candidates": [
+    {
+      "risk_scale": "4.8",
+      "eligible": true,
+      "main_cagr": 1.3832461822258288,
+      "stress_cagr": 1.2905357184136763,
+      "main_mdd": "0.3097413118833636441509456278",
+      "stress_mdd": "0.3143236282272013104816281895"
+    },
+    {
+      "risk_scale": "6.0",
+      "eligible": true,
+      "main_cagr": 1.6066594567207018,
+      "stress_cagr": 1.5400248650386263,
+      "main_mdd": "0.3719818574945480407165053239",
+      "stress_mdd": "0.3780258447483232157626903154"
+    }
+  ],
+  "files": {
+    "4.8/development-instant/result.json": "c675980a3cd1e7c101a0d713e45fedbc390934085487d8a8853584895d20f6fa",
+    "4.8/development-instant/LEDGER_AUDIT.json": "1fccc32454d68d72c1d480709c1670d5fb3971692c1c5d9761efb3b0b033cba2",
+    "4.8/development-instant/RISK_AUDIT.json": "9ac7222d88d045fd7f9d6322d5f7447aecfc6184999bcc093429f69dd2b04c37",
+    "4.8/development-instant.invocation.json": "a5bf68034384566625a8e55a24781f0180155b6bf08950522e7c6bd754677b7f",
+    "4.8/development-five-minute/result.json": "7fce47d8db3b82d6e5c5d974abcd6fcb4891a426c43de88356278b356d4750e0",
+    "4.8/development-five-minute/LEDGER_AUDIT.json": "c1035f5d30bb98412b9a81f62fb89fea418e5b7da3e51e1a3705be2402079940",
+    "4.8/development-five-minute/RISK_AUDIT.json": "b3442e48076ed9529238161feca8695be3f13d0c31a418d178e4ad994d862e23",
+    "4.8/development-five-minute.invocation.json": "6f0561e9ada88843a235ef3ac9ce94c98daabfdc813a527a6ce79b50b92bf575",
+    "4.8/stress-five-minute/result.json": "aed064a79b078cee1928dc3e6f0773e2b7d5b1dd846b90e739523ee4efac9f5e",
+    "4.8/stress-five-minute/LEDGER_AUDIT.json": "f95ee8a75f1bdb62a9d7bb8ae120e8daa12bf6acfd9c113d32061a3b878774aa",
+    "4.8/stress-five-minute/RISK_AUDIT.json": "4ebff9eececfa70f89055dad90023852c937084861bc712ef6486583b5bc2f36",
+    "4.8/stress-five-minute.invocation.json": "60c31e414b67adb1969739bbe4f35df92c095d1d9b544234febcbf6c7c958fbc",
+    "6.0/development-instant/result.json": "f1c49d1e971e061d8eba9e4d3a21816b0ec5dda55311a4f983a6859045b2ee2f",
+    "6.0/development-instant/LEDGER_AUDIT.json": "484f48e95857a11c37a7f26dd49de64e7caf5c0b1ead2d4789356b3cd3069909",
+    "6.0/development-instant/RISK_AUDIT.json": "03277d792fbc44e8eb4b7b40287cf65b6cb5054cdd4025637e55eca976f85c86",
+    "6.0/development-instant.invocation.json": "e35e946e803698b64bc077bbedf188ce93c29a9e847d4a9b4532212a0a9684f6",
+    "6.0/development-five-minute/result.json": "6e38147ca455cf6a475c55effa7123101123462f72b452d5bc47a9d8b1ee5bd5",
+    "6.0/development-five-minute/LEDGER_AUDIT.json": "f2bfb0cf327d1f25cb6b473ad049f4fb8f03e5c0ee3e1a7a8efe6ede412a6757",
+    "6.0/development-five-minute/RISK_AUDIT.json": "d3b0eb1f50b87599ffc7f927ae9ec76cc3ae876cdd3b6f6b2572036076717218",
+    "6.0/development-five-minute.invocation.json": "951e1c699e5682169e76e0c09870626950b663d069804bf97ae7623afce47d78",
+    "6.0/stress-five-minute/result.json": "f1c0836a082f69f08c74db13c4395821875608fb04b7bd040bddc314d1a93ced",
+    "6.0/stress-five-minute/LEDGER_AUDIT.json": "93c213dedb6e172580916ce7dbe032bad3c659f55125c37d6dcd4da81d6964fa",
+    "6.0/stress-five-minute/RISK_AUDIT.json": "b164b9a42ff078463c242b475146950ed336207c2da092472bbadae594a6300f",
+    "6.0/stress-five-minute.invocation.json": "d0e93d8861c29adc413dae76557eca8456166590923664f3178dcda22dafb834",
+    "../originals/evidence/development-five-minute/result.json": "fb9c3983866d82d3aec3b82cf7686c4f4fc64b09d026604e9e6b7fc5d597ccdd",
+    "../originals/evidence/stress-five-minute/result.json": "9b1df15e3e808f8f859f90a0b88c3ee4db9d74a0e59643590259d9dcdb26c2c8",
+    "../originals/evidence/full-five-minute/result.json": "3c0799cd17579d15c7042361e04cccb384c159e7123d3418b83f396874c96031"
+  },
+  "baseline_main": "../originals/evidence/development-five-minute/result.json",
+  "baseline_stress": "../originals/evidence/stress-five-minute/result.json",
+  "baseline_full": "../originals/evidence/full-five-minute/result.json",
+  "selected_main": "6.0/development-five-minute/result.json",
+  "selected_stress": "6.0/stress-five-minute/result.json",
+  "selected_full": "6.0/full-five-minute/result.json",
+  "development_input_identity": "c93e630cf74bd69e1a5200ae08b508fed241ea7143165783bed664796421a593",
+  "request_sha256": "db397b39387b54d51ee19809fd6b523e4ffb639c3010e287da724a3a293befcb",
+  "note": "Selected before any new full-window account. Full-window comparison is reused history, not holdout. All native safety and economic proxy limits remain."
+}

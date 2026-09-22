@@ -1,0 +1,29 @@
+{
+  "candidate": "L10",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "cagr": 0.04220932426134594,
+  "mdd_conservative_envelope": "0.1736212425990117963366897816",
+  "final_cny": "11798.35045121275424335967326",
+  "counts": {
+    "invocations": 468,
+    "no_breakout": 154,
+    "entry": 17,
+    "funding_charge": 2655,
+    "hold": 286,
+    "regime_exit": 11,
+    "ambiguous_funding_credit_omitted": 204,
+    "stop": 4,
+    "liquidation": 1
+  },
+  "fees_usdt": "3.177809647386116393545158869",
+  "funding_bound_paid_usdt": "130.64850658588613538249",
+  "progression_passed": false,
+  "code_sha256": "590e53e31610e8a6c1cc2203c0745da8e3e00d63a30985fa99145044548ee0f4",
+  "limitations": [
+    "Proxy dated rules/fees/liquidity and USDT=USD",
+    "Adverse interval funding valuation, not exact cashflow",
+    "Hourly conservative envelope and liquidation-first ambiguity",
+    "Margin transfer and full-position execution unverified"
+  ]
+}

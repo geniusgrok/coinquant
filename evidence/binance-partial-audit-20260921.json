@@ -1,0 +1,38 @@
+{
+  "qualification": "NOT_QUALIFIED",
+  "purpose": "partial integrity audit, not economic measurement",
+  "series": {
+    "klines": {
+      "archives": 26,
+      "rows": 18960,
+      "first_time": "2020-01-01T00:00:00Z",
+      "last_time": "2022-02-28T23:00:00Z",
+      "missing_hours_before_2022_02": 0,
+      "missing_months": [],
+      "extra_hours_after_2022_02": 672
+    },
+    "markPriceKlines": {
+      "archives": 24,
+      "rows": 17544,
+      "first_time": "2020-01-01T00:00:00Z",
+      "last_time": "2022-01-31T23:00:00Z",
+      "missing_hours_before_2022_02": 744,
+      "missing_months": [
+        "2021-07"
+      ],
+      "extra_hours_after_2022_02": 0
+    },
+    "fundingRate": {
+      "archives": 25,
+      "rows": 2286,
+      "first_time": "2020-01-01T00:00:00Z",
+      "last_time": "2022-01-31T16:00:00Z",
+      "max_funding_offset_ms": 47
+    }
+  },
+  "physical_inventory_sha256": "bc15bd0f3471bf978ca3582911d73a6d73e5d56ecc3ee34873104d8699dcd573",
+  "missing_mark_month_in_remainder_request": true,
+  "missing_mark_month_reason": "Original archive rejected for internal hour gap, not lost after verified receipt",
+  "progress_verified_records": 75,
+  "progress_verified_files_missing": 0
+}

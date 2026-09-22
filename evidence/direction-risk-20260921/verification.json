@@ -1,0 +1,94 @@
+{
+  "qualification": "NOT_QUALIFIED",
+  "paired_event_fields": [
+    {
+      "candidate": "L",
+      "mode": "four_hour",
+      "unchanged_event_fields": [
+        "time",
+        "event",
+        "price_or_mark",
+        "funding_rate"
+      ],
+      "rows": 481
+    },
+    {
+      "candidate": "L-full",
+      "mode": "four_hour",
+      "unchanged_event_fields": [
+        "time",
+        "event",
+        "price_or_mark",
+        "funding_rate"
+      ],
+      "rows": 706
+    },
+    {
+      "candidate": "H",
+      "mode": "four_hour",
+      "unchanged_event_fields": [
+        "time",
+        "event",
+        "price_or_mark",
+        "funding_rate"
+      ],
+      "rows": 610
+    },
+    {
+      "candidate": "L",
+      "mode": "sparse",
+      "unchanged_event_fields": [
+        "time",
+        "event",
+        "price_or_mark",
+        "funding_rate"
+      ],
+      "rows": 373
+    },
+    {
+      "candidate": "L-full",
+      "mode": "sparse",
+      "unchanged_event_fields": [
+        "time",
+        "event",
+        "price_or_mark",
+        "funding_rate"
+      ],
+      "rows": 524
+    },
+    {
+      "candidate": "H",
+      "mode": "sparse",
+      "unchanged_event_fields": [
+        "time",
+        "event",
+        "price_or_mark",
+        "funding_rate"
+      ],
+      "rows": 458
+    }
+  ],
+  "execution_checks": {
+    "replacement_tests": 14,
+    "recovery_tests": 4,
+    "cli_tests": 5,
+    "unmodified_safety_tests": 12,
+    "native_lifecycle_verified": false,
+    "unique_targeted_passes": 35
+  },
+  "source_hashes_verified": true,
+  "notes": [
+    "Final affected replacement/recovery/CLI checks passed; prior safety checks reused after unchanged safety helpers",
+    "Historical economics and funding/FX proxy limitations retained",
+    "Initial test-fixture inheritance and moved-helper import failures preserved in logs; fixed before final checks"
+  ],
+  "native_cancel_schema_affected_checks_passed": 30,
+  "spot_input_audit": {
+    "archives_sha256_verified": 48,
+    "missing_hours": 31,
+    "rejected_timestamp_rows": 8,
+    "usable_hours": 35025,
+    "sparse_cost_scale_episodes": 2,
+    "account_qualification": false
+  }
+}

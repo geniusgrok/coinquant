@@ -1,0 +1,12 @@
+{
+  "file_name": "PANCAKEQUANT_SPOT_FLOW_EVIDENCE_20260921.zip",
+  "library_file_id": "libfile_4e2f6adb89288191bf17ac25bf117146",
+  "file_id": "file_000000007aa08230af44a0c944e5edaa",
+  "bytes": 1844208,
+  "sha256": "11b2c235075ba008a1fbb173ec0bed55e634e8a0ea38f8b2978c2dd006a1d5c1",
+  "manifest_files": 504,
+  "remote_readback": "byte-identical, total length, SHA256 and all504manifest members verified",
+  "source_commit": "b72390aa124994454cda005c07eddd4fb0565b76",
+  "dependencies": "DEPENDENCIES.json in archive; full verified original input archives preserved",
+  "qualification": "INFORMATION_SCREEN_REJECTED_NO_ACCOUNT_CANDIDATE"
+}

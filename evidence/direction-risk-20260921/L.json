@@ -1,0 +1,316 @@
+{
+  "L/sparse": {
+    "result": {
+      "candidate": "D2-impulse-hold",
+      "qualification": "NOT_QUALIFIED",
+      "validation_used": false,
+      "window_end_exclusive": "2024-01-01T00:00:00Z",
+      "cagr": 0.8956597011039795,
+      "mdd_conservative_envelope": "0.2425160178524597063540699551",
+      "final_cny": "129141.0536281560232102672553",
+      "counts": {
+        "invocations": 468,
+        "entry": 20,
+        "funding_charge": 333,
+        "inventory_hold": 19,
+        "regime_exit": 16,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2
+      },
+      "fees_usdt": "422.39634864578400",
+      "funding_bound_paid_usdt": "714.1183960796999009393",
+      "progression_passed": null,
+      "progression_status": "requires paired refined comparison",
+      "code_sha256": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
+      "limitations": [
+        "Proxy dated rules/fees/liquidity and USDT=USD",
+        "Adverse interval funding valuation, not exact cashflow",
+        "Minute refinement on 10 days only; remaining interval liquidation-first ambiguity",
+        "Margin transfer and full-position execution unverified"
+      ],
+      "reference": "impulse_hold",
+      "risk_scale": "3.6",
+      "entry_side": "long",
+      "short_risk_scale": "0",
+      "protection": "fixed",
+      "source_hashes": {
+        "/workspace/scratch/07840788e266/pancakequant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
+        "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
+        "research/volatility_target.py": "1dceb5aa153990b4697c32ff36a805edf2adae2da13e06ca8255f40421f99c09",
+        "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
+        "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
+        "pancakequant/binance.py": "233849483c012fe6d891e3a8a976e313e193ea3693e50646f0c332ecee9f2917",
+        "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
+        "pancakequant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
+      },
+      "schedule": "sparse",
+      "lifecycle": "one_campaign",
+      "allocation": "volatility",
+      "quantity_rule_scope": "2026_snapshot_scenario_NOT_historical",
+      "mean_close_exposure": "0.1675502075405853822783914553",
+      "max_close_exposure": "3.994481132775391092892232289",
+      "holding_hours": 2838,
+      "turnover_usdt": "563195.131527712",
+      "binding_caps": {
+        "target": 20
+      },
+      "mean_entry_regime_age_hours": 60.4,
+      "schedule_sha256": "311b36c48c3f2e676bdcb85253ab516b1f2f656ab93a255a691a4de8a9b08a99"
+    },
+    "yearly": {
+      "2020": {
+        "start": "1433.445142054413577592385539",
+        "mdd": "0.2252664015643862736003459601",
+        "hours": 8784,
+        "holding_hours": 1231,
+        "max_margin": "0.4791846675342042868892929897",
+        "end": "5466.395114853700106606193153",
+        "fees": "70.74341166360900",
+        "funding": "155.6519655270500574086",
+        "net_return": "2.813466560024238268370612468",
+        "gross_pnl_usdt": "4259.345349989945586422407614",
+        "mean_exposure": "0.2773637246900381461634947599",
+        "mean_margin_equity": "0.03864374468756709572999082712"
+      },
+      "2021": {
+        "start": "5466.395114853700106606193153",
+        "mdd": "0.2425160178524597063540699551",
+        "hours": 8760,
+        "holding_hours": 365,
+        "max_margin": "0.4156646205549296033926935928",
+        "end": "6719.885632067631012891793153",
+        "fees": "51.20047837711500",
+        "funding": "276.0467658969540937144",
+        "net_return": "0.229308436524804465420257024",
+        "gross_pnl_usdt": "1580.737761488000000000000000",
+        "mean_exposure": "0.06526179250084157767791323458",
+        "mean_margin_equity": "0.009441008039870327456534093288"
+      },
+      "2022": {
+        "start": "6719.885632067631012891793153",
+        "mdd": "0.1871265770415977108421838641",
+        "hours": 8760,
+        "holding_hours": 156,
+        "max_margin": "0.3839987588122736191618381722",
+        "end": "5748.622482666024408201993153",
+        "fees": "42.14033900179500",
+        "funding": "17.0734086598116046898",
+        "net_return": "-0.1445356666141295886801330438",
+        "gross_pnl_usdt": "-912.049401740000000000000000",
+        "mean_exposure": "0.04010396252200464072314708277",
+        "mean_margin_equity": "0.006237488072962838363921199977"
+      },
+      "2023": {
+        "start": "5748.622482666024408201993153",
+        "mdd": "0.2161274255972040910967367866",
+        "hours": 8760,
+        "holding_hours": 1086,
+        "max_margin": "0.6000362446425254403580282667",
+        "end": "18511.66159630687526307549315",
+        "fees": "258.31211960326500",
+        "funding": "265.3462559958841451265",
+        "net_return": "2.220190863485223649954281647",
+        "gross_pnl_usdt": "13286.69748924000000000000000",
+        "mean_exposure": "0.2871704914983627734150789529",
+        "mean_margin_equity": "0.04232674911677207869025718830"
+      }
+    },
+    "diagnostics": {
+      "candidate": "D2-impulse-hold",
+      "schedule": "sparse",
+      "qualification": "DESCRIPTIVE_ONLY",
+      "drawdown": {
+        "fraction": "0.2425160178524597063540699551",
+        "peak": "2021-07-26T19:00:00Z",
+        "trough": "2021-10-12T20:00:00Z",
+        "recovery": "2023-01-14T00:00:00Z",
+        "recovery_hours": 12869.0
+      },
+      "side_components": {
+        "long_funding": "714.1183960796999009393",
+        "long_gross_execution": "18216.164644120",
+        "long_fees": "422.39634864578400"
+      },
+      "slippage_usdt": "563.21585080",
+      "spread_usdt": "56.321585080",
+      "gross_before_friction_usdt": "18835.702080000",
+      "ledger_residual": "0E-23",
+      "completed_trades": 20,
+      "mean_hold_hours": 141.9,
+      "positive_trades": 15,
+      "mean_net_trade": "854.082927045725804953035",
+      "empty_hours": 32226,
+      "hours": 35064,
+      "mean_leverage": "0.1675502075405853822783914553",
+      "max_leverage": "3.994481132775391092892232289",
+      "turnover_usdt": "563195.131527712",
+      "native_protection_failures_verified": false,
+      "limitations": [
+        "Execution gross is after modeled spread/slippage; these costs are embedded, not double-subtracted.",
+        "Side ledger includes offset funding charged after an exit; trade net alone may omit that adverse boundary charge.",
+        "Drawdown is the conservative mark envelope, not a uniquely observed intrabar path."
+      ]
+    },
+    "top3_net_cash_share": 0.7201942749548942,
+    "net_cash_excluding_top3": 4779.545853013513,
+    "max_loss_streak": 2
+  },
+  "L/four_hour": {
+    "result": {
+      "candidate": "D2-impulse-hold",
+      "qualification": "NOT_QUALIFIED",
+      "validation_used": false,
+      "window_end_exclusive": "2024-01-01T00:00:00Z",
+      "cagr": 0.7800289079697551,
+      "mdd_conservative_envelope": "0.4022102551353163891719722400",
+      "final_cny": "100398.8621633810523399559409",
+      "counts": {
+        "invocations": 8766,
+        "entry": 32,
+        "inventory_hold": 817,
+        "funding_charge": 417,
+        "regime_exit": 17,
+        "ambiguous_funding_credit_omitted": 19,
+        "stop": 14,
+        "take": 1
+      },
+      "fees_usdt": "828.75128530520475",
+      "funding_bound_paid_usdt": "1087.7945019692303092076",
+      "progression_passed": null,
+      "progression_status": "requires paired refined comparison",
+      "code_sha256": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
+      "limitations": [
+        "Proxy dated rules/fees/liquidity and USDT=USD",
+        "Adverse interval funding valuation, not exact cashflow",
+        "Minute refinement on 10 days only; remaining interval liquidation-first ambiguity",
+        "Margin transfer and full-position execution unverified"
+      ],
+      "reference": "impulse_hold",
+      "risk_scale": "3.6",
+      "entry_side": "long",
+      "short_risk_scale": "0",
+      "protection": "fixed",
+      "source_hashes": {
+        "/workspace/scratch/07840788e266/pancakequant/research/persistent_hold_replay.py": "294527b8e9f6cccf7ccfbf408e4b8864e8aa2c37a2edb7574b6866a0984b4832",
+        "research/edge_allocation.py": "ed0365ceac94908440ccbff81bde0824636a305f4885835eaee44dba04145fb7",
+        "research/volatility_target.py": "1dceb5aa153990b4697c32ff36a805edf2adae2da13e06ca8255f40421f99c09",
+        "research/linear_replay.py": "5265912475a18d150933bc570902d610efe839f75eb06cadda5924d763f7986d",
+        "research/minute_evidence.py": "3b1b81e0ffffd848f89bc2ca4e64101ad9b367463a65d3b606d9bc6cec23a364",
+        "pancakequant/binance.py": "233849483c012fe6d891e3a8a976e313e193ea3693e50646f0c332ecee9f2917",
+        "research/spec.json": "0d365e8d344c3017d3b6f2ce1699d0231e6944942376ce46a1df02899cdab6d7",
+        "pancakequant/opportunities.py": "f96ff718f96fadfddd146c0f0c2c6aba179e6f6f09dac2ef009181bfb932a2df"
+      },
+      "schedule": "four_hour",
+      "lifecycle": "one_campaign",
+      "allocation": "volatility",
+      "quantity_rule_scope": "2026_snapshot_scenario_NOT_historical",
+      "mean_close_exposure": "0.2367909155712403684576144073",
+      "max_close_exposure": "4.193064579321960809152305929",
+      "holding_hours": 3354,
+      "turnover_usdt": "1105001.713740273",
+      "binding_caps": {
+        "target": 32
+      },
+      "mean_entry_regime_age_hours": 0.0,
+      "schedule_sha256": "b201857b10042d51b444b747a2996e89590243a42073b97b250b2ac848ac8b6a"
+    },
+    "yearly": {
+      "2020": {
+        "start": "1433.445142054413577592385539",
+        "mdd": "0.2883058370152871741468497696",
+        "hours": 8784,
+        "holding_hours": 1361,
+        "max_margin": "0.4751302592331022613985102212",
+        "end": "6896.686174237462646127893153",
+        "fees": "121.81495644520500",
+        "funding": "276.7259194296915178869",
+        "net_return": "3.811266208871538691191740823",
+        "gross_pnl_usdt": "5861.781908057945586422407614",
+        "mean_exposure": "0.3826041950940927568466643987",
+        "mean_margin_equity": "0.04513706963503213640566214299"
+      },
+      "2021": {
+        "start": "6896.686174237462646127893153",
+        "mdd": "0.2932208871709946753091896846",
+        "hours": 8760,
+        "holding_hours": 419,
+        "max_margin": "0.3859000347528381308693900776",
+        "end": "5482.505987655127802648693153",
+        "fees": "108.06382865552475",
+        "funding": "375.1836472178100934792",
+        "net_return": "-0.2050521295089514134258539561",
+        "gross_pnl_usdt": "-930.932710709000000000000000",
+        "mean_exposure": "0.08952557302431297803735337661",
+        "mean_margin_equity": "0.01254517486145896879412436269"
+      },
+      "2022": {
+        "start": "5482.505987655127802648693153",
+        "mdd": "0.2230049596318686094745078697",
+        "hours": 8760,
+        "holding_hours": 288,
+        "max_margin": "0.3069460544041247421921242447",
+        "end": "4873.522084750460959376693153",
+        "fees": "67.60350324733500",
+        "funding": "39.9292816773318432720",
+        "net_return": "-0.1110776539553091752807759187",
+        "gross_pnl_usdt": "-501.451117980000000000000000",
+        "mean_exposure": "0.07238331550592742647890971938",
+        "mean_margin_equity": "0.009287971949854317075688183495"
+      },
+      "2023": {
+        "start": "4873.522084750460959376693153",
+        "mdd": "0.2735774913961692471463397931",
+        "hours": 8760,
+        "holding_hours": 1286,
+        "max_margin": "0.4900583188812660007592684364",
+        "end": "14391.62612358892410480719315",
+        "fees": "531.26899695714000",
+        "funding": "395.9556536443968545695",
+        "net_return": "1.953023680475599773745763366",
+        "gross_pnl_usdt": "10445.32868944000000000000000",
+        "mean_exposure": "0.4022510902235794018144094511",
+        "mean_margin_equity": "0.04813706774834483737949641479"
+      }
+    },
+    "diagnostics": {
+      "candidate": "D2-impulse-hold",
+      "schedule": "four_hour",
+      "qualification": "DESCRIPTIVE_ONLY",
+      "drawdown": {
+        "fraction": "0.4022102551353163891719722400",
+        "peak": "2021-01-02T18:00:00Z",
+        "trough": "2022-09-27T16:00:00Z",
+        "recovery": "2023-01-14T00:00:00Z",
+        "recovery_hours": 17790.0
+      },
+      "side_components": {
+        "long_funding": "1087.7945019692303092076",
+        "long_gross_execution": "14876.160213951",
+        "long_fees": "828.75128530520475"
+      },
+      "slippage_usdt": "1105.01941459",
+      "spread_usdt": "110.501941459",
+      "gross_before_friction_usdt": "16091.681570000",
+      "ledger_residual": "0E-23",
+      "completed_trades": 32,
+      "mean_hold_hours": 104.8125,
+      "positive_trades": 18,
+      "mean_net_trade": "405.3453262117468779310125",
+      "empty_hours": 31710,
+      "hours": 35064,
+      "mean_leverage": "0.2367909155712403684576144073",
+      "max_leverage": "4.193064579321960809152305929",
+      "turnover_usdt": "1105001.713740273",
+      "native_protection_failures_verified": false,
+      "limitations": [
+        "Execution gross is after modeled spread/slippage; these costs are embedded, not double-subtracted.",
+        "Side ledger includes offset funding charged after an exit; trade net alone may omit that adverse boundary charge.",
+        "Drawdown is the conservative mark envelope, not a uniquely observed intrabar path."
+      ]
+    },
+    "top3_net_cash_share": 0.6994951905661071,
+    "net_cash_excluding_top3": 3897.8630402617655,
+    "max_loss_streak": 3
+  }
+}

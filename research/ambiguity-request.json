@@ -1,0 +1,18 @@
+{
+  "purpose": "resolve eight hourly stop-vs-liquidation ambiguities with native one-minute Bybit BTCUSD data",
+  "api_host": "api.manepa.jp",
+  "interval_minutes": 1,
+  "days": [
+    "2020-02-15",
+    "2020-11-02",
+    "2021-11-03",
+    "2023-12-11",
+    "2024-01-11",
+    "2024-03-15",
+    "2024-08-27",
+    "2024-12-05"
+  ],
+  "source_replay": "proxy diagnostic baseline using native 60m trade/mark/funding",
+  "reason": "each event hour opened above stop, had stop above liquidation, and hourly low below liquidation; 60m replay currently chooses liquidation whenever both are touched",
+  "note": "evidence acquisition only; no parameter tuning"
+}

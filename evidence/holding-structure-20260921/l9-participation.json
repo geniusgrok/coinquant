@@ -1,0 +1,14 @@
+{
+  "qualification": "diagnostic_only",
+  "hours": 35064,
+  "hours_by_direction": {
+    "long": 22177,
+    "short": 10842,
+    "flat": 2045
+  },
+  "mean_account_notional_multiple": "0.06726980369553898079928728770",
+  "mean_notional_multiple_when_held": "0.07143609427240009760278050383",
+  "max_close_notional_multiple": "0.2980628336787775675672854271",
+  "scope": "native development close observations; not intrahour maximum",
+  "interpretation": "20x exchange setting does not imply 20x account exposure; this attribution does not authorize leverage escalation"
+}

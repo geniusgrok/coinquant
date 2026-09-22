@@ -1,0 +1,22 @@
+{
+  "base_commit": "c204a76d81f1c0dc0bdf3980c7617da9ead93b09",
+  "run": "python -m unittest discover -s tests -v",
+  "result": "27 offline tests passed",
+  "files": {
+    "pancakequant/execution.py": {
+      "bytes": 17429,
+      "sha256": "8ec119d78f95756d36a5c68425f1f19dc80cb963f65e426764e736dbddabf3de",
+      "git_blob_oid": "11befc505507264131178498fc6504917f17ab47"
+    },
+    "tests/test_observation.py": {
+      "bytes": 2272,
+      "sha256": "98ea955524ed2685150512ce5c9f61b700d856431778fb8b22a5ffb8420f370b",
+      "git_blob_oid": "e0d889eae04f17376a35a75880f98de7a88ae24b"
+    },
+    "evidence/observation-integration-tests.txt": {
+      "bytes": 3690,
+      "sha256": "b73e9758867b2cd1ee88038bf080f94dec6f5430fbdacfe29c3c840d85cb8fb3",
+      "git_blob_oid": "8b938c913d97f6b165e254b74196d27d7c2775ca"
+    }
+  }
+}

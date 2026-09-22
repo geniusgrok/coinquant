@@ -1,0 +1,18 @@
+{
+  "candidate": "L4",
+  "qualification": "NOT_QUALIFIED",
+  "validation_used": false,
+  "observations": 466,
+  "skipped_boundary": 2,
+  "correlation": 0.025937491300122368,
+  "mean_directional_net": -0.0033236332148368604,
+  "mean_long_control_net": 0.0006724655737065044,
+  "progression_passed": false,
+  "input_identity_sha256": "ff809b421f1f89ba40d6a5c0b3c007a63e415a6d64c7e351434559d1a7898561",
+  "code_sha256": "c1ed0e576064219ed02b4bb6c69f39821ef7a5fa8fdde4563ae3ca0a229d949d",
+  "limitations": [
+    "Overlapping four-day forecast observations, not account CAGR/MDD",
+    "Funding rate sum approximation; fixed proxy costs",
+    "No margin, liquidation, TP/SL or USDT valuation replay"
+  ]
+}

@@ -1,45 +1,34 @@
-# Pancakequant Project State
+# 当前：新源码已恢复发布，开发主线切换为 main；经济与原生资格未完成
 
-## Repository
+2026-09-22 用户明确要求合并研究成果到 main，后续基于 main 改造。该授权替代旧的达标前不得合并规则；不修改150%/<50%目标，不启用交易，不自动切换SX60默认。实际集成HEAD、PR与CI以实时GitHub为准，不从本文推断。
 
-- Repository: `ychenracing/pancakequant`
-- Default branch: `main`
-- Purpose: cryptocurrency quantitative trading system development.
+## 源码与保全
 
-## Current Baseline
+原研究入口 a6861aa2d202114ce050371691d9bf339d32a8b4 只有报告和索引，新资金/退出实现当时在Library。现已恢复至研究提交 79e18895935de9525d9b78355a87448491f5a6d8，tree dc3ea620e34e6f62148e00f62b1688c94f4ec0b1。此源码随当前集成进入main；后续开发从最新main恢复，历史研究分支保留。
 
-The repository is based on an automated trading framework with support for strategy development, backtesting, simulated trading, and exchange-related execution components.
+完整原件 PANCAKEQUANT_SUSTAINABLE_CAPITAL_EXIT_20260922.zip：Library libfile_0f102b0356a48191b1b5d2865074ad0b；file file_0000000087a082308588b1ebea6afa39；41,734,473字节；SHA256 d18021568ef10c5c091b1dc5488372a1d87e8b8bc0baadb5f0fe288df68956ab；899个成员。本次重新核验全部长度、哈希、CRC；旧预算依赖964成员也通过。完整原件未用摘要替代。
 
-Initial repository documentation indicates support for:
+GitHub恢复工作区699个文件逐一校验Git blob并重建tree一致；16个冻结经济源码与Library逐字节及SHA一致。266项离线检查及编译通过，未重复经济账户。临时源码恢复目录及写权限工作流已经移除，CI恢复contents:read；只读入口、配置、3.6默认参考、execute阻止不变。
 
-- market data events;
-- order and trade events;
-- strategy implementation;
-- backtesting;
-- paper trading;
-- exchange execution workflows.
+第一次恢复Actions的源码核验和266检查成功，push因Actions令牌缺workflows权限失败；已读取实际远端对象，再由授权连接器正常快进到同一已验证提交。失败运行不能说成整条CI成功，后续精确提交CI单独记录。详见 SOURCE_RESTORATION.json 与 SOURCE_READBACK.json。
 
-## Engineering Goals
+## 当前经济证据：复用，不是本次新回测
 
-- Maintain reliable research-to-execution workflow.
-- Improve strategy development efficiency.
-- Keep execution infrastructure understandable and safe.
-- Preserve separation between experiments and production behavior.
+完整2020-01-01至2026-09-20 exclusive、人民币10,000无追加：
+- B36主场景：74.974917% CAGR /31.976557% MDD /429,053.61元。
+- S60资金修复：101.018918% /39.895796% /1,089,922.23元。
+- SC60配对集中退出：96.312670% /39.903644% /929,540.28元。
+- SX60分片退出：102.626204% /39.885115% /1,149,830.31元。
+- SX60联合压力：99.750168% /39.655504% /1,044,528.34元。
 
-## Current Status
+初算102.99%/100.47%已被有效结果替代，失败原件保留。SX60相对S60终值+5.4965%/+9.9193%；相对严格配对SC60 +23.6988%/+17.1227%，不可混用。源码发布没有改变这些结果的测量身份。
 
-Repository instruction files have been added:
+九条有效新账户现金账本误差0，原GAP全持仓缓冲通过；但七日规划不等于无限离线保证。21日同率静态持仓压力SX60主/压力各一确认入场子单不足8,083.80/7,152.63 USDT；原冻结缺席恰好删除空仓无信号调用，不能当有仓21日证明。历史规则、费用、盘口冲击、人民币/USDT估值与真实原生执行仍未闭合，资格NOT_QUALIFIED。
 
-- `AGENTS.md`
-- `PROJECT_STATE.md`
+## 下一步与禁止重复
 
-Further project-specific details should be updated after reviewing the current source tree and runtime architecture.
+收益目标仍优先，但先区分模型收益研究、主线工程集成和生产资格。从实时main核验新引擎及以上原件恢复；当前较优研究候选SX60与B36参照均保留，不回退到只发布报告的旧状态。
 
-## Recovery Notes
+不重复现货flow、payoff B0/B1、关注度C2/lag7、T持有替换、旧预算网格或已经完成的资金/退出九条账户。既有证据身份相符则复用；仅真实缺陷或新的独立机制产生改变时运行受影响账户。不得因急于150%而增加未授权调用、缩小SL/GAP、隐藏21日不足、改费率或拿旧收益冒充新模型。
 
-When continuing work:
-
-1. Read `AGENTS.md`.
-2. Check current `main` HEAD.
-3. Review active branches and pending changes.
-4. Verify execution mode before running trading-related operations.
+合并main不是收益达标，不解除execute，不执行实盘/Testnet、转账或账户变更。没有后台研究或交易任务。详细历史证据保留于evidence各日期目录及原件索引，不再将旧“当前”段落重复堆叠为新指令。

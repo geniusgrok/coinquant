@@ -1,0 +1,33 @@
+{
+  "api_host": "https://fapi.binance.com",
+  "startTime": 1575158400000,
+  "endTime": 1577836799999,
+  "limit": 1000,
+  "records": [
+    {
+      "file": "warmup-trade.json",
+      "sha256": "62e9a9ecddccac737f99032a224f7a2a1932756cf200db34fb5c5641b72c4094",
+      "bytes": 98643,
+      "rows": 744,
+      "first_ts": 1575158400000,
+      "last_ts": 1577833200000
+    },
+    {
+      "file": "warmup-mark.json",
+      "sha256": "ce8e2f579b84e83a2caf90a944c57674923fde8b03155e5d9f8a6c7b10ff56e0",
+      "bytes": 24395,
+      "rows": 205,
+      "first_ts": 1577098800000,
+      "last_ts": 1577833200000
+    },
+    {
+      "file": "warmup-funding.json",
+      "sha256": "25a949a83bc5305727fb86f0d6e3e297235a03990d6404a3f160a2ce82bd82b3",
+      "bytes": 10451,
+      "rows": 93,
+      "first_ts": 1575158400000,
+      "last_ts": 1577808000000
+    }
+  ],
+  "mark_gap": "mark starts Dec 23; do not fabricate earlier marks. Signal warmup uses trade only; account start stays Jan 1."
+}

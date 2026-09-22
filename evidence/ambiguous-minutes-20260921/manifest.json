@@ -1,0 +1,172 @@
+{
+  "original_path": "ambiguous-btcusd-minutes-411419f3cd7796bf3fe73237d8bd796e74e6af13.zip",
+  "artifact_id": 10622037487,
+  "source_run": 35559122193,
+  "source_commit": "411419f3cd7796bf3fe73237d8bd796e74e6af13",
+  "bytes": 729363,
+  "sha256": "7cf97ac730953674d7da9f503eddf0d16470b7fd3fa885d5ab16b4ace098580f",
+  "chunk_bytes": 32768,
+  "parts": [
+    {
+      "path": "original.zip.part000",
+      "offset": 0,
+      "length": 32768,
+      "sha256": "d8445371a33b029b0fa59fa2ea2f979f09dd3f6d33b3cd2bf7918dd9f1827308",
+      "git_blob_oid": "5fe9c77aa6e2305ad6cb8c1bdef834d3f182a8be"
+    },
+    {
+      "path": "original.zip.part001",
+      "offset": 32768,
+      "length": 32768,
+      "sha256": "7e880a01d82f3f454ac6421f26aefa9ec5b69196ca3c3f51ccb54cfd1299980e",
+      "git_blob_oid": "97e0dfa911126b437c8642f16afe279faa37eab1"
+    },
+    {
+      "path": "original.zip.part002",
+      "offset": 65536,
+      "length": 32768,
+      "sha256": "16992eb21642fb61678b2086201beb4dda01a0e975175c5ec0c94e249f7a2d15",
+      "git_blob_oid": "04ee8abc77f48f3b91f4f238af58cf25810cae4a"
+    },
+    {
+      "path": "original.zip.part003",
+      "offset": 98304,
+      "length": 32768,
+      "sha256": "e6f27bda82a426c2ebc7daa7195c26856a5fedc2123944a0aed023e01a15b67e",
+      "git_blob_oid": "f1d45ec8c7a7659ac1192f3feee143c598392bf8"
+    },
+    {
+      "path": "original.zip.part004",
+      "offset": 131072,
+      "length": 32768,
+      "sha256": "4e18cc7e0954f5a5d1b2b88eb610d93c318f13c0c9563dc7fd04511c5c52a005",
+      "git_blob_oid": "465b73834f73b9b67b44672e5e2ec39660696f14"
+    },
+    {
+      "path": "original.zip.part005",
+      "offset": 163840,
+      "length": 32768,
+      "sha256": "a83dea9e21f0efc9889ffa1b75a378435dab0385a4f144434a1fe2f3f31d2f4b",
+      "git_blob_oid": "b7257d9e915b19b5a609aba80651910439ef26e3"
+    },
+    {
+      "path": "original.zip.part006",
+      "offset": 196608,
+      "length": 32768,
+      "sha256": "e68b12be48bdb27587c2759ec60dc44e50ed98792cd61b2c80195b37f0c92d25",
+      "git_blob_oid": "d2d74c607e1873a2a22dfcf433454c3121831a01"
+    },
+    {
+      "path": "original.zip.part007",
+      "offset": 229376,
+      "length": 32768,
+      "sha256": "b3491765b0bcad9655142942c004ad50366a3a32fe6c66eb32954ae6625afd75",
+      "git_blob_oid": "f048ba1bc24819f81b257852d52cf2ed9e9c7af5"
+    },
+    {
+      "path": "original.zip.part008",
+      "offset": 262144,
+      "length": 32768,
+      "sha256": "1f211753dab9b464b65fc6c9a824a98475ae8e80ef59352ff0901bae0c6f0bb4",
+      "git_blob_oid": "528a5c2a68c266e637e71ddd7079f1e0b1c0e5f2"
+    },
+    {
+      "path": "original.zip.part009",
+      "offset": 294912,
+      "length": 32768,
+      "sha256": "51d611e7675969d3ef97cdae123b95f6673ca9bb8cce52c6e36e2d4c818f7aa9",
+      "git_blob_oid": "ac93a510d6a39dd6e89242eaef84cf598eee972a"
+    },
+    {
+      "path": "original.zip.part010",
+      "offset": 327680,
+      "length": 32768,
+      "sha256": "422bd069852b50429066d0b16376fd9f25710b416134215173ac5a7585607183",
+      "git_blob_oid": "c73e5bee4b8b3ee07841b04dc3a0ea1a344c3a67"
+    },
+    {
+      "path": "original.zip.part011",
+      "offset": 360448,
+      "length": 32768,
+      "sha256": "49dda2bf98c661ade70cfe19891e6abc1abc821d498331fb5a609235601209ff",
+      "git_blob_oid": "623404a342a5bcd4a4d96647f3aebd6e2add11ea"
+    },
+    {
+      "path": "original.zip.part012",
+      "offset": 393216,
+      "length": 32768,
+      "sha256": "67c56593642922bb24834591647a44206cbdd71dd1752da814fd113b96d10342",
+      "git_blob_oid": "bf407c39c2c57db0e78ad9ed4a87928aaf05d7a2"
+    },
+    {
+      "path": "original.zip.part013",
+      "offset": 425984,
+      "length": 32768,
+      "sha256": "3e22c3b02453d6cce3bd4d39f47897c3bfdfb39c75c263fa6625068f0212738b",
+      "git_blob_oid": "91570e58612a4a1c30130726c01aa577379a0e23"
+    },
+    {
+      "path": "original.zip.part014",
+      "offset": 458752,
+      "length": 32768,
+      "sha256": "e9068e13e77be9f8aa21fb04044aa9fe7421c30df4d9b8d0968665e2fa9f1741",
+      "git_blob_oid": "07fc710fa36c5a0b1cc9c169ef771904cfaa56af"
+    },
+    {
+      "path": "original.zip.part015",
+      "offset": 491520,
+      "length": 32768,
+      "sha256": "4f42313a2b38e4545ec90679ad71a6812679dec8512e98ef683558fc323dc684",
+      "git_blob_oid": "a094a88c6c7dc11f7c564229ba6e0b74158cb671"
+    },
+    {
+      "path": "original.zip.part016",
+      "offset": 524288,
+      "length": 32768,
+      "sha256": "99f29155aeb2eb0b05ec91b1f145a2bca43e54be424d4aff019caab6a726da3a",
+      "git_blob_oid": "85d2089d5095628007679f4dfe7e8c62a9fe996a"
+    },
+    {
+      "path": "original.zip.part017",
+      "offset": 557056,
+      "length": 32768,
+      "sha256": "f02d410b3cfd56c79fc72c710be67b572b7f28dcbf2998721f2ba382bcabe24c",
+      "git_blob_oid": "b35c16d04d1ba025fd6976dc18e96bf10c459434"
+    },
+    {
+      "path": "original.zip.part018",
+      "offset": 589824,
+      "length": 32768,
+      "sha256": "d5c11d74b67e71e84d6bd406f7e8ba7fbf09243bc60096012de617af89db994c",
+      "git_blob_oid": "4a1380b59269238600a1d7426ac19a15b6991619"
+    },
+    {
+      "path": "original.zip.part019",
+      "offset": 622592,
+      "length": 32768,
+      "sha256": "0ca5454d21c963c268d6343ebee06ceb790aa64ef71c78e3baafd53aa5957205",
+      "git_blob_oid": "d9862a9e91ef3abf15f994ad303b59cf828c78b1"
+    },
+    {
+      "path": "original.zip.part020",
+      "offset": 655360,
+      "length": 32768,
+      "sha256": "6a53e13e8379e97516adf8d2188f0f0196cc932d8596e40843c7e31e7d7357e2",
+      "git_blob_oid": "f147e4dc841f564da6f12851da8d8c04d0d5df68"
+    },
+    {
+      "path": "original.zip.part021",
+      "offset": 688128,
+      "length": 32768,
+      "sha256": "8b685a4a9446af3e75799ce49c1b903e88c5ac42ff60354076e432705c3c2639",
+      "git_blob_oid": "ec2664a51a7450e1969d522d494f2f532c39e35f"
+    },
+    {
+      "path": "original.zip.part022",
+      "offset": 720896,
+      "length": 8467,
+      "sha256": "b943593f12530d1c8b8586c8f2b22dd6303c4095f3853dd9e0ae0cc78fe5afb4",
+      "git_blob_oid": "9066ef2985bb983cd774b0016ec96557860bef9f"
+    }
+  ]
+}

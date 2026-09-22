@@ -1,0 +1,20 @@
+{
+  "candidate": "L19_funding_crowding",
+  "qualification": "NOT_QUALIFIED",
+  "scope": "2020-2023_nonoverlapping_unit_inventory_forecast",
+  "validation_used": false,
+  "samples": 456,
+  "active": 360,
+  "mean_net": {
+    "crowding": "-0.003322027562556312197091554570",
+    "long": "0.0001525334420737318447003262954",
+    "channel": "0.0003531856520481543716901416561"
+  },
+  "screen_passed": false,
+  "source_sha256": "db7822c3455d075d7506f700b9c9b7bd9f08dc402cd86b562f45469bd950188b",
+  "limitations": [
+    "Not account CAGR/MDD",
+    "Dated costs/rules and USDT valuation proxy",
+    "Funding mark interval approximation; no exact cashflow claim"
+  ]
+}

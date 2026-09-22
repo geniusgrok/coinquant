@@ -1,0 +1,10 @@
+test_boundary_gap_is_rejected (test_okx_probe.ProbeTests.test_boundary_gap_is_rejected) ... ok
+test_complete_exact_boundary (test_okx_probe.ProbeTests.test_complete_exact_boundary) ... ok
+test_funding_requires_realized_rate_and_correct_instrument (test_okx_probe.ProbeTests.test_funding_requires_realized_rate_and_correct_instrument) ... ok
+test_incomplete_duplicate_and_bad_prices_rejected (test_okx_probe.ProbeTests.test_incomplete_duplicate_and_bad_prices_rejected) ... ok
+test_missing_listing_is_not_pre_2020_evidence (test_okx_probe.ProbeTests.test_missing_listing_is_not_pre_2020_evidence) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+OK

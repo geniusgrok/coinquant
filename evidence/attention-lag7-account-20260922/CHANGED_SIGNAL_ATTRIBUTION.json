@@ -1,0 +1,393 @@
+{
+  "changed_prediction_signs": 29,
+  "cases": [
+    {
+      "t": 1606478400000,
+      "month": "2020-11",
+      "C1_prediction": -0.003954271275092497,
+      "C2_lag7_prediction": 0.009881150492696243,
+      "C1_action": "inventory_hold",
+      "C2_lag7_action": "inventory_hold",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1606546800000,
+      "month": "2020-11",
+      "C1_prediction": -0.011470035803531044,
+      "C2_lag7_prediction": 0.0010650834659794845,
+      "C1_action": "payoff_expiry",
+      "C2_lag7_action": "payoff_expiry",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1612710000000,
+      "month": "2021-02",
+      "C1_prediction": 0.0558935178085625,
+      "C2_lag7_prediction": -0.0614415866880866,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1612710000000,
+        "q": "0.082",
+        "p": "38317.052445",
+        "net": "889.4228540795466903330",
+        "exit": 1613703600000,
+        "event": "payoff_expiry"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1613703600000,
+      "month": "2021-02",
+      "C1_prediction": 0.06166705730164146,
+      "C2_lag7_prediction": -0.05257879860578813,
+      "C1_action": "payoff_expiry",
+      "C2_lag7_action": "payoff_expiry",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1613772000000,
+      "month": "2021-02",
+      "C1_prediction": 0.047478550722916145,
+      "C2_lag7_prediction": -0.0696695533379755,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1613772000000,
+        "q": "0.077",
+        "p": "55854.282201",
+        "net": "-997.8084098759878504018",
+        "exit": 1614520800000,
+        "event": "stop"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1616004000000,
+      "month": "2021-03",
+      "C1_prediction": 0.005668603816345956,
+      "C2_lag7_prediction": -0.12439171117365888,
+      "C1_action": "inventory_hold",
+      "C2_lag7_action": "inventory_hold",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1616266800000,
+      "month": "2021-03",
+      "C1_prediction": 0.041079264564303275,
+      "C2_lag7_prediction": -0.09047409872137961,
+      "C1_action": "payoff_expiry",
+      "C2_lag7_action": "payoff_expiry",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1616659200000,
+      "month": "2021-03",
+      "C1_prediction": 0.10508620507270271,
+      "C2_lag7_prediction": -0.010037606019016175,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1616659200000,
+        "q": "0.103",
+        "p": "52355.858163",
+        "net": "-85.4789250735866670000",
+        "exit": 1616673600000,
+        "event": "stop"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1616922000000,
+      "month": "2021-03",
+      "C1_prediction": 0.036561314405171096,
+      "C2_lag7_prediction": -0.09480926506757249,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1616922000000,
+        "q": "0.088",
+        "p": "56381.941989",
+        "net": "28.9749886255199808768",
+        "exit": 1617591600000,
+        "event": "payoff_expiry"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1616990400000,
+      "month": "2021-03",
+      "C1_prediction": 0.03890075127762097,
+      "C2_lag7_prediction": -0.08063992970401564,
+      "C1_action": "inventory_hold",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1624132800000,
+      "month": "2021-06",
+      "C1_prediction": 0.0405886554556419,
+      "C2_lag7_prediction": -0.07395835979120961,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1624132800000,
+        "q": "0.119",
+        "p": "35972.025750",
+        "net": "-437.4471833169375000000",
+        "exit": 1624255200000,
+        "event": "stop"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1629003600000,
+      "month": "2021-08",
+      "C1_prediction": -0.030671167987412273,
+      "C2_lag7_prediction": 0.013905793600598801,
+      "C1_action": "payoff_expiry",
+      "C2_lag7_action": "payoff_expiry",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1631664000000,
+      "month": "2021-09",
+      "C1_prediction": 0.013149448323867514,
+      "C2_lag7_prediction": -0.004045780176900507,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1631664000000,
+        "q": "0.219",
+        "p": "47138.975898",
+        "net": "-1150.6480607284806570000",
+        "exit": 1632182400000,
+        "event": "stop"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1632636000000,
+      "month": "2021-09",
+      "C1_prediction": -0.021481514473204916,
+      "C2_lag7_prediction": 0.004222325026236718,
+      "C1_action": "flat_prediction",
+      "C2_lag7_action": "entry",
+      "C1_trade": null,
+      "C2_lag7_trade": {
+        "t": 1632636000000,
+        "q": "0.137",
+        "p": "42095.914626",
+        "net": "1077.6807297713541314392",
+        "exit": 1633442400000,
+        "event": "payoff_expiry"
+      }
+    },
+    {
+      "t": 1635472800000,
+      "month": "2021-10",
+      "C1_prediction": 0.018845710173165695,
+      "C2_lag7_prediction": -0.01965721485005555,
+      "C1_action": "inventory_hold",
+      "C2_lag7_action": "payoff_expiry",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1635865200000,
+      "month": "2021-11",
+      "C1_prediction": 0.034831739664019805,
+      "C2_lag7_prediction": -0.0015975005649631693,
+      "C1_action": "payoff_expiry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1637341200000,
+      "month": "2021-11",
+      "C1_prediction": 0.015365256385577236,
+      "C2_lag7_prediction": -0.006966336453643837,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1637341200000,
+        "q": "0.264",
+        "p": "58225.027155",
+        "net": "-507.1164487472130960000",
+        "exit": 1637604000000,
+        "event": "stop"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1641171600000,
+      "month": "2022-01",
+      "C1_prediction": 0.02608819376456409,
+      "C2_lag7_prediction": -0.000936254092361776,
+      "C1_action": "payoff_expiry",
+      "C2_lag7_action": "payoff_expiry",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1641564000000,
+      "month": "2022-01",
+      "C1_prediction": 0.03146629219423446,
+      "C2_lag7_prediction": -0.001247309138146594,
+      "C1_action": "protection",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1646532000000,
+      "month": "2022-03",
+      "C1_prediction": 0.023191749964798794,
+      "C2_lag7_prediction": -0.005222242923859526,
+      "C1_action": "inventory_hold",
+      "C2_lag7_action": "inventory_hold",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1647468000000,
+      "month": "2022-03",
+      "C1_prediction": 0.007991440581723273,
+      "C2_lag7_prediction": -0.02209866611890114,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1647468000000,
+        "q": "0.169",
+        "p": "41130.493830",
+        "net": "1031.5008627271681735324",
+        "exit": 1648573200000,
+        "event": "payoff_expiry"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1652738400000,
+      "month": "2022-05",
+      "C1_prediction": 0.042398390005622316,
+      "C2_lag7_prediction": -0.0017111269406955099,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1652738400000,
+        "q": "0.156",
+        "p": "30195.678750",
+        "net": "-194.8421289638283609240",
+        "exit": 1653613200000,
+        "event": "payoff_expiry"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1652806800000,
+      "month": "2022-05",
+      "C1_prediction": 0.014347022559133192,
+      "C2_lag7_prediction": -0.037589103952319125,
+      "C1_action": "inventory_hold",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1654660800000,
+      "month": "2022-06",
+      "C1_prediction": 0.021654850649844168,
+      "C2_lag7_prediction": -0.007948224213780488,
+      "C1_action": "payoff_expiry",
+      "C2_lag7_action": "inventory_hold",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1655776800000,
+      "month": "2022-06",
+      "C1_prediction": 0.003449198388000947,
+      "C2_lag7_prediction": -0.06660712073968174,
+      "C1_action": "entry",
+      "C2_lag7_action": "flat_prediction",
+      "C1_trade": {
+        "t": 1655776800000,
+        "q": "0.141",
+        "p": "20683.827210",
+        "net": "48.4737697057500000000",
+        "exit": 1656406800000,
+        "event": "payoff_expiry"
+      },
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1657821600000,
+      "month": "2022-07",
+      "C1_prediction": 0.006645188119255968,
+      "C2_lag7_prediction": -0.0186637861419821,
+      "C1_action": "inventory_hold",
+      "C2_lag7_action": "payoff_expiry",
+      "C1_trade": null,
+      "C2_lag7_trade": null
+    },
+    {
+      "t": 1659722400000,
+      "month": "2022-08",
+      "C1_prediction": -0.006363969384722586,
+      "C2_lag7_prediction": 0.006540944229862337,
+      "C1_action": "flat_prediction",
+      "C2_lag7_action": "entry",
+      "C1_trade": null,
+      "C2_lag7_trade": {
+        "t": 1659722400000,
+        "q": "0.193",
+        "p": "22844.201010",
+        "net": "311.6384587887277254878",
+        "exit": 1660453200000,
+        "event": "payoff_expiry"
+      }
+    },
+    {
+      "t": 1661220000000,
+      "month": "2022-08",
+      "C1_prediction": -0.0002488292734701775,
+      "C2_lag7_prediction": 0.007189927706677828,
+      "C1_action": "flat_prediction",
+      "C2_lag7_action": "entry",
+      "C1_trade": null,
+      "C2_lag7_trade": {
+        "t": 1661220000000,
+        "q": "0.215",
+        "p": "21320.026260",
+        "net": "-136.4419448575009204415",
+        "exit": 1661526000000,
+        "event": "stop"
+      }
+    },
+    {
+      "t": 1683964800000,
+      "month": "2023-05",
+      "C1_prediction": -0.007338122807039545,
+      "C2_lag7_prediction": 0.0016597068391157872,
+      "C1_action": "flat_prediction",
+      "C2_lag7_action": "entry",
+      "C1_trade": null,
+      "C2_lag7_trade": {
+        "t": 1683964800000,
+        "q": "0.108",
+        "p": "26788.635120",
+        "net": "-1.1463449458980508668",
+        "exit": 1684677600000,
+        "event": "payoff_expiry"
+      }
+    }
+  ]
+}

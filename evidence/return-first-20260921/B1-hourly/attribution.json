@@ -1,0 +1,81 @@
+{
+  "candidate": "B1",
+  "schedule": "hourly",
+  "yearly": {
+    "2020": {
+      "start": "1433.445142054413577592385539",
+      "mdd": "0.5233720870898344943446465036",
+      "hours": 8784,
+      "holding_hours": 8755,
+      "max_margin": "0.3790043352912889600742890996",
+      "end": "5344.442299065871354900493153",
+      "fees": "20.47722823131176251013259945",
+      "funding": "475.2430278050060601143",
+      "net_return": "2.728389836674333174605682034",
+      "gross_pnl_usdt": "4406.717413047775599932540213",
+      "mean_exposure": "1.002604247466676878780010357",
+      "mean_margin_equity": "0.1107037262163673437282156147"
+    },
+    "2021": {
+      "start": "5344.442299065871354900493153",
+      "mdd": "0.5784927837084531272684646173",
+      "hours": 8760,
+      "holding_hours": 8760,
+      "max_margin": "0.3450382139603628184180743081",
+      "end": "6229.726612996543083509093153",
+      "fees": "1.88780945533425000000000000",
+      "funding": "2484.0473100084640213914",
+      "net_return": "0.165645780119172808125886909",
+      "gross_pnl_usdt": "3371.219433394470000000000000",
+      "mean_exposure": "1.005174123490614915846334641",
+      "mean_margin_equity": "0.2207621289226656837220750200"
+    },
+    "2022": {
+      "start": "6229.726612996543083509093153",
+      "mdd": "0.6978740688258361724158935636",
+      "hours": 8760,
+      "holding_hours": 8730,
+      "max_margin": "0.4959352492026873352755349578",
+      "end": "2075.192263150376052284893153",
+      "fees": "13.31428314801000000000000000",
+      "funding": "226.9154651912070312242",
+      "net_return": "-0.6668887108430920818974810272",
+      "gross_pnl_usdt": "-3914.304601506950000000000000",
+      "mean_exposure": "1.003422678553545118172432032",
+      "mean_margin_equity": "0.2074623448236394415236671845"
+    },
+    "2023": {
+      "start": "2075.192263150376052284893153",
+      "mdd": "0.2325642461350409130837192724",
+      "hours": 8760,
+      "holding_hours": 8759,
+      "max_margin": "0.4576347308565853417015172627",
+      "end": "4927.853122837318502926093153",
+      "fees": "5.49749044637250000000000000",
+      "funding": "308.3579911566850493588",
+      "net_return": "1.374648947156482420197912753",
+      "gross_pnl_usdt": "3166.516341290000000000000000",
+      "mean_exposure": "1.008051152464268986962987101",
+      "mean_margin_equity": "0.3171009382630148600520498882"
+    }
+  },
+  "counts": {
+    "invocations": 35064,
+    "entry": 13,
+    "minimum_or_unchanged": 34949,
+    "ambiguous_funding_credit_omitted": 584,
+    "funding_charge": 3791,
+    "stop": 8,
+    "protection": 48,
+    "take": 3,
+    "rebalance_reduce": 54,
+    "unresolved_same_interval_stop_liquidation": 1,
+    "liquidation": 1
+  },
+  "limitations": [
+    "Proxy dated rules/fees/liquidity and USDT=USD",
+    "Adverse interval funding valuation, not exact cashflow",
+    "Minute refinement on six days only; remaining interval liquidation-first ambiguity",
+    "Margin transfer and full-position execution unverified"
+  ]
+}

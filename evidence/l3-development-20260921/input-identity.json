@@ -1,0 +1,535 @@
+{
+  "venue": "Binance",
+  "symbol": "BTCUSDT",
+  "inputs": [
+    {
+      "path": "warmup-trade.json",
+      "sha256": "62e9a9ecddccac737f99032a224f7a2a1932756cf200db34fb5c5641b72c4094",
+      "bytes": 98643
+    },
+    {
+      "path": "warmup-funding.json",
+      "sha256": "25a949a83bc5305727fb86f0d6e3e297235a03990d6404a3f160a2ce82bd82b3",
+      "bytes": 10451
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-01.zip",
+      "sha256": "512a1d725c8df97a1bbbee4f118e730e9628500a8f271c9e59d2a7fc5fbfcfcc",
+      "bytes": 37271
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-01.zip",
+      "sha256": "7f81b2f3694d13779e7e896b69d60cd61e9444d7b9f9e90df761935e1c1b76e2",
+      "bytes": 825
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-02.zip",
+      "sha256": "13d067e5c7b258764b8524e1d3c61b129c44838c2ce9850f4d86cae13c61f198",
+      "bytes": 35268
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-02.zip",
+      "sha256": "6599466d108d120c64a078824326c063ed2d4335b3292e52c5e572f79166533a",
+      "bytes": 885
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-03.zip",
+      "sha256": "9fc0c560cce35fd083febee10c0c8c3ffcd56a9185f9b489f265a51bbf60ec6e",
+      "bytes": 38166
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-03.zip",
+      "sha256": "eee845fde6336e29d25889563cba3d2cff2d4d640e51fb1f82ae9b28cedaee77",
+      "bytes": 928
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-04.zip",
+      "sha256": "bfa6d2adc1aefd8a96b3cbd38932486741caa1ae40f1e646df3606205402176f",
+      "bytes": 36833
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-04.zip",
+      "sha256": "d009ce034d08c3dcf3e7f874b0f8b0ec76ba507bc6bb4e007e541df537bafbce",
+      "bytes": 867
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-05.zip",
+      "sha256": "1eb7de25a14b8a6c70098b866a21ba2c35f1b55c9e1c1d4dadb431cd4d3e180d",
+      "bytes": 38289
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-05.zip",
+      "sha256": "3f2b56dd6b9a42457009bb367d0adadd3cf7e2216cd325172d0089e3883125a8",
+      "bytes": 839
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-06.zip",
+      "sha256": "5f5b7ccd40facb7ddecd6019192be8de148e0aeeec8c8adc30cab3c474406c5b",
+      "bytes": 36260
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-06.zip",
+      "sha256": "30b3470ff98576578973d75e3c157a5cbf1778b11e4c26b4b4ff70a3cbb348ec",
+      "bytes": 791
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-07.zip",
+      "sha256": "f116be7c0a36e71f771ae4987b95e1f6d098dc0dae3b71154c12e7c390cf1a4c",
+      "bytes": 37043
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-07.zip",
+      "sha256": "18dae7b11075fc0fba79ad47df46683415cba5d027caa69c66bc2a5c9d9b459a",
+      "bytes": 712
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-08.zip",
+      "sha256": "d4dff9c958c878c00f2f3f059043612ac051fdc4117c3e9e74261db28c4f13fc",
+      "bytes": 37996
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-08.zip",
+      "sha256": "e6f6d1749f674c85d4766e0eb36af6ea40d91a0674234d30df80eb9876b094e3",
+      "bytes": 854
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-09.zip",
+      "sha256": "b210c5ecfae463aaef862ea0e6d8ccbf63430f32d6a80bad0bdeb2eef83a7165",
+      "bytes": 36859
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-09.zip",
+      "sha256": "7ae9a3b6afb2dc06e46080582908ec8c27063b707a14c7f1e679dc991ff48032",
+      "bytes": 838
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-10.zip",
+      "sha256": "753bc2e366777b40294690c5bbee38da8ec99e3157739ba0f16850c94ac92dc7",
+      "bytes": 38117
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-10.zip",
+      "sha256": "4c55b191c101f39c7fb193a6529665dd9e83302ca21876521e4c93b3902e9fb1",
+      "bytes": 828
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-11.zip",
+      "sha256": "23694fa6fc619c159992db5325d37730a392e8ee23e9e5c375a7bfef6022fb82",
+      "bytes": 37893
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-11.zip",
+      "sha256": "676356a2d075caa51b4f8ada026e9430dc320ffd23d2343b13b7aa25324ed6d1",
+      "bytes": 854
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2020-12.zip",
+      "sha256": "9eca4954142f813a1ab404161b76facb56389a26fcd0b05bf93a19bf29578cb3",
+      "bytes": 39316
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-12.zip",
+      "sha256": "d7390f90edf54cc4ad9bbe78e2f6b291ae06ad9539f591a2d0fce445873bbd63",
+      "bytes": 852
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-01.zip",
+      "sha256": "00de1eb2f3e3bc7f21b7ab321f1681385726fe7ba55306a7337acfd8f81fedfa",
+      "bytes": 40346
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-01.zip",
+      "sha256": "cff916dc4b638ec3de97828e8911cd91cf7d7a3d0836ec0175869c374e66823d",
+      "bytes": 981
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-02.zip",
+      "sha256": "c5739d16db0aa917f9b4f196cf1dc3c9741b2889253c029571dcd2d00e83ccbb",
+      "bytes": 36379
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-02.zip",
+      "sha256": "819a7b107443686adb313fc5fc223302a29f3981e1d1bd9828ad0ade65a8a8af",
+      "bytes": 956
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-03.zip",
+      "sha256": "518891de0fa643092cac84143c9b35a7cbcebfc75ae0846ce36c8e3adab1929f",
+      "bytes": 40163
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-03.zip",
+      "sha256": "2125fd300848938c7b992b8f7b7b5007d5b277a4ff1ebda7da083b40242729da",
+      "bytes": 918
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-04.zip",
+      "sha256": "0fdf8d01fa2eae368a63dcf709e6e6c5b0fd79bbe83b2f086aefbe2a7890924f",
+      "bytes": 38669
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-04.zip",
+      "sha256": "9cd888e3b0a1954813d0062c2e60426fdc8e34a7f258f6838371ec67f535b028",
+      "bytes": 914
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-05.zip",
+      "sha256": "c209747915a1451a7b51d80d92e68332622c1dd1b9517dc7723f78cfa4f28ab9",
+      "bytes": 40697
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-05.zip",
+      "sha256": "ed934afb9cf84df6ecae742e755147333a84244836a66b51523abc66dd5f63af",
+      "bytes": 960
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-06.zip",
+      "sha256": "5134cef4361e0819b721776da6e99f715141d122e3cfbf4be729e3dfc153ac33",
+      "bytes": 39207
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-06.zip",
+      "sha256": "7b8d9bfb8816636b800764dafb2aa2307d19166c695bfa245adbf7d01d61f766",
+      "bytes": 883
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-07.zip",
+      "sha256": "97241c02191fd4694daf9836269e6f8ed04ef5bf858414de5a3354678552b54d",
+      "bytes": 40038
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-07.zip",
+      "sha256": "8ab3df641d3bcf40527491f8e26d046ad2b662d1950ead9555ad32975571b7fe",
+      "bytes": 973
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-08.zip",
+      "sha256": "4c8290ad0baa9fcf37d45b893e8cae1a1e3b9ef77987a9d9abd64e44ab7deb09",
+      "bytes": 40160
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-08.zip",
+      "sha256": "7eb681cc45b94176f4b9192a62c3a1925d79031ba001cea2d8dec6ff6e5b9c35",
+      "bytes": 781
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-09.zip",
+      "sha256": "22c55191129632daf70611af13e8f2b0f34a5e79f4876f41744a9848c43b9864",
+      "bytes": 38738
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-09.zip",
+      "sha256": "03f25a7c25eef18d5f5b5b7bb0b664cab7a210b409f37e95a54e141808a0752d",
+      "bytes": 828
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-10.zip",
+      "sha256": "d3b55f8ae3689efe9bccc1d9b7082bda39fa7fa194e4c1197a63d1473ca57b4e",
+      "bytes": 40087
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-10.zip",
+      "sha256": "f25820d6add687addbca3ef43bee58f70853a6da53832a0c1bc22d00dc8ec64a",
+      "bytes": 951
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-11.zip",
+      "sha256": "a013f6adfd3012130c0b0bc58895373ae478cd38c646ac87957b855682c7f069",
+      "bytes": 38610
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-11.zip",
+      "sha256": "e2e6b2d7218607e7e4a38137d50f553c2cfb901275c19edf567024c1cc6de85f",
+      "bytes": 919
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2021-12.zip",
+      "sha256": "f1dff81c6e322f7d5cee3c0808efd4e35b33e371f04ba613054264d9621318f1",
+      "bytes": 40053
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2021-12.zip",
+      "sha256": "bf3ce484faf41d7dccfd38c5cc3d8de34d8297df30ab10784e874cc10fd1b310",
+      "bytes": 815
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-01.zip",
+      "sha256": "5281a9c866e7d54b0a5b5e6a7dad5575ad7b96df67f05f74d614c54190ffff5f",
+      "bytes": 39953
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-01.zip",
+      "sha256": "22ee19079b620f5c6d820e7d7f8bafa7fde866d89bd664863b8bd527749c12cb",
+      "bytes": 906
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-02.zip",
+      "sha256": "b3a199287b2a8fed2c261999205d56cfd72ef9675c4b498a399601978d666228",
+      "bytes": 35964
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-02.zip",
+      "sha256": "fa95088258a905c79ab79e8984d2f6f66933ec2e814dbab4ef9da89b01ab484a",
+      "bytes": 890
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-03.zip",
+      "sha256": "f61ebcacd9a38f20b0ad89c64bbeb56baf368641fbbd6e25e987db2b96ede5ff",
+      "bytes": 39024
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-03.zip",
+      "sha256": "4cf0883bc07f4ed4cdd3b0d8c0d166b4d15d21e666ab752f9f44401af4d6172f",
+      "bytes": 904
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-04.zip",
+      "sha256": "db7f9dbcc60cf68051b755346a5be32d27b0d3565cf6c02341b050a234ef44df",
+      "bytes": 37478
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-04.zip",
+      "sha256": "57e2776cc68b3169fc9f8632dad67278f470cd453407a8ebe6c87963c8a31357",
+      "bytes": 926
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-05.zip",
+      "sha256": "b1512041ade711819be114fee30668fbdd2783b73fa55607991ae14d1d43653f",
+      "bytes": 39107
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-05.zip",
+      "sha256": "bced8a5013d09742b96682e6fd01ad4456213515a03d7586ec2b1f2689af5255",
+      "bytes": 915
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-06.zip",
+      "sha256": "1006ae5b8b4704da69f8f14fb4711d075d689fcf44cd0a98317df97953f1332d",
+      "bytes": 37922
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-06.zip",
+      "sha256": "0cd0708f8903829eb46f98cf60f4b2516c986e1ccddf6620a5912b48e16baf93",
+      "bytes": 966
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-07.zip",
+      "sha256": "72060f8608459b04817f652cbb945be28afef0ae54ccf38113911c194630c184",
+      "bytes": 38784
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-07.zip",
+      "sha256": "29d58cce0cd45f74c6a112039835c6d9ee5a7e60e7c38c2503beb7930453a4fe",
+      "bytes": 917
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-08.zip",
+      "sha256": "a1ad9eafd3dfecccfbc60c07de33ec2f7c33eab96f8ec04f88360b73b55dad76",
+      "bytes": 38388
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-08.zip",
+      "sha256": "6f4f0c6c84c05694b4b4a5c085776730fd4059723eecd98ee6ffeb3fde4da811",
+      "bytes": 997
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-09.zip",
+      "sha256": "92753ae32ed042ab7f10b90e3b9a49ddafc695c8e60eb563713855c73e2e6e82",
+      "bytes": 37283
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-09.zip",
+      "sha256": "d62cd4e13009de37add446dc4f63ead4c56dcc4955a1e60f6726bcadc5a68fa9",
+      "bytes": 960
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-10.zip",
+      "sha256": "d85a5f4bdbe93df2babdecf3b37f866655fa23c3fb31eeca96c3e3f6a1e9b872",
+      "bytes": 37838
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-10.zip",
+      "sha256": "ad9efed10d4ca1567b865d7a158790977cec1b925395634217069df6696c8bc9",
+      "bytes": 950
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-11.zip",
+      "sha256": "e9b3f3b1929e3f6f255269c2d2eb564d9d9bcacbfc16651888e95765df383888",
+      "bytes": 36889
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-11.zip",
+      "sha256": "8febe5bec1a029e993bbf27490761f8c47c32849bf7dd13441b2b2f6ec1ffb51",
+      "bytes": 1000
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2022-12.zip",
+      "sha256": "d313c2cb509cba13eff6538829245aedc993f18eff4a7bd48fe0eb6c3a9fa158",
+      "bytes": 36820
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2022-12.zip",
+      "sha256": "4218c78331bcc4dbeb5768fa112242a880971c1f2cfd1d3f32aaa26ca34069af",
+      "bytes": 982
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-01.zip",
+      "sha256": "b9ac60cc3ffc1e16db96ca2314120ff7531988108ebef1733ee54234f4fedf7f",
+      "bytes": 37766
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-01.zip",
+      "sha256": "05e3df32f28d0d50f4c5a280adee9368b4a66fc68c6ddca1b3277087ac0d19f5",
+      "bytes": 863
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-02.zip",
+      "sha256": "1ace9802f4da961db025a7b76a6171ef2c516c5307e5dee24267182f059110e0",
+      "bytes": 34682
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-02.zip",
+      "sha256": "5227accd9aaa59f71f5e682abffb58be5f99573ed208ab968b1704c81ac11345",
+      "bytes": 808
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-03.zip",
+      "sha256": "35f0068cc41887ea11960c4bb10e251a404fef5ad4cb4c88699cc2419b6bc38b",
+      "bytes": 38700
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-03.zip",
+      "sha256": "ab022adff9b853d2f33cf80154e77c770f57c3392f0bbc36564b2e2cdbd0e872",
+      "bytes": 956
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-04.zip",
+      "sha256": "ed6f0a84d1b2ed8f73fbdd4df10703e2ab49864fc4d657b0d8a9464a49dd4a29",
+      "bytes": 37139
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-04.zip",
+      "sha256": "2931039d26818edc65d4faefba84945fd1ba52989dd58fb127dc3cd7a12c7fbf",
+      "bytes": 952
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-05.zip",
+      "sha256": "2f278ad3ea09cc42e577ad7185de74391a1eb09b9d9836d375e2c540aef1667f",
+      "bytes": 38198
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-05.zip",
+      "sha256": "5d026fece46df86293054c8c56c2c8de575d30161b82979b11831831217a246e",
+      "bytes": 983
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-06.zip",
+      "sha256": "19bd435cdf58b426642c24a0df3b5fa755433f52a8c39f05dc5cfdeffa453aa0",
+      "bytes": 37120
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-06.zip",
+      "sha256": "3ffdde6f1dc9c3c065d77ae43f3ba64d19d4cb76512d4bc1d541933d4fb2e6f7",
+      "bytes": 845
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-07.zip",
+      "sha256": "ae9ebc03dff2bdeb805a1401b5cf1256b2b84283f5f9d92b1f454f33b223f499",
+      "bytes": 37558
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-07.zip",
+      "sha256": "0304baed9fd407293a8a8040b30a1b68bd344803b630d33530375b421733a930",
+      "bytes": 861
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-08.zip",
+      "sha256": "599daa607ff593666036fe742d8272de6e0e9d284cd7d41d6585cf53baa20ca2",
+      "bytes": 37282
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-08.zip",
+      "sha256": "516a8f50631c6ede6a9642f6d1590b6a22c33ba09935501d2ace8dc1396501fd",
+      "bytes": 846
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-09.zip",
+      "sha256": "7849f82af86aabcb9a79f64d0527480f22117656a68f98280fe8b840a6ee1339",
+      "bytes": 35974
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-09.zip",
+      "sha256": "3fd9df6fd1eef33cf5fe625c27012359bc6d64a68c109305d7b44a0354f533c2",
+      "bytes": 914
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-10.zip",
+      "sha256": "bbf0ef273c80f696ed9eb129a257812162487486692f124b9631ec38a924f6ae",
+      "bytes": 37679
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-10.zip",
+      "sha256": "03105cc140150bffca834bcccbddc6cfee245e079d2df1759653243bd6e92448",
+      "bytes": 865
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-11.zip",
+      "sha256": "26f1a2870f57925303edcf75581f0a33ff5e145c2126e15afc5fc1b400522428",
+      "bytes": 36685
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-11.zip",
+      "sha256": "8015d2997f8d5e757ff3707ee87800ca30a74da0129daa747b64117f07bcc186",
+      "bytes": 696
+    },
+    {
+      "path": "monthly/klines/BTCUSDT/1h/BTCUSDT-1h-2023-12.zip",
+      "sha256": "5377bec9e6dc04027717836cc1c2a3789da4e4122d57e8395265a0414b766b7c",
+      "bytes": 38475
+    },
+    {
+      "path": "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2023-12.zip",
+      "sha256": "8f02fdd2a2da261bbf13ab301c74bdb57fae005f19d5088e9ece5f8824c1a2a7",
+      "bytes": 810
+    }
+  ],
+  "frozen_spec": {
+    "start": "2020-01-01T00:00:00Z",
+    "end": "2026-09-20T00:00:00Z",
+    "endpoint_status": "locked_upper_bound; native complete coverage has not been obtained",
+    "development_end": "2024-01-01T00:00:00Z",
+    "initial_cny": "10000",
+    "cny_per_usd": "6.9762",
+    "fx_convention": "constant 2019-12-31 USD/CNY central parity for all CNY displays and acceptance; raw BTC and USD equity retained",
+    "fx_source": "https://www.pbc.gov.cn/zhengcehuobisi/125207/125217/125925/3952151/index.html",
+    "initial_conversion_cost": "0.001",
+    "conversion_assumption": "initial BTC is valued at the native contract's first mark; 10bp modeled acquisition cost, not a verified historical spot execution",
+    "venue": "bybit",
+    "symbol": "BTCUSD",
+    "contract_type": "InversePerpetual",
+    "settlement_coin": "BTC",
+    "leverage": 20,
+    "seed": "pancakequant-20260920-before-economic-observations",
+    "gap_hours": [
+      19,
+      31,
+      47,
+      73,
+      109,
+      151
+    ],
+    "stress_skip_after_trigger": 50,
+    "stress_absence_days": 21,
+    "spread_fraction": "0.0002",
+    "slippage_fraction": "0.001",
+    "volume_participation": "0.01",
+    "book_proxy_fraction": "0.10",
+    "cost_status": "spread, slippage, conversion and depth are explicit modeling assumptions; fees, funding and margin tiers must come from identified input records",
+    "cagr_minimum_exclusive": "2",
+    "mdd_maximum_exclusive": "0.20",
+    "qualification_status": "NOT_MEASURED",
+    "bar_interval_ms": 3600000,
+    "liquidity_activity_basis_ms": 60000,
+    "bar_interval_status": "frozen before native economic measurement; native 60m trade/mark extrema rebuild the 4h signal clock"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "qualification": "NOT_QUALIFIED",
+  "attempts": [
+    {
+      "url": "https://data.binance.vision/data/futures/um/monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2020-01.zip",
+      "status": "checksum_verified",
+      "sha256": "0c53176e13066f16c36ae12fe2cd78389cdbd56d11fe8cf49c086976befa106d",
+      "bytes": 27231,
+      "rows": 744,
+      "first_ts": 1577836800000,
+      "last_ts": 1580511600000
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2020-01.zip",
+      "status": "checksum_verified",
+      "sha256": "7f81b2f3694d13779e7e896b69d60cd61e9444d7b9f9e90df761935e1c1b76e2",
+      "bytes": 825,
+      "rows": 93,
+      "first_ts": 1577836800000,
+      "last_ts": 1580486400000
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1h/BTCUSDT-1h-2026-09-19.zip",
+      "status": "checksum_verified",
+      "sha256": "6eacc92c9d63a485ad764eb8c6e1081e2a5938d19aebda17b1fd986a5ec452aa",
+      "bytes": 1530,
+      "rows": 24,
+      "first_ts": 1789776000000,
+      "last_ts": 1789858800000
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2026-09-19.zip",
+      "status": "checksum_verified",
+      "sha256": "10f0a3a06b40d8829154093e1784c1e86478858647d566955f8103108070759b",
+      "bytes": 965,
+      "rows": 24,
+      "first_ts": 1789776000000,
+      "last_ts": 1789858800000
+    },
+    {
+      "url": "https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2026-08.zip",
+      "status": "checksum_verified",
+      "sha256": "7c108b3a02bd6dc7345ca7323e3a49664edcea0afdcf780ffb3b44762c45a964",
+      "bytes": 896,
+      "rows": 93,
+      "first_ts": 1785542400001,
+      "last_ts": 1788192000001
+    }
+  ]
+}

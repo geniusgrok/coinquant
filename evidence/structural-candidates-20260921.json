@@ -1,0 +1,58 @@
+{
+  "status": "measured_diagnostic",
+  "qualification": "NOT_QUALIFIED",
+  "provenance": "native_bybit_market_and_funding_with_proxy_rules",
+  "frozen_window": [
+    "2020-01-01T00:00:00Z",
+    "2026-09-20T00:00:00Z"
+  ],
+  "native_history_artifact_sha256": "717841c3267f5de40d0c0b103aeff3c067054eb7752ccf5b8cc1bcad11228159",
+  "baseline": {
+    "cagr": 0.4392074800343406,
+    "mdd": "0.7705119333829854577554200902",
+    "final_equity_cny": "115452.4924083855493430345766",
+    "liquidation_events": 8,
+    "fills": 537,
+    "decisions": 795,
+    "result_sha256": "533a50e63fa8e0cf65fba2d7f36a6e3c5eca44202b7c95e822ec7b9d56831933"
+  },
+  "m1_buffered_isolated_margin": {
+    "hypothesis": "allocate more isolated margin so liquidation sits another stop-risk distance beyond the stop for immediate entries; offline FOK remains safe on initial 20x margin",
+    "cagr": 0.43506655525260163,
+    "mdd": "0.7724637136655934853896251039",
+    "final_equity_cny": "113238.8933340238575891535327",
+    "liquidation_events": 9,
+    "fills": 550,
+    "decisions": 795,
+    "result_sha256": "c805a058ff7726bf66d99ba36be1cafa215ade62863e7bb2c6e0827d5cb55dde",
+    "decision": "reject"
+  },
+  "h4_collateral_neutralized_bear_alpha": {
+    "hypothesis": "bearish manual invocations short enough BTCUSD to neutralize BTC collateral delta plus original bearish alpha, using whole-account stop risk; bullish path unchanged",
+    "cagr": 0.3502330968496352,
+    "mdd": "0.7658952015022885813201219162",
+    "final_equity_cny": "75195.76936056819958750824495",
+    "liquidation_events": 13,
+    "fills": 724,
+    "decisions": 795,
+    "result_sha256": "a0bdfcf7f9a5ad4ea2a9473a9e5b3d4e0121beed7f0cbade4b09665e27a6c96a",
+    "decision": "reject"
+  },
+  "stop_first_upper_bound": {
+    "hypothesis": "diagnostic only: whenever an hourly bar opens above a long stop and later touches both stop and liquidation, assume stop precedes liquidation",
+    "cagr": 0.441626268107854,
+    "mdd": "0.7704998726120382224789570114",
+    "final_equity_cny": "116762.4539288916716332807830",
+    "liquidation_events": 0,
+    "fills": 537,
+    "decisions": 795,
+    "result_sha256": "8d9f0cae3b93357d8ff876781eaa207d9d7c9d23e35750cfaf8f50d5f3dbb813",
+    "decision": "not a production rule; shows liquidation ordering is not the main economic blocker"
+  },
+  "interpretation": [
+    "Extra isolated margin does not improve the frozen-window economics.",
+    "A direct inverse-contract collateral-neutralization overlay worsens return and liquidation count.",
+    "Even eliminating all eight hourly liquidation outcomes barely changes CAGR/MDD, so coarse stop-vs-liquidation ordering is not the main source of the 77% drawdown.",
+    "BTC collateral beta remains the dominant structural issue; a stable-settlement linear perpetual should be evaluated before further inverse-contract parameter work."
+  ]
+}

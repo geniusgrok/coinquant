@@ -1,0 +1,37 @@
+{
+  "source": "https://developers.binance.com/en/docs/products/derivatives-trading-usds-futures/change-log",
+  "retrieved": "2026-09-21",
+  "qualification": "NOT_QUALIFIED",
+  "events": [
+    {
+      "date": "2019-10-18",
+      "fact": "reduceOnly support added for MARKET orders"
+    },
+    {
+      "date": "2020-01-03",
+      "fact": "Isolated margin configuration and adjustment API endpoints introduced"
+    },
+    {
+      "date": "2020-05-18",
+      "fact": "closePosition parameter introduced for full-position conditional market exits"
+    },
+    {
+      "date": "2025-12-09",
+      "announced": "2025-11-06",
+      "fact": "Conditional orders moved to Algo Service; legacy order endpoints reject these order types; untriggered conditional amendment unsupported"
+    },
+    {
+      "date": "2026-08-26",
+      "fact": "userTrades availability documented as past three months"
+    },
+    {
+      "date": "2026-09-15",
+      "fact": "Amend reduceOnly parameter validates existing reduce-only status; cannot convert an opening order"
+    }
+  ],
+  "limitations": [
+    "API chronology is not a dated fee/risk/filter timeline",
+    "Calendar dates do not establish exact intraday activation times",
+    "Never backfill present API capabilities into earlier replay dates"
+  ]
+}

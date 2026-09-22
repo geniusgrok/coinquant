@@ -1,0 +1,9 @@
+{
+  "purpose": "Preserve only four checksum-valid mark archives with reported hour gaps; do not interpolate",
+  "paths": [
+    "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2021-07.zip",
+    "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2022-10.zip",
+    "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2023-02.zip",
+    "monthly/markPriceKlines/BTCUSDT/1h/BTCUSDT-1h-2026-06.zip"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "targeted_tests": 31,
+  "tests_log": "logs/mechanism-tests.log",
+  "l29_all_three_development_streams_identical": true,
+  "causality": {
+    "passed": true,
+    "cutoff": 1688169600000,
+    "checks": [
+      {
+        "schedule": "sparse",
+        "file": "decisions.csv.gz",
+        "identical_prefix_rows": 411
+      },
+      {
+        "schedule": "sparse",
+        "file": "equity.csv.gz",
+        "identical_prefix_rows": 75893
+      },
+      {
+        "schedule": "sparse",
+        "file": "orders.csv.gz",
+        "identical_prefix_rows": 412
+      },
+      {
+        "schedule": "four_hour",
+        "file": "decisions.csv.gz",
+        "identical_prefix_rows": 7662
+      },
+      {
+        "schedule": "four_hour",
+        "file": "equity.csv.gz",
+        "identical_prefix_rows": 79758
+      },
+      {
+        "schedule": "four_hour",
+        "file": "orders.csv.gz",
+        "identical_prefix_rows": 537
+      }
+    ],
+    "matched_sparse_market_states": 468,
+    "synthetic_paths_not_economic_evidence": true
+  },
+  "all_side_ledger_residuals_zero": true,
+  "validation_views": [
+    {
+      "candidate": "D2",
+      "window": "2020-01-01/2026-09-20",
+      "purpose": "already-used chronological follow-up",
+      "informed_subsequent": [
+        "E"
+      ]
+    }
+  ]
+}

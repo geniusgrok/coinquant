@@ -1,0 +1,10 @@
+{
+  "filename": "PANCAKEQUANT_RETURN_FIRST_L21_L26_20260921.zip",
+  "bytes": 140850994,
+  "sha256": "001813d77bb3d4ceba82c2a73f37f5513ffd6eef91cd42f5cd344fe9401b4357",
+  "files": 1183,
+  "library_file_id": "libfile_b035708d7d408191b6931ca60b9a7ba2",
+  "qualification": "NOT_QUALIFIED",
+  "remote_readback": "byte-for-byte, length, SHA256 and all1183manifest entries verified",
+  "contents": "all raw account and synthetic causality paths; exact measured/current sources; complete restored native inputs; frozen spec/invocations; failed and corrected originals"
+}

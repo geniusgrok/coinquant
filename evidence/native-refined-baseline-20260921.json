@@ -1,0 +1,89 @@
+{
+  "initial_equity_usd": "1433.445142054413577592385539",
+  "final_equity_btc": "0.2057269794175997620743444472",
+  "final_equity_usd": "16705.18296667386970426070413",
+  "final_equity_cny": "116538.6974121102498308635242",
+  "cagr": 0.4412147524329828,
+  "mdd": "0.7704986881947826991941728765",
+  "drawdown_start": "2021-11-10T14:00:00Z",
+  "drawdown_end": "2022-11-21T21:00:00Z",
+  "yearly": [
+    {
+      "year": "2020",
+      "return": "3.128989807578580425700270400",
+      "mdd": "0.6312565051797597261828966023",
+      "ending_usd": "5918.680381265704001749190675"
+    },
+    {
+      "year": "2021",
+      "return": "0.585555803393312197332696735",
+      "mdd": "0.5616351099755256689246493179",
+      "ending_usd": "9384.398026945978650919288748"
+    },
+    {
+      "year": "2022",
+      "return": "-0.6296837601036433326099032208",
+      "mdd": "0.6747692035754640048624730425",
+      "ending_usd": "3475.194991029423211078221959"
+    },
+    {
+      "year": "2023",
+      "return": "1.505088253942868415374900702",
+      "mdd": "0.2436011212298950533735649773",
+      "ending_usd": "8705.670152188900057748297817"
+    },
+    {
+      "year": "2024",
+      "return": "1.277509692282848012267766856",
+      "mdd": "0.3302983812861833334179344821",
+      "ending_usd": "19827.24814942771639434656573"
+    },
+    {
+      "year": "2025",
+      "return": "-0.0841543994817021731828921978",
+      "mdd": "0.3517974921398670031868076597",
+      "ending_usd": "18158.69798803793620542207481"
+    },
+    {
+      "year": "2026",
+      "return": "-0.0800451123930565529561245666",
+      "mdd": "0.4152745425176077758670584764",
+      "ending_usd": "16705.18296667386970426070413"
+    }
+  ],
+  "fees_btc": "0.009108079826724124219124800389",
+  "net_funding_paid_btc": "0.003590199031849428922662833970",
+  "liquidation_events": 2,
+  "fills": 537,
+  "decisions": 795,
+  "invocations": 795,
+  "longest_interval_hours": 151.0,
+  "longest_tail_without_invocation_hours": 48.0,
+  "economic_numbers_meet_limits": false,
+  "qualification": "NOT_QUALIFIED",
+  "limitations": [
+    "Base-bar extrema are a conservative account-drawdown envelope, not a known tick path.",
+    "Liquidity uses previous-base-bar volume normalized to a one-minute activity proxy; spread/slippage/conversion are frozen modeling assumptions.",
+    "Native FOK/partial-fill/offline-order integration and historical source authenticity remain unverified."
+  ],
+  "status": "measured",
+  "provenance": "proxy",
+  "output_files": {
+    "orders.csv.gz": {
+      "bytes": 30637,
+      "sha256": "9fe205dbbc50e11318c293c07484198228653a58be370dfd33ee0e8bb30bf648"
+    },
+    "identity.json": {
+      "bytes": 124561,
+      "sha256": "aca3aa095d4dfe89d21e30e4b85498bb41b176d0c4a2c5b93d40b89c02c52e79"
+    },
+    "invocations.csv": {
+      "bytes": 28630,
+      "sha256": "2c385775cf9cc33af2ec99f68314ae76c38fd16e5bf28f449eef9731f983f8b8"
+    },
+    "equity.csv.gz": {
+      "bytes": 11734894,
+      "sha256": "ff968c4f190cf5f120c5724c3514bdf0e5e52be823d668dea59cb8051cbb7648"
+    }
+  }
+}

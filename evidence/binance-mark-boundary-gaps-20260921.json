@@ -1,0 +1,12 @@
+{
+  "missing_hours": 24,
+  "ranges": [
+    {
+      "start": 1659225600000,
+      "end_exclusive": 1659312000000,
+      "start_utc": "2022-07-31T00:00:00+00:00"
+    }
+  ],
+  "duplicates": 0,
+  "outside": []
+}

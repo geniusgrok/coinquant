@@ -1,0 +1,15 @@
+{
+  "file_name": "PANCAKEQUANT_HOLDING_ATTRIBUTION_T_20260921.zip",
+  "library_file_id": "libfile_37573ecf3dc08191aee80ae0ec6c4ee8",
+  "file_id": "file_00000000cc3082118cb831bf677b3934",
+  "bytes": 28257076,
+  "sha256": "d4f7615566eb6adad5fa7acc0181ee244e94fe45ba1541b26365477ddb2064a9",
+  "manifest_files": 742,
+  "remote_readback": "byte-identical; all manifest members verified",
+  "source_scope": "snapshot before this receipt; measured source per run retained",
+  "dependencies": [
+    "evidence/constrained-space-20260921/originals.json",
+    "evidence/basis-direction-20260921/originals.json"
+  ],
+  "qualification": "NOT_QUALIFIED"
+}
