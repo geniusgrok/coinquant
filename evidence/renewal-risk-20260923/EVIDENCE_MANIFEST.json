@@ -1,0 +1,1575 @@
+{
+  "schema": "coinquant.hr60.evidence_manifest.v1",
+  "files": [
+    {
+      "path": "FAILED_RUNS.md",
+      "bytes": 2021,
+      "sha256": "61855ed4dd1d55dd0ded0a02a4775064845072d29217144b88a3e2b9cf608672"
+    },
+    {
+      "path": "FULL_WINDOW_INPUT_GAP.json",
+      "bytes": 186077,
+      "sha256": "a868ce5889d4c32174b17096dba6f22960467bdbaa4ecb0f21241ad17f832cef"
+    },
+    {
+      "path": "FULL_WINDOW_INPUT_GAP_SUMMARY.json",
+      "bytes": 1059,
+      "sha256": "8526a94c929bd6790a932bcd9b8ee4a414f0ab60130dbdad2fd660f2eed113aa"
+    },
+    {
+      "path": "PROTOCOL.md",
+      "bytes": 5523,
+      "sha256": "4702bdd4025da7b58e47fba6925eaa38c5d3e22173a965f57c2f5b544785fc81"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 5317,
+      "sha256": "b191159c974df2391779c4644be39bc3f8e0f1386a55a78234c281efad2cf092"
+    },
+    {
+      "path": "TEST_RESULTS.txt",
+      "bytes": 582,
+      "sha256": "1aa8b02112bd6af835a85ec01b5b323e8376d2e0abef151734b440e7a497b740"
+    },
+    {
+      "path": "VALIDATION.json",
+      "bytes": 4585,
+      "sha256": "fbde01b52aeb1da3a05f9d58ac110cf4658e47e9cc6d50be374317d3d432d73e"
+    },
+    {
+      "path": "originals/COINQUANT_H60_SAVED_RISK_REVIEW_20260923.zip",
+      "bytes": 4672535,
+      "sha256": "febb851b3039f1fb94f312842ed98313af27e831fd6d082b9401838f2343fc0e"
+    },
+    {
+      "path": "originals/COINQUANT_RETURN_FIRST_RENEWAL_RISK_PROMPT_20260923.md",
+      "bytes": 22196,
+      "sha256": "7cb320a146eeb390f1893d6baaee043253d0ad05106b4cede3f3255c991fa3e3"
+    },
+    {
+      "path": "results/HR60-development-failed-01.failure.txt",
+      "bytes": 516,
+      "sha256": "2d1fc562fbb48bc2f6979ac878fa350ac6d590744f17855cfdefc514a80c2019"
+    },
+    {
+      "path": "results/HR60-development-failed-01.invocation.json",
+      "bytes": 130612,
+      "sha256": "7cc70f181ced49dacf8b6b9ef7fc772720a12ece50f0835e79242a89b7b437bd"
+    },
+    {
+      "path": "results/HR60-development-failed-01.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-development-failed-01/decisions.csv.gz.partial",
+      "bytes": 1668,
+      "sha256": "8164f6c0a12c16cc3e895cfcd5f4ac2d4e84311d5e4d3e59bd21d3e7df47050e"
+    },
+    {
+      "path": "results/HR60-development-failed-01/equity.csv.gz.partial",
+      "bytes": 136927,
+      "sha256": "9656ca0061214eeeec12df9f7e686857755a51022dc2d83c200a8e1c55862750"
+    },
+    {
+      "path": "results/HR60-development-failed-01/execution.jsonl.partial",
+      "bytes": 47588,
+      "sha256": "28c62884f1f12df540ef7bfc774fdc4150671ca17e9edd0e6f9638468748fa2f"
+    },
+    {
+      "path": "results/HR60-development-failed-01/orders.csv.gz.partial",
+      "bytes": 1083,
+      "sha256": "b4082cd6203888d5de2c71611ec909873f5156d7d83a192da098502d8173448e"
+    },
+    {
+      "path": "results/HR60-development-failed-02.failure.txt",
+      "bytes": 2383,
+      "sha256": "4370cdd6eee3bcf5afbb15b347ecd92a36e2e3fffdd449758315e22d8f34eef5"
+    },
+    {
+      "path": "results/HR60-development-failed-02.invocation.json",
+      "bytes": 130612,
+      "sha256": "2b9352d657f09b6d6bcb6821153d5aeda47d7980a1fec6d288cc9c94bf0512c5"
+    },
+    {
+      "path": "results/HR60-development-failed-02.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-development-failed-02/decisions.csv.gz",
+      "bytes": 16653,
+      "sha256": "91f336b48d2828e198c12e2d20599886086a6bce4820355f03e2a3c9e39fb99f"
+    },
+    {
+      "path": "results/HR60-development-failed-02/decisions.csv.gz.partial",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-development-failed-02/equity.csv.gz",
+      "bytes": 2216864,
+      "sha256": "51c09a5234804d046c5e37b21b0b74ed9b48fa39e4fb883448f15711a32ab372"
+    },
+    {
+      "path": "results/HR60-development-failed-02/equity.csv.gz.partial",
+      "bytes": 346154,
+      "sha256": "c54102dcc28afa34a40c9ea208bdba3c4001351ffd2cc8afe28c3027961c9424"
+    },
+    {
+      "path": "results/HR60-development-failed-02/execution.jsonl",
+      "bytes": 616345,
+      "sha256": "9fda2db2db2492195af55bd95e94e9cf5b9aaaf11242c2db4dbf12a51f8df969"
+    },
+    {
+      "path": "results/HR60-development-failed-02/execution.jsonl.partial",
+      "bytes": 120057,
+      "sha256": "3258bb66723e83801665037185eb1baa765ab9cb197023cac2400d4ae0249bfc"
+    },
+    {
+      "path": "results/HR60-development-failed-02/orders.csv.gz",
+      "bytes": 16073,
+      "sha256": "b66f47d18af60a1f29f9b1e5c6ad299d4d96a12a1645487b6c0c8cf8b45782de"
+    },
+    {
+      "path": "results/HR60-development-failed-02/orders.csv.gz.partial",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-development-failed-03.invocation.json",
+      "bytes": 130612,
+      "sha256": "1ab645912a22708bd6143c02ea2ee3d156f2bd816701f68ea0bb1d726bbb71c8"
+    },
+    {
+      "path": "results/HR60-development-failed-03.log",
+      "bytes": 4717,
+      "sha256": "84945dd529567315fddd41ab64c33213636a169f485ee33d92b2b6a7adcafd90"
+    },
+    {
+      "path": "results/HR60-development-failed-03/BUFFER_AUDIT.json",
+      "bytes": 738,
+      "sha256": "8334d200eb39ee94bea844d20dc82d489925f92b76b435c1cdb0ee53ba547ea6"
+    },
+    {
+      "path": "results/HR60-development-failed-03/FINITE_BUDGET.json",
+      "bytes": 6168,
+      "sha256": "71b14ba8f5183e70acb39576545018b76a1593d0f46f6fab7c75c64b0bdd4ab6"
+    },
+    {
+      "path": "results/HR60-development-failed-03/LEDGER_AUDIT.json",
+      "bytes": 346,
+      "sha256": "eaf8cf75d6b3f56e31d5a3fdafede6595d7356c100c5627b0ee96add1e91f2f9"
+    },
+    {
+      "path": "results/HR60-development-failed-03/RISK_AUDIT.json",
+      "bytes": 3179,
+      "sha256": "265e8741cf3739cc0c02e4bf09eaf5e051b222bf425ebd44e808d79060cd3d54"
+    },
+    {
+      "path": "results/HR60-development-failed-03/decisions.csv.gz",
+      "bytes": 16653,
+      "sha256": "599df7ce39827acf5457929a487e0c3efd016ccd85855f8e98c9d93fadcc1f5c"
+    },
+    {
+      "path": "results/HR60-development-failed-03/equity.csv.gz",
+      "bytes": 2216864,
+      "sha256": "2c79520423a13da3ad8b2b5fb01a3be90236e89a7537a69533bbeb7ba5b944fe"
+    },
+    {
+      "path": "results/HR60-development-failed-03/execution.jsonl",
+      "bytes": 616345,
+      "sha256": "9fda2db2db2492195af55bd95e94e9cf5b9aaaf11242c2db4dbf12a51f8df969"
+    },
+    {
+      "path": "results/HR60-development-failed-03/execution_summary.json",
+      "bytes": 143060,
+      "sha256": "049405e3d17bdab92228f55b95abf7a418d6d0b2bb8137afa3ca366fd189cc40"
+    },
+    {
+      "path": "results/HR60-development-failed-03/inputs.json",
+      "bytes": 207609,
+      "sha256": "c0de437f90aefaab115cbafd4c3d359d77d1e65fef1a76252df0f6cf9643a365"
+    },
+    {
+      "path": "results/HR60-development-failed-03/invocations.json",
+      "bytes": 7021,
+      "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/binance.py",
+      "bytes": 26039,
+      "sha256": "be190884f651bda265ad185777180647810455ad62809d8b00109c3d488f65d2"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/coinquant/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/coinquant/capital.py",
+      "bytes": 7426,
+      "sha256": "9ce5e29b774249754ca28d78d443ece2c03982010825b19681c96d23bd5cd930"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/coinquant/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/coinquant/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/coinquant/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/coinquant/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/coinquant/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/coinquant/renewal_risk.py",
+      "bytes": 4626,
+      "sha256": "a5f2a5dff51953c36756a0d7c9269f2c9e3dbb37b8812ae67a535f15e428fa38"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/edge_allocation.py",
+      "bytes": 414,
+      "sha256": "cf2913e84a80c855394a787cf9833ebac1e3948c730c11f4feba76feb902cb82"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/evidence/conditional-hold-20260923/PROTOCOL.md",
+      "bytes": 2989,
+      "sha256": "dfa120402148f71ee382a2d5bf7b45feb17a47dc08cc1eb9173729bda7932563"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/evidence/renewal-risk-20260923/PROTOCOL.md",
+      "bytes": 5217,
+      "sha256": "e57907d3cf3aa5dd2e6260098504dce5209d188ab2f004fbaf0591487927237a"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/linear_replay.py",
+      "bytes": 11116,
+      "sha256": "60d25c10fc078d11f1d13a25be000416cccdeedbc06d6d2346650cde00d87084"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/native_trail.py",
+      "bytes": 1621,
+      "sha256": "eeafdb810ffac2d63a62dd35924edd85ebaf631c8c0da5ee6cc47fe8f5c6ecb7"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/persistent_hold_replay.py",
+      "bytes": 62153,
+      "sha256": "c8a5dfdb6c3a257064e58aeb5bd8048a895e24d7119683a59f554bf888541b9f"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/renewal_risk.py",
+      "bytes": 4626,
+      "sha256": "a5f2a5dff51953c36756a0d7c9269f2c9e3dbb37b8812ae67a535f15e428fa38"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/bounded_execution_data.py",
+      "bytes": 6487,
+      "sha256": "242d98b0d3369f681678e3ca00204165f8ba59db3f58013c8112e9b3e98f5f2b"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/bounded_execution_replay.py",
+      "bytes": 9610,
+      "sha256": "0fc6561cb68f41cdfa086678318327b0ec0e732ee6d41ad391f03961292fad53"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/conditional_hold_replay.py",
+      "bytes": 5430,
+      "sha256": "6e5f8325eb19874f7b0650dca89cec2f47202c7adeb3e6f88559721a48a56649"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/execution_risk_audit.py",
+      "bytes": 8365,
+      "sha256": "cbe964d3be12cc0d383fd4db44f78216c3da93b9a6c4a6944b78dbac9ffe3070"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/persistent_hold_replay.py",
+      "bytes": 62153,
+      "sha256": "c8a5dfdb6c3a257064e58aeb5bd8048a895e24d7119683a59f554bf888541b9f"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/planned_exit.py",
+      "bytes": 7009,
+      "sha256": "abffe4e655ad4dba6afa06e7e3d9f94f991505f3a3c717aa52cff2ce9fa3500f"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/renewal_risk_replay.py",
+      "bytes": 7083,
+      "sha256": "4be1e9b4ea146271007b663e5780986a15be6b3d3722042b14039b9ae826c60b"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/research/verify_account_ledger.py",
+      "bytes": 2508,
+      "sha256": "50e9fbce7d46b7dd46dbfa1a502ad1565b45eec698704435df768469920108d7"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development-failed-03/measured_source/volatility_target.py",
+      "bytes": 569,
+      "sha256": "8a2916ad10c26393d5091d2fbef144451353494ce25fcfbf04608b269fbe1ea5"
+    },
+    {
+      "path": "results/HR60-development-failed-03/orders.csv.gz",
+      "bytes": 16073,
+      "sha256": "df08c319e9d9798282f95b3256014d63b48ae3ab2217a1c16d873d3ed6e04d32"
+    },
+    {
+      "path": "results/HR60-development-failed-03/result.json",
+      "bytes": 7424,
+      "sha256": "29d90469f52b3c64d270d4b38d4887884ae9e3a322453667080f60bce8d1d295"
+    },
+    {
+      "path": "results/HR60-development-partial-streams-01/decisions.csv.gz.partial",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-development-partial-streams-01/equity.csv.gz.partial",
+      "bytes": 2125844,
+      "sha256": "7c32f8b6c108bc9f6c14bc70f85cce12629797b06d026b76577e38c60b998ae3"
+    },
+    {
+      "path": "results/HR60-development-partial-streams-01/execution.jsonl.partial",
+      "bytes": 665245,
+      "sha256": "7a1b1317e4b737f14fafdbd43308803cf25005cf7294503d2d50f7b67b5dcc2e"
+    },
+    {
+      "path": "results/HR60-development-partial-streams-01/orders.csv.gz.partial",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01.invocation.json",
+      "bytes": 130612,
+      "sha256": "d5c763365906a5cad02ba814505c42fd1fa055df2eeb32c7807928083941d078"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01.log",
+      "bytes": 4672,
+      "sha256": "21664f4508a9bea7b7e1851d8402f8f4e369a21d73b6f3ae68675b34aeb47e91"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/BUFFER_AUDIT.json",
+      "bytes": 738,
+      "sha256": "59f212b919646d94ff68f93b31c87f0b92e32b13fbf2788e43b5d5d24fb9e72b"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/FINITE_BUDGET.json",
+      "bytes": 6168,
+      "sha256": "ae1db206c0ecd7661ccf226a841d483c4fe94a770175627d238e52e0303bed8a"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/LEDGER_AUDIT.json",
+      "bytes": 346,
+      "sha256": "81973385b4edf7d8224727be143c06f21305b42a72437a22dfed0be7f2273435"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/RISK_AUDIT.json",
+      "bytes": 3135,
+      "sha256": "9d6bee648f8799178912c0b350595d0d15023a5e7f72b471118b37f83fc6096c"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/decisions.csv.gz",
+      "bytes": 16628,
+      "sha256": "27264ed93cabe23ffa24c33bed8ac0b25fe181a4e1e2e7863dcab49277eab3db"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/equity.csv.gz",
+      "bytes": 2212575,
+      "sha256": "ecd754d0978cfbc64f077c06208356884e8a30e02362b49640cc6f659e94b643"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/execution.jsonl",
+      "bytes": 702389,
+      "sha256": "40be7f51ab027de27f0e945f12fa3fad6ab3ff9c43d43c477a7097b9df17df90"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/execution_summary.json",
+      "bytes": 144312,
+      "sha256": "e219f5a47f8447849d7f1858866c4260d9d4a415bf4d7db4e18ab1ddf5d1f0fc"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/inputs.json",
+      "bytes": 207609,
+      "sha256": "c0de437f90aefaab115cbafd4c3d359d77d1e65fef1a76252df0f6cf9643a365"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/invocations.json",
+      "bytes": 7021,
+      "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/binance.py",
+      "bytes": 26039,
+      "sha256": "be190884f651bda265ad185777180647810455ad62809d8b00109c3d488f65d2"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/coinquant/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/coinquant/capital.py",
+      "bytes": 7426,
+      "sha256": "9ce5e29b774249754ca28d78d443ece2c03982010825b19681c96d23bd5cd930"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/coinquant/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/coinquant/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/coinquant/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/coinquant/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/coinquant/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/coinquant/renewal_risk.py",
+      "bytes": 4626,
+      "sha256": "a5f2a5dff51953c36756a0d7c9269f2c9e3dbb37b8812ae67a535f15e428fa38"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/edge_allocation.py",
+      "bytes": 414,
+      "sha256": "cf2913e84a80c855394a787cf9833ebac1e3948c730c11f4feba76feb902cb82"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/evidence/conditional-hold-20260923/PROTOCOL.md",
+      "bytes": 2989,
+      "sha256": "dfa120402148f71ee382a2d5bf7b45feb17a47dc08cc1eb9173729bda7932563"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/evidence/renewal-risk-20260923/PROTOCOL.md",
+      "bytes": 5523,
+      "sha256": "4702bdd4025da7b58e47fba6925eaa38c5d3e22173a965f57c2f5b544785fc81"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/linear_replay.py",
+      "bytes": 11116,
+      "sha256": "60d25c10fc078d11f1d13a25be000416cccdeedbc06d6d2346650cde00d87084"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/native_trail.py",
+      "bytes": 1621,
+      "sha256": "eeafdb810ffac2d63a62dd35924edd85ebaf631c8c0da5ee6cc47fe8f5c6ecb7"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/persistent_hold_replay.py",
+      "bytes": 63307,
+      "sha256": "427755add103e6beaba2d2506b7c27f03a92b81ea1ef6585bbcba6a3d9de3428"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/renewal_risk.py",
+      "bytes": 4626,
+      "sha256": "a5f2a5dff51953c36756a0d7c9269f2c9e3dbb37b8812ae67a535f15e428fa38"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/bounded_execution_data.py",
+      "bytes": 6487,
+      "sha256": "242d98b0d3369f681678e3ca00204165f8ba59db3f58013c8112e9b3e98f5f2b"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/bounded_execution_replay.py",
+      "bytes": 9610,
+      "sha256": "0fc6561cb68f41cdfa086678318327b0ec0e732ee6d41ad391f03961292fad53"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/conditional_hold_replay.py",
+      "bytes": 5430,
+      "sha256": "6e5f8325eb19874f7b0650dca89cec2f47202c7adeb3e6f88559721a48a56649"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/execution_risk_audit.py",
+      "bytes": 8365,
+      "sha256": "cbe964d3be12cc0d383fd4db44f78216c3da93b9a6c4a6944b78dbac9ffe3070"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/persistent_hold_replay.py",
+      "bytes": 63307,
+      "sha256": "427755add103e6beaba2d2506b7c27f03a92b81ea1ef6585bbcba6a3d9de3428"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/planned_exit.py",
+      "bytes": 7009,
+      "sha256": "abffe4e655ad4dba6afa06e7e3d9f94f991505f3a3c717aa52cff2ce9fa3500f"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/renewal_risk_replay.py",
+      "bytes": 7987,
+      "sha256": "d1a739431502dcd4050d2826846774db2a1c14cf731e2a50db4eadf5d4744e88"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/research/verify_account_ledger.py",
+      "bytes": 2508,
+      "sha256": "50e9fbce7d46b7dd46dbfa1a502ad1565b45eec698704435df768469920108d7"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/measured_source/volatility_target.py",
+      "bytes": 569,
+      "sha256": "8a2916ad10c26393d5091d2fbef144451353494ce25fcfbf04608b269fbe1ea5"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/orders.csv.gz",
+      "bytes": 16059,
+      "sha256": "75a5b8812425afecab4ba581e997cd300aaff97ffa2690d9c80b5d0b3ac54c5a"
+    },
+    {
+      "path": "results/HR60-development-retry-stale-01/result.json",
+      "bytes": 7515,
+      "sha256": "654163fc29056a6c5f0f9c4ebe5c44531578fd4baba0dbd41e480e478def519c"
+    },
+    {
+      "path": "results/HR60-development-superseded-04.invocation.json",
+      "bytes": 130612,
+      "sha256": "d5c763365906a5cad02ba814505c42fd1fa055df2eeb32c7807928083941d078"
+    },
+    {
+      "path": "results/HR60-development-superseded-04.log",
+      "bytes": 4672,
+      "sha256": "21664f4508a9bea7b7e1851d8402f8f4e369a21d73b6f3ae68675b34aeb47e91"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/BUFFER_AUDIT.json",
+      "bytes": 738,
+      "sha256": "59f212b919646d94ff68f93b31c87f0b92e32b13fbf2788e43b5d5d24fb9e72b"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/FINITE_BUDGET.json",
+      "bytes": 6168,
+      "sha256": "ae1db206c0ecd7661ccf226a841d483c4fe94a770175627d238e52e0303bed8a"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/LEDGER_AUDIT.json",
+      "bytes": 346,
+      "sha256": "81973385b4edf7d8224727be143c06f21305b42a72437a22dfed0be7f2273435"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/RISK_AUDIT.json",
+      "bytes": 3135,
+      "sha256": "9d6bee648f8799178912c0b350595d0d15023a5e7f72b471118b37f83fc6096c"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/decisions.csv.gz",
+      "bytes": 16628,
+      "sha256": "27264ed93cabe23ffa24c33bed8ac0b25fe181a4e1e2e7863dcab49277eab3db"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/equity.csv.gz",
+      "bytes": 2212575,
+      "sha256": "ecd754d0978cfbc64f077c06208356884e8a30e02362b49640cc6f659e94b643"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/execution.jsonl",
+      "bytes": 702389,
+      "sha256": "40be7f51ab027de27f0e945f12fa3fad6ab3ff9c43d43c477a7097b9df17df90"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/execution_summary.json",
+      "bytes": 144312,
+      "sha256": "e219f5a47f8447849d7f1858866c4260d9d4a415bf4d7db4e18ab1ddf5d1f0fc"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/inputs.json",
+      "bytes": 207609,
+      "sha256": "c0de437f90aefaab115cbafd4c3d359d77d1e65fef1a76252df0f6cf9643a365"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/invocations.json",
+      "bytes": 7021,
+      "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/binance.py",
+      "bytes": 26039,
+      "sha256": "be190884f651bda265ad185777180647810455ad62809d8b00109c3d488f65d2"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/coinquant/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/coinquant/capital.py",
+      "bytes": 7426,
+      "sha256": "9ce5e29b774249754ca28d78d443ece2c03982010825b19681c96d23bd5cd930"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/coinquant/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/coinquant/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/coinquant/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/coinquant/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/coinquant/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/coinquant/renewal_risk.py",
+      "bytes": 4626,
+      "sha256": "a5f2a5dff51953c36756a0d7c9269f2c9e3dbb37b8812ae67a535f15e428fa38"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/edge_allocation.py",
+      "bytes": 414,
+      "sha256": "cf2913e84a80c855394a787cf9833ebac1e3948c730c11f4feba76feb902cb82"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/evidence/conditional-hold-20260923/PROTOCOL.md",
+      "bytes": 2989,
+      "sha256": "dfa120402148f71ee382a2d5bf7b45feb17a47dc08cc1eb9173729bda7932563"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/evidence/renewal-risk-20260923/PROTOCOL.md",
+      "bytes": 5523,
+      "sha256": "4702bdd4025da7b58e47fba6925eaa38c5d3e22173a965f57c2f5b544785fc81"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/linear_replay.py",
+      "bytes": 11116,
+      "sha256": "60d25c10fc078d11f1d13a25be000416cccdeedbc06d6d2346650cde00d87084"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/native_trail.py",
+      "bytes": 1621,
+      "sha256": "eeafdb810ffac2d63a62dd35924edd85ebaf631c8c0da5ee6cc47fe8f5c6ecb7"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/persistent_hold_replay.py",
+      "bytes": 63307,
+      "sha256": "427755add103e6beaba2d2506b7c27f03a92b81ea1ef6585bbcba6a3d9de3428"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/renewal_risk.py",
+      "bytes": 4626,
+      "sha256": "a5f2a5dff51953c36756a0d7c9269f2c9e3dbb37b8812ae67a535f15e428fa38"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/bounded_execution_data.py",
+      "bytes": 6487,
+      "sha256": "242d98b0d3369f681678e3ca00204165f8ba59db3f58013c8112e9b3e98f5f2b"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/bounded_execution_replay.py",
+      "bytes": 9610,
+      "sha256": "0fc6561cb68f41cdfa086678318327b0ec0e732ee6d41ad391f03961292fad53"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/conditional_hold_replay.py",
+      "bytes": 5430,
+      "sha256": "6e5f8325eb19874f7b0650dca89cec2f47202c7adeb3e6f88559721a48a56649"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/execution_risk_audit.py",
+      "bytes": 8365,
+      "sha256": "cbe964d3be12cc0d383fd4db44f78216c3da93b9a6c4a6944b78dbac9ffe3070"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/persistent_hold_replay.py",
+      "bytes": 63307,
+      "sha256": "427755add103e6beaba2d2506b7c27f03a92b81ea1ef6585bbcba6a3d9de3428"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/planned_exit.py",
+      "bytes": 7009,
+      "sha256": "abffe4e655ad4dba6afa06e7e3d9f94f991505f3a3c717aa52cff2ce9fa3500f"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/renewal_risk_replay.py",
+      "bytes": 7987,
+      "sha256": "d1a739431502dcd4050d2826846774db2a1c14cf731e2a50db4eadf5d4744e88"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/research/verify_account_ledger.py",
+      "bytes": 2508,
+      "sha256": "50e9fbce7d46b7dd46dbfa1a502ad1565b45eec698704435df768469920108d7"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/measured_source/volatility_target.py",
+      "bytes": 569,
+      "sha256": "8a2916ad10c26393d5091d2fbef144451353494ce25fcfbf04608b269fbe1ea5"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/orders.csv.gz",
+      "bytes": 16059,
+      "sha256": "75a5b8812425afecab4ba581e997cd300aaff97ffa2690d9c80b5d0b3ac54c5a"
+    },
+    {
+      "path": "results/HR60-development-superseded-04/result.json",
+      "bytes": 7515,
+      "sha256": "654163fc29056a6c5f0f9c4ebe5c44531578fd4baba0dbd41e480e478def519c"
+    },
+    {
+      "path": "results/HR60-development-superseded-05.invocation.json",
+      "bytes": 130612,
+      "sha256": "0ad0c125fb5e7e076be79083e80045d27a3e9a2a778e7a155478fc9306791bc2"
+    },
+    {
+      "path": "results/HR60-development-superseded-05.log",
+      "bytes": 4672,
+      "sha256": "3e13271aa83b6441e65006bdd498e03ca20726e8a2a8f10f5cfb600d8ef782ed"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/BUFFER_AUDIT.json",
+      "bytes": 738,
+      "sha256": "59f212b919646d94ff68f93b31c87f0b92e32b13fbf2788e43b5d5d24fb9e72b"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/FINITE_BUDGET.json",
+      "bytes": 6168,
+      "sha256": "ae1db206c0ecd7661ccf226a841d483c4fe94a770175627d238e52e0303bed8a"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/LEDGER_AUDIT.json",
+      "bytes": 346,
+      "sha256": "aa8be5d4fb3476cc26c7ed946b427d1deabec84c46b37c7e4a2200b17bd1b960"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/RISK_AUDIT.json",
+      "bytes": 3135,
+      "sha256": "9d6bee648f8799178912c0b350595d0d15023a5e7f72b471118b37f83fc6096c"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/decisions.csv.gz",
+      "bytes": 16628,
+      "sha256": "157f1b99c2df7f3a7964339b1b1cc738ea26245ba22640885b6722aa5f7badc3"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/decisions.csv.gz.partial",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/equity.csv.gz",
+      "bytes": 2212575,
+      "sha256": "d7b983f75d81a74b83bf416bd46faca4edcf7315853dc26c597e73d1c7efab60"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/equity.csv.gz.partial",
+      "bytes": 2125844,
+      "sha256": "7c32f8b6c108bc9f6c14bc70f85cce12629797b06d026b76577e38c60b998ae3"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/execution.jsonl",
+      "bytes": 719889,
+      "sha256": "e1f481aafdb8df2c8029bbc392e6ccf7a74575916a8ff4f6192b8d809b018b7e"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/execution.jsonl.partial",
+      "bytes": 665245,
+      "sha256": "7a1b1317e4b737f14fafdbd43308803cf25005cf7294503d2d50f7b67b5dcc2e"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/execution_summary.json",
+      "bytes": 156182,
+      "sha256": "4c695aa23a37177883fe6aeb97007bec850505841b0ac66c4eca8341884acc53"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/inputs.json",
+      "bytes": 229233,
+      "sha256": "e453ef127b0e9085c4c71fd2ddce12005c39fb067dc8b105e579b7568874548f"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/invocations.json",
+      "bytes": 7021,
+      "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/binance.py",
+      "bytes": 26039,
+      "sha256": "be190884f651bda265ad185777180647810455ad62809d8b00109c3d488f65d2"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/coinquant/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/coinquant/capital.py",
+      "bytes": 7426,
+      "sha256": "9ce5e29b774249754ca28d78d443ece2c03982010825b19681c96d23bd5cd930"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/coinquant/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/coinquant/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/coinquant/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/coinquant/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/coinquant/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/coinquant/renewal_risk.py",
+      "bytes": 5507,
+      "sha256": "3aaaa810546dce37e8869c5e28e6ec14447fde1554893c0f475c53f59db30e78"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/edge_allocation.py",
+      "bytes": 414,
+      "sha256": "cf2913e84a80c855394a787cf9833ebac1e3948c730c11f4feba76feb902cb82"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/evidence/conditional-hold-20260923/PROTOCOL.md",
+      "bytes": 2989,
+      "sha256": "dfa120402148f71ee382a2d5bf7b45feb17a47dc08cc1eb9173729bda7932563"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/evidence/renewal-risk-20260923/PROTOCOL.md",
+      "bytes": 5523,
+      "sha256": "4702bdd4025da7b58e47fba6925eaa38c5d3e22173a965f57c2f5b544785fc81"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/linear_replay.py",
+      "bytes": 11116,
+      "sha256": "60d25c10fc078d11f1d13a25be000416cccdeedbc06d6d2346650cde00d87084"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/native_trail.py",
+      "bytes": 1621,
+      "sha256": "eeafdb810ffac2d63a62dd35924edd85ebaf631c8c0da5ee6cc47fe8f5c6ecb7"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/persistent_hold_replay.py",
+      "bytes": 65507,
+      "sha256": "0168ab6a11c5a62d43ee3b4552c2c5fc2f21548c05ba7476b4ec9f20b1ebe985"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/renewal_risk.py",
+      "bytes": 5507,
+      "sha256": "3aaaa810546dce37e8869c5e28e6ec14447fde1554893c0f475c53f59db30e78"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/bounded_execution_data.py",
+      "bytes": 6487,
+      "sha256": "242d98b0d3369f681678e3ca00204165f8ba59db3f58013c8112e9b3e98f5f2b"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/bounded_execution_replay.py",
+      "bytes": 9610,
+      "sha256": "0fc6561cb68f41cdfa086678318327b0ec0e732ee6d41ad391f03961292fad53"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/conditional_hold_replay.py",
+      "bytes": 5430,
+      "sha256": "6e5f8325eb19874f7b0650dca89cec2f47202c7adeb3e6f88559721a48a56649"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/execution_risk_audit.py",
+      "bytes": 8365,
+      "sha256": "cbe964d3be12cc0d383fd4db44f78216c3da93b9a6c4a6944b78dbac9ffe3070"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/persistent_hold_replay.py",
+      "bytes": 65507,
+      "sha256": "0168ab6a11c5a62d43ee3b4552c2c5fc2f21548c05ba7476b4ec9f20b1ebe985"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/planned_exit.py",
+      "bytes": 7009,
+      "sha256": "abffe4e655ad4dba6afa06e7e3d9f94f991505f3a3c717aa52cff2ce9fa3500f"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/renewal_risk_replay.py",
+      "bytes": 8120,
+      "sha256": "207095f08f51cd139e2eeaed3c682d8bab694c5c9971abae2e31fa17c34b81f4"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/research/verify_account_ledger.py",
+      "bytes": 2508,
+      "sha256": "50e9fbce7d46b7dd46dbfa1a502ad1565b45eec698704435df768469920108d7"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/measured_source/volatility_target.py",
+      "bytes": 569,
+      "sha256": "8a2916ad10c26393d5091d2fbef144451353494ce25fcfbf04608b269fbe1ea5"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/orders.csv.gz",
+      "bytes": 16059,
+      "sha256": "5c2c6159baa0a8082072b017886645c62786a1c2f68009b92b21ab6d9b5f44af"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/orders.csv.gz.partial",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-development-superseded-05/result.json",
+      "bytes": 7515,
+      "sha256": "3367298979e7b213cac510cd94d2402451b0537cbff6635283af10c57af6e249"
+    },
+    {
+      "path": "results/HR60-development.invocation.json",
+      "bytes": 130612,
+      "sha256": "77f601a24b4df35c39608e3fcbc21e0ff68ee20e51efff8b7e466c60a43b84ab"
+    },
+    {
+      "path": "results/HR60-development.log",
+      "bytes": 4672,
+      "sha256": "b0d96f2e4fe5707d9f013ae316ad97c65df9ff3d4206ecd18f98b1f85016c30b"
+    },
+    {
+      "path": "results/HR60-development/BUFFER_AUDIT.json",
+      "bytes": 738,
+      "sha256": "59f212b919646d94ff68f93b31c87f0b92e32b13fbf2788e43b5d5d24fb9e72b"
+    },
+    {
+      "path": "results/HR60-development/FINITE_BUDGET.json",
+      "bytes": 6168,
+      "sha256": "ae1db206c0ecd7661ccf226a841d483c4fe94a770175627d238e52e0303bed8a"
+    },
+    {
+      "path": "results/HR60-development/LEDGER_AUDIT.json",
+      "bytes": 346,
+      "sha256": "bd8b700447a042b8f300ab1216aeab79081077a0c74cbbd45ccb8311428b7d78"
+    },
+    {
+      "path": "results/HR60-development/RISK_AUDIT.json",
+      "bytes": 3135,
+      "sha256": "9d6bee648f8799178912c0b350595d0d15023a5e7f72b471118b37f83fc6096c"
+    },
+    {
+      "path": "results/HR60-development/decisions.csv.gz",
+      "bytes": 16628,
+      "sha256": "f9ccca5f22904ab4c9d1f77b0ce7533f7eb00669b86a0845367ff8b3e36d749a"
+    },
+    {
+      "path": "results/HR60-development/equity.csv.gz",
+      "bytes": 2212575,
+      "sha256": "4ea4b9e0a7f4e73aba2cdb29f4aaf2b73313ae105d36fd71ce4bfef6b77daed4"
+    },
+    {
+      "path": "results/HR60-development/execution.jsonl",
+      "bytes": 719889,
+      "sha256": "e1f481aafdb8df2c8029bbc392e6ccf7a74575916a8ff4f6192b8d809b018b7e"
+    },
+    {
+      "path": "results/HR60-development/execution_summary.json",
+      "bytes": 156182,
+      "sha256": "4c695aa23a37177883fe6aeb97007bec850505841b0ac66c4eca8341884acc53"
+    },
+    {
+      "path": "results/HR60-development/inputs.json",
+      "bytes": 229233,
+      "sha256": "e453ef127b0e9085c4c71fd2ddce12005c39fb067dc8b105e579b7568874548f"
+    },
+    {
+      "path": "results/HR60-development/invocations.json",
+      "bytes": 7021,
+      "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd"
+    },
+    {
+      "path": "results/HR60-development/measured_source/binance.py",
+      "bytes": 26039,
+      "sha256": "be190884f651bda265ad185777180647810455ad62809d8b00109c3d488f65d2"
+    },
+    {
+      "path": "results/HR60-development/measured_source/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development/measured_source/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development/measured_source/coinquant/campaign.py",
+      "bytes": 5857,
+      "sha256": "394c54df36565c66a0c0380cc548fb325956475f4209427ef488faf5be83e7a1"
+    },
+    {
+      "path": "results/HR60-development/measured_source/coinquant/capital.py",
+      "bytes": 7426,
+      "sha256": "9ce5e29b774249754ca28d78d443ece2c03982010825b19681c96d23bd5cd930"
+    },
+    {
+      "path": "results/HR60-development/measured_source/coinquant/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development/measured_source/coinquant/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development/measured_source/coinquant/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development/measured_source/coinquant/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development/measured_source/coinquant/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development/measured_source/coinquant/renewal_risk.py",
+      "bytes": 5507,
+      "sha256": "3aaaa810546dce37e8869c5e28e6ec14447fde1554893c0f475c53f59db30e78"
+    },
+    {
+      "path": "results/HR60-development/measured_source/conditional_hold.py",
+      "bytes": 1596,
+      "sha256": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7"
+    },
+    {
+      "path": "results/HR60-development/measured_source/edge_allocation.py",
+      "bytes": 414,
+      "sha256": "cf2913e84a80c855394a787cf9833ebac1e3948c730c11f4feba76feb902cb82"
+    },
+    {
+      "path": "results/HR60-development/measured_source/evidence/conditional-hold-20260923/PROTOCOL.md",
+      "bytes": 2989,
+      "sha256": "dfa120402148f71ee382a2d5bf7b45feb17a47dc08cc1eb9173729bda7932563"
+    },
+    {
+      "path": "results/HR60-development/measured_source/evidence/renewal-risk-20260923/PROTOCOL.md",
+      "bytes": 5523,
+      "sha256": "4702bdd4025da7b58e47fba6925eaa38c5d3e22173a965f57c2f5b544785fc81"
+    },
+    {
+      "path": "results/HR60-development/measured_source/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development/measured_source/linear_account.py",
+      "bytes": 2347,
+      "sha256": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339"
+    },
+    {
+      "path": "results/HR60-development/measured_source/linear_replay.py",
+      "bytes": 11116,
+      "sha256": "60d25c10fc078d11f1d13a25be000416cccdeedbc06d6d2346650cde00d87084"
+    },
+    {
+      "path": "results/HR60-development/measured_source/linear_sizing.py",
+      "bytes": 4763,
+      "sha256": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275"
+    },
+    {
+      "path": "results/HR60-development/measured_source/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development/measured_source/multiscale.py",
+      "bytes": 9443,
+      "sha256": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388"
+    },
+    {
+      "path": "results/HR60-development/measured_source/native_trail.py",
+      "bytes": 1621,
+      "sha256": "eeafdb810ffac2d63a62dd35924edd85ebaf631c8c0da5ee6cc47fe8f5c6ecb7"
+    },
+    {
+      "path": "results/HR60-development/measured_source/opportunities.py",
+      "bytes": 6849,
+      "sha256": "37f1715a4c1a2b26a04403cfefc74f65f1d16a2fcc3af1ba91f1ffd98e1e1f82"
+    },
+    {
+      "path": "results/HR60-development/measured_source/persistent_hold_replay.py",
+      "bytes": 65521,
+      "sha256": "a4080bf57d1e4ce190fa5b698ceb2511676466ef3b0c067e17a31b432339b76b"
+    },
+    {
+      "path": "results/HR60-development/measured_source/renewal_risk.py",
+      "bytes": 5507,
+      "sha256": "3aaaa810546dce37e8869c5e28e6ec14447fde1554893c0f475c53f59db30e78"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/bounded_execution.py",
+      "bytes": 14415,
+      "sha256": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/bounded_execution_data.py",
+      "bytes": 6487,
+      "sha256": "242d98b0d3369f681678e3ca00204165f8ba59db3f58013c8112e9b3e98f5f2b"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/bounded_execution_replay.py",
+      "bytes": 9610,
+      "sha256": "0fc6561cb68f41cdfa086678318327b0ec0e732ee6d41ad391f03961292fad53"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/conditional_hold_replay.py",
+      "bytes": 5430,
+      "sha256": "6e5f8325eb19874f7b0650dca89cec2f47202c7adeb3e6f88559721a48a56649"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/execution_risk_audit.py",
+      "bytes": 8365,
+      "sha256": "cbe964d3be12cc0d383fd4db44f78216c3da93b9a6c4a6944b78dbac9ffe3070"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/invocation_draws.json",
+      "bytes": 18603,
+      "sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/minute_evidence.py",
+      "bytes": 1612,
+      "sha256": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/persistent_hold_replay.py",
+      "bytes": 65521,
+      "sha256": "a4080bf57d1e4ce190fa5b698ceb2511676466ef3b0c067e17a31b432339b76b"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/planned_exit.py",
+      "bytes": 7009,
+      "sha256": "abffe4e655ad4dba6afa06e7e3d9f94f991505f3a3c717aa52cff2ce9fa3500f"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/renewal_risk_replay.py",
+      "bytes": 8120,
+      "sha256": "207095f08f51cd139e2eeaed3c682d8bab694c5c9971abae2e31fa17c34b81f4"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development/measured_source/research/verify_account_ledger.py",
+      "bytes": 2508,
+      "sha256": "50e9fbce7d46b7dd46dbfa1a502ad1565b45eec698704435df768469920108d7"
+    },
+    {
+      "path": "results/HR60-development/measured_source/spec.json",
+      "bytes": 1950,
+      "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9"
+    },
+    {
+      "path": "results/HR60-development/measured_source/volatility_target.py",
+      "bytes": 569,
+      "sha256": "8a2916ad10c26393d5091d2fbef144451353494ce25fcfbf04608b269fbe1ea5"
+    },
+    {
+      "path": "results/HR60-development/orders.csv.gz",
+      "bytes": 16059,
+      "sha256": "8f3018cc78f6d793893fc5f47bf42a240952ef5dae794b9adc3499797736a7db"
+    },
+    {
+      "path": "results/HR60-development/result.json",
+      "bytes": 7515,
+      "sha256": "52da59fe66240eefe71d2f668681c25934a489706f7472bcf6ceefb0fb108e0c"
+    },
+    {
+      "path": "results/HR60-full-window-failed-01.failure.txt",
+      "bytes": 524,
+      "sha256": "c1266781fabdf375f0be6e300d8175c9adfe3130b131ba2bd364a32d365429ec"
+    },
+    {
+      "path": "results/HR60-full-window-failed-01.invocation.json",
+      "bytes": 48879,
+      "sha256": "c378ff49e81333eace37e4e7d84649b53848f24a85e970d9a48df37a60caed20"
+    },
+    {
+      "path": "results/HR60-full-window-failed-01.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-full-window-failed-01/decisions.csv.gz.partial",
+      "bytes": 4034,
+      "sha256": "db637664a8e5cb16c1943dbc7741e20aad62071943dfb1a85059dbaee4c05863"
+    },
+    {
+      "path": "results/HR60-full-window-failed-01/equity.csv.gz.partial",
+      "bytes": 393994,
+      "sha256": "a5fadd1a1243dbafe3999fbfab7fbbbbfc35b2cf110ed77b0d3ef05f625c0950"
+    },
+    {
+      "path": "results/HR60-full-window-failed-01/execution.jsonl.partial",
+      "bytes": 140722,
+      "sha256": "86563d5133e1947374d90fdc9fe47c6855acb2f67cfb080455bcd220443b9f3a"
+    },
+    {
+      "path": "results/HR60-full-window-failed-01/orders.csv.gz.partial",
+      "bytes": 2954,
+      "sha256": "bbe584ead13e07149eaf158f9aff5ebb435998b0faa5bf9e024cad0c93889281"
+    },
+    {
+      "path": "results/HR60-full-window.failure.txt",
+      "bytes": 524,
+      "sha256": "c1266781fabdf375f0be6e300d8175c9adfe3130b131ba2bd364a32d365429ec"
+    },
+    {
+      "path": "results/HR60-full-window.invocation.json",
+      "bytes": 48879,
+      "sha256": "c378ff49e81333eace37e4e7d84649b53848f24a85e970d9a48df37a60caed20"
+    },
+    {
+      "path": "results/HR60-full-window.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "results/HR60-full-window/decisions.csv.gz.partial",
+      "bytes": 4034,
+      "sha256": "db637664a8e5cb16c1943dbc7741e20aad62071943dfb1a85059dbaee4c05863"
+    },
+    {
+      "path": "results/HR60-full-window/equity.csv.gz.partial",
+      "bytes": 393994,
+      "sha256": "a5fadd1a1243dbafe3999fbfab7fbbbbfc35b2cf110ed77b0d3ef05f625c0950"
+    },
+    {
+      "path": "results/HR60-full-window/execution.jsonl.partial",
+      "bytes": 140722,
+      "sha256": "86563d5133e1947374d90fdc9fe47c6855acb2f67cfb080455bcd220443b9f3a"
+    },
+    {
+      "path": "results/HR60-full-window/orders.csv.gz.partial",
+      "bytes": 2954,
+      "sha256": "bbe584ead13e07149eaf158f9aff5ebb435998b0faa5bf9e024cad0c93889281"
+    }
+  ]
+}
