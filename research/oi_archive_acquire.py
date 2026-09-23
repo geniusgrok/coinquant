@@ -73,7 +73,7 @@ def acquire(day):
         unique[label] = row
     expected = {datetime.combine(day, datetime.min.time()) + timedelta(minutes=5*i)
                 for i in range(288)}
-    missing = sorted(expected - unique)
+    missing = sorted(expected - unique.keys())
     extra = sorted(unique.keys() - expected)
     record.update(status='quarantined_conflict' if conflicts or invalid else
                   'verified_complete' if not missing and not extra else 'verified_incomplete',
