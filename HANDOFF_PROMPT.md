@@ -1,5 +1,9 @@
 # Coinquant 当前恢复入口
 
+## 新增：覆盖诊断未找到可直接晋级的简单替代信号
+
+只读 795 调用诊断保存在 `evidence/initial-atr-stop-20260923/SIGNAL_COVERAGE.md`；四份逐调用原始诊断包 `COINQUANT_FULL_SIGNAL_COVERAGE_DIAGNOSTICS_20260923.zip`，Library ID `libfile_7ad7959c00d88191b38aad638ba497c7`、77,003 字节、SHA `b7de26b8e6e922938509ca1287d0f479bb574c1858edd9c8014dfd165a29cb0d`，回读字节一致。2024+ 的 327 调用 SX60 仅 17 个有效多头机会调用；21 个“以后七日涨>10%且当时无多头机会”的调用互有重叠，绝非 21 笔错过订单。日线 T20 覆盖多但已在 2022 失优势；四小时 20/10 突破与冲击到期后续接两项**信号级探针**在 2025/26 费前七日平均回报为负，未做经济账户，也不将其升级为新版本。按已测真实交易的单位风险净收益与覆盖缺口归因后再冻结有依据的单一新机制；不能微调阈值、假装信号诊断是可交易收益或声称未来保证。
+
 ## 最新：PA1 初始止损保护失败；下一步先查信号优势
 
 研究分支 `research/initial-atr-stop-core-20260923` 冻结源码远端 `59995609302793ef51fbe8d89b744a0d106df27c`、tree `8d4b512b67c0a7caf8860844073b5a89765147b2`；同 468 调用开发输入 `2e8bbefb4f1994f73e7c14048012f7b008d3b848b6a71b6eb31838844ddef8cb`，PA1 **68.279875% CAGR /62.123308% 连续 MDD /CNY80,195.00**。较紧的初始 ATR 止损缩短亏损但显著损害 2020 盈利复利，双门拒绝；不跑 795、压力、缺席。完整原件 `COINQUANT_PA1_DEVELOPMENT_REJECT_20260923.zip`，Library ID `libfile_c28b41574bf08191ab36ef544fbc684c`、2,130,659 字节、SHA `03affaa733a6c1f36fc4ecb82163b6e0a63027bf5f6b6c7e67dbe1bda66575bf`，回读字节一致；报告/协议/索引在 `evidence/initial-atr-stop-20260923/`。旧 PXT/PXC 输入和代码在各自独立原件包与历史研究提交。现在停止追调 ATR/峰值百分数，沿真实账户身份分析收益分布和后段有效事件，选择单一新的信号或持仓机制。main PR #9 合并后仍 `cd4d7e7`，生产默认 B36/execute 阻止保留，正式全窗目标未完成。
