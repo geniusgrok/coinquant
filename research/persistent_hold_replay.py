@@ -135,13 +135,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             not execution.sustainable or not execution.sliced or execution.planned_exit!='sliced' or
             D(risk_scale)!=6 or D(short_risk_scale if short_risk_scale is not None else risk_scale)!=0 or
             schedule!='sparse' or conditional_hold or renewal_risk or payoff is not None):
-        raise ValueError('PXT requires the frozen sparse SX60 account and persistent impulse')
+        raise ValueError('PXC requires the frozen sparse SX60 account and persistent impulse')
     if execution is not None and (entry_capacity_unlimited or native_trail_order):
         raise ValueError('execution study cannot mix other diagnostic mechanisms')
     if entry_side not in ('both','long','short'):raise ValueError('invalid diagnostic entry side')
     if native_trail_order not in (None,'low_first','high_first'):raise ValueError('unknown native trailing path')
     if native_trail_order and (reference!='impulse_hold' or entry_side!='long'):raise ValueError('T requires frozen persistent long entry')
-    trail_peak=ZERO;trail_invalid=False;opposing_closes=set()
+    trail_peak=ZERO;trail_invalid=False;opposing_closes=set();completed_close_peak=ZERO
     if payoff is not None and (reference!='long' or allocation!='volatility' or protection!='fixed' or baseline):
         raise ValueError('payoff policy requires fixed long volatility control')
     hypothetical=bool(payoff and payoff.get('terminal_label'))
@@ -578,10 +578,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                             else:counts['size_below_minimum']+=1;action='size_below_minimum'
                 dw.writerow(decision_state+[action,limiter]+[str(caps.get(k,'')) for k in ('risk','exposure','margin','notional','liquidity')]+[str(raw_qty),str(qty),str(edge_target),len(edge_observations)])
                 if invocation_trail and account.q and opportunity and opportunity.identity==last_entry_epoch and not (planned_window is not None and not planned_window.terminal_reason):
-                    proposed=floor_step(min(x[1] for x in window[-10:]),TICK)
+                    proposed=floor_step(completed_close_peak*D('.90'),TICK)
                     if proposed>account.sl:
                         if t not in execution.refined_hours or minutes is None or t+60000 not in minutes['klines'] or t+60000 not in minutes['markPriceKlines']:
-                            raise ValueError(f'missing PXT protection-amendment minute at {t}')
+                            raise ValueError(f'missing PXC protection-amendment minute at {t}')
                         pending_trail=(last_entry_epoch,proposed)
                         execution_record('trail_scheduled',dict(call_time=t,execute_time=t+60000,
                             campaign=last_entry_epoch,stop_before=str(account.sl),proposed_stop=str(proposed)))
@@ -755,6 +755,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 elif hit_stop:close(st,'stop',min(account.sl,so) if long else max(account.sl,so))
                 elif (long and smh>=account.tp) or (not long and sml<=account.tp):close(st,'take',account.tp)
             observe(t+HOUR,'close',mc)
+            if invocation_trail:
+                completed_close_peak=max(completed_close_peak,mc) if account.q else ZERO
             exposure=abs(account.q)*mc/account.equity(mc) if account.equity(mc)>0 else ZERO
             exposure_sum+=exposure;max_exposure=max(max_exposure,exposure);holding_hours+=bool(account.q)
             if account.equity(mc)<=0:
@@ -849,7 +851,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['daily_publication_lag_seconds']=60
         result['supplementary_warmup_days']=len(daily_warmup)
     if invocation_trail:
-        result['candidate']='PXT'
+        result['candidate']='PXC'
         result['amendment_lag_seconds']=60
     if renewal_risk:
         result['renewal_risk_checks_passed']=not any(counts.get(k,0) for k in (
