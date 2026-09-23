@@ -1,0 +1,83 @@
+name: Temporary OI archive integrity probe
+on:
+  pull_request:
+    branches: [main]
+    paths: ['.github/workflows/probe-oi-archive.yml']
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Verify a fixed set of public OI archives and retain original bytes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import csv
+          import hashlib
+          import io
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from urllib.error import HTTPError
+          from urllib.request import urlopen
+          from zipfile import ZipFile
+
+          days = ('2020-08-31', '2020-09-01', '2020-09-02', '2020-09-03',
+                  '2021-01-01', '2023-11-10', '2026-06-24', '2026-06-25',
+                  '2026-09-18')
+          out = Path(os.environ['RUNNER_TEMP']) / 'oi-original-probe'
+          out.mkdir()
+          manifest = []
+          base = 'https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/'
+          for day in days:
+              name = f'BTCUSDT-metrics-{day}.zip'
+              url = base + name
+              record = {'day': day, 'source': url}
+              try:
+                  with urlopen(url + '.CHECKSUM', timeout=20) as response:
+                      checksum = response.read()
+                  with urlopen(url, timeout=30) as response:
+                      raw = response.read()
+                      record['last_modified'] = response.headers.get('Last-Modified')
+              except HTTPError as exc:
+                  if exc.code != 404:
+                      raise
+                  record['status'] = '404'
+                  manifest.append(record)
+                  continue
+              expected, checksum_name = checksum.decode('ascii').strip().split()
+              if checksum_name != name or hashlib.sha256(raw).hexdigest() != expected:
+                  raise ValueError(f'checksum mismatch: {day}')
+              with ZipFile(io.BytesIO(raw)) as archive:
+                  members = archive.namelist()
+                  if len(members) != 1 or archive.testzip() is not None:
+                      raise ValueError(f'invalid ZIP: {day}')
+                  rows = list(csv.DictReader(io.StringIO(archive.read(members[0]).decode('utf-8-sig'))))
+              if not rows or 'sum_open_interest' not in rows[0] or 'create_time' not in rows[0]:
+                  raise ValueError(f'unexpected metrics schema: {day}')
+              times = [datetime.fromisoformat(r['create_time']).replace(tzinfo=timezone.utc)
+                       for r in rows]
+              if times != sorted(set(times)):
+                  raise ValueError(f'duplicate or unordered labels within {day}')
+              (out / name).write_bytes(raw)
+              (out / (name + '.CHECKSUM')).write_bytes(checksum)
+              record.update(status='verified', sha256=expected, bytes=len(raw),
+                            header=list(rows[0]), count=len(rows),
+                            first_label=rows[0]['create_time'],
+                            last_label=rows[-1]['create_time'],
+                            first_oi=rows[0]['sum_open_interest'],
+                            last_oi=rows[-1]['sum_open_interest'])
+              manifest.append(record)
+          (out / 'MANIFEST.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+          print(json.dumps(manifest, ensure_ascii=False, indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: oi-original-probe
+          path: ${{ runner.temp }}/oi-original-probe/
+          compression-level: 0
+          retention-days: 30
+          if-no-files-found: error
