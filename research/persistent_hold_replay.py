@@ -109,14 +109,19 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=()):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False):
     multiscale = reference == 'multiscale'
+    if conditional_hold and (reference != 'impulse_hold' or D(risk_scale) != 6 or
+            D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0 or
+            schedule != 'sparse' or execution is None or not execution.sliced or
+            not execution.sustainable or execution.planned_exit != 'sliced'):
+        raise ValueError('H60 requires the frozen SX60 entry, funds and execution')
     if multiscale and (D(risk_scale) != 6 or D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0
             or schedule != 'sparse' or execution is None or not execution.sliced
             or not execution.sustainable or execution.planned_exit != 'sliced'):
         raise ValueError('M60 requires its frozen sparse long SX60 execution and capital controls')
-    if daily_warmup and not multiscale:
-        raise ValueError('supplementary daily warmup is only specified for M60')
+    if daily_warmup and not (multiscale or conditional_hold):
+        raise ValueError('supplementary daily warmup requires the frozen trend score')
     if (entry_capacity_unlimited or execution is not None) and (reference not in ('impulse_hold','multiscale') or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
         raise ValueError('execution study requires the frozen long impulse control')
     if entry_capacity_unlimited and D(risk_scale)!=D('3.6'):
@@ -159,11 +164,14 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     trade=series['klines'];marks=series['markPriceKlines']
     mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale')
     opportunities={};fractions={};signal_states={}
-    if multiscale:
+    if multiscale or conditional_hold:
         from coinquant.multiscale import daily_snapshots, published_daily_key
-        from coinquant.campaign import disposition
+        if conditional_hold:
+            from coinquant.conditional_hold import expiry_permission
         signal_states=daily_snapshots(warm,trade,start,end,
             D(frozen['slippage_fraction'])+D(frozen['spread_fraction'])/2,daily_warmup)
+    if multiscale:
+        from coinquant.campaign import disposition
         opportunities={t:s.opportunity for t,s in signal_states.items()}
         fractions={t:s.fraction for t,s in signal_states.items()}
         model_interval=DAY
@@ -178,6 +186,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 opposing_closes.add(bt+model_interval)
             opportunities[bt+model_interval]=model.update(bt+model_interval,max(D(r[2]) for r in rs),min(D(r[3]) for r in rs),D(rs[-1][4]))
             fractions[bt+model_interval]=model.fraction(D(1),D(frozen['slippage_fraction'])+D(frozen['spread_fraction'])/2)
+    original_opportunities={op.identity:op for op in opportunities.values() if op} if conditional_hold else {}
     fund_hours={t//HOUR*HOUR:(t,r) for t,r in funding.items()}
     daily=deque(maxlen=21);closes=deque(maxlen=200);regime=0;anchor=None
     prior=warm|trade if payoff else warm
@@ -207,6 +216,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     sustainable=execution is not None and execution.sustainable
     capital=None;gap_anchor_mark=None;gap_anchor_child=''
     planned_window=None;planned_parents=[]
+    extended_epoch=None;extension_checked=None
     if execution is not None and execution.planned_exit!='instant':
         from research.planned_exit import PlannedExit
     funding_times=sorted(funding)
@@ -298,6 +308,21 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 if not edge_target:direction=0
                 if reference=='channel_position':edge_target*=channel_position(daily)[1]
                 action='hold' if account.q else 'no_signal';caps={};qty=ZERO;raw_qty=ZERO;limiter=''
+                hold_permission=False
+                if conditional_hold and account.q:
+                    original=original_opportunities.get(last_entry_epoch)
+                    if original is not None and t >= original.expires:
+                        hold_permission,reason=expiry_permission(original,t,opportunities,signal_states,
+                            extension_checked if extended_epoch==last_entry_epoch else None)
+                        execution_record('conditional_hold',dict(time=t,campaign=last_entry_epoch,
+                            expires=original.expires,permitted=hold_permission,reason=reason,
+                            score=signal_states.get(published_daily_key(t)).record()
+                                if signal_states.get(published_daily_key(t)) else None))
+                        if hold_permission:
+                            extended_epoch=last_entry_epoch;extension_checked=t
+                            counts['conditional_hold']+=1
+                        else:
+                            counts['conditional_denied_'+reason]+=1
                 decision_state=[t,regime,str(account.equity(mo)),str(account.q),str(abs(account.q)*mo),str(account.margin),str(account.wallet-account.margin),str(account.sl),str(account.tp),(t-regime_since)//HOUR]
                 if mechanism and not account.q and opportunity and opportunity.entry_limit is not None and (not opportunity.entry_open or opportunity.direction*(o*(1+D(opportunity.direction)*(D(frozen['slippage_fraction'])+spread/2))-opportunity.entry_limit)>=0):
                     direction=0;action='edge_realized';counts[action]+=1
@@ -360,7 +385,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                 turnover+=change['amount']*price;entry_time=t
                                 ow.writerow([t,change['event'],str(change['amount']),str(price),'',str(account.q)])
                 elif targeting:
-                    if account.q and (trail_invalid if native_trail_order else disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit' if mechanism else account.q*direction<=0):
+                    if account.q and (trail_invalid if native_trail_order else
+                            (disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit' and not hold_permission)
+                            if mechanism else account.q*direction<=0):
                         if sustainable and execution.planned_exit!='instant':
                             if t not in execution.refined_hours or minutes is None or t not in minutes['klines']:
                                 raise ValueError(f'missing planned exit minute path at {t}')
@@ -602,9 +629,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['model_version']=1
         result['daily_publication_lag_seconds']=60
         result['supplementary_warmup_days']=len(daily_warmup)
+    if conditional_hold:
+        result['candidate']='H60'
+        result['daily_publication_lag_seconds']=60
+        result['supplementary_warmup_days']=len(daily_warmup)
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
-    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('research/invocation_draws.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ())+((Path('coinquant/multiscale.py'),) if multiscale else ()):
+    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('research/invocation_draws.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ())+((Path('coinquant/multiscale.py'),) if multiscale or conditional_hold else ())+((Path('coinquant/conditional_hold.py'),) if conditional_hold else ()):
         raw=source.read_bytes()
         if not (payoff and payoff.get('scenario')):(sources/source.name).write_bytes(raw)
         source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()
