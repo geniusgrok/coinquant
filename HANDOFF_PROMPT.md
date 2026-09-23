@@ -1,5 +1,9 @@
 # Coinquant 当前恢复入口
 
+## 最新：PXC 回撤仍超限，原件已保存
+
+从 `research/peak-protection-core-20260923` 源码事前冻结 `46cd7e7a1214263f1e0875560c75ef93c702f4ee`、tree `9988dbc68362b4b61b3ec0722aa1dd195edada44` 继续；468 调用同官方开发输入的 PXC **161.447565% CAGR /55.876824% MDD /CNY467,275.15**，PXT **168.805666%/69.835343%**，同输入 SX60 **162.179152%/37.209136%**。PXC 风险超严格门 5.876824 个百分点，拒绝；不做它的全窗/压力/缺席。主因是入场初始风险及跨笔价格损失，旧十日和已完成小时峰值调用后调整都不足以覆盖短时亏损。账户账本、风险/GAP 审计通过。完整原件 `COINQUANT_PXC_DEVELOPMENT_REJECT_20260923.zip`，Library ID `libfile_0e395afe86588191a1e7b9ccd90a52ef`、2,227,347 字节、SHA `6f0ec92c98e5462b45d02de2a12e7334feabddd6469bcf7d01d0d2912bd83040`，回读逐字节一致；索引和报告在 `evidence/peak-close-protection-20260923/`。研究代码仍未入生产 main。先研究入场止损几何/起始风险的最小联动改变并事前冻结，同数据下运行开发连续账户；不凭微调百分数过线。全窗正式目标未完成，生产默认 B36、execute 阻止保持。
+
 ## 最新：PXT 完整开发账户风险拒绝，研究继续
 
 本研究分支 `research/stop-risk-core-20260923` 事前远端源码提交 `e4594588c57f64a762850b8d5efe6618e354af3b`、tree `95ea15a45721a5f6f3e3b430aa1d0646fb8e287a`；同精细官方输入 `2e8bbefb4f1994f73e7c14048012f7b008d3b848b6a71b6eb31838844ddef8cb` 的 PXT **168.805666% CAGR /69.835343% MDD /CNY522,142.38**，SX60 **162.179152%/37.209136%/CNY472,527.41**，468 调用、账本误差 0、风险和 GAP 审计过。PXT 收益达门、风险严重超门，拒绝；无其 795 全窗、压力及 787 缺席。2021-02-21 至 2022-08-19 的 69.84% 回撤主要是实际价格/执行损失，资金费约 2,803 USDT 加剧损失。完整原件 `COINQUANT_PXT_DEVELOPMENT_REJECT_20260923.zip`，Library ID `libfile_fa1c875126488191bcba9670be383d70`、3,800,508 字节、SHA `107ee11d2901a7af568dc2c010fd4a9eae408b4d155420d7ef2e52bd0f752432`，远端回读逐字节一致；本分支 `evidence/persistent-trail-20260923/` 有协议、报告、索引。旧官方原件及源见 `T20_ORIGINALS_COMPLETE.json`。下一步用账本所示跨 campaign 回撤与弱十日保护依据，另冻**不同**保护机制，保持同一研究引擎，先跑开发门。main 的 PR #9 已合并为 `cd4d7e7`，不含 PXT 生产替换；生产默认 B36、execute 阻止未变，正式全窗经济目标尚未达到。
