@@ -1,0 +1,35 @@
+{
+  "schema": "coinquant.hr60.full_window_input_gap_summary.v1",
+  "candidate": "HR60",
+  "full_account_completed": false,
+  "frozen_calls": 795,
+  "first_attempt": {
+    "failure_path": "evidence/renewal-risk-20260923/results/HR60-full-window-failed-01.failure.txt",
+    "missing_entry_hour_ms": 1603562400000,
+    "missing_entry_hour_utc": "2020-10-24T18:00:00+00:00",
+    "raw_archives_present_in_checked_roots": {
+      "klines": true,
+      "markPriceKlines": true
+    },
+    "validated_coverage_before_attempt": false
+  },
+  "opportunity_minute_subset": {
+    "hours": 505,
+    "missing_archive_records": 378,
+    "missing_distinct_days": 189,
+    "missing_by_kind": {
+      "klines": 189,
+      "markPriceKlines": 189
+    }
+  },
+  "frozen_call_hour_superset": {
+    "hours": 795,
+    "missing_archive_records": 874,
+    "missing_distinct_days": 439,
+    "missing_by_kind": {
+      "klines": 439,
+      "markPriceKlines": 435
+    }
+  },
+  "data_rule": "Only verified official 1-minute originals are accepted; no hourly substitution or interpolation."
+}

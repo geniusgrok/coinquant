@@ -1,0 +1,5 @@
+Command: python -m py_compile research/persistent_hold_replay.py research/renewal_risk_replay.py coinquant/renewal_risk.py coinquant/capital.py
+Result: passed
+
+Command: PYTHONPATH=tests python -m unittest test_renewal_risk test_sustainable_capital test_bounded_execution test_conditional_hold test_planned_exit test_execution_risk_frontier
+Result: Ran 40 tests; OK

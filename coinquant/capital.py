@@ -61,11 +61,12 @@ class CapitalBudget:
         digest = hashlib.sha256(json.dumps([(t, str(r)) for t, r in selected]).encode()).hexdigest()
         return cls(as_of, latest, rate, digest, *values, not reason, reason)
 
-    def reserve(self, quantity, entry, reference, mark):
-        """Spendable wallet needed in addition to segregated GAP collateral."""
+    def reserve_components(self, quantity, entry, reference, mark):
+        """Return separately auditable funding, exit-cost and pending reserves."""
         quantity = abs(D(quantity))
         if not self.valid:
-            return D('Infinity') if quantity else self.pending_reserve
+            return dict(funding=D('Infinity') if quantity else ZERO,
+                        exit_cost=ZERO, pending=self.pending_reserve)
         if min(entry, reference, mark) <= 0 or quantity < 0:
             raise ValueError('invalid capital reference')
         funding_price = max(entry, reference, mark)*(1+GAP)
@@ -76,7 +77,13 @@ class CapitalBudget:
         # Fees on the adverse higher exit notional are an explicit conservative
         # reserve; actual long exit fees still use its actual lower fill price.
         exit_cost = quantity*reference*(friction + FEE*(1+friction))
-        return quantity*funding_price*funding_fraction + exit_cost + self.pending_reserve
+        return dict(funding=quantity*funding_price*funding_fraction,
+                    exit_cost=exit_cost, pending=self.pending_reserve)
+
+    def reserve(self, quantity, entry, reference, mark):
+        """Spendable wallet needed in addition to segregated GAP collateral."""
+        parts = self.reserve_components(quantity, entry, reference, mark)
+        return parts['funding'] + parts['exit_cost'] + parts['pending']
 
     def record(self):
         return serial(asdict(self))

@@ -1,0 +1,128 @@
+{
+  "schema": "coinquant.hr60.validation.v1",
+  "candidate": "HR60",
+  "development_hard_checks_passed": true,
+  "formal_economic_objective": {
+    "cost_net_cagr_minimum": 1.5,
+    "complete_continuous_mdd_maximum": 0.5,
+    "status": "unverified_full_window_unavailable"
+  },
+  "results": {
+    "development": {
+      "cagr": 1.8508719139305851,
+      "mdd_conservative_envelope": "0.3714867865292819634423740601",
+      "final_cny": "660614.6376317883361947353059",
+      "renewal_risk_checks_passed": true,
+      "development_hard_checks_passed": true,
+      "hr60_audit": {
+        "plan_count": 64,
+        "reduction_count": 32,
+        "scheduled_count": 64,
+        "resolved_schedule_count": 64,
+        "all_schedules_resolved": true,
+        "post_execution_violations": 0,
+        "all_cut_stops_unchanged": true,
+        "reductions_only": true,
+        "hourly_permission_calls_covered": true,
+        "decision_at_execution_time": true
+      }
+    },
+    "saved_H60_development": {
+      "cagr": 1.8308037021716501,
+      "mdd_conservative_envelope": "0.5427891853284228168284867996",
+      "final_cny": "642208.6313775020786663367627"
+    },
+    "same-source_SX60_development": {
+      "cagr": 1.621791521634055,
+      "mdd_conservative_envelope": "0.3720913583781855744812129575",
+      "final_cny": "472527.4051232058609321245863"
+    },
+    "same-source_SX60_full_reference_only": {
+      "cagr": 1.0262620414608756,
+      "mdd_conservative_envelope": "0.3988511525411302503194848743",
+      "final_cny": "1149830.313334538443769839619"
+    }
+  },
+  "checks": {
+    "h60_development_input_identity_matches": true,
+    "frozen_h60_permission_inventory": {
+      "rows": 75,
+      "permitted": 64,
+      "expected_rows": 75,
+      "expected_permitted": 64
+    },
+    "source_identity_matches_current_worktree": true,
+    "source_identity_mismatches": [],
+    "entry_risk_basis": {
+      "count": 20,
+      "expected_mother_intents": 20,
+      "all_basis_present": true
+    },
+    "renewal": {
+      "scheduled": 64,
+      "decisions": 64,
+      "reductions": 32,
+      "all_schedule_requests_resolved": true,
+      "every_decision_at_T_plus_60_seconds": true,
+      "reductions_only": true,
+      "protective_stop_unchanged": true,
+      "post_execution_risk_or_capital_violations": 0
+    },
+    "account_ledger": {
+      "close_points": 35064,
+      "max_equity_error_usdt": "0",
+      "fees_usdt": "2327.373864300127781596401236",
+      "funding_usdt": "7128.0687543042287308818"
+    },
+    "risk_audit": {
+      "passed": true,
+      "violation_count": 0,
+      "liquidation_count": 0
+    },
+    "original_gap": {
+      "maintained": true,
+      "negative_observations": 0
+    },
+    "finite_budget": {
+      "seven_day_entry_violations": 0,
+      "twenty_one_day_insufficient_entry_children": 0
+    },
+    "regression_tests": {
+      "passed": 40,
+      "command": "PYTHONPATH=tests python -m unittest test_renewal_risk test_sustainable_capital test_bounded_execution test_conditional_hold test_planned_exit test_execution_risk_frontier"
+    },
+    "full_window": {
+      "invocations": 795,
+      "completed": false,
+      "missing_official_archive_records_opportunity_subset": 378,
+      "missing_days_opportunity_subset": 189,
+      "missing_official_archive_records_frozen_call_superset": 874,
+      "missing_days_frozen_call_superset": 439,
+      "formal_cagr": null,
+      "formal_mdd": null
+    }
+  },
+  "old_risk_experiments": [
+    {
+      "name": "L8",
+      "equivalent": false,
+      "reason": "all-call equity resizing and permits additions; does not freeze realized campaign r0",
+      "development_cagr": 0.0359,
+      "development_mdd": 0.1243,
+      "final_cny": 11515.76,
+      "additions": 215,
+      "reductions": 160
+    },
+    {
+      "name": "L13",
+      "equivalent": false,
+      "reason": "ratchets stop and reinvests; does not preserve fixed entry-risk ratio or reduce-only rule",
+      "development_cagr": 0.1834,
+      "development_mdd": 0.7268,
+      "final_cny": 19610.36
+    }
+  ],
+  "no_H60_M60_or_old_grid_reruns": true,
+  "production_defaults_or_live_execution_changed": false,
+  "note": "Passing development gates authorizes the full-window attempt under the frozen attachment; it does not certify the official return objective."
+}

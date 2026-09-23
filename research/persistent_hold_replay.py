@@ -109,13 +109,15 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False):
     multiscale = reference == 'multiscale'
     if conditional_hold and (reference != 'impulse_hold' or D(risk_scale) != 6 or
             D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0 or
             schedule != 'sparse' or execution is None or not execution.sliced or
             not execution.sustainable or execution.planned_exit != 'sliced'):
         raise ValueError('H60 requires the frozen SX60 entry, funds and execution')
+    if renewal_risk and not conditional_hold:
+        raise ValueError('HR60 requires the frozen H60 renewal permissions')
     if multiscale and (D(risk_scale) != 6 or D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0
             or schedule != 'sparse' or execution is None or not execution.sliced
             or not execution.sustainable or execution.planned_exit != 'sliced'):
@@ -213,6 +215,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         from research.bounded_execution import BoundedEntry, exit_fill
         if execution.stress:slip*=2
     entry_window=None;parent_entries=[];exit_events=[]
+    renewal_entry_equity={};renewal_basis={};renewal_basis_finalized=set();renewal_pending=None
+    renewal_confirmed_children={}
     sustainable=execution is not None and execution.sustainable
     capital=None;gap_anchor_mark=None;gap_anchor_child=''
     planned_window=None;planned_parents=[]
@@ -221,7 +225,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         from research.planned_exit import PlannedExit
     funding_times=sorted(funding)
     if sustainable:
-        from coinquant.capital import CapitalBudget, sustain_position
+        from coinquant.capital import CapitalBudget, capital_surplus, gap_margin, sustain_position
 
     output.mkdir(parents=True,exist_ok=False)
     with gzip.open(output/'equity.csv.gz.partial','wt') as ef,gzip.open(output/'orders.csv.gz.partial','wt') as of,gzip.open(output/'decisions.csv.gz.partial','wt') as df, (open(output/'execution.jsonl.partial','w') if execution is not None else nullcontext(None)) as xf:
@@ -236,7 +240,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             eq=account.equity(mark);peak=max(peak,eq);dd=1-eq/peak;mdd=max(mdd,dd)
             ew.writerow([t,event,str(eq),str(dd),str(account.q),str(mark),str(account.margin),str(account.fees),str(account.funding)]+([str(account.wallet),str(account.entry),str(account.sl),str(account.tp)] if execution is not None else [])+([gap_anchor_child,str(gap_anchor_mark)] if sustainable else []))
         def close(t,event,reference,bankruptcy=False):
-            nonlocal turnover
+            nonlocal turnover,renewal_pending
             q=account.q
             price=reference if bankruptcy else reference*(1-slip-spread/2 if q>0 else 1+slip+spread/2)
             if execution is not None:
@@ -250,6 +254,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 if entry_window is not None and not entry_window.terminal_reason:
                     entry_window.finish('protection_or_exit:'+event,t)
                     execution_record('mother_stop',entry_window.record())
+                if renewal_pending is not None and renewal_pending['campaign']==last_entry_epoch:
+                    execution_record('renewal_risk_cancelled',dict(time=t,campaign=last_entry_epoch,
+                        reason='existing_protection_or_exit',planned=renewal_pending))
+                    renewal_pending=None
             turnover+=abs(q)*price
             account.close(abs(q),price);counts[event]+=1
             ow.writerow([t,event,str(q),str(price),'',str(account.q)])
@@ -265,6 +273,48 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 counts['funding_charge']+=1
                 if sustainable:observe(ft,'funding_settled',p)
             elif q:counts['ambiguous_funding_credit_omitted']+=1
+
+        def finalize_renewal_basis(parent, now):
+            campaign=parent.campaign
+            if campaign in renewal_basis_finalized:
+                return
+            renewal_basis_finalized.add(campaign)
+            e0=renewal_entry_equity.get(parent.identity)
+            basis=None
+            status='missing_confirmed_entry_risk'
+            audit_basis=dict(campaign=campaign,parent_id=parent.identity,
+                child_ids=renewal_confirmed_children.get(campaign,[]),entry_time=parent.call_time,
+                first_fill=parent.first_fill,last_fill=parent.last_fill,basis_time=now,
+                e0=str(e0) if e0 is not None else None,
+                confirmed_quantity=str(parent.filled),risk_budget=str(parent.risk_budget),
+                starting_fees=str(parent.starting_fees),starting_funding=str(parent.starting_funding),
+                fees_after=str(account.fees),funding_after=str(account.funding),
+                sl=str(account.sl),tp=str(account.tp),gap_anchor_child=gap_anchor_child,
+                gap_anchor_mark=str(gap_anchor_mark) if gap_anchor_mark is not None else None,
+                calculation='BoundedEntry.loss_at_stop:v1')
+            if (e0 is not None and e0.is_finite() and e0>0 and account.q>0
+                    and last_entry_epoch==campaign and parent.filled>0):
+                b0=parent.loss_at_stop(account)
+                ratio=b0/e0 if b0.is_finite() else ZERO
+                audit_basis.update(b0=str(b0),r0=str(ratio))
+                if b0>parent.risk_budget+D('1e-18'):
+                    status='confirmed_entry_risk_exceeds_mother_budget'
+                elif b0.is_finite() and b0>0 and ratio.is_finite() and ratio>0:
+                    basis=dict(campaign=campaign,parent_id=parent.identity,
+                        child_ids=renewal_confirmed_children.get(campaign,[]),
+                        entry_time=parent.call_time,first_fill=parent.first_fill,
+                        last_fill=parent.last_fill,basis_time=now,e0=str(e0),
+                        b0=str(b0),r0=str(ratio),confirmed_quantity=str(parent.filled),
+                        risk_budget=str(parent.risk_budget),fees_delta=str(account.fees-parent.starting_fees),
+                        funding_delta=str(account.funding-parent.starting_funding),
+                        starting_fees=str(parent.starting_fees),starting_funding=str(parent.starting_funding),
+                        fees_after=str(account.fees),funding_after=str(account.funding),
+                        sl=str(account.sl),tp=str(account.tp),gap_anchor_child=gap_anchor_child,
+                        gap_anchor_mark=str(gap_anchor_mark),calculation='BoundedEntry.loss_at_stop:v1')
+                    status='frozen_from_confirmed_entry'
+            renewal_basis[campaign]=basis
+            execution_record('renewal_risk_basis',dict(campaign=campaign,
+                parent_id=parent.identity,time=now,status=status,basis=basis,audit=audit_basis))
         for t in range(start,end,HOUR):
             signal_time=published_daily_key(t) if multiscale else (t//model_interval*model_interval if mechanism else None)
             opportunity=opportunities.get(signal_time) if mechanism else None
@@ -308,10 +358,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 if not edge_target:direction=0
                 if reference=='channel_position':edge_target*=channel_position(daily)[1]
                 action='hold' if account.q else 'no_signal';caps={};qty=ZERO;raw_qty=ZERO;limiter=''
-                hold_permission=False
+                hold_permission=False;renewal_expiry=False
                 if conditional_hold and account.q:
                     original=original_opportunities.get(last_entry_epoch)
                     if original is not None and t >= original.expires:
+                        renewal_expiry=True
                         hold_permission,reason=expiry_permission(original,t,opportunities,signal_states,
                             extension_checked if extended_epoch==last_entry_epoch else None)
                         execution_record('conditional_hold',dict(time=t,campaign=last_entry_epoch,
@@ -326,13 +377,34 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 decision_state=[t,regime,str(account.equity(mo)),str(account.q),str(abs(account.q)*mo),str(account.margin),str(account.wallet-account.margin),str(account.sl),str(account.tp),(t-regime_since)//HOUR]
                 if mechanism and not account.q and opportunity and opportunity.entry_limit is not None and (not opportunity.entry_open or opportunity.direction*(o*(1+D(opportunity.direction)*(D(frozen['slippage_fraction'])+spread/2))-opportunity.entry_limit)>=0):
                     direction=0;action='edge_realized';counts[action]+=1
+                renewal_plan=None
                 if sustainable:
                     capital=CapitalBudget.from_history(t,funding,previous_quote,slip,spread,times=funding_times)
                     execution_record('capital_budget',dict(time=t,quantity=str(account.q),wallet=str(account.wallet),
                         mark=str(mo),reference=str(o),gap_anchor_child=gap_anchor_child,budget=capital.record()))
                     immediate_signal_exit=(execution.planned_exit=='instant' and account.q
                         and disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit')
-                    if account.q and not immediate_signal_exit:
+                    renewal_expiry_skip=bool(renewal_risk and renewal_expiry and account.q)
+                    if renewal_risk and renewal_expiry and account.q and hold_permission:
+                        basis=renewal_basis.get(last_entry_epoch)
+                        if basis is None or gap_anchor_mark is None:
+                            hold_permission=False
+                            counts['renewal_risk_basis_missing']+=1
+                            execution_record('renewal_risk_gate',dict(time=t,campaign=last_entry_epoch,
+                                status='fail_closed_missing_entry_basis_or_anchor'))
+                        else:
+                            if t not in execution.refined_hours or minutes is None or t not in minutes['klines']:
+                                raise ValueError(f'missing HR60 renewal minute path at {t}')
+                            renewal_plan=dict(campaign=last_entry_epoch,call_time=t,
+                                execute_time=t+(120_000 if execution.stress else 60_000),
+                                before_quantity=str(account.q),r0=basis['r0'],e0=basis['e0'],b0=basis['b0'],
+                                stop_before=str(account.sl),status='awaiting_causal_decision')
+                            if renewal_pending is not None:
+                                raise ValueError('overlapping HR60 renewal decisions')
+                            renewal_pending=renewal_plan
+                            execution_record('renewal_risk_scheduled',renewal_plan)
+                            action='renewal_risk_scheduled'
+                    if account.q and not immediate_signal_exit and not renewal_expiry_skip:
                         original_q=account.q
                         change=sustain_position(account,capital,o,mo,gap_anchor_mark,instrument,
                             lambda q: exit_fill(o,q,previous_quote,slip,spread)[0])
@@ -416,8 +488,14 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                 action='unsafe_geometry';counts[action]+=1
                             else:
                                 if execution is not None and execution.sliced:
+                                    entry_equity_before=account.equity(mo) if renewal_risk else None
                                     entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
                                         previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale,capital=capital)
+                                    if renewal_risk and entry_window.maximum:
+                                        renewal_entry_equity[entry_window.identity]=entry_equity_before
+                                        execution_record('renewal_entry_basis_started',dict(time=t,
+                                            campaign=campaign_epoch,parent_id=entry_window.identity,
+                                            e0=str(entry_equity_before),stop=str(sl)))
                                     if entry_window.maximum and (t not in execution.refined_hours or minutes is None or t not in minutes['klines']):
                                         raise ValueError(f'missing bounded entry minute path at {t}')
                                     parent_entries.append(entry_window)
@@ -510,12 +588,17 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                         turnover+=amount*D(child['price']);counts[child['event']]+=1
                         binding[child['reason']]+=1
                         ow.writerow([st,child['event'],str(amount),child['price'],'',str(account.q)])
+                        if renewal_risk:
+                            renewal_confirmed_children.setdefault(entry_window.campaign,[]).append(child['child_id'])
                         if sustainable:
                             gap_anchor_mark=smo;gap_anchor_child=child['child_id']
                         observe(st,'slice_confirmed',smo)
                         if child['event']=='entry':
                             last_entry_epoch=entry_window.campaign
                             delays.append((t-regime_since)//HOUR)
+                if (renewal_risk and entry_window is not None and entry_window.call_time==t
+                        and entry_window.terminal_reason):
+                    finalize_renewal_basis(entry_window,st)
                 if planned_window is not None and not planned_window.terminal_reason and planned_window.call_time==t:
                     child=planned_window.attempt(st,account,so,smo,execution.minute_quotes,instrument)
                     execution_record('planned_child',child)
@@ -524,6 +607,77 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                         turnover+=amount*price;counts[event]+=1;exit_events.append(child)
                         ow.writerow([st,event,str(amount),str(price),'',str(account.q)])
                         observe(st,event,smo)
+                if (renewal_pending is not None and renewal_pending['call_time']==t
+                        and renewal_pending['execute_time']==st):
+                    planned=renewal_pending
+                    before_q=D(planned['before_quantity'])
+                    if account.q<=0 or account.q!=before_q:
+                        execution_record('renewal_risk_cancelled',dict(time=st,campaign=planned['campaign'],
+                            reason='position_changed_before_reduce',quantity=str(account.q),planned=planned))
+                        renewal_pending=None
+                    else:
+                        decision_budget=CapitalBudget.from_history(st,funding,previous_quote,slip,spread,
+                            times=funding_times)
+                        execution_record('capital_budget',dict(time=st,quantity=str(account.q),
+                            wallet=str(account.wallet),mark=str(smo),reference=str(so),
+                            gap_anchor_child=gap_anchor_child,budget=decision_budget.record(),
+                            purpose='HR60_causal_decision'))
+                        from coinquant.renewal_risk import plan_renewal_reduction
+                        change=plan_renewal_reduction(account,decision_budget,so,smo,gap_anchor_mark,instrument,
+                            lambda q: exit_fill(so,q,previous_quote,slip,spread)[0],
+                            lambda q: exit_fill(account.sl,q,previous_quote,slip,spread)[0],
+                            risk_fraction=D(planned['r0']))
+                        counts['renewal_risk_checks']+=1
+                        plan_record=dict(time=st,campaign=planned['campaign'],call_time=t,decision_time=st,
+                            execute_time=st,before_quantity=str(account.q),r0=planned['r0'],
+                            e0=planned['e0'],b0=planned['b0'],stop_before=str(account.sl),
+                            reference=str(so),mark=str(smo),capital_budget=decision_budget.record(),plan=change)
+                        execution_record('renewal_risk_plan',plan_record)
+                        amount=D(change['amount'])
+                        if not amount:
+                            execution_record('renewal_risk_within_limit',dict(time=st,
+                                campaign=planned['campaign'],quantity=str(account.q),plan=change))
+                            renewal_pending=None
+                        elif amount>account.q:
+                            raise ValueError('invalid HR60 reduce-only amount')
+                        else:
+                            stop_before=account.sl
+                            price,record=exit_fill(so,amount,previous_quote,slip,spread)
+                            account.close(amount,price)
+                            if account.q:
+                                required,_=gap_margin(account,gap_anchor_mark)
+                                account.margin=max(account.margin,required)
+                            capital_after=capital_surplus(account,decision_budget,so,smo,gap_anchor_mark)
+                            risk_violation=False
+                            if account.q:
+                                try:
+                                    post=plan_renewal_reduction(account,decision_budget,so,smo,gap_anchor_mark,instrument,
+                                        lambda q: exit_fill(so,q,previous_quote,slip,spread)[0],
+                                        lambda q: exit_fill(account.sl,q,previous_quote,slip,spread)[0],
+                                        risk_fraction=D(planned['r0']))
+                                    risk_violation=bool(post['amount'])
+                                except ValueError:
+                                    post=None;risk_violation=True
+                            else:
+                                post=None
+                            record.update(time=st,event='renewal_risk_reduction',quantity=str(amount),
+                                quantity_before=str(before_q),quantity_after=str(account.q),
+                                planned_remaining=str(change['remaining']),
+                                original_anchor=gap_anchor_child,capital_after_execution=str(capital_after),
+                                margin_after=str(account.margin),stop_before=str(stop_before),
+                                stop_after=str(account.sl),risk_limit_violation_after_execution=risk_violation,
+                                post_execution_plan=post,decision_time=st)
+                            if risk_violation:
+                                counts['renewal_risk_execution_violation']+=1
+                            if capital_after < D('-1e-18'):
+                                counts['renewal_risk_capital_violation']+=1
+                            if account.q and account.sl!=stop_before:
+                                raise ValueError('HR60 changed the frozen protective stop')
+                            turnover+=amount*price;counts['renewal_risk_reductions']+=1
+                            exit_events.append(record);execution_record('renewal_risk_reduction',record)
+                            ow.writerow([st,'renewal_risk_reduction',str(amount),str(price),'',str(account.q)])
+                            observe(st,'renewal_risk_reduction',smo)
+                            renewal_pending=None
                 if minute_funding and not charged and t in fund_hours and st<fund_hours[t][0]<st+60000:
                     if account.q:observe(st,'pre_offset_possible_peak',smh)
                     funding_bound(t,smark,account.q,price_override=smh);charged=True
@@ -568,6 +722,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 regime=new_regime
             previous_quote=D(r[7])
         final=account.equity(mc)
+        if renewal_pending is not None:
+            raise ValueError('unresolved HR60 reduce-only action at end of continuous account')
         if execution is not None:
             for planned in planned_parents:
                 if not planned.terminal_reason or planned.unresolved:
@@ -588,7 +744,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         with pending.open() as stream:
             for line in stream:json.loads(line)
         pending.replace(output/'execution.jsonl')
-        (output/'execution_summary.json').write_text(json.dumps(dict(configuration=execution.configuration(),parents=[p.record() for p in parent_entries],planned_exits=[p.record() for p in planned_parents],exits=exit_events),indent=2)+'\n')
+        (output/'execution_summary.json').write_text(json.dumps(dict(configuration=execution.configuration(),parents=[p.record() for p in parent_entries],planned_exits=[p.record() for p in planned_parents],exits=exit_events,renewal_risk_basis=renewal_basis if renewal_risk else {}),indent=2,default=str)+'\n')
     if seen!=sorted(triggers):raise ValueError('frozen invocation mismatch')
     years=(end-start)/31556952000;cagr=(float(final/initial)**(1/years)-1 if final>0 else -1) if not (payoff and payoff.get('scenario')) else None
     result=dict(candidate=('L7' if baseline else 'L9')+'-minute-refined',qualification='NOT_QUALIFIED',validation_used=full_window,window_end_exclusive=iso(end),cagr=cagr,mdd_conservative_envelope=str(mdd),
@@ -630,12 +786,17 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['daily_publication_lag_seconds']=60
         result['supplementary_warmup_days']=len(daily_warmup)
     if conditional_hold:
-        result['candidate']='H60'
+        result['candidate']='HR60' if renewal_risk else 'H60'
         result['daily_publication_lag_seconds']=60
         result['supplementary_warmup_days']=len(daily_warmup)
+    if renewal_risk:
+        result['renewal_risk_checks_passed']=not any(counts.get(k,0) for k in (
+            'renewal_risk_basis_missing','renewal_risk_execution_violation',
+            'renewal_risk_capital_violation')) and renewal_pending is None
+        result['renewal_risk_basis_count']=sum(basis is not None for basis in renewal_basis.values())
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
-    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('research/invocation_draws.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ())+((Path('coinquant/multiscale.py'),) if multiscale or conditional_hold else ())+((Path('coinquant/conditional_hold.py'),) if conditional_hold else ()):
+    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('research/invocation_draws.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ())+((Path('coinquant/multiscale.py'),) if multiscale or conditional_hold else ())+((Path('coinquant/conditional_hold.py'),) if conditional_hold else ())+((Path('coinquant/renewal_risk.py'),) if renewal_risk else ()):
         raw=source.read_bytes()
         if not (payoff and payoff.get('scenario')):(sources/source.name).write_bytes(raw)
         source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()

@@ -1,0 +1,8857 @@
+{
+  "schema": "coinquant.hr60.full_window_input_gap.v1",
+  "candidate": "HR60",
+  "status": "blocked_before_complete_account",
+  "window": {
+    "start": "2020-01-01T00:00:00Z",
+    "end_exclusive": "2026-09-20T00:00:00Z"
+  },
+  "frozen_invocation_count": 795,
+  "available_verified_minute_archives": {
+    "klines": 363,
+    "markPriceKlines": 343
+  },
+  "first_full_attempt": {
+    "failure_path": "evidence/renewal-risk-20260923/results/HR60-full-window-failed-01.failure.txt",
+    "missing_entry_hour_ms": 1603562400000,
+    "missing_entry_hour_utc": "2020-10-24T18:00:00+00:00",
+    "raw_archives_present_in_checked_roots": {
+      "klines": true,
+      "markPriceKlines": true
+    },
+    "validated_coverage_before_attempt": false
+  },
+  "opportunity_minute_subset": {
+    "hours": 505,
+    "missing_archive_records": 378,
+    "missing_distinct_days": 189,
+    "missing_by_kind": {
+      "klines": 189,
+      "markPriceKlines": 189
+    },
+    "missing_archives": [
+      {
+        "kind": "klines",
+        "day": "2024-01-02",
+        "missing_required_hours": [
+          1704225600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-04",
+        "missing_required_hours": [
+          1704337200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-10",
+        "missing_required_hours": [
+          1704880800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-13",
+        "missing_required_hours": [
+          1705143600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-18",
+        "missing_required_hours": [
+          1705536000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-21",
+        "missing_required_hours": [
+          1705798800000,
+          1705867200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-22",
+        "missing_required_hours": [
+          1705935600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-23",
+        "missing_required_hours": [
+          1706004000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-29",
+        "missing_required_hours": [
+          1706565600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-06",
+        "missing_required_hours": [
+          1707177600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-07",
+        "missing_required_hours": [
+          1707289200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-08",
+        "missing_required_hours": [
+          1707400800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-11",
+        "missing_required_hours": [
+          1707663600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-14",
+        "missing_required_hours": [
+          1707901200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-18",
+        "missing_required_hours": [
+          1708293600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-20",
+        "missing_required_hours": [
+          1708462800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-22",
+        "missing_required_hours": [
+          1708574400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-04",
+        "missing_required_hours": [
+          1709510400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-16",
+        "missing_required_hours": [
+          1710597600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-21",
+        "missing_required_hours": [
+          1710990000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-25",
+        "missing_required_hours": [
+          1711382400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-30",
+        "missing_required_hours": [
+          1711774800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-02",
+        "missing_required_hours": [
+          1712037600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-03",
+        "missing_required_hours": [
+          1712106000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-07",
+        "missing_required_hours": [
+          1712498400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-12",
+        "missing_required_hours": [
+          1712890800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-18",
+        "missing_required_hours": [
+          1713434400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-24",
+        "missing_required_hours": [
+          1713938400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-25",
+        "missing_required_hours": [
+          1714050000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-30",
+        "missing_required_hours": [
+          1714442400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-06",
+        "missing_required_hours": [
+          1714986000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-10",
+        "missing_required_hours": [
+          1715378400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-13",
+        "missing_required_hours": [
+          1715641200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-17",
+        "missing_required_hours": [
+          1715904000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-29",
+        "missing_required_hours": [
+          1716991200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-30",
+        "missing_required_hours": [
+          1717059600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-05",
+        "missing_required_hours": [
+          1717603200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-10",
+        "missing_required_hours": [
+          1717995600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-13",
+        "missing_required_hours": [
+          1718258400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-16",
+        "missing_required_hours": [
+          1721142000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-17",
+        "missing_required_hours": [
+          1721210400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-23",
+        "missing_required_hours": [
+          1721754000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-26",
+        "missing_required_hours": [
+          1722016800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-08-02",
+        "missing_required_hours": [
+          1722560400000,
+          1722628800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-17",
+        "missing_required_hours": [
+          1726560000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-20",
+        "missing_required_hours": [
+          1726822800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-23",
+        "missing_required_hours": [
+          1727085600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-29",
+        "missing_required_hours": [
+          1727629200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-04",
+        "missing_required_hours": [
+          1728021600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-05",
+        "missing_required_hours": [
+          1728090000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-11",
+        "missing_required_hours": [
+          1728633600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-15",
+        "missing_required_hours": [
+          1729026000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-22",
+        "missing_required_hours": [
+          1729569600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-24",
+        "missing_required_hours": [
+          1729738800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-26",
+        "missing_required_hours": [
+          1729908000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-29",
+        "missing_required_hours": [
+          1730170800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-01",
+        "missing_required_hours": [
+          1730433600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-03",
+        "missing_required_hours": [
+          1730602800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-05",
+        "missing_required_hours": [
+          1730772000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-11",
+        "missing_required_hours": [
+          1731333600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-18",
+        "missing_required_hours": [
+          1731895200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-19",
+        "missing_required_hours": [
+          1732006800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-20",
+        "missing_required_hours": [
+          1732118400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-21",
+        "missing_required_hours": [
+          1732186800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-26",
+        "missing_required_hours": [
+          1732579200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-29",
+        "missing_required_hours": [
+          1732842000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-30",
+        "missing_required_hours": [
+          1732953600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-06",
+        "missing_required_hours": [
+          1733497200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-09",
+        "missing_required_hours": [
+          1733760000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-11",
+        "missing_required_hours": [
+          1733929200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-12",
+        "missing_required_hours": [
+          1734040800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-14",
+        "missing_required_hours": [
+          1734152400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-17",
+        "missing_required_hours": [
+          1734415200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-18",
+        "missing_required_hours": [
+          1734526800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-19",
+        "missing_required_hours": [
+          1734595200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-20",
+        "missing_required_hours": [
+          1734663600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-26",
+        "missing_required_hours": [
+          1735207200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-27",
+        "missing_required_hours": [
+          1735275600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-28",
+        "missing_required_hours": [
+          1735344000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-31",
+        "missing_required_hours": [
+          1735606800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-02",
+        "missing_required_hours": [
+          1735776000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-04",
+        "missing_required_hours": [
+          1735956000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-10",
+        "missing_required_hours": [
+          1736499600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-19",
+        "missing_required_hours": [
+          1737324000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-20",
+        "missing_required_hours": [
+          1737392400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-21",
+        "missing_required_hours": [
+          1737460800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-22",
+        "missing_required_hours": [
+          1737529200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-28",
+        "missing_required_hours": [
+          1738072800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-02",
+        "missing_required_hours": [
+          1738465200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-03",
+        "missing_required_hours": [
+          1738576800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-11",
+        "missing_required_hours": [
+          1739232000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-12",
+        "missing_required_hours": [
+          1739401200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-13",
+        "missing_required_hours": [
+          1739469600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-16",
+        "missing_required_hours": [
+          1739732400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-04-16",
+        "missing_required_hours": [
+          1744786800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-04-20",
+        "missing_required_hours": [
+          1745179200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-04-30",
+        "missing_required_hours": [
+          1746003600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-03",
+        "missing_required_hours": [
+          1746266400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-04",
+        "missing_required_hours": [
+          1746378000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-05",
+        "missing_required_hours": [
+          1746446400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-08",
+        "missing_required_hours": [
+          1746709200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-09",
+        "missing_required_hours": [
+          1746820800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-10",
+        "missing_required_hours": [
+          1746889200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-12",
+        "missing_required_hours": [
+          1747058400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-18",
+        "missing_required_hours": [
+          1747602000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-20",
+        "missing_required_hours": [
+          1747771200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-25",
+        "missing_required_hours": [
+          1748163600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-26",
+        "missing_required_hours": [
+          1748275200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-28",
+        "missing_required_hours": [
+          1748444400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-31",
+        "missing_required_hours": [
+          1748707200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-05",
+        "missing_required_hours": [
+          1749099600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-08",
+        "missing_required_hours": [
+          1749362400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-12",
+        "missing_required_hours": [
+          1749754800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-14",
+        "missing_required_hours": [
+          1749924000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-16",
+        "missing_required_hours": [
+          1750035600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-22",
+        "missing_required_hours": [
+          1750579200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-28",
+        "missing_required_hours": [
+          1751122800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-01",
+        "missing_required_hours": [
+          1751385600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-02",
+        "missing_required_hours": [
+          1751454000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-08",
+        "missing_required_hours": [
+          1751997600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-16",
+        "missing_required_hours": [
+          1752652800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-25",
+        "missing_required_hours": [
+          1753459200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-26",
+        "missing_required_hours": [
+          1753527600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-01",
+        "missing_required_hours": [
+          1754071200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-03",
+        "missing_required_hours": [
+          1754240400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-05",
+        "missing_required_hours": [
+          1754352000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-12",
+        "missing_required_hours": [
+          1754964000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-14",
+        "missing_required_hours": [
+          1755133200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-24",
+        "missing_required_hours": [
+          1756069200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-25",
+        "missing_required_hours": [
+          1756137600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-06",
+        "missing_required_hours": [
+          1757160000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-08",
+        "missing_required_hours": [
+          1757329200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-13",
+        "missing_required_hours": [
+          1757721600000,
+          1757790000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-15",
+        "missing_required_hours": [
+          1757959200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-18",
+        "missing_required_hours": [
+          1758222000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-23",
+        "missing_required_hours": [
+          1758614400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-05",
+        "missing_required_hours": [
+          1759626000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-09",
+        "missing_required_hours": [
+          1760000400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-15",
+        "missing_required_hours": [
+          1760544000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-27",
+        "missing_required_hours": [
+          1761559200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-30",
+        "missing_required_hours": [
+          1761822000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-03",
+        "missing_required_hours": [
+          1767466800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-08",
+        "missing_required_hours": [
+          1767859200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-15",
+        "missing_required_hours": [
+          1768514400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-16",
+        "missing_required_hours": [
+          1768582800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-19",
+        "missing_required_hours": [
+          1768845600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-21",
+        "missing_required_hours": [
+          1769014800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-06",
+        "missing_required_hours": [
+          1772823600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-11",
+        "missing_required_hours": [
+          1773216000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-17",
+        "missing_required_hours": [
+          1773759600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-22",
+        "missing_required_hours": [
+          1774152000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-10",
+        "missing_required_hours": [
+          1775829600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-11",
+        "missing_required_hours": [
+          1775941200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-14",
+        "missing_required_hours": [
+          1776204000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-17",
+        "missing_required_hours": [
+          1776466800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-19",
+        "missing_required_hours": [
+          1776578400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-22",
+        "missing_required_hours": [
+          1776841200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-25",
+        "missing_required_hours": [
+          1777104000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-28",
+        "missing_required_hours": [
+          1777366800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-29",
+        "missing_required_hours": [
+          1777478400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-30",
+        "missing_required_hours": [
+          1777590000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-01",
+        "missing_required_hours": [
+          1777658400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-04",
+        "missing_required_hours": [
+          1777921200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-05",
+        "missing_required_hours": [
+          1777989600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-08",
+        "missing_required_hours": [
+          1778252400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-10",
+        "missing_required_hours": [
+          1778421600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-11",
+        "missing_required_hours": [
+          1778490000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-13",
+        "missing_required_hours": [
+          1778659200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-16",
+        "missing_required_hours": [
+          1778922000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-18",
+        "missing_required_hours": [
+          1779091200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-19",
+        "missing_required_hours": [
+          1779202800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-25",
+        "missing_required_hours": [
+          1779746400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-28",
+        "missing_required_hours": [
+          1780009200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-09",
+        "missing_required_hours": [
+          1783587600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-11",
+        "missing_required_hours": [
+          1783756800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-22",
+        "missing_required_hours": [
+          1784692800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-26",
+        "missing_required_hours": [
+          1785085200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-08",
+        "missing_required_hours": [
+          1786172400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-09",
+        "missing_required_hours": [
+          1786240800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-10",
+        "missing_required_hours": [
+          1786352400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-11",
+        "missing_required_hours": [
+          1786420800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-21",
+        "missing_required_hours": [
+          1787295600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-24",
+        "missing_required_hours": [
+          1787558400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-01",
+        "missing_required_hours": [
+          1788271200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-04",
+        "missing_required_hours": [
+          1788534000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-05",
+        "missing_required_hours": [
+          1788602400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-08",
+        "missing_required_hours": [
+          1788865200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-09",
+        "missing_required_hours": [
+          1788976800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-16",
+        "missing_required_hours": [
+          1789520400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-02",
+        "missing_required_hours": [
+          1704225600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-04",
+        "missing_required_hours": [
+          1704337200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-10",
+        "missing_required_hours": [
+          1704880800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-13",
+        "missing_required_hours": [
+          1705143600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-18",
+        "missing_required_hours": [
+          1705536000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-21",
+        "missing_required_hours": [
+          1705798800000,
+          1705867200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-22",
+        "missing_required_hours": [
+          1705935600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-23",
+        "missing_required_hours": [
+          1706004000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-29",
+        "missing_required_hours": [
+          1706565600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-06",
+        "missing_required_hours": [
+          1707177600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-07",
+        "missing_required_hours": [
+          1707289200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-08",
+        "missing_required_hours": [
+          1707400800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-11",
+        "missing_required_hours": [
+          1707663600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-14",
+        "missing_required_hours": [
+          1707901200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-18",
+        "missing_required_hours": [
+          1708293600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-20",
+        "missing_required_hours": [
+          1708462800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-22",
+        "missing_required_hours": [
+          1708574400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-04",
+        "missing_required_hours": [
+          1709510400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-16",
+        "missing_required_hours": [
+          1710597600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-21",
+        "missing_required_hours": [
+          1710990000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-25",
+        "missing_required_hours": [
+          1711382400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-30",
+        "missing_required_hours": [
+          1711774800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-02",
+        "missing_required_hours": [
+          1712037600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-03",
+        "missing_required_hours": [
+          1712106000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-07",
+        "missing_required_hours": [
+          1712498400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-12",
+        "missing_required_hours": [
+          1712890800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-18",
+        "missing_required_hours": [
+          1713434400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-24",
+        "missing_required_hours": [
+          1713938400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-25",
+        "missing_required_hours": [
+          1714050000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-30",
+        "missing_required_hours": [
+          1714442400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-06",
+        "missing_required_hours": [
+          1714986000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-10",
+        "missing_required_hours": [
+          1715378400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-13",
+        "missing_required_hours": [
+          1715641200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-17",
+        "missing_required_hours": [
+          1715904000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-29",
+        "missing_required_hours": [
+          1716991200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-30",
+        "missing_required_hours": [
+          1717059600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-05",
+        "missing_required_hours": [
+          1717603200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-10",
+        "missing_required_hours": [
+          1717995600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-13",
+        "missing_required_hours": [
+          1718258400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-16",
+        "missing_required_hours": [
+          1721142000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-17",
+        "missing_required_hours": [
+          1721210400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-23",
+        "missing_required_hours": [
+          1721754000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-26",
+        "missing_required_hours": [
+          1722016800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-08-02",
+        "missing_required_hours": [
+          1722560400000,
+          1722628800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-17",
+        "missing_required_hours": [
+          1726560000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-20",
+        "missing_required_hours": [
+          1726822800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-23",
+        "missing_required_hours": [
+          1727085600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-29",
+        "missing_required_hours": [
+          1727629200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-04",
+        "missing_required_hours": [
+          1728021600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-05",
+        "missing_required_hours": [
+          1728090000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-11",
+        "missing_required_hours": [
+          1728633600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-15",
+        "missing_required_hours": [
+          1729026000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-22",
+        "missing_required_hours": [
+          1729569600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-24",
+        "missing_required_hours": [
+          1729738800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-26",
+        "missing_required_hours": [
+          1729908000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-29",
+        "missing_required_hours": [
+          1730170800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-01",
+        "missing_required_hours": [
+          1730433600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-03",
+        "missing_required_hours": [
+          1730602800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-05",
+        "missing_required_hours": [
+          1730772000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-11",
+        "missing_required_hours": [
+          1731333600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-18",
+        "missing_required_hours": [
+          1731895200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-19",
+        "missing_required_hours": [
+          1732006800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-20",
+        "missing_required_hours": [
+          1732118400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-21",
+        "missing_required_hours": [
+          1732186800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-26",
+        "missing_required_hours": [
+          1732579200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-29",
+        "missing_required_hours": [
+          1732842000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-30",
+        "missing_required_hours": [
+          1732953600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-06",
+        "missing_required_hours": [
+          1733497200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-09",
+        "missing_required_hours": [
+          1733760000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-11",
+        "missing_required_hours": [
+          1733929200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-12",
+        "missing_required_hours": [
+          1734040800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-14",
+        "missing_required_hours": [
+          1734152400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-17",
+        "missing_required_hours": [
+          1734415200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-18",
+        "missing_required_hours": [
+          1734526800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-19",
+        "missing_required_hours": [
+          1734595200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-20",
+        "missing_required_hours": [
+          1734663600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-26",
+        "missing_required_hours": [
+          1735207200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-27",
+        "missing_required_hours": [
+          1735275600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-28",
+        "missing_required_hours": [
+          1735344000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-31",
+        "missing_required_hours": [
+          1735606800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-02",
+        "missing_required_hours": [
+          1735776000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-04",
+        "missing_required_hours": [
+          1735956000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-10",
+        "missing_required_hours": [
+          1736499600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-19",
+        "missing_required_hours": [
+          1737324000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-20",
+        "missing_required_hours": [
+          1737392400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-21",
+        "missing_required_hours": [
+          1737460800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-22",
+        "missing_required_hours": [
+          1737529200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-28",
+        "missing_required_hours": [
+          1738072800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-02",
+        "missing_required_hours": [
+          1738465200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-03",
+        "missing_required_hours": [
+          1738576800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-11",
+        "missing_required_hours": [
+          1739232000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-12",
+        "missing_required_hours": [
+          1739401200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-13",
+        "missing_required_hours": [
+          1739469600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-16",
+        "missing_required_hours": [
+          1739732400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-04-16",
+        "missing_required_hours": [
+          1744786800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-04-20",
+        "missing_required_hours": [
+          1745179200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-04-30",
+        "missing_required_hours": [
+          1746003600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-03",
+        "missing_required_hours": [
+          1746266400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-04",
+        "missing_required_hours": [
+          1746378000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-05",
+        "missing_required_hours": [
+          1746446400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-08",
+        "missing_required_hours": [
+          1746709200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-09",
+        "missing_required_hours": [
+          1746820800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-10",
+        "missing_required_hours": [
+          1746889200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-12",
+        "missing_required_hours": [
+          1747058400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-18",
+        "missing_required_hours": [
+          1747602000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-20",
+        "missing_required_hours": [
+          1747771200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-25",
+        "missing_required_hours": [
+          1748163600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-26",
+        "missing_required_hours": [
+          1748275200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-28",
+        "missing_required_hours": [
+          1748444400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-31",
+        "missing_required_hours": [
+          1748707200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-05",
+        "missing_required_hours": [
+          1749099600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-08",
+        "missing_required_hours": [
+          1749362400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-12",
+        "missing_required_hours": [
+          1749754800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-14",
+        "missing_required_hours": [
+          1749924000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-16",
+        "missing_required_hours": [
+          1750035600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-22",
+        "missing_required_hours": [
+          1750579200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-28",
+        "missing_required_hours": [
+          1751122800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-01",
+        "missing_required_hours": [
+          1751385600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-02",
+        "missing_required_hours": [
+          1751454000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-08",
+        "missing_required_hours": [
+          1751997600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-16",
+        "missing_required_hours": [
+          1752652800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-25",
+        "missing_required_hours": [
+          1753459200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-26",
+        "missing_required_hours": [
+          1753527600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-01",
+        "missing_required_hours": [
+          1754071200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-03",
+        "missing_required_hours": [
+          1754240400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-05",
+        "missing_required_hours": [
+          1754352000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-12",
+        "missing_required_hours": [
+          1754964000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-14",
+        "missing_required_hours": [
+          1755133200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-24",
+        "missing_required_hours": [
+          1756069200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-25",
+        "missing_required_hours": [
+          1756137600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-06",
+        "missing_required_hours": [
+          1757160000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-08",
+        "missing_required_hours": [
+          1757329200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-13",
+        "missing_required_hours": [
+          1757721600000,
+          1757790000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-15",
+        "missing_required_hours": [
+          1757959200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-18",
+        "missing_required_hours": [
+          1758222000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-23",
+        "missing_required_hours": [
+          1758614400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-05",
+        "missing_required_hours": [
+          1759626000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-09",
+        "missing_required_hours": [
+          1760000400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-15",
+        "missing_required_hours": [
+          1760544000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-27",
+        "missing_required_hours": [
+          1761559200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-30",
+        "missing_required_hours": [
+          1761822000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-03",
+        "missing_required_hours": [
+          1767466800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-08",
+        "missing_required_hours": [
+          1767859200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-15",
+        "missing_required_hours": [
+          1768514400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-16",
+        "missing_required_hours": [
+          1768582800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-19",
+        "missing_required_hours": [
+          1768845600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-21",
+        "missing_required_hours": [
+          1769014800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-06",
+        "missing_required_hours": [
+          1772823600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-11",
+        "missing_required_hours": [
+          1773216000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-17",
+        "missing_required_hours": [
+          1773759600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-22",
+        "missing_required_hours": [
+          1774152000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-10",
+        "missing_required_hours": [
+          1775829600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-11",
+        "missing_required_hours": [
+          1775941200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-14",
+        "missing_required_hours": [
+          1776204000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-17",
+        "missing_required_hours": [
+          1776466800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-19",
+        "missing_required_hours": [
+          1776578400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-22",
+        "missing_required_hours": [
+          1776841200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-25",
+        "missing_required_hours": [
+          1777104000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-28",
+        "missing_required_hours": [
+          1777366800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-29",
+        "missing_required_hours": [
+          1777478400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-30",
+        "missing_required_hours": [
+          1777590000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-01",
+        "missing_required_hours": [
+          1777658400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-04",
+        "missing_required_hours": [
+          1777921200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-05",
+        "missing_required_hours": [
+          1777989600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-08",
+        "missing_required_hours": [
+          1778252400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-10",
+        "missing_required_hours": [
+          1778421600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-11",
+        "missing_required_hours": [
+          1778490000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-13",
+        "missing_required_hours": [
+          1778659200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-16",
+        "missing_required_hours": [
+          1778922000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-18",
+        "missing_required_hours": [
+          1779091200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-19",
+        "missing_required_hours": [
+          1779202800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-25",
+        "missing_required_hours": [
+          1779746400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-28",
+        "missing_required_hours": [
+          1780009200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-09",
+        "missing_required_hours": [
+          1783587600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-11",
+        "missing_required_hours": [
+          1783756800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-22",
+        "missing_required_hours": [
+          1784692800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-26",
+        "missing_required_hours": [
+          1785085200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-08",
+        "missing_required_hours": [
+          1786172400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-09",
+        "missing_required_hours": [
+          1786240800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-10",
+        "missing_required_hours": [
+          1786352400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-11",
+        "missing_required_hours": [
+          1786420800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-21",
+        "missing_required_hours": [
+          1787295600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-24",
+        "missing_required_hours": [
+          1787558400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-01",
+        "missing_required_hours": [
+          1788271200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-04",
+        "missing_required_hours": [
+          1788534000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-05",
+        "missing_required_hours": [
+          1788602400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-08",
+        "missing_required_hours": [
+          1788865200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-09",
+        "missing_required_hours": [
+          1788976800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-16",
+        "missing_required_hours": [
+          1789520400000
+        ]
+      }
+    ]
+  },
+  "frozen_call_hour_superset": {
+    "hours": 795,
+    "missing_archive_records": 874,
+    "missing_distinct_days": 439,
+    "missing_by_kind": {
+      "klines": 439,
+      "markPriceKlines": 435
+    },
+    "missing_archives": [
+      {
+        "kind": "klines",
+        "day": "2020-02-26",
+        "missing_required_hours": [
+          1582696800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-02-28",
+        "missing_required_hours": [
+          1582866000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-03-02",
+        "missing_required_hours": [
+          1583128800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-03-16",
+        "missing_required_hours": [
+          1584327600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-03-20",
+        "missing_required_hours": [
+          1584720000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-03-21",
+        "missing_required_hours": [
+          1584831600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-03-28",
+        "missing_required_hours": [
+          1585375200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-03-29",
+        "missing_required_hours": [
+          1585486800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-03-31",
+        "missing_required_hours": [
+          1585656000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-04-01",
+        "missing_required_hours": [
+          1585724400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-07-17",
+        "missing_required_hours": [
+          1594954800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-09-05",
+        "missing_required_hours": [
+          1599346800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-09-10",
+        "missing_required_hours": [
+          1599739200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-09-12",
+        "missing_required_hours": [
+          1599908400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2020-09-23",
+        "missing_required_hours": [
+          1600862400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-05-15",
+        "missing_required_hours": [
+          1621054800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-05-21",
+        "missing_required_hours": [
+          1621598400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-05-27",
+        "missing_required_hours": [
+          1622142000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-05-30",
+        "missing_required_hours": [
+          1622404800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-06-04",
+        "missing_required_hours": [
+          1622797200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-06-05",
+        "missing_required_hours": [
+          1622865600000,
+          1622934000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-06-07",
+        "missing_required_hours": [
+          1623045600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-06-13",
+        "missing_required_hours": [
+          1623589200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-06-19",
+        "missing_required_hours": [
+          1624132800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-06-26",
+        "missing_required_hours": [
+          1624676400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-06-30",
+        "missing_required_hours": [
+          1625068800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-07-03",
+        "missing_required_hours": [
+          1625331600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-07-10",
+        "missing_required_hours": [
+          1625875200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-07-13",
+        "missing_required_hours": [
+          1626138000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-07-17",
+        "missing_required_hours": [
+          1626530400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-07-18",
+        "missing_required_hours": [
+          1626642000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-07-23",
+        "missing_required_hours": [
+          1627034400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-09-29",
+        "missing_required_hours": [
+          1632898800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-09-30",
+        "missing_required_hours": [
+          1633010400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-11-19",
+        "missing_required_hours": [
+          1637341200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-11-24",
+        "missing_required_hours": [
+          1637733600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-12-04",
+        "missing_required_hours": [
+          1638626400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-12-09",
+        "missing_required_hours": [
+          1639018800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-12-13",
+        "missing_required_hours": [
+          1639411200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-12-15",
+        "missing_required_hours": [
+          1639580400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-12-20",
+        "missing_required_hours": [
+          1639972800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2021-12-23",
+        "missing_required_hours": [
+          1640235600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-01-03",
+        "missing_required_hours": [
+          1641171600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-01-07",
+        "missing_required_hours": [
+          1641564000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-01-13",
+        "missing_required_hours": [
+          1642107600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-01-18",
+        "missing_required_hours": [
+          1642500000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-01-20",
+        "missing_required_hours": [
+          1642669200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-01-24",
+        "missing_required_hours": [
+          1643061600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-01-25",
+        "missing_required_hours": [
+          1643130000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-01-27",
+        "missing_required_hours": [
+          1643299200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-01-30",
+        "missing_required_hours": [
+          1643562000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-02-04",
+        "missing_required_hours": [
+          1643954400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-02-16",
+        "missing_required_hours": [
+          1645027200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-02-18",
+        "missing_required_hours": [
+          1645196400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-02-20",
+        "missing_required_hours": [
+          1645365600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-02-21",
+        "missing_required_hours": [
+          1645477200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-02-28",
+        "missing_required_hours": [
+          1646020800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-03-06",
+        "missing_required_hours": [
+          1646532000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-03-12",
+        "missing_required_hours": [
+          1647075600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-03-16",
+        "missing_required_hours": [
+          1647468000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-03-18",
+        "missing_required_hours": [
+          1647637200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-04-17",
+        "missing_required_hours": [
+          1650186000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-04-18",
+        "missing_required_hours": [
+          1650297600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-04-24",
+        "missing_required_hours": [
+          1650841200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-04-29",
+        "missing_required_hours": [
+          1651233600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-05-02",
+        "missing_required_hours": [
+          1651496400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-05-04",
+        "missing_required_hours": [
+          1651665600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-05-10",
+        "missing_required_hours": [
+          1652209200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-05-11",
+        "missing_required_hours": [
+          1652277600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-05-16",
+        "missing_required_hours": [
+          1652670000000,
+          1652738400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-05-17",
+        "missing_required_hours": [
+          1652806800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-05-20",
+        "missing_required_hours": [
+          1653069600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-05-27",
+        "missing_required_hours": [
+          1653613200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-05-31",
+        "missing_required_hours": [
+          1654005600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-03",
+        "missing_required_hours": [
+          1654268400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-08",
+        "missing_required_hours": [
+          1654660800000,
+          1654729200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-13",
+        "missing_required_hours": [
+          1655121600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-16",
+        "missing_required_hours": [
+          1655384400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-21",
+        "missing_required_hours": [
+          1655776800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-25",
+        "missing_required_hours": [
+          1656169200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-26",
+        "missing_required_hours": [
+          1656237600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-28",
+        "missing_required_hours": [
+          1656406800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-29",
+        "missing_required_hours": [
+          1656518400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-06-30",
+        "missing_required_hours": [
+          1656630000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-07-04",
+        "missing_required_hours": [
+          1656892800000,
+          1656961200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-07-09",
+        "missing_required_hours": [
+          1657353600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-07-10",
+        "missing_required_hours": [
+          1657422000000,
+          1657490400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-07-11",
+        "missing_required_hours": [
+          1657558800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-07-14",
+        "missing_required_hours": [
+          1657821600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-07-16",
+        "missing_required_hours": [
+          1657933200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-08-23",
+        "missing_required_hours": [
+          1661220000000,
+          1661288400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-08-25",
+        "missing_required_hours": [
+          1661400000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-08-29",
+        "missing_required_hours": [
+          1661792400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-09-05",
+        "missing_required_hours": [
+          1662336000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-09-06",
+        "missing_required_hours": [
+          1662447600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-09-07",
+        "missing_required_hours": [
+          1662559200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-09-09",
+        "missing_required_hours": [
+          1662728400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-09-18",
+        "missing_required_hours": [
+          1663534800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-09-21",
+        "missing_required_hours": [
+          1663797600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-09-24",
+        "missing_required_hours": [
+          1664060400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-10-01",
+        "missing_required_hours": [
+          1664604000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-10-15",
+        "missing_required_hours": [
+          1665871200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-10-17",
+        "missing_required_hours": [
+          1665982800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-10-21",
+        "missing_required_hours": [
+          1666375200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-11-10",
+        "missing_required_hours": [
+          1668078000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-11-15",
+        "missing_required_hours": [
+          1668470400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-11-16",
+        "missing_required_hours": [
+          1668582000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-11-18",
+        "missing_required_hours": [
+          1668751200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-11-22",
+        "missing_required_hours": [
+          1669143600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-11-24",
+        "missing_required_hours": [
+          1669255200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-11-25",
+        "missing_required_hours": [
+          1669366800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-11-29",
+        "missing_required_hours": [
+          1669759200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-11-30",
+        "missing_required_hours": [
+          1669827600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-12-07",
+        "missing_required_hours": [
+          1670371200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-12-08",
+        "missing_required_hours": [
+          1670540400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-12-10",
+        "missing_required_hours": [
+          1670709600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-12-22",
+        "missing_required_hours": [
+          1671714000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-12-23",
+        "missing_required_hours": [
+          1671825600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-12-25",
+        "missing_required_hours": [
+          1671994800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2022-12-31",
+        "missing_required_hours": [
+          1672495200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-01-02",
+        "missing_required_hours": [
+          1672664400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-03-10",
+        "missing_required_hours": [
+          1678410000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-04-24",
+        "missing_required_hours": [
+          1682323200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-05-13",
+        "missing_required_hours": [
+          1683964800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-05-19",
+        "missing_required_hours": [
+          1684508400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-05-28",
+        "missing_required_hours": [
+          1685239200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-06-12",
+        "missing_required_hours": [
+          1686582000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-06-15",
+        "missing_required_hours": [
+          1686844800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-07-28",
+        "missing_required_hours": [
+          1690578000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-07-30",
+        "missing_required_hours": [
+          1690747200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-08-01",
+        "missing_required_hours": [
+          1690916400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-08-07",
+        "missing_required_hours": [
+          1691402400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-08-11",
+        "missing_required_hours": [
+          1691794800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-08-23",
+        "missing_required_hours": [
+          1692781200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-08-25",
+        "missing_required_hours": [
+          1692950400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-08-27",
+        "missing_required_hours": [
+          1693119600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-08-28",
+        "missing_required_hours": [
+          1693188000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-08-29",
+        "missing_required_hours": [
+          1693299600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-09-01",
+        "missing_required_hours": [
+          1693562400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-09-07",
+        "missing_required_hours": [
+          1694106000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-09-09",
+        "missing_required_hours": [
+          1694217600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-09-12",
+        "missing_required_hours": [
+          1694480400000,
+          1694548800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2023-09-17",
+        "missing_required_hours": [
+          1694941200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-02",
+        "missing_required_hours": [
+          1704225600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-04",
+        "missing_required_hours": [
+          1704337200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-10",
+        "missing_required_hours": [
+          1704880800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-13",
+        "missing_required_hours": [
+          1705143600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-18",
+        "missing_required_hours": [
+          1705536000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-21",
+        "missing_required_hours": [
+          1705798800000,
+          1705867200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-22",
+        "missing_required_hours": [
+          1705935600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-23",
+        "missing_required_hours": [
+          1706004000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-25",
+        "missing_required_hours": [
+          1706173200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-01-29",
+        "missing_required_hours": [
+          1706565600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-06",
+        "missing_required_hours": [
+          1707177600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-07",
+        "missing_required_hours": [
+          1707289200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-08",
+        "missing_required_hours": [
+          1707400800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-11",
+        "missing_required_hours": [
+          1707663600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-14",
+        "missing_required_hours": [
+          1707901200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-18",
+        "missing_required_hours": [
+          1708293600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-20",
+        "missing_required_hours": [
+          1708462800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-02-22",
+        "missing_required_hours": [
+          1708574400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-04",
+        "missing_required_hours": [
+          1709510400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-16",
+        "missing_required_hours": [
+          1710597600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-21",
+        "missing_required_hours": [
+          1710990000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-25",
+        "missing_required_hours": [
+          1711382400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-03-30",
+        "missing_required_hours": [
+          1711774800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-02",
+        "missing_required_hours": [
+          1712037600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-03",
+        "missing_required_hours": [
+          1712106000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-07",
+        "missing_required_hours": [
+          1712498400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-12",
+        "missing_required_hours": [
+          1712890800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-18",
+        "missing_required_hours": [
+          1713434400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-19",
+        "missing_required_hours": [
+          1713546000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-24",
+        "missing_required_hours": [
+          1713938400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-25",
+        "missing_required_hours": [
+          1714050000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-04-30",
+        "missing_required_hours": [
+          1714442400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-06",
+        "missing_required_hours": [
+          1714986000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-10",
+        "missing_required_hours": [
+          1715378400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-13",
+        "missing_required_hours": [
+          1715641200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-17",
+        "missing_required_hours": [
+          1715904000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-29",
+        "missing_required_hours": [
+          1716991200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-05-30",
+        "missing_required_hours": [
+          1717059600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-05",
+        "missing_required_hours": [
+          1717603200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-10",
+        "missing_required_hours": [
+          1717995600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-13",
+        "missing_required_hours": [
+          1718258400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-14",
+        "missing_required_hours": [
+          1718370000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-17",
+        "missing_required_hours": [
+          1718632800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-18",
+        "missing_required_hours": [
+          1718744400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-20",
+        "missing_required_hours": [
+          1718856000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-21",
+        "missing_required_hours": [
+          1718967600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-22",
+        "missing_required_hours": [
+          1719079200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-27",
+        "missing_required_hours": [
+          1719471600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-29",
+        "missing_required_hours": [
+          1719640800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-06-30",
+        "missing_required_hours": [
+          1719709200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-01",
+        "missing_required_hours": [
+          1719820800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-02",
+        "missing_required_hours": [
+          1719932400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-03",
+        "missing_required_hours": [
+          1720044000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-04",
+        "missing_required_hours": [
+          1720112400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-07",
+        "missing_required_hours": [
+          1720375200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-09",
+        "missing_required_hours": [
+          1720486800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-12",
+        "missing_required_hours": [
+          1720749600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-16",
+        "missing_required_hours": [
+          1721142000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-17",
+        "missing_required_hours": [
+          1721210400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-23",
+        "missing_required_hours": [
+          1721754000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-07-26",
+        "missing_required_hours": [
+          1722016800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-08-02",
+        "missing_required_hours": [
+          1722560400000,
+          1722628800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-08-10",
+        "missing_required_hours": [
+          1723284000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-08-14",
+        "missing_required_hours": [
+          1723676400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-08-16",
+        "missing_required_hours": [
+          1723788000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-08-17",
+        "missing_required_hours": [
+          1723899600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-08-23",
+        "missing_required_hours": [
+          1724443200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-08-30",
+        "missing_required_hours": [
+          1724986800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-02",
+        "missing_required_hours": [
+          1725249600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-03",
+        "missing_required_hours": [
+          1725361200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-11",
+        "missing_required_hours": [
+          1726016400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-17",
+        "missing_required_hours": [
+          1726560000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-20",
+        "missing_required_hours": [
+          1726822800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-23",
+        "missing_required_hours": [
+          1727085600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-09-29",
+        "missing_required_hours": [
+          1727629200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-04",
+        "missing_required_hours": [
+          1728021600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-05",
+        "missing_required_hours": [
+          1728090000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-11",
+        "missing_required_hours": [
+          1728633600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-15",
+        "missing_required_hours": [
+          1729026000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-22",
+        "missing_required_hours": [
+          1729569600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-24",
+        "missing_required_hours": [
+          1729738800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-26",
+        "missing_required_hours": [
+          1729908000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-10-29",
+        "missing_required_hours": [
+          1730170800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-01",
+        "missing_required_hours": [
+          1730433600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-03",
+        "missing_required_hours": [
+          1730602800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-05",
+        "missing_required_hours": [
+          1730772000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-11",
+        "missing_required_hours": [
+          1731333600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-18",
+        "missing_required_hours": [
+          1731895200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-19",
+        "missing_required_hours": [
+          1732006800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-20",
+        "missing_required_hours": [
+          1732118400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-21",
+        "missing_required_hours": [
+          1732186800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-26",
+        "missing_required_hours": [
+          1732579200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-29",
+        "missing_required_hours": [
+          1732842000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-11-30",
+        "missing_required_hours": [
+          1732953600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-06",
+        "missing_required_hours": [
+          1733497200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-09",
+        "missing_required_hours": [
+          1733760000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-11",
+        "missing_required_hours": [
+          1733929200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-12",
+        "missing_required_hours": [
+          1734040800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-14",
+        "missing_required_hours": [
+          1734152400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-17",
+        "missing_required_hours": [
+          1734415200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-18",
+        "missing_required_hours": [
+          1734526800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-19",
+        "missing_required_hours": [
+          1734595200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-20",
+        "missing_required_hours": [
+          1734663600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-26",
+        "missing_required_hours": [
+          1735207200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-27",
+        "missing_required_hours": [
+          1735275600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-28",
+        "missing_required_hours": [
+          1735344000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2024-12-31",
+        "missing_required_hours": [
+          1735606800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-02",
+        "missing_required_hours": [
+          1735776000000,
+          1735844400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-04",
+        "missing_required_hours": [
+          1735956000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-10",
+        "missing_required_hours": [
+          1736499600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-12",
+        "missing_required_hours": [
+          1736668800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-13",
+        "missing_required_hours": [
+          1736780400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-19",
+        "missing_required_hours": [
+          1737324000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-20",
+        "missing_required_hours": [
+          1737392400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-21",
+        "missing_required_hours": [
+          1737460800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-22",
+        "missing_required_hours": [
+          1737529200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-01-28",
+        "missing_required_hours": [
+          1738072800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-02",
+        "missing_required_hours": [
+          1738465200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-03",
+        "missing_required_hours": [
+          1738576800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-09",
+        "missing_required_hours": [
+          1739120400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-11",
+        "missing_required_hours": [
+          1739232000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-12",
+        "missing_required_hours": [
+          1739401200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-13",
+        "missing_required_hours": [
+          1739469600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-16",
+        "missing_required_hours": [
+          1739732400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-18",
+        "missing_required_hours": [
+          1739844000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-20",
+        "missing_required_hours": [
+          1740013200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-02-24",
+        "missing_required_hours": [
+          1740405600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-01",
+        "missing_required_hours": [
+          1740798000000,
+          1740866400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-06",
+        "missing_required_hours": [
+          1741258800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-07",
+        "missing_required_hours": [
+          1741327200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-10",
+        "missing_required_hours": [
+          1741590000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-12",
+        "missing_required_hours": [
+          1741759200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-16",
+        "missing_required_hours": [
+          1742151600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-18",
+        "missing_required_hours": [
+          1742320800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-23",
+        "missing_required_hours": [
+          1742713200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-24",
+        "missing_required_hours": [
+          1742781600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-27",
+        "missing_required_hours": [
+          1743044400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-03-30",
+        "missing_required_hours": [
+          1743307200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-04-05",
+        "missing_required_hours": [
+          1743850800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-04-11",
+        "missing_required_hours": [
+          1744394400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-04-16",
+        "missing_required_hours": [
+          1744786800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-04-20",
+        "missing_required_hours": [
+          1745179200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-04-30",
+        "missing_required_hours": [
+          1746003600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-03",
+        "missing_required_hours": [
+          1746266400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-04",
+        "missing_required_hours": [
+          1746378000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-05",
+        "missing_required_hours": [
+          1746446400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-08",
+        "missing_required_hours": [
+          1746709200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-09",
+        "missing_required_hours": [
+          1746820800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-10",
+        "missing_required_hours": [
+          1746889200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-12",
+        "missing_required_hours": [
+          1747058400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-18",
+        "missing_required_hours": [
+          1747602000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-20",
+        "missing_required_hours": [
+          1747771200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-25",
+        "missing_required_hours": [
+          1748163600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-26",
+        "missing_required_hours": [
+          1748275200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-28",
+        "missing_required_hours": [
+          1748444400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-05-31",
+        "missing_required_hours": [
+          1748707200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-05",
+        "missing_required_hours": [
+          1749099600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-08",
+        "missing_required_hours": [
+          1749362400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-12",
+        "missing_required_hours": [
+          1749754800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-14",
+        "missing_required_hours": [
+          1749924000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-16",
+        "missing_required_hours": [
+          1750035600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-22",
+        "missing_required_hours": [
+          1750579200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-06-28",
+        "missing_required_hours": [
+          1751122800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-01",
+        "missing_required_hours": [
+          1751385600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-02",
+        "missing_required_hours": [
+          1751454000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-08",
+        "missing_required_hours": [
+          1751997600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-16",
+        "missing_required_hours": [
+          1752652800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-25",
+        "missing_required_hours": [
+          1753459200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-07-26",
+        "missing_required_hours": [
+          1753527600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-01",
+        "missing_required_hours": [
+          1754071200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-03",
+        "missing_required_hours": [
+          1754240400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-05",
+        "missing_required_hours": [
+          1754352000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-12",
+        "missing_required_hours": [
+          1754964000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-14",
+        "missing_required_hours": [
+          1755133200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-24",
+        "missing_required_hours": [
+          1756069200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-25",
+        "missing_required_hours": [
+          1756137600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-26",
+        "missing_required_hours": [
+          1756206000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-08-31",
+        "missing_required_hours": [
+          1756598400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-01",
+        "missing_required_hours": [
+          1756767600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-06",
+        "missing_required_hours": [
+          1757160000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-08",
+        "missing_required_hours": [
+          1757329200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-13",
+        "missing_required_hours": [
+          1757721600000,
+          1757790000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-15",
+        "missing_required_hours": [
+          1757959200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-18",
+        "missing_required_hours": [
+          1758222000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-23",
+        "missing_required_hours": [
+          1758614400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-24",
+        "missing_required_hours": [
+          1758726000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-27",
+        "missing_required_hours": [
+          1758988800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-09-28",
+        "missing_required_hours": [
+          1759100400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-05",
+        "missing_required_hours": [
+          1759626000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-09",
+        "missing_required_hours": [
+          1760000400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-15",
+        "missing_required_hours": [
+          1760544000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-16",
+        "missing_required_hours": [
+          1760612400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-17",
+        "missing_required_hours": [
+          1760724000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-19",
+        "missing_required_hours": [
+          1760835600000,
+          1760904000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-22",
+        "missing_required_hours": [
+          1761166800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-27",
+        "missing_required_hours": [
+          1761559200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-10-30",
+        "missing_required_hours": [
+          1761822000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-04",
+        "missing_required_hours": [
+          1762214400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-10",
+        "missing_required_hours": [
+          1762758000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-11",
+        "missing_required_hours": [
+          1762869600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-12",
+        "missing_required_hours": [
+          1762938000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-13",
+        "missing_required_hours": [
+          1763006400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-14",
+        "missing_required_hours": [
+          1763118000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-20",
+        "missing_required_hours": [
+          1763661600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-22",
+        "missing_required_hours": [
+          1763830800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-24",
+        "missing_required_hours": [
+          1764000000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-25",
+        "missing_required_hours": [
+          1764068400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-11-26",
+        "missing_required_hours": [
+          1764136800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-02",
+        "missing_required_hours": [
+          1764680400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-03",
+        "missing_required_hours": [
+          1764792000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-10",
+        "missing_required_hours": [
+          1765335600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-11",
+        "missing_required_hours": [
+          1765447200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-17",
+        "missing_required_hours": [
+          1765990800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-19",
+        "missing_required_hours": [
+          1766160000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-20",
+        "missing_required_hours": [
+          1766228400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-23",
+        "missing_required_hours": [
+          1766491200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-25",
+        "missing_required_hours": [
+          1766660400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2025-12-28",
+        "missing_required_hours": [
+          1766923200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-03",
+        "missing_required_hours": [
+          1767466800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-08",
+        "missing_required_hours": [
+          1767859200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-09",
+        "missing_required_hours": [
+          1767970800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-15",
+        "missing_required_hours": [
+          1768514400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-16",
+        "missing_required_hours": [
+          1768582800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-19",
+        "missing_required_hours": [
+          1768845600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-21",
+        "missing_required_hours": [
+          1769014800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-26",
+        "missing_required_hours": [
+          1769407200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-27",
+        "missing_required_hours": [
+          1769475600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-28",
+        "missing_required_hours": [
+          1769587200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-01-29",
+        "missing_required_hours": [
+          1769655600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-02-04",
+        "missing_required_hours": [
+          1770199200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-02-05",
+        "missing_required_hours": [
+          1770267600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-02-06",
+        "missing_required_hours": [
+          1770336000000,
+          1770404400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-02-07",
+        "missing_required_hours": [
+          1770472800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-02-13",
+        "missing_required_hours": [
+          1771016400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-02-18",
+        "missing_required_hours": [
+          1771408800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-02-22",
+        "missing_required_hours": [
+          1771801200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-02-27",
+        "missing_required_hours": [
+          1772193600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-01",
+        "missing_required_hours": [
+          1772362800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-02",
+        "missing_required_hours": [
+          1772431200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-06",
+        "missing_required_hours": [
+          1772823600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-11",
+        "missing_required_hours": [
+          1773216000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-17",
+        "missing_required_hours": [
+          1773759600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-22",
+        "missing_required_hours": [
+          1774152000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-26",
+        "missing_required_hours": [
+          1774544400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-03-28",
+        "missing_required_hours": [
+          1774713600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-04",
+        "missing_required_hours": [
+          1775325600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-10",
+        "missing_required_hours": [
+          1775829600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-11",
+        "missing_required_hours": [
+          1775941200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-14",
+        "missing_required_hours": [
+          1776204000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-17",
+        "missing_required_hours": [
+          1776466800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-19",
+        "missing_required_hours": [
+          1776578400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-22",
+        "missing_required_hours": [
+          1776841200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-25",
+        "missing_required_hours": [
+          1777104000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-28",
+        "missing_required_hours": [
+          1777366800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-29",
+        "missing_required_hours": [
+          1777478400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-04-30",
+        "missing_required_hours": [
+          1777590000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-01",
+        "missing_required_hours": [
+          1777658400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-04",
+        "missing_required_hours": [
+          1777921200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-05",
+        "missing_required_hours": [
+          1777989600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-08",
+        "missing_required_hours": [
+          1778252400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-10",
+        "missing_required_hours": [
+          1778421600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-11",
+        "missing_required_hours": [
+          1778490000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-13",
+        "missing_required_hours": [
+          1778659200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-16",
+        "missing_required_hours": [
+          1778922000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-18",
+        "missing_required_hours": [
+          1779091200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-19",
+        "missing_required_hours": [
+          1779202800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-25",
+        "missing_required_hours": [
+          1779746400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-28",
+        "missing_required_hours": [
+          1780009200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-30",
+        "missing_required_hours": [
+          1780120800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-05-31",
+        "missing_required_hours": [
+          1780189200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-06-06",
+        "missing_required_hours": [
+          1780732800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-06-07",
+        "missing_required_hours": [
+          1780844400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-06-13",
+        "missing_required_hours": [
+          1781388000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-06-17",
+        "missing_required_hours": [
+          1781719200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-06-19",
+        "missing_required_hours": [
+          1781888400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-06-26",
+        "missing_required_hours": [
+          1782432000000,
+          1782500400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-03",
+        "missing_required_hours": [
+          1783044000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-09",
+        "missing_required_hours": [
+          1783587600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-11",
+        "missing_required_hours": [
+          1783756800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-17",
+        "missing_required_hours": [
+          1784300400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-22",
+        "missing_required_hours": [
+          1784692800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-07-26",
+        "missing_required_hours": [
+          1785085200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-02",
+        "missing_required_hours": [
+          1785628800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-08",
+        "missing_required_hours": [
+          1786172400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-09",
+        "missing_required_hours": [
+          1786240800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-10",
+        "missing_required_hours": [
+          1786352400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-11",
+        "missing_required_hours": [
+          1786420800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-17",
+        "missing_required_hours": [
+          1786964400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-21",
+        "missing_required_hours": [
+          1787295600000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-08-24",
+        "missing_required_hours": [
+          1787558400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-01",
+        "missing_required_hours": [
+          1788271200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-04",
+        "missing_required_hours": [
+          1788534000000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-05",
+        "missing_required_hours": [
+          1788602400000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-08",
+        "missing_required_hours": [
+          1788865200000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-09",
+        "missing_required_hours": [
+          1788976800000
+        ]
+      },
+      {
+        "kind": "klines",
+        "day": "2026-09-16",
+        "missing_required_hours": [
+          1789520400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-02-26",
+        "missing_required_hours": [
+          1582696800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-02-28",
+        "missing_required_hours": [
+          1582866000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-03-02",
+        "missing_required_hours": [
+          1583128800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-03-16",
+        "missing_required_hours": [
+          1584327600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-03-20",
+        "missing_required_hours": [
+          1584720000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-03-21",
+        "missing_required_hours": [
+          1584831600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-03-28",
+        "missing_required_hours": [
+          1585375200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-03-29",
+        "missing_required_hours": [
+          1585486800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-03-31",
+        "missing_required_hours": [
+          1585656000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-04-01",
+        "missing_required_hours": [
+          1585724400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2020-07-17",
+        "missing_required_hours": [
+          1594954800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-05-15",
+        "missing_required_hours": [
+          1621054800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-05-21",
+        "missing_required_hours": [
+          1621598400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-05-27",
+        "missing_required_hours": [
+          1622142000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-05-30",
+        "missing_required_hours": [
+          1622404800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-06-04",
+        "missing_required_hours": [
+          1622797200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-06-05",
+        "missing_required_hours": [
+          1622865600000,
+          1622934000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-06-07",
+        "missing_required_hours": [
+          1623045600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-06-13",
+        "missing_required_hours": [
+          1623589200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-06-19",
+        "missing_required_hours": [
+          1624132800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-06-26",
+        "missing_required_hours": [
+          1624676400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-06-30",
+        "missing_required_hours": [
+          1625068800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-07-03",
+        "missing_required_hours": [
+          1625331600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-07-10",
+        "missing_required_hours": [
+          1625875200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-07-13",
+        "missing_required_hours": [
+          1626138000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-07-17",
+        "missing_required_hours": [
+          1626530400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-07-18",
+        "missing_required_hours": [
+          1626642000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-07-23",
+        "missing_required_hours": [
+          1627034400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-09-29",
+        "missing_required_hours": [
+          1632898800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-09-30",
+        "missing_required_hours": [
+          1633010400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-11-19",
+        "missing_required_hours": [
+          1637341200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-11-24",
+        "missing_required_hours": [
+          1637733600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-12-04",
+        "missing_required_hours": [
+          1638626400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-12-09",
+        "missing_required_hours": [
+          1639018800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-12-13",
+        "missing_required_hours": [
+          1639411200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-12-15",
+        "missing_required_hours": [
+          1639580400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-12-20",
+        "missing_required_hours": [
+          1639972800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2021-12-23",
+        "missing_required_hours": [
+          1640235600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-01-03",
+        "missing_required_hours": [
+          1641171600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-01-07",
+        "missing_required_hours": [
+          1641564000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-01-13",
+        "missing_required_hours": [
+          1642107600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-01-18",
+        "missing_required_hours": [
+          1642500000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-01-20",
+        "missing_required_hours": [
+          1642669200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-01-24",
+        "missing_required_hours": [
+          1643061600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-01-25",
+        "missing_required_hours": [
+          1643130000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-01-27",
+        "missing_required_hours": [
+          1643299200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-01-30",
+        "missing_required_hours": [
+          1643562000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-02-04",
+        "missing_required_hours": [
+          1643954400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-02-16",
+        "missing_required_hours": [
+          1645027200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-02-18",
+        "missing_required_hours": [
+          1645196400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-02-20",
+        "missing_required_hours": [
+          1645365600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-02-21",
+        "missing_required_hours": [
+          1645477200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-02-28",
+        "missing_required_hours": [
+          1646020800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-03-06",
+        "missing_required_hours": [
+          1646532000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-03-12",
+        "missing_required_hours": [
+          1647075600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-03-16",
+        "missing_required_hours": [
+          1647468000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-03-18",
+        "missing_required_hours": [
+          1647637200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-04-17",
+        "missing_required_hours": [
+          1650186000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-04-18",
+        "missing_required_hours": [
+          1650297600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-04-24",
+        "missing_required_hours": [
+          1650841200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-04-29",
+        "missing_required_hours": [
+          1651233600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-05-02",
+        "missing_required_hours": [
+          1651496400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-05-04",
+        "missing_required_hours": [
+          1651665600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-05-10",
+        "missing_required_hours": [
+          1652209200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-05-11",
+        "missing_required_hours": [
+          1652277600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-05-16",
+        "missing_required_hours": [
+          1652670000000,
+          1652738400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-05-17",
+        "missing_required_hours": [
+          1652806800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-05-20",
+        "missing_required_hours": [
+          1653069600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-05-27",
+        "missing_required_hours": [
+          1653613200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-05-31",
+        "missing_required_hours": [
+          1654005600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-03",
+        "missing_required_hours": [
+          1654268400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-08",
+        "missing_required_hours": [
+          1654660800000,
+          1654729200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-13",
+        "missing_required_hours": [
+          1655121600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-16",
+        "missing_required_hours": [
+          1655384400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-21",
+        "missing_required_hours": [
+          1655776800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-25",
+        "missing_required_hours": [
+          1656169200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-26",
+        "missing_required_hours": [
+          1656237600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-28",
+        "missing_required_hours": [
+          1656406800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-29",
+        "missing_required_hours": [
+          1656518400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-06-30",
+        "missing_required_hours": [
+          1656630000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-07-04",
+        "missing_required_hours": [
+          1656892800000,
+          1656961200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-07-09",
+        "missing_required_hours": [
+          1657353600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-07-10",
+        "missing_required_hours": [
+          1657422000000,
+          1657490400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-07-11",
+        "missing_required_hours": [
+          1657558800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-07-14",
+        "missing_required_hours": [
+          1657821600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-07-16",
+        "missing_required_hours": [
+          1657933200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-08-23",
+        "missing_required_hours": [
+          1661220000000,
+          1661288400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-08-25",
+        "missing_required_hours": [
+          1661400000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-08-29",
+        "missing_required_hours": [
+          1661792400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-09-05",
+        "missing_required_hours": [
+          1662336000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-09-06",
+        "missing_required_hours": [
+          1662447600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-09-07",
+        "missing_required_hours": [
+          1662559200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-09-09",
+        "missing_required_hours": [
+          1662728400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-09-18",
+        "missing_required_hours": [
+          1663534800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-09-21",
+        "missing_required_hours": [
+          1663797600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-09-24",
+        "missing_required_hours": [
+          1664060400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-10-01",
+        "missing_required_hours": [
+          1664604000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-10-15",
+        "missing_required_hours": [
+          1665871200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-10-17",
+        "missing_required_hours": [
+          1665982800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-10-21",
+        "missing_required_hours": [
+          1666375200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-11-10",
+        "missing_required_hours": [
+          1668078000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-11-15",
+        "missing_required_hours": [
+          1668470400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-11-16",
+        "missing_required_hours": [
+          1668582000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-11-18",
+        "missing_required_hours": [
+          1668751200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-11-22",
+        "missing_required_hours": [
+          1669143600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-11-24",
+        "missing_required_hours": [
+          1669255200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-11-25",
+        "missing_required_hours": [
+          1669366800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-11-29",
+        "missing_required_hours": [
+          1669759200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-11-30",
+        "missing_required_hours": [
+          1669827600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-12-07",
+        "missing_required_hours": [
+          1670371200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-12-08",
+        "missing_required_hours": [
+          1670540400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-12-10",
+        "missing_required_hours": [
+          1670709600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-12-22",
+        "missing_required_hours": [
+          1671714000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-12-23",
+        "missing_required_hours": [
+          1671825600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-12-25",
+        "missing_required_hours": [
+          1671994800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2022-12-31",
+        "missing_required_hours": [
+          1672495200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-01-02",
+        "missing_required_hours": [
+          1672664400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-03-10",
+        "missing_required_hours": [
+          1678410000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-04-24",
+        "missing_required_hours": [
+          1682323200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-05-13",
+        "missing_required_hours": [
+          1683964800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-05-19",
+        "missing_required_hours": [
+          1684508400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-05-28",
+        "missing_required_hours": [
+          1685239200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-06-12",
+        "missing_required_hours": [
+          1686582000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-06-15",
+        "missing_required_hours": [
+          1686844800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-07-28",
+        "missing_required_hours": [
+          1690578000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-07-30",
+        "missing_required_hours": [
+          1690747200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-08-01",
+        "missing_required_hours": [
+          1690916400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-08-07",
+        "missing_required_hours": [
+          1691402400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-08-11",
+        "missing_required_hours": [
+          1691794800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-08-23",
+        "missing_required_hours": [
+          1692781200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-08-25",
+        "missing_required_hours": [
+          1692950400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-08-27",
+        "missing_required_hours": [
+          1693119600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-08-28",
+        "missing_required_hours": [
+          1693188000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-08-29",
+        "missing_required_hours": [
+          1693299600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-09-01",
+        "missing_required_hours": [
+          1693562400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-09-07",
+        "missing_required_hours": [
+          1694106000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-09-09",
+        "missing_required_hours": [
+          1694217600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-09-12",
+        "missing_required_hours": [
+          1694480400000,
+          1694548800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2023-09-17",
+        "missing_required_hours": [
+          1694941200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-02",
+        "missing_required_hours": [
+          1704225600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-04",
+        "missing_required_hours": [
+          1704337200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-10",
+        "missing_required_hours": [
+          1704880800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-13",
+        "missing_required_hours": [
+          1705143600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-18",
+        "missing_required_hours": [
+          1705536000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-21",
+        "missing_required_hours": [
+          1705798800000,
+          1705867200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-22",
+        "missing_required_hours": [
+          1705935600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-23",
+        "missing_required_hours": [
+          1706004000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-25",
+        "missing_required_hours": [
+          1706173200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-01-29",
+        "missing_required_hours": [
+          1706565600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-06",
+        "missing_required_hours": [
+          1707177600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-07",
+        "missing_required_hours": [
+          1707289200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-08",
+        "missing_required_hours": [
+          1707400800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-11",
+        "missing_required_hours": [
+          1707663600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-14",
+        "missing_required_hours": [
+          1707901200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-18",
+        "missing_required_hours": [
+          1708293600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-20",
+        "missing_required_hours": [
+          1708462800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-02-22",
+        "missing_required_hours": [
+          1708574400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-04",
+        "missing_required_hours": [
+          1709510400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-16",
+        "missing_required_hours": [
+          1710597600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-21",
+        "missing_required_hours": [
+          1710990000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-25",
+        "missing_required_hours": [
+          1711382400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-03-30",
+        "missing_required_hours": [
+          1711774800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-02",
+        "missing_required_hours": [
+          1712037600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-03",
+        "missing_required_hours": [
+          1712106000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-07",
+        "missing_required_hours": [
+          1712498400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-12",
+        "missing_required_hours": [
+          1712890800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-18",
+        "missing_required_hours": [
+          1713434400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-19",
+        "missing_required_hours": [
+          1713546000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-24",
+        "missing_required_hours": [
+          1713938400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-25",
+        "missing_required_hours": [
+          1714050000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-04-30",
+        "missing_required_hours": [
+          1714442400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-06",
+        "missing_required_hours": [
+          1714986000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-10",
+        "missing_required_hours": [
+          1715378400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-13",
+        "missing_required_hours": [
+          1715641200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-17",
+        "missing_required_hours": [
+          1715904000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-29",
+        "missing_required_hours": [
+          1716991200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-05-30",
+        "missing_required_hours": [
+          1717059600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-05",
+        "missing_required_hours": [
+          1717603200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-10",
+        "missing_required_hours": [
+          1717995600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-13",
+        "missing_required_hours": [
+          1718258400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-14",
+        "missing_required_hours": [
+          1718370000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-17",
+        "missing_required_hours": [
+          1718632800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-18",
+        "missing_required_hours": [
+          1718744400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-20",
+        "missing_required_hours": [
+          1718856000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-21",
+        "missing_required_hours": [
+          1718967600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-22",
+        "missing_required_hours": [
+          1719079200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-27",
+        "missing_required_hours": [
+          1719471600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-29",
+        "missing_required_hours": [
+          1719640800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-06-30",
+        "missing_required_hours": [
+          1719709200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-01",
+        "missing_required_hours": [
+          1719820800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-02",
+        "missing_required_hours": [
+          1719932400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-03",
+        "missing_required_hours": [
+          1720044000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-04",
+        "missing_required_hours": [
+          1720112400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-07",
+        "missing_required_hours": [
+          1720375200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-09",
+        "missing_required_hours": [
+          1720486800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-12",
+        "missing_required_hours": [
+          1720749600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-16",
+        "missing_required_hours": [
+          1721142000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-17",
+        "missing_required_hours": [
+          1721210400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-23",
+        "missing_required_hours": [
+          1721754000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-07-26",
+        "missing_required_hours": [
+          1722016800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-08-02",
+        "missing_required_hours": [
+          1722560400000,
+          1722628800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-08-10",
+        "missing_required_hours": [
+          1723284000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-08-14",
+        "missing_required_hours": [
+          1723676400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-08-16",
+        "missing_required_hours": [
+          1723788000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-08-17",
+        "missing_required_hours": [
+          1723899600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-08-23",
+        "missing_required_hours": [
+          1724443200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-08-30",
+        "missing_required_hours": [
+          1724986800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-02",
+        "missing_required_hours": [
+          1725249600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-03",
+        "missing_required_hours": [
+          1725361200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-11",
+        "missing_required_hours": [
+          1726016400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-17",
+        "missing_required_hours": [
+          1726560000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-20",
+        "missing_required_hours": [
+          1726822800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-23",
+        "missing_required_hours": [
+          1727085600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-09-29",
+        "missing_required_hours": [
+          1727629200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-04",
+        "missing_required_hours": [
+          1728021600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-05",
+        "missing_required_hours": [
+          1728090000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-11",
+        "missing_required_hours": [
+          1728633600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-15",
+        "missing_required_hours": [
+          1729026000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-22",
+        "missing_required_hours": [
+          1729569600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-24",
+        "missing_required_hours": [
+          1729738800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-26",
+        "missing_required_hours": [
+          1729908000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-10-29",
+        "missing_required_hours": [
+          1730170800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-01",
+        "missing_required_hours": [
+          1730433600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-03",
+        "missing_required_hours": [
+          1730602800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-05",
+        "missing_required_hours": [
+          1730772000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-11",
+        "missing_required_hours": [
+          1731333600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-18",
+        "missing_required_hours": [
+          1731895200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-19",
+        "missing_required_hours": [
+          1732006800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-20",
+        "missing_required_hours": [
+          1732118400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-21",
+        "missing_required_hours": [
+          1732186800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-26",
+        "missing_required_hours": [
+          1732579200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-29",
+        "missing_required_hours": [
+          1732842000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-11-30",
+        "missing_required_hours": [
+          1732953600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-06",
+        "missing_required_hours": [
+          1733497200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-09",
+        "missing_required_hours": [
+          1733760000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-11",
+        "missing_required_hours": [
+          1733929200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-12",
+        "missing_required_hours": [
+          1734040800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-14",
+        "missing_required_hours": [
+          1734152400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-17",
+        "missing_required_hours": [
+          1734415200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-18",
+        "missing_required_hours": [
+          1734526800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-19",
+        "missing_required_hours": [
+          1734595200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-20",
+        "missing_required_hours": [
+          1734663600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-26",
+        "missing_required_hours": [
+          1735207200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-27",
+        "missing_required_hours": [
+          1735275600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-28",
+        "missing_required_hours": [
+          1735344000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2024-12-31",
+        "missing_required_hours": [
+          1735606800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-02",
+        "missing_required_hours": [
+          1735776000000,
+          1735844400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-04",
+        "missing_required_hours": [
+          1735956000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-10",
+        "missing_required_hours": [
+          1736499600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-12",
+        "missing_required_hours": [
+          1736668800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-13",
+        "missing_required_hours": [
+          1736780400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-19",
+        "missing_required_hours": [
+          1737324000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-20",
+        "missing_required_hours": [
+          1737392400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-21",
+        "missing_required_hours": [
+          1737460800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-22",
+        "missing_required_hours": [
+          1737529200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-01-28",
+        "missing_required_hours": [
+          1738072800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-02",
+        "missing_required_hours": [
+          1738465200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-03",
+        "missing_required_hours": [
+          1738576800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-09",
+        "missing_required_hours": [
+          1739120400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-11",
+        "missing_required_hours": [
+          1739232000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-12",
+        "missing_required_hours": [
+          1739401200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-13",
+        "missing_required_hours": [
+          1739469600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-16",
+        "missing_required_hours": [
+          1739732400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-18",
+        "missing_required_hours": [
+          1739844000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-20",
+        "missing_required_hours": [
+          1740013200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-02-24",
+        "missing_required_hours": [
+          1740405600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-01",
+        "missing_required_hours": [
+          1740798000000,
+          1740866400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-06",
+        "missing_required_hours": [
+          1741258800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-07",
+        "missing_required_hours": [
+          1741327200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-10",
+        "missing_required_hours": [
+          1741590000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-12",
+        "missing_required_hours": [
+          1741759200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-16",
+        "missing_required_hours": [
+          1742151600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-18",
+        "missing_required_hours": [
+          1742320800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-23",
+        "missing_required_hours": [
+          1742713200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-24",
+        "missing_required_hours": [
+          1742781600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-27",
+        "missing_required_hours": [
+          1743044400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-03-30",
+        "missing_required_hours": [
+          1743307200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-04-05",
+        "missing_required_hours": [
+          1743850800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-04-11",
+        "missing_required_hours": [
+          1744394400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-04-16",
+        "missing_required_hours": [
+          1744786800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-04-20",
+        "missing_required_hours": [
+          1745179200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-04-30",
+        "missing_required_hours": [
+          1746003600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-03",
+        "missing_required_hours": [
+          1746266400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-04",
+        "missing_required_hours": [
+          1746378000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-05",
+        "missing_required_hours": [
+          1746446400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-08",
+        "missing_required_hours": [
+          1746709200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-09",
+        "missing_required_hours": [
+          1746820800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-10",
+        "missing_required_hours": [
+          1746889200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-12",
+        "missing_required_hours": [
+          1747058400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-18",
+        "missing_required_hours": [
+          1747602000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-20",
+        "missing_required_hours": [
+          1747771200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-25",
+        "missing_required_hours": [
+          1748163600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-26",
+        "missing_required_hours": [
+          1748275200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-28",
+        "missing_required_hours": [
+          1748444400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-05-31",
+        "missing_required_hours": [
+          1748707200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-05",
+        "missing_required_hours": [
+          1749099600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-08",
+        "missing_required_hours": [
+          1749362400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-12",
+        "missing_required_hours": [
+          1749754800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-14",
+        "missing_required_hours": [
+          1749924000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-16",
+        "missing_required_hours": [
+          1750035600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-22",
+        "missing_required_hours": [
+          1750579200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-06-28",
+        "missing_required_hours": [
+          1751122800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-01",
+        "missing_required_hours": [
+          1751385600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-02",
+        "missing_required_hours": [
+          1751454000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-08",
+        "missing_required_hours": [
+          1751997600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-16",
+        "missing_required_hours": [
+          1752652800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-25",
+        "missing_required_hours": [
+          1753459200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-07-26",
+        "missing_required_hours": [
+          1753527600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-01",
+        "missing_required_hours": [
+          1754071200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-03",
+        "missing_required_hours": [
+          1754240400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-05",
+        "missing_required_hours": [
+          1754352000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-12",
+        "missing_required_hours": [
+          1754964000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-14",
+        "missing_required_hours": [
+          1755133200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-24",
+        "missing_required_hours": [
+          1756069200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-25",
+        "missing_required_hours": [
+          1756137600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-26",
+        "missing_required_hours": [
+          1756206000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-08-31",
+        "missing_required_hours": [
+          1756598400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-01",
+        "missing_required_hours": [
+          1756767600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-06",
+        "missing_required_hours": [
+          1757160000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-08",
+        "missing_required_hours": [
+          1757329200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-13",
+        "missing_required_hours": [
+          1757721600000,
+          1757790000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-15",
+        "missing_required_hours": [
+          1757959200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-18",
+        "missing_required_hours": [
+          1758222000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-23",
+        "missing_required_hours": [
+          1758614400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-24",
+        "missing_required_hours": [
+          1758726000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-27",
+        "missing_required_hours": [
+          1758988800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-09-28",
+        "missing_required_hours": [
+          1759100400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-05",
+        "missing_required_hours": [
+          1759626000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-09",
+        "missing_required_hours": [
+          1760000400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-15",
+        "missing_required_hours": [
+          1760544000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-16",
+        "missing_required_hours": [
+          1760612400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-17",
+        "missing_required_hours": [
+          1760724000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-19",
+        "missing_required_hours": [
+          1760835600000,
+          1760904000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-22",
+        "missing_required_hours": [
+          1761166800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-27",
+        "missing_required_hours": [
+          1761559200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-10-30",
+        "missing_required_hours": [
+          1761822000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-04",
+        "missing_required_hours": [
+          1762214400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-10",
+        "missing_required_hours": [
+          1762758000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-11",
+        "missing_required_hours": [
+          1762869600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-12",
+        "missing_required_hours": [
+          1762938000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-13",
+        "missing_required_hours": [
+          1763006400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-14",
+        "missing_required_hours": [
+          1763118000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-20",
+        "missing_required_hours": [
+          1763661600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-22",
+        "missing_required_hours": [
+          1763830800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-24",
+        "missing_required_hours": [
+          1764000000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-25",
+        "missing_required_hours": [
+          1764068400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-11-26",
+        "missing_required_hours": [
+          1764136800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-02",
+        "missing_required_hours": [
+          1764680400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-03",
+        "missing_required_hours": [
+          1764792000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-10",
+        "missing_required_hours": [
+          1765335600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-11",
+        "missing_required_hours": [
+          1765447200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-17",
+        "missing_required_hours": [
+          1765990800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-19",
+        "missing_required_hours": [
+          1766160000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-20",
+        "missing_required_hours": [
+          1766228400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-23",
+        "missing_required_hours": [
+          1766491200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-25",
+        "missing_required_hours": [
+          1766660400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2025-12-28",
+        "missing_required_hours": [
+          1766923200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-03",
+        "missing_required_hours": [
+          1767466800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-08",
+        "missing_required_hours": [
+          1767859200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-09",
+        "missing_required_hours": [
+          1767970800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-15",
+        "missing_required_hours": [
+          1768514400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-16",
+        "missing_required_hours": [
+          1768582800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-19",
+        "missing_required_hours": [
+          1768845600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-21",
+        "missing_required_hours": [
+          1769014800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-26",
+        "missing_required_hours": [
+          1769407200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-27",
+        "missing_required_hours": [
+          1769475600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-28",
+        "missing_required_hours": [
+          1769587200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-01-29",
+        "missing_required_hours": [
+          1769655600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-02-04",
+        "missing_required_hours": [
+          1770199200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-02-05",
+        "missing_required_hours": [
+          1770267600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-02-06",
+        "missing_required_hours": [
+          1770336000000,
+          1770404400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-02-07",
+        "missing_required_hours": [
+          1770472800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-02-13",
+        "missing_required_hours": [
+          1771016400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-02-18",
+        "missing_required_hours": [
+          1771408800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-02-22",
+        "missing_required_hours": [
+          1771801200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-02-27",
+        "missing_required_hours": [
+          1772193600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-01",
+        "missing_required_hours": [
+          1772362800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-02",
+        "missing_required_hours": [
+          1772431200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-06",
+        "missing_required_hours": [
+          1772823600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-11",
+        "missing_required_hours": [
+          1773216000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-17",
+        "missing_required_hours": [
+          1773759600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-22",
+        "missing_required_hours": [
+          1774152000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-26",
+        "missing_required_hours": [
+          1774544400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-03-28",
+        "missing_required_hours": [
+          1774713600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-04",
+        "missing_required_hours": [
+          1775325600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-10",
+        "missing_required_hours": [
+          1775829600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-11",
+        "missing_required_hours": [
+          1775941200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-14",
+        "missing_required_hours": [
+          1776204000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-17",
+        "missing_required_hours": [
+          1776466800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-19",
+        "missing_required_hours": [
+          1776578400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-22",
+        "missing_required_hours": [
+          1776841200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-25",
+        "missing_required_hours": [
+          1777104000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-28",
+        "missing_required_hours": [
+          1777366800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-29",
+        "missing_required_hours": [
+          1777478400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-04-30",
+        "missing_required_hours": [
+          1777590000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-01",
+        "missing_required_hours": [
+          1777658400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-04",
+        "missing_required_hours": [
+          1777921200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-05",
+        "missing_required_hours": [
+          1777989600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-08",
+        "missing_required_hours": [
+          1778252400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-10",
+        "missing_required_hours": [
+          1778421600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-11",
+        "missing_required_hours": [
+          1778490000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-13",
+        "missing_required_hours": [
+          1778659200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-16",
+        "missing_required_hours": [
+          1778922000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-18",
+        "missing_required_hours": [
+          1779091200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-19",
+        "missing_required_hours": [
+          1779202800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-25",
+        "missing_required_hours": [
+          1779746400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-28",
+        "missing_required_hours": [
+          1780009200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-30",
+        "missing_required_hours": [
+          1780120800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-05-31",
+        "missing_required_hours": [
+          1780189200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-06-06",
+        "missing_required_hours": [
+          1780732800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-06-07",
+        "missing_required_hours": [
+          1780844400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-06-13",
+        "missing_required_hours": [
+          1781388000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-06-17",
+        "missing_required_hours": [
+          1781719200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-06-19",
+        "missing_required_hours": [
+          1781888400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-06-26",
+        "missing_required_hours": [
+          1782432000000,
+          1782500400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-03",
+        "missing_required_hours": [
+          1783044000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-09",
+        "missing_required_hours": [
+          1783587600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-11",
+        "missing_required_hours": [
+          1783756800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-17",
+        "missing_required_hours": [
+          1784300400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-22",
+        "missing_required_hours": [
+          1784692800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-07-26",
+        "missing_required_hours": [
+          1785085200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-02",
+        "missing_required_hours": [
+          1785628800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-08",
+        "missing_required_hours": [
+          1786172400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-09",
+        "missing_required_hours": [
+          1786240800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-10",
+        "missing_required_hours": [
+          1786352400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-11",
+        "missing_required_hours": [
+          1786420800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-17",
+        "missing_required_hours": [
+          1786964400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-21",
+        "missing_required_hours": [
+          1787295600000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-08-24",
+        "missing_required_hours": [
+          1787558400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-01",
+        "missing_required_hours": [
+          1788271200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-04",
+        "missing_required_hours": [
+          1788534000000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-05",
+        "missing_required_hours": [
+          1788602400000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-08",
+        "missing_required_hours": [
+          1788865200000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-09",
+        "missing_required_hours": [
+          1788976800000
+        ]
+      },
+      {
+        "kind": "markPriceKlines",
+        "day": "2026-09-16",
+        "missing_required_hours": [
+          1789520400000
+        ]
+      }
+    ]
+  },
+  "source_roots": [
+    "../deps/bounded/inputs",
+    "../deps/sx60/exit-minutes",
+    "../deps/m60dev/data",
+    "../deps/protection/data",
+    "../deps/mark/data"
+  ],
+  "first_attempt_input_identity": "3828823dfccadbba0bfc3c4440a3b905b19295acb7bb8ca4b5dfb8580cff3191",
+  "warmup_identity_checked": [],
+  "no_interpolation_or_hourly_substitution": true,
+  "note": "Archive counts for the opportunity subset and frozen-call superset are availability diagnostics. No complete HR60 full-window account was produced; this file is not a full-window result."
+}
