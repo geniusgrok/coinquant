@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "stage": "input_preparation",
+      "baseline": "account/results/SX60-full-control",
+      "status": "failed",
+      "reason": "monthly 1m-2021-01 path is not a daily date; timestamp parser rejected it",
+      "economic_account_started": false
+    },
+    {
+      "stage": "input_preparation",
+      "baseline": "bounded/old-controls/full",
+      "status": "passed",
+      "input_identity": "9b036837f4eb462d672524f9b032adc7a9a9ba85cce071b33b268ab658747645",
+      "refined_hours": 143
+    },
+    {
+      "stage": "git_branch_creation",
+      "status": "recovered",
+      "first_attempt": "update_ref failed 422 because branch did not exist",
+      "resolution": "create_branch at main then fast-forward to frozen commit; six files reread byte-identical"
+    }
+  ]
+}

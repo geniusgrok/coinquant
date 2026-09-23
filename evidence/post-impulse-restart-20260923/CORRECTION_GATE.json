@@ -1,0 +1,212 @@
+{
+  "status": "joint_return_risk_research_rejected",
+  "original_pir1_status": "development_rejected_unchanged",
+  "correction_protocol_sha256": "e2c37a121081f45e1c4cc5fda4eb7d93db79de94ab8b0836752470656e896100",
+  "correction_freeze_sha256": "f00f08bf05d8e6a9fb8c75a3aeff24148450fda5bf4eed9695c2751ef1dfa63f",
+  "pre_result_remote_commit": "6c2ce44145eab1e2f76fdc7579cece14eb595f3d",
+  "original_pir1": {
+    "candidate": "PIR1",
+    "cagr": 1.8486711400546096,
+    "mdd_conservative_envelope": "0.6393394622107774830165347072",
+    "final_cny": "658577.0707088175629707244185",
+    "fees_usdt": "3158.949105934139183981081784",
+    "funding_bound_paid_usdt": "9001.9943774010752805850",
+    "holding_hours": 4504,
+    "schedule_sha256": "311b36c48c3f2e676bdcb85253ab516b1f2f656ab93a255a691a4de8a9b08a99"
+  },
+  "corrected_pir1": {
+    "candidate": "PIR1",
+    "cagr": 1.6474768843686198,
+    "mdd_conservative_envelope": "0.6988066034750496972667413001",
+    "final_cny": "491318.8626181470321469799327",
+    "fees_usdt": "2797.200126635516232861759753",
+    "funding_bound_paid_usdt": "6846.1254940075519475179",
+    "holding_hours": 3927,
+    "schedule_sha256": "311b36c48c3f2e676bdcb85253ab516b1f2f656ab93a255a691a4de8a9b08a99"
+  },
+  "paired_sx60": {
+    "candidate": "SX60",
+    "cagr": 1.621791521634055,
+    "mdd_conservative_envelope": "0.3720913583781855744812129575",
+    "final_cny": "472527.4051232058609321245863",
+    "fees_usdt": "1713.764242246668608580825530",
+    "funding_bound_paid_usdt": "2713.5315433927760523065",
+    "holding_hours": 2838,
+    "schedule_sha256": "311b36c48c3f2e676bdcb85253ab516b1f2f656ab93a255a691a4de8a9b08a99"
+  },
+  "saved_full_sx60": {
+    "candidate": "SX60-control",
+    "cagr": 1.0262621107382985,
+    "mdd_conservative_envelope": "0.3988511525411302503194848743",
+    "final_cny": "1149830.577467841415769839619",
+    "fees_usdt": "6068.961212762306457583025473",
+    "funding_bound_paid_usdt": "9891.2061605814960831168",
+    "holding_hours": 3906,
+    "schedule_sha256": "d2cfa986b52fdf3c835c254469d3c23b4ab164b611ba42ff7fb61ebd4a2508ad"
+  },
+  "development_gate": {
+    "cagr_at_least_150": true,
+    "continuous_mdd_strictly_below_50": false,
+    "net_advantage_over_control": true,
+    "passed": false
+  },
+  "original_child_count": 6,
+  "original_child_net_usdt": "-3584.859463244926019253544228",
+  "corrected_child_count": 10,
+  "corrected_child_net_usdt": "2284.429963869809727378769915",
+  "original_semantics_affected_calls": 13,
+  "original_semantics_affected_campaigns": 9,
+  "audits": {
+    "ledger": {
+      "close_points": 35064,
+      "max_equity_error_usdt": "0",
+      "fees": "2797.200126635516232861759753",
+      "funding": "6846.1254940075519475179",
+      "input_sha256": {
+        "orders.csv.gz": "fe56d646aa708bb241b0121b9f118b496bfd3e990c74ec123ee6d35251211d56",
+        "equity.csv.gz": "c323492fc89339ac31dbc7338e18db4421c2871af95893a969358e7d2cc8889b"
+      }
+    },
+    "risk": {
+      "risk_scale": "6",
+      "observed_holding_points": 24006,
+      "accepted_children": 80,
+      "minimum": {
+        "entry_free_after_all_reserves": {
+          "value": "166.63790033434428386709315",
+          "time": 1674219660000,
+          "event": "entry"
+        },
+        "entry_gap_coverage": {
+          "value": "-3E-23",
+          "time": 1695204180000,
+          "event": "rebalance_add"
+        },
+        "free_wallet": {
+          "value": "304.554898682744050083293154",
+          "time": 1588867200000,
+          "event": "funding_settled"
+        },
+        "mark_to_liquidation_fraction": {
+          "value": "0.1002260573483394926020154928",
+          "time": 1695297600000,
+          "event": "conservative_envelope"
+        },
+        "stop_to_liquidation_fraction": {
+          "value": "0.08073445564556567579060612483",
+          "time": 1698098400000,
+          "event": "conservative_envelope"
+        },
+        "isolated_equity_less_maintenance_and_fee": {
+          "value": "4.326311544166662500000000012",
+          "time": 1581008520000,
+          "event": "conservative_envelope"
+        },
+        "stop_coverage_usdt": {
+          "value": "1.812741839762052500000000012",
+          "time": 1581008520000,
+          "event": "regime_exit_slice"
+        },
+        "rolling_reserve_surplus_usdt": {
+          "value": "-1.26595438377420213290685",
+          "time": 1674594000000,
+          "event": "conservative_envelope"
+        }
+      },
+      "maximum": {
+        "margin_equity": {
+          "value": "1.944556501790190556995204181",
+          "time": 1614078000000,
+          "event": "conservative_envelope"
+        },
+        "exposure": {
+          "value": "6.487611889371455248708298308",
+          "time": 1595401200000,
+          "event": "conservative_envelope"
+        },
+        "margin_usdt": {
+          "value": "29690.197676232887468500",
+          "time": 1613772060000,
+          "event": "slice_confirmed"
+        },
+        "notional_usdt": {
+          "value": "181940.85731821098",
+          "time": 1695232800000,
+          "event": "conservative_envelope"
+        }
+      },
+      "violations": [],
+      "passed": true,
+      "parent_raw_minus_fundable_btc": "1.943640103922954838293472418",
+      "capital_limited_parent_count": 5,
+      "child_reasons": {
+        "stop_budget": 50,
+        "liquidity_cap": 58,
+        "target": 9,
+        "insufficient_funded_minimum": 2
+      },
+      "counts": {
+        "invocations": 468,
+        "deferred_entry": 30,
+        "entry": 30,
+        "funding_charge": 464,
+        "inventory_hold": 22,
+        "regime_exit_slice": 56,
+        "rebalance_add": 50,
+        "ambiguous_funding_credit_omitted": 29,
+        "take": 2,
+        "capital_reduce": 5,
+        "planned_exit_safety": 1,
+        "stop": 4,
+        "regime_exit_deadline": 2
+      },
+      "assumptions": [
+        "Synchronous IOC: pending-order reserve is zero only in this replay; native unresolved orders cannot spend it.",
+        "Cash is the shared wallet; isolated collateral remains part of equity, not deducted twice.",
+        "Rolling reserve surplus during holding is descriptive, not an unused-entry-budget guarantee.",
+        "MMR=.005, cumulative deduction=0, fixed fees and original gap rules remain historical proxies."
+      ]
+    },
+    "buffer": {
+      "minimum_original_last_fill_gap_coverage": {
+        "time": 1695204180000,
+        "event": "slice_confirmed",
+        "gap_coverage_usdt": "-3E-23",
+        "gap_boundary": "23907.7615761900",
+        "call_time": 1695204000000,
+        "quantity": "6.666",
+        "wallet": "33937.43037764663475586709313",
+        "margin": "22040.7197577720346050000000",
+        "equity": "33641.81783150123475586709310",
+        "free_wallet": "11896.71061987460015086709313",
+        "funding_since_entry": "0E-19"
+      },
+      "negative_gap_observations": 0,
+      "affected_parents": 0,
+      "zero_free_observations": 0,
+      "funding_margin_draws": [],
+      "total_funding_taken_from_margin": "0",
+      "original_gap_maintained": true,
+      "qualification": "READ_ONLY_BUFFER_DIAGNOSTIC_NOT_NATIVE_SAFETY"
+    }
+  },
+  "target_full_terminal_cny": 4717248.980685025,
+  "full_sx60_terminal_shortfall_cny": 3567418.4032171844,
+  "new_economic_candidate": "none_after_attribution",
+  "new_candidate_account_run": false,
+  "corrected_pir1_full_window_run": false,
+  "corrected_pir1_stress_run": false,
+  "corrected_pir1_absence_787_run": false,
+  "economic_proxy_qualified": false,
+  "historical_economic_qualified": false,
+  "native_execution_qualified": false,
+  "input_artifact_hashes": {
+    "../evidence/post-impulse-restart-20260923/correction/PIR1-ownership-corrected/result.json": "2c92c293b0dd31313285a209e5da34f45bdc0860387f3c20ecef6d68923095dd",
+    "../evidence/post-impulse-restart-20260923/correction/PIR1-ownership-corrected/equity.csv.gz": "c323492fc89339ac31dbc7338e18db4421c2871af95893a969358e7d2cc8889b",
+    "../evidence/post-impulse-restart-20260923/correction/PIR1-ownership-corrected/orders.csv.gz": "fe56d646aa708bb241b0121b9f118b496bfd3e990c74ec123ee6d35251211d56",
+    "../evidence/post-impulse-restart-20260923/correction/PIR1-ownership-corrected/decisions.csv.gz": "4697656b34df4101a430619eaae359284046bb16faec091f45fcfb706fd2e524",
+    "../evidence/post-impulse-restart-20260923/correction/PIR1-ownership-corrected/execution.jsonl": "6d2b72a3688afd26bd12997707ebe87283dc1a019b860dc1757be5755ab8e495",
+    "evidence/post-impulse-restart-20260923/JOINT_ATTRIBUTION.json": "da9898cf41d61b0057373c5c5f7e1f98eeeed200a52e58d22d642c03e57012c0",
+    "evidence/post-impulse-restart-20260923/SEMANTICS_AUDIT.json": "cd7f135e87d40d13841b86a32784388e6697971311f86575df6fdc492abe06c8"
+  }
+}
