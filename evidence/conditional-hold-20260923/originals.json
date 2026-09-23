@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "candidate": "H60",
+  "status": "REJECTED_DEVELOPMENT_RISK",
+  "protocol_commit": "3fdcaa57ed21ac2e5a1845cb2cb8d635dfce84d9",
+  "results_bundle": {
+    "name": "COINQUANT_H60_DEVELOPMENT_ORIGINALS_20260923.zip",
+    "bytes": 4693204,
+    "sha256": "1e13c2e628ef88df7fe9a2321b01cd96d225de9cb941285d02200520a21673c2",
+    "members": 108,
+    "library_file_id": "libfile_ef43347db8fc8191951792b19a8ab84e",
+    "file_id": "file_0000000057fc81fd90a9b83deba16530",
+    "readback_byte_identical": true,
+    "scope": "Full H60 and paired SX60 development accounts, raw orders/equity/decisions, parent/child events, audits, logs, measured source, protocol, report, validation and per-member SHA256 manifest. Reused market originals are linked as exact verified dependencies, not duplicated.",
+    "library_version": 1
+  },
+  "reused_input_note": "Names are logical aliases; retrieve authorized original bytes by stable Library ID and verify SHA256 regardless of stored basename.",
+  "reused_inputs": [
+    {
+      "name": "COINQUANT_BOUNDED_EXECUTION_20260922.zip",
+      "library_file_id": "libfile_54a5fcf3af5c8191af73244b14ef6ec5",
+      "sha256": "854fba74875a4e7bc07a9b709edf82b377d7157a01d8d73db42db44aa41095c1"
+    },
+    {
+      "name": "COINQUANT_SUSTAINABLE_CAPITAL_EXIT_20260922.zip",
+      "library_file_id": "libfile_0f102b0356a48191b1b5d2865074ad0b",
+      "sha256": "d18021568ef10c5c091b1dc5488372a1d87e8b8bc0baadb5f0fe288df68956ab"
+    },
+    {
+      "name": "COINQUANT_M60_DEVELOPMENT_MINUTES_20260923.zip",
+      "library_file_id": "libfile_f238bff2ad6c819183809199ef661478",
+      "sha256": "76d6fd297e3f07fb73b5db8824b21c0cddf5349748afa6ee70e7f52d4e20c3e1"
+    },
+    {
+      "name": "COINQUANT_M60_PROTECTION_MINUTES_20260923.zip",
+      "library_file_id": "libfile_b6057b4e31bc8191979c45b8060481da",
+      "sha256": "b4701cbc7e8e6d91ba01997c093382c5e5f8a656c8868d79f072d35b05565781"
+    },
+    {
+      "name": "COINQUANT_M60_MARK_RECHECK_20260923.zip",
+      "library_file_id": "libfile_dec4645a5afc8191937b52f06c35abf8",
+      "sha256": "1c6adee31bf3640837c07e8d6fd83f9523f3b1b8e3900d757156248e61617b40"
+    }
+  ],
+  "separate_unresolved_gap": "The 217458618-byte completed M60 development bundle e0681fc623cf473185f72696788e5370b02ebdf89b2d116c3780ec91cd03419d remains not persistently recovered; H60 originals do not substitute for it."
+}
