@@ -102,6 +102,8 @@ class Opportunities:
                 stop=high if side<0 else low
                 if self.mechanism in ('impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse'):
                     side=-side;stop=(prior+close)/2
+                    if self.mechanism=='persistent_impulse':
+                        stop=close-prior_atr if side>0 else close+prior_atr
                     take=close*(close/stop)**20 if self.mechanism in ('impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse') else close+2*(close-stop)
                     if take>0:self.active=Opportunity(end,side,stop,take,None if self.mechanism=='persistent_impulse' else end+42*FOUR_HOURS,close+2*(close-stop) if self.mechanism=='impulse_validity' else None,True,close+2*(close-stop) if self.mechanism=='impulse_confirmation' else None,close if self.mechanism=='impulse_confirmation' else None)
                 elif stop!=close:

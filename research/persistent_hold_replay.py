@@ -109,7 +109,7 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,invocation_trail=False):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False):
     multiscale = reference == 'multiscale'
     if conditional_hold and (reference != 'impulse_hold' or D(risk_scale) != 6 or
             D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0 or
@@ -131,17 +131,12 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         raise ValueError('unlimited capacity diagnostic remains fixed at 3.6')
     if execution is not None and D(risk_scale)!=execution.risk_scale:
         raise ValueError('account risk scale does not match execution study')
-    if invocation_trail and (reference!='persistent_impulse' or execution is None or
-            not execution.sustainable or not execution.sliced or execution.planned_exit!='sliced' or
-            D(risk_scale)!=6 or D(short_risk_scale if short_risk_scale is not None else risk_scale)!=0 or
-            schedule!='sparse' or conditional_hold or renewal_risk or payoff is not None):
-        raise ValueError('PXC requires the frozen sparse SX60 account and persistent impulse')
     if execution is not None and (entry_capacity_unlimited or native_trail_order):
         raise ValueError('execution study cannot mix other diagnostic mechanisms')
     if entry_side not in ('both','long','short'):raise ValueError('invalid diagnostic entry side')
     if native_trail_order not in (None,'low_first','high_first'):raise ValueError('unknown native trailing path')
     if native_trail_order and (reference!='impulse_hold' or entry_side!='long'):raise ValueError('T requires frozen persistent long entry')
-    trail_peak=ZERO;trail_invalid=False;opposing_closes=set();completed_close_peak=ZERO
+    trail_peak=ZERO;trail_invalid=False;opposing_closes=set()
     if payoff is not None and (reference!='long' or allocation!='volatility' or protection!='fixed' or baseline):
         raise ValueError('payoff policy requires fixed long volatility control')
     hypothetical=bool(payoff and payoff.get('terminal_label'))
@@ -336,7 +331,6 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             execution_record('renewal_risk_basis',dict(campaign=campaign,
                 parent_id=parent.identity,time=now,status=status,basis=basis,audit=audit_basis))
         for t in range(start,end,HOUR):
-            pending_trail=None
             signal_time=published_daily_key(t) if multiscale else (t//model_interval*model_interval if mechanism else None)
             opportunity=opportunities.get(signal_time) if mechanism else None
             if mechanism:
@@ -577,14 +571,6 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                 counts['entry']+=1;ow.writerow([t,'entry',str(account.q),str(price),'',str(account.q)])
                             else:counts['size_below_minimum']+=1;action='size_below_minimum'
                 dw.writerow(decision_state+[action,limiter]+[str(caps.get(k,'')) for k in ('risk','exposure','margin','notional','liquidity')]+[str(raw_qty),str(qty),str(edge_target),len(edge_observations)])
-                if invocation_trail and account.q and opportunity and opportunity.identity==last_entry_epoch and not (planned_window is not None and not planned_window.terminal_reason):
-                    proposed=floor_step(completed_close_peak*D('.90'),TICK)
-                    if proposed>account.sl:
-                        if t not in execution.refined_hours or minutes is None or t+60000 not in minutes['klines'] or t+60000 not in minutes['markPriceKlines']:
-                            raise ValueError(f'missing PXC protection-amendment minute at {t}')
-                        pending_trail=(last_entry_epoch,proposed)
-                        execution_record('trail_scheduled',dict(call_time=t,execute_time=t+60000,
-                            campaign=last_entry_epoch,stop_before=str(account.sl),proposed_stop=str(proposed)))
             if not minute_funding and not charged and t in fund_hours and (opening_q or account.q):
                 if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
                 charge_q=(max((opening_q,account.q),key=lambda q:q*fund_hours[t][1]) if targeting else opening_q or account.q)
@@ -611,18 +597,6 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     if (long and smo>=account.tp) or (not long and smo<=account.tp):
                         close(st,'take_gap',so)
                         continue
-                if pending_trail is not None and st==t+60000:
-                    campaign,proposed=pending_trail
-                    pending_trail=None
-                    if account.q and account.q>0 and last_entry_epoch==campaign and (planned_window is None or planned_window.terminal_reason):
-                        old=account.sl
-                        if smo<=proposed:
-                            close(st,'trail_amendment_crossed',min(so,smo))
-                            continue
-                        account.sl=proposed
-                        counts['trail_amendment']+=1
-                        execution_record('trail_amended',dict(time=st,campaign=campaign,
-                            stop_before=str(old),stop_after=str(account.sl),mark_open=str(smo)))
                 if active_entry and st>=entry_window.start:
                     child=entry_window.attempt(st,account,so,smo,execution.minute_quotes,instrument)
                     execution_record('child',child)
@@ -755,8 +729,6 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 elif hit_stop:close(st,'stop',min(account.sl,so) if long else max(account.sl,so))
                 elif (long and smh>=account.tp) or (not long and sml<=account.tp):close(st,'take',account.tp)
             observe(t+HOUR,'close',mc)
-            if invocation_trail:
-                completed_close_peak=max(completed_close_peak,mc) if account.q else ZERO
             exposure=abs(account.q)*mc/account.equity(mc) if account.equity(mc)>0 else ZERO
             exposure_sum+=exposure;max_exposure=max(max_exposure,exposure);holding_hours+=bool(account.q)
             if account.equity(mc)<=0:
@@ -850,9 +822,6 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['candidate']='HR60' if renewal_risk else 'H60'
         result['daily_publication_lag_seconds']=60
         result['supplementary_warmup_days']=len(daily_warmup)
-    if invocation_trail:
-        result['candidate']='PXC'
-        result['amendment_lag_seconds']=60
     if renewal_risk:
         result['renewal_risk_checks_passed']=not any(counts.get(k,0) for k in (
             'renewal_risk_basis_missing','renewal_risk_execution_violation',

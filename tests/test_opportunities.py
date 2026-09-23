@@ -39,7 +39,7 @@ class OpportunityTests(unittest.TestCase):
     def test_impulse_uses_prior_volatility_and_persistent_has_no_timer(self):
         rows=[(101,99,100)]*20+[(120,99,115)]
         m=Opportunities('persistent_impulse');a=self.feed(m,rows)[-1]
-        self.assertEqual((a.direction,a.stop,a.expires),(1,D('107.5'),None))
+        self.assertEqual((a.direction,a.stop,a.expires),(1,D('113'),None))
         for i in range(22,80):self.assertEqual(m.update(i*FOUR_HOURS,D(116),D(114),D(115)),a)
         b=m.update(80*FOUR_HOURS,D(116),D(90),D(95))
         self.assertEqual(b.direction,-1)
