@@ -25,5 +25,37 @@
   ],
   "retained_dependency_index": "evidence/sustainable-capital-exit-20260922/originals.json",
   "account_paths": ["results/accounts/M60-development", "results/accounts/SX60-development", "results/first-pass/M60-development", "results/first-pass/SX60-development"],
-  "scope": "Bundle contains complete dependencies, new data, source, all valid accounts and interrupted partial. Library component records do not contain new account trajectories; do not substitute their hashes for the downloadable complete bundle."
+  "scope": "Bundle contains complete dependencies, new data, source, all valid accounts and interrupted partial. Library component records do not contain new account trajectories; do not substitute their hashes for the downloadable complete bundle.",
+  "earlier_data_blocked_snapshot": {
+    "status": "Superseded local source and partial runs preserved in Library; do not overwrite current main or treat these as the completed development accounts",
+    "original_local_head": "7225aa64913d7e9331a862af76ccd0c1fb8f7d25",
+    "original_local_tree": "72b9cfa38708067912c07e2352e5693d5ce9d376",
+    "current_main_at_reconciliation": "baf5e045127ae6a953af581f654036b865e419c0",
+    "current_main_tree_verified": "ca92b9dab7a6e64e61c3341195f373456cf5da2b",
+    "current_main_source_artifact_id": 10712276585,
+    "current_main_source_artifact_sha256": "01890debbcc2517739ca6eed0cf6299488707d060c9a2ef03874bc809fdd616f",
+    "source_publication": "Current main already contains the subsequent M60 implementation and tests merged by PR #1. The earlier 7225aa6 source is retained exactly in the Library bundles, not merged over current code.",
+    "originals": [
+      {
+        "name": "COINQUANT_M60_COMPLETE_20260923.zip",
+        "bytes": 184635190,
+        "sha256": "ca1dab14d2501a31d2122bc22d3001c34392033a6e9de786a6727886b13c5a1e",
+        "byte_equal": true,
+        "members_verified": 784,
+        "library_file_id": "libfile_7579b3804a4c8191b16800c40c81d5df",
+        "file_id": "file_00000000442881f5b5955b1780cce3d2"
+      },
+      {
+        "name": "COINQUANT_M60_SOURCE_EVIDENCE_20260923.zip",
+        "bytes": 402840,
+        "sha256": "98a6a26c9f2a39c8c44372dcd0043bd3ad91acd94890c00be32521bbdd706626",
+        "byte_equal": true,
+        "members_verified": 97,
+        "library_file_id": "libfile_3d4426c769f481918b3842e5230f99e8",
+        "file_id": "file_0000000017e08211a09a193bcd98183a"
+      }
+    ],
+    "verification": "Both Library copies read back and compared byte-for-byte with the conversation originals; complete ZIP member manifests verified. Current main exported source rebuilt to the exact Git tree.",
+    "scope_boundary": "These are the earlier 184635190-byte recovery and 402840-byte source/evidence bundles. They do not replace or close the persistence gap of the separate 217458618-byte completed-development bundle above."
+  }
 }
