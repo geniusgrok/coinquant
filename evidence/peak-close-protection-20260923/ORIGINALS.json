@@ -1,0 +1,14 @@
+{
+  "name": "COINQUANT_PXC_DEVELOPMENT_REJECT_20260923.zip",
+  "library_file_id": "libfile_0e395afe86588191a1e7b9ccd90a52ef",
+  "bytes": 2227347,
+  "sha256": "6f0ec92c98e5462b45d02de2a12e7334feabddd6469bcf7d01d0d2912bd83040",
+  "readback_equal": true,
+  "member_count": 40,
+  "contents": "PXC full development account streams, invocation, execution, audits, measured source, original input references, attribution, protocol, result, member hash manifest",
+  "input_identity": "2e8bbefb4f1994f73e7c14048012f7b008d3b848b6a71b6eb31838844ddef8cb",
+  "paired_SX60_library_file_id": "libfile_fa1c875126488191bcba9670be383d70",
+  "source_commit": "46cd7e7a1214263f1e0875560c75ef93c702f4ee",
+  "source_tree": "9988dbc68362b4b61b3ec0722aa1dd195edada44",
+  "original_input_archives": "evidence/stop-risk-core-20260923/T20_ORIGINALS_COMPLETE.json"
+}

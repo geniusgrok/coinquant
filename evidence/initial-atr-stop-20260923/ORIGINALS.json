@@ -1,0 +1,13 @@
+{
+  "name": "COINQUANT_PA1_DEVELOPMENT_REJECT_20260923.zip",
+  "library_file_id": "libfile_c28b41574bf08191ab36ef544fbc684c",
+  "bytes": 2130659,
+  "sha256": "03affaa733a6c1f36fc4ecb82163b6e0a63027bf5f6b6c7e67dbe1bda66575bf",
+  "readback_equal": true,
+  "member_count": 41,
+  "contents": "PA1 full development account, frozen invocation, measured source, audit, attribution, protocol, result, input original references and per-member SHA manifest",
+  "input_identity": "2e8bbefb4f1994f73e7c14048012f7b008d3b848b6a71b6eb31838844ddef8cb",
+  "source_commit": "59995609302793ef51fbe8d89b744a0d106df27c",
+  "source_tree": "8d4b512b67c0a7caf8860844073b5a89765147b2",
+  "original_input_archives": "evidence/stop-risk-core-20260923/T20_ORIGINALS_COMPLETE.json"
+}
