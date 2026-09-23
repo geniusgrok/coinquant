@@ -1,0 +1,14 @@
+{
+  "candidate": "H60",
+  "decision": "REJECTED_DEVELOPMENT_RISK",
+  "post_hoc_exploratory": true,
+  "development_invocations": 468,
+  "same_source_SX60": {"cagr": 1.621791521634055, "mdd_conservative_envelope": "0.3720913583781855744812129575", "final_cny": "472527.4051232058609321245863"},
+  "H60": {"cagr": 1.8308037021716501, "mdd_conservative_envelope": "0.5427891853284228168284867996", "completed_hour_close_mdd": "0.5361408989636934693862009610", "final_cny": "642208.6313775020786663367627", "extended_campaigns": 13, "permitted_invocations": 64},
+  "full_window": {"run": false, "reason": "Frozen development continuous MDD >= 50%; completed-hour-close MDD also >= 50%."},
+  "joint_stress": {"run": false, "reason": "Development risk rejection."},
+  "absence_787": {"run": false, "reason": "Development risk rejection; cannot reuse SX60 no-op claim for H60."},
+  "production_default": "unchanged 3.6",
+  "execute": "BLOCKED",
+  "qualification": "NOT_QUALIFIED"
+}
