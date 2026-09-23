@@ -22,8 +22,6 @@ def disposition(opportunity, quantity, consumed, side='long'):
     if side=='long' and direction<0 or side=='short' and direction>0:
         direction=0
     if quantity:
-        if opportunity is not None and getattr(opportunity,'parent_identity',None) is not None:
-            return 'hold'
         return 'hold' if quantity*direction>0 and opportunity.identity==consumed else 'exit'
     if not direction:return 'flat'
     return 'consumed' if opportunity.identity==consumed else 'enter'
