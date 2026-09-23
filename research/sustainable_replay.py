@@ -63,10 +63,13 @@ def exit_minutes(root, prepared):
     return cache,(tables,identities),quotes,combined,input_identity(cache[3]+identities)
 
 
-def run_account(root, output, prepared, label, *, full=False, stress=False):
+def run_account(root, output, prepared, label, *, full=False, stress=False,
+                stop_risk_share=None, research_protocol=None):
     modes={'S60':'instant','SC60':'prepared','SX60':'sliced','PIR1':'sliced'}
     cache,minutes,quotes,validation,data_id=prepared
-    cfg=ExecutionStudy(True,stress,frozenset(validation['hours']),quotes,D(6),True,modes[label])
+    if (stop_risk_share is None) != (research_protocol is None) or (stop_risk_share is not None and label!='SX60'):
+        raise ValueError('frozen stop-risk research requires SX60 and its protocol')
+    cfg=ExecutionStudy(True,stress,frozenset(validation['hours']),quotes,D(6),True,modes[label],stop_risk_share)
     reference='post_impulse_restart' if label=='PIR1' else 'impulse_hold'
     pir1_protocol_hash=None
     if label=='PIR1':
@@ -80,6 +83,9 @@ def run_account(root, output, prepared, label, *, full=False, stress=False):
                 protocol_sha256=digest(PROTOCOL),source_identity=source_identity(),
                 input_identity=data_id,minute_validation=validation)
     if pir1_protocol_hash:frozen['pir1_protocol_sha256']=pir1_protocol_hash
+    if research_protocol is not None:
+        frozen['research_protocol_sha256']=digest(research_protocol)
+        frozen['source_identity'][research_protocol]=frozen['research_protocol_sha256']
     invocation.write_text(json.dumps(frozen,indent=2)+'\n')
     try:
         with output.with_suffix('.log').open('w') as log,contextlib.redirect_stdout(log):
@@ -88,7 +94,7 @@ def run_account(root, output, prepared, label, *, full=False, stress=False):
                 entry_side='long',short_risk_scale=D(0),risk_scale=D(6),
                 quantity_rules=root/'quantity/current-instrument.json',cached_inputs=cache,
                 cached_minutes=minutes,execution=cfg,full_window=full)
-        result['candidate']=label
+        result['candidate']='SX60-R10' if stop_risk_share is not None else label
         result['protocol_sha256']=digest(PROTOCOL)
         for name in NEW_SOURCES:
             path=output/'measured_source'/name
@@ -99,6 +105,11 @@ def run_account(root, output, prepared, label, *, full=False, stress=False):
             result['pir1_protocol_sha256']=pir1_protocol_hash
         result['complete_source_identity']=source_identity()
         if pir1_protocol_hash:result['complete_source_identity'][PIR1_PROTOCOL]=pir1_protocol_hash
+        if research_protocol is not None:
+            path=output/'measured_source'/research_protocol
+            path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(Path(research_protocol).read_bytes())
+            result['research_protocol_sha256']=frozen['research_protocol_sha256']
+            result['complete_source_identity'][research_protocol]=frozen['research_protocol_sha256']
         (output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
         ledger=verify(output);(output/'LEDGER_AUDIT.json').write_text(json.dumps(ledger,indent=2)+'\n')
         risk=audit(output);buffer=buffer_audit(output)
