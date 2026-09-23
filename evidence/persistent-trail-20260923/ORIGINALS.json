@@ -1,0 +1,13 @@
+{
+  "name": "COINQUANT_PXT_DEVELOPMENT_REJECT_20260923.zip",
+  "library_file_id": "libfile_fa1c875126488191bcba9670be383d70",
+  "bytes": 3800508,
+  "sha256": "107ee11d2901a7af568dc2c010fd4a9eae408b4d155420d7ef2e52bd0f752432",
+  "readback_equal": true,
+  "member_count": 71,
+  "contents": "PXT and paired SX60 full development account streams, invocation, execution, audits, measured source, original input references, attribution, protocol, result and member SHA-256 manifest",
+  "input_identity": "2e8bbefb4f1994f73e7c14048012f7b008d3b848b6a71b6eb31838844ddef8cb",
+  "source_commit": "e4594588c57f64a762850b8d5efe6618e354af3b",
+  "source_tree": "95ea15a45721a5f6f3e3b430aa1d0646fb8e287a",
+  "original_input_archives": "evidence/stop-risk-core-20260923/T20_ORIGINALS_COMPLETE.json"
+}
