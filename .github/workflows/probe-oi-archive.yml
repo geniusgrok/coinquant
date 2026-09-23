@@ -1,44 +1,58 @@
-name: Temporary OI original archive preservation
+name: Temporary independent OI archive readback
 on:
   pull_request:
     branches: [main]
     paths: ['.github/workflows/probe-oi-archive.yml']
 permissions:
-  contents: write
+  contents: read
 jobs:
-  archive:
+  readback:
     if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'research/oi-causal-probe-20260923'
     runs-on: ubuntu-24.04
-    timeout-minutes: 18
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           ref: research/oi-causal-probe-20260923
-      - name: Acquire and verify official OI original files
+      - name: Verify remote original bundle, Git blob and each provider checksum
         run: |
-          python3 research/oi_archive_acquire.py /tmp/oi-originals
           python3 - <<'PY'
+          import hashlib
           import json
-          from collections import Counter
+          import subprocess
+          import tarfile
           from pathlib import Path
+          from collections import Counter
 
-          folder = Path('/tmp/oi-originals')
-          manifest = json.loads((folder / 'MANIFEST.json').read_text())
-          count = Counter(row['status'] for row in manifest['days'])
+          folder = Path('evidence/oi-archive-20260923/development-originals')
+          manifest_bytes = (folder / 'MANIFEST.json').read_bytes()
+          archive_path = folder / 'OI_DEVELOPMENT_ORIGINALS.tar.gz'
+          if hashlib.sha256(manifest_bytes).hexdigest() != 'abc9a7bde759f23598f31b7ea40e9f197be8efcb29cb1ac964058537c2f30bc6':
+              raise ValueError('manifest mismatch')
+          if archive_path.stat().st_size != 14431948 or hashlib.sha256(archive_path.read_bytes()).hexdigest() != 'a15d9d1dd28ac8901f5daa81fda9a58e86847ee0e29f77ba04d9f687f6b35196':
+              raise ValueError('original bundle mismatch')
+          git_oid = subprocess.check_output(['git', 'hash-object', str(archive_path)], text=True).strip()
+          if git_oid != '0f0f5dd4be05d31e25967f77ebd32350cb261ba8':
+              raise ValueError('Git blob mismatch')
+          manifest = json.loads(manifest_bytes)
+          statuses = Counter(row['status'] for row in manifest['days'])
           expected = {'missing_checksum_404': 244, 'verified_complete': 1140,
                       'verified_incomplete': 68, 'quarantined_conflict': 9}
-          if len(manifest['days']) != 1461 or count != expected:
-              raise ValueError(f'coverage changed; inspect before preservation: {count}')
-          destination = Path('evidence/oi-archive-20260923/development-originals')
-          destination.mkdir(parents=True, exist_ok=True)
-          for filename in ['MANIFEST.json', 'OI_DEVELOPMENT_ORIGINALS.tar.gz']:
-              (destination / filename).write_bytes((folder / filename).read_bytes())
+          if len(manifest['days']) != 1461 or statuses != expected:
+              raise ValueError('coverage mismatch')
+          with tarfile.open(archive_path, 'r:gz') as original:
+              names = set(original.getnames())
+              if original.extractfile('MANIFEST.json').read() != manifest_bytes:
+                  raise ValueError('manifest inside archive differs')
+              for row in manifest['days']:
+                  if row['status'] == 'missing_checksum_404':
+                      continue
+                  filename = 'BTCUSDT-metrics-' + row['day'] + '.zip'
+                  raw = original.extractfile('raw/' + filename).read()
+                  checksum = original.extractfile('raw/' + filename + '.CHECKSUM').read().decode().strip().split()
+                  if len(checksum) != 2 or checksum[1] != filename or hashlib.sha256(raw).hexdigest() != checksum[0] or checksum[0] != row['zip_sha256']:
+                      raise ValueError('provider checksum mismatch: ' + row['day'])
+              if len(names) != 2436:
+                  raise ValueError('archive member count mismatch: ' + str(len(names)))
+          print('PASS: 1461 days; 1217 original pairs; remote blob:', git_oid)
           PY
-      - name: Preserve verified bytes on the research branch
-        run: |
-          set -eu
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add evidence/oi-archive-20260923/development-originals
-          git commit -m 'Preserve complete official OI development originals'
-          git push origin HEAD:refs/heads/research/oi-causal-probe-20260923
