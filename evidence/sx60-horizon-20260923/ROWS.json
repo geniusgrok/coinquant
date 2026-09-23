@@ -1,0 +1,308 @@
+{
+  "scope": "Retrospective 30 filled SX60 parents, call-hour open to future-hour open; NOT actual entry/exit execution, independent sample or account return",
+  "source_sha256": {
+    "receipt": "547fbc42920823e37561a344d1ff9c9a2d258f5918cada7ae37d5583c34850e9",
+    "account_result": "b2e6b6b71ff765331fad3e6626ea82d3cb234ea5edbf920912401be35dc0671c",
+    "parent_summary": "fd8d82dcda8ddd49141b67545d77098b5ed202b56289fabb07d5e753f47e9619",
+    "market_identity_aggregate": "fb5adb7afeacffdcbce1745111b373ded79f3cc128c4d87bed6d174bc91ad674"
+  },
+  "filled_parents": 30,
+  "rows": [
+    {
+      "call": "2020-01-03T18:00:00Z",
+      "parent_id": "pq-654454b443a880beb7a58408070a6c",
+      "filled_btc": "0.753",
+      "gross_open_to_open_24h": "-0.0005222443450729510069523778",
+      "gross_open_to_open_168h": "0.083311573152288627041376984"
+    },
+    {
+      "call": "2020-01-21T02:00:00Z",
+      "parent_id": "pq-f0bfff1eac3a260a82b5e12a07f9fa",
+      "filled_btc": "0.904",
+      "gross_open_to_open_24h": "0.008458070437739203722197528",
+      "gross_open_to_open_168h": "0.055366533703551904682187368"
+    },
+    {
+      "call": "2020-04-05T20:00:00Z",
+      "parent_id": "pq-a87d093aba4d7048c530a4b40bcdec",
+      "filled_btc": "0.929",
+      "gross_open_to_open_24h": "0.069968577779938393003142222",
+      "gross_open_to_open_168h": "0.047205514282894261946115238"
+    },
+    {
+      "call": "2020-04-29T12:00:00Z",
+      "parent_id": "pq-e83827a50e33bfbf9d2fd9f99bc724",
+      "filled_btc": "1.203",
+      "gross_open_to_open_24h": "0.088658867548323969057890300",
+      "gross_open_to_open_168h": "0.147323335200034462174686302"
+    },
+    {
+      "call": "2020-07-21T16:00:00Z",
+      "parent_id": "pq-c39380d0a62bab9948d65f09c7e3d6",
+      "filled_btc": "2.148",
+      "gross_open_to_open_24h": "0.000009637584007607266310005",
+      "gross_open_to_open_168h": "0.195603334175729565109375870"
+    },
+    {
+      "call": "2020-10-09T04:00:00Z",
+      "parent_id": "pq-88498356b5b3b89def7e2bbd2f28c5",
+      "filled_btc": "1.764",
+      "gross_open_to_open_24h": "0.048918582371077649783348880",
+      "gross_open_to_open_168h": "0.057487214597185143660599823"
+    },
+    {
+      "call": "2020-10-20T05:00:00Z",
+      "parent_id": "pq-f92c47622ef898792658478f01c367",
+      "filled_btc": "2.350",
+      "gross_open_to_open_24h": "0.046235800363326390482862309",
+      "gross_open_to_open_168h": "0.119159622133727662210556944"
+    },
+    {
+      "call": "2020-12-18T07:00:00Z",
+      "parent_id": "pq-b549c5409357f13f78012f9951b977",
+      "filled_btc": "1.569",
+      "gross_open_to_open_24h": "-0.0061312510019981309069011766",
+      "gross_open_to_open_168h": "0.027110539347624813666363841"
+    },
+    {
+      "call": "2021-02-10T16:00:00Z",
+      "parent_id": "pq-6e99597be4f1ab2a1f49a41d8c5996",
+      "filled_btc": "0.677",
+      "gross_open_to_open_24h": "0.082717078809403467422749702",
+      "gross_open_to_open_168h": "0.154828543395940828754219857"
+    },
+    {
+      "call": "2021-07-26T11:00:00Z",
+      "parent_id": "pq-1783f36b7fc6778167ab9b8db7da80",
+      "filled_btc": "1.786",
+      "gross_open_to_open_24h": "-0.0261183199855707334669837235",
+      "gross_open_to_open_168h": "0.028827176362539467982991709"
+    },
+    {
+      "call": "2021-10-09T10:00:00Z",
+      "parent_id": "pq-91294072f0f335b1e3809e445b29fd",
+      "filled_btc": "0.721",
+      "gross_open_to_open_24h": "0.001430878953938475663408342",
+      "gross_open_to_open_168h": "0.120032924231673882645719031"
+    },
+    {
+      "call": "2022-03-29T17:00:00Z",
+      "parent_id": "pq-77d83fb9073c3a6e602eca2b75307d",
+      "filled_btc": "1.415",
+      "gross_open_to_open_24h": "-0.0051814344569603936205167954",
+      "gross_open_to_open_168h": "-0.0332201562012924098304028039"
+    },
+    {
+      "call": "2022-08-01T05:00:00Z",
+      "parent_id": "pq-a2f00338c842e59bf03dc83bf92496",
+      "filled_btc": "2.328",
+      "gross_open_to_open_24h": "-0.0226084873784248479508652473",
+      "gross_open_to_open_168h": "-0.0021684644534357544288854863"
+    },
+    {
+      "call": "2023-01-13T04:00:00Z",
+      "parent_id": "pq-6feb92f617a798bcea9813d3c2613c",
+      "filled_btc": "3.931",
+      "gross_open_to_open_24h": "0.112587764618604774395252100",
+      "gross_open_to_open_168h": "0.117356860874864213231592613"
+    },
+    {
+      "call": "2023-01-25T02:00:00Z",
+      "parent_id": "pq-b9b7a9f3ba428814944a274dc6c8ff",
+      "filled_btc": "3.772",
+      "gross_open_to_open_24h": "0.029847825893611533569910261",
+      "gross_open_to_open_168h": "0.028073498937182600033796704"
+    },
+    {
+      "call": "2023-03-16T08:00:00Z",
+      "parent_id": "pq-639c31702fbb5c1ee09f76cc3411a3",
+      "filled_btc": "3.694",
+      "gross_open_to_open_24h": "0.058193341323203802636657255",
+      "gross_open_to_open_168h": "0.121952507668244327530520628"
+    },
+    {
+      "call": "2023-04-13T12:00:00Z",
+      "parent_id": "pq-4ee91b92b88f5eda918bad49d00508",
+      "filled_btc": "5.766",
+      "gross_open_to_open_24h": "0.021254365801964237738439953",
+      "gross_open_to_open_168h": "-0.0513315488687887863982672783"
+    },
+    {
+      "call": "2023-06-23T06:00:00Z",
+      "parent_id": "pq-a8780e507d0a79b178ec8548186424",
+      "filled_btc": "2.889",
+      "gross_open_to_open_24h": "0.022706615216095727360805452",
+      "gross_open_to_open_168h": "0.023182721664175153902241696"
+    },
+    {
+      "call": "2023-10-17T05:00:00Z",
+      "parent_id": "pq-824d0e153bbb05dc52a82a0879bff2",
+      "filled_btc": "5.060",
+      "gross_open_to_open_24h": "0.019229813664596273291925466",
+      "gross_open_to_open_168h": "0.220663708961845607808340728"
+    },
+    {
+      "call": "2023-10-29T08:00:00Z",
+      "parent_id": "pq-0d1838f331fd3a0c8c951b5e7b8cd1",
+      "filled_btc": "1.776",
+      "gross_open_to_open_24h": "0.003100970776944267604683434",
+      "gross_open_to_open_168h": "0.031960241858118118529253860"
+    },
+    {
+      "call": "2024-02-13T14:00:00Z",
+      "parent_id": "pq-160dad442f76270f284081ceee8852",
+      "filled_btc": "6.671",
+      "gross_open_to_open_24h": "0.045957963873879510971255331",
+      "gross_open_to_open_168h": "0.067553302074355460195264325"
+    },
+    {
+      "call": "2024-02-28T11:00:00Z",
+      "parent_id": "pq-dbf85414b61fd2f238b5f01ae0a5d5",
+      "filled_btc": "4.166",
+      "gross_open_to_open_24h": "0.058193951752205529200616790",
+      "gross_open_to_open_168h": "0.124546044371792819285636043"
+    },
+    {
+      "call": "2024-05-23T07:00:00Z",
+      "parent_id": "pq-a4c48155bcbdcc9967b4fa0771dd28",
+      "filled_btc": "2.895",
+      "gross_open_to_open_24h": "-0.0385232721718250883366838287",
+      "gross_open_to_open_168h": "-0.0246078196106719623173453156"
+    },
+    {
+      "call": "2024-11-09T15:00:00Z",
+      "parent_id": "pq-8ce2ee6a32989081fa3917121331e2",
+      "filled_btc": "1.982",
+      "gross_open_to_open_24h": "0.041934638810662125875957823",
+      "gross_open_to_open_168h": "0.192370161765669002554194774"
+    },
+    {
+      "call": "2025-04-27T03:00:00Z",
+      "parent_id": "pq-dba5683a6f458b2e9b2e706f739289",
+      "filled_btc": "1.368",
+      "gross_open_to_open_24h": "-0.0077049528051755223247428147",
+      "gross_open_to_open_168h": "0.016378194930533460600275745"
+    },
+    {
+      "call": "2025-07-13T07:00:00Z",
+      "parent_id": "pq-65ace1be4ef12245330154f638ef95",
+      "filled_btc": "0.981",
+      "gross_open_to_open_24h": "0.036356106887395525624173137",
+      "gross_open_to_open_168h": "-0.0003615074350877758721791176"
+    },
+    {
+      "call": "2025-10-02T00:00:00Z",
+      "parent_id": "pq-d42a10defb0a733e9bd5dbeec1604a",
+      "filled_btc": "5.387",
+      "gross_open_to_open_24h": "0.016273871381334772926648222",
+      "gross_open_to_open_168h": "0.039521897563938187462041973"
+    },
+    {
+      "call": "2026-04-06T01:00:00Z",
+      "parent_id": "pq-ce6720c8f39c5177476e8ac83235f5",
+      "filled_btc": "7.783",
+      "gross_open_to_open_24h": "-0.0045371669715098353557251864",
+      "gross_open_to_open_168h": "0.030093306628782118956900534"
+    },
+    {
+      "call": "2026-06-16T23:00:00Z",
+      "parent_id": "pq-4d979517510692cc9945b5ebabe847",
+      "filled_btc": "1.106",
+      "gross_open_to_open_24h": "-0.0225096280793122539744346355",
+      "gross_open_to_open_168h": "-0.0484461223024646666220499748"
+    },
+    {
+      "call": "2026-08-20T12:00:00Z",
+      "parent_id": "pq-de56af3045aeabbc009d9212a30431",
+      "filled_btc": "5.861",
+      "gross_open_to_open_24h": "0.067495917725832519660288026",
+      "gross_open_to_open_168h": "0.104927659598142878204967717"
+    }
+  ],
+  "annual": {
+    "2020": {
+      "168": {
+        "n": 8,
+        "positive": 8,
+        "mean_gross": "0.09157095832412955506140779625"
+      },
+      "24": {
+        "n": 8,
+        "positive": 6,
+        "mean_gross": "0.0319495050921677664252372112"
+      }
+    },
+    "2021": {
+      "168": {
+        "n": 3,
+        "positive": 3,
+        "mean_gross": "0.101229547996718059794310199"
+      },
+      "24": {
+        "n": 3,
+        "positive": 2,
+        "mean_gross": "0.01934321259259040320639144017"
+      }
+    },
+    "2022": {
+      "168": {
+        "n": 2,
+        "positive": 0,
+        "mean_gross": "-0.0176943103273640821296441451"
+      },
+      "24": {
+        "n": 2,
+        "positive": 0,
+        "mean_gross": "-0.01389496091769262078569102135"
+      }
+    },
+    "2023": {
+      "168": {
+        "n": 7,
+        "positive": 6,
+        "mean_gross": "0.07026542729937731923392556439"
+      },
+      "24": {
+        "n": 7,
+        "positive": 7,
+        "mean_gross": "0.03813152818500294522823913157"
+      }
+    },
+    "2024": {
+      "168": {
+        "n": 4,
+        "positive": 3,
+        "mean_gross": "0.0899654221502863299294374566"
+      },
+      "24": {
+        "n": 4,
+        "positive": 3,
+        "mean_gross": "0.02689082056623051942778652882"
+      }
+    },
+    "2025": {
+      "168": {
+        "n": 3,
+        "positive": 2,
+        "mean_gross": "0.01851286168646129073004620013"
+      },
+      "24": {
+        "n": 3,
+        "positive": 2,
+        "mean_gross": "0.01497500848785159207535951477"
+      }
+    },
+    "2026": {
+      "168": {
+        "n": 3,
+        "positive": 2,
+        "mean_gross": "0.02885828130815344351327275873"
+      },
+      "24": {
+        "n": 3,
+        "positive": 1,
+        "mean_gross": "0.01348304089167014344337606803"
+      }
+    }
+  }
+}
