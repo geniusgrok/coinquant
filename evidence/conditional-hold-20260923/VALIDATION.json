@@ -1,0 +1,63 @@
+{
+  "unit_command": "python -m unittest tests.test_conditional_hold tests.test_multiscale tests.test_campaign tests.test_planned_exit tests.test_sustainable_capital -q",
+  "unit_result": "38 tests passed",
+  "unit_exit_code": 0,
+  "compileall": "coinquant/conditional_hold.py research/conditional_hold_replay.py research/persistent_hold_replay.py passed",
+  "accounts": {
+    "H60-development": {
+      "cagr": 1.8308037021716501,
+      "mdd_conservative_envelope": "0.5427891853284228168284867996",
+      "final_cny": "642208.6313775020786663367627",
+      "development_hard_checks_passed": true,
+      "fees_usdt": "2474.700017086368764313830706",
+      "funding_bound_paid_usdt": "18535.3525699396102894964",
+      "holding_hours": 7668,
+      "counts": {
+        "invocations": 468,
+        "deferred_entry": 20,
+        "entry": 20,
+        "funding_charge": 898,
+        "inventory_hold": 82,
+        "conditional_denied_intervening_opportunity": 6,
+        "regime_exit_slice": 28,
+        "rebalance_add": 46,
+        "conditional_denied_score_unavailable": 1,
+        "ambiguous_funding_credit_omitted": 60,
+        "conditional_hold": 64,
+        "conditional_denied_offline_score_invalidated": 1,
+        "take": 5,
+        "capital_reduce": 2,
+        "stop": 4,
+        "conditional_denied_score_nonpositive": 3,
+        "regime_exit_deadline": 1
+      },
+      "ledger": "0",
+      "gap": true
+    },
+    "SX60-control-development": {
+      "cagr": 1.621791521634055,
+      "mdd_conservative_envelope": "0.3720913583781855744812129575",
+      "final_cny": "472527.4051232058609321245863",
+      "development_hard_checks_passed": true,
+      "fees_usdt": "1713.764242246668608580825530",
+      "funding_bound_paid_usdt": "2713.5315433927760523065",
+      "holding_hours": 2838,
+      "counts": {
+        "invocations": 468,
+        "deferred_entry": 20,
+        "entry": 20,
+        "funding_charge": 329,
+        "inventory_hold": 19,
+        "regime_exit_slice": 36,
+        "rebalance_add": 40,
+        "ambiguous_funding_credit_omitted": 26,
+        "take": 2,
+        "stop": 2,
+        "capital_reduce": 1,
+        "regime_exit_deadline": 1
+      },
+      "ledger": "0",
+      "gap": true
+    }
+  }
+}
