@@ -7,9 +7,13 @@ permissions:
   contents: write
 jobs:
   probe:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'research/oi-causal-probe-20260923'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
       - name: Verify a fixed set of public OI archives and retain original bytes
         shell: bash
         run: |
@@ -89,6 +93,18 @@ jobs:
           compression-level: 0
           retention-days: 30
           if-no-files-found: error
+      - name: Acquire fixed development window without economic selection
+        run: python3 research/oi_archive_acquire.py "$RUNNER_TEMP/oi-development"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oi-development-originals
+          path: |
+            ${{ runner.temp }}/oi-development/MANIFEST.json
+            ${{ runner.temp }}/oi-development/OI_DEVELOPMENT_ORIGINALS.tar.gz
+          compression-level: 0
+          retention-days: 30
+          if-no-files-found: warn
       - name: Preserve fixed original ZIPs and checksums on research branch
         if: success() && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'research/oi-causal-probe-20260923'
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
@@ -100,6 +116,8 @@ jobs:
           set -eu
           mkdir -p evidence/oi-archive-20260923/sample-originals
           cp "$RUNNER_TEMP"/oi-original-probe/* evidence/oi-archive-20260923/sample-originals/
+          mkdir -p evidence/oi-archive-20260923/development-originals
+          cp "$RUNNER_TEMP"/oi-development/MANIFEST.json "$RUNNER_TEMP"/oi-development/OI_DEVELOPMENT_ORIGINALS.tar.gz evidence/oi-archive-20260923/development-originals/
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add evidence/oi-archive-20260923/sample-originals
