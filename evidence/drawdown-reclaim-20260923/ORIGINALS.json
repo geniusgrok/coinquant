@@ -15,8 +15,24 @@
     "members": 37,
     "all_member_lengths_sha256_and_zip_crc_verified": true,
     "upload_readback_byte_equal": true,
-    "scope": "Full DC10 468-call development account, original invocation, measured source, all equity/order/decision and execution flows, audits, confirmed unit-risk attribution, failed-result report and frozen protocol"
+    "scope": "Full DC10 468-call development account, original invocation, measured-source snapshots of 15 of 18 source-identity entries, all equity/order/decision and execution flows, audits, confirmed unit-risk attribution and frozen protocol"
   },
   "market_original_dependency": "evidence/stop-risk-core-20260923/T20_ORIGINALS_COMPLETE.json",
-  "market_dependency_note": "The prior 449 day original/checksum source identity and 468 call-hour precision are reused, not duplicated or replaced by old source snapshots."
+  "market_dependency_note": "The prior 449 day original/checksum source identity and 468 call-hour precision are reused, not duplicated or replaced by old source snapshots.",
+  "measurement_source_supplement": {
+    "name": "COINQUANT_DC10_SOURCE_SUPPLEMENT_20260923.zip",
+    "library_file_id": "libfile_bf2b58c988208191bbc38b1ba39f402e",
+    "file_id": "file_0000000047f081f48308b963f94fb76c",
+    "bytes": 8625,
+    "sha256": "dcceb50b4effc9e5d7ab19fdcfeb1c7d2a18f72c9c839ac3eb3aefa6d5e02407",
+    "members": 4,
+    "upload_readback_byte_equal": true,
+    "missing_source_files": [
+      "research/bounded_execution_data.py",
+      "research/bounded_execution_replay.py",
+      "research/verify_account_ledger.py"
+    ],
+    "complete_source_identity_members": 18,
+    "reconstruction": "SOURCE_IDENTITY.json maps each of the 18 frozen source hashes to its exact account ZIP or supplement ZIP path; all restored members match invocation hashes"
+  }
 }
