@@ -124,7 +124,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         raise ValueError('M60 requires its frozen sparse long SX60 execution and capital controls')
     if daily_warmup and not (multiscale or conditional_hold):
         raise ValueError('supplementary daily warmup requires the frozen trend score')
-    if (entry_capacity_unlimited or execution is not None) and (reference not in ('impulse_hold','multiscale','post_impulse_restart') or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
+    if (entry_capacity_unlimited or execution is not None) and (reference not in ('impulse_hold','multiscale','post_impulse_restart','daily_trend') or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None
+            or reference=='daily_trend' and (execution is None or execution.stop_risk_share is None)):
         raise ValueError('execution study requires the frozen long impulse control')
     if entry_capacity_unlimited and D(risk_scale)!=D('3.6'):
         raise ValueError('unlimited capacity diagnostic remains fixed at 3.6')
