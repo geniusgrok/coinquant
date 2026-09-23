@@ -1,0 +1,33 @@
+name: Temporary UC4 official minute recovery
+on:
+  push:
+    branches: [research/unified-four-hour-channel-20260924]
+    paths: ['.github/workflows/uc4-minutes.yml']
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - name: Fetch and check requested official ZIP/CHECKSUM pairs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from research.acquire_minute_probe import run
+          request=json.loads(Path('evidence/unified-channel-20260924/MISSING_MINUTES.json').read_text())
+          complete=run(Path('evidence/unified-channel-20260924/minutes'),request['days'])
+          print('All requested official days complete:',complete)
+          PY
+      - name: Retain complete and failed acquisition evidence on research branch
+        run: |
+          git config user.name 'coinquant-evidence'
+          git config user.email 'coinquant-evidence@users.noreply.github.com'
+          git add evidence/unified-channel-20260924/minutes
+          git commit -m 'Preserve UC4 official minute originals and receipts'
+          git push origin HEAD:research/unified-four-hour-channel-20260924
