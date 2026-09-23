@@ -1,5 +1,6 @@
 from decimal import Decimal as D
 from types import SimpleNamespace
+import unittest
 
 from coinquant.conditional_hold import expiry_permission
 from coinquant.multiscale import DAY
@@ -37,3 +38,9 @@ def test_offline_negative_then_positive_ends_existing_extension():
     daily={19*DAY+60000:state(19*DAY+60000,D(-1)),
            20*DAY+60000:state(20*DAY+60000,D(1))}
     assert expiry_permission(original,now,{17*DAY:None},daily,last_checked=18*DAY)[1]=='offline_score_invalidated'
+
+
+class ConditionalHoldTests(unittest.TestCase):
+    test_expiry_and_publication = staticmethod(test_only_original_expiry_and_published_positive_score)
+    test_other_invalidation = staticmethod(test_lost_opportunity_or_intervening_shock_is_not_expiry_only)
+    test_offline_reversal = staticmethod(test_offline_negative_then_positive_ends_existing_extension)
