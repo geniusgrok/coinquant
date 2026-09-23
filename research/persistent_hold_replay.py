@@ -110,6 +110,7 @@ def decision_times(frozen, end, schedule):
 
 
 def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False):
+    channel_core = reference == 'channel_core'
     multiscale = reference == 'multiscale'
     if conditional_hold and (reference != 'impulse_hold' or D(risk_scale) != 6 or
             D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0 or
@@ -124,7 +125,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         raise ValueError('M60 requires its frozen sparse long SX60 execution and capital controls')
     if daily_warmup and not (multiscale or conditional_hold):
         raise ValueError('supplementary daily warmup requires the frozen trend score')
-    if (entry_capacity_unlimited or execution is not None) and (reference not in ('impulse_hold','multiscale','post_impulse_restart') or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
+    if (entry_capacity_unlimited or execution is not None) and (reference not in ('impulse_hold','multiscale','post_impulse_restart','channel_core') or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
         raise ValueError('execution study requires the frozen long impulse control')
     if entry_capacity_unlimited and D(risk_scale)!=D('3.6'):
         raise ValueError('unlimited capacity diagnostic remains fixed at 3.6')
@@ -143,13 +144,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     risk_scale=D(risk_scale)
     short_risk_scale=risk_scale if short_risk_scale is None else D(short_risk_scale)
     if not short_risk_scale.is_finite() or short_risk_scale<0:raise ValueError('invalid short risk scale')
-    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and payoff is None and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing','multiscale','post_impulse_restart')):
+    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and payoff is None and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing','multiscale','post_impulse_restart','channel_core')):
         raise ValueError('non-unit diagnostic risk requires impulse_hold')
     if allocation not in ('fixed','edge','unit','volatility'):raise ValueError('unknown allocation')
     if lifecycle not in ('persistent','one_campaign','fresh_breakout'):raise ValueError('unknown lifecycle')
-    if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart'):raise ValueError('unknown reference')
+    if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart','channel_core'):raise ValueError('unknown reference')
     if protection not in ('fixed','trailing'):raise ValueError('unknown protection')
-    if reference in ('anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart') and (allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline):
+    if reference in ('anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart','channel_core') and (allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline):
         raise ValueError('return-capture candidates require their frozen L21 controls')
     if minute_days and minutes is None:raise ValueError('extra minute days require original minute data')
     targeting=allocation in ('unit','volatility')
@@ -164,7 +165,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     elif minutes is not None:
         minutes,minute_identity=minute_load(minutes,series,minute_days);identity.extend(minute_identity)
     trade=series['klines'];marks=series['markPriceKlines']
-    mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart')
+    mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart','channel_core')
     opportunities={};fractions={};signal_states={}
     if multiscale or conditional_hold:
         from coinquant.multiscale import daily_snapshots, published_daily_key
@@ -172,13 +173,23 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             from coinquant.conditional_hold import expiry_permission
         signal_states=daily_snapshots(warm,trade,start,end,
             D(frozen['slippage_fraction'])+D(frozen['spread_fraction'])/2,daily_warmup)
-    if multiscale:
+    if mechanism:
         from coinquant.campaign import disposition
+    if multiscale:
         opportunities={t:s.opportunity for t,s in signal_states.items()}
         fractions={t:s.fraction for t,s in signal_states.items()}
         model_interval=DAY
+    elif channel_core:
+        from coinquant.channel_core import ChannelCore
+        model_interval=4*HOUR
+        model=ChannelCore()
+        for bt in range(min(warm),end,model_interval):
+            source=warm if bt<start else trade
+            rs=[source[x] for x in range(bt,bt+model_interval,HOUR)]
+            opportunities[bt+model_interval]=model.update(bt+model_interval,
+                max(D(r[2]) for r in rs),min(D(r[3]) for r in rs),D(rs[-1][4]))
     elif mechanism:
-        from coinquant.campaign import Campaign, disposition
+        from coinquant.campaign import Campaign
         model_interval=DAY if reference=='swing' else HOUR if reference=='hourly_impulse_hold' else 4*HOUR
         model=Campaign('impulse_hold' if reference=='hourly_impulse_hold' else reference,model_interval)
         for bt in range(min(warm),end,model_interval):
@@ -367,7 +378,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 direction=1 if reference=='long' else max(0,regime) if reference=='long_flat' else regime
                 if entry_side=='long' and direction<0 or entry_side=='short' and direction>0:direction=0
                 edge_target=(volatility_fraction(daily_returns,slip+spread/2) if allocation=='volatility' else D(1) if allocation=='unit' else target_fraction(edge_observations) if allocation=='edge' else D(2))
-                if mechanism:edge_target=fractions.get(signal_time,ZERO)
+                if mechanism and not channel_core:edge_target=fractions.get(signal_time,ZERO)
                 edge_target*=short_risk_scale if direction<0 else risk_scale
                 if not edge_target:direction=0
                 if reference=='channel_position':edge_target*=channel_position(daily)[1]
@@ -498,7 +509,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                             price=o*(1+D(execution_direction)*(slip+spread/2))
                             sl=account.sl if account.q else floor_step(min(x[1] for x in window[-10:]) if direction>0 else max(x[0] for x in window[-10:]),TICK)+(TICK if direction<0 else ZERO)
                             if mechanism and not account.q:sl=floor_step(opportunity.stop,TICK)+(TICK if direction<0 else ZERO)
-                            tp=account.tp if account.q else floor_step(opportunity.take if mechanism and not multiscale else price*(price/sl)**20,TICK)+(TICK if direction>0 else ZERO)
+                            tp=account.tp if account.q else floor_step(opportunity.take if mechanism and not (multiscale or channel_core) else price*(price/sl)**20,TICK)+(TICK if direction>0 else ZERO)
                             if min(sl,tp)<=0:
                                 action='unsafe_geometry';counts[action]+=1
                             else:
