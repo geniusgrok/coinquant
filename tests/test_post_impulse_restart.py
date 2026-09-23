@@ -1,6 +1,7 @@
 import json
 import unittest
 from decimal import Decimal as D
+from types import SimpleNamespace
 
 from coinquant.campaign import Campaign, ORIGIN, disposition
 from coinquant.opportunities import FOUR_HOURS, Opportunity, Opportunities
@@ -59,6 +60,10 @@ class PostImpulseRestartTests(unittest.TestCase):
         child = Opportunity(100, 1, D(90), D(200), 200,
                             parent_identity=20)
         self.assertEqual(disposition(child, D(1), consumed=20), 'hold')
+
+    def test_existing_opportunity_without_parent_identity_keeps_campaign_behavior(self):
+        existing = SimpleNamespace(identity=20, direction=1)
+        self.assertEqual(disposition(existing, D(1), consumed=20), 'hold')
 
     def test_pending_restart_state_survives_campaign_checkpoint(self):
         campaign = Campaign('post_impulse_restart')
