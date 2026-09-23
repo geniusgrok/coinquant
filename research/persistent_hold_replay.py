@@ -505,7 +505,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                 if execution is not None and execution.sliced:
                                     entry_equity_before=account.equity(mo) if renewal_risk else None
                                     entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
-                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale,capital=capital)
+                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale,capital=capital,
+                                        stop_risk_share=execution.stop_risk_share)
                                     if renewal_risk and entry_window.maximum:
                                         renewal_entry_equity[entry_window.identity]=entry_equity_before
                                         execution_record('renewal_entry_basis_started',dict(time=t,

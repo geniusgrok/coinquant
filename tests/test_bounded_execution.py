@@ -41,6 +41,23 @@ class BoundedTests(unittest.TestCase):
         self.assertGreater(a.q,0)
         self.assertFalse(p.available(p.deadline))
 
+    def test_one_frozen_loss_allowance_covers_all_slices_and_restart(self):
+        a = Account(D(10000))
+        p = BoundedEntry.freeze(a,T,T-4*HOUR,D('3.6'),D(10000),D(10000),
+                                D(9500),D(20000),D(6000000),None,D('.001'),D('.0002'),
+                                stop_risk_share=D('.10'))
+        self.assertEqual(p.risk_budget,D(1000))
+        a.wallet *= 2  # A subsequent wallet change cannot reprice the mother allowance.
+        v = {t:D(100000) for t in range(T-MINUTE,T+8*MINUTE,MINUTE)}
+        p.attempt(p.start,a,D(10000),D(10000),v,None)
+        p = BoundedEntry.restore(p.record())
+        for t in range(p.start+MINUTE,p.deadline,MINUTE):
+            p.attempt(t,a,D(10000),D(10000),v,None)
+            self.assertLessEqual(p.loss_at_stop(a),D(1000))
+        self.assertGreater(a.q,0)
+        self.assertEqual(p.filled,a.q)
+        self.assertLess(p.filled,p.maximum)
+
     def test_published_volume_only_and_unique_child(self):
         a,p,v = self.parent();b=replace(a);q=BoundedEntry.restore(p.record())
         future={t:(value if t<T else value*10000) for t,value in v.items()}

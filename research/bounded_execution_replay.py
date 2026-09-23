@@ -9,6 +9,7 @@ import argparse
 import contextlib
 import hashlib
 import json
+import re
 from pathlib import Path
 from decimal import Decimal as D
 
@@ -42,7 +43,8 @@ def input_identity(identity):
 def prepare(root, baseline, entry_minutes, request, repair=None, *, full=False):
     cache = inputs(root/'native', root/'warmup', root/'repairs', full_window=full)
     original = json.loads((baseline/'inputs.json').read_text())
-    days = sorted({r['path'][-14:-4] for r in original if '/1m/' in r.get('path', '')})
+    days = sorted({r['path'][-14:-4] for r in original
+                   if '/1m/' in r.get('path', '') and re.fullmatch(r'\d{4}-\d{2}-\d{2}', r['path'][-14:-4])})
     days = [day for day in days if timestamp(day+'T00:00:00Z') in cache[0]['klines']]
     minute_tables, identity = load_original_minutes(root/'minutes', cache[0], days)
     added, quotes, extra, validation = load_entry_minutes(

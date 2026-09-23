@@ -92,8 +92,12 @@ class BoundedEntry:
                quote: D, mark: D, stop: D, take: D, previous_hour_quote: D,
                instrument: dict | None, slippage: D, spread: D,
                entry_limit: D | None = None, *, stress: bool = False,
-               budget: D = D('3.6'), capital=None) -> BoundedEntry:
+               budget: D = D('3.6'), capital=None, stop_risk_share: D | None = None) -> BoundedEntry:
         selected_budget = risk_scale(budget)
+        if stop_risk_share is not None:
+            stop_risk_share = D(stop_risk_share)
+            if not stop_risk_share.is_finite() or not ZERO < stop_risk_share <= 1:
+                raise ValueError('invalid frozen stop risk share')
         if account.q or account.wallet <= 0:
             raise ValueError('mother intent requires the reconciled flat account')
         price = quote * (1 + slippage + spread / 2)
@@ -103,6 +107,8 @@ class BoundedEntry:
         maximum = abs(trial.q)
         original_stop_fill = stop * (1 - slippage - spread / 2)
         budget = maximum * (price - original_stop_fill + FEE*(price + original_stop_fill))
+        if stop_risk_share is not None:
+            budget = min(budget, account.equity(mark) * stop_risk_share)
         start = call_time + MINUTE * (2 if stress else 1)
         result = cls(call_time, campaign, start, start + WINDOW, maximum,
                      D(change['requested']), budget, price, quote, stop, take, entry_limit,
@@ -268,6 +274,7 @@ class ExecutionStudy:
 
     sustainable: bool = False
     planned_exit: str = 'instant'
+    stop_risk_share: D | None = None
 
     def __post_init__(self):
         if self.planned_exit not in ('instant', 'prepared', 'sliced'):
@@ -275,6 +282,11 @@ class ExecutionStudy:
         if self.planned_exit != 'instant' and not self.sustainable:
             raise ValueError('planned exits require sustainable capital')
         object.__setattr__(self, 'risk_scale', risk_scale(self.risk_scale))
+        if self.stop_risk_share is not None:
+            share = D(self.stop_risk_share)
+            if not share.is_finite() or not ZERO < share <= 1:
+                raise ValueError('invalid frozen stop risk share')
+            object.__setattr__(self, 'stop_risk_share', share)
 
     def configuration(self) -> dict:
         return dict(sustainable_capital=self.sustainable, planned_exit=self.planned_exit,
@@ -282,4 +294,5 @@ class ExecutionStudy:
                     fixed_window_seconds=300, decision_delay_seconds=(120 if self.stress else 60) if self.sliced else 0,
                     volume_publication_lag_seconds=60, participation='0.01',
                     cost_multiplier=2 if self.stress else 1,
-                    exit_impact='linear_prior_hour_capacity_proxy', native_execution_verified=False)
+                    exit_impact='linear_prior_hour_capacity_proxy', native_execution_verified=False,
+                    **({'stop_risk_share': str(self.stop_risk_share)} if self.stop_risk_share is not None else {}))
