@@ -1,0 +1,45 @@
+{
+  "scope": "Necessary current-archive version-timing screen only; NOT sufficient historical publication evidence or a counterfactual OI strategy",
+  "input_sha256": {
+    "manifest": "abc9a7bde759f23598f31b7ea40e9f197be8efcb29cb1ac964058537c2f30bc6",
+    "call_labels": "0146c119104846cdc4b9ca3367989f45d58c42b4d726014d275d5c69398d892a",
+    "existing_account": "2ed9b042cd7000d9b3bece516ef8b47ffbf7c975d6f598faa7c3d29038442621"
+  },
+  "two_earlier_utc_days": [
+    2,
+    3
+  ],
+  "by_year": {
+    "2020": {
+      "calls": 123,
+      "two_complete_days": 38,
+      "current_bytes_modified_before_call": 0
+    },
+    "2021": {
+      "calls": 112,
+      "two_complete_days": 85,
+      "current_bytes_modified_before_call": 0
+    },
+    "2022": {
+      "calls": 120,
+      "two_complete_days": 119,
+      "current_bytes_modified_before_call": 0
+    },
+    "2023": {
+      "calls": 113,
+      "two_complete_days": 108,
+      "current_bytes_modified_before_call": 43
+    }
+  },
+  "necessary_condition_calls": 43,
+  "price_drop_10pct_intersection": [
+    "2023-08-23T09:00:00Z"
+  ],
+  "existing_dc10_filled_segments_intersection": [
+    {
+      "call": "2023-08-23T09:00:00Z",
+      "first_fill": "2023-08-23T09:01:00Z",
+      "existing_dc10_net_wallet_usdt": "-4.624198972384787750400000"
+    }
+  ]
+}

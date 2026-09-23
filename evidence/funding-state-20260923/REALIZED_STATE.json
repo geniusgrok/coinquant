@@ -1,0 +1,112 @@
+{
+  "scope": "Historical realized account-path stratification, no alternative filter/equity/counterfactual OI or funding strategy",
+  "state": "Sign of sum of the three strictly prior 8h funding settlements at first fill",
+  "funding_monthly_zip_count": 80,
+  "funding_sha_inventory_hash": "ded3fb7414b58f2bd995b753c574c51b4e54021074dcab6bf18071bc1283b569",
+  "source_sha256": {
+    "campaigns": "e150a05e257b3813ed874f3dc3d62d1e170c3344687db34c540d9d1c422f4df5",
+    "dc10_account": "2ed9b042cd7000d9b3bece516ef8b47ffbf7c975d6f598faa7c3d29038442621"
+  },
+  "accounts": {
+    "SX60_full": {
+      "nonpositive": {
+        "segments": 3,
+        "positive_net_segments": 1,
+        "realized_net_wallet_usdt": "-4596.42887659204126097412660",
+        "by_entry_year": {
+          "2021": {
+            "segments": 1,
+            "realized_net_wallet_usdt": "-3250.42398535741834000000000"
+          },
+          "2025": {
+            "segments": 1,
+            "realized_net_wallet_usdt": "70.6773720011295000000000"
+          },
+          "2026": {
+            "segments": 1,
+            "realized_net_wallet_usdt": "-1416.6822632357524209741266"
+          }
+        }
+      },
+      "positive": {
+        "segments": 27,
+        "positive_net_segments": 20,
+        "realized_net_wallet_usdt": "167986.2848633095154976415988",
+        "by_entry_year": {
+          "2020": {
+            "segments": 8,
+            "realized_net_wallet_usdt": "11566.39394911456905169009999"
+          },
+          "2021": {
+            "segments": 2,
+            "realized_net_wallet_usdt": "8178.80380243704454688970000"
+          },
+          "2022": {
+            "segments": 2,
+            "realized_net_wallet_usdt": "-4096.86073733784739036560001"
+          },
+          "2023": {
+            "segments": 7,
+            "realized_net_wallet_usdt": "53904.28661037501891199918071"
+          },
+          "2024": {
+            "segments": 4,
+            "realized_net_wallet_usdt": "55850.61484652884598499246406"
+          },
+          "2025": {
+            "segments": 2,
+            "realized_net_wallet_usdt": "20149.3795043609074024508545"
+          },
+          "2026": {
+            "segments": 2,
+            "realized_net_wallet_usdt": "22433.6668878309769899848995"
+          }
+        }
+      }
+    },
+    "DC10_development": {
+      "nonpositive": {
+        "segments": 6,
+        "positive_net_segments": 3,
+        "realized_net_wallet_usdt": "-1.146921750568405299200000",
+        "by_entry_year": {
+          "2020": {
+            "segments": 1,
+            "realized_net_wallet_usdt": "54.950241837604542000000000"
+          },
+          "2021": {
+            "segments": 1,
+            "realized_net_wallet_usdt": "-7.103792256747606769800000"
+          },
+          "2022": {
+            "segments": 4,
+            "realized_net_wallet_usdt": "-48.993371331425340529400000"
+          }
+        }
+      },
+      "positive": {
+        "segments": 23,
+        "positive_net_segments": 7,
+        "realized_net_wallet_usdt": "-682.814431800560632323000000",
+        "by_entry_year": {
+          "2020": {
+            "segments": 3,
+            "realized_net_wallet_usdt": "-159.370670023178549563500000"
+          },
+          "2021": {
+            "segments": 9,
+            "realized_net_wallet_usdt": "-264.637853050507535165300000"
+          },
+          "2022": {
+            "segments": 9,
+            "realized_net_wallet_usdt": "-285.787093655763851843800000"
+          },
+          "2023": {
+            "segments": 2,
+            "realized_net_wallet_usdt": "26.981184928889304249600000"
+          }
+        }
+      }
+    }
+  }
+}
