@@ -1,0 +1,74 @@
+{
+  "scope": "Retrospective price events and the separate executed DC10 development path; no counterfactual OI model",
+  "source_sha256": {
+    "labels": "0146c119104846cdc4b9ca3367989f45d58c42b4d726014d275d5c69398d892a",
+    "account_zip": "2ed9b042cd7000d9b3bece516ef8b47ffbf7c975d6f598faa7c3d29038442621"
+  },
+  "event_rule": "Join qualifying calls whose 168-hour future windows overlap; first call anchors event, no future label is used to select an event",
+  "year": {
+    "2020": {
+      "qualifying_calls": 4,
+      "overlap_events": 3
+    },
+    "2021": {
+      "qualifying_calls": 11,
+      "overlap_events": 8
+    },
+    "2022": {
+      "qualifying_calls": 14,
+      "overlap_events": 8
+    },
+    "2023": {
+      "qualifying_calls": 3,
+      "overlap_events": 3
+    },
+    "2024": {
+      "qualifying_calls": 3,
+      "overlap_events": 3
+    },
+    "2025": {
+      "qualifying_calls": 5,
+      "overlap_events": 3
+    },
+    "2026": {
+      "qualifying_calls": 7,
+      "overlap_events": 2
+    }
+  },
+  "events_2025": [
+    {
+      "first_call": "2025-03-01T03:00:00+00:00",
+      "last_call": "2025-03-01T22:00:00+00:00",
+      "calls": 2
+    },
+    {
+      "first_call": "2025-03-10T07:00:00+00:00",
+      "last_call": "2025-03-10T07:00:00+00:00",
+      "calls": 1
+    },
+    {
+      "first_call": "2025-11-20T18:00:00+00:00",
+      "last_call": "2025-11-22T17:00:00+00:00",
+      "calls": 2
+    }
+  ],
+  "development_account": {
+    "invocations": 468,
+    "decision_actions": {
+      "no_signal": 394,
+      "deferred_entry": 29,
+      "hold": 27,
+      "regime_exit": 17,
+      "campaign_consumed": 1
+    },
+    "created_parents": 29,
+    "filled_parents": 29,
+    "closed_segments": 29,
+    "positive_segments": 10,
+    "negative_segments": 19,
+    "net_wallet_usdt": "-683.961353551129037622200000",
+    "cost_net_cagr": -0.1500587890378694,
+    "continuous_mdd": "0.6111625352240286480726657839",
+    "terminal_cny": "5218.548805356613607740008354"
+  }
+}
