@@ -1,5 +1,9 @@
 # Coinquant 当前恢复入口
 
+## 最新：PA1 初始止损保护失败；下一步先查信号优势
+
+研究分支 `research/initial-atr-stop-core-20260923` 冻结源码远端 `59995609302793ef51fbe8d89b744a0d106df27c`、tree `8d4b512b67c0a7caf8860844073b5a89765147b2`；同 468 调用开发输入 `2e8bbefb4f1994f73e7c14048012f7b008d3b848b6a71b6eb31838844ddef8cb`，PA1 **68.279875% CAGR /62.123308% 连续 MDD /CNY80,195.00**。较紧的初始 ATR 止损缩短亏损但显著损害 2020 盈利复利，双门拒绝；不跑 795、压力、缺席。完整原件 `COINQUANT_PA1_DEVELOPMENT_REJECT_20260923.zip`，Library ID `libfile_c28b41574bf08191ab36ef544fbc684c`、2,130,659 字节、SHA `03affaa733a6c1f36fc4ecb82163b6e0a63027bf5f6b6c7e67dbe1bda66575bf`，回读字节一致；报告/协议/索引在 `evidence/initial-atr-stop-20260923/`。旧 PXT/PXC 输入和代码在各自独立原件包与历史研究提交。现在停止追调 ATR/峰值百分数，沿真实账户身份分析收益分布和后段有效事件，选择单一新的信号或持仓机制。main PR #9 合并后仍 `cd4d7e7`，生产默认 B36/execute 阻止保留，正式全窗目标未完成。
+
 ## 最新：PXC 回撤仍超限，原件已保存
 
 从 `research/peak-protection-core-20260923` 源码事前冻结 `46cd7e7a1214263f1e0875560c75ef93c702f4ee`、tree `9988dbc68362b4b61b3ec0722aa1dd195edada44` 继续；468 调用同官方开发输入的 PXC **161.447565% CAGR /55.876824% MDD /CNY467,275.15**，PXT **168.805666%/69.835343%**，同输入 SX60 **162.179152%/37.209136%**。PXC 风险超严格门 5.876824 个百分点，拒绝；不做它的全窗/压力/缺席。主因是入场初始风险及跨笔价格损失，旧十日和已完成小时峰值调用后调整都不足以覆盖短时亏损。账户账本、风险/GAP 审计通过。完整原件 `COINQUANT_PXC_DEVELOPMENT_REJECT_20260923.zip`，Library ID `libfile_0e395afe86588191a1e7b9ccd90a52ef`、2,227,347 字节、SHA `6f0ec92c98e5462b45d02de2a12e7334feabddd6469bcf7d01d0d2912bd83040`，回读逐字节一致；索引和报告在 `evidence/peak-close-protection-20260923/`。研究代码仍未入生产 main。先研究入场止损几何/起始风险的最小联动改变并事前冻结，同数据下运行开发连续账户；不凭微调百分数过线。全窗正式目标未完成，生产默认 B36、execute 阻止保持。
