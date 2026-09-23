@@ -4,7 +4,7 @@ on:
     branches: [main]
     paths: ['.github/workflows/probe-oi-archive.yml']
 permissions:
-  contents: read
+  contents: write
 jobs:
   probe:
     runs-on: ubuntu-24.04
@@ -64,8 +64,13 @@ jobs:
               (out / (name + '.CHECKSUM')).write_bytes(checksum)
               anomalies = [(i, rows[i - 1]['create_time'], rows[i]['create_time'])
                            for i in range(1, len(times)) if times[i] <= times[i - 1]]
+              disagreements = [i for i in range(1, len(times))
+                               if times[i] == times[i - 1] and rows[i] != rows[i - 1]]
               record.update(status='verified_with_label_anomaly' if anomalies else 'verified',
                             label_anomalies=anomalies[:8], label_anomaly_count=len(anomalies),
+                            duplicate_row_disagreements=len(disagreements),
+                            first_disagreement=[rows[disagreements[0] - 1], rows[disagreements[0]]]
+                                if disagreements else None,
                             sha256=expected, bytes=len(raw),
                             header=list(rows[0]), count=len(rows),
                             first_label=rows[0]['create_time'],
@@ -84,3 +89,19 @@ jobs:
           compression-level: 0
           retention-days: 30
           if-no-files-found: error
+      - name: Preserve fixed original ZIPs and checksums on research branch
+        if: success() && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'research/oi-causal-probe-20260923'
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: research/oi-causal-probe-20260923
+      - name: Commit original bytes to research branch
+        if: success() && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'research/oi-causal-probe-20260923'
+        run: |
+          set -eu
+          mkdir -p evidence/oi-archive-20260923/sample-originals
+          cp "$RUNNER_TEMP"/oi-original-probe/* evidence/oi-archive-20260923/sample-originals/
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/oi-archive-20260923/sample-originals
+          git commit -m 'Preserve checksum-verified OI sample originals'
+          git push origin HEAD:refs/heads/research/oi-causal-probe-20260923
