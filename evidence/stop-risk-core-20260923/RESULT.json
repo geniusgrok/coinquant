@@ -1,0 +1,49 @@
+{
+  "status": "development_rejected_continue_core_research",
+  "pre_result_commit": "ee7d995556a650e4b03e7583c2e0de881212d15b",
+  "tree": "7884885775807988dd2d0010daeabda052541d2e",
+  "input_identity": "9b036837f4eb462d672524f9b032adc7a9a9ba85cce071b33b268ab658747645",
+  "normal_calls": 468,
+  "cagr": 1.2136301881969884,
+  "mdd_conservative_envelope": "0.2367115718665401316623173607",
+  "final_cny": "240131.2166545642709733532697",
+  "fees_usdt": "732.12182642925300",
+  "funding_bound_paid_usdt": "1241.7213498630016696836",
+  "holding_hours": 2838,
+  "max_mother_budget_to_call_equity": "0.1",
+  "parent_count": 20,
+  "ledger": {
+    "close_points": 35064,
+    "max_equity_error_usdt": "0",
+    "fees": "732.12182642925300",
+    "funding": "1241.7213498630016696836",
+    "input_sha256": {
+      "orders.csv.gz": "37267af8a9dc80464dadb69fa63a688a6cf35d17201afa2ff87ff60248453b9a",
+      "equity.csv.gz": "b56f18be21671ee4bd78932d66b8f76dc80007f8c6c5530d231e7e25cbeba5b1"
+    }
+  },
+  "risk_passed": true,
+  "gap_maintained": true,
+  "dependent_originals": {
+    "bounded_execution": {
+      "library_file_id": "libfile_54a5fcf3af5c8191af73244b14ef6ec5",
+      "sha256": "854fba74875a4e7bc07a9b709edf82b377d7157a01d8d73db42db44aa41095c1",
+      "bytes": 48866772
+    },
+    "sustainable_exit": {
+      "library_file_id": "libfile_0f102b0356a48191b1b5d2865074ad0b",
+      "sha256": "d18021568ef10c5c091b1dc5488372a1d87e8b8bc0baadb5f0fe288df68956ab",
+      "bytes": 41734473
+    },
+    "pir1_development": {
+      "library_file_id": "libfile_b20c07ea87f48191b3b6a524609e548d",
+      "sha256": "703ac6ab27f573a4af8953529cea3a349334e51346da9d4e312afa6ca273a9d3",
+      "bytes": 38496598
+    },
+    "pir1_correction": {
+      "library_file_id": "libfile_27b492b73c24819192445901917345ea",
+      "sha256": "40ed453f88817d2c940cff5a3182b0d02c9595dbb52399ff45a1407fc1f6ca04",
+      "bytes": 5039967
+    }
+  }
+}

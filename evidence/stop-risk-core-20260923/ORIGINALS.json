@@ -1,0 +1,10 @@
+{
+  "file_name": "COINQUANT_R10_DEVELOPMENT_ORIGINALS_20260923.zip",
+  "bytes": 1471023,
+  "sha256": "84c91eef173863b339826c8c4f80b9d839f6f01711e8810d83fe56701ccd2d80",
+  "members": 54,
+  "input_dependencies": "RESULT.json dependent_originals",
+  "library_file_id": "libfile_9661e80f0e508191a71708ee35c26e2b",
+  "remote_verified": true,
+  "readback_byte_equal": true
+}
