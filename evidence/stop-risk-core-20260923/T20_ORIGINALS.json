@@ -1,0 +1,10 @@
+{
+  "file_name": "COINQUANT_T20_BLOCKED_ORIGINALS_20260923.zip",
+  "bytes": 317663,
+  "sha256": "e4630c81e29c5e6a74a6f20d04b7b27d9670d14dfec9ae1cc8df07992ae161e2",
+  "members": 31,
+  "input_dependencies": "R10 RESULT.json dependent_originals",
+  "library_file_id": "libfile_c246dbd9266c8191922bd5f6cb5af542",
+  "remote_verified": true,
+  "readback_byte_equal": true
+}
