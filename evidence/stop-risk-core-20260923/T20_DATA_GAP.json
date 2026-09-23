@@ -1,0 +1,73 @@
+{
+  "status": "incomplete_no_economic_result",
+  "frozen_protocol_commit": "6b27c178c831147fc2d934dc4c07a78a9184ccbf",
+  "corrected_source_commit": "8d551c9c8f85f53850584b2409a1b5bf293dbcc6",
+  "corrected_source_tree": "b1c37d7e0a8c78b0091c896e8fb74b3e351f98e6",
+  "input_identity": "9b036837f4eb462d672524f9b032adc7a9a9ba85cce071b33b268ab658747645",
+  "development_invocations": 468,
+  "signal_only_active_calls": 224,
+  "signal_only_distinct_campaigns": 20,
+  "signal_only_active_calls_missing_refined_hour": 131,
+  "first_actual_missing_exit_hour_ms": 1582866000000,
+  "first_actual_missing_exit_hour_utc": "2020-02-28T05:00:00Z",
+  "required_kinds": [
+    "klines",
+    "markPriceKlines"
+  ],
+  "partial_files": [
+    {
+      "path": "T20-development/decisions.csv.gz.partial",
+      "bytes": 1618,
+      "sha256": "50c9bb9ecee4a0bddd20196376c814ef402811e42c802bf844b61746acf8ae98"
+    },
+    {
+      "path": "T20-development/equity.csv.gz.partial",
+      "bytes": 231875,
+      "sha256": "2f1917af6fe8dfb9f84159595c7726c0fd55a2328256a8d9718e0014b25d0e19"
+    },
+    {
+      "path": "T20-development/execution.jsonl.partial",
+      "bytes": 17833,
+      "sha256": "595f23cf6835f8c5c61b8a69a6c95f1518e928a3adef3a39ad02d3d2b3bf9ab4"
+    },
+    {
+      "path": "T20-development/orders.csv.gz.partial",
+      "bytes": 2458,
+      "sha256": "a4f556ab71dce109ea33518f098feac12f120740f077bc8d01e079bbdc1cace8"
+    },
+    {
+      "path": "T20-development.failure.txt",
+      "bytes": 505,
+      "sha256": "cc38fcc0b17298622ec9539d94b244cdeb50ba99e23e222642286031020681d9"
+    },
+    {
+      "path": "T20-development.invocation.json",
+      "bytes": 67885,
+      "sha256": "216c01318d4efbd0f3fd858a131ae9a9112939443a7bfd0f67ef02b6505c667b"
+    },
+    {
+      "path": "T20-development.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "preflight-failure-1/T20-development.failure.txt",
+      "bytes": 528,
+      "sha256": "41d5aa3a1a1cb43b6b01460d21c7dedb0c504807ed9d6d20a87b82bc12e0adff"
+    },
+    {
+      "path": "preflight-failure-1/T20-development.invocation.json",
+      "bytes": 67885,
+      "sha256": "53d078ace1fb4acdaca434bf4093f86861c59f800835d8f1337cc0d8278a3741"
+    },
+    {
+      "path": "preflight-failure-1/T20-development.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "cagr": null,
+  "mdd": null,
+  "final_cny": null,
+  "economic_gate": "NOT_MEASURED"
+}

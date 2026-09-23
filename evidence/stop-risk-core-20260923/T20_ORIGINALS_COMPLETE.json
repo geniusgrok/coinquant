@@ -1,0 +1,24 @@
+{
+  "status": "complete_originals_saved_and_read_back_byte_equal",
+  "account_package": {
+    "file_name": "COINQUANT_T20_DEVELOPMENT_ACCOUNT_ORIGINALS_20260923.zip",
+    "library_file_id": "libfile_784b7fbff7cc81918fdf44fb1ff607aa",
+    "bytes": 12163885,
+    "sha256": "d7b31319c5df286edd962d1cab9ba3c8d646adecd5d00a76242559b23586ce2a"
+  },
+  "official_archive_artifacts": [
+    {"year": 2020, "role": "call_days", "library_file_id": "libfile_dde44e4f453881919f74faeafe9a9a3b", "bytes": 7848914, "sha256": "09ce893e15e97acaf414fbd4f80a8034c1cfb970dfb5aae41d4444f85216f980"},
+    {"year": 2021, "role": "call_days", "library_file_id": "libfile_c1e3327724b08191b145a487681fa68b", "bytes": 14280439, "sha256": "e6768b95697c6b95e76c7dc9db1724e12d0a9d9d7c881fd01cff3a8fd684b444"},
+    {"year": 2022, "role": "call_days", "library_file_id": "libfile_2efd80d1ea6c8191ba929aaa148dfdb2", "bytes": 9176959, "sha256": "00b063d50650a8326b44a6b472989fec1df0bba4e30ccf58f9d15da0839b0e48"},
+    {"year": 2023, "role": "call_days", "library_file_id": "libfile_71687cf03e38819187cf877ea3862c3f", "bytes": 6496496, "sha256": "ab13a26c8f44d5bf70204aebaf80a7f737474b6c5e4ab62aa5eac3058237f5ee"},
+    {"year": 2020, "role": "prior_volume", "library_file_id": "libfile_18c0ddcc5ab08191a0c6cf16b4529e79", "bytes": 632263, "sha256": "35e8d4aec37ebf52f45be2d8f8eca03b5278bc5e32e75c48bf6b1ad04faf9b95"},
+    {"year": 2021, "role": "prior_volume", "library_file_id": "libfile_036f1f5ed8508191a731d16b269abff6", "bytes": 106637, "sha256": "aebe83865693802b1f3fe27c5de34f62fd3ce9df9f2572355ef63eeaaf5ec061"},
+    {"year": 2022, "role": "prior_volume", "library_file_id": "libfile_8e35ed3f7c1c8191b4b179f9190cca95", "bytes": 291784, "sha256": "152e3fce726c8503c2c022768f33085851587fb9c0ef7b129efa18a73544b351"},
+    {"year": 2023, "role": "prior_volume", "library_file_id": "libfile_911a7b0236d88191b79a913bd27ae897", "bytes": 93355, "sha256": "f8bf4ce6b5cebc8749f9d48bfa93043f35909647ad9254b013350d4a39688ef5"}
+  ],
+  "prior_partial_account": {"library_file_id": "libfile_c246dbd9266c8191922bd5f6cb5af542", "sha256": "e4630c81e29c5e6a74a6f20d04b7b27d9670d14dfec9ae1cc8df07992ae161e2"},
+  "input_dependencies": "RESULT.json dependent_originals; four separately byte-verified historical bundles",
+  "unified_receipt_sha256": "bd8009d3ece824e8dbbf681211355de5be5197d130abd5d279c79e85a6e31382",
+  "input_identity": "2e8bbefb4f1994f73e7c14048012f7b008d3b848b6a71b6eb31838844ddef8cb",
+  "all_nine_readback_byte_equal": true
+}
