@@ -1,0 +1,405 @@
+{
+  "scope": "RETROSPECTIVE feasibility on unchanged SX60 paths; no alternative sizing, fills, stop amendments, CAGR or counterfactual PnL",
+  "input_sha256": {
+    "execution_summary.json": "fd8d82dcda8ddd49141b67545d77098b5ed202b56289fabb07d5e753f47e9619",
+    "execution.jsonl": "fdde28a8aaeb73c1470eb2746a403ff103c1d064800d78f90256ee9b11a8477e",
+    "equity.csv.gz": "a41cdd77c5442bda2c3ff0c6d4f2c0e92d1b4aa0e02fda4aa305840276bd17f9",
+    "invocations.json": "4e48e33467e699608be89e62749f438f3cc436d2c533b90d419159d694372e4f",
+    "attribution": "839b731acbb9555713305f93df725aec57ee97442982c6a89fc9672b2c915441"
+  },
+  "rows": [
+    {
+      "parent_id": "pq-654454b443a880beb7a58408070a6c",
+      "segment_start": "2020-01-03T18:01:00Z",
+      "segment_end": "2020-01-14T19:01:00Z",
+      "net_wallet_usdt": "1014.911560259348211644100000",
+      "confirmed_quantity_btc": "0.753",
+      "confirmed_entry_price": "7368.075978",
+      "initial_stop": "7072.5",
+      "one_r_mark_threshold": "7663.651956",
+      "first_completed_hour_mark_cross_ms": 1578351600000,
+      "next_frozen_call_before_actual_exit_ms": 1578636000000
+    },
+    {
+      "parent_id": "pq-f0bfff1eac3a260a82b5e12a07f9fa",
+      "segment_start": "2020-01-21T02:01:00Z",
+      "segment_end": "2020-01-23T01:03:00Z",
+      "net_wallet_usdt": "-30.364864065450276591999999",
+      "confirmed_quantity_btc": "0.904",
+      "confirmed_entry_price": "8670.166991926991150442477876",
+      "initial_stop": "8291.0",
+      "one_r_mark_threshold": "9049.333983853982300884955752",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-a87d093aba4d7048c530a4b40bcdec",
+      "segment_start": "2020-04-05T20:01:00Z",
+      "segment_end": "2020-04-11T22:01:00Z",
+      "net_wallet_usdt": "44.125189835819872763400000",
+      "confirmed_quantity_btc": "0.929",
+      "confirmed_entry_price": "6793.804305881593110871905274",
+      "initial_stop": "6418.5",
+      "one_r_mark_threshold": "7169.108611763186221743810548",
+      "first_completed_hour_mark_cross_ms": 1586196000000,
+      "next_frozen_call_before_actual_exit_ms": 1586379600000
+    },
+    {
+      "parent_id": "pq-e83827a50e33bfbf9d2fd9f99bc724",
+      "segment_start": "2020-04-29T12:01:00Z",
+      "segment_end": "2020-04-30T19:01:00Z",
+      "net_wallet_usdt": "610.963803800076296700000000",
+      "confirmed_quantity_btc": "1.203",
+      "confirmed_entry_price": "8139.253341",
+      "initial_stop": "7328.5",
+      "one_r_mark_threshold": "8950.006682",
+      "first_completed_hour_mark_cross_ms": 1588219200000,
+      "next_frozen_call_before_actual_exit_ms": 1588273200000
+    },
+    {
+      "parent_id": "pq-c39380d0a62bab9948d65f09c7e3d6",
+      "segment_start": "2020-07-21T16:01:00Z",
+      "segment_end": "2020-07-27T17:00:00Z",
+      "net_wallet_usdt": "2881.449307257360310730400000",
+      "confirmed_quantity_btc": "2.148",
+      "confirmed_entry_price": "9345.921279652234636871508380",
+      "initial_stop": "9248.0",
+      "one_r_mark_threshold": "9443.842559304469273743016760",
+      "first_completed_hour_mark_cross_ms": 1595458800000,
+      "next_frozen_call_before_actual_exit_ms": 1595739600000
+    },
+    {
+      "parent_id": "pq-88498356b5b3b89def7e2bbd2f28c5",
+      "segment_start": "2020-10-09T04:01:00Z",
+      "segment_end": "2020-10-15T16:02:00Z",
+      "net_wallet_usdt": "796.719277939239819999999995",
+      "confirmed_quantity_btc": "1.764",
+      "confirmed_entry_price": "10893.85553886394557823129252",
+      "initial_stop": "10745.5",
+      "one_r_mark_threshold": "11042.21107772789115646258504",
+      "first_completed_hour_mark_cross_ms": 1602244800000,
+      "next_frozen_call_before_actual_exit_ms": 1602385200000
+    },
+    {
+      "parent_id": "pq-f92c47622ef898792658478f01c367",
+      "segment_start": "2020-10-20T05:01:00Z",
+      "segment_end": "2020-10-31T01:03:00Z",
+      "net_wallet_usdt": "4310.944718985051746500000001",
+      "confirmed_quantity_btc": "2.350",
+      "confirmed_entry_price": "11730.47409216000000000000000",
+      "initial_stop": "11637.5",
+      "one_r_mark_threshold": "11823.44818432000000000000000",
+      "first_completed_hour_mark_cross_ms": 1603191600000,
+      "next_frozen_call_before_actual_exit_ms": 1603562400000
+    },
+    {
+      "parent_id": "pq-b549c5409357f13f78012f9951b977",
+      "segment_start": "2020-12-18T07:01:00Z",
+      "segment_end": "2020-12-25T21:03:00Z",
+      "net_wallet_usdt": "1937.64495510312306994419999",
+      "confirmed_quantity_btc": "1.569",
+      "confirmed_entry_price": "23001.70887751434034416826004",
+      "initial_stop": "20207.5",
+      "one_r_mark_threshold": "25795.91775502868068833652008",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-6e99597be4f1ab2a1f49a41d8c5996",
+      "segment_start": "2021-02-10T16:01:00Z",
+      "segment_end": "2021-02-19T03:01:00Z",
+      "net_wallet_usdt": "3744.70872642389096708050000",
+      "confirmed_quantity_btc": "0.677",
+      "confirmed_entry_price": "44341.341882",
+      "initial_stop": "41640.5",
+      "one_r_mark_threshold": "47042.183764",
+      "first_completed_hour_mark_cross_ms": 1613052000000,
+      "next_frozen_call_before_actual_exit_ms": 1613142000000
+    },
+    {
+      "parent_id": "pq-1783f36b7fc6778167ab9b8db7da80",
+      "segment_start": "2021-07-26T11:01:00Z",
+      "segment_end": "2021-07-26T23:00:00Z",
+      "net_wallet_usdt": "-3250.42398535741834000000000",
+      "confirmed_quantity_btc": "1.786",
+      "confirmed_entry_price": "38542.590264",
+      "initial_stop": "36823.5",
+      "one_r_mark_threshold": "40261.680528",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-91294072f0f335b1e3809e445b29fd",
+      "segment_start": "2021-10-09T10:01:00Z",
+      "segment_end": "2021-10-15T17:01:00Z",
+      "net_wallet_usdt": "4434.09507601315357980920000",
+      "confirmed_quantity_btc": "0.721",
+      "confirmed_entry_price": "55046.995161",
+      "initial_stop": "53155.0",
+      "one_r_mark_threshold": "56938.990322",
+      "first_completed_hour_mark_cross_ms": 1633960800000,
+      "next_frozen_call_before_actual_exit_ms": 1634317200000
+    },
+    {
+      "parent_id": "pq-77d83fb9073c3a6e602eca2b75307d",
+      "segment_start": "2022-03-29T17:01:00Z",
+      "segment_end": "2022-03-31T17:00:00Z",
+      "net_wallet_usdt": "-2539.33428836145768000000000",
+      "confirmed_quantity_btc": "1.415",
+      "confirmed_entry_price": "47462.94728130742049469964664",
+      "initial_stop": "45817.0",
+      "one_r_mark_threshold": "49108.89456261484098939929328",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-a2f00338c842e59bf03dc83bf92496",
+      "segment_start": "2022-08-01T05:01:00Z",
+      "segment_end": "2022-08-05T18:01:00Z",
+      "net_wallet_usdt": "-1557.52644897638971036560001",
+      "confirmed_quantity_btc": "2.328",
+      "confirmed_entry_price": "23417.41702317010309278350516",
+      "initial_stop": "22140.0",
+      "one_r_mark_threshold": "24694.83404634020618556701032",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-6feb92f617a798bcea9813d3c2613c",
+      "segment_start": "2023-01-13T04:01:00Z",
+      "segment_end": "2023-01-19T06:06:00Z",
+      "net_wallet_usdt": "7174.31979786188873041730691",
+      "confirmed_quantity_btc": "3.931",
+      "confirmed_entry_price": "18886.32572545917069447977614",
+      "initial_stop": "17738.0",
+      "one_r_mark_threshold": "20034.65145091834138895955228",
+      "first_completed_hour_mark_cross_ms": 1673658000000,
+      "next_frozen_call_before_actual_exit_ms": 1673845200000
+    },
+    {
+      "parent_id": "pq-b9b7a9f3ba428814944a274dc6c8ff",
+      "segment_start": "2023-01-25T02:01:00Z",
+      "segment_end": "2023-02-02T08:03:00Z",
+      "net_wallet_usdt": "4309.60769522877671599999998",
+      "confirmed_quantity_btc": "3.772",
+      "confirmed_entry_price": "22518.83788345705196182396607",
+      "initial_stop": "22077.5",
+      "one_r_mark_threshold": "22960.17576691410392364793214",
+      "first_completed_hour_mark_cross_ms": 1674684000000,
+      "next_frozen_call_before_actual_exit_ms": 1674781200000
+    },
+    {
+      "parent_id": "pq-639c31702fbb5c1ee09f76cc3411a3",
+      "segment_start": "2023-03-16T08:01:00Z",
+      "segment_end": "2023-03-21T13:01:00Z",
+      "net_wallet_usdt": "12649.67932141948816000000000",
+      "confirmed_quantity_btc": "3.694",
+      "confirmed_entry_price": "24652.31923811857065511640498",
+      "initial_stop": "23050.5",
+      "one_r_mark_threshold": "26254.13847623714131023280996",
+      "first_completed_hour_mark_cross_ms": 1679050800000,
+      "next_frozen_call_before_actual_exit_ms": 1679065200000
+    },
+    {
+      "parent_id": "pq-4ee91b92b88f5eda918bad49d00508",
+      "segment_start": "2023-04-13T12:01:00Z",
+      "segment_end": "2023-04-17T20:04:00Z",
+      "net_wallet_usdt": "-4718.36959367134570600000002",
+      "confirmed_quantity_btc": "5.766",
+      "confirmed_entry_price": "30182.90198120187304890738814",
+      "initial_stop": "28796.0",
+      "one_r_mark_threshold": "31569.80396240374609781477628",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-a8780e507d0a79b178ec8548186424",
+      "segment_start": "2023-06-23T06:01:00Z",
+      "segment_end": "2023-06-30T20:02:00Z",
+      "net_wallet_usdt": "487.56871580316828800000000",
+      "confirmed_quantity_btc": "2.889",
+      "confirmed_entry_price": "30060.59841073727933541017653",
+      "initial_stop": "27514.0",
+      "one_r_mark_threshold": "32607.19682147455867082035306",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-824d0e153bbb05dc52a82a0879bff2",
+      "segment_start": "2023-10-17T05:01:00Z",
+      "segment_end": "2023-10-23T23:00:00Z",
+      "net_wallet_usdt": "32574.81230177550855958187384",
+      "confirmed_quantity_btc": "5.060",
+      "confirmed_entry_price": "28206.99965408300395256916996",
+      "initial_stop": "27529.0",
+      "one_r_mark_threshold": "28884.99930816600790513833992",
+      "first_completed_hour_mark_cross_ms": 1697770800000,
+      "next_frozen_call_before_actual_exit_ms": 1697911200000
+    },
+    {
+      "parent_id": "pq-0d1838f331fd3a0c8c951b5e7b8cd1",
+      "segment_start": "2023-10-29T08:01:00Z",
+      "segment_end": "2023-11-05T10:04:00Z",
+      "net_wallet_usdt": "1426.66837195753416400000000",
+      "confirmed_quantity_btc": "1.776",
+      "confirmed_entry_price": "34139.00229287162162162162162",
+      "initial_stop": "32206.5",
+      "one_r_mark_threshold": "36071.50458574324324324324324",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-160dad442f76270f284081ceee8852",
+      "segment_start": "2024-02-13T14:01:00Z",
+      "segment_end": "2024-02-13T15:00:00Z",
+      "net_wallet_usdt": "-5586.29547031234000000000000",
+      "confirmed_quantity_btc": "6.671",
+      "confirmed_entry_price": "49625.227770",
+      "initial_stop": "48915.5",
+      "one_r_mark_threshold": "50334.955540",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-dbf85414b61fd2f238b5f01ae0a5d5",
+      "segment_start": "2024-02-28T11:01:00Z",
+      "segment_end": "2024-03-10T07:06:00Z",
+      "net_wallet_usdt": "35943.68122979772938201810001",
+      "confirmed_quantity_btc": "4.166",
+      "confirmed_entry_price": "59429.26839171387421987518003",
+      "initial_stop": "51999.0",
+      "one_r_mark_threshold": "66859.53678342774843975036006",
+      "first_completed_hour_mark_cross_ms": 1709575200000,
+      "next_frozen_call_before_actual_exit_ms": 1710054000000
+    },
+    {
+      "parent_id": "pq-a4c48155bcbdcc9967b4fa0771dd28",
+      "segment_start": "2024-05-23T07:01:00Z",
+      "segment_end": "2024-05-23T14:00:00Z",
+      "net_wallet_usdt": "-3362.70791736291432475303598",
+      "confirmed_quantity_btc": "2.895",
+      "confirmed_entry_price": "69658.27600642487046632124352",
+      "initial_stop": "68689.0",
+      "one_r_mark_threshold": "70627.55201284974093264248704",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-8ce2ee6a32989081fa3917121331e2",
+      "segment_start": "2024-11-09T15:01:00Z",
+      "segment_end": "2024-11-16T03:03:00Z",
+      "net_wallet_usdt": "28855.93700440637092772740003",
+      "confirmed_quantity_btc": "1.982",
+      "confirmed_entry_price": "76364.95223518668012108980827",
+      "initial_stop": "71860.0",
+      "one_r_mark_threshold": "80869.90447037336024217961654",
+      "first_completed_hour_mark_cross_ms": 1731290400000,
+      "next_frozen_call_before_actual_exit_ms": 1731333600000
+    },
+    {
+      "parent_id": "pq-dba5683a6f458b2e9b2e706f739289",
+      "segment_start": "2025-04-27T03:01:00Z",
+      "segment_end": "2025-04-28T10:02:00Z",
+      "net_wallet_usdt": "70.6773720011295000000000",
+      "confirmed_quantity_btc": "1.368",
+      "confirmed_entry_price": "94391.80695754385964912280702",
+      "initial_stop": "86152.5",
+      "one_r_mark_threshold": "102631.1139150877192982456140",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-65ace1be4ef12245330154f638ef95",
+      "segment_start": "2025-07-13T07:01:00Z",
+      "segment_end": "2025-07-22T15:01:00Z",
+      "net_wallet_usdt": "479.1176312049370586313000",
+      "confirmed_quantity_btc": "0.981",
+      "confirmed_entry_price": "117951.5968524770642201834862",
+      "initial_stop": "110369.0",
+      "one_r_mark_threshold": "125534.1937049541284403669724",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-d42a10defb0a733e9bd5dbeec1604a",
+      "segment_start": "2025-10-02T00:01:00Z",
+      "segment_end": "2025-10-06T08:06:00Z",
+      "net_wallet_usdt": "19670.2618731559703438195545",
+      "confirmed_quantity_btc": "5.387",
+      "confirmed_entry_price": "118945.5177069222201596435864",
+      "initial_stop": "111200.5",
+      "one_r_mark_threshold": "126690.5354138444403192871728",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-ce6720c8f39c5177476e8ac83235f5",
+      "segment_start": "2026-04-06T01:01:00Z",
+      "segment_end": "2026-04-07T11:00:00Z",
+      "net_wallet_usdt": "-11897.7469269891727889821760",
+      "confirmed_quantity_btc": "7.783",
+      "confirmed_entry_price": "69057.76403741359372992419376",
+      "initial_stop": "68163.5",
+      "one_r_mark_threshold": "69952.02807482718745984838752",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-4d979517510692cc9945b5ebabe847",
+      "segment_start": "2026-06-16T23:01:00Z",
+      "segment_end": "2026-06-17T11:00:00Z",
+      "net_wallet_usdt": "-1416.6822632357524209741266",
+      "confirmed_quantity_btc": "1.106",
+      "confirmed_entry_price": "65844.73425238698010849909584",
+      "initial_stop": "64739.5",
+      "one_r_mark_threshold": "66949.96850477396021699819168",
+      "first_completed_hour_mark_cross_ms": null,
+      "next_frozen_call_before_actual_exit_ms": null
+    },
+    {
+      "parent_id": "pq-de56af3045aeabbc009d9212a30431",
+      "segment_start": "2026-08-20T12:01:00Z",
+      "segment_end": "2026-08-30T15:06:00Z",
+      "net_wallet_usdt": "34331.4138148201497789670755",
+      "confirmed_quantity_btc": "5.861",
+      "confirmed_entry_price": "71934.35032687084115338679406",
+      "initial_stop": "66501.0",
+      "one_r_mark_threshold": "77367.70065374168230677358812",
+      "first_completed_hour_mark_cross_ms": 1787302800000,
+      "next_frozen_call_before_actual_exit_ms": 1787558400000
+    }
+  ],
+  "annual": {
+    "2020": {
+      "profitable": 7,
+      "profitable_reachable": 6,
+      "loss": 1
+    },
+    "2021": {
+      "profitable": 2,
+      "profitable_reachable": 2,
+      "loss": 1
+    },
+    "2022": {
+      "loss": 2
+    },
+    "2023": {
+      "profitable": 6,
+      "profitable_reachable": 4,
+      "loss": 1
+    },
+    "2024": {
+      "loss": 2,
+      "profitable": 2,
+      "profitable_reachable": 2
+    },
+    "2025": {
+      "profitable": 3
+    },
+    "2026": {
+      "loss": 2,
+      "profitable": 1,
+      "profitable_reachable": 1
+    }
+  }
+}
