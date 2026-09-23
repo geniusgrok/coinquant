@@ -1,0 +1,75 @@
+name: T20 official minute acquisition
+on:
+  push:
+    branches: [research/t20-official-minute-acquisition-20260923]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Download and verify first required official archive pair
+        shell: bash
+        run: |
+          python - <<'PY'
+          import csv
+          import hashlib
+          import json
+          import urllib.error
+          import urllib.request
+          import zipfile
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from io import TextIOWrapper
+
+          day = "2020-02-28"
+          root = Path("official")
+          base = "https://data.binance.vision/data/futures/um/"
+          records = []
+          for kind in ("klines", "markPriceKlines"):
+              for period, stamp in (("daily", day), ("monthly", day[:7])):
+                  relative = f"{period}/{kind}/BTCUSDT/1m/BTCUSDT-1m-{stamp}.zip"
+                  url = base + relative
+                  try:
+                      with urllib.request.urlopen(url + ".CHECKSUM", timeout=35) as response:
+                          checksum = response.read()
+                      with urllib.request.urlopen(url, timeout=90) as response:
+                          archive = response.read()
+                  except urllib.error.HTTPError as exc:
+                      if exc.code == 404 and period == "daily":
+                          continue
+                      raise
+                  expected = checksum.decode("utf-8").split()[0].lower()
+                  digest = hashlib.sha256(archive).hexdigest()
+                  if digest != expected:
+                      raise ValueError(f"checksum mismatch: {relative}")
+                  dest = root / relative
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  dest.write_bytes(archive)
+                  Path(str(dest) + ".CHECKSUM").write_bytes(checksum)
+                  with zipfile.ZipFile(dest) as z:
+                      if z.testzip() is not None or len(z.namelist()) != 1:
+                          raise ValueError(f"invalid ZIP: {relative}")
+                      with z.open(z.namelist()[0]) as handle:
+                          rows = list(csv.reader(TextIOWrapper(handle, encoding="utf-8-sig")))
+                  lo = int(datetime.fromisoformat(day).replace(tzinfo=timezone.utc).timestamp() * 1000)
+                  times = [int(row[0]) for row in rows if row and row[0].isdigit() and lo <= int(row[0]) < lo + 86400000]
+                  if times != list(range(lo, lo + 86400000, 60000)):
+                      raise ValueError(f"noncontinuous target-day 1m rows: {relative}, count={len(times)}")
+                  records.append(dict(path=relative, bytes=len(archive), sha256=digest, day_rows=len(times)))
+                  break
+              else:
+                  raise ValueError(f"official archive missing: {kind} {day}")
+          (root / "RECEIPT.json").write_text(json.dumps(records, indent=2) + "\n")
+          print(json.dumps(records))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: t20-official-first-day
+          path: official/
+          compression-level: 0
+          retention-days: 3
+          if-no-files-found: warn
