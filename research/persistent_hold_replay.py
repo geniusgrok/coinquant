@@ -109,7 +109,7 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,invocation_trail=False):
     multiscale = reference == 'multiscale'
     if conditional_hold and (reference != 'impulse_hold' or D(risk_scale) != 6 or
             D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0 or
@@ -124,13 +124,18 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         raise ValueError('M60 requires its frozen sparse long SX60 execution and capital controls')
     if daily_warmup and not (multiscale or conditional_hold):
         raise ValueError('supplementary daily warmup requires the frozen trend score')
-    if (entry_capacity_unlimited or execution is not None) and (reference not in ('impulse_hold','multiscale','post_impulse_restart','daily_trend') or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None
+    if (entry_capacity_unlimited or execution is not None) and (reference not in ('impulse_hold','persistent_impulse','multiscale','post_impulse_restart','daily_trend') or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None
             or reference=='daily_trend' and (execution is None or execution.stop_risk_share is None)):
         raise ValueError('execution study requires the frozen long impulse control')
     if entry_capacity_unlimited and D(risk_scale)!=D('3.6'):
         raise ValueError('unlimited capacity diagnostic remains fixed at 3.6')
     if execution is not None and D(risk_scale)!=execution.risk_scale:
         raise ValueError('account risk scale does not match execution study')
+    if invocation_trail and (reference!='persistent_impulse' or execution is None or
+            not execution.sustainable or not execution.sliced or execution.planned_exit!='sliced' or
+            D(risk_scale)!=6 or D(short_risk_scale if short_risk_scale is not None else risk_scale)!=0 or
+            schedule!='sparse' or conditional_hold or renewal_risk or payoff is not None):
+        raise ValueError('PXT requires the frozen sparse SX60 account and persistent impulse')
     if execution is not None and (entry_capacity_unlimited or native_trail_order):
         raise ValueError('execution study cannot mix other diagnostic mechanisms')
     if entry_side not in ('both','long','short'):raise ValueError('invalid diagnostic entry side')
@@ -144,7 +149,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     risk_scale=D(risk_scale)
     short_risk_scale=risk_scale if short_risk_scale is None else D(short_risk_scale)
     if not short_risk_scale.is_finite() or short_risk_scale<0:raise ValueError('invalid short risk scale')
-    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and payoff is None and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing','multiscale','post_impulse_restart','daily_trend')):
+    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and payoff is None and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','multiscale','post_impulse_restart','daily_trend')):
         raise ValueError('non-unit diagnostic risk requires impulse_hold')
     if allocation not in ('fixed','edge','unit','volatility'):raise ValueError('unknown allocation')
     if lifecycle not in ('persistent','one_campaign','fresh_breakout'):raise ValueError('unknown lifecycle')
@@ -331,6 +336,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             execution_record('renewal_risk_basis',dict(campaign=campaign,
                 parent_id=parent.identity,time=now,status=status,basis=basis,audit=audit_basis))
         for t in range(start,end,HOUR):
+            pending_trail=None
             signal_time=published_daily_key(t) if multiscale else (t//model_interval*model_interval if mechanism else None)
             opportunity=opportunities.get(signal_time) if mechanism else None
             if mechanism:
@@ -571,6 +577,14 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                 counts['entry']+=1;ow.writerow([t,'entry',str(account.q),str(price),'',str(account.q)])
                             else:counts['size_below_minimum']+=1;action='size_below_minimum'
                 dw.writerow(decision_state+[action,limiter]+[str(caps.get(k,'')) for k in ('risk','exposure','margin','notional','liquidity')]+[str(raw_qty),str(qty),str(edge_target),len(edge_observations)])
+                if invocation_trail and account.q and opportunity and opportunity.identity==last_entry_epoch and not (planned_window is not None and not planned_window.terminal_reason):
+                    proposed=floor_step(min(x[1] for x in window[-10:]),TICK)
+                    if proposed>account.sl:
+                        if t not in execution.refined_hours or minutes is None or t+60000 not in minutes['klines'] or t+60000 not in minutes['markPriceKlines']:
+                            raise ValueError(f'missing PXT protection-amendment minute at {t}')
+                        pending_trail=(last_entry_epoch,proposed)
+                        execution_record('trail_scheduled',dict(call_time=t,execute_time=t+60000,
+                            campaign=last_entry_epoch,stop_before=str(account.sl),proposed_stop=str(proposed)))
             if not minute_funding and not charged and t in fund_hours and (opening_q or account.q):
                 if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
                 charge_q=(max((opening_q,account.q),key=lambda q:q*fund_hours[t][1]) if targeting else opening_q or account.q)
@@ -597,6 +611,18 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     if (long and smo>=account.tp) or (not long and smo<=account.tp):
                         close(st,'take_gap',so)
                         continue
+                if pending_trail is not None and st==t+60000:
+                    campaign,proposed=pending_trail
+                    pending_trail=None
+                    if account.q and account.q>0 and last_entry_epoch==campaign and (planned_window is None or planned_window.terminal_reason):
+                        old=account.sl
+                        if smo<=proposed:
+                            close(st,'trail_amendment_crossed',min(so,smo))
+                            continue
+                        account.sl=proposed
+                        counts['trail_amendment']+=1
+                        execution_record('trail_amended',dict(time=st,campaign=campaign,
+                            stop_before=str(old),stop_after=str(account.sl),mark_open=str(smo)))
                 if active_entry and st>=entry_window.start:
                     child=entry_window.attempt(st,account,so,smo,execution.minute_quotes,instrument)
                     execution_record('child',child)
@@ -822,6 +848,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['candidate']='HR60' if renewal_risk else 'H60'
         result['daily_publication_lag_seconds']=60
         result['supplementary_warmup_days']=len(daily_warmup)
+    if invocation_trail:
+        result['candidate']='PXT'
+        result['amendment_lag_seconds']=60
     if renewal_risk:
         result['renewal_risk_checks_passed']=not any(counts.get(k,0) for k in (
             'renewal_risk_basis_missing','renewal_risk_execution_violation',

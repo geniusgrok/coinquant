@@ -83,12 +83,14 @@ def exit_minutes(root, prepared):
 
 def run_account(root, output, prepared, label, *, full=False, stress=False,
                 stop_risk_share=None, research_protocol=None):
-    modes={'S60':'instant','SC60':'prepared','SX60':'sliced','PIR1':'sliced','T20':'sliced'}
+    modes={'S60':'instant','SC60':'prepared','SX60':'sliced','PIR1':'sliced','T20':'sliced','PXT':'sliced'}
     cache,minutes,quotes,validation,data_id=prepared
-    if (stop_risk_share is None) != (research_protocol is None) or (stop_risk_share is not None and label not in ('SX60','T20')):
+    if ((label=='PXT' and (research_protocol is None or stop_risk_share is not None)) or
+            (label!='PXT' and ((stop_risk_share is None) != (research_protocol is None) or
+                stop_risk_share is not None and label not in ('SX60','T20')))):
         raise ValueError('frozen stop-risk research requires a paired label and protocol')
     cfg=ExecutionStudy(True,stress,frozenset(validation['hours']),quotes,D(6),True,modes[label],stop_risk_share)
-    reference='post_impulse_restart' if label=='PIR1' else 'daily_trend' if label=='T20' else 'impulse_hold'
+    reference='post_impulse_restart' if label=='PIR1' else 'daily_trend' if label=='T20' else 'persistent_impulse' if label=='PXT' else 'impulse_hold'
     pir1_protocol_hash=None
     if label=='PIR1':
         pir1_protocol_hash=digest(PIR1_PROTOCOL)
@@ -111,7 +113,8 @@ def run_account(root, output, prepared, label, *, full=False, stress=False,
                 allocation='volatility',reference=reference,lifecycle='one_campaign',
                 entry_side='long',short_risk_scale=D(0),risk_scale=D(6),
                 quantity_rules=root/'quantity/current-instrument.json',cached_inputs=cache,
-                cached_minutes=minutes,execution=cfg,full_window=full)
+                cached_minutes=minutes,execution=cfg,full_window=full,
+                invocation_trail=label=='PXT')
         result['candidate']='SX60-R10' if stop_risk_share is not None and label=='SX60' else label
         result['protocol_sha256']=digest(PROTOCOL)
         for name in NEW_SOURCES:
