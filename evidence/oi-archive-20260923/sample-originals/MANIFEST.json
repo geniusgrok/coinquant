@@ -1,0 +1,428 @@
+[
+  {
+    "day": "2020-08-31",
+    "source": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-08-31.zip",
+    "status": "404"
+  },
+  {
+    "day": "2020-09-01",
+    "source": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-01.zip",
+    "last_modified": "Wed, 18 Mar 2026 12:30:27 GMT",
+    "status": "verified_with_label_anomaly",
+    "label_anomalies": [
+      [
+        1,
+        "2020-09-01 00:00:00",
+        "2020-09-01 00:00:00"
+      ],
+      [
+        3,
+        "2020-09-01 00:05:00",
+        "2020-09-01 00:05:00"
+      ],
+      [
+        5,
+        "2020-09-01 00:10:00",
+        "2020-09-01 00:10:00"
+      ],
+      [
+        7,
+        "2020-09-01 00:15:00",
+        "2020-09-01 00:15:00"
+      ],
+      [
+        9,
+        "2020-09-01 00:20:00",
+        "2020-09-01 00:20:00"
+      ],
+      [
+        11,
+        "2020-09-01 00:25:00",
+        "2020-09-01 00:25:00"
+      ],
+      [
+        13,
+        "2020-09-01 00:30:00",
+        "2020-09-01 00:30:00"
+      ],
+      [
+        15,
+        "2020-09-01 00:35:00",
+        "2020-09-01 00:35:00"
+      ]
+    ],
+    "label_anomaly_count": 288,
+    "duplicate_row_disagreements": 0,
+    "first_disagreement": null,
+    "sha256": "9a9c0518bfb939032afe97a6b1708668ec833457743b1ba6ef448fb157722ae3",
+    "bytes": 12191,
+    "header": [
+      "create_time",
+      "symbol",
+      "sum_open_interest",
+      "sum_open_interest_value",
+      "count_toptrader_long_short_ratio",
+      "sum_toptrader_long_short_ratio",
+      "count_long_short_ratio",
+      "sum_taker_long_short_vol_ratio"
+    ],
+    "count": 576,
+    "first_label": "2020-09-01 00:00:00",
+    "last_label": "2020-09-01 23:55:00",
+    "first_oi": "39080.23100000",
+    "last_oi": "39187.19100000"
+  },
+  {
+    "day": "2020-09-02",
+    "source": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-02.zip",
+    "last_modified": "Wed, 18 Mar 2026 12:30:16 GMT",
+    "status": "verified_with_label_anomaly",
+    "label_anomalies": [
+      [
+        1,
+        "2020-09-02 00:00:00",
+        "2020-09-02 00:00:00"
+      ],
+      [
+        3,
+        "2020-09-02 00:05:00",
+        "2020-09-02 00:05:00"
+      ],
+      [
+        5,
+        "2020-09-02 00:10:00",
+        "2020-09-02 00:10:00"
+      ],
+      [
+        7,
+        "2020-09-02 00:15:00",
+        "2020-09-02 00:15:00"
+      ],
+      [
+        9,
+        "2020-09-02 00:20:00",
+        "2020-09-02 00:20:00"
+      ],
+      [
+        11,
+        "2020-09-02 00:25:00",
+        "2020-09-02 00:25:00"
+      ],
+      [
+        13,
+        "2020-09-02 00:30:00",
+        "2020-09-02 00:30:00"
+      ],
+      [
+        15,
+        "2020-09-02 00:35:00",
+        "2020-09-02 00:35:00"
+      ]
+    ],
+    "label_anomaly_count": 288,
+    "duplicate_row_disagreements": 0,
+    "first_disagreement": null,
+    "sha256": "d696c01e35bb901b660c6144bde8dc4627b5aa6c717786ad3da212c8add348a1",
+    "bytes": 12257,
+    "header": [
+      "create_time",
+      "symbol",
+      "sum_open_interest",
+      "sum_open_interest_value",
+      "count_toptrader_long_short_ratio",
+      "sum_toptrader_long_short_ratio",
+      "count_long_short_ratio",
+      "sum_taker_long_short_vol_ratio"
+    ],
+    "count": 576,
+    "first_label": "2020-09-02 00:00:00",
+    "last_label": "2020-09-02 23:55:00",
+    "first_oi": "39371.78200000",
+    "last_oi": "37052.71600000"
+  },
+  {
+    "day": "2020-09-03",
+    "source": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-09-03.zip",
+    "last_modified": "Wed, 18 Mar 2026 12:32:04 GMT",
+    "status": "verified_with_label_anomaly",
+    "label_anomalies": [
+      [
+        1,
+        "2020-09-03 00:00:00",
+        "2020-09-03 00:00:00"
+      ],
+      [
+        3,
+        "2020-09-03 00:05:00",
+        "2020-09-03 00:05:00"
+      ],
+      [
+        5,
+        "2020-09-03 00:10:00",
+        "2020-09-03 00:10:00"
+      ],
+      [
+        7,
+        "2020-09-03 00:15:00",
+        "2020-09-03 00:15:00"
+      ],
+      [
+        9,
+        "2020-09-03 00:20:00",
+        "2020-09-03 00:20:00"
+      ],
+      [
+        11,
+        "2020-09-03 00:25:00",
+        "2020-09-03 00:25:00"
+      ],
+      [
+        13,
+        "2020-09-03 00:30:00",
+        "2020-09-03 00:30:00"
+      ],
+      [
+        15,
+        "2020-09-03 00:35:00",
+        "2020-09-03 00:35:00"
+      ]
+    ],
+    "label_anomaly_count": 288,
+    "duplicate_row_disagreements": 0,
+    "first_disagreement": null,
+    "sha256": "ab9d2c9e6da64d2873c5b53606335abd5b1990996570a67782462575ea7f4414",
+    "bytes": 12379,
+    "header": [
+      "create_time",
+      "symbol",
+      "sum_open_interest",
+      "sum_open_interest_value",
+      "count_toptrader_long_short_ratio",
+      "sum_toptrader_long_short_ratio",
+      "count_long_short_ratio",
+      "sum_taker_long_short_vol_ratio"
+    ],
+    "count": 576,
+    "first_label": "2020-09-03 00:00:00",
+    "last_label": "2020-09-03 23:55:00",
+    "first_oi": "36958.79000000",
+    "last_oi": "30128.35500000"
+  },
+  {
+    "day": "2021-01-01",
+    "source": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2021-01-01.zip",
+    "last_modified": "Wed, 18 Mar 2026 11:35:13 GMT",
+    "status": "verified_with_label_anomaly",
+    "label_anomalies": [
+      [
+        1,
+        "2021-01-01 00:00:00",
+        "2021-01-01 00:00:00"
+      ],
+      [
+        3,
+        "2021-01-01 00:05:00",
+        "2021-01-01 00:05:00"
+      ],
+      [
+        5,
+        "2021-01-01 00:10:00",
+        "2021-01-01 00:10:00"
+      ],
+      [
+        7,
+        "2021-01-01 00:15:00",
+        "2021-01-01 00:15:00"
+      ],
+      [
+        9,
+        "2021-01-01 00:20:00",
+        "2021-01-01 00:20:00"
+      ],
+      [
+        11,
+        "2021-01-01 00:25:00",
+        "2021-01-01 00:25:00"
+      ],
+      [
+        13,
+        "2021-01-01 00:30:00",
+        "2021-01-01 00:30:00"
+      ],
+      [
+        15,
+        "2021-01-01 00:35:00",
+        "2021-01-01 00:35:00"
+      ]
+    ],
+    "label_anomaly_count": 288,
+    "duplicate_row_disagreements": 0,
+    "first_disagreement": null,
+    "sha256": "9c42e4fa6048b185439a3d744066fa1d2bf0637b3654da53bb8930d1a3da364a",
+    "bytes": 12278,
+    "header": [
+      "create_time",
+      "symbol",
+      "sum_open_interest",
+      "sum_open_interest_value",
+      "count_toptrader_long_short_ratio",
+      "sum_toptrader_long_short_ratio",
+      "count_long_short_ratio",
+      "sum_taker_long_short_vol_ratio"
+    ],
+    "count": 576,
+    "first_label": "2021-01-01 00:00:00",
+    "last_label": "2021-01-01 23:55:00",
+    "first_oi": "34935.88100000",
+    "last_oi": "36157.80900000"
+  },
+  {
+    "day": "2023-11-10",
+    "source": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2023-11-10.zip",
+    "last_modified": "Mon, 13 Nov 2023 01:35:28 GMT",
+    "status": "verified",
+    "label_anomalies": [],
+    "label_anomaly_count": 0,
+    "duplicate_row_disagreements": 0,
+    "first_disagreement": null,
+    "sha256": "c69d14e6c9ba7073b89e11c67614af9b3fde841296d1c71a784a8e5ceef5caa1",
+    "bytes": 11491,
+    "header": [
+      "create_time",
+      "symbol",
+      "sum_open_interest",
+      "sum_open_interest_value",
+      "count_toptrader_long_short_ratio",
+      "sum_toptrader_long_short_ratio",
+      "count_long_short_ratio",
+      "sum_taker_long_short_vol_ratio"
+    ],
+    "count": 288,
+    "first_label": "2023-11-10 00:00:00",
+    "last_label": "2023-11-10 23:55:00",
+    "first_oi": "79520.23600000",
+    "last_oi": "79882.17500000"
+  },
+  {
+    "day": "2026-06-24",
+    "source": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-06-24.zip",
+    "last_modified": "Wed, 29 Jul 2026 06:12:20 GMT",
+    "status": "verified",
+    "label_anomalies": [],
+    "label_anomaly_count": 0,
+    "duplicate_row_disagreements": 0,
+    "first_disagreement": null,
+    "sha256": "6bb5ab473189fa7c935b4d9a58d34b2c96cc329cd74fd6f9f17f8abc48ece649",
+    "bytes": 11317,
+    "header": [
+      "create_time",
+      "symbol",
+      "sum_open_interest",
+      "sum_open_interest_value",
+      "count_toptrader_long_short_ratio",
+      "sum_toptrader_long_short_ratio",
+      "count_long_short_ratio",
+      "sum_taker_long_short_vol_ratio"
+    ],
+    "count": 288,
+    "first_label": "2026-06-24 00:00:00",
+    "last_label": "2026-06-24 23:55:00",
+    "first_oi": "98880.9820000000000000",
+    "last_oi": "100826.8340000000000000"
+  },
+  {
+    "day": "2026-06-25",
+    "source": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-06-25.zip",
+    "last_modified": "Tue, 28 Jul 2026 04:26:19 GMT",
+    "status": "verified",
+    "label_anomalies": [],
+    "label_anomaly_count": 0,
+    "duplicate_row_disagreements": 0,
+    "first_disagreement": null,
+    "sha256": "56e0751dabd8108d61d1f9de86931ac68e901dad202d4dbac03173e2768be68e",
+    "bytes": 11316,
+    "header": [
+      "create_time",
+      "symbol",
+      "sum_open_interest",
+      "sum_open_interest_value",
+      "count_toptrader_long_short_ratio",
+      "sum_toptrader_long_short_ratio",
+      "count_long_short_ratio",
+      "sum_taker_long_short_vol_ratio"
+    ],
+    "count": 288,
+    "first_label": "2026-06-25 00:00:00",
+    "last_label": "2026-06-25 23:55:00",
+    "first_oi": "100861.4190000000000000",
+    "last_oi": "105339.4650000000000000"
+  },
+  {
+    "day": "2026-09-18",
+    "source": "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-09-18.zip",
+    "last_modified": "Sat, 19 Sep 2026 06:38:26 GMT",
+    "status": "verified_with_label_anomaly",
+    "label_anomalies": [
+      [
+        7,
+        "2026-09-18 12:30:00",
+        "2026-09-18 00:10:00"
+      ],
+      [
+        9,
+        "2026-09-18 15:25:00",
+        "2026-09-18 03:05:00"
+      ],
+      [
+        21,
+        "2026-09-18 22:50:00",
+        "2026-09-18 12:45:00"
+      ],
+      [
+        26,
+        "2026-09-18 23:50:00",
+        "2026-09-18 01:50:00"
+      ],
+      [
+        39,
+        "2026-09-18 15:15:00",
+        "2026-09-18 01:05:00"
+      ],
+      [
+        49,
+        "2026-09-18 23:30:00",
+        "2026-09-18 11:25:00"
+      ],
+      [
+        56,
+        "2026-09-18 22:15:00",
+        "2026-09-18 01:00:00"
+      ],
+      [
+        67,
+        "2026-09-18 23:35:00",
+        "2026-09-18 01:30:00"
+      ]
+    ],
+    "label_anomaly_count": 25,
+    "duplicate_row_disagreements": 0,
+    "first_disagreement": null,
+    "sha256": "3558afea198d8579ea1fa8c176726ed2204770dbdd2dd05a5dfed6c83d8c7be3",
+    "bytes": 11743,
+    "header": [
+      "create_time",
+      "symbol",
+      "sum_open_interest",
+      "sum_open_interest_value",
+      "count_toptrader_long_short_ratio",
+      "sum_toptrader_long_short_ratio",
+      "count_long_short_ratio",
+      "sum_taker_long_short_vol_ratio"
+    ],
+    "count": 288,
+    "first_label": "2026-09-18 00:35:00",
+    "last_label": "2026-09-18 22:30:00",
+    "first_oi": "108602.9620000000000000",
+    "last_oi": "108106.3460000000000000"
+  }
+]
