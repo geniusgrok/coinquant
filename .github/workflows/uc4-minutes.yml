@@ -14,15 +14,34 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
-      - name: Fetch and check requested official ZIP/CHECKSUM pairs
+      - name: Recover the one unavailable daily mark hour from its official monthly archive
         run: |
           python - <<'PY'
+          import hashlib
           import json
           from pathlib import Path
-          from research.acquire_minute_probe import run
-          request=json.loads(Path('evidence/unified-channel-20260924/MISSING_MINUTES.json').read_text())
-          complete=run(Path('evidence/unified-channel-20260924/minutes'),request['days'])
-          print('All requested official days complete:',complete)
+          from zipfile import ZipFile
+          from research.acquire_binance import BASE,download
+          path=Path('evidence/unified-channel-20260924/minutes/monthly/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-05.zip')
+          source=BASE+'monthly/markPriceKlines/BTCUSDT/1m/'+path.name
+          receipt={'source':source}
+          try:
+              raw=download(source)
+              checksum=download(source+'.CHECKSUM')
+              digest=hashlib.sha256(raw).hexdigest()
+              if digest!=checksum.decode().split()[0]:raise ValueError('official checksum mismatch')
+              import io
+              with ZipFile(io.BytesIO(raw)) as archive:
+                  if len(archive.namelist())!=1 or archive.testzip() is not None:
+                      raise ValueError('official ZIP structure/CRC')
+              path.parent.mkdir(parents=True,exist_ok=True)
+              path.write_bytes(raw)
+              Path(str(path)+'.CHECKSUM').write_bytes(checksum)
+              receipt.update(status='verified',bytes=len(raw),sha256=digest)
+          except Exception as exc:
+              receipt.update(status='unavailable',error=f'{type(exc).__name__}: {exc}')
+          Path('evidence/unified-channel-20260924/minutes/MONTH_FALLBACK.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          print(receipt)
           PY
       - name: Retain complete and failed acquisition evidence on research branch
         run: |
