@@ -83,3 +83,18 @@ class OpportunityTests(unittest.TestCase):
             self.assertIsNone(b.confirm_at)
             self.assertEqual(a.expires-a.identity,7*86400000)
             self.assertEqual((a.identity,a.take,a.expires),(b.identity,b.take,b.expires))
+
+    def test_drawdown_reclaim_uses_only_completed_bars_and_expires(self):
+        rows=[(101,99,100)]+[(85,83,84)]*40+[(82,79,80)]+[(85,80,84)]
+        m=Opportunities('drawdown_reclaim')
+        seen=self.feed(m,rows)
+        self.assertTrue(all(x is None for x in seen[:-1]))
+        a=seen[-1]
+        self.assertEqual((a.identity,a.stop,a.direction,a.expires),
+                         (43*FOUR_HOURS,D(79),1,85*FOUR_HOURS))
+        self.assertEqual(a.take,D(84)*(D(84)/D(79))**20)
+        self.assertEqual(seen,self.feed(Opportunities('drawdown_reclaim'),rows))
+        self.assertEqual(seen,self.feed(Opportunities('drawdown_reclaim'),rows[:42]+[(85,80,84)]))
+        for i in range(44,85):
+            self.assertEqual(m.update(i*FOUR_HOURS,D(85),D(81),D(84)),a)
+        self.assertIsNone(m.update(85*FOUR_HOURS,D(85),D(81),D(84)))

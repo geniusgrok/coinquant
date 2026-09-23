@@ -24,10 +24,10 @@ class Opportunity:
 
 class Opportunities:
     def __init__(self, mechanism, interval=FOUR_HOURS):
-        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','post_impulse_restart'):raise ValueError('unknown mechanism')
+        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','post_impulse_restart','drawdown_reclaim'):raise ValueError('unknown mechanism')
         if interval not in (3600000,FOUR_HOURS,86400000) or (interval==86400000 and mechanism!='swing'):raise ValueError('unsupported completed interval')
         self.interval=interval
-        self.mechanism=mechanism;self.bars=deque(maxlen=21);self.tr=deque(maxlen=14)
+        self.mechanism=mechanism;self.bars=deque(maxlen=42 if mechanism=='drawdown_reclaim' else 21);self.tr=deque(maxlen=14)
         self.ema=None;self.last=None;self.active=None;self.box=None;self.contraction=0
         self.armed=None;self.pivots=[];self.count=0
         self.swing_direction=0;self.swing_high=None;self.swing_low=None
@@ -40,6 +40,7 @@ class Opportunities:
         if not 0<low<=close<=high:raise ValueError('invalid completed candle')
         if self.mechanism=='post_impulse_restart':
             return self._update_post_impulse_restart(end,high,low,close)
+        previous=tuple(self.bars) if self.mechanism=='drawdown_reclaim' else ()
         prior=self.bars[-1][3] if self.bars else close
         prior_atr=sum(self.tr)/14 if len(self.tr)==14 else None
         self.tr.append(max(high-low,abs(high-prior),abs(low-prior)))
@@ -52,7 +53,13 @@ class Opportunities:
             self.active=replace(self.active,entry_open=False)
         if self.active and self.active.confirm_at is not None and self.active.direction*(close-self.active.confirm_at)>=0:
             self.active=replace(self.active,stop=self.active.confirmed_stop,confirm_at=None)
-        if self.mechanism=='swing':
+        if self.mechanism=='drawdown_reclaim':
+            if (not self.active and len(previous)==42 and close<=previous[0][3]*D('.90')
+                    and close>previous[-1][1]):
+                stop=min(low,*(bar[2] for bar in previous))
+                if stop<close:
+                    self.active=Opportunity(end,1,stop,close*(close/stop)**20,end+42*FOUR_HOURS)
+        elif self.mechanism=='swing':
             self.swing_high=close if self.swing_high is None else max(self.swing_high,close)
             self.swing_low=close if self.swing_low is None else min(self.swing_low,close)
             if prior_atr:

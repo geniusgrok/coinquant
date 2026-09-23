@@ -61,3 +61,13 @@ class CampaignTests(unittest.TestCase):
         self.assertEqual(m.model.swing_direction,1)
         self.assertIsNotNone(m.model.active)
         self.assertIsNone(m.model.active.expires)
+
+    def test_drawdown_reclaim_restarts_with_full_seven_day_state(self):
+        m=Campaign('drawdown_reclaim')
+        for i in range(42):
+            close=D(100) if i==0 else D(80) if i==41 else D(84)
+            m.update(ORIGIN+(i+1)*14400000,close+1,close-1,close)
+        restored=Campaign.restore(json.loads(json.dumps(m.checkpoint())))
+        end=ORIGIN+43*14400000
+        self.assertEqual(m.update(end,D(85),D(80),D(84)),
+                         restored.update(end,D(85),D(80),D(84)))
