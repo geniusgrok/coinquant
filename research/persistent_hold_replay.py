@@ -173,8 +173,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             from coinquant.conditional_hold import expiry_permission
         signal_states=daily_snapshots(warm,trade,start,end,
             D(frozen['slippage_fraction'])+D(frozen['spread_fraction'])/2,daily_warmup)
-    if multiscale:
+    if mechanism:
         from coinquant.campaign import disposition
+    if multiscale:
         opportunities={t:s.opportunity for t,s in signal_states.items()}
         fractions={t:s.fraction for t,s in signal_states.items()}
         model_interval=DAY
@@ -188,7 +189,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             opportunities[bt+model_interval]=model.update(bt+model_interval,
                 max(D(r[2]) for r in rs),min(D(r[3]) for r in rs),D(rs[-1][4]))
     elif mechanism:
-        from coinquant.campaign import Campaign, disposition
+        from coinquant.campaign import Campaign
         model_interval=DAY if reference=='swing' else HOUR if reference=='hourly_impulse_hold' else 4*HOUR
         model=Campaign('impulse_hold' if reference=='hourly_impulse_hold' else reference,model_interval)
         for bt in range(min(warm),end,model_interval):
