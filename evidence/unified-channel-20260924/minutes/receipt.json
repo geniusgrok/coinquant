@@ -1,0 +1,800 @@
+[
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-03-20.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-03-20.zip",
+    "bytes": 64701,
+    "sha256": "bb4a94f2d14fd1871b924667ec7f5c7a109fff922630a2e20d8d994802f6ac92",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-03-20.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-03-20.zip",
+    "bytes": 46498,
+    "sha256": "92b9c3cd00a9a5eda085e26746db91eceea3fa8cad836ffebd069ef26de8852a",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-03-21.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-03-21.zip",
+    "bytes": 64027,
+    "sha256": "be06eb5fbd757432c817b822dd4a4372ca92faecf215f28974342b065ab7aa99",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-03-21.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-03-21.zip",
+    "bytes": 46535,
+    "sha256": "40c6ca96a53f9ed4735d7a4de9aefcdf4dde4a735928a4ff64fc9ea83573ed62",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-03-28.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-03-28.zip",
+    "bytes": 62296,
+    "sha256": "102cb046cbbf5503839eb1da38bcbbc100fef5d2c4e1facadc94580f4420a8b9",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-03-28.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-03-28.zip",
+    "bytes": 45465,
+    "sha256": "6d7ac809c12a64c0c9ef8b5463d5af362f86142837148e566c701293471dc4bc",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-05-27.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-05-27.zip",
+    "bytes": 68289,
+    "sha256": "c056e0d69ffded58ce44b1243042ddbcbd93e7cf9101d2b1e1f9c6c87c5d29ee",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-05-27.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-05-27.zip",
+    "status": "unavailable",
+    "error": "HTTPError: HTTP Error 404: Not Found"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-05-30.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-05-30.zip",
+    "bytes": 67535,
+    "sha256": "e830437d777fece2897a602d7cf6e62ba3c72c500f0d70a0b4f2fe0886343230",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-05-30.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-05-30.zip",
+    "bytes": 41994,
+    "sha256": "e1ad5748648a8d812757fe0f5a5a8351d0e8428a28df93fc840ca9a98d6671c1",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-06-30.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-06-30.zip",
+    "bytes": 67389,
+    "sha256": "4e3fdb1194f0d5c633df4b83384f4abfc70c7d73620298383a13c1388d174b64",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-06-30.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-06-30.zip",
+    "bytes": 41900,
+    "sha256": "364a7c58be5e28a594472ffffb5ad2e1e608d17b8409d1aecdb2ac1faba8f6fa",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-07-03.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-07-03.zip",
+    "bytes": 66160,
+    "sha256": "1345a51ea556324e73b2c3e18d833270efdc3455becfb8ead0ef54ed43ba8432",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-07-03.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-07-03.zip",
+    "bytes": 37563,
+    "sha256": "95fc5dd75d09ce7833d1286c9c64a03cd7f5ccda26f4b72028dd08d4da01ca6e",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-12-23.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-12-23.zip",
+    "bytes": 66175,
+    "sha256": "460188ffb2aec0bdb8bf97238ecda0574bb36dbade7e8d700d9cc17bf1b84f3b",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-12-23.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-12-23.zip",
+    "bytes": 39807,
+    "sha256": "ea7264885531b0c6d5a8a4035a2b64f47985a7243222a44ad78adf5213c88c13",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01-13.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01-13.zip",
+    "bytes": 65650,
+    "sha256": "72f75ef643c9df775174f125ca1788594a644ab3e879cfbe8b0e05d6b37f1556",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-01-13.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-01-13.zip",
+    "bytes": 39587,
+    "sha256": "5dd85609c16d36d35035020234de0d5de0e63a1985e9f71c00311a2cf06a626a",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01-18.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01-18.zip",
+    "bytes": 65852,
+    "sha256": "30bb24bc82c619574a52b559cd5b07af0c6e437b7b3ae38b492484cf7abf4d51",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-01-18.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-01-18.zip",
+    "bytes": 39206,
+    "sha256": "1315f61b897626bdec55110b299a2b1db462942179a17efa12eaa3c63d592afb",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-02-16.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-02-16.zip",
+    "bytes": 62400,
+    "sha256": "8f0e56f9625743eb7043d42ac19f84ddb8d9dfe1bfea246c43501e67737a70b4",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-02-16.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-02-16.zip",
+    "bytes": 38367,
+    "sha256": "ba49d0a4c50afe6e5ea309cbc77bbde5429c6fd7a584251a1c1d476b89fa91bd",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-02-18.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-02-18.zip",
+    "bytes": 63119,
+    "sha256": "18a5d4880873d5467cb2d385cb1762bed46ebb667fe8f34ff7b22919e08b5439",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-02-18.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-02-18.zip",
+    "bytes": 37551,
+    "sha256": "712cdc334b696fb7ba5ed050d15969d14cdc75e9a2c6f6686b1058b3508cad15",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-12.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-12.zip",
+    "bytes": 60788,
+    "sha256": "bab4f8b4a7f01212d3b54b789a0f34e0f689a378869ff82d25408efd680be3c8",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-12.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-12.zip",
+    "bytes": 36388,
+    "sha256": "fde60bc6643d1727613fc669867fb14032a08105380283d3d0ea865b089a83b9",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-16.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-16.zip",
+    "bytes": 64874,
+    "sha256": "6e840396be1aa71523dcd1fd8ca08571a19ced2abfd7542ce1259cd3e55aaee4",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-16.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-16.zip",
+    "bytes": 39788,
+    "sha256": "57218cb3f3c29da8f044aa2103cf1effef24200dd55b79a10b697783258ae0b0",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-18.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-18.zip",
+    "bytes": 62389,
+    "sha256": "5d2e6caeae4d3a9743901798e9d3c6c8da04397647efde2eb2ce61b93d774634",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-18.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-18.zip",
+    "bytes": 37395,
+    "sha256": "ffd0120efd27c2ce48cdf3b60b5e8d5518e823ee4c4aac63019dce4ebf35c047",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-16.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-16.zip",
+    "bytes": 63958,
+    "sha256": "60a8e7bf12f1a4d1223ad312748edf66d46ac289b15ecd5ff879debd7d85274d",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-16.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-16.zip",
+    "bytes": 38682,
+    "sha256": "71b7a66c27c3c59ca6082a55ab016e302f5c3f49c190fd8a630ba0c371e698b4",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-17.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-17.zip",
+    "bytes": 62942,
+    "sha256": "a9e2e322e03f3bb76fc0c582fc6c4cf95e41ee0874866b7260cb817d3dcc9a93",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-17.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-17.zip",
+    "bytes": 38350,
+    "sha256": "1f4d3c716aed6cb707736bcd169bdab38f8ba8eae20794229a9b2aaa1c7d8f85",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-20.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-20.zip",
+    "bytes": 63098,
+    "sha256": "655ae2ed3cbb1c1e0c2e6b35b5dcef5fb0fc36c1b5dbbf2f4103ec7edf22d42e",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-20.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-20.zip",
+    "bytes": 39346,
+    "sha256": "d321e6b768e8259b264d29b1d0673e41d806b0d68df979b76ca28bb961132134",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-31.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-31.zip",
+    "bytes": 62423,
+    "sha256": "b9cea563e5e161189f9eaed6be82cb20a26398e07925393f6d9964ea8a97af04",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-31.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-31.zip",
+    "bytes": 38313,
+    "sha256": "b09371e93a47fca6a3603deffc486d61e1c8ec80126d1b05a6b71467ad8f221b",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-03.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-03.zip",
+    "bytes": 62052,
+    "sha256": "f9dfe9b77307b72addb22ed273ea4cfca5b67613258f1279816717e77e4cecc2",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-03.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-03.zip",
+    "bytes": 36378,
+    "sha256": "100344bcbdb95e7c398ae8264d74fdde8f4fdda7d641c59e0c835e2f9388220c",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-08.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-08.zip",
+    "bytes": 62838,
+    "sha256": "78fbe8cf487129fcb0843f26bbccfebdee0ddc9852a83b03c462f163b6ffc8d8",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-08.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-08.zip",
+    "bytes": 37828,
+    "sha256": "848de7dbc01b4fe4d84bb5a582ba625e17565e4b44ac5a01345d084870ee4858",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-13.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-13.zip",
+    "bytes": 67213,
+    "sha256": "920fead00d88ddcb1ff099cedc8e36a8221b667f1abbbde0df473a6a5b723f34",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-13.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-13.zip",
+    "bytes": 41194,
+    "sha256": "4041a9d500cc9691b5da8108b5221f7c702ab3dd5c2f77b20f3c4e6ee3daadde",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-25.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-25.zip",
+    "bytes": 62151,
+    "sha256": "73a28fb56d016a0527dfe4ab332dfa4a033462bf4b6bea005fb0a36f250f6710",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-25.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-25.zip",
+    "bytes": 37258,
+    "sha256": "04a071d929cc10c5f7e93b84005e5f2451038f9c7943e28f9759d60aa718e98a",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-26.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-26.zip",
+    "bytes": 61734,
+    "sha256": "123d638ccc74670c8694ffe0ac9ba05e6c7b366aec7b911748530817ed98e23b",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-26.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-26.zip",
+    "bytes": 36486,
+    "sha256": "2b3d3c8bcc1067096149fc09330b650b80e3e780c11d6172f40d368bd1bd38c1",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-28.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-28.zip",
+    "bytes": 62637,
+    "sha256": "bfe56365a61594303d16ff1f94107b0a9d8e1b253ba6a3471349254b63008ec7",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-28.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-28.zip",
+    "bytes": 36936,
+    "sha256": "361e19160f96e9cbddb8eba4fb08dee39c99ed055d4a6651674989deaf3bbe44",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07-09.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07-09.zip",
+    "bytes": 61668,
+    "sha256": "e2bfd81f3895aea0121dcbb6e585dd0ca6b17d556d0b23c98b27acc035465bb2",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-07-09.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-07-09.zip",
+    "bytes": 37029,
+    "sha256": "35137940b27d8b41637def96d77189972a5b4a8d559979a037e4e7e1d8dc00c9",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07-10.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07-10.zip",
+    "bytes": 61863,
+    "sha256": "e8ac03f222abdd1162fd20454b1fd49b5c0d4703b52d909322401b35773db1a1",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-07-10.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-07-10.zip",
+    "bytes": 36982,
+    "sha256": "7a48414233ef0e76aa477302f232d00f97220bc61ed3d4bcafad30d02bd9ce13",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07-16.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07-16.zip",
+    "bytes": 62037,
+    "sha256": "ed916274ae9c3cef166c38b019154cc6e00b7ae0cba3d819add7cc0cf75906f8",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-07-16.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-07-16.zip",
+    "bytes": 36391,
+    "sha256": "b97afc92dc372664244b5f992593155a0b4441e1e8b4b83694aed56fb557c4dd",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-09-09.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-09-09.zip",
+    "bytes": 63120,
+    "sha256": "aca3467b8bd3189bcb4939ee0b4b38d88fdec19137a0ece6bde920c95f7950f3",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-09-09.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-09-09.zip",
+    "bytes": 37112,
+    "sha256": "6993978691a9edabc96a1e92391441a2cd96fc8927d1018388565e635af51cec",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-15.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-15.zip",
+    "bytes": 57829,
+    "sha256": "a7524a1765ec31b98ef068716f14833c1601e27e99ed9667aaf5d0e3c7c3df45",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-15.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-15.zip",
+    "bytes": 34149,
+    "sha256": "21f80a3cdb9ca62b466dc823d8fa7a2f06f80df382d1c694f05f7effd0703db5",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-17.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-17.zip",
+    "bytes": 60609,
+    "sha256": "cea8ae899c34109c7c09ce22d697f3c279d2b92a668de03a92bdebed1dc4ee40",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-17.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-17.zip",
+    "bytes": 35540,
+    "sha256": "0757544871dd55eb24308928fed8a006cda8fc00384e0daaf92c46f055d8d99e",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-21.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-21.zip",
+    "bytes": 60276,
+    "sha256": "bb527559361abde63777e6a77138decb9157e229c349064c483bb0cbd07c6f2d",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-21.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-21.zip",
+    "bytes": 35197,
+    "sha256": "e77afe57340d930583ac03c0449547165c64758a66d77c3f9953d3dc48ea8abc",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-11-30.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-11-30.zip",
+    "bytes": 60677,
+    "sha256": "e393ec3b48de21607f26d4bc131c153483fa52824e799aa9bc6df54560002df3",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-11-30.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-11-30.zip",
+    "bytes": 35836,
+    "sha256": "c817d3238d8abdf5bb516296614c8413b631fa5f15f8374e264e30c12964120a",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-06.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-06.zip",
+    "bytes": 58954,
+    "sha256": "bd2ab9969b0b69211819ba2eb371a481c5ce6f0c23e8a345dfa0abb7d49183c1",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-06.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-06.zip",
+    "bytes": 34710,
+    "sha256": "fc979785ec557fae0377131c6c572c10d74b2fce1249653aa6bd1917ce867677",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-07.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-07.zip",
+    "bytes": 58678,
+    "sha256": "8cd01ad94f6135c222e960efc5f8b59e7916ebf53abcc45e017eefe7db86b2a4",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-07.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-07.zip",
+    "bytes": 35110,
+    "sha256": "f4e292905786b96c2eb07d95a389be203f0f35c362783ce9c8535c70b0d50fe4",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-08.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-08.zip",
+    "bytes": 59005,
+    "sha256": "262e9bfb4eb4b83bc27239050da977f52bac1af53e97bcfdd34843ff5ca11745",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-08.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-08.zip",
+    "bytes": 35262,
+    "sha256": "77a8152b4d0202a382218ac5434ff7e704bf9cabe30223eec524b4586917f77d",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-22.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-22.zip",
+    "bytes": 57839,
+    "sha256": "fab5a0d4749a38f53732e98b7e01c979f2df041c95cfe39138abb4dff5065d45",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-22.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-22.zip",
+    "bytes": 34465,
+    "sha256": "66947148630e2c0977c51fe874678e015009c5f602a8dd5b8e6b721cea06a8e5",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-23.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-23.zip",
+    "bytes": 57060,
+    "sha256": "b70cd96aaffc842d9768ef459368df8fed7fb9c709c0779a8a51ae4125c695f7",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-23.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-23.zip",
+    "bytes": 34643,
+    "sha256": "2686385d33ec28b216e9b95659c27d4c4cd3721ef00c40ae8a3e6bca0a47e3b0",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-01-02.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-01-02.zip",
+    "bytes": 55800,
+    "sha256": "45b5955462baaf3030ad3abbe74c0762e2791ca52b0566040b8f33de8849db02",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-01-02.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-01-02.zip",
+    "bytes": 33558,
+    "sha256": "ded191e389011f7eb4a654ad2ff0f885840a40579d5bf89e0fae5856ffc218da",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05-28.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05-28.zip",
+    "bytes": 60267,
+    "sha256": "073210343c0b4599664fcd4a8b0ffaba8405fc9c61636140aa779bcf7d018a84",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-05-28.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-05-28.zip",
+    "bytes": 33489,
+    "sha256": "ff83934478bb3f8619a2031e5b71e72e982e52258ec799fecec6e442a212fcad",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-07.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-07.zip",
+    "bytes": 59040,
+    "sha256": "9d11b309ad91e11b27faaae82e44c6dc60c873a7425d415f3125e5dde60dc7d6",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-07.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-07.zip",
+    "bytes": 31789,
+    "sha256": "9712c582afec9f0729e85141f998df403de35adbf06ead0af82e7d8af0fed25c",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-11.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-11.zip",
+    "bytes": 56660,
+    "sha256": "8df038c5a1a8f55b40ca3189fa4e5d379004eb80758c4c4b739c251999c47ae1",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-11.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-11.zip",
+    "bytes": 30629,
+    "sha256": "a1bc18318a676b6d40c4fb344709c97f7701b8c9ed3b6d1dc7bc6dd518c19c02",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-25.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-25.zip",
+    "bytes": 59059,
+    "sha256": "71cc3ca84233b3b45bd0c45eb26b305c1757be229af90656abd52f610bbe04eb",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-25.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-25.zip",
+    "bytes": 32451,
+    "sha256": "aa3379a97ee08b5be7f991e4aff40f4bc6df1dd2563909b92b5c5022965f8228",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-27.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-27.zip",
+    "bytes": 54661,
+    "sha256": "c54f185f7a7359e2110fe150ccaa1be09b14fcb6145b4b2734e5c48fe126af75",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-27.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-27.zip",
+    "bytes": 29525,
+    "sha256": "6d75e35f3f010a8b123f5ab72bd99329f9e49af13db60e39adf65241c3dacaa2",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-28.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-28.zip",
+    "bytes": 58494,
+    "sha256": "b8dc56db88518d023b8f2b1be5de0e291ea853d33ccea02eed01c075d0f8222e",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-28.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-28.zip",
+    "bytes": 31710,
+    "sha256": "5d531eeec28f59b442ef5797b93d9783bc3f20dea967291220a5af99650c8a7d",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-29.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-29.zip",
+    "bytes": 60332,
+    "sha256": "6246b0979804eb188a1d52eec293f452df4c8d7cab84dbeb238aee0fd0b7035e",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-29.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-29.zip",
+    "bytes": 33120,
+    "sha256": "cbb4345d2bf5370e078d337403b61f33fdf3ddff3e5ec183a2f1427fdce62ce0",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-08.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-08.zip",
+    "bytes": 59379,
+    "sha256": "2cc8d99ae5a99b620fa1a09fb52f30e4a8b21df089d181a23f1ee235e77b85a6",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-08.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-08.zip",
+    "bytes": 31857,
+    "sha256": "2dd325a0a7bad69bdb977cb302ce78928546f62ae189e73d250211ca0dbab43b",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-09.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-09.zip",
+    "bytes": 53370,
+    "sha256": "ad85b824bf4376384f8d0d1aad60e585ec9be3218c0c8c07ce2f01b35842d8ee",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-09.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-09.zip",
+    "bytes": 28862,
+    "sha256": "83eb59903e7366d31fd8930b26b6e1bd348431831f8a45a156fcc4b3595f1198",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-12.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-12.zip",
+    "bytes": 61430,
+    "sha256": "b83277472684104b7e48cda747b492aa4f77fb3c3ce0e8f97a5357b939b71a44",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-12.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-12.zip",
+    "bytes": 34432,
+    "sha256": "a5a38a51c40a8403ed2523140a57144e9b8bf212c6fca59ca1f9d316af0278e5",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-17.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-17.zip",
+    "bytes": 56193,
+    "sha256": "39e3af1ae3f289aa2a035cabd5064537b953c7c558e259f74fd3d5ff79fbfc97",
+    "rows": 1440,
+    "status": "verified"
+  },
+  {
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-17.zip",
+    "source": "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-17.zip",
+    "bytes": 30395,
+    "sha256": "ce581703fb7013db594c5ad7073ac51f30abdb0e66645a3678009501f107bd55",
+    "rows": 1440,
+    "status": "verified"
+  }
+]
