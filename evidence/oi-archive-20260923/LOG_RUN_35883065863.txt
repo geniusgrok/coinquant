@@ -1,0 +1,81 @@
+﻿2026-09-23T15:38:44.9842021Z Current runner version: '2.337.0'
+2026-09-23T15:38:44.9865426Z ##[group]Runner Image Provisioner
+2026-09-23T15:38:44.9866192Z Hosted Compute Agent
+2026-09-23T15:38:44.9866677Z Version: 20260828.587
+2026-09-23T15:38:44.9867249Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-23T15:38:44.9867886Z Build Date: 2026-08-28T16:44:25Z
+2026-09-23T15:38:44.9868722Z Worker ID: {36446a03-c65b-484e-88d0-53ffa2d5abd9}
+2026-09-23T15:38:44.9869405Z Azure Region: westus3
+2026-09-23T15:38:44.9869872Z ##[endgroup]
+2026-09-23T15:38:44.9871078Z ##[group]Operating System
+2026-09-23T15:38:44.9871613Z Ubuntu
+2026-09-23T15:38:44.9872026Z 24.04.5
+2026-09-23T15:38:44.9872499Z LTS
+2026-09-23T15:38:44.9872929Z ##[endgroup]
+2026-09-23T15:38:44.9873404Z ##[group]Runner Image
+2026-09-23T15:38:44.9873933Z Image: ubuntu-24.04
+2026-09-23T15:38:44.9874401Z Version: 20260907.300.1
+2026-09-23T15:38:44.9875459Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260907.300/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-23T15:38:44.9876739Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260907.300
+2026-09-23T15:38:44.9877589Z ##[endgroup]
+2026-09-23T15:38:44.9878795Z ##[group]GITHUB_TOKEN Permissions
+2026-09-23T15:38:44.9880576Z Contents: read
+2026-09-23T15:38:44.9881091Z Metadata: read
+2026-09-23T15:38:44.9881649Z ##[endgroup]
+2026-09-23T15:38:44.9883346Z Secret source: Actions
+2026-09-23T15:38:44.9884153Z Cache mode: write
+2026-09-23T15:38:44.9884746Z Prepare workflow directory
+2026-09-23T15:38:45.0146137Z Prepare all required actions
+2026-09-23T15:38:45.0232962Z Complete job name: probe
+2026-09-23T15:38:45.0824506Z ##[group]Run set -u
+2026-09-23T15:38:45.0825085Z [36;1mset -u[0m
+2026-09-23T15:38:45.0825701Z [36;1mfor month in 01 02 03 04 05 06 07 08 09 10 11 12; do[0m
+2026-09-23T15:38:45.0826309Z [36;1m  day="2020-${month}-01"[0m
+2026-09-23T15:38:45.0827389Z [36;1m  url="https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-${day}.zip.CHECKSUM"[0m
+2026-09-23T15:38:45.0828522Z [36;1m  path="${RUNNER_TEMP}/BTCUSDT-metrics-${day}.zip.CHECKSUM"[0m
+2026-09-23T15:38:45.0829651Z [36;1m  status=$(curl --silent --show-error --location --connect-timeout 8 --max-time 15 --output "$path" --write-out '%{http_code}' "$url") || status="TRANSPORT_ERROR"[0m
+2026-09-23T15:38:45.0830793Z [36;1m  echo "daily ${day} HTTP=${status}"[0m
+2026-09-23T15:38:45.0831555Z [36;1m  if [ "$status" = 200 ]; then wc -c "$path"; sha256sum "$path"; head -c 512 "$path"; echo; fi[0m
+2026-09-23T15:38:45.0832323Z [36;1mdone[0m
+2026-09-23T15:38:45.0832906Z [36;1mfor month in 01 06 12; do[0m
+2026-09-23T15:38:45.0833453Z [36;1m  period="2020-${month}"[0m
+2026-09-23T15:38:45.0834394Z [36;1m  url="https://data.binance.vision/data/futures/um/monthly/metrics/BTCUSDT/BTCUSDT-metrics-${period}.zip.CHECKSUM"[0m
+2026-09-23T15:38:45.0835403Z [36;1m  path="${RUNNER_TEMP}/BTCUSDT-metrics-${period}.zip.CHECKSUM"[0m
+2026-09-23T15:38:45.0836614Z [36;1m  status=$(curl --silent --show-error --location --connect-timeout 8 --max-time 15 --output "$path" --write-out '%{http_code}' "$url") || status="TRANSPORT_ERROR"[0m
+2026-09-23T15:38:45.0837701Z [36;1m  echo "monthly ${period} HTTP=${status}"[0m
+2026-09-23T15:38:45.0838585Z [36;1m  if [ "$status" = 200 ]; then wc -c "$path"; sha256sum "$path"; head -c 512 "$path"; echo; fi[0m
+2026-09-23T15:38:45.0839326Z [36;1mdone[0m
+2026-09-23T15:38:45.1639492Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-09-23T15:38:45.1641049Z ##[endgroup]
+2026-09-23T15:38:45.3950132Z daily 2020-01-01 HTTP=404
+2026-09-23T15:38:45.5746606Z daily 2020-02-01 HTTP=404
+2026-09-23T15:38:45.9423918Z daily 2020-03-01 HTTP=404
+2026-09-23T15:38:46.1879675Z daily 2020-04-01 HTTP=404
+2026-09-23T15:38:46.5696600Z daily 2020-05-01 HTTP=404
+2026-09-23T15:38:46.7296857Z daily 2020-06-01 HTTP=404
+2026-09-23T15:38:47.1398786Z daily 2020-07-01 HTTP=404
+2026-09-23T15:38:47.6578910Z daily 2020-08-01 HTTP=404
+2026-09-23T15:38:47.8292769Z daily 2020-09-01 HTTP=200
+2026-09-23T15:38:47.8307258Z 97 /home/runner/work/_temp/BTCUSDT-metrics-2020-09-01.zip.CHECKSUM
+2026-09-23T15:38:47.8323645Z fa3aa895c4483e47bf7904c712dbaa49e3996212fe7f279511b2317413048a94  /home/runner/work/_temp/BTCUSDT-metrics-2020-09-01.zip.CHECKSUM
+2026-09-23T15:38:47.8334019Z 9a9c0518bfb939032afe97a6b1708668ec833457743b1ba6ef448fb157722ae3  BTCUSDT-metrics-2020-09-01.zip
+2026-09-23T15:38:47.8334801Z 
+2026-09-23T15:38:48.0257403Z daily 2020-10-01 HTTP=200
+2026-09-23T15:38:48.0266504Z 97 /home/runner/work/_temp/BTCUSDT-metrics-2020-10-01.zip.CHECKSUM
+2026-09-23T15:38:48.0279304Z 13e864deab86b107d26f6f41d88a3e2e8620a4f30c76486c019ffa5b704738b1  /home/runner/work/_temp/BTCUSDT-metrics-2020-10-01.zip.CHECKSUM
+2026-09-23T15:38:48.0288027Z 2ff2970fec17df90ddb9b344c7adab077592526299109283e5432892b0a36aae  BTCUSDT-metrics-2020-10-01.zip
+2026-09-23T15:38:48.0288939Z 
+2026-09-23T15:38:48.4082405Z daily 2020-11-01 HTTP=200
+2026-09-23T15:38:48.4093206Z 97 /home/runner/work/_temp/BTCUSDT-metrics-2020-11-01.zip.CHECKSUM
+2026-09-23T15:38:48.4109979Z 8537b866fdfbc0a994d7291a131666ca0c191f888f466b9df0023b3c0a5077cb  /home/runner/work/_temp/BTCUSDT-metrics-2020-11-01.zip.CHECKSUM
+2026-09-23T15:38:48.4121617Z 01dab7d0172559ec1294cb653adbdf2d7864114298c5575d84e6e168f260e25a  BTCUSDT-metrics-2020-11-01.zip
+2026-09-23T15:38:48.4122661Z 
+2026-09-23T15:38:48.7923703Z daily 2020-12-01 HTTP=200
+2026-09-23T15:38:48.7933072Z 97 /home/runner/work/_temp/BTCUSDT-metrics-2020-12-01.zip.CHECKSUM
+2026-09-23T15:38:48.7946665Z e474e3cd53b6f3ebb17674fba28e21babd3daf7097cbe6390fb16af62f99481d  /home/runner/work/_temp/BTCUSDT-metrics-2020-12-01.zip.CHECKSUM
+2026-09-23T15:38:48.7956653Z 7ae1292caed6c405418dc09ac29b1fc5b01ca1834d2912bd4d35e051b1622c90  BTCUSDT-metrics-2020-12-01.zip
+2026-09-23T15:38:48.7957284Z 
+2026-09-23T15:38:48.9579885Z monthly 2020-01 HTTP=404
+2026-09-23T15:38:49.1137142Z monthly 2020-06 HTTP=404
+2026-09-23T15:38:49.2763788Z monthly 2020-12 HTTP=404
+2026-09-23T15:38:49.2886647Z Cleaning up orphan processes
