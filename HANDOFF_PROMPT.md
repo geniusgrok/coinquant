@@ -1,5 +1,10 @@
 # Coinquant：从实时main恢复，不重复M60失败实验
 
+## 新进展：H60 已研究、拒绝并完整保全（2026-09-23）
+
+在本研究分支冻结协议 3fdcaa57 后，仅实测原 SX60 到期条件续持组件。开发 468 调用：H60 成本后 183.080370% CAGR、54.278919% 连续 MDD、642208.63 元；同源码 SX60 控制 162.179152% /37.209136% /472527.41 元。完成小时收盘 H60 MDD 53.614090%，按冻结规则拒绝。无 H60 全窗/联合压力/787 缺席，正式目标未达。见 evidence/conditional-hold-20260923/{REPORT.md,SELECTION.json,originals.json}。新 H60 完整账户包已另存并回读，不能替代旧 217MB M60 完成包缺口。默认 3.6 和 execute 阻止不动；不要把 main 集成当作生产晋级。下一机制须另有证据，不重跑 M60/H60 或搜周期预算。恢复时先读取实时 main SHA、本节与 PROJECT_STATE，再看开放 PR 和对应 CI。
+
+
 继续geniusgrok/coinquant，全程中文，仅用personal / geniusgrok连接。先读实时main、AGENTS.md、PROJECT_STATE.md、evidence/multiscale-core-20260923/{REPORT.md,SELECTION.json,originals.json}，再看仍适用的SX60原件。实际可用时主动使用PonyTail；不可用就独立执行，不虚称调用，不新增强制TDD/审批。
 
 目标不变：CNY10000无追加，2020-01-01至2026-09-20 exclusive，成本后CAGR≥150%、连续MDD<50%，Binance BTCUSDT USDT永续、交易所20x、原冻结normal795/absence787。research/invocation_draws.json的SHA绑定不得因名字或路径重置。原3.6生产默认不改，execute在凭据/网络前阻止；不授权实盘/Testnet/划转/凭据或账户安全变更。保留真实state，不能建空目录假定无持仓。
