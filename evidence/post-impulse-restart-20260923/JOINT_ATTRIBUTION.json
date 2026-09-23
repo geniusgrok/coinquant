@@ -1,0 +1,573 @@
+{
+  "status": "saved_account_attribution_no_new_economic_account",
+  "original_children": [
+    {
+      "campaign": 1580155200000,
+      "first_fill": 1580184060000,
+      "parent_identity": 1578974400000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "entry_price": "9140.043000",
+      "stop": "8520.0",
+      "distance_to_stop_fraction": "0.06783808347509962480482859873",
+      "planned_stop_risk_usdt": "687.7629133355964802231641835",
+      "planned_stop_risk_fraction": "0.2846043014303256080148931681",
+      "first_notional_to_equity": "0.7542285917888257947024959066",
+      "first_margin_to_equity": "0.1303599067810767916630319004",
+      "accepted_slices": 3,
+      "fees_usdt": "15.17152059696600",
+      "funding_usdt": "159.5549604289861051024",
+      "net_usdt": "515.6490131520478948976000005",
+      "flat_at": 1581008580000,
+      "exit_reason": "regime_exit_slice"
+    },
+    {
+      "campaign": 1588276800000,
+      "first_fill": 1588816860000,
+      "parent_identity": 1587657600000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "entry_price": "9227.709327",
+      "stop": "7482.5",
+      "distance_to_stop_fraction": "0.1891270373995819298524377978",
+      "planned_stop_risk_usdt": "2203.2800824853575000000",
+      "planned_stop_risk_fraction": "0.5975553081823654646002038322",
+      "first_notional_to_equity": "2.474776394976987116958595682",
+      "first_margin_to_equity": "0.7261946234122490726098399533",
+      "accepted_slices": 2,
+      "fees_usdt": "17.82762799879500",
+      "funding_usdt": "2.3564688900500000000",
+      "net_usdt": "689.0632255511550000000",
+      "flat_at": 1588885260000,
+      "exit_reason": "regime_exit_slice"
+    },
+    {
+      "campaign": 1595894400000,
+      "first_fill": 1596200460000,
+      "parent_identity": 1595318400000,
+      "parent_invalidation_reasons": [
+        "take"
+      ],
+      "entry_price": "11246.277312",
+      "stop": "9300.0",
+      "distance_to_stop_fraction": "0.1730596941552635973271650373",
+      "planned_stop_risk_usdt": "4630.0431478924320000000",
+      "planned_stop_risk_fraction": "0.5593320521292258876751178965",
+      "first_notional_to_equity": "3.186296984693917828891085492",
+      "first_margin_to_equity": "0.8840272862332902404037576684",
+      "accepted_slices": 1,
+      "fees_usdt": "40.69392217951575",
+      "funding_usdt": "186.4610666570915187360",
+      "net_usdt": "1218.8896600323927312640",
+      "flat_at": 1596744120000,
+      "exit_reason": "regime_exit_slice"
+    },
+    {
+      "campaign": 1612396800000,
+      "first_fill": 1612641660000,
+      "parent_identity": 1611921600000,
+      "parent_invalidation_reasons": [
+        "stop"
+      ],
+      "entry_price": "40219.472808",
+      "stop": "33521.0",
+      "distance_to_stop_fraction": "0.1665480012624038172350376871",
+      "planned_stop_risk_usdt": "13212.59776505444101151976058",
+      "planned_stop_risk_fraction": "0.4814176200284652691368679033",
+      "first_notional_to_equity": "1.342338738678221612162903318",
+      "first_margin_to_equity": "0.3637117578965749069077527547",
+      "accepted_slices": 2,
+      "fees_usdt": "124.08419224599300",
+      "funding_usdt": "1372.8231519039597635616",
+      "net_usdt": "6496.927774462047236438400006",
+      "flat_at": 1612972860000,
+      "exit_reason": "planned_exit_safety"
+    },
+    {
+      "campaign": 1627430400000,
+      "first_fill": 1627466460000,
+      "parent_identity": 1627272000000,
+      "parent_invalidation_reasons": [
+        "stop"
+      ],
+      "entry_price": "39868.807500",
+      "stop": "37778.0",
+      "distance_to_stop_fraction": "0.05244218804387364733695634112",
+      "planned_stop_risk_usdt": "5121.5462042559500000000",
+      "planned_stop_risk_fraction": "0.2050431390341987142188763597",
+      "first_notional_to_equity": "3.728893106891946299116799795",
+      "first_margin_to_equity": "0.5867832684117940162215999148",
+      "accepted_slices": 1,
+      "fees_usdt": "136.08080885595000",
+      "funding_usdt": "151.3545809705675314744",
+      "net_usdt": "-5272.9007852265175314744",
+      "flat_at": 1627992000000,
+      "exit_reason": "stop"
+    },
+    {
+      "campaign": 1695139200000,
+      "first_fill": 1695204060000,
+      "parent_identity": 1695038400000,
+      "parent_invalidation_reasons": [
+        "stop"
+      ],
+      "entry_price": "27081.356760",
+      "stop": "26611.0",
+      "distance_to_stop_fraction": "0.01736828638861740692197136433",
+      "planned_stop_risk_usdt": "7064.76683384467658663000598",
+      "planned_stop_risk_fraction": "0.1099115293156636984084279163",
+      "first_notional_to_equity": "1.380002240594357544941743761",
+      "first_margin_to_equity": "0.1690071342262141052483009809",
+      "accepted_slices": 4,
+      "fees_usdt": "479.6338938794312800983143026",
+      "funding_usdt": "13.8599292249935346999",
+      "net_usdt": "-7232.488351216051350379144234",
+      "flat_at": 1695297600000,
+      "exit_reason": "stop"
+    }
+  ],
+  "original_child_trade_net_usdt": "-3584.859463244926019253544228",
+  "affected_ownership": [
+    {
+      "campaign": 1585785600000,
+      "first_held_call": 1586642400000,
+      "actual_first_flat": 1586811660000,
+      "exposure_extension_hours": 47.016666666666666,
+      "actual_first_flat_event": "regime_exit_slice",
+      "observed_mark_to_flat_equity_change_usdt": "-40.522633240028699416800000",
+      "observed_extension_fees_usdt": "5.78026624530600",
+      "observed_extension_funding_usdt": "2.8474212400826994168",
+      "old_whole_campaign_net_usdt": "23.3272063545240314520",
+      "old_whole_campaign_fees_usdt": "11.52746021721150",
+      "old_whole_campaign_funding_usdt": "9.2416979622644685480",
+      "corrected_same_campaign_net_usdt": "54.0635206095687308688",
+      "corrected_same_campaign_flat_time": 1586642460000
+    },
+    {
+      "campaign": 1603123200000,
+      "first_held_call": 1604106000000,
+      "actual_first_flat": 1604368920000,
+      "exposure_extension_hours": 73.03333333333333,
+      "actual_first_flat_event": "regime_exit_slice",
+      "observed_mark_to_flat_equity_change_usdt": "-60.49094997432873746000000",
+      "observed_extension_fees_usdt": "23.95772134075950",
+      "observed_extension_funding_usdt": "8.3055310825692374600",
+      "old_whole_campaign_net_usdt": "4253.321723475697759040000000",
+      "old_whole_campaign_fees_usdt": "44.63268192819150",
+      "old_whole_campaign_funding_usdt": "79.0599323661107409600",
+      "corrected_same_campaign_net_usdt": "4310.944718985051746500000000",
+      "corrected_same_campaign_flat_time": 1604106180000
+    },
+    {
+      "campaign": 1608134400000,
+      "first_held_call": 1608930000000,
+      "actual_first_flat": 1609585320000,
+      "exposure_extension_hours": 182.03333333333333,
+      "actual_first_flat_event": "regime_exit_slice",
+      "observed_mark_to_flat_equity_change_usdt": "10221.71779382694313987060000",
+      "observed_extension_fees_usdt": "45.94196589651900",
+      "observed_extension_funding_usdt": "508.5414689685378601294",
+      "old_whole_campaign_net_usdt": "12898.45108042603056182399999",
+      "old_whole_campaign_fees_usdt": "81.53138414070900",
+      "old_whole_campaign_funding_usdt": "823.4144052052604381760",
+      "corrected_same_campaign_net_usdt": "2567.067549588793014553000008",
+      "corrected_same_campaign_flat_time": 1608930240000
+    },
+    {
+      "campaign": 1612800000000,
+      "first_held_call": 1613703600000,
+      "actual_first_flat": 1614315720000,
+      "exposure_extension_hours": 170.03333333333333,
+      "actual_first_flat_event": "regime_exit_slice",
+      "observed_mark_to_flat_equity_change_usdt": "-8816.77415415889289700800000",
+      "observed_extension_fees_usdt": "62.22954531948000",
+      "observed_extension_funding_usdt": "1421.7069014794128970080",
+      "old_whole_campaign_net_usdt": "-2947.4789001764059162880",
+      "old_whole_campaign_fees_usdt": "124.01695398840000",
+      "old_whole_campaign_funding_usdt": "3412.9774802680059162880",
+      "corrected_same_campaign_net_usdt": "4880.5812400195167247840",
+      "corrected_same_campaign_flat_time": 1613703720000
+    },
+    {
+      "campaign": 1633536000000,
+      "first_held_call": 1634317200000,
+      "actual_first_flat": 1634860860000,
+      "exposure_extension_hours": 151.01666666666668,
+      "actual_first_flat_event": "regime_exit_slice",
+      "observed_mark_to_flat_equity_change_usdt": "212.64764160308415534060000",
+      "observed_extension_fees_usdt": "49.26036902838450",
+      "observed_extension_funding_usdt": "431.6470884322813446594",
+      "old_whole_campaign_net_usdt": "6826.686705838761121856999996",
+      "old_whole_campaign_fees_usdt": "92.89245887539800",
+      "old_whole_campaign_funding_usdt": "584.7930771138408781430",
+      "corrected_same_campaign_net_usdt": "3862.1521605218591513456",
+      "corrected_same_campaign_flat_time": 1634317260000
+    },
+    {
+      "campaign": 1658952000000,
+      "first_held_call": 1659722400000,
+      "actual_first_flat": 1660114920000,
+      "exposure_extension_hours": 109.03333333333333,
+      "actual_first_flat_event": "regime_exit_slice",
+      "observed_mark_to_flat_equity_change_usdt": "131.23679390209231089300000",
+      "observed_extension_fees_usdt": "58.16424787110000",
+      "observed_extension_funding_usdt": "70.3469350912376891070",
+      "old_whole_campaign_net_usdt": "-1994.540830488427312821899990",
+      "old_whole_campaign_fees_usdt": "117.64769394089250",
+      "old_whole_campaign_funding_usdt": "117.9622049575348128219",
+      "corrected_same_campaign_net_usdt": "-1362.501656084453869908000014",
+      "corrected_same_campaign_flat_time": 1659722460000
+    },
+    {
+      "campaign": 1673481600000,
+      "first_held_call": 1674108000000,
+      "actual_first_flat": 1674248400000,
+      "exposure_extension_hours": 39.0,
+      "actual_first_flat_event": "take",
+      "observed_mark_to_flat_equity_change_usdt": "8720.06978435996225000000000",
+      "observed_extension_fees_usdt": "96.4226620218750",
+      "observed_extension_funding_usdt": "60.3398944481627500000",
+      "old_whole_campaign_net_usdt": "19466.63365225420848572500001",
+      "old_whole_campaign_fees_usdt": "177.86199357827250",
+      "old_whole_campaign_funding_usdt": "333.2783081375190142750",
+      "corrected_same_campaign_net_usdt": "6304.674895573276241435000001",
+      "corrected_same_campaign_flat_time": 1674108360000
+    },
+    {
+      "campaign": 1678723200000,
+      "first_held_call": 1679403600000,
+      "actual_first_flat": 1679796360000,
+      "exposure_extension_hours": 109.1,
+      "actual_first_flat_event": "regime_exit_deadline",
+      "observed_mark_to_flat_equity_change_usdt": "-4608.02396249253467422390000",
+      "observed_extension_fees_usdt": "146.28023122665750",
+      "observed_extension_funding_usdt": "94.1571795301671742239",
+      "old_whole_campaign_net_usdt": "19977.02021758055613577610001",
+      "old_whole_campaign_fees_usdt": "277.10922554126250",
+      "old_whole_campaign_funding_usdt": "347.5197729481813642239",
+      "corrected_same_campaign_net_usdt": "12766.98150521102641999999999",
+      "corrected_same_campaign_flat_time": 1679403660000
+    },
+    {
+      "campaign": 1698105600000,
+      "first_held_call": 1699178400000,
+      "actual_first_flat": 1699790700000,
+      "exposure_extension_hours": 170.08333333333334,
+      "actual_first_flat_event": "regime_exit_slice",
+      "observed_mark_to_flat_equity_change_usdt": "3233.37601907507367313760002",
+      "observed_extension_fees_usdt": "49.35086386944000",
+      "observed_extension_funding_usdt": "161.8456376524463268624",
+      "old_whole_campaign_net_usdt": "4784.236765115720337137600005",
+      "old_whole_campaign_fees_usdt": "94.82401492354500",
+      "old_whole_campaign_funding_usdt": "291.2229737407346628624",
+      "corrected_same_campaign_net_usdt": "1426.668371957534164000000003",
+      "corrected_same_campaign_flat_time": 1699178640000
+    }
+  ],
+  "corrected_children_count": 10,
+  "corrected_child_trade_net_usdt": "2284.429963869809727378769915",
+  "worst_drawdown": {
+    "original": {
+      "peak": {
+        "time": "1613934000000",
+        "event": "conservative_envelope",
+        "equity_usdt": "51493.93479611426336269429315",
+        "quantity": "1.760",
+        "mark": "58469.49466440",
+        "wallet": "30970.83574533026336269429315",
+        "average_entry": "46808.642931",
+        "fees": "509.69123252670300",
+        "funding": "5739.4449723653928013205",
+        "drawdown": "0"
+      },
+      "trough": {
+        "time": "1634068800000",
+        "event": "conservative_envelope",
+        "equity_usdt": "18571.83021644972856692049315",
+        "quantity": "1.057",
+        "mark": "54073.63877217",
+        "wallet": "19592.11383028403856692049315",
+        "average_entry": "55038.90236141721854304635762",
+        "fees": "938.40346310365950",
+        "funding": "6476.2800426306610970943",
+        "drawdown": "0.6393394622107774830165347072"
+      },
+      "equity_change_usdt": "-32922.10457966453479577380000",
+      "wallet_change_usdt": "-11378.72191504622479577380000",
+      "unrealized_change_usdt": "-21543.38266461831000000000000",
+      "unrealized_at_peak_usdt": "20523.09905078400",
+      "unrealized_at_trough_usdt": "-1020.283613834310000000000004"
+    },
+    "corrected": {
+      "peak": {
+        "time": "1613934000000",
+        "event": "conservative_envelope",
+        "equity_usdt": "36800.55705512471583528549316",
+        "quantity": "1.571",
+        "mark": "58469.49466440",
+        "wallet": "32552.14838334731583528549316",
+        "average_entry": "55765.224345",
+        "fees": "683.04982189976775",
+        "funding": "4736.6202416012755787293",
+        "drawdown": "0"
+      },
+      "trough": {
+        "time": "1634068800000",
+        "event": "conservative_envelope",
+        "equity_usdt": "11084.08477344323593280489316",
+        "quantity": "0.628",
+        "mark": "54073.63877217",
+        "wallet": "11695.35258562847593280489316",
+        "average_entry": "55046.995161",
+        "fees": "957.23886084535950",
+        "funding": "5325.1601323165237312099",
+        "drawdown": "0.6988066034750496972667413001"
+      },
+      "equity_change_usdt": "-25716.47228168147990248060000",
+      "wallet_change_usdt": "-20856.79579771883990248060000",
+      "unrealized_change_usdt": "-4859.67648396264",
+      "unrealized_at_peak_usdt": "4248.40867177740",
+      "unrealized_at_trough_usdt": "-611.26781218524"
+    },
+    "control": {
+      "peak": {
+        "time": "1627326000000",
+        "event": "conservative_envelope",
+        "equity_usdt": "20248.00527505368584278539314",
+        "quantity": "1.786",
+        "mark": "40537.77806226",
+        "wallet": "16684.59986736132584278539314",
+        "average_entry": "38542.590264",
+        "fees": "308.06266835385900",
+        "funding": "1440.2233809411743212294",
+        "drawdown": "0"
+      },
+      "trough": {
+        "time": "1634068800000",
+        "event": "conservative_envelope",
+        "equity_usdt": "12713.89748781029284759319314",
+        "quantity": "0.721",
+        "mark": "54073.63877217",
+        "wallet": "13415.68744415672284759319314",
+        "average_entry": "55046.995161",
+        "fees": "387.10015165109475",
+        "funding": "1487.4596612445415664216",
+        "drawdown": "0.3720913583781855744812129575"
+      },
+      "equity_change_usdt": "-7534.10778724339299519220000",
+      "wallet_change_usdt": "-3268.91242320460299519220000",
+      "unrealized_change_usdt": "-4265.19536403879",
+      "unrealized_at_peak_usdt": "3563.40540769236",
+      "unrealized_at_trough_usdt": "-701.78995634643"
+    },
+    "full_control": {
+      "peak": {
+        "time": "1709651040000",
+        "event": "conservative_envelope",
+        "equity_usdt": "98948.42317600527576776297384",
+        "quantity": "4.033",
+        "mark": "69125.86470213",
+        "wallet": "59842.05025609704049651957490",
+        "average_entry": "59429.26839171387421987518003",
+        "fees": "2398.500800543006108580825530",
+        "funding": "5316.8200702751787287717",
+        "drawdown": "0"
+      },
+      "trough": {
+        "time": "1709668620000",
+        "event": "conservative_envelope",
+        "equity_usdt": "59482.73055012808776776297384",
+        "quantity": "4.033",
+        "mark": "59399.09223833",
+        "wallet": "59604.43097672525249651957490",
+        "average_entry": "59429.26839171387421987518003",
+        "fees": "2398.500800543006108580825530",
+        "funding": "5554.4393496469667287717",
+        "drawdown": "0.3988511525411302503194848743"
+      },
+      "equity_change_usdt": "-39465.69262587718800000000000",
+      "wallet_change_usdt": "-237.61927937178800000000000",
+      "unrealized_change_usdt": "-39228.07334650540000000000000",
+      "unrealized_at_peak_usdt": "39106.37291990823527124339894",
+      "unrealized_at_trough_usdt": "-121.7004265971647287566010610"
+    }
+  },
+  "full_control_annual": {
+    "2020": {
+      "hours": 8783,
+      "holding_hours": 1231,
+      "last_equity_usdt": "12998.40564602692821570489314",
+      "calls": 123,
+      "actions": {
+        "no_signal": 100,
+        "deferred_entry": 8,
+        "hold": 8,
+        "regime_exit": 7
+      },
+      "opened": 8,
+      "closed": 8,
+      "wins": 7,
+      "closed_trade_net_usdt": "11566.39394911456905169009999",
+      "closed_trade_fees_usdt": "207.84629509722300",
+      "closed_trade_funding_usdt": "480.0460864162079483099"
+    },
+    "2021": {
+      "hours": 8760,
+      "holding_hours": 365,
+      "last_equity_usdt": "17926.78546310655442259459314",
+      "calls": 112,
+      "actions": {
+        "no_signal": 105,
+        "deferred_entry": 3,
+        "hold": 2,
+        "regime_exit": 2
+      },
+      "opened": 3,
+      "closed": 3,
+      "wins": 2,
+      "closed_trade_net_usdt": "4928.3798170796262068897",
+      "closed_trade_fees_usdt": "212.47167672136350",
+      "closed_trade_funding_usdt": "1064.6411146190102931103"
+    },
+    "2022": {
+      "hours": 8760,
+      "holding_hours": 156,
+      "last_equity_usdt": "13829.92472576870703222899313",
+      "calls": 120,
+      "actions": {
+        "no_signal": 117,
+        "deferred_entry": 2,
+        "regime_exit": 1
+      },
+      "opened": 2,
+      "closed": 2,
+      "wins": 0,
+      "closed_trade_net_usdt": "-4096.860737337847390365600008",
+      "closed_trade_fees_usdt": "179.63039743704750",
+      "closed_trade_funding_usdt": "72.7924566507998903656"
+    },
+    "2023": {
+      "hours": 8760,
+      "holding_hours": 1086,
+      "last_equity_usdt": "67734.21133614372594422817384",
+      "calls": 113,
+      "actions": {
+        "no_signal": 91,
+        "deferred_entry": 7,
+        "hold": 9,
+        "regime_exit": 6
+      },
+      "opened": 7,
+      "closed": 7,
+      "wins": 6,
+      "closed_trade_net_usdt": "53904.28661037501891199918072",
+      "closed_trade_fees_usdt": "1113.815872991034608580825530",
+      "closed_trade_funding_usdt": "1096.0518857067579205207"
+    },
+    "2024": {
+      "hours": 8784,
+      "holding_hours": 422,
+      "last_equity_usdt": "123584.8261826725719292206379",
+      "calls": 118,
+      "actions": {
+        "no_signal": 110,
+        "deferred_entry": 4,
+        "capital_reduce": 1,
+        "regime_exit": 2,
+        "hold": 1
+      },
+      "opened": 4,
+      "closed": 4,
+      "wins": 2,
+      "closed_trade_net_usdt": "55850.61484652884598499246404",
+      "closed_trade_fees_usdt": "1444.057670238801594622402024",
+      "closed_trade_funding_usdt": "4819.0125837211452502545"
+    },
+    "2025": {
+      "hours": 8760,
+      "holding_hours": 359,
+      "last_equity_usdt": "143804.8830590346088316714924",
+      "calls": 123,
+      "actions": {
+        "no_signal": 115,
+        "deferred_entry": 3,
+        "regime_exit": 3,
+        "hold": 1,
+        "capital_reduce": 1
+      },
+      "opened": 3,
+      "closed": 3,
+      "wins": 3,
+      "closed_trade_net_usdt": "20220.05687636203690245085444",
+      "closed_trade_fees_usdt": "1345.414366935572108470854532",
+      "closed_trade_funding_usdt": "1124.3267026852022835510"
+    },
+    "2026": {
+      "hours": 6289,
+      "holding_hours": 287,
+      "last_equity_usdt": "164821.9055456898334006822653",
+      "calls": 86,
+      "actions": {
+        "no_signal": 79,
+        "deferred_entry": 3,
+        "hold": 2,
+        "regime_exit": 1,
+        "unfunded_parent:protection": 1
+      },
+      "opened": 3,
+      "closed": 3,
+      "wins": 1,
+      "closed_trade_net_usdt": "21017.02248665522456901077281",
+      "closed_trade_fees_usdt": "1565.724933341264145908943387",
+      "closed_trade_funding_usdt": "1234.3353307823724970048"
+    }
+  },
+  "full_control_trade_spans": {
+    "2020_2023": {
+      "trades": 20,
+      "wins": 15,
+      "mean_net_to_entry_equity": "0.256478440184902979738613972",
+      "median_net_to_entry_equity": "0.1901799163863261714201176812",
+      "median_mother_stop_risk_to_entry_equity": "0.1686490372541562968115990534"
+    },
+    "2024_2026": {
+      "trades": 10,
+      "wins": 6,
+      "mean_net_to_entry_equity": "0.1098743713959530799187536059",
+      "median_net_to_entry_equity": "0.002223254959695982562838737961",
+      "median_mother_stop_risk_to_entry_equity": "0.3005627135136034098267483578"
+    }
+  },
+  "account_sha256": {
+    "original": {
+      "result.json": "1abdf15e6997bbcc90b7bdc653ba167811385d70f559aff66cf2649d3a848f4c",
+      "decisions.csv.gz": "9a6ebcc067081884ed7bd4bb4a4496bbea2519572e77fc048f006bfd39eaf1c9",
+      "orders.csv.gz": "df1af6d8304ae4888c5ca0769dfb8d9ab6e24ee3916d14f3afd1ae198fb3d779",
+      "equity.csv.gz": "1b75ecda854e4eea531d53ba9e6ab3559706c5006b10d67a6bc7b7ded12ff38f",
+      "execution.jsonl": "178ca44665e9bdb19cc587fa624c75b94c25d0bb0b1925f4bb48c5a2945cf422"
+    },
+    "corrected": {
+      "result.json": "2c92c293b0dd31313285a209e5da34f45bdc0860387f3c20ecef6d68923095dd",
+      "decisions.csv.gz": "4697656b34df4101a430619eaae359284046bb16faec091f45fcfb706fd2e524",
+      "orders.csv.gz": "fe56d646aa708bb241b0121b9f118b496bfd3e990c74ec123ee6d35251211d56",
+      "equity.csv.gz": "c323492fc89339ac31dbc7338e18db4421c2871af95893a969358e7d2cc8889b",
+      "execution.jsonl": "6d2b72a3688afd26bd12997707ebe87283dc1a019b860dc1757be5755ab8e495"
+    },
+    "control": {
+      "result.json": "c7ef28c895a64f1182a7be8bb45226c45bd570faf6d42585552eec77bfb27856",
+      "decisions.csv.gz": "c7b91979bc8c3059542815ad07597ba5ba30a7b3121dd150dcfaa5d08f979687",
+      "orders.csv.gz": "da541075acb6871d42ca2ae4fa971c0a17777ecc73ec86c63e08c743208637e5",
+      "equity.csv.gz": "3b806448631bcd24d2cc672f5a445dfe3c07a7fae26e7c4703c745ef5a8cabdd",
+      "execution.jsonl": "85653bacf105df2687de0e29bd173a60d5e9291f2a483c57ba5622feff206136"
+    },
+    "full_control": {
+      "result.json": "b97bb9d99b7afcbad28d880d10cf09eebfd417fadb3b7b48389fcf66ef609560",
+      "decisions.csv.gz": "0e8324706830100bf4fb0a9817011ac64a991f5514b00aa24c90ff729970dfac",
+      "orders.csv.gz": "5001bb9baa6fe23ed49297fac1d06a4d07089a102f82c87db39fd523238f5360",
+      "equity.csv.gz": "b6bc34cb4063e0c3ea7a56e2bb7ba0846c883a59cfc37a328e3df1f9f8645eb5",
+      "execution.jsonl": "611aad70b42c97f3b9411816a3a427de05c66ea541a7498ce9fe2af1c997cb7f"
+    }
+  }
+}

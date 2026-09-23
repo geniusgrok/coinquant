@@ -1,0 +1,38 @@
+{
+  "status": "frozen_before_corrected_economic_account",
+  "base_main": "7b9ed877eb7f14f6b1d93d719a30195674781401",
+  "original_protocol_sha256": "15860f4768446f8f422e74d50b1b6f52c5993df18c28fa916f9eb333f89d7237",
+  "correction_protocol_sha256": "e2c37a121081f45e1c4cc5fda4eb7d93db79de94ab8b0836752470656e896100",
+  "semantic_audit_sha256": "cd7f135e87d40d13841b86a32784388e6697971311f86575df6fdc492abe06c8",
+  "original_pir1_result_sha256": "1abdf15e6997bbcc90b7bdc653ba167811385d70f559aff66cf2649d3a848f4c",
+  "paired_sx60_result_sha256": "c7ef28c895a64f1182a7be8bb45226c45bd570faf6d42585552eec77bfb27856",
+  "input_identity": "9b036837f4eb462d672524f9b032adc7a9a9ba85cce071b33b268ab658747645",
+  "development_calls": 468,
+  "corrected_account_limit": 1,
+  "code_identity": {
+    "research/persistent_hold_replay.py": "acbf4254297e94b1fdd2a62946d3a44c9080b84a02ca4cc720aef30bb969f852",
+    "research/bounded_execution.py": "0af5e05313a493e69aa3936cd342cb9db795051432ceca117ec34b4c83ec144e",
+    "research/bounded_execution_data.py": "debe2eadb6c5d573bf40e8bd04ecfe1548b086194b683cb3d38ba73dff440b32",
+    "research/bounded_execution_replay.py": "0fc6561cb68f41cdfa086678318327b0ec0e732ee6d41ad391f03961292fad53",
+    "research/minute_evidence.py": "622e55b551b838dab3a1cfcf2d11c0496d652fa9fc6ab4aef7933c7815799a24",
+    "research/verify_account_ledger.py": "50e9fbce7d46b7dd46dbfa1a502ad1565b45eec698704435df768469920108d7",
+    "coinquant/linear_account.py": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339",
+    "coinquant/linear_sizing.py": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275",
+    "coinquant/campaign.py": "05f7a0170f68a51d8e89b92d0533ce0b7adcc755db31df35464574647f117f14",
+    "coinquant/opportunities.py": "1c23ba0653da553fde3be3798d3b88687fe58e0b883218cebd93819568057d61",
+    "research/spec.json": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9",
+    "research/invocation_draws.json": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf",
+    "coinquant/capital.py": "9ce5e29b774249754ca28d78d443ece2c03982010825b19681c96d23bd5cd930",
+    "research/planned_exit.py": "abffe4e655ad4dba6afa06e7e3d9f94f991505f3a3c717aa52cff2ce9fa3500f",
+    "research/sustainable_replay.py": "600cafb08325d8bf8d2cfe91b22997bfc19b011e7744564bc0e6fddc79121311",
+    "research/execution_risk_audit.py": "cbe964d3be12cc0d383fd4db44f78216c3da93b9a6c4a6944b78dbac9ffe3070",
+    "evidence/sustainable-capital-exit-20260922/PROTOCOL.md": "bd8c4492d5806a12b7eb5591d26e3492837368a7ae17bf3c8b4eaf379d184e9d"
+  },
+  "gate": {
+    "cagr_minimum": "1.5",
+    "mdd_exclusive_maximum": "0.5",
+    "requires_paired_net_advantage": true,
+    "requires_nonconcentration": true
+  },
+  "forward_rule": "If corrected development fails any hard gate, do not run its full window, stress or absence accounts."
+}

@@ -56,10 +56,12 @@ class PostImpulseRestartTests(unittest.TestCase):
         self.assertEqual(state.identity, 25 * FOUR_HOURS)
         self.assertIsNone(state.parent_identity)
 
-    def test_candidate_signal_does_not_close_an_existing_same_side_campaign(self):
+    def test_expired_parent_exits_when_child_signal_is_current(self):
         child = Opportunity(100, 1, D(90), D(200), 200,
                             parent_identity=20)
-        self.assertEqual(disposition(child, D(1), consumed=20), 'hold')
+        self.assertEqual(disposition(child, D(1), consumed=20), 'exit')
+        self.assertEqual(disposition(child, D(1), consumed=100), 'hold')
+        self.assertEqual(disposition(child, D(-1), consumed=100), 'exit')
 
     def test_existing_opportunity_without_parent_identity_keeps_campaign_behavior(self):
         existing = SimpleNamespace(identity=20, direction=1)
