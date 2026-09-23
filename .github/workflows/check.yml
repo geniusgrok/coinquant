@@ -10,6 +10,16 @@ on:
       - 'research/**'
       - 'requirements-research.txt'
       - '.github/workflows/check.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'coinquant/**'
+      - 'tests/**'
+      - 'main.py'
+      - 'config.example.json'
+      - 'research/**'
+      - 'requirements-research.txt'
+      - '.github/workflows/check.yml'
   workflow_dispatch:
 permissions:
   contents: read

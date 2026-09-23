@@ -1,0 +1,250 @@
+{
+  "input": {
+    "begin": "2020-01-01T00:00:00Z",
+    "end_exclusive": "2026-09-20T00:00:00Z",
+    "invocations": 795,
+    "event_count": 99,
+    "event_mechanism": "completed 4h abs(close-prior_close)>3*prior ATR14; midpoint stop; far 20R take; 42-bar expiry",
+    "status_alignment": "all saved call regimes match reconstructed signal direction",
+    "invocation_draws_sha256": "3c409406a8bbe3bac31565a7795835b6c8a6051f1f5eb33a650672c5d75fd8cf",
+    "spec_sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9",
+    "account_decisions_sha256": "0e8324706830100bf4fb0a9817011ac64a991f5514b00aa24c90ff729970dfac",
+    "account_orders_sha256": "5001bb9baa6fe23ed49297fac1d06a4d07089a102f82c87db39fd523238f5360",
+    "account_inputs_sha256": "83fb96c045d104ebd94d935d4550828c43b610e7ecf3bccf7dc52afa30172324",
+    "market_source_identity": "fb5adb7afeacffdcbce1745111b373ded79f3cc128c4d87bed6d174bc91ad674"
+  },
+  "call_actions": [
+    {
+      "action": "capital_reduce",
+      "signal_direction": 1,
+      "account_state": "occupied",
+      "count": 2
+    },
+    {
+      "action": "deferred_entry",
+      "signal_direction": 1,
+      "account_state": "flat",
+      "count": 30
+    },
+    {
+      "action": "hold",
+      "signal_direction": 1,
+      "account_state": "occupied",
+      "count": 23
+    },
+    {
+      "action": "no_signal",
+      "signal_direction": -1,
+      "account_state": "flat",
+      "count": 37
+    },
+    {
+      "action": "no_signal",
+      "signal_direction": 0,
+      "account_state": "flat",
+      "count": 680
+    },
+    {
+      "action": "regime_exit",
+      "signal_direction": 0,
+      "account_state": "occupied",
+      "count": 21
+    },
+    {
+      "action": "regime_exit",
+      "signal_direction": 1,
+      "account_state": "occupied",
+      "count": 1
+    },
+    {
+      "action": "unfunded_parent:protection",
+      "signal_direction": 1,
+      "account_state": "flat",
+      "count": 1
+    }
+  ],
+  "call_year": {
+    "2020": {
+      "no_signal": 100,
+      "deferred_entry": 8,
+      "hold": 8,
+      "regime_exit": 7
+    },
+    "2021": {
+      "no_signal": 105,
+      "deferred_entry": 3,
+      "hold": 2,
+      "regime_exit": 2
+    },
+    "2022": {
+      "no_signal": 117,
+      "deferred_entry": 2,
+      "regime_exit": 1
+    },
+    "2023": {
+      "no_signal": 91,
+      "deferred_entry": 7,
+      "hold": 9,
+      "regime_exit": 6
+    },
+    "2024": {
+      "no_signal": 110,
+      "deferred_entry": 4,
+      "capital_reduce": 1,
+      "regime_exit": 2,
+      "hold": 1
+    },
+    "2025": {
+      "no_signal": 115,
+      "deferred_entry": 3,
+      "regime_exit": 3,
+      "hold": 1,
+      "capital_reduce": 1
+    },
+    "2026": {
+      "no_signal": 79,
+      "deferred_entry": 3,
+      "hold": 2,
+      "regime_exit": 1,
+      "unfunded_parent:protection": 1
+    }
+  },
+  "event_year": {
+    "2020": {
+      "events": 16,
+      "long": 10,
+      "no_call": 5,
+      "at_least_one_call": 11,
+      "long_events": 10,
+      "long_events_no_call": 2,
+      "long_events_account_occupied_first": 1,
+      "short": 6
+    },
+    "2021": {
+      "events": 12,
+      "long": 6,
+      "no_call": 5,
+      "at_least_one_call": 7,
+      "long_events": 6,
+      "long_events_no_call": 3,
+      "long_events_account_occupied_first": 0,
+      "short": 6
+    },
+    "2022": {
+      "events": 10,
+      "short": 6,
+      "no_call": 3,
+      "at_least_one_call": 7,
+      "long": 4,
+      "long_events": 4,
+      "long_events_no_call": 2,
+      "long_events_account_occupied_first": 0
+    },
+    "2023": {
+      "events": 19,
+      "long": 12,
+      "no_call": 8,
+      "at_least_one_call": 11,
+      "long_events": 12,
+      "long_events_no_call": 5,
+      "long_events_account_occupied_first": 0,
+      "short": 7
+    },
+    "2024": {
+      "events": 13,
+      "long": 7,
+      "no_call": 7,
+      "at_least_one_call": 6,
+      "long_events": 7,
+      "long_events_no_call": 3,
+      "long_events_account_occupied_first": 0,
+      "short": 6
+    },
+    "2025": {
+      "events": 19,
+      "long": 9,
+      "no_call": 12,
+      "at_least_one_call": 7,
+      "long_events": 9,
+      "long_events_no_call": 6,
+      "long_events_account_occupied_first": 0,
+      "short": 10
+    },
+    "2026": {
+      "events": 10,
+      "short": 3,
+      "no_call": 5,
+      "at_least_one_call": 5,
+      "long": 7,
+      "long_events": 7,
+      "long_events_no_call": 3,
+      "long_events_account_occupied_first": 0
+    }
+  },
+  "event_totals": {
+    "long": 55,
+    "short": 44,
+    "long_no_call": 24,
+    "long_completed_no_call_stop": 23,
+    "long_first_call_overlap": 31,
+    "terminal_reasons": {
+      "expiry": 34,
+      "stop": 62,
+      "take": 2,
+      "active_at_end": 1
+    }
+  },
+  "missed_long_next_call": {
+    "count": 23,
+    "delay_hours": [
+      86.0,
+      49.0,
+      96.0,
+      10.0,
+      2.0,
+      24.0,
+      82.0,
+      75.0,
+      76.0,
+      14.0,
+      38.0,
+      31.0,
+      18.0,
+      90.0,
+      42.0,
+      69.0,
+      67.0,
+      3.0,
+      1.0,
+      21.0,
+      127.0,
+      7.0,
+      15.0
+    ],
+    "next_actions": {
+      "no_signal": 23
+    },
+    "flat_after_invalidation": 23
+  },
+  "posthoc_missed_long_7d_labels": {
+    "count": 23,
+    "positive_high_excursion": 15,
+    "median_max_return": "0.011653593724987994237233872",
+    "label": "future high/low diagnostic only; not an executable return or a rule-selection input"
+  },
+  "call_short_only": 37,
+  "existing_orders": {
+    "rows": 633,
+    "events": {
+      "entry": 30,
+      "funding_adverse_bound": 459,
+      "regime_exit_slice": 57,
+      "rebalance_add": 71,
+      "take": 2,
+      "stop": 6,
+      "capital_reduce": 4,
+      "regime_exit_deadline": 4
+    }
+  },
+  "scope": "Descriptive opportunity coverage. Parent identity, call-time state and saved account decisions are joined by frozen timestamp. Future labels are not used for selection."
+}

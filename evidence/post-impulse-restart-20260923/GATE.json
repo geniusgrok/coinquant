@@ -1,0 +1,197 @@
+{
+  "status": "development_rejected",
+  "candidate": "PIR1",
+  "protocol_frozen_before_candidate_account": true,
+  "protocol_sha256": "15860f4768446f8f422e74d50b1b6f52c5993df18c28fa916f9eb333f89d7237",
+  "decision": "reject",
+  "reason": "The candidate clears the development return screen but fails the hard conservative maximum drawdown threshold: 63.933946% >= 50%. Do not run full-window, stress, or call-absence matrices.",
+  "gate": {
+    "cagr_minimum": 1.5,
+    "mdd_exclusive_maximum": 0.5,
+    "candidate_cagr_passed": true,
+    "candidate_mdd_passed": false,
+    "development_gate_passed": false
+  },
+  "window": {
+    "start": "2020-01-01T00:00:00Z",
+    "end_exclusive": "2024-01-01T00:00:00Z",
+    "continuous_calls": 468
+  },
+  "pairing": {
+    "input_identity": "9b036837f4eb462d672524f9b032adc7a9a9ba85cce071b33b268ab658747645",
+    "control_and_candidate_inputs_json_identical": true,
+    "shared_source_identity_entries_match": true,
+    "control_risk_scale": "6",
+    "candidate_risk_scale": "6",
+    "entry": "5-minute proxy",
+    "planned_exit": "sliced",
+    "participation": "0.01"
+  },
+  "control": {
+    "candidate": "SX60",
+    "calls": 468,
+    "cagr": 1.621791521634055,
+    "cagr_percent": 162.1791521634055,
+    "mdd_conservative_envelope": "0.3720913583781855744812129575",
+    "mdd_percent": 37.20913583781856,
+    "final_cny": "472527.4051232058609321245863",
+    "protocol_sha256": "bd8c4492d5806a12b7eb5591d26e3492837368a7ae17bf3c8b4eaf379d184e9d",
+    "source_identity_sha256": "acbf4254297e94b1fdd2a62946d3a44c9080b84a02ca4cc720aef30bb969f852",
+    "schedule_sha256": "311b36c48c3f2e676bdcb85253ab516b1f2f656ab93a255a691a4de8a9b08a99",
+    "input_artifacts_sha256": "ad270c8122a1f2c314bb2fa24a0038724e48334ee6176d00c3646e4cb6038864",
+    "result_sha256": "c7ef28c895a64f1182a7be8bb45226c45bd570faf6d42585552eec77bfb27856",
+    "execution_sha256": "85653bacf105df2687de0e29bd173a60d5e9291f2a483c57ba5622feff206136",
+    "equity_sha256": "3b806448631bcd24d2cc672f5a445dfe3c07a7fae26e7c4703c745ef5a8cabdd",
+    "orders_sha256": "da541075acb6871d42ca2ae4fa971c0a17777ecc73ec86c63e08c743208637e5",
+    "ledger_audit_max_equity_error_usdt": "0",
+    "ledger_close_points": 35064,
+    "risk_audit_passed": true,
+    "risk_audit_violations": [],
+    "buffer_audit_original_gap_maintained": true,
+    "buffer_audit_negative_gap_observations": 0,
+    "worst_drawdown_peak": {
+      "time_ms": 1627326000000,
+      "time_utc": "2021-07-26T19:00:00Z",
+      "equity_usdt": "20248.00527505368584278539314",
+      "event": "conservative_envelope"
+    },
+    "worst_drawdown_trough": {
+      "time_ms": 1634068800000,
+      "time_utc": "2021-10-12T20:00:00Z",
+      "equity_usdt": "12713.89748781029284759319314",
+      "event": "conservative_envelope"
+    },
+    "event_counts": {
+      "invocations": 468,
+      "deferred_entry": 20,
+      "entry": 20,
+      "funding_charge": 329,
+      "inventory_hold": 19,
+      "regime_exit_slice": 36,
+      "rebalance_add": 40,
+      "ambiguous_funding_credit_omitted": 26,
+      "take": 2,
+      "stop": 2,
+      "capital_reduce": 1,
+      "regime_exit_deadline": 1
+    }
+  },
+  "candidate_metrics": {
+    "candidate": "PIR1",
+    "calls": 468,
+    "cagr": 1.8486711400546096,
+    "cagr_percent": 184.86711400546096,
+    "mdd_conservative_envelope": "0.6393394622107774830165347072",
+    "mdd_percent": 63.933946221077754,
+    "final_cny": "658577.0707088175629707244185",
+    "protocol_sha256": "15860f4768446f8f422e74d50b1b6f52c5993df18c28fa916f9eb333f89d7237",
+    "source_identity_sha256": "acbf4254297e94b1fdd2a62946d3a44c9080b84a02ca4cc720aef30bb969f852",
+    "schedule_sha256": "311b36c48c3f2e676bdcb85253ab516b1f2f656ab93a255a691a4de8a9b08a99",
+    "input_artifacts_sha256": "ad270c8122a1f2c314bb2fa24a0038724e48334ee6176d00c3646e4cb6038864",
+    "result_sha256": "1abdf15e6997bbcc90b7bdc653ba167811385d70f559aff66cf2649d3a848f4c",
+    "execution_sha256": "178ca44665e9bdb19cc587fa624c75b94c25d0bb0b1925f4bb48c5a2945cf422",
+    "equity_sha256": "1b75ecda854e4eea531d53ba9e6ab3559706c5006b10d67a6bc7b7ded12ff38f",
+    "orders_sha256": "df1af6d8304ae4888c5ca0769dfb8d9ab6e24ee3916d14f3afd1ae198fb3d779",
+    "ledger_audit_max_equity_error_usdt": "0",
+    "ledger_close_points": 35064,
+    "risk_audit_passed": true,
+    "risk_audit_violations": [],
+    "buffer_audit_original_gap_maintained": true,
+    "buffer_audit_negative_gap_observations": 0,
+    "worst_drawdown_peak": {
+      "time_ms": 1613934000000,
+      "time_utc": "2021-02-21T19:00:00Z",
+      "equity_usdt": "51493.93479611426336269429315",
+      "event": "conservative_envelope"
+    },
+    "worst_drawdown_trough": {
+      "time_ms": 1634068800000,
+      "time_utc": "2021-10-12T20:00:00Z",
+      "equity_usdt": "18571.83021644972856692049315",
+      "event": "conservative_envelope"
+    },
+    "event_counts": {
+      "invocations": 468,
+      "deferred_entry": 26,
+      "entry": 26,
+      "funding_charge": 523,
+      "inventory_hold": 36,
+      "regime_exit_slice": 45,
+      "rebalance_add": 53,
+      "ambiguous_funding_credit_omitted": 41,
+      "take": 3,
+      "capital_reduce": 1,
+      "planned_exit_safety": 1,
+      "stop": 4,
+      "regime_exit_deadline": 2
+    }
+  },
+  "candidate_delta": {
+    "cagr_percentage_points": 22.687961842055458,
+    "final_cny": "186049.6655856117020385998322",
+    "final_value_percent": 39.37330693806034
+  },
+  "causal_attribution": {
+    "sha256": "e5cb846a03a7ea723c52c26c26cf1c4b307f45b2e6691e9274cbf6276051648e",
+    "protocol_sha256": "15860f4768446f8f422e74d50b1b6f52c5993df18c28fa916f9eb333f89d7237",
+    "account_result_sha256": "1abdf15e6997bbcc90b7bdc653ba167811385d70f559aff66cf2649d3a848f4c",
+    "development_calls": 468,
+    "children_generated": 23,
+    "children_with_active_call": 15,
+    "entry_intents": 6,
+    "children_with_entry_intent": 6,
+    "children_entry_filled": 6,
+    "accepted_child_slices": 13
+  },
+  "input_validation": {
+    "request_sha256": "e9443cc01716e6b3da150b393362acc29a864e09089fb940f8ec9963f6faac43",
+    "validation_sha256": "3ad548836a815ec32d074fb496ea42a4952610d6d99de7e175256b41ad119c6d",
+    "receipt_sha256": "dd9ca5b944895aff338f7d0948c36d14d79337380c741c164b11794d9dda3aca",
+    "input_identity": "9b036837f4eb462d672524f9b032adc7a9a9ba85cce071b33b268ab658747645",
+    "verified_execution_hours": 143,
+    "entry_check_groups": 3,
+    "prior_sx60_exit_check_groups": 32,
+    "minute_receipt_complete": true,
+    "verified_decision_hours": 143,
+    "official_monthly_mark_repair_hashes": [
+      "883021211d84d5d0996bb6c946e82163b508d02f7e7d53e50c399f4622f4a3dc",
+      "b090f44eb2b24486e89c387db83533f309800aa44931d73964bfc211846205bf"
+    ]
+  },
+  "historical_coverage": {
+    "summary_sha256": "ef7db789b457c26295225e63fc32b58291bf0191cd47a4c57342ef78327335cc",
+    "original_events": 99,
+    "frozen_calls": 795,
+    "regimes_aligned_calls": 795,
+    "long_events": 55,
+    "short_events": 44,
+    "completed_long_stops_before_next_call": 23
+  },
+  "audits": {
+    "candidate_ledger": "passed; maximum cash-ledger equity error 0 USDT",
+    "candidate_risk": "passed; violations []",
+    "candidate_buffer": "original GAP maintained; 0 negative-gap observations",
+    "liquidations": 0
+  },
+  "continuation": {
+    "full_window_candidate": "not run (hard development MDD gate failed)",
+    "joint_stress": "not run",
+    "call_absence_787": "not run"
+  },
+  "production": {
+    "qualification": "NOT_QUALIFIED",
+    "default": "3.6 unchanged",
+    "run_execute_guard": "unchanged",
+    "live_or_testnet_orders": "none"
+  },
+  "result_artifacts": {
+    "control_result_sha256": "c7ef28c895a64f1182a7be8bb45226c45bd570faf6d42585552eec77bfb27856",
+    "candidate_result_sha256": "1abdf15e6997bbcc90b7bdc653ba167811385d70f559aff66cf2649d3a848f4c",
+    "control_execution_sha256": "85653bacf105df2687de0e29bd173a60d5e9291f2a483c57ba5622feff206136",
+    "candidate_execution_sha256": "178ca44665e9bdb19cc587fa624c75b94c25d0bb0b1925f4bb48c5a2945cf422",
+    "control_equity_sha256": "3b806448631bcd24d2cc672f5a445dfe3c07a7fae26e7c4703c745ef5a8cabdd",
+    "candidate_equity_sha256": "1b75ecda854e4eea531d53ba9e6ab3559706c5006b10d67a6bc7b7ded12ff38f",
+    "control_orders_sha256": "da541075acb6871d42ca2ae4fa971c0a17777ecc73ec86c63e08c743208637e5",
+    "candidate_orders_sha256": "df1af6d8304ae4888c5ca0769dfb8d9ab6e24ee3916d14f3afd1ae198fb3d779"
+  }
+}

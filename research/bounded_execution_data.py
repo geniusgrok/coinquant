@@ -59,25 +59,38 @@ def validate_hour(rows: list, hourly: list, *, trade: bool) -> dict:
 
 def _mark_repair(root: Path) -> tuple[dict[int,list],dict]:
     receipt = json.loads((root/'RECEIPT.json').read_text())
-    for record in receipt['records']:
-        if not record.get('complete_required_hour'):
-            continue
+    records=[record for record in receipt['records'] if record.get('complete_required_hour')]
+    if not records:raise ValueError('no complete required-hour mark repair')
+    combined={};sources=[]
+    for record in records:
         source = record['source']
         if source.startswith('https://data.binance.vision/data/futures/um/monthly/markPriceKlines/'):
-            path = root/'monthly.zip'; raw = path.read_bytes()
-            if hashlib.sha256(raw).hexdigest() != (root/'monthly.zip.CHECKSUM').read_text().split()[0]:
+            path = root/record.get('archive_path','monthly.zip'); raw = path.read_bytes()
+            checksum=Path(str(path)+'.CHECKSUM').read_text().split()[0]
+            if hashlib.sha256(raw).hexdigest() != checksum:
                 raise ValueError('mark repair exchange checksum mismatch')
             rows = _rows(raw)
         elif source.startswith('https://fapi.binance.com/fapi/v1/markPriceKlines?'):
-            path = root/'required-hour.json'; raw = path.read_bytes(); rows = json.loads(raw)
+            path = root/record.get('response_path','required-hour.json'); raw = path.read_bytes(); rows = json.loads(raw)
         else:
             raise ValueError('unrecognized mark repair source')
         if len(raw) != record['bytes'] or hashlib.sha256(raw).hexdigest() != record['sha256']:
             raise ValueError('mark repair receipt mismatch')
-        if len({int(r[0]) for r in rows}) != len(rows):
-            raise ValueError('duplicate mark repair minute')
-        return {int(r[0]):r for r in rows}, dict(path=str(path),source=source,bytes=len(raw),sha256=record['sha256'])
-    raise ValueError('no verified repair for required mark minutes')
+        parsed={int(r[0]):r for r in rows}
+        if len(parsed) != len(rows):raise ValueError('duplicate mark repair minute')
+        for hour in record.get('required_hours_ms',[]):
+            if not all(t in parsed for t in range(hour,hour+HOUR,MINUTE)):
+                raise ValueError('incomplete mark repair hour')
+        if record.get('required_rows') is not None and len(rows)<record['required_rows']:
+            raise ValueError('mark repair has fewer rows than requested')
+        for t,row in parsed.items():
+            if t in combined and combined[t]!=row:raise ValueError('overlapping mark repair rows differ')
+            combined[t]=row
+        sources.append(dict(path=str(path),source=source,bytes=len(raw),sha256=record['sha256']))
+    if len(sources)==1:return combined,sources[0]
+    aggregate=hashlib.sha256(json.dumps(sorted(item['sha256'] for item in sources)).encode()).hexdigest()
+    return combined,dict(path=str(root/'RECEIPT.json'),source='multiple_official_mark_repair_archives',
+        bytes=sum(item['bytes'] for item in sources),sha256=aggregate,archives=sources)
 
 
 def load_entry_minutes(root: Path, hourly: dict, entry_hours: list[int], *, repair: Path | None = None):

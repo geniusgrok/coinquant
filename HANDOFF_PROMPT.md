@@ -1,5 +1,12 @@
 # Coinquant 当前恢复入口
 
+## 最新研究状态：PIR1 开发期拒绝（2026-09-23）
+
+冻结协议 `15860f4768446f8f422e74d50b1b6f52c5993df18c28fa916f9eb333f89d7237` 后只完成 468 次配对开发账户。SX60 为 162.179152% CAGR /37.209136% 连续 MDD /CNY472,527.41；PIR1 为 184.867114% /63.933946% /CNY658,577.07。收益提高，但 MDD 超过严格 <50% 门槛，按协议拒绝。**未运行 PIR1 全窗、联合压力或 787 缺席账户**。23 个子信号中 6 个创建订单意图，6 个均有首笔成交。账本误差 0、风险审计通过、原 GAP 保持。默认3.6和 execute 阻止不变。
+
+最新报告与审计：`evidence/post-impulse-restart-20260923/{REPORT.md,GATE.json}`。全量证据包：`COINQUANT_PIR1_DEVELOPMENT_REJECT_20260923.zip`，SHA-256 `703ac6ab27f573a4af8953529cea3a349334e51346da9d4e312afa6ca273a9d3`。继续时先核对实时 main、开放 PR 与 CI，并阅读本报告；不要重复此 PIR1 版本或运行其后续矩阵。
+
+
 继续 geniusgrok/coinquant，全程中文，personal / geniusgrok。先核对实时 main、AGENTS.md、PROJECT_STATE.md、最新 CI，再读 evidence/renewal-risk-full-20260923/{REPORT.md,SELECTION.json,originals.json}。保护并行工作，不回退 main。
 
 正式目标不变：CNY10,000 无追加；2020-01-01 至 2026-09-20 exclusive；成本后 CAGR≥150%、完整连续 MDD<50%；Binance BTCUSDT 永续、交易所20x、冻结 normal795/absence787。默认3.6及execute阻止不动，无真实或Testnet交易授权。

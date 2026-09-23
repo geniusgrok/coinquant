@@ -22,6 +22,8 @@ def disposition(opportunity, quantity, consumed, side='long'):
     if side=='long' and direction<0 or side=='short' and direction>0:
         direction=0
     if quantity:
+        if opportunity is not None and getattr(opportunity,'parent_identity',None) is not None:
+            return 'hold'
         return 'hold' if quantity*direction>0 and opportunity.identity==consumed else 'exit'
     if not direction:return 'flat'
     return 'consumed' if opportunity.identity==consumed else 'enter'
@@ -64,12 +66,17 @@ class Campaign:
     def checkpoint(self):
         def encode(v):
             if isinstance(v,D):return {'decimal':str(v)}
-            if isinstance(v,Opportunity):return {'opportunity':encode(asdict(v))}
+            if isinstance(v,Opportunity):
+                body=asdict(v)
+                if body['parent_identity'] is None:body.pop('parent_identity')
+                return {'opportunity':encode(body)}
+            if isinstance(v,Opportunities):return {'opportunities':encode(vars(v))}
             if isinstance(v,deque):return {'deque':[encode(x) for x in v],'maxlen':v.maxlen}
             if isinstance(v,(tuple,list)):return [encode(x) for x in v]
             if isinstance(v,dict):return {k:encode(x) for k,x in v.items()}
             return v
-        body={'version':1,'last':self.last,'model':encode(vars(self.model)),
+        version=2 if self.model.mechanism=='post_impulse_restart' else 1
+        body={'version':version,'last':self.last,'model':encode(vars(self.model)),
               'returns':[str(x) for x in self.returns],
               'previous_daily':str(self.previous_daily) if self.previous_daily is not None else None,
               'consumed':self.consumed,'position_campaign':self.position_campaign}
@@ -79,7 +86,8 @@ class Campaign:
     def restore(cls, saved):
         try:
             body=saved['body']
-            if saved['sha256']!=hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest() or body['version']!=1:
+            if (saved['sha256']!=hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()
+                    or body['version'] not in (1,2)):
                 raise ValueError('state identity')
             def decode(v):
                 if isinstance(v,list):return [decode(x) for x in v]
@@ -89,10 +97,18 @@ class Campaign:
                         if not d.is_finite():raise ValueError('nonfinite state')
                         return d
                     if set(v)=={'opportunity'}:return Opportunity(**decode(v['opportunity']))
+                    if set(v)=={'opportunities'}:
+                        fields=decode(v['opportunities'])
+                        model=Opportunities(fields['mechanism'],fields['interval'])
+                        if set(fields)!=set(vars(model)):raise ValueError('nested model fields')
+                        model.__dict__.update(fields)
+                        return model
                     if set(v)=={'deque','maxlen'}:return deque((decode(x) for x in v['deque']),maxlen=v['maxlen'])
                     return {k:decode(x) for k,x in v.items()}
                 return v
             data=decode(body['model']);result=cls(data['mechanism'],data['interval'])
+            if (body['version']==2) != (data['mechanism']=='post_impulse_restart'):
+                raise ValueError('campaign version')
             if set(data)!=set(vars(result.model)):raise ValueError('state fields')
             result.model.__dict__.update(data)
             result.last=body['last']

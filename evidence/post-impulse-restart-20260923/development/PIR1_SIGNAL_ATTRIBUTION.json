@@ -1,0 +1,659 @@
+{
+  "protocol_sha256": "15860f4768446f8f422e74d50b1b6f52c5993df18c28fa916f9eb333f89d7237",
+  "account_result_sha256": "1abdf15e6997bbcc90b7bdc653ba167811385d70f559aff66cf2649d3a848f4c",
+  "execution_sha256": "178ca44665e9bdb19cc587fa624c75b94c25d0bb0b1925f4bb48c5a2945cf422",
+  "source_identity_hash": "a6a2a119fa8595d7e068c00946409dcffec7fc90348008e17cc5f9bb8f8ed8ea",
+  "development_calls": 468,
+  "generated_children": 23,
+  "children": [
+    {
+      "identity": 1578657600000,
+      "parent_identity": 1578038400000,
+      "parent_invalidation_time": 1578643200000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "125.335",
+      "peak_before": "7368.33",
+      "pullback_at": 1578067200000,
+      "pullback_high": "7379.00",
+      "pullback_low": "7229.00",
+      "pullback_distance": "139.33",
+      "confirmed_at": 1578657600000,
+      "confirmation_close": "7841.02",
+      "direction": 1,
+      "stop": "7229.00",
+      "take": "39834.49344371353368142516082",
+      "expires": 1579262400000,
+      "active_call_times": [],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1580155200000,
+      "parent_identity": 1578974400000,
+      "parent_invalidation_time": 1579579200000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "178.42",
+      "peak_before": "8770.00",
+      "pullback_at": 1579032000000,
+      "pullback_high": "8864.99",
+      "pullback_low": "8520.00",
+      "pullback_distance": "250.00",
+      "confirmed_at": 1580155200000,
+      "confirmation_close": "8934.04",
+      "direction": 1,
+      "stop": "8520.00",
+      "take": "23078.83323596516050335477485",
+      "expires": 1580760000000,
+      "active_call_times": [
+        1580184000000,
+        1580446800000,
+        1580616000000
+      ],
+      "entry_intent_count": 1,
+      "entry_filled": true,
+      "accepted_child_slices": 3,
+      "accepted_quantity_total": "1.069",
+      "intent_terminal_reasons": [
+        "deadline"
+      ]
+    },
+    {
+      "identity": 1586404800000,
+      "parent_identity": 1585785600000,
+      "parent_invalidation_time": 1586390400000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "222.53",
+      "peak_before": "7290.00",
+      "pullback_at": 1585872000000,
+      "pullback_high": "6865.00",
+      "pullback_low": "6640.05",
+      "pullback_distance": "649.95",
+      "confirmed_at": 1586404800000,
+      "confirmation_close": "7281.38",
+      "direction": 1,
+      "stop": "6640.05",
+      "take": "46032.08377565056665342399077",
+      "expires": 1587009600000,
+      "active_call_times": [
+        1586642400000
+      ],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1588276800000,
+      "parent_identity": 1587657600000,
+      "parent_invalidation_time": 1588262400000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "199.465",
+      "peak_before": "7802.38",
+      "pullback_at": 1587672000000,
+      "pullback_high": "7612.36",
+      "pullback_low": "7482.83",
+      "pullback_distance": "319.55",
+      "confirmed_at": 1588276800000,
+      "confirmation_close": "8843.72",
+      "direction": 1,
+      "stop": "7482.83",
+      "take": "250044.3747881894324488061643",
+      "expires": 1588881600000,
+      "active_call_times": [
+        1588816800000
+      ],
+      "entry_intent_count": 1,
+      "entry_filled": true,
+      "accepted_child_slices": 2,
+      "accepted_quantity_total": "1.250",
+      "intent_terminal_reasons": [
+        "target_filled"
+      ]
+    },
+    {
+      "identity": 1595894400000,
+      "parent_identity": 1595318400000,
+      "parent_invalidation_time": 1595880000000,
+      "parent_invalidation_reasons": [
+        "take"
+      ],
+      "risk_r": "66.61",
+      "peak_before": "9377.89",
+      "pullback_at": 1595332800000,
+      "pullback_high": "9350.32",
+      "pullback_low": "9300.01",
+      "pullback_distance": "77.88",
+      "confirmed_at": 1595894400000,
+      "confirmation_close": "11047.58",
+      "direction": 1,
+      "stop": "9300.01",
+      "take": "345893.1388092822193152725873",
+      "expires": 1596499200000,
+      "active_call_times": [
+        1596200400000
+      ],
+      "entry_intent_count": 1,
+      "entry_filled": true,
+      "accepted_child_slices": 1,
+      "accepted_quantity_total": "2.348",
+      "intent_terminal_reasons": [
+        "target_filled"
+      ]
+    },
+    {
+      "identity": 1602792000000,
+      "parent_identity": 1602172800000,
+      "parent_invalidation_time": 1602777600000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "147.135",
+      "peak_before": "11494.00",
+      "pullback_at": 1602331200000,
+      "pullback_high": "11397.59",
+      "pullback_low": "11237.49",
+      "pullback_distance": "256.51",
+      "confirmed_at": 1602792000000,
+      "confirmation_close": "11518.48",
+      "direction": 1,
+      "stop": "11237.49",
+      "take": "18876.09951863124569225207908",
+      "expires": 1603396800000,
+      "active_call_times": [],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1603742400000,
+      "parent_identity": 1603123200000,
+      "parent_invalidation_time": 1603728000000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "163.39",
+      "peak_before": "11829.00",
+      "pullback_at": 1603137600000,
+      "pullback_high": "11830.00",
+      "pullback_low": "11656.01",
+      "pullback_distance": "172.99",
+      "confirmed_at": 1603742400000,
+      "confirmation_close": "12997.57",
+      "direction": 1,
+      "stop": "11656.01",
+      "take": "114843.7166856472109412620230",
+      "expires": 1604347200000,
+      "active_call_times": [
+        1604106000000
+      ],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1608753600000,
+      "parent_identity": 1608134400000,
+      "parent_invalidation_time": 1608739200000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "458.83",
+      "peak_before": "22222.00",
+      "pullback_at": 1608192000000,
+      "pullback_high": "22513.49",
+      "pullback_low": "21742.86",
+      "pullback_distance": "479.14",
+      "confirmed_at": 1608753600000,
+      "confirmation_close": "23566.00",
+      "direction": 1,
+      "stop": "21742.86",
+      "take": "117942.3971519839488428414438",
+      "expires": 1609358400000,
+      "active_call_times": [
+        1608930000000,
+        1609192800000
+      ],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1609660800000,
+      "parent_identity": 1609603200000,
+      "parent_invalidation_time": 1609632000000,
+      "parent_invalidation_reasons": [
+        "stop"
+      ],
+      "risk_r": "970.745",
+      "peak_before": "33480.00",
+      "pullback_at": 1609632000000,
+      "pullback_high": "33146.49",
+      "pullback_low": "30528.00",
+      "pullback_distance": "2952.00",
+      "confirmed_at": 1609660800000,
+      "confirmation_close": "34472.24",
+      "direction": 1,
+      "stop": "30528.00",
+      "take": "391644.9565833740169266080682",
+      "expires": 1610265600000,
+      "active_call_times": [],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1612396800000,
+      "parent_identity": 1611921600000,
+      "parent_invalidation_time": 1611950400000,
+      "parent_invalidation_reasons": [
+        "stop"
+      ],
+      "risk_r": "2379.98",
+      "peak_before": "38641.10",
+      "pullback_at": 1611950400000,
+      "pullback_high": "37600.52",
+      "pullback_low": "33521.00",
+      "pullback_distance": "5120.10",
+      "confirmed_at": 1612396800000,
+      "confirmation_close": "37652.51",
+      "direction": 1,
+      "stop": "33521.00",
+      "take": "384887.0175883914552625184962",
+      "expires": 1613001600000,
+      "active_call_times": [
+        1612641600000,
+        1612710000000
+      ],
+      "entry_intent_count": 1,
+      "entry_filled": true,
+      "accepted_child_slices": 2,
+      "accepted_quantity_total": "1.960",
+      "intent_terminal_reasons": [
+        "target_filled"
+      ]
+    },
+    {
+      "identity": 1613419200000,
+      "parent_identity": 1612800000000,
+      "parent_invalidation_time": 1613404800000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "2145.23",
+      "peak_before": "45063.24",
+      "pullback_at": 1612814400000,
+      "pullback_high": "44380.00",
+      "pullback_low": "42649.00",
+      "pullback_distance": "2414.24",
+      "confirmed_at": 1613419200000,
+      "confirmation_close": "48722.66",
+      "direction": 1,
+      "stop": "42649.00",
+      "take": "698511.7999188377103211567322",
+      "expires": 1614024000000,
+      "active_call_times": [
+        1613703600000,
+        1613772000000
+      ],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1627430400000,
+      "parent_identity": 1627272000000,
+      "parent_invalidation_time": 1627344000000,
+      "parent_invalidation_reasons": [
+        "stop"
+      ],
+      "risk_r": "1452.94",
+      "peak_before": "48168.60",
+      "pullback_at": 1627286400000,
+      "pullback_high": "39284.65",
+      "pullback_low": "37778.00",
+      "pullback_distance": "10390.60",
+      "confirmed_at": 1627430400000,
+      "confirmation_close": "39442.33",
+      "direction": 1,
+      "stop": "37778.00",
+      "take": "93418.86020571783025909701994",
+      "expires": 1628035200000,
+      "active_call_times": [
+        1627466400000,
+        1627729200000,
+        1627898400000
+      ],
+      "entry_intent_count": 1,
+      "entry_filled": true,
+      "accepted_child_slices": 1,
+      "accepted_quantity_total": "2.338",
+      "intent_terminal_reasons": [
+        "target_filled"
+      ]
+    },
+    {
+      "identity": 1634155200000,
+      "parent_identity": 1633536000000,
+      "parent_invalidation_time": 1634140800000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "1858.80",
+      "peak_before": "56416.02",
+      "pullback_at": 1633550400000,
+      "pullback_high": "55147.19",
+      "pullback_low": "54510.00",
+      "pullback_distance": "1906.02",
+      "confirmed_at": 1634155200000,
+      "confirmation_close": "57260.95",
+      "direction": 1,
+      "stop": "54510.00",
+      "take": "153287.1989934874278383307223",
+      "expires": 1634760000000,
+      "active_call_times": [
+        1634317200000
+      ],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1640620800000,
+      "parent_identity": 1640289600000,
+      "parent_invalidation_time": 1640491200000,
+      "parent_invalidation_reasons": [
+        "stop"
+      ],
+      "risk_r": "1147.175",
+      "peak_before": "51805.00",
+      "pullback_at": 1640390400000,
+      "pullback_high": "51222.73",
+      "pullback_low": "50470.00",
+      "pullback_distance": "1335.00",
+      "confirmed_at": 1640620800000,
+      "confirmation_close": "51449.29",
+      "direction": 1,
+      "stop": "50470.00",
+      "take": "75561.57621969203942437923256",
+      "expires": 1641225600000,
+      "active_call_times": [],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1659672000000,
+      "parent_identity": 1658952000000,
+      "parent_invalidation_time": 1659556800000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "623.70",
+      "peak_before": "23480.00",
+      "pullback_at": 1659009600000,
+      "pullback_high": "23150.90",
+      "pullback_low": "22809.80",
+      "pullback_distance": "670.20",
+      "confirmed_at": 1659672000000,
+      "confirmation_close": "23158.50",
+      "direction": 1,
+      "stop": "22809.80",
+      "take": "31368.18603359926316148574507",
+      "expires": 1660276800000,
+      "active_call_times": [
+        1659722400000
+      ],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1674100800000,
+      "parent_identity": 1673481600000,
+      "parent_invalidation_time": 1674086400000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "197.55",
+      "peak_before": "18400.00",
+      "pullback_at": 1673510400000,
+      "pullback_high": "18233.00",
+      "pullback_low": "18070.00",
+      "pullback_distance": "330.00",
+      "confirmed_at": 1674100800000,
+      "confirmation_close": "20748.90",
+      "direction": 1,
+      "stop": "18070.00",
+      "take": "329407.5722892945723201053502",
+      "expires": 1674705600000,
+      "active_call_times": [
+        1674108000000,
+        1674219600000
+      ],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1674993600000,
+      "parent_identity": 1674259200000,
+      "parent_invalidation_time": 1674864000000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "583.45",
+      "peak_before": "23390.00",
+      "pullback_at": 1674345600000,
+      "pullback_high": "23298.20",
+      "pullback_low": "22670.00",
+      "pullback_distance": "720.00",
+      "confirmed_at": 1674993600000,
+      "confirmation_close": "23430.00",
+      "direction": 1,
+      "stop": "22670.00",
+      "take": "45309.33185668812323752023616",
+      "expires": 1675598400000,
+      "active_call_times": [],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1679342400000,
+      "parent_identity": 1678723200000,
+      "parent_invalidation_time": 1679328000000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "958.20",
+      "peak_before": "26489.90",
+      "pullback_at": 1678824000000,
+      "pullback_high": "26025.70",
+      "pullback_low": "24222.00",
+      "pullback_distance": "2267.90",
+      "confirmed_at": 1679342400000,
+      "confirmation_close": "27769.50",
+      "direction": 1,
+      "stop": "24222.00",
+      "take": "427296.4336802584885468232373",
+      "expires": 1679947200000,
+      "active_call_times": [
+        1679403600000
+      ],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1681819200000,
+      "parent_identity": 1681156800000,
+      "parent_invalidation_time": 1681761600000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "368.60",
+      "peak_before": "30491.00",
+      "pullback_at": 1681200000000,
+      "pullback_high": "30160.00",
+      "pullback_low": "29752.10",
+      "pullback_distance": "738.90",
+      "confirmed_at": 1681819200000,
+      "confirmation_close": "30369.70",
+      "direction": 1,
+      "stop": "29752.10",
+      "take": "45803.43383706313605388068682",
+      "expires": 1682424000000,
+      "active_call_times": [],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1687910400000,
+      "parent_identity": 1687291200000,
+      "parent_invalidation_time": 1687896000000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "459.80",
+      "peak_before": "30822.00",
+      "pullback_at": 1687392000000,
+      "pullback_high": "30195.80",
+      "pullback_low": "29766.00",
+      "pullback_distance": "1056.00",
+      "confirmed_at": 1687910400000,
+      "confirmation_close": "30683.20",
+      "direction": 1,
+      "stop": "29766.00",
+      "take": "56299.44590907217738449273292",
+      "expires": 1688515200000,
+      "active_call_times": [],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1695139200000,
+      "parent_identity": 1695038400000,
+      "parent_invalidation_time": 1695067200000,
+      "parent_invalidation_reasons": [
+        "stop"
+      ],
+      "risk_r": "241.50",
+      "peak_before": "27397.00",
+      "pullback_at": 1695067200000,
+      "pullback_high": "27296.80",
+      "pullback_low": "26611.20",
+      "pullback_distance": "785.80",
+      "confirmed_at": 1695139200000,
+      "confirmation_close": "27413.40",
+      "direction": 1,
+      "stop": "26611.20",
+      "take": "49651.43278414511167400457038",
+      "expires": 1695744000000,
+      "active_call_times": [
+        1695204000000
+      ],
+      "entry_intent_count": 1,
+      "entry_filled": true,
+      "accepted_child_slices": 4,
+      "accepted_quantity_total": "11.939",
+      "intent_terminal_reasons": [
+        "deadline"
+      ]
+    },
+    {
+      "identity": 1698062400000,
+      "parent_identity": 1697443200000,
+      "parent_invalidation_time": 1698048000000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "307.90",
+      "peak_before": "28168.60",
+      "pullback_at": 1697457600000,
+      "pullback_high": "27890.20",
+      "pullback_low": "27627.40",
+      "pullback_distance": "541.20",
+      "confirmed_at": 1698062400000,
+      "confirmation_close": "30644.40",
+      "direction": 1,
+      "stop": "27627.40",
+      "take": "243541.6594099280561133775116",
+      "expires": 1698667200000,
+      "active_call_times": [],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    },
+    {
+      "identity": 1698883200000,
+      "parent_identity": 1698105600000,
+      "parent_invalidation_time": 1698710400000,
+      "parent_invalidation_reasons": [
+        "expiry"
+      ],
+      "risk_r": "867.05",
+      "peak_before": "35981.90",
+      "pullback_at": 1698120000000,
+      "pullback_high": "35300",
+      "pullback_low": "32833.50",
+      "pullback_distance": "3148.40",
+      "confirmed_at": 1698883200000,
+      "confirmation_close": "35437.40",
+      "direction": 1,
+      "stop": "32833.50",
+      "take": "163062.9363923487781430557596",
+      "expires": 1699488000000,
+      "active_call_times": [
+        1699178400000,
+        1699246800000
+      ],
+      "entry_intent_count": 0,
+      "entry_filled": false,
+      "accepted_child_slices": 0,
+      "accepted_quantity_total": "0",
+      "intent_terminal_reasons": []
+    }
+  ]
+}
