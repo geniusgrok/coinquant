@@ -32,6 +32,19 @@ def exit_minutes(root, prepared):
     hours=[t for t in receipt['request']['exit_hours_ms'] if t in cache[0]['klines']]
     tables={kind:dict(values) for kind,values in original.items()}
     quotes=dict(old_quotes); identities=list(identities);checks=[]
+    for record in receipt.get('prior_volume_sources', []):
+        tm=record['minute_ms'];path=root/record['path'];raw=path.read_bytes()
+        sha=hashlib.sha256(raw).hexdigest()
+        if (tm+MINUTE not in hours or tm%HOUR!=HOUR-MINUTE
+                or '/klines/' not in record['source'] or sha!=record['sha256']
+                or len(raw)!=record['bytes']
+                or Path(str(path)+'.CHECKSUM').read_text().split()[0]!=sha):
+            raise ValueError('invalid preceding published volume original')
+        rows={int(r[0]):r for r in _rows(raw)}
+        if tm not in rows or tm in quotes and quotes[tm]!=D(rows[tm][7]):
+            raise ValueError('missing or conflicting preceding published volume')
+        quotes[tm]=D(rows[tm][7])
+        identities.append(dict(path=str(path),source=record['source'],sha256=sha,bytes=len(raw)))
     for record in receipt['records']:
         selected=[t for t in hours if iso(t)[:10]==record['day']]
         if not selected:continue
@@ -54,8 +67,13 @@ def exit_minutes(root, prepared):
                 tables[kind][tm]=values
             if kind=='klines':
                 for tm in range(t-MINUTE,t+HOUR,MINUTE):
-                    if tm not in source:raise ValueError('missing published exit volume')
-                    quotes[tm]=D(source[tm][7])
+                    if tm in source:
+                        value=D(source[tm][7])
+                        if tm in quotes and quotes[tm]!=value:
+                            raise ValueError('conflicting published exit volume')
+                        quotes[tm]=value
+                    elif tm not in quotes:
+                        raise ValueError(f'missing published exit volume at {tm}')
         identities.append(dict(path=str(path),source=record['source'],sha256=sha,bytes=len(raw)))
     if len(checks)!=2*len(hours):raise ValueError('planned exit hour coverage mismatch')
     combined=dict(hours=sorted(set(validation['hours'])|set(hours)),
