@@ -1,60 +1,40 @@
-name: Temporary OI original archive recovery
+name: Temporary OI original archive preservation
 on:
   pull_request:
     branches: [main]
     paths: ['.github/workflows/probe-oi-archive.yml']
 permissions:
   contents: write
-  actions: read
 jobs:
   archive:
     if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'research/oi-causal-probe-20260923'
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           ref: research/oi-causal-probe-20260923
-      - name: Restore and verify the already acquired full original package
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Acquire and verify official OI original files
         run: |
+          python3 research/oi_archive_acquire.py /tmp/oi-originals
           python3 - <<'PY'
-          import hashlib
-          import io
-          import os
+          import json
+          from collections import Counter
           from pathlib import Path
-          from urllib.request import Request, urlopen
-          from zipfile import ZipFile
 
-          url = 'https://api.github.com/repos/geniusgrok/coinquant/actions/artifacts/10765955427/zip'
-          request = Request(url, headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
-                                          'Accept': 'application/vnd.github+json'})
-          with urlopen(request, timeout=90) as response:
-              artifact = response.read()
-          with ZipFile(io.BytesIO(artifact)) as archive:
-              names = set(archive.namelist())
-              expected = {'MANIFEST.json', 'OI_DEVELOPMENT_ORIGINALS.tar.gz'}
-              if names != expected or archive.testzip() is not None:
-                  raise ValueError(f'unexpected artifact files: {names}')
-              manifest = archive.read('MANIFEST.json')
-              originals = archive.read('OI_DEVELOPMENT_ORIGINALS.tar.gz')
-          digests = {
-              'MANIFEST.json': 'abc9a7bde759f23598f31b7ea40e9f197be8efcb29cb1ac964058537c2f30bc6',
-              'OI_DEVELOPMENT_ORIGINALS.tar.gz': 'c1b853a8584e200677772879b91a6b07ce135b0c1500508da9f475008234a74c',
-          }
-          target = Path('evidence/oi-archive-20260923/development-originals')
-          target.mkdir(parents=True, exist_ok=True)
-          for name, data in [('MANIFEST.json', manifest),
-                             ('OI_DEVELOPMENT_ORIGINALS.tar.gz', originals)]:
-              if hashlib.sha256(data).hexdigest() != digests[name]:
-                  raise ValueError(f'original digest mismatch: {name}')
-              (target / name).write_bytes(data)
-              print(name, len(data), digests[name])
-          if len(originals) != 14432183:
-              raise ValueError('original archive length mismatch')
+          folder = Path('/tmp/oi-originals')
+          manifest = json.loads((folder / 'MANIFEST.json').read_text())
+          count = Counter(row['status'] for row in manifest['days'])
+          expected = {'missing_checksum_404': 244, 'verified_complete': 1140,
+                      'verified_incomplete': 68, 'quarantined_conflict': 9}
+          if len(manifest['days']) != 1461 or count != expected:
+              raise ValueError(f'coverage changed; inspect before preservation: {count}')
+          destination = Path('evidence/oi-archive-20260923/development-originals')
+          destination.mkdir(parents=True, exist_ok=True)
+          for filename in ['MANIFEST.json', 'OI_DEVELOPMENT_ORIGINALS.tar.gz']:
+              (destination / filename).write_bytes((folder / filename).read_bytes())
           PY
-      - name: Save verified original bytes on the research branch
+      - name: Preserve verified bytes on the research branch
         run: |
           set -eu
           git config user.name 'github-actions[bot]'
