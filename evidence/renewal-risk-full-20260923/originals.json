@@ -1,0 +1,58 @@
+{
+  "schema": "coinquant.hr60.full_originals_index.v1",
+  "new_complete_originals": [
+    {
+      "file": "COINQUANT_HR60_FULL_MINUTES_20260923.zip",
+      "bytes": 19173704,
+      "sha256": "83926b49e51001a472db465aea5f2702ff13422023810c633548ac6ce6fb953a",
+      "library_file_id": "libfile_6be839ad3dfc8191ae3e81cfcd5580f0",
+      "readback_byte_equal": true
+    },
+    {
+      "file": "COINQUANT_HR60_FULL_ACCOUNT_20260923.zip",
+      "bytes": 9857907,
+      "sha256": "76de79836cb0526318d457aadcb9151ccffbd153ff75191a01d139c39ad0e3c9",
+      "library_file_id": "libfile_72e261d1946881918bb401364184f573",
+      "readback_byte_equal": true
+    }
+  ],
+  "recovery_dependencies": [
+    {
+      "file": "COINQUANT_M60_COMPLETE_20260923.zip",
+      "library_file_id": "libfile_7579b3804a4c8191b16800c40c81d5df",
+      "bytes": 184635190,
+      "sha256": "ca1dab14d2501a31d2122bc22d3001c34392033a6e9de786a6727886b13c5a1e"
+    },
+    {
+      "file": "COINQUANT_H60_DEVELOPMENT_ORIGINALS_20260923.zip",
+      "library_file_id": "libfile_ef43347db8fc8191951792b19a8ab84e",
+      "bytes": 4693204,
+      "sha256": "1e13c2e628ef88df7fe9a2321b01cd96d225de9cb941285d02200520a21673c2"
+    },
+    {
+      "file": "COINQUANT_M60_DEVELOPMENT_MINUTES_20260923.zip",
+      "library_file_id": "libfile_f238bff2ad6c819183809199ef661478",
+      "bytes": 30232711,
+      "sha256": "76d6fd297e3f07fb73b5db8824b21c0cddf5349748afa6ee70e7f52d4e20c3e1"
+    },
+    {
+      "file": "COINQUANT_M60_PROTECTION_MINUTES_20260923.zip",
+      "library_file_id": "libfile_b6057b4e31bc8191979c45b8060481da",
+      "bytes": 755861,
+      "sha256": "b4701cbc7e8e6d91ba01997c093382c5e5f8a656c8868d79f072d35b05565781"
+    },
+    {
+      "file": "COINQUANT_M60_MARK_RECHECK_20260923.zip",
+      "library_file_id": "libfile_dec4645a5afc8191937b52f06c35abf8",
+      "bytes": 1116642,
+      "sha256": "1c6adee31bf3640837c07e8d6fd83f9523f3b1b8e3900d757156248e61617b40"
+    },
+    {
+      "file": "COINQUANT_M60_WARMUP_PROBE_20260923.zip",
+      "library_file_id": "libfile_6b23bff662d8819185867ef506e3be4a",
+      "bytes": 1013,
+      "sha256": "edd70f1dbd6fef0cfdf00901b9fdc11240a3d5d4b5ac10ac8122840a42697cf6"
+    }
+  ],
+  "note": "The 184635190-byte M60 COMPLETE dependency contains the old bounded/SX60 input archives; it is not the missing 217458618-byte completed M60 account package. Account ZIP has the complete results and source snapshots; this index is maintained in Git."
+}

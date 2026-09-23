@@ -1,0 +1,11 @@
+{
+  "source_base": "97ba8fcf89ace1d8798067bef59d8160c9bebd00",
+  "frozen_calls": 795,
+  "coverage_hours": 514,
+  "changed_measured_sources": [
+    "research/renewal_risk_replay.py"
+  ],
+  "input_identity": "f931b0d76ef3bbe4d1de0f58ed23e85b1e5a831fb9d29388bd4737f59715a0ff",
+  "coverage_verified": true,
+  "strategy_and_protocol_unchanged": true
+}
