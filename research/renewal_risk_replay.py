@@ -13,14 +13,52 @@ from research.persistent_hold_replay import run
 from research.verify_account_ledger import verify
 from research.execution_risk_audit import audit, buffer_audit
 from research.sustainable_validation import finite_budget_check
+from coinquant.campaign import Campaign
+from coinquant.multiscale import daily_snapshots, published_daily_key
+from coinquant.research import invocations, spec, timestamp
+from research.multiscale_data import extend_minutes
+from research.bounded_execution_data import HOUR
 
 PROTOCOL='evidence/renewal-risk-20260923/PROTOCOL.md'
 SOURCES_HR60=tuple(dict.fromkeys((*SOURCES_H60, 'coinquant/renewal_risk.py',
     'coinquant/capital.py', 'research/renewal_risk_replay.py', PROTOCOL)))
 
 
+def full_window_hours(cache, warmup):
+    """Cover possible entries/renewals and the first following exit call.
+
+    This input-only superset never consults simulated positions or returns.
+    After a call, a long can survive only with a long impulse opportunity or
+    positive published renewal score. The next call also needs an exit path.
+    """
+    cfg=spec(); trade=cache[0]['klines']; warm=cache[2]
+    start=timestamp(cfg['start']); end=timestamp(cfg['end']); interval=4*HOUR
+    daily=daily_snapshots(warm,trade,start,end,
+        D(cfg['slippage_fraction'])+D(cfg['spread_fraction'])/2,warmup)
+    model=Campaign('impulse_hold',interval); opportunities={}
+    for t in range(min(warm),end,interval):
+        source=warm if t<start else trade
+        rows=[source[x] for x in range(t,t+interval,HOUR)]
+        opportunities[t+interval]=model.update(t+interval,
+            max(D(r[2]) for r in rows),min(D(r[3]) for r in rows),D(rows[-1][4]))
+    hours=[]; previous_possible=False
+    for t in invocations(cfg):
+        opportunity=opportunities.get(t//interval*interval)
+        state=daily.get(published_daily_key(t))
+        possible=bool((opportunity and opportunity.direction>0) or
+            (state and state.score is not None and state.score>0))
+        if possible or previous_possible:
+            hours.append(t)
+        previous_possible=possible
+    return hours
+
+
 def prepared_inputs(bounded, sx60, new_data, h60_originals, full=False):
     root, prepared, warmup=prepare_h60_inputs(bounded,sx60,new_data,full)
+    if full:
+        prepared=extend_minutes(prepared,
+            [bounded/'inputs',sx60/'exit-minutes',*new_data],
+            full_window_hours(prepared[0],warmup))
     h60_root=Path(h60_originals)
     h60_invocation=json.loads((h60_root/'results/H60-development.invocation.json').read_text())
     h60_result=json.loads((h60_root/'results/H60-development/result.json').read_text())
@@ -34,7 +72,6 @@ def prepared_inputs(bounded, sx60, new_data, h60_originals, full=False):
     covered=set(prepared[3]['hours'])
     missing=sorted({row['time'] for row in holds if row['time'] not in covered})
     if missing:
-        from research.multiscale_data import extend_minutes
         prepared=extend_minutes(prepared,[Path(bounded/'inputs'),Path(sx60/'exit-minutes'),*new_data],missing)
     if any(row['time'] not in set(prepared[3]['hours']) for row in holds):
         raise ValueError('HR60 permission hour lacks verified minute protection')

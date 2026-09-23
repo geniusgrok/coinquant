@@ -1,0 +1,22 @@
+{
+  "schema": "coinquant.hr60.full_selection.v1",
+  "decision": "REJECT_HR60",
+  "formal_target_passed": false,
+  "reason": "Same-input SX60 has higher terminal wealth and lower continuous MDD.",
+  "full_calls": 795,
+  "stress_run": false,
+  "absence_run": false,
+  "production_enabled": false,
+  "hr60": {
+    "cagr": 1.0258234402260338,
+    "mdd": "0.4443234249350503092988459082",
+    "final_cny": "1148159.097847901775326713835"
+  },
+  "sx60": {
+    "cagr": 1.0262621107382985,
+    "mdd": "0.3988511525411302503194848743",
+    "final_cny": "1149830.577467841415769839619"
+  },
+  "terminal_relative_delta": "-0.0014536747001637191748923133",
+  "mdd_percentage_point_delta": "4.547227239392005897936103390"
+}

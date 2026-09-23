@@ -1,0 +1,10 @@
+{
+  "close_points": 58896,
+  "max_equity_error_usdt": "0",
+  "fees": "7356.003494566241988853926219",
+  "funding": "18408.6554876108124242888",
+  "input_sha256": {
+    "orders.csv.gz": "feb47f378f200b5596b0926f7ea39d8307bf6583d84ddbf99eeca2848e5c2258",
+    "equity.csv.gz": "4fd0ce8782fbc34d280cab357f61df49a8645e57c4cd5edcba3c0e87fc40b558"
+  }
+}
