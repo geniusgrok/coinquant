@@ -24,8 +24,8 @@ class Opportunity:
 
 class Opportunities:
     def __init__(self, mechanism, interval=FOUR_HOURS):
-        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','post_impulse_restart'):raise ValueError('unknown mechanism')
-        if interval not in (3600000,FOUR_HOURS,86400000) or (interval==86400000 and mechanism!='swing'):raise ValueError('unsupported completed interval')
+        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','post_impulse_restart','daily_trend'):raise ValueError('unknown mechanism')
+        if interval not in (3600000,FOUR_HOURS,86400000) or (interval==86400000 and mechanism not in ('swing','daily_trend')):raise ValueError('unsupported completed interval')
         self.interval=interval
         self.mechanism=mechanism;self.bars=deque(maxlen=21);self.tr=deque(maxlen=14)
         self.ema=None;self.last=None;self.active=None;self.box=None;self.contraction=0
@@ -40,6 +40,7 @@ class Opportunities:
         if not 0<low<=close<=high:raise ValueError('invalid completed candle')
         if self.mechanism=='post_impulse_restart':
             return self._update_post_impulse_restart(end,high,low,close)
+        previous = tuple(self.bars) if self.mechanism=='daily_trend' else ()
         prior=self.bars[-1][3] if self.bars else close
         prior_atr=sum(self.tr)/14 if len(self.tr)==14 else None
         self.tr.append(max(high-low,abs(high-prior),abs(low-prior)))
@@ -52,6 +53,14 @@ class Opportunities:
             self.active=replace(self.active,entry_open=False)
         if self.active and self.active.confirm_at is not None and self.active.direction*(close-self.active.confirm_at)>=0:
             self.active=replace(self.active,stop=self.active.confirmed_stop,confirm_at=None)
+        if self.mechanism=='daily_trend':
+            if len(previous)>=20:
+                floor=min(bar[2] for bar in previous[-10:])
+                if self.active and close<floor:
+                    self.active=None
+                if not self.active and close>max(bar[1] for bar in previous[-20:]):
+                    self.active=Opportunity(end,1,floor,close*(close/floor)**20,None)
+            return self.active
         if self.mechanism=='swing':
             self.swing_high=close if self.swing_high is None else max(self.swing_high,close)
             self.swing_low=close if self.swing_low is None else min(self.swing_low,close)
