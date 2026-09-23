@@ -2,7 +2,7 @@ name: Temporary OI archive integrity probe
 on:
   pull_request:
     branches: [main]
-    paths: ['.github/workflows/probe-oi-archive.yml']
+    paths: ['.github/workflows/probe-oi-archive.yml', 'research/oi_archive_acquire.py']
 permissions:
   contents: write
 jobs:
