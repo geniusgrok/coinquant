@@ -1,125 +1,64 @@
-name: Temporary OI archive integrity probe
+name: Temporary OI original archive recovery
 on:
   pull_request:
     branches: [main]
-    paths: ['.github/workflows/probe-oi-archive.yml', 'research/oi_archive_acquire.py']
+    paths: ['.github/workflows/probe-oi-archive.yml']
 permissions:
   contents: write
+  actions: read
 jobs:
-  probe:
+  archive:
     if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'research/oi-causal-probe-20260923'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
-          persist-credentials: false
-      - name: Verify a fixed set of public OI archives and retain original bytes
-        shell: bash
+          ref: research/oi-causal-probe-20260923
+      - name: Restore and verify the already acquired full original package
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           python3 - <<'PY'
-          import csv
           import hashlib
           import io
-          import json
           import os
-          from datetime import datetime, timezone
           from pathlib import Path
-          from urllib.error import HTTPError
-          from urllib.request import urlopen
+          from urllib.request import Request, urlopen
           from zipfile import ZipFile
 
-          days = ('2020-08-31', '2020-09-01', '2020-09-02', '2020-09-03',
-                  '2021-01-01', '2023-11-10', '2026-06-24', '2026-06-25',
-                  '2026-09-18')
-          out = Path(os.environ['RUNNER_TEMP']) / 'oi-original-probe'
-          out.mkdir()
-          manifest = []
-          base = 'https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/'
-          for day in days:
-              name = f'BTCUSDT-metrics-{day}.zip'
-              url = base + name
-              record = {'day': day, 'source': url}
-              try:
-                  with urlopen(url + '.CHECKSUM', timeout=20) as response:
-                      checksum = response.read()
-                  with urlopen(url, timeout=30) as response:
-                      raw = response.read()
-                      record['last_modified'] = response.headers.get('Last-Modified')
-              except HTTPError as exc:
-                  if exc.code != 404:
-                      raise
-                  record['status'] = '404'
-                  manifest.append(record)
-                  continue
-              expected, checksum_name = checksum.decode('ascii').strip().split()
-              if checksum_name != name or hashlib.sha256(raw).hexdigest() != expected:
-                  raise ValueError(f'checksum mismatch: {day}')
-              with ZipFile(io.BytesIO(raw)) as archive:
-                  members = archive.namelist()
-                  if len(members) != 1 or archive.testzip() is not None:
-                      raise ValueError(f'invalid ZIP: {day}')
-                  rows = list(csv.DictReader(io.StringIO(archive.read(members[0]).decode('utf-8-sig'))))
-              if not rows or 'sum_open_interest' not in rows[0] or 'create_time' not in rows[0]:
-                  raise ValueError(f'unexpected metrics schema: {day}')
-              times = [datetime.fromisoformat(r['create_time']).replace(tzinfo=timezone.utc)
-                       for r in rows]
-              (out / name).write_bytes(raw)
-              (out / (name + '.CHECKSUM')).write_bytes(checksum)
-              anomalies = [(i, rows[i - 1]['create_time'], rows[i]['create_time'])
-                           for i in range(1, len(times)) if times[i] <= times[i - 1]]
-              disagreements = [i for i in range(1, len(times))
-                               if times[i] == times[i - 1] and rows[i] != rows[i - 1]]
-              record.update(status='verified_with_label_anomaly' if anomalies else 'verified',
-                            label_anomalies=anomalies[:8], label_anomaly_count=len(anomalies),
-                            duplicate_row_disagreements=len(disagreements),
-                            first_disagreement=[rows[disagreements[0] - 1], rows[disagreements[0]]]
-                                if disagreements else None,
-                            sha256=expected, bytes=len(raw),
-                            header=list(rows[0]), count=len(rows),
-                            first_label=rows[0]['create_time'],
-                            last_label=rows[-1]['create_time'],
-                            first_oi=rows[0]['sum_open_interest'],
-                            last_oi=rows[-1]['sum_open_interest'])
-              manifest.append(record)
-          (out / 'MANIFEST.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
-          print(json.dumps(manifest, ensure_ascii=False, indent=2))
+          url = 'https://api.github.com/repos/geniusgrok/coinquant/actions/artifacts/10765955427/zip'
+          request = Request(url, headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                                          'Accept': 'application/vnd.github+json'})
+          with urlopen(request, timeout=90) as response:
+              artifact = response.read()
+          with ZipFile(io.BytesIO(artifact)) as archive:
+              names = set(archive.namelist())
+              expected = {'MANIFEST.json', 'OI_DEVELOPMENT_ORIGINALS.tar.gz'}
+              if names != expected or archive.testzip() is not None:
+                  raise ValueError(f'unexpected artifact files: {names}')
+              manifest = archive.read('MANIFEST.json')
+              originals = archive.read('OI_DEVELOPMENT_ORIGINALS.tar.gz')
+          digests = {
+              'MANIFEST.json': 'abc9a7bde759f23598f31b7ea40e9f197be8efcb29cb1ac964058537c2f30bc6',
+              'OI_DEVELOPMENT_ORIGINALS.tar.gz': 'c1b853a8584e200677772879b91a6b07ce135b0c1500508da9f475008234a74c',
+          }
+          target = Path('evidence/oi-archive-20260923/development-originals')
+          target.mkdir(parents=True, exist_ok=True)
+          for name, data in [('MANIFEST.json', manifest),
+                             ('OI_DEVELOPMENT_ORIGINALS.tar.gz', originals)]:
+              if hashlib.sha256(data).hexdigest() != digests[name]:
+                  raise ValueError(f'original digest mismatch: {name}')
+              (target / name).write_bytes(data)
+              print(name, len(data), digests[name])
+          if len(originals) != 14432183:
+              raise ValueError('original archive length mismatch')
           PY
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: oi-original-probe
-          path: ${{ runner.temp }}/oi-original-probe/
-          compression-level: 0
-          retention-days: 30
-          if-no-files-found: error
-      - name: Acquire fixed development window without economic selection
-        run: python3 research/oi_archive_acquire.py "$RUNNER_TEMP/oi-development"
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: oi-development-originals
-          path: |
-            ${{ runner.temp }}/oi-development/MANIFEST.json
-            ${{ runner.temp }}/oi-development/OI_DEVELOPMENT_ORIGINALS.tar.gz
-          compression-level: 0
-          retention-days: 30
-          if-no-files-found: warn
-      - name: Preserve fixed original ZIPs and checksums on research branch
-        if: success() && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'research/oi-causal-probe-20260923'
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
-        with:
-          ref: research/oi-causal-probe-20260923
-      - name: Commit original bytes to research branch
-        if: success() && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'research/oi-causal-probe-20260923'
+      - name: Save verified original bytes on the research branch
         run: |
           set -eu
-          mkdir -p evidence/oi-archive-20260923/sample-originals
-          cp "$RUNNER_TEMP"/oi-original-probe/* evidence/oi-archive-20260923/sample-originals/
-          mkdir -p evidence/oi-archive-20260923/development-originals
-          cp "$RUNNER_TEMP"/oi-development/MANIFEST.json "$RUNNER_TEMP"/oi-development/OI_DEVELOPMENT_ORIGINALS.tar.gz evidence/oi-archive-20260923/development-originals/
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add evidence/oi-archive-20260923/sample-originals
-          git commit -m 'Preserve checksum-verified OI sample originals'
+          git add evidence/oi-archive-20260923/development-originals
+          git commit -m 'Preserve complete official OI development originals'
           git push origin HEAD:refs/heads/research/oi-causal-probe-20260923
