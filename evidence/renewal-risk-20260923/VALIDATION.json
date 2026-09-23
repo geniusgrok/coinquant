@@ -56,7 +56,11 @@
     "entry_risk_basis": {
       "count": 20,
       "expected_mother_intents": 20,
-      "all_basis_present": true
+      "all_basis_present": true,
+      "all_parents_resolved": true,
+      "child_identity_and_quantity_reconciled": true,
+      "last_confirmed_child_is_gap_anchor": true,
+      "gap_anchor_and_protection_valid": true
     },
     "renewal": {
       "scheduled": 64,
@@ -66,7 +70,8 @@
       "every_decision_at_T_plus_60_seconds": true,
       "reductions_only": true,
       "protective_stop_unchanged": true,
-      "post_execution_risk_or_capital_violations": 0
+      "post_execution_risk_or_capital_violations": 0,
+      "infeasible_plan_count": 0
     },
     "account_ledger": {
       "close_points": 35064,
@@ -84,11 +89,11 @@
       "negative_observations": 0
     },
     "finite_budget": {
-      "seven_day_entry_violations": 0,
+      "seven_day_entry_violations": [],
       "twenty_one_day_insufficient_entry_children": 0
     },
     "regression_tests": {
-      "passed": 40,
+      "passed": 42,
       "command": "PYTHONPATH=tests python -m unittest test_renewal_risk test_sustainable_capital test_bounded_execution test_conditional_hold test_planned_exit test_execution_risk_frontier"
     },
     "full_window": {
@@ -124,5 +129,5 @@
   ],
   "no_H60_M60_or_old_grid_reruns": true,
   "production_defaults_or_live_execution_changed": false,
-  "note": "Passing development gates authorizes the full-window attempt under the frozen attachment; it does not certify the official return objective."
+  "note": "\u4fee\u6b63\u540e HR60 \u5f00\u53d1\u8d26\u6237\u901a\u8fc7\u786c\u68c0\u67e5\uff1b\u6b63\u5f0f\u5168\u7a97\u7f3a\u5c11\u5b98\u65b9\u5206\u949f\u539f\u4ef6\uff0cCAGR/MDD \u76ee\u6807\u4ecd\u672a\u9a8c\u8bc1\u3002"
 }

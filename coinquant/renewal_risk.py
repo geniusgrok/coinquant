@@ -8,6 +8,29 @@ from .types import ZERO, floor_step
 from .binance import market_quantity
 
 
+def confirmed_entry_child_ids(parent_id, parent_quantity, unresolved, children):
+    """Return child IDs only when resolved fills exactly reconcile to one parent."""
+    quantity = D(parent_quantity)
+    if unresolved or not quantity.is_finite() or quantity <= 0 or not children:
+        return None
+    seen = set()
+    total = ZERO
+    child_ids = []
+    for child in children:
+        child_id = child.get('child_id')
+        try:
+            accepted = D(child.get('accepted', '0'))
+        except (ArithmeticError, TypeError, ValueError):
+            return None
+        if (child.get('parent_id') != parent_id or not child_id or child_id in seen
+                or not accepted.is_finite() or accepted <= 0):
+            return None
+        seen.add(child_id)
+        child_ids.append(child_id)
+        total += accepted
+    return child_ids if total == quantity else None
+
+
 def plan_renewal_reduction(account, budget, reference, mark, anchor_mark,
                            instrument, exit_price, stop_fill, *, risk_fraction):
     """Find the largest remaining long quantity meeting both frozen limits.

@@ -84,6 +84,8 @@ def run_account(root,prepared,warmup,output,*,full=False,stress=False):
         resolved_keys={(e['campaign'],e['call_time']) for e in plans}
         resolved_keys.update((e.get('planned',{}).get('campaign'),
             e.get('planned',{}).get('call_time')) for e in cancellations)
+        resolved_keys.update((e['campaign'],e['call_time']) for e in events
+            if e.get('kind')=='renewal_risk_infeasible')
         result['hr60_audit']=dict(plan_count=len(plans),reduction_count=len(cuts),
             scheduled_count=len(schedules),resolved_schedule_count=len(scheduled_keys & resolved_keys),
             all_schedules_resolved=scheduled_keys==resolved_keys,

@@ -280,10 +280,16 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 return
             renewal_basis_finalized.add(campaign)
             e0=renewal_entry_equity.get(parent.identity)
+            child_fills=renewal_confirmed_children.get(parent.identity,[])
+            from coinquant.renewal_risk import confirmed_entry_child_ids
+            child_ids=confirmed_entry_child_ids(parent.identity,parent.filled,parent.unresolved,child_fills)
+            anchor_valid=(bool(child_ids) and gap_anchor_child==child_ids[-1] and gap_anchor_mark is not None
+                and gap_anchor_mark.is_finite() and gap_anchor_mark>0)
             basis=None
             status='missing_confirmed_entry_risk'
             audit_basis=dict(campaign=campaign,parent_id=parent.identity,
-                child_ids=renewal_confirmed_children.get(campaign,[]),entry_time=parent.call_time,
+                child_ids=child_ids or [],confirmed_child_fills=child_fills,
+                parent_unresolved=parent.unresolved,entry_time=parent.call_time,
                 first_fill=parent.first_fill,last_fill=parent.last_fill,basis_time=now,
                 e0=str(e0) if e0 is not None else None,
                 confirmed_quantity=str(parent.filled),risk_budget=str(parent.risk_budget),
@@ -292,8 +298,16 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 sl=str(account.sl),tp=str(account.tp),gap_anchor_child=gap_anchor_child,
                 gap_anchor_mark=str(gap_anchor_mark) if gap_anchor_mark is not None else None,
                 calculation='BoundedEntry.loss_at_stop:v1')
-            if (e0 is not None and e0.is_finite() and e0>0 and account.q>0
-                    and last_entry_epoch==campaign and parent.filled>0):
+            if parent.unresolved:
+                status='unresolved_entry_parent'
+            elif child_ids is None:
+                status='unconfirmed_entry_children'
+            elif not anchor_valid:
+                status='missing_confirmed_gap_anchor'
+            elif (e0 is not None and e0.is_finite() and e0>0 and account.q>0
+                    and last_entry_epoch==campaign and account.q==parent.filled
+                    and account.sl.is_finite() and account.sl>0
+                    and account.tp.is_finite() and account.tp>account.sl):
                 b0=parent.loss_at_stop(account)
                 ratio=b0/e0 if b0.is_finite() else ZERO
                 audit_basis.update(b0=str(b0),r0=str(ratio))
@@ -301,7 +315,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     status='confirmed_entry_risk_exceeds_mother_budget'
                 elif b0.is_finite() and b0>0 and ratio.is_finite() and ratio>0:
                     basis=dict(campaign=campaign,parent_id=parent.identity,
-                        child_ids=renewal_confirmed_children.get(campaign,[]),
+                        child_ids=child_ids,confirmed_child_fills=child_fills,
                         entry_time=parent.call_time,first_fill=parent.first_fill,
                         last_fill=parent.last_fill,basis_time=now,e0=str(e0),
                         b0=str(b0),r0=str(ratio),confirmed_quantity=str(parent.filled),
@@ -384,7 +398,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                         mark=str(mo),reference=str(o),gap_anchor_child=gap_anchor_child,budget=capital.record()))
                     immediate_signal_exit=(execution.planned_exit=='instant' and account.q
                         and disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit')
-                    renewal_expiry_skip=bool(renewal_risk and renewal_expiry and account.q)
+                    renewal_expiry_skip=False
                     if renewal_risk and renewal_expiry and account.q and hold_permission:
                         basis=renewal_basis.get(last_entry_epoch)
                         if basis is None or gap_anchor_mark is None:
@@ -403,6 +417,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                 raise ValueError('overlapping HR60 renewal decisions')
                             renewal_pending=renewal_plan
                             execution_record('renewal_risk_scheduled',renewal_plan)
+                            renewal_expiry_skip=True
                             action='renewal_risk_scheduled'
                     if account.q and not immediate_signal_exit and not renewal_expiry_skip:
                         original_q=account.q
@@ -589,7 +604,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                         binding[child['reason']]+=1
                         ow.writerow([st,child['event'],str(amount),child['price'],'',str(account.q)])
                         if renewal_risk:
-                            renewal_confirmed_children.setdefault(entry_window.campaign,[]).append(child['child_id'])
+                            renewal_confirmed_children.setdefault(entry_window.identity,[]).append(dict(
+                                parent_id=child['parent_id'],child_id=child['child_id'],accepted=str(amount)))
                         if sustainable:
                             gap_anchor_mark=smo;gap_anchor_child=child['child_id']
                         observe(st,'slice_confirmed',smo)
@@ -623,61 +639,75 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                             gap_anchor_child=gap_anchor_child,budget=decision_budget.record(),
                             purpose='HR60_causal_decision'))
                         from coinquant.renewal_risk import plan_renewal_reduction
-                        change=plan_renewal_reduction(account,decision_budget,so,smo,gap_anchor_mark,instrument,
-                            lambda q: exit_fill(so,q,previous_quote,slip,spread)[0],
-                            lambda q: exit_fill(account.sl,q,previous_quote,slip,spread)[0],
-                            risk_fraction=D(planned['r0']))
-                        counts['renewal_risk_checks']+=1
-                        plan_record=dict(time=st,campaign=planned['campaign'],call_time=t,decision_time=st,
-                            execute_time=st,before_quantity=str(account.q),r0=planned['r0'],
-                            e0=planned['e0'],b0=planned['b0'],stop_before=str(account.sl),
-                            reference=str(so),mark=str(smo),capital_budget=decision_budget.record(),plan=change)
-                        execution_record('renewal_risk_plan',plan_record)
-                        amount=D(change['amount'])
-                        if not amount:
-                            execution_record('renewal_risk_within_limit',dict(time=st,
-                                campaign=planned['campaign'],quantity=str(account.q),plan=change))
+                        try:
+                            change=plan_renewal_reduction(account,decision_budget,so,smo,gap_anchor_mark,instrument,
+                                lambda q: exit_fill(so,q,previous_quote,slip,spread)[0],
+                                lambda q: exit_fill(account.sl,q,previous_quote,slip,spread)[0],
+                                risk_fraction=D(planned['r0']))
+                        except ValueError as exc:
+                            if str(exc) != 'no payable reduce-only quantity meets capital and risk limits':
+                                raise
+                            counts['renewal_risk_checks']+=1
+                            counts['renewal_risk_infeasible']+=1
+                            failure=dict(time=st,campaign=planned['campaign'],call_time=t,
+                                decision_time=st,execute_time=st,before_quantity=str(account.q),
+                                r0=planned['r0'],stop_unchanged=str(account.sl),
+                                reason='no_payable_reduce_only_quantity',hard_check_passed=False,
+                                account_path='preserved_without_synthetic_fill')
+                            execution_record('renewal_risk_infeasible',failure)
                             renewal_pending=None
-                        elif amount>account.q:
-                            raise ValueError('invalid HR60 reduce-only amount')
                         else:
-                            stop_before=account.sl
-                            price,record=exit_fill(so,amount,previous_quote,slip,spread)
-                            account.close(amount,price)
-                            if account.q:
-                                required,_=gap_margin(account,gap_anchor_mark)
-                                account.margin=max(account.margin,required)
-                            capital_after=capital_surplus(account,decision_budget,so,smo,gap_anchor_mark)
-                            risk_violation=False
-                            if account.q:
-                                try:
-                                    post=plan_renewal_reduction(account,decision_budget,so,smo,gap_anchor_mark,instrument,
-                                        lambda q: exit_fill(so,q,previous_quote,slip,spread)[0],
-                                        lambda q: exit_fill(account.sl,q,previous_quote,slip,spread)[0],
-                                        risk_fraction=D(planned['r0']))
-                                    risk_violation=bool(post['amount'])
-                                except ValueError:
-                                    post=None;risk_violation=True
+                            counts['renewal_risk_checks']+=1
+                            plan_record=dict(time=st,campaign=planned['campaign'],call_time=t,decision_time=st,
+                                execute_time=st,before_quantity=str(account.q),r0=planned['r0'],
+                                e0=planned['e0'],b0=planned['b0'],stop_before=str(account.sl),
+                                reference=str(so),mark=str(smo),capital_budget=decision_budget.record(),plan=change)
+                            execution_record('renewal_risk_plan',plan_record)
+                            amount=D(change['amount'])
+                            if not amount:
+                                execution_record('renewal_risk_within_limit',dict(time=st,
+                                    campaign=planned['campaign'],quantity=str(account.q),plan=change))
+                                renewal_pending=None
+                            elif amount>account.q:
+                                raise ValueError('invalid HR60 reduce-only amount')
                             else:
-                                post=None
-                            record.update(time=st,event='renewal_risk_reduction',quantity=str(amount),
-                                quantity_before=str(before_q),quantity_after=str(account.q),
-                                planned_remaining=str(change['remaining']),
-                                original_anchor=gap_anchor_child,capital_after_execution=str(capital_after),
-                                margin_after=str(account.margin),stop_before=str(stop_before),
-                                stop_after=str(account.sl),risk_limit_violation_after_execution=risk_violation,
-                                post_execution_plan=post,decision_time=st)
-                            if risk_violation:
-                                counts['renewal_risk_execution_violation']+=1
-                            if capital_after < D('-1e-18'):
-                                counts['renewal_risk_capital_violation']+=1
-                            if account.q and account.sl!=stop_before:
-                                raise ValueError('HR60 changed the frozen protective stop')
-                            turnover+=amount*price;counts['renewal_risk_reductions']+=1
-                            exit_events.append(record);execution_record('renewal_risk_reduction',record)
-                            ow.writerow([st,'renewal_risk_reduction',str(amount),str(price),'',str(account.q)])
-                            observe(st,'renewal_risk_reduction',smo)
-                            renewal_pending=None
+                                stop_before=account.sl
+                                price,record=exit_fill(so,amount,previous_quote,slip,spread)
+                                account.close(amount,price)
+                                if account.q:
+                                    required,_=gap_margin(account,gap_anchor_mark)
+                                    account.margin=max(account.margin,required)
+                                capital_after=capital_surplus(account,decision_budget,so,smo,gap_anchor_mark)
+                                risk_violation=False
+                                if account.q:
+                                    try:
+                                        post=plan_renewal_reduction(account,decision_budget,so,smo,gap_anchor_mark,instrument,
+                                            lambda q: exit_fill(so,q,previous_quote,slip,spread)[0],
+                                            lambda q: exit_fill(account.sl,q,previous_quote,slip,spread)[0],
+                                            risk_fraction=D(planned['r0']))
+                                        risk_violation=bool(post['amount'])
+                                    except ValueError:
+                                        post=None;risk_violation=True
+                                else:
+                                    post=None
+                                record.update(time=st,event='renewal_risk_reduction',quantity=str(amount),
+                                    quantity_before=str(before_q),quantity_after=str(account.q),
+                                    planned_remaining=str(change['remaining']),
+                                    original_anchor=gap_anchor_child,capital_after_execution=str(capital_after),
+                                    margin_after=str(account.margin),stop_before=str(stop_before),
+                                    stop_after=str(account.sl),risk_limit_violation_after_execution=risk_violation,
+                                    post_execution_plan=post,decision_time=st)
+                                if risk_violation:
+                                    counts['renewal_risk_execution_violation']+=1
+                                if capital_after < D('-1e-18'):
+                                    counts['renewal_risk_capital_violation']+=1
+                                if account.q and account.sl!=stop_before:
+                                    raise ValueError('HR60 changed the frozen protective stop')
+                                turnover+=amount*price;counts['renewal_risk_reductions']+=1
+                                exit_events.append(record);execution_record('renewal_risk_reduction',record)
+                                ow.writerow([st,'renewal_risk_reduction',str(amount),str(price),'',str(account.q)])
+                                observe(st,'renewal_risk_reduction',smo)
+                                renewal_pending=None
                 if minute_funding and not charged and t in fund_hours and st<fund_hours[t][0]<st+60000:
                     if account.q:observe(st,'pre_offset_possible_peak',smh)
                     funding_bound(t,smark,account.q,price_override=smh);charged=True
@@ -792,7 +822,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if renewal_risk:
         result['renewal_risk_checks_passed']=not any(counts.get(k,0) for k in (
             'renewal_risk_basis_missing','renewal_risk_execution_violation',
-            'renewal_risk_capital_violation')) and renewal_pending is None
+            'renewal_risk_capital_violation','renewal_risk_infeasible')) and renewal_pending is None
         result['renewal_risk_basis_count']=sum(basis is not None for basis in renewal_basis.values())
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
