@@ -11,19 +11,23 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     steps:
-      - name: Probe public Binance USD-M BTCUSDT metrics CHECKSUM files
+      - name: Locate official Binance 2020 daily and monthly OI CHECKSUM files
         shell: bash
         run: |
           set -u
-          for day in 2020-01-01 2020-06-01 2021-01-01 2022-01-01 2023-01-01 2025-01-01 2026-09-18; do
+          for month in 01 02 03 04 05 06 07 08 09 10 11 12; do
+            day="2020-${month}-01"
             url="https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-${day}.zip.CHECKSUM"
             path="${RUNNER_TEMP}/BTCUSDT-metrics-${day}.zip.CHECKSUM"
             status=$(curl --silent --show-error --location --connect-timeout 8 --max-time 15 --output "$path" --write-out '%{http_code}' "$url") || status="TRANSPORT_ERROR"
-            echo "${day} HTTP=${status}"
-            if [ "$status" = 200 ]; then
-              wc -c "$path"
-              sha256sum "$path"
-              head -c 512 "$path"
-              echo
-            fi
+            echo "daily ${day} HTTP=${status}"
+            if [ "$status" = 200 ]; then wc -c "$path"; sha256sum "$path"; head -c 512 "$path"; echo; fi
+          done
+          for month in 01 06 12; do
+            period="2020-${month}"
+            url="https://data.binance.vision/data/futures/um/monthly/metrics/BTCUSDT/BTCUSDT-metrics-${period}.zip.CHECKSUM"
+            path="${RUNNER_TEMP}/BTCUSDT-metrics-${period}.zip.CHECKSUM"
+            status=$(curl --silent --show-error --location --connect-timeout 8 --max-time 15 --output "$path" --write-out '%{http_code}' "$url") || status="TRANSPORT_ERROR"
+            echo "monthly ${period} HTTP=${status}"
+            if [ "$status" = 200 ]; then wc -c "$path"; sha256sum "$path"; head -c 512 "$path"; echo; fi
           done
