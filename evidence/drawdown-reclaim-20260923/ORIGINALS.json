@@ -1,0 +1,22 @@
+{
+  "schema": "coinquant.dc10.development.originals.v1",
+  "qualification": "NOT_QUALIFIED",
+  "label": "DC10",
+  "frozen_source_commit": "5248910dbff522e44343829b530625b1a4d61f89",
+  "frozen_source_tree": "70005d5fdbc037175bbbd44e469673aa68358d1b",
+  "protocol_sha256": "7710565b0e1373f09cbbec5c3509afc9b260381cbaa6004302cdd9ce282bb6ab",
+  "official_refined_input_identity": "2e8bbefb4f1994f73e7c14048012f7b008d3b848b6a71b6eb31838844ddef8cb",
+  "archive": {
+    "name": "COINQUANT_DC10_DEVELOPMENT_REJECT_20260923.zip",
+    "library_file_id": "libfile_f323126832c08191b6b81999e03e435c",
+    "file_id": "file_000000003b8881f4bf49e16bb8717922",
+    "bytes": 1560616,
+    "sha256": "2ed9b042cd7000d9b3bece516ef8b47ffbf7c975d6f598faa7c3d29038442621",
+    "members": 37,
+    "all_member_lengths_sha256_and_zip_crc_verified": true,
+    "upload_readback_byte_equal": true,
+    "scope": "Full DC10 468-call development account, original invocation, measured source, all equity/order/decision and execution flows, audits, confirmed unit-risk attribution, failed-result report and frozen protocol"
+  },
+  "market_original_dependency": "evidence/stop-risk-core-20260923/T20_ORIGINALS_COMPLETE.json",
+  "market_dependency_note": "The prior 449 day original/checksum source identity and 468 call-hour precision are reused, not duplicated or replaced by old source snapshots."
+}
