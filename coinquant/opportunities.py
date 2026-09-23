@@ -20,20 +20,26 @@ class Opportunity:
     entry_open: bool = True
     confirm_at: D | None = None
     confirmed_stop: D | None = None
+    parent_identity: int | None = None
 
 class Opportunities:
     def __init__(self, mechanism, interval=FOUR_HOURS):
-        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing'):raise ValueError('unknown mechanism')
+        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','post_impulse_restart'):raise ValueError('unknown mechanism')
         if interval not in (3600000,FOUR_HOURS,86400000) or (interval==86400000 and mechanism!='swing'):raise ValueError('unsupported completed interval')
         self.interval=interval
         self.mechanism=mechanism;self.bars=deque(maxlen=21);self.tr=deque(maxlen=14)
         self.ema=None;self.last=None;self.active=None;self.box=None;self.contraction=0
         self.armed=None;self.pivots=[];self.count=0
         self.swing_direction=0;self.swing_high=None;self.swing_low=None
+        if mechanism=='post_impulse_restart':
+            self.original=Opportunities('impulse_hold',interval)
+            self.restart_context=None;self.restart_child=None
 
     def update(self, end, high, low, close):
         if self.last is not None and end!=self.last+self.interval:raise ValueError('incomplete model clock')
         if not 0<low<=close<=high:raise ValueError('invalid completed candle')
+        if self.mechanism=='post_impulse_restart':
+            return self._update_post_impulse_restart(end,high,low,close)
         prior=self.bars[-1][3] if self.bars else close
         prior_atr=sum(self.tr)/14 if len(self.tr)==14 else None
         self.tr.append(max(high-low,abs(high-prior),abs(low-prior)))
@@ -105,4 +111,46 @@ class Opportunities:
                 seven=bars[-7:];pivot=seven[3]
                 if all(pivot[1]>r[1] for i,r in enumerate(seven) if i!=3):self.pivots.append((self.count-3,1,pivot[1]))
                 if all(pivot[2]<r[2] for i,r in enumerate(seven) if i!=3):self.pivots.append((self.count-3,-1,pivot[2]))
+        return self.active
+
+    def _update_post_impulse_restart(self,end,high,low,close):
+        context=self.restart_context
+        if context is not None:
+            deadline=context['deadline']
+            if context['pullback_at'] is None and (deadline is None or end<=deadline):
+                if end>context['identity'] and context['peak_high']-low>=context['risk']:
+                    context.update(pullback_at=end,pullback_high=high,pullback_low=low)
+                context['peak_high']=max(context['peak_high'],high)
+        if self.restart_child is not None:
+            child=self.restart_child
+            if (end>=child.expires or low<=child.stop or high>=child.take):
+                self.restart_child=None
+
+        before=self.original.active
+        primary=self.original.update(end,high,low,close)
+        self.last=end;self.count+=1
+        if primary is not None and primary.identity==end:
+            self.restart_child=None
+            risk=close-primary.stop
+            self.restart_context=({'identity':end,'risk':risk,'peak_high':high,
+                'pullback_at':None,'pullback_high':None,'pullback_low':None,
+                'invalidated_at':None,'deadline':None,'emitted':False}
+                if primary.direction>0 and risk>0 else None)
+        elif context is not None:
+            if (before is not None and before.identity==context['identity']
+                    and primary is None and context['invalidated_at'] is None):
+                context['invalidated_at']=end
+                context['deadline']=end+42*self.interval
+            if (primary is None and context['invalidated_at'] is not None
+                    and context['pullback_at'] is not None and not context['emitted']
+                    and context['invalidated_at']<end<=context['deadline']
+                    and close>context['pullback_high']):
+                stop=context['pullback_low']
+                if stop>0 and close>stop:
+                    self.restart_child=Opportunity(end,1,stop,close*(close/stop)**20,
+                        end+42*self.interval,parent_identity=context['identity'])
+                    context['emitted']=True
+            if context['invalidated_at'] is not None and end>context['deadline']:
+                self.restart_context=None
+        self.active=primary if primary is not None else self.restart_child
         return self.active

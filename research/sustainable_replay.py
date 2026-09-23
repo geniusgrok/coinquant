@@ -15,6 +15,8 @@ from research.verify_account_ledger import verify
 from research.execution_risk_audit import audit, buffer_audit
 
 PROTOCOL = 'evidence/sustainable-capital-exit-20260922/PROTOCOL.md'
+PIR1_PROTOCOL = 'evidence/post-impulse-restart-20260923/PROTOCOL.md'
+PIR1_PROTOCOL_SHA256 = '15860f4768446f8f422e74d50b1b6f52c5993df18c28fa916f9eb333f89d7237'
 NEW_SOURCES = ('coinquant/capital.py','research/planned_exit.py',
                'research/sustainable_replay.py','research/execution_risk_audit.py',PROTOCOL)
 
@@ -62,20 +64,27 @@ def exit_minutes(root, prepared):
 
 
 def run_account(root, output, prepared, label, *, full=False, stress=False):
-    modes={'S60':'instant','SC60':'prepared','SX60':'sliced'}
+    modes={'S60':'instant','SC60':'prepared','SX60':'sliced','PIR1':'sliced'}
     cache,minutes,quotes,validation,data_id=prepared
     cfg=ExecutionStudy(True,stress,frozenset(validation['hours']),quotes,D(6),True,modes[label])
+    reference='post_impulse_restart' if label=='PIR1' else 'impulse_hold'
+    pir1_protocol_hash=None
+    if label=='PIR1':
+        pir1_protocol_hash=digest(PIR1_PROTOCOL)
+        if pir1_protocol_hash!=PIR1_PROTOCOL_SHA256:
+            raise ValueError('PIR1 protocol differs from its pre-result freeze')
     output.parent.mkdir(parents=True,exist_ok=True)
     invocation=output.with_suffix('.invocation.json')
     if output.exists() or invocation.exists():raise ValueError('refusing to overwrite account evidence')
-    frozen=dict(label=label,full_window=full,configuration=cfg.configuration(),
+    frozen=dict(label=label,reference=reference,full_window=full,configuration=cfg.configuration(),
                 protocol_sha256=digest(PROTOCOL),source_identity=source_identity(),
                 input_identity=data_id,minute_validation=validation)
+    if pir1_protocol_hash:frozen['pir1_protocol_sha256']=pir1_protocol_hash
     invocation.write_text(json.dumps(frozen,indent=2)+'\n')
     try:
         with output.with_suffix('.log').open('w') as log,contextlib.redirect_stdout(log):
             result=run(root/'native',root/'warmup',root/'repairs',output,
-                allocation='volatility',reference='impulse_hold',lifecycle='one_campaign',
+                allocation='volatility',reference=reference,lifecycle='one_campaign',
                 entry_side='long',short_risk_scale=D(0),risk_scale=D(6),
                 quantity_rules=root/'quantity/current-instrument.json',cached_inputs=cache,
                 cached_minutes=minutes,execution=cfg,full_window=full)
@@ -84,7 +93,12 @@ def run_account(root, output, prepared, label, *, full=False, stress=False):
         for name in NEW_SOURCES:
             path=output/'measured_source'/name
             path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(Path(name).read_bytes())
+        if pir1_protocol_hash:
+            path=output/'measured_source'/PIR1_PROTOCOL
+            path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(Path(PIR1_PROTOCOL).read_bytes())
+            result['pir1_protocol_sha256']=pir1_protocol_hash
         result['complete_source_identity']=source_identity()
+        if pir1_protocol_hash:result['complete_source_identity'][PIR1_PROTOCOL]=pir1_protocol_hash
         (output/'result.json').write_text(json.dumps(result,indent=2)+'\n')
         ledger=verify(output);(output/'LEDGER_AUDIT.json').write_text(json.dumps(ledger,indent=2)+'\n')
         risk=audit(output);buffer=buffer_audit(output)
@@ -103,7 +117,7 @@ def main():
     p.add_argument('--input-root',type=Path,required=True);p.add_argument('--baseline',type=Path,required=True)
     p.add_argument('--entry-minutes',type=Path,required=True);p.add_argument('--request',type=Path,required=True)
     p.add_argument('--mark-repair',type=Path,required=True);p.add_argument('--exit-minutes',type=Path)
-    p.add_argument('--output',type=Path,required=True);p.add_argument('--labels',nargs='+',choices=('S60','SC60','SX60'),required=True)
+    p.add_argument('--output',type=Path,required=True);p.add_argument('--labels',nargs='+',choices=('S60','SC60','SX60','PIR1'),required=True)
     p.add_argument('--full-window',action='store_true');p.add_argument('--stress',action='store_true')
     p.add_argument('--selection',type=Path)
     a=p.parse_args()

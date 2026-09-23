@@ -124,7 +124,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         raise ValueError('M60 requires its frozen sparse long SX60 execution and capital controls')
     if daily_warmup and not (multiscale or conditional_hold):
         raise ValueError('supplementary daily warmup requires the frozen trend score')
-    if (entry_capacity_unlimited or execution is not None) and (reference not in ('impulse_hold','multiscale') or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
+    if (entry_capacity_unlimited or execution is not None) and (reference not in ('impulse_hold','multiscale','post_impulse_restart') or entry_side!='long' or allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline or payoff is not None):
         raise ValueError('execution study requires the frozen long impulse control')
     if entry_capacity_unlimited and D(risk_scale)!=D('3.6'):
         raise ValueError('unlimited capacity diagnostic remains fixed at 3.6')
@@ -143,13 +143,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     risk_scale=D(risk_scale)
     short_risk_scale=risk_scale if short_risk_scale is None else D(short_risk_scale)
     if not short_risk_scale.is_finite() or short_risk_scale<0:raise ValueError('invalid short risk scale')
-    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and payoff is None and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing','multiscale')):
+    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and payoff is None and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing','multiscale','post_impulse_restart')):
         raise ValueError('non-unit diagnostic risk requires impulse_hold')
     if allocation not in ('fixed','edge','unit','volatility'):raise ValueError('unknown allocation')
     if lifecycle not in ('persistent','one_campaign','fresh_breakout'):raise ValueError('unknown lifecycle')
-    if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale'):raise ValueError('unknown reference')
+    if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart'):raise ValueError('unknown reference')
     if protection not in ('fixed','trailing'):raise ValueError('unknown protection')
-    if reference in ('anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale') and (allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline):
+    if reference in ('anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart') and (allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline):
         raise ValueError('return-capture candidates require their frozen L21 controls')
     if minute_days and minutes is None:raise ValueError('extra minute days require original minute data')
     targeting=allocation in ('unit','volatility')
@@ -164,7 +164,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     elif minutes is not None:
         minutes,minute_identity=minute_load(minutes,series,minute_days);identity.extend(minute_identity)
     trade=series['klines'];marks=series['markPriceKlines']
-    mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale')
+    mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart')
     opportunities={};fractions={};signal_states={}
     if multiscale or conditional_hold:
         from coinquant.multiscale import daily_snapshots, published_daily_key
@@ -800,7 +800,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if targeting and reference=='anchored':result['candidate']='L27'
     if targeting and reference=='same_run_reversal':result['candidate']='L28'
     if targeting and reference=='entry_inventory':result['candidate']='L29'
-    if mechanism:result['candidate']='S-directional-change' if reference=='swing' else 'A-squeeze' if reference=='squeeze' else 'F-hourly-impulse' if reference=='hourly_impulse_hold' else 'E-persistent-impulse' if reference=='persistent_impulse' else 'V2-impulse-confirmation' if reference=='impulse_confirmation' else 'V1-impulse-validity' if reference=='impulse_validity' else 'D2-impulse-hold' if reference=='impulse_hold' else 'D-impulse' if reference=='impulse' else 'C-shock' if reference=='shock' else 'B-sweep'
+    if mechanism:result['candidate']='PIR1' if reference=='post_impulse_restart' else 'S-directional-change' if reference=='swing' else 'A-squeeze' if reference=='squeeze' else 'F-hourly-impulse' if reference=='hourly_impulse_hold' else 'E-persistent-impulse' if reference=='persistent_impulse' else 'V2-impulse-confirmation' if reference=='impulse_confirmation' else 'V1-impulse-validity' if reference=='impulse_validity' else 'D2-impulse-hold' if reference=='impulse_hold' else 'D-impulse' if reference=='impulse' else 'C-shock' if reference=='shock' else 'B-sweep'
     if native_trail_order:
         result.update(candidate='T-native-trailing',native_trail_order=native_trail_order,callback_rate='10',no_fixed_take=True)
         result['limitations'].append('OHLC path scenario, not native tick or protective-write evidence')
@@ -809,6 +809,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if execution is not None:
         result['execution']=execution.configuration()
         result['candidate']=f'L{risk_scale:.1f}-'+('five-minute' if execution.sliced else 'instant-impact-control')
+        if reference=='post_impulse_restart':result['candidate']='PIR1'
         result['limitations'].extend(['Causal minute capacity is not order-book depth; IOC fills and immediate protection are proxies', 'Additional exit impact is the preregistered linear stress, not historical calibration'])
     if multiscale:
         result['candidate']='M60'
@@ -826,11 +827,22 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['renewal_risk_basis_count']=sum(basis is not None for basis in renewal_basis.values())
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
-    for source in (Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('research/invocation_draws.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ())+((Path('coinquant/multiscale.py'),) if multiscale or conditional_hold else ())+((Path('coinquant/conditional_hold.py'),) if conditional_hold else ())+((Path('coinquant/renewal_risk.py'),) if renewal_risk else ()):
+    sources_to_copy=(Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('research/invocation_draws.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ())+((Path('coinquant/multiscale.py'),) if multiscale or conditional_hold else ())+((Path('coinquant/conditional_hold.py'),) if conditional_hold else ())+((Path('coinquant/renewal_risk.py'),) if renewal_risk else ())+((Path('evidence/post-impulse-restart-20260923/PROTOCOL.md'),) if reference=='post_impulse_restart' else ())
+    for source in sources_to_copy:
         raw=source.read_bytes()
-        if not (payoff and payoff.get('scenario')):(sources/source.name).write_bytes(raw)
+        if not (payoff and payoff.get('scenario')):
+            nested_protocol=(reference=='post_impulse_restart' and source.as_posix().startswith('evidence/post-impulse-restart-'))
+            destination=sources/source if nested_protocol else sources/source.name
+            destination.parent.mkdir(parents=True,exist_ok=True)
+            destination.write_bytes(raw)
         source_hashes[str(source)]=hashlib.sha256(raw).hexdigest()
     result['source_hashes']=source_hashes
+    if reference=='post_impulse_restart':
+        children={op.identity:op for op in opportunities.values() if op and op.parent_identity is not None}
+        result['restart_children_generated']=len(children)
+        result['restart_children']=[dict(identity=op.identity,parent_identity=op.parent_identity,
+            direction=op.direction,stop=str(op.stop),take=str(op.take),expires=op.expires)
+            for op in sorted(children.values(),key=lambda item:item.identity)]
     result.update(schedule=schedule,lifecycle=lifecycle,allocation=allocation,quantity_rule_scope='2026_snapshot_scenario_NOT_historical' if instrument else 'legacy_hypothetical',
         mean_close_exposure=str(exposure_sum/((end-start)//HOUR)),max_close_exposure=str(max_exposure),holding_hours=holding_hours,
         turnover_usdt=str(turnover),binding_caps=dict(binding),mean_entry_regime_age_hours=sum(delays)/len(delays) if delays else None,
@@ -851,7 +863,7 @@ if __name__=='__main__':
     p.add_argument('--quantity-rules',type=Path)
     p.add_argument('--lifecycle',choices=('persistent','one_campaign','fresh_breakout'),default='persistent')
     p.add_argument('--allocation',choices=('fixed','edge','unit','volatility'),default='fixed')
-    p.add_argument('--reference',choices=('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing'),default='channel')
+    p.add_argument('--reference',choices=('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','post_impulse_restart'),default='channel')
     p.add_argument('--protection',choices=('fixed','trailing'),default='fixed')
     p.add_argument('--full-window',action='store_true',help='Frozen candidate validation; continuous account, no annual resets')
     p.add_argument('--extra-minute-day',action='append',default=[])

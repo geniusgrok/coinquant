@@ -1,0 +1,98 @@
+{
+  "risk_scale": "6",
+  "observed_holding_points": 16555,
+  "accepted_children": 60,
+  "minimum": {
+    "entry_free_after_all_reserves": {
+      "value": "349.681284715328597080293154",
+      "time": 1588161660000,
+      "event": "entry"
+    },
+    "entry_gap_coverage": {
+      "value": "-2E-23",
+      "time": 1681387500000,
+      "event": "rebalance_add"
+    },
+    "free_wallet": {
+      "value": "440.717664414746893780293154",
+      "time": 1588262400000,
+      "event": "funding_settled"
+    },
+    "mark_to_liquidation_fraction": {
+      "value": "0.1010715427985716767553163721",
+      "time": 1648742400000,
+      "event": "conservative_envelope"
+    },
+    "stop_to_liquidation_fraction": {
+      "value": "0.08073445564556567579060612483",
+      "time": 1698098400000,
+      "event": "conservative_envelope"
+    },
+    "isolated_equity_less_maintenance_and_fee": {
+      "value": "167.6565135939649080000000001",
+      "time": 1579741320000,
+      "event": "conservative_envelope"
+    },
+    "stop_coverage_usdt": {
+      "value": "117.0646022157992680000000001",
+      "time": 1579741320000,
+      "event": "regime_exit_slice"
+    },
+    "rolling_reserve_surplus_usdt": {
+      "value": "322.420973831081929780293154",
+      "time": 1588233600000,
+      "event": "conservative_envelope"
+    }
+  },
+  "maximum": {
+    "margin_equity": {
+      "value": "0.9221513631100586570189359480",
+      "time": 1673586000000,
+      "event": "conservative_envelope"
+    },
+    "exposure": {
+      "value": "6.833190262528778222698889620",
+      "time": 1595401200000,
+      "event": "conservative_envelope"
+    },
+    "margin_usdt": {
+      "value": "26238.1868124900000000000000",
+      "time": 1681387500000,
+      "event": "slice_confirmed"
+    },
+    "notional_usdt": {
+      "value": "178689.59981553108",
+      "time": 1681452000000,
+      "event": "conservative_envelope"
+    }
+  },
+  "violations": [],
+  "passed": true,
+  "parent_raw_minus_fundable_btc": "0.2922982951562468025417460387",
+  "capital_limited_parent_count": 1,
+  "child_reasons": {
+    "stop_budget": 27,
+    "liquidity_cap": 47,
+    "target": 6
+  },
+  "counts": {
+    "invocations": 468,
+    "deferred_entry": 20,
+    "entry": 20,
+    "funding_charge": 329,
+    "inventory_hold": 19,
+    "regime_exit_slice": 36,
+    "rebalance_add": 40,
+    "ambiguous_funding_credit_omitted": 26,
+    "take": 2,
+    "stop": 2,
+    "capital_reduce": 1,
+    "regime_exit_deadline": 1
+  },
+  "assumptions": [
+    "Synchronous IOC: pending-order reserve is zero only in this replay; native unresolved orders cannot spend it.",
+    "Cash is the shared wallet; isolated collateral remains part of equity, not deducted twice.",
+    "Rolling reserve surplus during holding is descriptive, not an unused-entry-budget guarantee.",
+    "MMR=.005, cumulative deduction=0, fixed fees and original gap rules remain historical proxies."
+  ]
+}
