@@ -86,7 +86,7 @@ def main():
                    complete=all(not r.get("failed") for r in records))
     (args.output / "RECEIPT.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(json.dumps(dict(year=args.year, days=len(days), complete=receipt["complete"],
-                          failed=[r for r in records if r.get("failed")]), flush=True))
+                          failed=[r for r in records if r.get("failed")])), flush=True)
     if not receipt["complete"]:
         raise SystemExit(1)
 

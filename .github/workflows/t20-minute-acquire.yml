@@ -23,13 +23,13 @@ jobs:
         run: |
           python research/t20_bulk_acquire.py \
             --year ${{ matrix.year }} \
-            --request research/t20_bulk_day_request.json \
-            --output "$RUNNER_TEMP/t20-official-${{ matrix.year }}"
+            --request research/t20_prior_day_request.json \
+            --output "$RUNNER_TEMP/t20-prior-${{ matrix.year }}"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: t20-official-${{ matrix.year }}
-          path: ${{ runner.temp }}/t20-official-${{ matrix.year }}/
+          name: t20-prior-${{ matrix.year }}
+          path: ${{ runner.temp }}/t20-prior-${{ matrix.year }}/
           compression-level: 0
           retention-days: 3
           if-no-files-found: warn
