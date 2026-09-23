@@ -1,0 +1,37 @@
+{
+  "status": "development_rejected_continue_core_research",
+  "frozen_t20_protocol_commit": "6b27c178c831147fc2d934dc4c07a78a9184ccbf",
+  "measured_source_commit": "87206c3aaf63b5f512c664e2988f14899f10dd96",
+  "measured_source_tree": "2b4643ff510e5a77a1bd6bf4de4ff9aa7f11f6ba",
+  "input_identity": "2e8bbefb4f1994f73e7c14048012f7b008d3b848b6a71b6eb31838844ddef8cb",
+  "calls": 468,
+  "t20": {
+    "cagr": 0.37130935932096754,
+    "continuous_mdd": "0.5709248466656692856446803542",
+    "final_cny": "35363.31946777574139576371603",
+    "fees_usdt": "111.09586680527775",
+    "funding_bound_paid_usdt": "1777.5099452619407363158",
+    "holding_hours": 16172,
+    "entries": 20,
+    "closed_campaigns": 19,
+    "open_campaigns_at_end": 1,
+    "profitable_closed_campaigns": 8,
+    "losing_closed_campaigns": 11,
+    "ledger_close_points": 35064,
+    "ledger_max_error_usdt": "0",
+    "risk_passed": true,
+    "gap_maintained": true
+  },
+  "r10_same_refined_input": {
+    "cagr": 1.2136301881969884,
+    "continuous_mdd": "0.2367115718665401316623173607",
+    "final_cny": "240131.2166545642709733532697",
+    "ledger_close_points": 35064,
+    "ledger_max_error_usdt": "0",
+    "risk_passed": true,
+    "gap_maintained": true
+  },
+  "development_gate": "REJECTED_BOTH_RETURN_AND_DRAWDOWN",
+  "full_window_run": false,
+  "stress_and_absence_run": false
+}
