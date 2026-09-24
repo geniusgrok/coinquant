@@ -1,0 +1,11 @@
+{
+  "requests": [
+    {
+      "day": "2020-11-26",
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-11-26.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-11-26.zip"
+      ]
+    }
+  ]
+}

@@ -11,7 +11,7 @@
 第二轮新增既有完整官方分钟原件：
 
 - `libfile_f238bff2ad6c819183809199ef661478`：`COINQUANT_M60_DEVELOPMENT_MINUTES_20260923.zip`，30232711 字节，SHA-256 `76d6fd297e3f07fb73b5db8824b21c0cddf5349748afa6ee70e7f52d4e20c3e1`，解到 `m60-development`。
-- `libfile_b6057b4e31bc8191979c45b8060481da`：`COINQUANT_M60_PROTECTION_MINUTES_20260923.zip`，755861 字节，SHA-256 `b4701bbc7e8e6d91ba01997c093382c5e5f8a656c8868d79f072d35b05565781`，解到 `m60-protection`。
+- `libfile_b6057b4e31bc8191979c45b8060481da`：`COINQUANT_M60_PROTECTION_MINUTES_20260923.zip`，755861 字节，SHA-256 `b4701cbc7e8e6d91ba01997c093382c5e5f8a656c8868d79f072d35b05565781`，解到 `m60-protection`。先前整体摘要的第八位误写为 `b`；2026-09-24 回读原包及内部 14 份官方 ZIP/CHECKSUM 均校验通过，旧 140/2/23 事件原件逐字节复现。
 - `libfile_dec4645a5afc8191937b52f06c35abf8`：`COINQUANT_M60_MARK_RECHECK_20260923.zip`，1116642 字节，SHA-256 `1c6adee31bf3640837c07e8d6fd83f9523f3b1b8e3900d757156248e61617b40`，解到 `m60-mark`。
 
 ZIP 中 `data/futures/um/{daily,monthly}/...` 的子目录必须保留；每次使用前按档内 `.CHECKSUM`、60 根时间戳和官方小时 OHLC/成交量逐小时核验。原件的 `RECEIPT.json` 留在相同根目录。三包整体哈希和长度按本段先核对。

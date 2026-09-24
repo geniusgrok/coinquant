@@ -1,0 +1,22 @@
+[
+  {
+    "day": "2020-11-26",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-11-26.zip",
+    "status": "verified",
+    "bytes": 67342,
+    "sha256": "fa5c2e89d996e24eb24e4ac273489c9cdd5aaec4963a3dbc03dabfc38c40f98b",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T06:28:09.741161+00:00"
+  },
+  {
+    "day": "2020-11-26",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-11-26.zip",
+    "status": "verified",
+    "bytes": 40429,
+    "sha256": "bd72be63d42f955df71c200c67b121a1dab8ba9337e01d42ddfd9873115c44a9",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T06:28:10.206948+00:00"
+  }
+]
