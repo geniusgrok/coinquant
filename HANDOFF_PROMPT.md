@@ -1,3 +1,5 @@
+# 最新接续入口（2026-09-24）先读 `PROJECT_STATE.md` 顶部和 `evidence/unified-channel-20260924/CONTINUATION_RESULT.md`。PR #24 已合并；UC4 3.6 在有效连续前缀的独立小时收盘回撤达到 54.6928008577%，按风险门拒绝，不再为了它补 2021-08-15 的分钟或报告部分账户 CAGR。UC4-PF55 完成 468 调用、CAGR54.8044%/保守 MDD44.9986%，按收益门拒绝，不做参数扫描和全窗。两份完整原件与官方新增分钟在上述报告标明，失败研究提交 4e957b3 可回读但不得将其切换为生产默认。正式目标未达；优先研究具备独立净收益机制的单一核心，验证真实稀疏调用与双向分片执行，避免重复 UC4/PF55。下方旧恢复命令及等待 PR #24 的文字属于历史状态。
+
 # Coinquant 续接：UC4 证据纠正与 3.6 配对闭合
 
 仓库 `geniusgrok/coinquant`，personal / geniusgrok。先读实时 main、AGENTS.md、PROJECT_STATE.md 顶部、PR #24 与 `evidence/unified-channel-20260924/REPORT.md`。写本入口时 main `6e6ae3f3b12c62e2c86dd227bf1f8844490cb267`，修复分支 `research/uc4-evidence-fix-20260924` 正在更新；远端提交和CI每次重核。生产B36、执行阻止保持，无实盘/Testnet授权。
