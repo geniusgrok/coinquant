@@ -49,8 +49,8 @@ def audit(root):
     minimum_qty = max(D('.001'), (D('50')/D(parents[-1]['original_price'])/D('.001')).to_integral_value(rounding='ROUND_CEILING')*D('.001'))
     price = D(parents[-1]['original_price'])
     stop_price = D(parents[-1]['stop'])*(1-D(parents[-1]['slippage'])-D(parents[-1]['spread'])/2)
-    # This is a lower bound: the execution model can add exit capacity impact.
-    minimum_risk = minimum_qty*(price-stop_price+D('.0004')*(price+stop_price))
+    # The replay uses a 2026 instrument-rule snapshot and 0.075% fee; exit impact can add risk.
+    minimum_risk = minimum_qty*(price-stop_price+D('.00075')*(price+stop_price))
     assert minimum_risk > final - D('.55')*final_peak
     return {
         'parents': len(parents), 'filled_parents': len(filled),

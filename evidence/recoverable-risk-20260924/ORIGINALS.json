@@ -2,13 +2,13 @@
   "archive": {
     "filename": "COINQUANT_RR_DEVELOPMENT_REJECT_20260924.zip",
     "library_file_id": "libfile_9f4c5e3529d481919b25437d394e2f4b",
-    "file_id": "file_00000000c2708209966fc1741a88d622",
-    "size_bytes": 36486805,
-    "sha256": "f4e5654c90947b2e3b4477a49c7c50e7d3753c13c692dbfbff230528d546ab7a",
-    "members": 224,
+    "file_id": "file_00000000d6d48209af75760dcee21620",
+    "size_bytes": 36488329,
+    "sha256": "c769a815543f4c52c58b46fca0cf9dcdf2b54f5ede12dd44cbf23e051f7f885e",
+    "members": 225,
     "member_length_hash_verified": true,
     "library_readback_byte_identical": true,
-    "current_version_number": 1
+    "current_version_number": 2
   },
   "frozen_source": {
     "main_parent": "962c7820dd0ccfce735b207388c2aadefcca9f0f",
