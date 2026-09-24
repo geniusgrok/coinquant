@@ -1,0 +1,414 @@
+{
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-03-20.zip": {
+    "bytes": 64701,
+    "sha256": "bb4a94f2d14fd1871b924667ec7f5c7a109fff922630a2e20d8d994802f6ac92"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-03-20.zip": {
+    "bytes": 46498,
+    "sha256": "92b9c3cd00a9a5eda085e26746db91eceea3fa8cad836ffebd069ef26de8852a"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2020-03-28.zip": {
+    "bytes": 62296,
+    "sha256": "102cb046cbbf5503839eb1da38bcbbc100fef5d2c4e1facadc94580f4420a8b9"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-03-28.zip": {
+    "bytes": 45465,
+    "sha256": "6d7ac809c12a64c0c9ef8b5463d5af362f86142837148e566c701293471dc4bc"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-05-27.zip": {
+    "bytes": 68289,
+    "sha256": "c056e0d69ffded58ce44b1243042ddbcbd93e7cf9101d2b1e1f9c6c87c5d29ee"
+  },
+  "evidence/unified-channel-20260924/minutes/monthly/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-05.zip": {
+    "bytes": 1273457,
+    "sha256": "9f5a9515e9ee59519cdce2d8b6ea2a81a21fe377ad524214a292cc51a1d55482"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-05-28.zip": {
+    "bytes": 69102,
+    "sha256": "8bfc48addcd99c614898a9bda187c26bd5d97ec54f8361231e84a1709ef57e65"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-06-30.zip": {
+    "bytes": 67389,
+    "sha256": "4e3fdb1194f0d5c633df4b83384f4abfc70c7d73620298383a13c1388d174b64"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-06-30.zip": {
+    "bytes": 41900,
+    "sha256": "364a7c58be5e28a594472ffffb5ad2e1e608d17b8409d1aecdb2ac1faba8f6fa"
+  },
+  "../working/bounded/inputs/entry-minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-07-26.zip": {
+    "bytes": 69122,
+    "sha256": "99fa7b136df2099c283f2cf6f37dec57ca8cd8ad5706910fac9708091145d191"
+  },
+  "../working/bounded/inputs/entry-minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-07-26.zip": {
+    "bytes": 43008,
+    "sha256": "d89bd409d52eac110a54fcfe68abcf1cc0bb2b03515b19557128d42cbcb8929b"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-08-15.zip": {
+    "bytes": 66855,
+    "sha256": "c60325f69144fa3700cea9ec6dcf18b149d6a7ad8928cdb0f26ac96bd7a681fa"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-08-15.zip": {
+    "bytes": 41537,
+    "sha256": "f0c9986c7bb481e539bb77ba90ca2621776fa25cd728fe2e556a9bd65f956cce"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-09-07.zip": {
+    "bytes": 67947,
+    "sha256": "3c60c1ad212115bc42dd1b61507d95c45e7b913abbd15c1754905ec8463da4e5"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-09-07.zip": {
+    "bytes": 41397,
+    "sha256": "c827470a0081401e566cbd4e976520b917c8521196a5f2a0e191c9cfbcab9367"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-11-10.zip": {
+    "bytes": 66971,
+    "sha256": "f5047995312cfb982a86daada9beec53105cafee0329072adfc38f6476577be5"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-11-10.zip": {
+    "bytes": 39856,
+    "sha256": "7a15280c777cdfa3c2e33bd62619f08a6c3c570420c4e39b6fa2988fa81e5d66"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-12-23.zip": {
+    "bytes": 66175,
+    "sha256": "460188ffb2aec0bdb8bf97238ecda0574bb36dbade7e8d700d9cc17bf1b84f3b"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-12-23.zip": {
+    "bytes": 39807,
+    "sha256": "ea7264885531b0c6d5a8a4035a2b64f47985a7243222a44ad78adf5213c88c13"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01-13.zip": {
+    "bytes": 65650,
+    "sha256": "72f75ef643c9df775174f125ca1788594a644ab3e879cfbe8b0e05d6b37f1556"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-01-13.zip": {
+    "bytes": 39587,
+    "sha256": "5dd85609c16d36d35035020234de0d5de0e63a1985e9f71c00311a2cf06a626a"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01-14.zip": {
+    "bytes": 65824,
+    "sha256": "5ee467ff233069c2a3120b875fc1947a8488ea263a4b485fa8f632a8afeb740e"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-01-14.zip": {
+    "bytes": 39663,
+    "sha256": "1a552ecc209457fff7f8443b448f547160374619c2da78117a2cf85ac315ac11"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-02-11.zip": {
+    "bytes": 66963,
+    "sha256": "1bb13103946e76c5c6a00886c58b44ad73d555860540bb2d3685dad344c963c0"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-02-11.zip": {
+    "bytes": 40327,
+    "sha256": "0ca402d915bbfb5379e4370e640e9022256ab75acaf0e124cbb7f0317794b2a7"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-02-16.zip": {
+    "bytes": 62400,
+    "sha256": "8f0e56f9625743eb7043d42ac19f84ddb8d9dfe1bfea246c43501e67737a70b4"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-02-16.zip": {
+    "bytes": 38367,
+    "sha256": "ba49d0a4c50afe6e5ea309cbc77bbde5429c6fd7a584251a1c1d476b89fa91bd"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-03.zip": {
+    "bytes": 63518,
+    "sha256": "17dc703b7328df8d1355e3f846aabbcd7a26f4ff0d082b80d704cbb2c078404e"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-03.zip": {
+    "bytes": 40620,
+    "sha256": "9e664eab4eeec32248831b969a78d65a040a3e62fb745f199fe272202f123e20"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-12.zip": {
+    "bytes": 60788,
+    "sha256": "bab4f8b4a7f01212d3b54b789a0f34e0f689a378869ff82d25408efd680be3c8"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-12.zip": {
+    "bytes": 36388,
+    "sha256": "fde60bc6643d1727613fc669867fb14032a08105380283d3d0ea865b089a83b9"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-13.zip": {
+    "bytes": 61216,
+    "sha256": "af39ed9c7f5d176ba3e580149e67fc553f5b1616199eb32aaea39baa64ed9ba1"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-13.zip": {
+    "bytes": 36360,
+    "sha256": "aeb719e3b86219ab1a3ea5b5afa8d88945dd23a2fd1c4af156757c0e8887f0b8"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-18.zip": {
+    "bytes": 62389,
+    "sha256": "5d2e6caeae4d3a9743901798e9d3c6c8da04397647efde2eb2ce61b93d774634"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-18.zip": {
+    "bytes": 37395,
+    "sha256": "ffd0120efd27c2ce48cdf3b60b5e8d5518e823ee4c4aac63019dce4ebf35c047"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-30.zip": {
+    "bytes": 62408,
+    "sha256": "0540e10cab6f5d6177698786d5c7e633983be82fb4c961f03e7dd2b2ad59d7f9"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-30.zip": {
+    "bytes": 39313,
+    "sha256": "8c55f15ee2d5c9ad23764f3e929a520b03828ac3305ecdb2303fb0c4b584af17"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-16.zip": {
+    "bytes": 63958,
+    "sha256": "60a8e7bf12f1a4d1223ad312748edf66d46ac289b15ecd5ff879debd7d85274d"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-16.zip": {
+    "bytes": 38682,
+    "sha256": "71b7a66c27c3c59ca6082a55ab016e302f5c3f49c190fd8a630ba0c371e698b4"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-20.zip": {
+    "bytes": 63098,
+    "sha256": "655ae2ed3cbb1c1e0c2e6b35b5dcef5fb0fc36c1b5dbbf2f4103ec7edf22d42e"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-20.zip": {
+    "bytes": 39346,
+    "sha256": "d321e6b768e8259b264d29b1d0673e41d806b0d68df979b76ca28bb961132134"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-18.zip": {
+    "bytes": 63112,
+    "sha256": "93e10338e5a2aecb43b34b30d3b7f4e94d4f7bc0f2c01775dc3a4e49a663463b"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-18.zip": {
+    "bytes": 37691,
+    "sha256": "77bd0cbb0adde29241f27e6329d0ed2ae6ef4c0db5a5142cfb404dc2cb11164b"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-17.zip": {
+    "bytes": 62942,
+    "sha256": "a9e2e322e03f3bb76fc0c582fc6c4cf95e41ee0874866b7260cb817d3dcc9a93"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-17.zip": {
+    "bytes": 38350,
+    "sha256": "1f4d3c716aed6cb707736bcd169bdab38f8ba8eae20794229a9b2aaa1c7d8f85"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-05-31.zip": {
+    "bytes": 62423,
+    "sha256": "b9cea563e5e161189f9eaed6be82cb20a26398e07925393f6d9964ea8a97af04"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-05-31.zip": {
+    "bytes": 38313,
+    "sha256": "b09371e93a47fca6a3603deffc486d61e1c8ec80126d1b05a6b71467ad8f221b"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-03.zip": {
+    "bytes": 62052,
+    "sha256": "f9dfe9b77307b72addb22ed273ea4cfca5b67613258f1279816717e77e4cecc2"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-03.zip": {
+    "bytes": 36378,
+    "sha256": "100344bcbdb95e7c398ae8264d74fdde8f4fdda7d641c59e0c835e2f9388220c"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-08.zip": {
+    "bytes": 62838,
+    "sha256": "78fbe8cf487129fcb0843f26bbccfebdee0ddc9852a83b03c462f163b6ffc8d8"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-08.zip": {
+    "bytes": 37828,
+    "sha256": "848de7dbc01b4fe4d84bb5a582ba625e17565e4b44ac5a01345d084870ee4858"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-10.zip": {
+    "bytes": 62242,
+    "sha256": "4f3e6c9d843dc01261f7756c0d206ddcbbd01d1281011beb3aefd6b900a498d1"
+  },
+  "../working/rr/evidence/recoverable-risk-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-10.zip": {
+    "bytes": 36896,
+    "sha256": "d92f40164f8d9d1e52d3a928f759cea2f41da6683792c69c654291e988da32ff"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-25.zip": {
+    "bytes": 62151,
+    "sha256": "73a28fb56d016a0527dfe4ab332dfa4a033462bf4b6bea005fb0a36f250f6710"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-25.zip": {
+    "bytes": 37258,
+    "sha256": "04a071d929cc10c5f7e93b84005e5f2451038f9c7943e28f9759d60aa718e98a"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-26.zip": {
+    "bytes": 61734,
+    "sha256": "123d638ccc74670c8694ffe0ac9ba05e6c7b366aec7b911748530817ed98e23b"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-26.zip": {
+    "bytes": 36486,
+    "sha256": "2b3d3c8bcc1067096149fc09330b650b80e3e780c11d6172f40d368bd1bd38c1"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07-09.zip": {
+    "bytes": 61668,
+    "sha256": "e2bfd81f3895aea0121dcbb6e585dd0ca6b17d556d0b23c98b27acc035465bb2"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-07-09.zip": {
+    "bytes": 37029,
+    "sha256": "35137940b27d8b41637def96d77189972a5b4a8d559979a037e4e7e1d8dc00c9"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07-10.zip": {
+    "bytes": 61863,
+    "sha256": "e8ac03f222abdd1162fd20454b1fd49b5c0d4703b52d909322401b35773db1a1"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-07-10.zip": {
+    "bytes": 36982,
+    "sha256": "7a48414233ef0e76aa477302f232d00f97220bc61ed3d4bcafad30d02bd9ce13"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-07-16.zip": {
+    "bytes": 62037,
+    "sha256": "ed916274ae9c3cef166c38b019154cc6e00b7ae0cba3d819add7cc0cf75906f8"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-07-16.zip": {
+    "bytes": 36391,
+    "sha256": "b97afc92dc372664244b5f992593155a0b4441e1e8b4b83694aed56fb557c4dd"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-09-09.zip": {
+    "bytes": 63120,
+    "sha256": "aca3467b8bd3189bcb4939ee0b4b38d88fdec19137a0ece6bde920c95f7950f3"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-09-09.zip": {
+    "bytes": 37112,
+    "sha256": "6993978691a9edabc96a1e92391441a2cd96fc8927d1018388565e635af51cec"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-15.zip": {
+    "bytes": 57829,
+    "sha256": "a7524a1765ec31b98ef068716f14833c1601e27e99ed9667aaf5d0e3c7c3df45"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-15.zip": {
+    "bytes": 34149,
+    "sha256": "21f80a3cdb9ca62b466dc823d8fa7a2f06f80df382d1c694f05f7effd0703db5"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-17.zip": {
+    "bytes": 60609,
+    "sha256": "cea8ae899c34109c7c09ce22d697f3c279d2b92a668de03a92bdebed1dc4ee40"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-17.zip": {
+    "bytes": 35540,
+    "sha256": "0757544871dd55eb24308928fed8a006cda8fc00384e0daaf92c46f055d8d99e"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-11-30.zip": {
+    "bytes": 60677,
+    "sha256": "e393ec3b48de21607f26d4bc131c153483fa52824e799aa9bc6df54560002df3"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-11-30.zip": {
+    "bytes": 35836,
+    "sha256": "c817d3238d8abdf5bb516296614c8413b631fa5f15f8374e264e30c12964120a"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-08.zip": {
+    "bytes": 59005,
+    "sha256": "262e9bfb4eb4b83bc27239050da977f52bac1af53e97bcfdd34843ff5ca11745"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-08.zip": {
+    "bytes": 35262,
+    "sha256": "77a8152b4d0202a382218ac5434ff7e704bf9cabe30223eec524b4586917f77d"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-07.zip": {
+    "bytes": 58678,
+    "sha256": "8cd01ad94f6135c222e960efc5f8b59e7916ebf53abcc45e017eefe7db86b2a4"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-07.zip": {
+    "bytes": 35110,
+    "sha256": "f4e292905786b96c2eb07d95a389be203f0f35c362783ce9c8535c70b0d50fe4"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-06.zip": {
+    "bytes": 58954,
+    "sha256": "bd2ab9969b0b69211819ba2eb371a481c5ce6f0c23e8a345dfa0abb7d49183c1"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-12-22.zip": {
+    "bytes": 57839,
+    "sha256": "fab5a0d4749a38f53732e98b7e01c979f2df041c95cfe39138abb4dff5065d45"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-12-22.zip": {
+    "bytes": 34465,
+    "sha256": "66947148630e2c0977c51fe874678e015009c5f602a8dd5b8e6b721cea06a8e5"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-01-02.zip": {
+    "bytes": 55800,
+    "sha256": "45b5955462baaf3030ad3abbe74c0762e2791ca52b0566040b8f33de8849db02"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-01-02.zip": {
+    "bytes": 33558,
+    "sha256": "ded191e389011f7eb4a654ad2ff0f885840a40579d5bf89e0fae5856ffc218da"
+  },
+  "../working/bounded/inputs/entry-minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-01-25.zip": {
+    "bytes": 62313,
+    "sha256": "8e77518dd95c2a079ec7742400f12ae1173f1bce24ed5718d51e9eb12e430d6c"
+  },
+  "../working/bounded/inputs/entry-minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-01-25.zip": {
+    "bytes": 38307,
+    "sha256": "27c4d235aeb29cdbcfef9a4318fcee5be3aca76dcc8564b3b3085afd4ec0e559"
+  },
+  "../working/sx60/exit-minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-04-17.zip": {
+    "bytes": 60884,
+    "sha256": "c92bf196c7d9e7280e1f7651b6458496ac41b56b7dbe74aa4acadb2f34c25009"
+  },
+  "../working/sx60/exit-minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-04-17.zip": {
+    "bytes": 32428,
+    "sha256": "7e45427dce0073779b647846eba3e7e6dcbb175afd99b9a265ac99189ba70d70"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-07.zip": {
+    "bytes": 59040,
+    "sha256": "9d11b309ad91e11b27faaae82e44c6dc60c873a7425d415f3125e5dde60dc7d6"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-07.zip": {
+    "bytes": 31789,
+    "sha256": "9712c582afec9f0729e85141f998df403de35adbf06ead0af82e7d8af0fed25c"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-11.zip": {
+    "bytes": 56660,
+    "sha256": "8df038c5a1a8f55b40ca3189fa4e5d379004eb80758c4c4b739c251999c47ae1"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-11.zip": {
+    "bytes": 30629,
+    "sha256": "a1bc18318a676b6d40c4fb344709c97f7701b8c9ed3b6d1dc7bc6dd518c19c02"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-25.zip": {
+    "bytes": 59059,
+    "sha256": "71cc3ca84233b3b45bd0c45eb26b305c1757be229af90656abd52f610bbe04eb"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-25.zip": {
+    "bytes": 32451,
+    "sha256": "aa3379a97ee08b5be7f991e4aff40f4bc6df1dd2563909b92b5c5022965f8228"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-27.zip": {
+    "bytes": 54661,
+    "sha256": "c54f185f7a7359e2110fe150ccaa1be09b14fcb6145b4b2734e5c48fe126af75"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-27.zip": {
+    "bytes": 29525,
+    "sha256": "6d75e35f3f010a8b123f5ab72bd99329f9e49af13db60e39adf65241c3dacaa2"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-29.zip": {
+    "bytes": 60332,
+    "sha256": "6246b0979804eb188a1d52eec293f452df4c8d7cab84dbeb238aee0fd0b7035e"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-29.zip": {
+    "bytes": 33120,
+    "sha256": "cbb4345d2bf5370e078d337403b61f33fdf3ddff3e5ec183a2f1427fdce62ce0"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-28.zip": {
+    "bytes": 58494,
+    "sha256": "b8dc56db88518d023b8f2b1be5de0e291ea853d33ccea02eed01c075d0f8222e"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-28.zip": {
+    "bytes": 31710,
+    "sha256": "5d531eeec28f59b442ef5797b93d9783bc3f20dea967291220a5af99650c8a7d"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-09.zip": {
+    "bytes": 53370,
+    "sha256": "ad85b824bf4376384f8d0d1aad60e585ec9be3218c0c8c07ce2f01b35842d8ee"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-09.zip": {
+    "bytes": 28862,
+    "sha256": "83eb59903e7366d31fd8930b26b6e1bd348431831f8a45a156fcc4b3595f1198"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-08.zip": {
+    "bytes": 59379,
+    "sha256": "2cc8d99ae5a99b620fa1a09fb52f30e4a8b21df089d181a23f1ee235e77b85a6"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-12.zip": {
+    "bytes": 61430,
+    "sha256": "b83277472684104b7e48cda747b492aa4f77fb3c3ce0e8f97a5357b939b71a44"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-12.zip": {
+    "bytes": 34432,
+    "sha256": "a5a38a51c40a8403ed2523140a57144e9b8bf212c6fca59ca1f9d316af0278e5"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-17.zip": {
+    "bytes": 56193,
+    "sha256": "39e3af1ae3f289aa2a035cabd5064537b953c7c558e259f74fd3d5ff79fbfc97"
+  },
+  "evidence/unified-channel-20260924/minutes/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-17.zip": {
+    "bytes": 30395,
+    "sha256": "ce581703fb7013db594c5ad7073ac51f30abdb0e66645a3678009501f107bd55"
+  }
+}

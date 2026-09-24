@@ -1,0 +1,24 @@
+{
+  "protocol_sha256": "dcbbfa6033eeb8ce1dd67ab116485961a27ccd0dbd781fe1ab12f2a2924cf1d7",
+  "source_sha256": "5267307a1d8911fb7921e8270b4c4ac2b99d8072592f05b1717a5171c6fe46e0",
+  "initial_prepared_input_identity": "5431c13a54bb766da9121c0cb495accc957a04c3ae143e8d3a649d0dc3443625",
+  "originals": {
+    "SX60": {
+      "SX60": "8f909bdbd116b4866928a8032d522b5327d83c1f6129e88c450395c929da1f6c"
+    },
+    "PF55": {
+      "PF55": "3c65c05e0b52146b8ded1248d33422878dad1980704c9165f53f357fe8bae958"
+    },
+    "RR": {
+      "RR": "2dfd2a66bed325419a9c626770cd993647e90dab7d5a68d336691f9365f0d9ae"
+    }
+  },
+  "events": 165,
+  "minute_archive_roots": [
+    "../working/bounded/inputs",
+    "../working/sx60/exit-minutes",
+    "../working/rr/evidence/recoverable-risk-20260924/minutes",
+    "evidence/unified-channel-20260924/minutes",
+    "evidence/renewal-risk-20260923"
+  ]
+}
