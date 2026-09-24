@@ -109,8 +109,10 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,peak_risk_floor=False):
     channel_core = reference == 'channel_core'
+    if peak_risk_floor and (not channel_core or execution is None or D(risk_scale)!=D('3.6')):
+        raise ValueError('peak risk floor requires UC4 3.6 and bounded execution')
     multiscale = reference == 'multiscale'
     if conditional_hold and (reference != 'impulse_hold' or D(risk_scale) != 6 or
             D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0 or
@@ -382,6 +384,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 edge_target*=short_risk_scale if direction<0 else risk_scale
                 if not edge_target:direction=0
                 if reference=='channel_position':edge_target*=channel_position(daily)[1]
+                floor_headroom=account.equity(mo)-peak*D('.55') if peak_risk_floor and not account.q else None
+                if floor_headroom is not None and floor_headroom<=0:
+                    direction=0
+                    counts['peak_floor_closed']+=1
                 action='hold' if account.q else 'no_signal';caps={};qty=ZERO;raw_qty=ZERO;limiter=''
                 hold_permission=False;renewal_expiry=False
                 if conditional_hold and account.q:
@@ -515,9 +521,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                             else:
                                 if execution is not None and execution.sliced:
                                     entry_equity_before=account.equity(mo) if renewal_risk else None
+                                    floor_share=(min(D(1),floor_headroom/account.equity(mo))
+                                                 if floor_headroom is not None else None)
                                     entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
                                         previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale,capital=capital,
-                                        stop_risk_share=execution.stop_risk_share)
+                                        stop_risk_share=floor_share if floor_share is not None else execution.stop_risk_share)
                                     if renewal_risk and entry_window.maximum:
                                         renewal_entry_equity[entry_window.identity]=entry_equity_before
                                         execution_record('renewal_entry_basis_started',dict(time=t,
