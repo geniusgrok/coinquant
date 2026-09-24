@@ -36,7 +36,7 @@ jobs:
                   if len(archive.namelist())!=1 or archive.testzip() is not None: raise ValueError(f'bad archive {kind}')
                   rows=list(csv.reader(io.TextIOWrapper(archive.open(archive.namelist()[0]))))
               from datetime import datetime,timezone
-              start=int(datetime(2021,4,18,tzinfo=timezone.utc).timestamp()*1000)
+              start=int(datetime.fromisoformat(day).replace(tzinfo=timezone.utc).timestamp()*1000)
               if [int(row[0]) for row in rows]!=list(range(start,start+86400000,60000)):
                   raise ValueError(f'incomplete minutes {kind}')
               if any(int(row[6])!=int(row[0])+59999 for row in rows):raise ValueError(f'bad minute close {kind}')
