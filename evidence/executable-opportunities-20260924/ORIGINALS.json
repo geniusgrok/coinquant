@@ -1,0 +1,170 @@
+{
+  "EVENTS.jsonl": {
+    "bytes": 481167,
+    "sha256": "5aa6a8291c6df1ca0ef040132071a37314fddabc3b96174873f37581de2ac91f",
+    "parts": [
+      {
+        "path": "EVENTS.jsonl.part000",
+        "offset": 0,
+        "bytes": 20219,
+        "sha256": "5a9f2ae8cfc559c9c51d5e923566acb118992d2ec25c99dc053821d131c09e4c"
+      },
+      {
+        "path": "EVENTS.jsonl.part001",
+        "offset": 20219,
+        "bytes": 18868,
+        "sha256": "52eb14dbb88d82993a04879c388a9a367c3df523bfd5d89f5f359294dc2134cb"
+      },
+      {
+        "path": "EVENTS.jsonl.part002",
+        "offset": 39087,
+        "bytes": 20509,
+        "sha256": "05265a7c17d202f982753abdc12b320ff085866f17ff74d65948ac8743ce3aec"
+      },
+      {
+        "path": "EVENTS.jsonl.part003",
+        "offset": 59596,
+        "bytes": 21729,
+        "sha256": "1c9c481d7d43d920fc9c8df78cf9aa2e2a59aeeedab72c419869dc80d10e6f69"
+      },
+      {
+        "path": "EVENTS.jsonl.part004",
+        "offset": 81325,
+        "bytes": 20129,
+        "sha256": "50a32ac3ab8abcb2055cd4ca07b489afbf97dab414f45f8e183fc601b0efa0d2"
+      },
+      {
+        "path": "EVENTS.jsonl.part005",
+        "offset": 101454,
+        "bytes": 23026,
+        "sha256": "f005064f1a9a09b8fd0310dc5f9b7a850f54c18387a654c1c485a0bb872b925a"
+      },
+      {
+        "path": "EVENTS.jsonl.part006",
+        "offset": 124480,
+        "bytes": 21637,
+        "sha256": "27a273c286d2d136a530686db48bd8aa178c26ff6e666c95743a540f43263f1b"
+      },
+      {
+        "path": "EVENTS.jsonl.part007",
+        "offset": 146117,
+        "bytes": 23807,
+        "sha256": "8a05880975489e924178e42ccf4f4a2215e17f55d189b82a2dbd5d1eaf522bf0"
+      },
+      {
+        "path": "EVENTS.jsonl.part008",
+        "offset": 169924,
+        "bytes": 21596,
+        "sha256": "4557e366642316878654582945baf75a971779b25187d7a0ba0c39e8ef942a9c"
+      },
+      {
+        "path": "EVENTS.jsonl.part009",
+        "offset": 191520,
+        "bytes": 21914,
+        "sha256": "f7f6cbc04e3b15543be2a486cdbe06917770699dd279dfa2b48cbab4f12d8eec"
+      },
+      {
+        "path": "EVENTS.jsonl.part010",
+        "offset": 213434,
+        "bytes": 22090,
+        "sha256": "7d26759af11436024c1c0b845a984aa683ec394b6c3d876edcd43c5b46123fdf"
+      },
+      {
+        "path": "EVENTS.jsonl.part011",
+        "offset": 235524,
+        "bytes": 22934,
+        "sha256": "37ff0928f1deef0e6a72a88ef4c13f5cab392e58d5f80cbbcbf302fa49d320ee"
+      },
+      {
+        "path": "EVENTS.jsonl.part012",
+        "offset": 258458,
+        "bytes": 21313,
+        "sha256": "9df06e1489cb4f9bd3af995e9dbaef812fbf09cd96b977ec9ddb15400dcd81f7"
+      },
+      {
+        "path": "EVENTS.jsonl.part013",
+        "offset": 279771,
+        "bytes": 18987,
+        "sha256": "0312b7ff9ee6ff124d4ddeea560e782bfd25224e92fbc62807817282e89f9ce1"
+      },
+      {
+        "path": "EVENTS.jsonl.part014",
+        "offset": 298758,
+        "bytes": 22654,
+        "sha256": "85397ccdaba5a947c69343d20c7306615ad55fbe7685b446fadccb7b779e12b8"
+      },
+      {
+        "path": "EVENTS.jsonl.part015",
+        "offset": 321412,
+        "bytes": 21396,
+        "sha256": "e39efeac4d98ffcae59ac8dd0fedd7c1835b50474db32386e2000de1f5b755e2"
+      },
+      {
+        "path": "EVENTS.jsonl.part016",
+        "offset": 342808,
+        "bytes": 22987,
+        "sha256": "a2a4f13bd52aab511ef77b5c70a686adfab7f11a7b5192d9be187468b3df349d"
+      },
+      {
+        "path": "EVENTS.jsonl.part017",
+        "offset": 365795,
+        "bytes": 23020,
+        "sha256": "6e2e32ce555347f36798c4d140c5e9b1cb4df7dc4df4c5597015e9dc4cf3a8b5"
+      },
+      {
+        "path": "EVENTS.jsonl.part018",
+        "offset": 388815,
+        "bytes": 22579,
+        "sha256": "f1f41dc6c77af9fdd288b4d5f87bc78ad16ca4d272841af57a387a8ff0a4743a"
+      },
+      {
+        "path": "EVENTS.jsonl.part019",
+        "offset": 411394,
+        "bytes": 21181,
+        "sha256": "aaff9fc8febd7331205240d995bc1651723b5b1530b374c8cd7287435b6e37d9"
+      },
+      {
+        "path": "EVENTS.jsonl.part020",
+        "offset": 432575,
+        "bytes": 23898,
+        "sha256": "b322159fbbefeb7eec376e77fc1c3e26df86276f42fb77c9ac806bb107c80b4a"
+      },
+      {
+        "path": "EVENTS.jsonl.part021",
+        "offset": 456473,
+        "bytes": 23368,
+        "sha256": "3ed0bddbc0479ac7e61d3fe294d2d36ab3fae2801ebb6a5b7484464bd2a3036a"
+      },
+      {
+        "path": "EVENTS.jsonl.part022",
+        "offset": 479841,
+        "bytes": 1326,
+        "sha256": "d1ac8a36ebdf2245e4ec56c2bdc63794fa1a4a0ee89944b866ac769216c046ef"
+      }
+    ]
+  },
+  "MISSING_MINUTES.json": {
+    "bytes": 66265,
+    "sha256": "d9163c3dcc29d8a299f0184dc191d7f9411d4b3c6c5280124642589fd56de80a",
+    "parts": [
+      {
+        "path": "MISSING_MINUTES.json.part000",
+        "offset": 0,
+        "bytes": 23987,
+        "sha256": "17f6c59ecdbb4aa8a793ed8e16e034f0d060e86e294f6d008ef75a67f1dcf442"
+      },
+      {
+        "path": "MISSING_MINUTES.json.part001",
+        "offset": 23987,
+        "bytes": 23998,
+        "sha256": "bee1f04d02f9bd391bdc10a875b919e5dd730c65042bf3dca0df059f7d3e7b00"
+      },
+      {
+        "path": "MISSING_MINUTES.json.part002",
+        "offset": 47985,
+        "bytes": 18280,
+        "sha256": "6ba07c16233cb9617c29e2419699e6b14f8184e28eef6b599c16b1d4465bceb9"
+      }
+    ]
+  }
+}
