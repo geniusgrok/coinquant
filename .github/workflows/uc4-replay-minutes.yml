@@ -1,0 +1,81 @@
+name: Temporary UC4 replay minute recovery
+on:
+  push:
+    branches: [research/uc4-complete-20260924]
+    paths:
+      - '.github/workflows/uc4-replay-minutes.yml'
+      - 'evidence/unified-channel-20260924/REPLAY_COVERAGE_HOURS.json'
+permissions:
+  contents: write
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/uc4-complete-20260924
+      - name: Fetch and verify requested official minutes
+        run: |
+          python3 - <<'PY'
+          import csv, hashlib, io, json, pathlib, urllib.error, urllib.request, zipfile
+          from datetime import datetime, timezone
+          request=json.loads(pathlib.Path('evidence/unified-channel-20260924/REPLAY_COVERAGE_HOURS.json').read_text())
+          days=sorted({datetime.fromtimestamp(t/1000,timezone.utc).date().isoformat() for t in request['new_hours']})
+          base='https://data.binance.vision/data/futures/um/'
+          root=pathlib.Path('evidence/unified-channel-20260924/minutes')
+          saved=[]
+          def get(url):
+              with urllib.request.urlopen(url,timeout=60) as response:
+                  if response.status!=200 or response.url!=url:raise ValueError('untrusted official response')
+                  return response.read()
+          for day in days:
+              for kind in ('klines','markPriceKlines'):
+                  rel=f'daily/{kind}/BTCUSDT/1m/BTCUSDT-1m-{day}.zip'
+                  try:
+                      raw=get(base+rel)
+                      check=get(base+rel+'.CHECKSUM')
+                  except urllib.error.HTTPError as exc:
+                      if exc.code!=404:raise
+                      rel=f'monthly/{kind}/BTCUSDT/1m/BTCUSDT-1m-{day[:7]}.zip'
+                      raw=get(base+rel)
+                      check=get(base+rel+'.CHECKSUM')
+                  sha=hashlib.sha256(raw).hexdigest()
+                  if check.decode().split()[0].lower()!=sha:raise ValueError('official checksum mismatch '+rel)
+                  with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+                      if len(archive.namelist())!=1 or archive.testzip() is not None:raise ValueError('invalid official ZIP '+rel)
+                      rows=list(csv.reader(io.TextIOWrapper(archive.open(archive.namelist()[0]))))
+                  if rows and not rows[0][0].isdigit():rows=rows[1:]
+                  start=int(datetime.fromisoformat(day).replace(tzinfo=timezone.utc).timestamp()*1000)
+                  selected=[r for r in rows if start<=int(r[0])<start+86400000]
+                  if [int(r[0]) for r in selected]!=list(range(start,start+86400000,60000)):raise ValueError('missing minute '+rel)
+                  if any(int(r[6])!=int(r[0])+59999 for r in selected):raise ValueError('invalid close timestamp '+rel)
+                  target=root/rel
+                  target.parent.mkdir(parents=True,exist_ok=True)
+                  if target.exists() and target.read_bytes()!=raw:raise ValueError('conflicting archive revision '+rel)
+                  target.write_bytes(raw)
+                  pathlib.Path(str(target)+'.CHECKSUM').write_bytes(check)
+                  saved.extend((str(target),str(target)+'.CHECKSUM'))
+                  print(day,kind,len(raw),sha,flush=True)
+          pathlib.Path('/tmp/uc4-selected.json').write_text(json.dumps(saved))
+          PY
+      - name: Preserve original bytes and read back Git objects
+        run: |
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add evidence/unified-channel-20260924/minutes
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve UC4 held-hour official minute archives'
+            git push origin HEAD:research/uc4-complete-20260924
+          fi
+          git fetch origin refs/heads/research/uc4-complete-20260924
+          python3 - <<'PY'
+          import hashlib,json,pathlib,subprocess
+          for name in json.loads(pathlib.Path('/tmp/uc4-selected.json').read_text()):
+              local=pathlib.Path(name).read_bytes()
+              remote=subprocess.check_output(['git','show','FETCH_HEAD:'+name])
+              oid=subprocess.check_output(['git','rev-parse','FETCH_HEAD:'+name],text=True).strip()
+              expected=subprocess.check_output(['git','hash-object',name],text=True).strip()
+              if local!=remote or oid!=expected:raise ValueError('remote readback mismatch '+name)
+              print(name,len(local),hashlib.sha256(local).hexdigest(),oid)
+          PY
