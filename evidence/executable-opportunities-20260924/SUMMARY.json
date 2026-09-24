@@ -2,114 +2,120 @@
   "protocol_sha256": "dcbbfa6033eeb8ce1dd67ab116485961a27ccd0dbd781fe1ab12f2a2924cf1d7",
   "all_events": 165,
   "closed": {
-    "count": 53,
-    "sum_net_usdt": "858.9855593933124489152",
-    "mean_net_usdt": "16.20727470553419714934339623",
-    "median_net_usdt": "-7.31266749235125",
-    "worst_net_usdt": "-73.1139378882190544390",
-    "loss_count": 32
+    "count": 140,
+    "sum_net_usdt": "3532.3219434478664043872",
+    "mean_net_usdt": "25.23087102462761717419428571",
+    "median_net_usdt": "-6.3151370335285829590",
+    "worst_net_usdt": "-91.7161867369356500000",
+    "loss_count": 78
   },
+  "blocked": 2,
   "unknown_by_reason": {
-    "entry_minute": 86,
-    "planned_exit_minute": 17,
-    "held_protection_minute": 9
+    "held_protection_minute": 23
   },
   "sections": {
     "SX60": {
       "total_events": 20,
-      "known": {
-        "count": 17,
-        "sum_net_usdt": "924.0177394476394781380",
-        "mean_net_usdt": "54.35398467339055753752941176",
-        "median_net_usdt": "49.6383129324363680000",
+      "closed": {
+        "count": 19,
+        "sum_net_usdt": "1293.1529564966704231998",
+        "mean_net_usdt": "68.06068192087739069472631579",
+        "median_net_usdt": "53.4599791830063287174",
         "worst_net_usdt": "-45.4986560100422500000",
         "loss_count": 4
       },
-      "unknown": 3
+      "blocked": 0,
+      "unknown": 1
     },
     "UC4": {
       "total_events": 145,
-      "known": {
-        "count": 36,
-        "sum_net_usdt": "-65.0321800543270292228",
-        "mean_net_usdt": "-1.806449445953528589522222222",
-        "median_net_usdt": "-9.80673475116500",
-        "worst_net_usdt": "-73.1139378882190544390",
-        "loss_count": 28
+      "closed": {
+        "count": 121,
+        "sum_net_usdt": "2239.1689869511959811874",
+        "mean_net_usdt": "18.50552881777847918336694215",
+        "median_net_usdt": "-8.7644428334135000000",
+        "worst_net_usdt": "-91.7161867369356500000",
+        "loss_count": 74
       },
-      "unknown": 109
+      "blocked": 2,
+      "unknown": 22
     },
     "2020-2021": {
       "total_events": 64,
-      "known": {
-        "count": 21,
-        "sum_net_usdt": "866.4726343043715172168",
-        "mean_net_usdt": "41.26060163354150081984761905",
-        "median_net_usdt": "41.6457895939544550000",
-        "worst_net_usdt": "-73.1139378882190544390",
-        "loss_count": 8
+      "closed": {
+        "count": 61,
+        "sum_net_usdt": "2198.4997529288824775262",
+        "mean_net_usdt": "36.04097955621118815616721311",
+        "median_net_usdt": "6.8141460036349077462",
+        "worst_net_usdt": "-91.7161867369356500000",
+        "loss_count": 29
       },
-      "unknown": 43
+      "blocked": 2,
+      "unknown": 1
     },
     "2022-2023": {
       "total_events": 101,
-      "known": {
-        "count": 32,
-        "sum_net_usdt": "-7.4870749110590683016",
-        "mean_net_usdt": "-0.233971090970595884425",
-        "median_net_usdt": "-9.3009553973952906192",
-        "worst_net_usdt": "-63.4667650006580060000",
-        "loss_count": 24
+      "closed": {
+        "count": 79,
+        "sum_net_usdt": "1333.8221905189839268610",
+        "mean_net_usdt": "16.88382519644283451722784810",
+        "median_net_usdt": "-7.13353913232000",
+        "worst_net_usdt": "-78.4668895329586453829",
+        "loss_count": 49
       },
-      "unknown": 69
+      "blocked": 0,
+      "unknown": 22
     },
     "original_RR_rejected": {
       "total_events": 77,
-      "known": {
-        "count": 13,
-        "sum_net_usdt": "-12.9565298536704861420",
-        "mean_net_usdt": "-0.9966561425900373955384615385",
-        "median_net_usdt": "-8.7644428334135000000",
-        "worst_net_usdt": "-63.4667650006580060000",
-        "loss_count": 10
+      "closed": {
+        "count": 57,
+        "sum_net_usdt": "1141.3190185827012713886",
+        "mean_net_usdt": "20.02314067688949598927368421",
+        "median_net_usdt": "-6.5412130475221659180",
+        "worst_net_usdt": "-78.4668895329586453829",
+        "loss_count": 34
       },
-      "unknown": 64
+      "blocked": 2,
+      "unknown": 18
     },
     "original_PF55_rejected": {
       "total_events": 117,
-      "known": {
-        "count": 29,
-        "sum_net_usdt": "-377.2492393091323794275",
-        "mean_net_usdt": "-13.00859445893559929060344828",
-        "median_net_usdt": "-16.2986595486828249723",
-        "worst_net_usdt": "-63.4667650006580060000",
-        "loss_count": 26
+      "closed": {
+        "count": 93,
+        "sum_net_usdt": "1338.5728149321554191033",
+        "mean_net_usdt": "14.39325607453930558175591398",
+        "median_net_usdt": "-8.4692473594488926773",
+        "worst_net_usdt": "-83.6505440322737430000",
+        "loss_count": 59
       },
-      "unknown": 88
+      "blocked": 2,
+      "unknown": 22
     },
     "original_any_filled": {
       "total_events": 69,
-      "known": {
-        "count": 36,
-        "sum_net_usdt": "1018.3741037855608560576",
-        "mean_net_usdt": "28.28816954959891266826666667",
-        "median_net_usdt": "0.9175237656215598650",
-        "worst_net_usdt": "-73.1139378882190544390",
-        "loss_count": 18
+      "closed": {
+        "count": 68,
+        "sum_net_usdt": "2173.5484342176518454382",
+        "mean_net_usdt": "31.96394756202429184467941176",
+        "median_net_usdt": "-4.7378013195737081350",
+        "worst_net_usdt": "-91.7161867369356500000",
+        "loss_count": 35
       },
-      "unknown": 33
+      "blocked": 0,
+      "unknown": 1
     }
   },
-  "campaign_count": 46,
-  "campaign_repeated": 5,
-  "overlapping_closed_event_pairs": 15,
-  "top_five_share_of_positive_pnl": "0.5149268611305168332249175347",
+  "campaign_count": 91,
+  "campaign_repeated": 27,
+  "overlapping_closed_event_pairs": 91,
+  "top_five_share_of_positive_pnl": "0.2127937722290420429471795663",
   "worst_five_net_usdt": [
+    "-91.7161867369356500000",
+    "-83.6505440322737430000",
+    "-78.4668895329586453829",
     "-73.1139378882190544390",
-    "-63.4667650006580060000",
-    "-53.5985012828155168555",
-    "-53.0257028839835850000",
-    "-51.4750122066687000000"
+    "-69.4559482714980720000"
   ],
   "campaigns": [
     {
@@ -135,6 +141,12 @@
       "campaign": 1587657600000,
       "calls": 1,
       "sum_net_usdt": "61.4518871652612069000"
+    },
+    {
+      "core": "SX60",
+      "campaign": 1595318400000,
+      "calls": 1,
+      "sum_net_usdt": "142.3566866503516859988"
     },
     {
       "core": "SX60",
@@ -210,6 +222,12 @@
     },
     {
       "core": "SX60",
+      "campaign": 1697443200000,
+      "calls": 1,
+      "sum_net_usdt": "226.7785303986792590630"
+    },
+    {
+      "core": "SX60",
       "campaign": 1698105600000,
       "calls": 1,
       "sum_net_usdt": "22.6663617353955600000"
@@ -219,6 +237,24 @@
       "campaign": 1578052800000,
       "calls": 1,
       "sum_net_usdt": "179.2606075889685420301"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1580097600000,
+      "calls": 1,
+      "sum_net_usdt": "52.8171427117792400832"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1580932800000,
+      "calls": 1,
+      "sum_net_usdt": "8.5535059355865482885"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1581451200000,
+      "calls": 1,
+      "sum_net_usdt": "-16.7882312058145516992"
     },
     {
       "core": "UC4",
@@ -234,6 +270,60 @@
     },
     {
       "core": "UC4",
+      "campaign": 1587038400000,
+      "calls": 1,
+      "sum_net_usdt": "-17.64880237238650"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1587657600000,
+      "calls": 1,
+      "sum_net_usdt": "122.4658918004655472320"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1589414400000,
+      "calls": 1,
+      "sum_net_usdt": "-47.1691575068083389124"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1590681600000,
+      "calls": 1,
+      "sum_net_usdt": "-28.2615435174590397030"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1592280000000,
+      "calls": 1,
+      "sum_net_usdt": "-21.1530994148625913840"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1594022400000,
+      "calls": 1,
+      "sum_net_usdt": "-10.7575635880703070000"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1595203200000,
+      "calls": 1,
+      "sum_net_usdt": "182.7202314642385688478"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1598760000000,
+      "calls": 1,
+      "sum_net_usdt": "-22.1218606058451220695"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1599969600000,
+      "calls": 1,
+      "sum_net_usdt": "-35.7417876674860656382"
+    },
+    {
+      "core": "UC4",
       "campaign": 1602172800000,
       "calls": 1,
       "sum_net_usdt": "41.6457895939544550000"
@@ -246,9 +336,63 @@
     },
     {
       "core": "UC4",
+      "campaign": 1605225600000,
+      "calls": 1,
+      "sum_net_usdt": "135.9612711803071456478"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1606708800000,
+      "calls": 1,
+      "sum_net_usdt": "-30.4690854359506090000"
+    },
+    {
+      "core": "UC4",
       "campaign": 1607803200000,
       "calls": 1,
       "sum_net_usdt": "53.4599791830063287174"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1608897600000,
+      "calls": 1,
+      "sum_net_usdt": "328.4492429237526313170"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1611590400000,
+      "calls": 1,
+      "sum_net_usdt": "-91.7161867369356500000"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1611921600000,
+      "calls": 1,
+      "sum_net_usdt": "174.5744574994993054333"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1615248000000,
+      "calls": 1,
+      "sum_net_usdt": "10.7559424726548320628"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1617019200000,
+      "calls": 1,
+      "sum_net_usdt": "-42.3701530239576889455"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1618027200000,
+      "calls": 1,
+      "sum_net_usdt": "-45.2378206119913832730"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1619798400000,
+      "calls": 1,
+      "sum_net_usdt": "-18.4832815364807594082"
     },
     {
       "core": "UC4",
@@ -264,6 +408,24 @@
     },
     {
       "core": "UC4",
+      "campaign": 1627084800000,
+      "calls": 2,
+      "sum_net_usdt": "118.5823753826804470600"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1627689600000,
+      "calls": 1,
+      "sum_net_usdt": "-53.5993389447587410000"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1628193600000,
+      "calls": 2,
+      "sum_net_usdt": "76.3750673888024300000"
+    },
+    {
+      "core": "UC4",
       "campaign": 1628899200000,
       "calls": 1,
       "sum_net_usdt": "-18.78488029862850"
@@ -271,14 +433,38 @@
     {
       "core": "UC4",
       "campaign": 1630555200000,
+      "calls": 2,
+      "sum_net_usdt": "-103.3824646040172150000"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1631664000000,
+      "calls": 5,
+      "sum_net_usdt": "-238.4693964504145030000"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1633075200000,
+      "calls": 5,
+      "sum_net_usdt": "756.8302351332007559804"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1635854400000,
       "calls": 1,
-      "sum_net_usdt": "-53.0257028839835850000"
+      "sum_net_usdt": "-30.0667636121634846092"
     },
     {
       "core": "UC4",
       "campaign": 1636329600000,
       "calls": 1,
       "sum_net_usdt": "-37.8068366866641302670"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1640073600000,
+      "calls": 1,
+      "sum_net_usdt": "21.9959020326107880000"
     },
     {
       "core": "UC4",
@@ -289,8 +475,8 @@
     {
       "core": "UC4",
       "campaign": 1643990400000,
-      "calls": 1,
-      "sum_net_usdt": "-20.56900955542275"
+      "calls": 2,
+      "sum_net_usdt": "-64.8000339437332814310"
     },
     {
       "core": "UC4",
@@ -303,6 +489,12 @@
       "campaign": 1646798400000,
       "calls": 1,
       "sum_net_usdt": "-25.4123964834475326825"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1647633600000,
+      "calls": 1,
+      "sum_net_usdt": "4.4862109833025100000"
     },
     {
       "core": "UC4",
@@ -336,9 +528,33 @@
     },
     {
       "core": "UC4",
+      "campaign": 1657915200000,
+      "calls": 3,
+      "sum_net_usdt": "-38.8430928792432661683"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1659945600000,
+      "calls": 3,
+      "sum_net_usdt": "20.2962356024682156488"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1662710400000,
+      "calls": 4,
+      "sum_net_usdt": "-168.8156801208693108096"
+    },
+    {
+      "core": "UC4",
       "campaign": 1665720000000,
       "calls": 1,
       "sum_net_usdt": "-5.47066852836000"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1666555200000,
+      "calls": 1,
+      "sum_net_usdt": "65.3783396629159918352"
     },
     {
       "core": "UC4",
@@ -348,33 +564,69 @@
     },
     {
       "core": "UC4",
-      "campaign": 1671552000000,
+      "campaign": 1670932800000,
       "calls": 1,
-      "sum_net_usdt": "-10.24163446361000"
+      "sum_net_usdt": "-9.15342042146000"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1671552000000,
+      "calls": 2,
+      "sum_net_usdt": "-12.6703087832141638212"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1672646400000,
+      "calls": 2,
+      "sum_net_usdt": "81.3356497098171622103"
     },
     {
       "core": "UC4",
       "campaign": 1673222400000,
+      "calls": 6,
+      "sum_net_usdt": "511.4926930459845685464"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1678665600000,
+      "calls": 3,
+      "sum_net_usdt": "164.8232187830659759408"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1680091200000,
       "calls": 1,
-      "sum_net_usdt": "-5.3008666966872540000"
+      "sum_net_usdt": "-14.7704519885176050300"
     },
     {
       "core": "UC4",
       "campaign": 1681084800000,
-      "calls": 1,
-      "sum_net_usdt": "-21.4052611719056960000"
+      "calls": 2,
+      "sum_net_usdt": "-38.6840434380356960000"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1682467200000,
+      "calls": 3,
+      "sum_net_usdt": "-71.3022450795545566546"
     },
     {
       "core": "UC4",
       "campaign": 1686988800000,
-      "calls": 1,
-      "sum_net_usdt": "5.8399816420305360000"
+      "calls": 4,
+      "sum_net_usdt": "126.4275355436466625653"
     },
     {
       "core": "UC4",
       "campaign": 1690934400000,
-      "calls": 1,
-      "sum_net_usdt": "-7.13353913232000"
+      "calls": 3,
+      "sum_net_usdt": "-26.9597075074394048284"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1691496000000,
+      "calls": 2,
+      "sum_net_usdt": "-19.1869506484673710605"
     },
     {
       "core": "UC4",
@@ -384,9 +636,33 @@
     },
     {
       "core": "UC4",
+      "campaign": 1694520000000,
+      "calls": 2,
+      "sum_net_usdt": "27.9284629487342735228"
+    },
+    {
+      "core": "UC4",
       "campaign": 1697414400000,
+      "calls": 3,
+      "sum_net_usdt": "437.3827662654604666360"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1700078400000,
+      "calls": 2,
+      "sum_net_usdt": "0.6977998387699200000"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1701201600000,
+      "calls": 2,
+      "sum_net_usdt": "282.4333953814032539596"
+    },
+    {
+      "core": "UC4",
+      "campaign": 1702958400000,
       "calls": 1,
-      "sum_net_usdt": "201.1268807233131040630"
+      "sum_net_usdt": "-0.6490865782726688990"
     }
   ]
 }

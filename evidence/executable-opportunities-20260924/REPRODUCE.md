@@ -8,6 +8,14 @@
 
 保留输入目录结构。必须校验 `NET_EDGE_INPUTS.json` 的账户文件长度和摘要；使用完整有效账户 `SX60-development`、`UC4-PF55-development-r01`、`UC4-RR-development-r17`，不要取 `.partial`。已有官方 1m 档和 CHECKSUM 可以从 bounded 原件、sx60 的 `exit-minutes`、RR 的 `evidence/recoverable-risk-20260924/minutes`、仓库 `evidence/unified-channel-20260924/minutes` 读取；新档案以 `--minute-root` 增加，并保留来源及 SHA。
 
+第二轮新增既有完整官方分钟原件：
+
+- `libfile_f238bff2ad6c819183809199ef661478`：`COINQUANT_M60_DEVELOPMENT_MINUTES_20260923.zip`，30232711 字节，SHA-256 `76d6fd297e3f07fb73b5db8824b21c0cddf5349748afa6ee70e7f52d4e20c3e1`，解到 `m60-development`。
+- `libfile_b6057b4e31bc8191979c45b8060481da`：`COINQUANT_M60_PROTECTION_MINUTES_20260923.zip`，755861 字节，SHA-256 `b4701bbc7e8e6d91ba01997c093382c5e5f8a656c8868d79f072d35b05565781`，解到 `m60-protection`。
+- `libfile_dec4645a5afc8191937b52f06c35abf8`：`COINQUANT_M60_MARK_RECHECK_20260923.zip`，1116642 字节，SHA-256 `1c6adee31bf3640837c07e8d6fd83f9523f3b1b8e3900d757156248e61617b40`，解到 `m60-mark`。
+
+ZIP 中 `data/futures/um/{daily,monthly}/...` 的子目录必须保留；每次使用前按档内 `.CHECKSUM`、60 根时间戳和官方小时 OHLC/成交量逐小时核验。原件的 `RECEIPT.json` 留在相同根目录。三包整体哈希和长度按本段先核对。
+
 在本仓库根目录运行，`../inputs` 为解出的工作目录；命令中的最后一个 `--minute-root` 指向新增的官方分钟档（若存在）：
 
 ```bash
@@ -17,12 +25,15 @@ python3 -m research.executable_opportunities \
   --minute-root ../inputs/bounded/inputs \
   --minute-root ../inputs/sx60/exit-minutes \
   --minute-root ../inputs/rr/evidence/recoverable-risk-20260924/minutes \
+  --minute-root ../inputs/m60-development \
+  --minute-root ../inputs/m60-protection \
+  --minute-root ../inputs/m60-mark \
   --minute-root evidence/unified-channel-20260924/minutes \
   --minute-root ../inputs/new-official-minutes \
   --output ../out/executable-events
 python3 evidence/executable-opportunities-20260924/summarize.py ../out/executable-events
 ```
 
-当前保存的第一次有效执行没有 `new-official-minutes`。运行前确保 `--output` 不存在，程序拒绝覆盖。其有效原件在研究证据包中，`EVENTS.jsonl` 的 SHA-256 为 `5aa6a8291c6df1ca0ef040132071a37314fddabc3b96174873f37581de2ac91f`；复现如新增分钟档，应给新结果独立目录与新的证据身份，不能冒充相同输出摘要。`MISSING_MINUTES.json` 是**第一轮**依赖，不保证补齐后不会出现新的保护小时。软件环境 Python 3.13，研究代理限定在历史快照与离线回放。
+当前保存的第二轮有效执行没有 `new-official-minutes`。运行前确保 `--output` 不存在，程序拒绝覆盖。其有效原件在研究证据包中，`EVENTS.jsonl` 的 SHA-256 为 `cd448c31cdcc47b9d961c536c8cb80ef38166a47fd90dc9616a0afe5f4b888ab`；复现如新增分钟档，应给新结果独立目录与新的证据身份，不能冒充相同输出摘要。`MISSING_MINUTES.json` 是**第二轮**依赖，不保证补齐后不会出现新的保护小时。软件环境 Python 3.13，研究代理限定在历史快照与离线回放。
 
-Git 研究分支为完整保全将两个文本原件分成确定性小块。运行 `python3 evidence/executable-opportunities-20260924/reassemble.py ../restored-events`，脚本逐块核对偏移、长度及 SHA-256，再核对总长度和原件 SHA-256；完整的 ZIP 恢复包也单独保存原件。不得把任一块当作可独立解读的交易文件。
+Git 研究分支为完整保全将大的 `EVENTS.jsonl` 分成确定性小块。运行 `python3 evidence/executable-opportunities-20260924/reassemble.py ../restored-events`，脚本逐块核对偏移、长度及 SHA-256，再核对总长度和原件 SHA-256；完整的 ZIP 恢复包也单独保存原件。`MISSING_MINUTES.json` 这轮直接保存为独立文件。不得把任一分片当作可独立解读的交易文件。

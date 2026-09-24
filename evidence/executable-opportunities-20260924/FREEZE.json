@@ -1,6 +1,6 @@
 {
   "protocol_sha256": "dcbbfa6033eeb8ce1dd67ab116485961a27ccd0dbd781fe1ab12f2a2924cf1d7",
-  "source_sha256": "5267307a1d8911fb7921e8270b4c4ac2b99d8072592f05b1717a5171c6fe46e0",
+  "source_sha256": "aa776c07602d96aad96aeda51349cf34ace9c51982a478147cdc9939c8d24d28",
   "initial_prepared_input_identity": "5431c13a54bb766da9121c0cb495accc957a04c3ae143e8d3a649d0dc3443625",
   "originals": {
     "SX60": {
@@ -18,7 +18,9 @@
     "../working/bounded/inputs",
     "../working/sx60/exit-minutes",
     "../working/rr/evidence/recoverable-risk-20260924/minutes",
-    "evidence/unified-channel-20260924/minutes",
-    "evidence/renewal-risk-20260923"
+    "../working/m60-development",
+    "../working/m60-protection",
+    "../working/m60-mark",
+    "evidence/unified-channel-20260924/minutes"
   ]
 }
