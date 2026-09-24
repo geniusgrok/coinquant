@@ -82,7 +82,7 @@ jobs:
                       remote=subprocess.check_output(['git','show',f'FETCH_HEAD:{file.as_posix()}'])
                       if local!=remote:raise ValueError(f'remote byte mismatch {file}')
                       oid=subprocess.check_output(['git','rev-parse',f'FETCH_HEAD:{file.as_posix()}'],text=True).strip()
-                      blob=hashlib.sha1(b'blob '+str(len(local)).encode()+b'\\0'+local).hexdigest()
+                      blob=hashlib.sha1(b'blob '+str(len(local)).encode()+b'\0'+local).hexdigest()
                       if oid!=blob:raise ValueError(f'Git blob OID mismatch {file}')
                       print(file,len(local),hashlib.sha256(local).hexdigest(),oid)
           PY
