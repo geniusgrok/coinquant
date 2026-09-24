@@ -31,6 +31,7 @@ jobs:
           cp -a recovered-minutes/. evidence/c7-call-expiry-20260924/minutes/
           git config user.name coinquant-research
           git config user.email 332557824+geniusgrok@users.noreply.github.com
+          git add -f evidence/c7-call-expiry-20260924/minutes/data
           git add evidence/c7-call-expiry-20260924/minutes
           git commit -m "Preserve checked official minute originals for C7"
           git push origin HEAD:refs/heads/research/minute-acceptance-20260924
