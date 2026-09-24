@@ -109,7 +109,16 @@ def decision_times(frozen, end, schedule):
     raise ValueError('unknown research schedule')
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False):
+def recoverable_budget(equity: D, peak: D) -> D:
+    """Allocate at most half the remaining 50% drawdown room to one mother."""
+    if min(equity, peak) <= 0:
+        raise ValueError('positive observed equity and high water required')
+    return max(ZERO, min(equity * D('.10'), (equity - peak * D('.50')) / 2))
+
+
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,recoverable_risk=False):
+    if recoverable_risk and (reference != 'channel_core' or execution is None or D(risk_scale) != D('3.6')):
+        raise ValueError('recoverable allocation requires UC4 3.6 bounded entry')
     channel_core = reference == 'channel_core'
     multiscale = reference == 'multiscale'
     if conditional_hold and (reference != 'impulse_hold' or D(risk_scale) != 6 or
@@ -382,6 +391,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 edge_target*=short_risk_scale if direction<0 else risk_scale
                 if not edge_target:direction=0
                 if reference=='channel_position':edge_target*=channel_position(daily)[1]
+                available_risk=(recoverable_budget(account.equity(mo),peak)
+                                if recoverable_risk and not account.q else None)
+                if available_risk is not None and available_risk<=0:
+                    direction=0
+                    counts['recoverable_risk_closed']+=1
                 action='hold' if account.q else 'no_signal';caps={};qty=ZERO;raw_qty=ZERO;limiter=''
                 hold_permission=False;renewal_expiry=False
                 if conditional_hold and account.q:
@@ -517,7 +531,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                     entry_equity_before=account.equity(mo) if renewal_risk else None
                                     entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
                                         previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale,capital=capital,
-                                        stop_risk_share=execution.stop_risk_share)
+                                        stop_risk_share=(available_risk/account.equity(mo)
+                                                         if available_risk is not None else execution.stop_risk_share))
                                     if renewal_risk and entry_window.maximum:
                                         renewal_entry_equity[entry_window.identity]=entry_equity_before
                                         execution_record('renewal_entry_basis_started',dict(time=t,

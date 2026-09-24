@@ -1,0 +1,64 @@
+{
+  "archive": {
+    "filename": "COINQUANT_RR_DEVELOPMENT_REJECT_20260924.zip",
+    "library_file_id": "libfile_9f4c5e3529d481919b25437d394e2f4b",
+    "file_id": "file_00000000c2708209966fc1741a88d622",
+    "size_bytes": 36486805,
+    "sha256": "f4e5654c90947b2e3b4477a49c7c50e7d3753c13c692dbfbff230528d546ab7a",
+    "members": 224,
+    "member_length_hash_verified": true,
+    "library_readback_byte_identical": true,
+    "current_version_number": 1
+  },
+  "frozen_source": {
+    "main_parent": "962c7820dd0ccfce735b207388c2aadefcca9f0f",
+    "frozen_tree": "d49546d33e5def59f8891a08359ee8494092718f",
+    "remote_frozen_commit": "38b749b9c5767e53f73f892316ad00ab861ccb5d",
+    "protocol_sha256": "967b98d119a729504a0142fb57a824fad60f110bbd5f0b95f0ba84c569f3b933"
+  },
+  "economic_account": {
+    "path_inside_archive": "replay/UC4-RR-development-r17",
+    "input_identity": "48b46f0ae90d7df1e00caf89901aa10ada60be94fe6aba1389521a2df65b1431",
+    "result_sha256": "9f9571f3c57ab0d219561fec41ac144de9fa70c587c8dd04561d653a667a141a",
+    "equity_sha256": "9ce487bd40c47af85f56452f5eaa03a0ac5a25299bbb0dd7474adb2d60c179f6",
+    "result": "REJECT_DEVELOPMENT_RETURN_GATE"
+  },
+  "existing_market_originals": [
+    {
+      "filename": "COINQUANT_M60_COMPLETE_20260923.zip",
+      "library_file_id": "libfile_7579b3804a4c8191b16800c40c81d5df",
+      "size_bytes": 184635190,
+      "sha256": "ca1dab14d2501a31d2122bc22d3001c34392033a6e9de786a6727886b13c5a1e"
+    },
+    {
+      "filename": "UC4_PF55_DEVELOPMENT_REJECT_20260924.zip",
+      "library_file_id": "libfile_025da54ab3a8819185df560eb62f5e5a",
+      "size_bytes": 4197340,
+      "sha256": "769e3517cdbbedf6581ac313224285f63e8ca215099bce3fc633fe72c014c4ad"
+    },
+    {
+      "filename": "COINQUANT_M60_DEVELOPMENT_MINUTES_20260923.zip",
+      "library_file_id": "libfile_f238bff2ad6c819183809199ef661478",
+      "size_bytes": 30232711,
+      "sha256": "76d6fd297e3f07fb73b5db8824b21c0cddf5349748afa6ee70e7f52d4e20c3e1"
+    },
+    {
+      "filename": "COINQUANT_M60_PROTECTION_MINUTES_20260923.zip",
+      "library_file_id": "libfile_b6057b4e31bc8191979c45b8060481da",
+      "size_bytes": 755861,
+      "sha256": "b4701cbc7e8e6d91ba01997c093382c5e5f8a656c8868d79f072d35b05565781"
+    },
+    {
+      "filename": "COINQUANT_M60_MARK_RECHECK_20260923.zip",
+      "library_file_id": "libfile_dec4645a5afc8191937b52f06c35abf8",
+      "size_bytes": 1116642,
+      "sha256": "1c6adee31bf3640837c07e8d6fd83f9523f3b1b8e3900d757156248e61617b40"
+    },
+    {
+      "filename": "COINQUANT_M60_WARMUP_PROBE_20260923.zip",
+      "library_file_id": "libfile_6b23bff662d8819185867ef506e3be4a",
+      "size_bytes": 1013,
+      "sha256": "edd70f1dbd6fef0cfdf00901b9fdc11240a3d5d4b5ac10ac8122840a42697cf6"
+    }
+  ]
+}
