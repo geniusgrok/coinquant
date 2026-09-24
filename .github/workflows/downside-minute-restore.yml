@@ -46,7 +46,7 @@ jobs:
               for r in receipts:
                   if r['status'] not in ('verified','rejected_original'):
                       raise ValueError('unclassified public minute response')
-                  target = batch/('data/futures/um' if r['status']=='verified' else 'rejected/data/futures/um')/r['path']
+                  target = batch/('data/futures/um' if r['status']=='verified' else 'rejected')/r['path']
                   raw = target.read_bytes()
                   assert len(raw) == r['bytes'] and hashlib.sha256(raw).hexdigest() == r['sha256']
                   assert (target.parent/(target.name+'.CHECKSUM')).read_text().split()[0].lower() == r['sha256']
