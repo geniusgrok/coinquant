@@ -15,7 +15,7 @@ from coinquant.binance import market_quantity
 from research.linear_forecast import archive_rows, DAY
 from research.audit_binance import repair_rows
 from research.linear_replay import Account, FEE, MMR, LOT, TICK
-from research.minute_evidence import load as minute_load, steps
+from research.minute_evidence import load as minute_load, steps, missing_protection_minutes
 from research.edge_allocation import target_fraction
 from research.volatility_target import target_fraction as volatility_fraction, funded_target, channel_position
 
@@ -585,6 +585,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
                 charge_q=(max((opening_q,account.q),key=lambda q:q*fund_hours[t][1]) if targeting else opening_q or account.q)
                 funding_bound(t,mark,charge_q)
+            if reference=='channel_core' and missing_protection_minutes(t,account,mark,minutes):
+                raise ValueError(f'unresolved held protection hour requires verified trade and mark minutes: {iso(t)}')
             for st,sbar,smark in steps(t,bar,mark,minutes):
                 active_entry=entry_window is not None and entry_window.call_time==t and entry_window.available(st)
                 if not account.q and not active_entry:break

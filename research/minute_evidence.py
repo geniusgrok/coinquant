@@ -31,3 +31,13 @@ def steps(t, trade, mark, minutes):
         return [(t,trade,mark)]
     return [(s,minutes['klines'][s],minutes['markPriceKlines'][s])
             for s in range(t,t+HOUR,60000)]
+
+
+def missing_protection_minutes(t, account, mark, minutes):
+    """Held coarse hours that can change the stop/take/liquidation order."""
+    if not account.q or (minutes and t in minutes['klines'] and t in minutes['markPriceKlines']):
+        return False
+    _, high, low, _ = mark
+    if account.q > 0:
+        return low <= max(account.sl, account.liquidation()) or high >= account.tp
+    return high >= min(account.sl, account.liquidation()) or low <= account.tp

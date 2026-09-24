@@ -1,0 +1,17 @@
+{
+  "schema": "coinquant.uc4.held_protection_minute_coverage.v1",
+  "source": "Frozen UC4 3.6 partial equity and hourly mark before 2021-04-18 03:00 UTC",
+  "source_package_sha256": "cad6b6b963a9b095f56268879d399d619e8c1477e829579f92100ad87bdc196d",
+  "reason": "Held hour absent from frozen minute_validation.hours with hourly mark range crossing the active stop or take level",
+  "hours": [
+    1587376800000,
+    1590055200000,
+    1591110000000,
+    1599044400000,
+    1600686000000,
+    1607083200000,
+    1611669600000,
+    1617494400000,
+    1618714800000
+  ]
+}
