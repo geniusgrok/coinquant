@@ -9,7 +9,8 @@ from unittest.mock import patch
 import zipfile
 
 from coinquant.research import timestamp
-from research.minute_evidence import load, steps
+from coinquant.linear_account import Account
+from research.minute_evidence import load, steps, missing_protection_minutes
 
 class MinuteEvidenceTests(unittest.TestCase):
     def test_exact_native_reconstruction_and_rejection(self):
@@ -35,3 +36,12 @@ class MinuteEvidenceTests(unittest.TestCase):
                 self.assertEqual(bars[-1][0],start+59*60000)
                 hourly['klines'][start][2]='111'
                 with self.assertRaises(ValueError):load(root,hourly)
+
+    def test_held_protection_requires_finer_prices_and_flat_position_does_not(self):
+        t=1618714800000
+        account=Account(D(10000),D(1),D(60000),D(3000),D(57700),D(90000))
+        mark=tuple(map(D,(58893,59080,57655,58876)))
+        self.assertTrue(missing_protection_minutes(t,account,mark,None))
+        self.assertFalse(missing_protection_minutes(t,account,mark,{'klines':{t:()},'markPriceKlines':{t:()}}))
+        account.q=D(0)
+        self.assertFalse(missing_protection_minutes(t,account,mark,None))
