@@ -47,9 +47,9 @@ def possible_hours(cache, full=False):
     return hours
 
 
-def prepared(bounded, sx60, more, full=False):
+def prepared(bounded, sx60, more, full=False, extra_hours=()):
     root, base, _ = prepared_inputs(bounded, sx60, more, full=full)
-    hours = possible_hours(base[0], full)
+    hours = sorted(set(possible_hours(base[0], full)) | set(extra_hours))
     completed = extend_minutes(base,
         [bounded/'inputs', sx60/'exit-minutes', *more], hours)
     return root, completed, hours
@@ -107,8 +107,10 @@ def main():
     p.add_argument('--full-window',action='store_true')
     p.add_argument('--stress',action='store_true')
     p.add_argument('--risk-control-3.6',dest='risk_control_36',action='store_true',help='one prespecified risk attribution control')
+    p.add_argument('--coverage-hours',type=Path,help='held protection crossings found in a previous account')
     a=p.parse_args()
-    root, data, hours=prepared(a.bounded_originals,a.sx60_originals,a.new_data,a.full_window)
+    extra_hours=json.loads(a.coverage_hours.read_text())['hours'] if a.coverage_hours else ()
+    root, data, hours=prepared(a.bounded_originals,a.sx60_originals,a.new_data,a.full_window,extra_hours)
     result=run_account(root,data,a.output,full=a.full_window,stress=a.stress,
                        risk_scale=D('3.6') if a.risk_control_36 else D(6))
     print(json.dumps({k:result[k] for k in ('candidate','cagr','mdd_conservative_envelope',
