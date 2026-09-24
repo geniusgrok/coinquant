@@ -123,7 +123,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         raise ValueError('C7 requires the frozen UC4 / SX60 6.0 seven-day call policy')
     if recoverable_risk and (reference != 'channel_core' or execution is None or D(risk_scale) != D('3.6')):
         raise ValueError('recoverable allocation requires UC4 3.6 bounded entry')
-    channel_core = reference == 'channel_core'
+    channel_core = reference in ('channel_core', 'channel_core_short')
+    if reference == 'channel_core_short' and (entry_side != 'short' or execution is not None):
+        raise ValueError('short channel is a diagnostic until bounded execution is signed')
     multiscale = reference == 'multiscale'
     if conditional_hold and (reference != 'impulse_hold' or D(risk_scale) != 6 or
             D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0 or
@@ -157,13 +159,13 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     risk_scale=D(risk_scale)
     short_risk_scale=risk_scale if short_risk_scale is None else D(short_risk_scale)
     if not short_risk_scale.is_finite() or short_risk_scale<0:raise ValueError('invalid short risk scale')
-    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and payoff is None and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing','multiscale','post_impulse_restart','channel_core')):
+    if not risk_scale.is_finite() or risk_scale<=0 or (risk_scale!=1 and payoff is None and reference not in ('impulse_hold','impulse_validity','impulse_confirmation','swing','multiscale','post_impulse_restart','channel_core','channel_core_short')):
         raise ValueError('non-unit diagnostic risk requires impulse_hold')
     if allocation not in ('fixed','edge','unit','volatility'):raise ValueError('unknown allocation')
     if lifecycle not in ('persistent','one_campaign','fresh_breakout'):raise ValueError('unknown lifecycle')
-    if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart','channel_core'):raise ValueError('unknown reference')
+    if reference not in ('channel','long','long_flat','slow_mean','channel_position','anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart','channel_core','channel_core_short'):raise ValueError('unknown reference')
     if protection not in ('fixed','trailing'):raise ValueError('unknown protection')
-    if reference in ('anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart','channel_core') and (allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline):
+    if reference in ('anchored','same_run_reversal','entry_inventory','squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart','channel_core','channel_core_short') and (allocation!='volatility' or lifecycle!='one_campaign' or protection!='fixed' or baseline):
         raise ValueError('return-capture candidates require their frozen L21 controls')
     if minute_days and minutes is None:raise ValueError('extra minute days require original minute data')
     targeting=allocation in ('unit','volatility')
@@ -178,7 +180,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     elif minutes is not None:
         minutes,minute_identity=minute_load(minutes,series,minute_days);identity.extend(minute_identity)
     trade=series['klines'];marks=series['markPriceKlines']
-    mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart','channel_core')
+    mechanism=reference in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','hourly_impulse_hold','swing','multiscale','post_impulse_restart','channel_core','channel_core_short')
     opportunities={};fractions={};signal_states={}
     if multiscale or conditional_hold:
         from coinquant.multiscale import daily_snapshots, published_daily_key
@@ -195,7 +197,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     elif channel_core:
         from coinquant.channel_core import ChannelCore
         model_interval=4*HOUR
-        model=ChannelCore()
+        model=ChannelCore(-1 if reference == 'channel_core_short' else 1)
         for bt in range(min(warm),end,model_interval):
             source=warm if bt<start else trade
             rs=[source[x] for x in range(bt,bt+model_interval,HOUR)]
@@ -606,7 +608,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 if account.q:observe(t,'pre_offset_funding_possible_peak',mh if account.q>0 else ml)
                 charge_q=(max((opening_q,account.q),key=lambda q:q*fund_hours[t][1]) if targeting else opening_q or account.q)
                 funding_bound(t,mark,charge_q)
-            if reference=='channel_core' and missing_protection_minutes(t,account,mark,minutes):
+            if channel_core and missing_protection_minutes(t,account,mark,minutes):
                 raise ValueError(f'unresolved held protection hour requires verified trade and mark minutes: {iso(t)}')
             for st,sbar,smark in steps(t,bar,mark,minutes):
                 active_entry=entry_window is not None and entry_window.call_time==t and entry_window.available(st)

@@ -1,0 +1,622 @@
+[
+  {
+    "day": "2023-03-15",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-03-15.zip",
+    "status": "verified",
+    "bytes": 64345,
+    "sha256": "1ef8db05d25b8c2a07697ebed79eccf7643a5950ab9e51d563b90c85fa799ab6",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:14.066935+00:00"
+  },
+  {
+    "day": "2023-03-15",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-03-15.zip",
+    "status": "verified",
+    "bytes": 39748,
+    "sha256": "13072ce5602f8efde7514a62c5239394fdcf4b1be0682e673285d43ac0375065",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:14.937804+00:00"
+  },
+  {
+    "day": "2023-03-29",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-03-29.zip",
+    "status": "verified",
+    "bytes": 62714,
+    "sha256": "566413c24980681df6882b0ca4de16df2ebcc38f5cb00c6e0a2262cc228a8faf",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:15.839687+00:00"
+  },
+  {
+    "day": "2023-03-29",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-03-29.zip",
+    "status": "verified",
+    "bytes": 34067,
+    "sha256": "ea391b5870d2202afc3c8fb1d8c04308eb21e0486c37ef0219d0ff896cb71035",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:16.431245+00:00"
+  },
+  {
+    "day": "2023-03-30",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-03-30.zip",
+    "status": "verified",
+    "bytes": 63324,
+    "sha256": "8cf7d650b954866c88fe8a2140be5d15346e565a0eec270c288407d0f2cb31c2",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:16.964484+00:00"
+  },
+  {
+    "day": "2023-03-30",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-03-30.zip",
+    "status": "verified",
+    "bytes": 34432,
+    "sha256": "27d240ab3c4c2f52c405a5ce21eb94cf229c33201f8377bb5cddc4a5a56505cd",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:17.480067+00:00"
+  },
+  {
+    "day": "2023-03-31",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-03-31.zip",
+    "status": "verified",
+    "bytes": 62696,
+    "sha256": "957a112fc06059a64dbfee1c7b4bc55f197b1669531d71999adf3ef4ec1cf617",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:18.107183+00:00"
+  },
+  {
+    "day": "2023-03-31",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-03-31.zip",
+    "status": "verified",
+    "bytes": 34353,
+    "sha256": "f2d047202cea3058152d749d8ffd00f45b076a8849ba8941bc015c72ca10d58a",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:18.656790+00:00"
+  },
+  {
+    "day": "2023-04-24",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-04-24.zip",
+    "status": "verified",
+    "bytes": 62253,
+    "sha256": "22ea7ba6ef8f2355968b593157203d169df7beed47aa38c839ddccc3755e50c8",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:19.485488+00:00"
+  },
+  {
+    "day": "2023-04-24",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-04-24.zip",
+    "status": "verified",
+    "bytes": 33615,
+    "sha256": "870614238831cac693f1f5b0491e1316679dd53d8e5d156ca2db47653d5db4d1",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:20.116037+00:00"
+  },
+  {
+    "day": "2023-04-25",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-04-25.zip",
+    "status": "verified",
+    "bytes": 61828,
+    "sha256": "caf71257c6d4cf6b597411091eb7824f627f42e97bfe66fa8205d85fe3dcf65d",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:20.717564+00:00"
+  },
+  {
+    "day": "2023-04-25",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-04-25.zip",
+    "status": "verified",
+    "bytes": 33162,
+    "sha256": "a9adb8a7f5578bca4c020dfb855656e95df8289d83427a35fcd5f5a27313117b",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:21.235852+00:00"
+  },
+  {
+    "day": "2023-05-04",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05-04.zip",
+    "status": "verified",
+    "bytes": 61447,
+    "sha256": "7cb8f7c996e464038cc99e1b1e0cd9c22020638fa60442e05d33d06a86541c47",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:21.864705+00:00"
+  },
+  {
+    "day": "2023-05-04",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-05-04.zip",
+    "status": "verified",
+    "bytes": 33453,
+    "sha256": "c7483bc0bcc490e966120eb20a69f84caa144452f38dec18242ceb4f5dbc951d",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:22.409538+00:00"
+  },
+  {
+    "day": "2023-05-13",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05-13.zip",
+    "status": "verified",
+    "bytes": 59790,
+    "sha256": "577e366e69101bc85ac5cff109469a528e89aa4721284b7298ac8a32a6ed64e0",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:22.813598+00:00"
+  },
+  {
+    "day": "2023-05-13",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-05-13.zip",
+    "status": "verified",
+    "bytes": 32945,
+    "sha256": "79a19d23d87976b31575f2f6247789628a826edef8a57bfa4bfc9c442049a25b",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:23.646699+00:00"
+  },
+  {
+    "day": "2023-05-15",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05-15.zip",
+    "status": "verified",
+    "bytes": 61328,
+    "sha256": "8c74cc3b4eac41c544a5d86b49c069064b7d9a1f848d127e5de167389a5d469b",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:24.470543+00:00"
+  },
+  {
+    "day": "2023-05-15",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-05-15.zip",
+    "status": "verified",
+    "bytes": 33862,
+    "sha256": "5a00b13c45c6c41430df4d9432f2f7e947bf02ffdf3006d3e5f3eafc303838e0",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:24.899338+00:00"
+  },
+  {
+    "day": "2023-05-16",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05-16.zip",
+    "status": "verified",
+    "bytes": 61086,
+    "sha256": "08012d867e65203f3723a6a33864cb606df16ba86cfa179ad60be35689a5fca5",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:26.190075+00:00"
+  },
+  {
+    "day": "2023-05-16",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-05-16.zip",
+    "status": "verified",
+    "bytes": 33182,
+    "sha256": "5549233cf3fe6f8f7de520b7af04e2fff34b01b51ed88ade6c8e33fbd82abad4",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:26.757482+00:00"
+  },
+  {
+    "day": "2023-05-17",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05-17.zip",
+    "status": "verified",
+    "bytes": 61602,
+    "sha256": "67c22f5817f98d8dfc7937d867d3a5d36d29b4f3e670bbfafed47a9f79601b13",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:27.163249+00:00"
+  },
+  {
+    "day": "2023-05-17",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-05-17.zip",
+    "status": "verified",
+    "bytes": 33834,
+    "sha256": "f77893317cbee06c8b8daff58a98eb59abb2b5dfa3b00d15595e80c11832fed9",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:27.699357+00:00"
+  },
+  {
+    "day": "2023-05-18",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05-18.zip",
+    "status": "verified",
+    "bytes": 61471,
+    "sha256": "a44380772ae718d70c132edbf2d592961848f73ba569018118f90dcce6fe3bf0",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:28.722955+00:00"
+  },
+  {
+    "day": "2023-05-18",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-05-18.zip",
+    "status": "verified",
+    "bytes": 33684,
+    "sha256": "871806b2a0e0e49d57122ad18d9bae58cde7f9a4019be52f6494a556c46c788a",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:29.873341+00:00"
+  },
+  {
+    "day": "2023-06-12",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-06-12.zip",
+    "status": "verified",
+    "bytes": 60422,
+    "sha256": "03c02a7c7aaebe8569636f0e9af4739eada1665e396c6223bc1c0001f35550e6",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:30.277068+00:00"
+  },
+  {
+    "day": "2023-06-12",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-06-12.zip",
+    "status": "verified",
+    "bytes": 32991,
+    "sha256": "9712a1ededfecfef2f10d2a0e269e8f14a97ff15ea7b1718c58ff7194b6d45fb",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:30.685869+00:00"
+  },
+  {
+    "day": "2023-06-13",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-06-13.zip",
+    "status": "verified",
+    "bytes": 61064,
+    "sha256": "0cb40a07b2c8b580925d9205e20d7870e46bd960f1238083ca9c11289b0871f3",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:31.240446+00:00"
+  },
+  {
+    "day": "2023-06-13",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-06-13.zip",
+    "status": "verified",
+    "bytes": 33606,
+    "sha256": "35a6ef9702c732ec8cca05b945daca2e731c33d80a2d21742d9dc335d4b3b3d6",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:32.103647+00:00"
+  },
+  {
+    "day": "2023-06-15",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-06-15.zip",
+    "status": "verified",
+    "bytes": 61613,
+    "sha256": "d165c6a72194bc8efde579a624cf5a3a31a96fb10adf23cc50d7a607888bd68b",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:32.953994+00:00"
+  },
+  {
+    "day": "2023-06-15",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-06-15.zip",
+    "status": "verified",
+    "bytes": 34326,
+    "sha256": "c2fde35e73b85db8138b4bf493e2f29bd4b8469af8424df21bb92279d7e1e891",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:33.806634+00:00"
+  },
+  {
+    "day": "2023-06-16",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-06-16.zip",
+    "status": "verified",
+    "bytes": 61089,
+    "sha256": "e17986d1802d831ad27deb0e6c3f911094816c5baf1b9a996e7097e983d1c307",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:35.019723+00:00"
+  },
+  {
+    "day": "2023-06-16",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-06-16.zip",
+    "status": "verified",
+    "bytes": 33581,
+    "sha256": "bb1b96a26a5c44620894e4df419a78273e1d3eef782929a5cdbc97157cc4272a",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:35.539262+00:00"
+  },
+  {
+    "day": "2023-06-17",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-06-17.zip",
+    "status": "verified",
+    "bytes": 59774,
+    "sha256": "f581637872e730ed4f4884bb386930b019c927c416622e48a96312c7cae48065",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:35.948728+00:00"
+  },
+  {
+    "day": "2023-06-17",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-06-17.zip",
+    "status": "verified",
+    "bytes": 32733,
+    "sha256": "4ea81f42ebec2071af546cd8f2e8b03990066a30f5f568b3d1ba9956c511c555",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:36.790606+00:00"
+  },
+  {
+    "day": "2023-07-28",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-07-28.zip",
+    "status": "verified",
+    "bytes": 57950,
+    "sha256": "da24313359e0b13ebec6395481bf2f65425afc7cb68aabb8b5a705db71d00348",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:37.226157+00:00"
+  },
+  {
+    "day": "2023-07-28",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-07-28.zip",
+    "status": "verified",
+    "bytes": 30967,
+    "sha256": "fccf4f3652bc7e6c1eca1ed12cbfe25b9c9dd3275871e0d223bd2e0be8e2cb5e",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:37.646592+00:00"
+  },
+  {
+    "day": "2023-07-30",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-07-30.zip",
+    "status": "verified",
+    "bytes": 56023,
+    "sha256": "bc7fd70c5bc52b4c875ade36d49a510cf5cddb9f0c5881fe0905f618f599e609",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:38.494793+00:00"
+  },
+  {
+    "day": "2023-07-30",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-07-30.zip",
+    "status": "verified",
+    "bytes": 29486,
+    "sha256": "f32f127fbefcdaf33d58bae9ef711fff8da0ff42e82ee1c8c654c3e08c8a1449",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:39.631158+00:00"
+  },
+  {
+    "day": "2023-07-31",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-07-31.zip",
+    "status": "verified",
+    "bytes": 58510,
+    "sha256": "84fba938865971db1b359f4f6a9d24b1654a54168ae9efdd756fd9bab00bb722",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:40.766550+00:00"
+  },
+  {
+    "day": "2023-07-31",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-07-31.zip",
+    "status": "verified",
+    "bytes": 31488,
+    "sha256": "f8c564e09de30a7d98bde66028b11f7558045af60c8e8202652997e583bbb816",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:41.643549+00:00"
+  },
+  {
+    "day": "2023-08-01",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-01.zip",
+    "status": "verified",
+    "bytes": 60328,
+    "sha256": "640d27c02c554b7b5eb85e1cda4309fcc51c93e8e99f594fc4b0448fde1e2209",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:42.328545+00:00"
+  },
+  {
+    "day": "2023-08-01",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-01.zip",
+    "status": "verified",
+    "bytes": 32676,
+    "sha256": "e771b71badf9efcab2f42f5583b0f253a3940029d982da6d509d6c66fbb62f8d",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:42.730974+00:00"
+  },
+  {
+    "day": "2023-08-02",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-02.zip",
+    "status": "verified",
+    "bytes": 61205,
+    "sha256": "681b33f67bb0dfa563c2ca3df0196cbde721f12baa45ab2c45df8e344a373a0a",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:43.327706+00:00"
+  },
+  {
+    "day": "2023-08-02",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-02.zip",
+    "status": "verified",
+    "bytes": 33185,
+    "sha256": "72f6a4be6010ff36a608c89a4e75ef6b5de68cd8908e9750b2456abc2e9873e4",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:44.167276+00:00"
+  },
+  {
+    "day": "2023-08-23",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-23.zip",
+    "status": "verified",
+    "bytes": 60610,
+    "sha256": "4cf02d6f0996068fba9b8b88710b1bf03d597249dbbcf5e93d60f38644e06229",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:45.014571+00:00"
+  },
+  {
+    "day": "2023-08-23",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-23.zip",
+    "status": "verified",
+    "bytes": 33068,
+    "sha256": "996b0480f9d3c8d3ffb6e40715a889458abba65921cc20aa9fb1a9f9871f196f",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:45.417728+00:00"
+  },
+  {
+    "day": "2023-08-24",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-08-24.zip",
+    "status": "verified",
+    "bytes": 59578,
+    "sha256": "04a3bcfefe5ca3ce1d49fa4a8f04b086ad8520b1f98da7444b4ff6110fa7ddb4",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:46.028206+00:00"
+  },
+  {
+    "day": "2023-08-24",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-08-24.zip",
+    "status": "verified",
+    "bytes": 32391,
+    "sha256": "23e6083f2c1175ff1c21d81903699446f338e463e7e06713b9bc3c666459fe74",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:46.440427+00:00"
+  },
+  {
+    "day": "2023-10-16",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-10-16.zip",
+    "status": "verified",
+    "bytes": 61585,
+    "sha256": "c294d957c06c8b6eef3725c9ed312b7a272d1ac618bab4e5e93081254ad128c2",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:47.168560+00:00"
+  },
+  {
+    "day": "2023-10-16",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-10-16.zip",
+    "status": "verified",
+    "bytes": 34207,
+    "sha256": "95634ef7572fc6567bcd0c404b55eb3896f3d3826afb4e776b5d382c8be99433",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:48.004407+00:00"
+  },
+  {
+    "day": "2023-11-24",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-11-24.zip",
+    "status": "verified",
+    "bytes": 60654,
+    "sha256": "73fdd01f2a6a57afb01ffbcaac08c75739e91e9b071bf118618d517a43f03477",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:48.861002+00:00"
+  },
+  {
+    "day": "2023-11-24",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-11-24.zip",
+    "status": "verified",
+    "bytes": 38106,
+    "sha256": "7f8e08871891ec51d6ba8f56e8e089970b58855c7ba00588fe1816e1177996f9",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:49.699779+00:00"
+  },
+  {
+    "day": "2023-11-25",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-11-25.zip",
+    "status": "verified",
+    "bytes": 56738,
+    "sha256": "4bed97cc64f4e95c64194f2a9b0c256ae09d290c87b4390eaf4f180a1052af08",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:50.842147+00:00"
+  },
+  {
+    "day": "2023-11-25",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-11-25.zip",
+    "status": "verified",
+    "bytes": 35394,
+    "sha256": "ebbb9925b8e5dbe51321c95cb4aeaf61e0e7f902ff14e8c89f22ae09e1a6c33e",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:51.266471+00:00"
+  },
+  {
+    "day": "2023-11-26",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-11-26.zip",
+    "status": "verified",
+    "bytes": 57976,
+    "sha256": "9b334855ad38d1b6647a5feee2b3c9011495648109c803ad2cc45bc11cc71efe",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:51.755954+00:00"
+  },
+  {
+    "day": "2023-11-26",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-11-26.zip",
+    "status": "verified",
+    "bytes": 32676,
+    "sha256": "48df6e933cb0ef99d4dd1006532bba503f99434ec5548e8db4b3596bef069650",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:52.444787+00:00"
+  },
+  {
+    "day": "2023-12-14",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-12-14.zip",
+    "status": "verified",
+    "bytes": 61993,
+    "sha256": "e2ed64d876a139a387f7397de238063d17e293c6d63a7ff5d6112aac82413be9",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:52.983417+00:00"
+  },
+  {
+    "day": "2023-12-14",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-12-14.zip",
+    "status": "verified",
+    "bytes": 38486,
+    "sha256": "ab8eb873ddffb39dcf2123bb41f662bea52f5e6fdd56240c9a5c18b45d71fdf2",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:53.695561+00:00"
+  },
+  {
+    "day": "2023-12-15",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-12-15.zip",
+    "status": "verified",
+    "bytes": 61421,
+    "sha256": "fa30ef86823ec9b36d7f1903a7205120edf89c2ab9ab50d206842123676808ba",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:54.540552+00:00"
+  },
+  {
+    "day": "2023-12-15",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-12-15.zip",
+    "status": "verified",
+    "bytes": 34396,
+    "sha256": "5b773b10f05db915a7fa4dfd40e7662e664b91ff5c3d084ef3742f9d94e57fc8",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:55.074395+00:00"
+  },
+  {
+    "day": "2023-12-16",
+    "kind": "klines",
+    "path": "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-12-16.zip",
+    "status": "verified",
+    "bytes": 59622,
+    "sha256": "170aae94c950b50f65065cbd9f3afe71a9b6fd4822d7ef8e2c54ab92e1e2e16c",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:55.747645+00:00"
+  },
+  {
+    "day": "2023-12-16",
+    "kind": "markPriceKlines",
+    "path": "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-12-16.zip",
+    "status": "verified",
+    "bytes": 33124,
+    "sha256": "e4bf9b53fb501db010579a952c5f01976176cbcb0c80ff3efafee6f167fd22c9",
+    "minutes": 1440,
+    "retrieved_at": "2026-09-24T08:50:56.586867+00:00"
+  }
+]

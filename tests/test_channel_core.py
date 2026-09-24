@@ -6,6 +6,21 @@ from coinquant.channel_core import ChannelCore, FOUR_HOURS
 
 
 class ChannelCoreTest(unittest.TestCase):
+    def test_short_breakdown_requires_completed_bar_and_preserves_campaign(self):
+        model = ChannelCore(-1)
+        for i in range(1, 21):
+            self.assertIsNone(model.update(i*FOUR_HOURS, D(101), D(99), D(100)))
+        first = model.update(21*FOUR_HOURS, D(100), D(97), D(98))
+        self.assertEqual((first.identity, first.direction, first.stop),
+                         (21*FOUR_HOURS, -1, D(101)))
+        self.assertEqual(disposition(first, D(-1), first.identity, 'short'), 'hold')
+        self.assertEqual(disposition(first, D(0), first.identity, 'short'), 'consumed')
+        self.assertEqual(model.update(22*FOUR_HOURS, D(99), D(96), D(97)).identity,
+                         first.identity)
+        self.assertIsNone(model.update(23*FOUR_HOURS, D(103), D(99), D(102)))
+        with self.assertRaises(ValueError):
+            model.update(25*FOUR_HOURS, D(103), D(99), D(102))
+
     def test_breakout_ownership_exit_and_gap(self):
         model = ChannelCore()
         for i in range(1, 21):
