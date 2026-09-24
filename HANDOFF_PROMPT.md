@@ -1,8 +1,8 @@
 # Coinquant 当前恢复入口（2026-09-24）
 
-**最新工作**：先读取 `PROJECT_STATE.md` 顶部与 `evidence/downside-channel-20260924/{PROTOCOL,RESULT}.md`，并查询实时 main、研究分支 `research/downside-channel-20260924` 的 SHA、PR 和检查状态。该分支从 main `0ecd1a03058631d51b7b2d66aa97b11663ea1cf1` 起。下行通道空头在冻结 468 次开发调用的简化连续账户探针中 CAGR −34.747968%、保守 MDD 91.036954%、账本误差 0，按事前早停停止扩展；不是正式经济否决，也没有 795／压力／787。不可将通用回放器的“305 days only”字样视为本轮官方原件完备性声明。完整结果与验证边界在 `RESULT.md`，账户归档 SHA-256 `23c1b95d497ef54c1b870291e156aa2f5f9724d6095be29aa94156cf054dfcba`，重建用 `archive/reassemble.py`。
+**最新远端状态**：PR #33 已合并，`main` 为 `d4e0decf4c5e83ea7cb4a8f18abc89265dbbaa6e`，tree `22b8ee905c67df461dbc0ba37f6e8ece700b1216`。账户有效 58 片、官方有效 301 ZIP/CHECKSUM、两份无效原档已随主线保存；归档重建 SHA-256 见下。正式目标仍未达到，暂时没有具备点时数据资格和独立净优势依据的新候选；机制去重和下一动作见 `PROJECT_STATE.md` 顶部。先读取实时 main，若已新增合格证据则从原账户起点继续，不重试旧空头及 C7。
 
-本轮需确认 `minutes/downside-minutes-{0,1,2,3}/data/futures/um` 的 301 份有效官方 ZIP 与 CHECKSUM、回执及两份拒绝原件都已在远端保存；仓库全局忽略 `data/`，临时 workflow 取数时必须显式 `git add -f`。最终 PR 移除该工作流后保留原件和回执。最佳已完成正式 SX60 仍 102.626211%／39.885115%，目标未达；不要复跑已经拒绝的空头机制或改动生产默认/执行阻止。
+下行通道空头简化连续账户探针的 468 次开发调用为 CAGR −34.747968%、保守 MDD 91.036954%、账本误差 0；按事前早停条件停止扩展，不是正式经济否决。它没有 795／压力／787；逐笔证据和数据限制见 `evidence/downside-channel-20260924/RESULT.md`，重建入口为同目录 `archive/reassemble.py`。最佳完成的正式 SX60 为 102.626211%／39.885115%，仍低于收益目标。生产 B36 与 execute 阻止不变。
 
 下文是上一次 C7 阶段的历史恢复说明，以本段实时状态为准。
 
