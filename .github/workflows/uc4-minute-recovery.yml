@@ -23,6 +23,10 @@ jobs:
            for kind in ('klines','markPriceKlines'):
               name=f'BTCUSDT-1m-{day}.zip'
               relative=f'daily/{kind}/BTCUSDT/1m/{name}'
+              monthly=day=='2021-01-26' and kind=='markPriceKlines'
+              if monthly:
+                  name='BTCUSDT-1m-2021-01.zip'
+                  relative=f'monthly/{kind}/BTCUSDT/1m/{name}'
               base='https://data.binance.vision/data/futures/um/'
               def get(url):
                   with urllib.request.urlopen(url,timeout=60) as response:
@@ -38,10 +42,11 @@ jobs:
               if rows and not rows[0][0].isdigit(): rows=rows[1:]
               from datetime import datetime,timezone
               start=int(datetime.fromisoformat(day).replace(tzinfo=timezone.utc).timestamp()*1000)
-              if [int(row[0]) for row in rows]!=list(range(start,start+86400000,60000)):
+              selected=[row for row in rows if start<=int(row[0])<start+86400000]
+              if [int(row[0]) for row in selected]!=list(range(start,start+86400000,60000)):
                   raise ValueError(f'incomplete minutes {kind}')
               if any(int(row[6])!=int(row[0])+59999 for row in rows):raise ValueError(f'bad minute close {kind}')
-              target=root/kind/'BTCUSDT'/'1m'/name
+              target=(root.parent/'monthly' if monthly else root)/kind/'BTCUSDT'/'1m'/name
               target.parent.mkdir(parents=True,exist_ok=True)
               target.write_bytes(raw)
               pathlib.Path(str(target)+'.CHECKSUM').write_bytes(checksum)
