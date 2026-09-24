@@ -1,0 +1,4182 @@
+[
+  {
+    "account": "SX60-development",
+    "result": {
+      "cagr": 1.621791521634055,
+      "mdd_conservative_envelope": "0.3720913583781855744812129575",
+      "final_cny": "472527.4051232058609321245863",
+      "fees_usdt": "1713.764242246668608580825530",
+      "funding_bound_paid_usdt": "2713.5315433927760523065",
+      "holding_hours": 2838
+    },
+    "counts": {
+      "invocations": 468,
+      "decision_actions": {
+        "no_signal": 413,
+        "deferred_entry": 20,
+        "hold": 19,
+        "regime_exit": 16
+      },
+      "parents": 20,
+      "filled_parents": 20,
+      "unfilled_child_reasons": {
+        "stop_budget": 20
+      },
+      "closed_trades": 20
+    },
+    "initial_usdt": "1432.011696912359164014793153",
+    "final_usdt": "67734.21133614372594422817384",
+    "reconciliation_error_usdt": "0E-23",
+    "parents": [
+      {
+        "call_time": 1578074400000,
+        "year": 2020,
+        "signal_age_hours": 10.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.753",
+        "risk_budget_usdt": "236.74879910570850",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1579572000000,
+        "year": 2020,
+        "signal_age_hours": 166.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.904",
+        "risk_budget_usdt": "420.80241179432625",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1586116800000,
+        "year": 2020,
+        "signal_age_hours": 92.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.929",
+        "risk_budget_usdt": "366.13997110815825",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1588161600000,
+        "year": 2020,
+        "signal_age_hours": 140.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.203",
+        "risk_budget_usdt": "999.00155828587625",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1595347200000,
+        "year": 2020,
+        "signal_age_hours": 8.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "2.148",
+        "risk_budget_usdt": "268.12407554072400",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1602216000000,
+        "year": 2020,
+        "signal_age_hours": 12.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.764",
+        "risk_budget_usdt": "497.36993714403125",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1603170000000,
+        "year": 2020,
+        "signal_age_hours": 13.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "2.350",
+        "risk_budget_usdt": "445.08777444892125",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1608274800000,
+        "year": 2020,
+        "signal_age_hours": 39.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.569",
+        "risk_budget_usdt": "4532.80449867926925",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1612972800000,
+        "year": 2021,
+        "signal_age_hours": 48.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.677",
+        "risk_budget_usdt": "1974.07248717120850",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1627297200000,
+        "year": 2021,
+        "signal_age_hours": 7.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.786",
+        "risk_budget_usdt": "3400.99617039015300",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1633773600000,
+        "year": 2021,
+        "signal_age_hours": 66.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.721",
+        "risk_budget_usdt": "1465.60992761804050",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1648573200000,
+        "year": 2022,
+        "signal_age_hours": 41.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.415",
+        "risk_budget_usdt": "2593.40583012597500",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1659330000000,
+        "year": 2022,
+        "signal_age_hours": 105.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "2.328",
+        "risk_budget_usdt": "3184.85317692198000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1673582400000,
+        "year": 2023,
+        "signal_age_hours": 28.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "3.931",
+        "risk_budget_usdt": "4838.54843883385000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674612000000,
+        "year": 2023,
+        "signal_age_hours": 98.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "3.772",
+        "risk_budget_usdt": "1882.72882171252000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1678953600000,
+        "year": 2023,
+        "signal_age_hours": 64.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "3.694",
+        "risk_budget_usdt": "6144.46314837570000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1681387200000,
+        "year": 2023,
+        "signal_age_hours": 64.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "5.766",
+        "risk_budget_usdt": "9484.96413933175250",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1687500000000,
+        "year": 2023,
+        "signal_age_hours": 58.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "2.889",
+        "risk_budget_usdt": "11877.51264852770000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1697518800000,
+        "year": 2023,
+        "signal_age_hours": 21.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "5.060",
+        "risk_budget_usdt": "4814.1632000696500",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1698566400000,
+        "year": 2023,
+        "signal_age_hours": 128.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.776",
+        "risk_budget_usdt": "16110.04605695082000",
+        "terminal_reason": "deadline"
+      }
+    ],
+    "closed_trades": [
+      {
+        "entry_time": 1578074460000,
+        "call_time": 1578074400000,
+        "year": 2020,
+        "holding_hours": 265.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1014.911560259348211644100000",
+        "net_over_entry_equity": "0.7087313340021286280351922347"
+      },
+      {
+        "entry_time": 1579572060000,
+        "call_time": 1579572000000,
+        "year": 2020,
+        "holding_hours": 47.03333333333333,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-30.364864065450276591999999",
+        "net_over_entry_equity": "-0.01240940596581999386347049441"
+      },
+      {
+        "entry_time": 1586116860000,
+        "call_time": 1586116800000,
+        "year": 2020,
+        "holding_hours": 146.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "44.125189835819872763400000",
+        "net_over_entry_equity": "0.01825951732087099184882910444"
+      },
+      {
+        "entry_time": 1588161660000,
+        "call_time": 1588161600000,
+        "year": 2020,
+        "holding_hours": 31.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "610.963803800076296700000000",
+        "net_over_entry_equity": "0.2482902751233001668301987361"
+      },
+      {
+        "entry_time": 1595347260000,
+        "call_time": 1595347200000,
+        "year": 2020,
+        "holding_hours": 143.98333333333332,
+        "exit_event": "take",
+        "net_usdt": "2881.449307257360310730400000",
+        "net_over_entry_equity": "0.9380794552442034688938079641"
+      },
+      {
+        "entry_time": 1602216060000,
+        "call_time": 1602216000000,
+        "year": 2020,
+        "holding_hours": 156.01666666666668,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "796.719277939239819999999995",
+        "net_over_entry_equity": "0.1338327460298606261850964158"
+      },
+      {
+        "entry_time": 1603170060000,
+        "call_time": 1603170000000,
+        "year": 2020,
+        "holding_hours": 260.03333333333336,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "4310.944718985051746500000001",
+        "net_over_entry_equity": "0.6386758893734426799418935263"
+      },
+      {
+        "entry_time": 1608274860000,
+        "call_time": 1608274800000,
+        "year": 2020,
+        "holding_hours": 182.03333333333333,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1937.64495510312306994419999",
+        "net_over_entry_equity": "0.1751818893155430107357671405"
+      },
+      {
+        "entry_time": 1612972860000,
+        "call_time": 1612972800000,
+        "year": 2021,
+        "holding_hours": 203.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "3744.70872642389096708050000",
+        "net_over_entry_equity": "0.2880898495092352052813081682"
+      },
+      {
+        "entry_time": 1627297260000,
+        "call_time": 1627297200000,
+        "year": 2021,
+        "holding_hours": 10.983333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-3250.42398535741834000000000",
+        "net_over_entry_equity": "-0.1941349687430719398803841885"
+      },
+      {
+        "entry_time": 1633773660000,
+        "call_time": 1633773600000,
+        "year": 2021,
+        "holding_hours": 151.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "4434.09507601315357980920000",
+        "net_over_entry_equity": "0.3286294244367040269655846786"
+      },
+      {
+        "entry_time": 1648573260000,
+        "call_time": 1648573200000,
+        "year": 2022,
+        "holding_hours": 46.983333333333334,
+        "exit_event": "stop",
+        "net_usdt": "-2539.33428836145768000000000",
+        "net_over_entry_equity": "-0.1416502860252009373623988769"
+      },
+      {
+        "entry_time": 1659330060000,
+        "call_time": 1659330000000,
+        "year": 2022,
+        "holding_hours": 109.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-1557.52644897638971036560001",
+        "net_over_entry_equity": "-0.1012205615659535089459132656"
+      },
+      {
+        "entry_time": 1673582460000,
+        "call_time": 1673582400000,
+        "year": 2023,
+        "holding_hours": 146.08333333333334,
+        "exit_event": "regime_exit_deadline",
+        "net_usdt": "7174.31979786188873041730691",
+        "net_over_entry_equity": "0.5187533511656998105160602828"
+      },
+      {
+        "entry_time": 1674612060000,
+        "call_time": 1674612000000,
+        "year": 2023,
+        "holding_hours": 198.03333333333333,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "4309.60769522877671599999998",
+        "net_over_entry_equity": "0.2051779434571093321044682209"
+      },
+      {
+        "entry_time": 1678953660000,
+        "call_time": 1678953600000,
+        "year": 2023,
+        "holding_hours": 125.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "12649.67932141948816000000000",
+        "net_over_entry_equity": "0.4997137224335694326260799006"
+      },
+      {
+        "entry_time": 1681387260000,
+        "call_time": 1681387200000,
+        "year": 2023,
+        "holding_hours": 104.05,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-4718.36959367134570600000002",
+        "net_over_entry_equity": "-0.1242868985638285795286979477"
+      },
+      {
+        "entry_time": 1687500060000,
+        "call_time": 1687500000000,
+        "year": 2023,
+        "holding_hours": 182.01666666666668,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "487.56871580316828800000000",
+        "net_over_entry_equity": "0.01466585473658437032200533491"
+      },
+      {
+        "entry_time": 1697518860000,
+        "call_time": 1697518800000,
+        "year": 2023,
+        "holding_hours": 160.98333333333332,
+        "exit_event": "take",
+        "net_usdt": "32574.81230177550855958187384",
+        "net_over_entry_equity": "0.9656737436342360748919021599"
+      },
+      {
+        "entry_time": 1698566460000,
+        "call_time": 1698566400000,
+        "year": 2023,
+        "holding_hours": 170.05,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1426.66837195753416400000000",
+        "net_over_entry_equity": "0.02151592877944672917495034410"
+      }
+    ]
+  },
+  {
+    "account": "SX60-full",
+    "result": {
+      "cagr": 1.0262620414608756,
+      "mdd_conservative_envelope": "0.3988511525411302503194848743",
+      "final_cny": "1149830.313334538443769839619",
+      "fees_usdt": "6068.961212762306457583025473",
+      "funding_bound_paid_usdt": "9891.2440226414960831168",
+      "holding_hours": 3906
+    },
+    "counts": {
+      "invocations": 795,
+      "decision_actions": {
+        "no_signal": 717,
+        "deferred_entry": 30,
+        "hold": 23,
+        "regime_exit": 22,
+        "capital_reduce": 2,
+        "unfunded_parent:protection": 1
+      },
+      "parents": 31,
+      "filled_parents": 30,
+      "unfilled_child_reasons": {
+        "stop_budget": 29
+      },
+      "closed_trades": 30
+    },
+    "initial_usdt": "1432.011696912359164014793153",
+    "final_usdt": "164821.8676836298334006822653",
+    "reconciliation_error_usdt": "-1E-22",
+    "parents": [
+      {
+        "call_time": 1578074400000,
+        "year": 2020,
+        "signal_age_hours": 10.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.753",
+        "risk_budget_usdt": "236.74879910570850",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1579572000000,
+        "year": 2020,
+        "signal_age_hours": 166.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.904",
+        "risk_budget_usdt": "420.80241179432625",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1586116800000,
+        "year": 2020,
+        "signal_age_hours": 92.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.929",
+        "risk_budget_usdt": "366.13997110815825",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1588161600000,
+        "year": 2020,
+        "signal_age_hours": 140.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.203",
+        "risk_budget_usdt": "999.00155828587625",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1595347200000,
+        "year": 2020,
+        "signal_age_hours": 8.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "2.148",
+        "risk_budget_usdt": "268.12407554072400",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1602216000000,
+        "year": 2020,
+        "signal_age_hours": 12.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.764",
+        "risk_budget_usdt": "497.36993714403125",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1603170000000,
+        "year": 2020,
+        "signal_age_hours": 13.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "2.350",
+        "risk_budget_usdt": "445.08777444892125",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1608274800000,
+        "year": 2020,
+        "signal_age_hours": 39.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.569",
+        "risk_budget_usdt": "4532.80449867926925",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1612972800000,
+        "year": 2021,
+        "signal_age_hours": 48.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.677",
+        "risk_budget_usdt": "1974.07248717120850",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1627297200000,
+        "year": 2021,
+        "signal_age_hours": 7.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.786",
+        "risk_budget_usdt": "3400.99617039015300",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1633773600000,
+        "year": 2021,
+        "signal_age_hours": 66.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.721",
+        "risk_budget_usdt": "1465.60992761804050",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1648573200000,
+        "year": 2022,
+        "signal_age_hours": 41.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.415",
+        "risk_budget_usdt": "2593.40583012597500",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1659330000000,
+        "year": 2022,
+        "signal_age_hours": 105.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "2.328",
+        "risk_budget_usdt": "3184.85317692198000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1673582400000,
+        "year": 2023,
+        "signal_age_hours": 28.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "3.931",
+        "risk_budget_usdt": "4838.54843883385000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674612000000,
+        "year": 2023,
+        "signal_age_hours": 98.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "3.772",
+        "risk_budget_usdt": "1882.72882171252000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1678953600000,
+        "year": 2023,
+        "signal_age_hours": 64.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "3.694",
+        "risk_budget_usdt": "6144.46314837570000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1681387200000,
+        "year": 2023,
+        "signal_age_hours": 64.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "5.766",
+        "risk_budget_usdt": "9484.96413933175250",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1687500000000,
+        "year": 2023,
+        "signal_age_hours": 58.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "2.889",
+        "risk_budget_usdt": "11877.51264852770000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1697518800000,
+        "year": 2023,
+        "signal_age_hours": 21.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "5.060",
+        "risk_budget_usdt": "4814.1632000696500",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1698566400000,
+        "year": 2023,
+        "signal_age_hours": 128.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.776",
+        "risk_budget_usdt": "16110.04605695082000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1707832800000,
+        "year": 2024,
+        "signal_age_hours": 22.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "6.671",
+        "risk_budget_usdt": "5586.45785268523000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1709118000000,
+        "year": 2024,
+        "signal_age_hours": 43.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "4.166",
+        "risk_budget_usdt": "31657.49316842793750",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1716447600000,
+        "year": 2024,
+        "signal_age_hours": 59.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "2.895",
+        "risk_budget_usdt": "6156.37549111193500",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1731164400000,
+        "year": 2024,
+        "signal_age_hours": 83.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.982",
+        "risk_budget_usdt": "25404.51858776725000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1745722800000,
+        "year": 2025,
+        "signal_age_hours": 143.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.368",
+        "risk_budget_usdt": "44169.49031461312500",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1752390000000,
+        "year": 2025,
+        "signal_age_hours": 83.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.981",
+        "risk_budget_usdt": "41170.37115021688000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1759363200000,
+        "year": 2025,
+        "signal_age_hours": 72.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "5.387",
+        "risk_budget_usdt": "44341.87777930872500",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1775437200000,
+        "year": 2026,
+        "signal_age_hours": 1.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "7.783",
+        "risk_budget_usdt": "11688.63629824269000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1781650800000,
+        "year": 2026,
+        "signal_age_hours": 47.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "1.106",
+        "risk_budget_usdt": "11011.87114312307500",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1787227200000,
+        "year": 2026,
+        "signal_age_hours": 20.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "5.861",
+        "risk_budget_usdt": "51601.46578386624000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1788534000000,
+        "year": 2026,
+        "signal_age_hours": 23.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "-0E-14",
+        "terminal_reason": "unfunded_parent:protection"
+      }
+    ],
+    "closed_trades": [
+      {
+        "entry_time": 1578074460000,
+        "call_time": 1578074400000,
+        "year": 2020,
+        "holding_hours": 265.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1014.911560259348211644100000",
+        "net_over_entry_equity": "0.7087313340021286280351922347"
+      },
+      {
+        "entry_time": 1579572060000,
+        "call_time": 1579572000000,
+        "year": 2020,
+        "holding_hours": 47.03333333333333,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-30.364864065450276591999999",
+        "net_over_entry_equity": "-0.01240940596581999386347049441"
+      },
+      {
+        "entry_time": 1586116860000,
+        "call_time": 1586116800000,
+        "year": 2020,
+        "holding_hours": 146.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "44.125189835819872763400000",
+        "net_over_entry_equity": "0.01825951732087099184882910444"
+      },
+      {
+        "entry_time": 1588161660000,
+        "call_time": 1588161600000,
+        "year": 2020,
+        "holding_hours": 31.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "610.963803800076296700000000",
+        "net_over_entry_equity": "0.2482902751233001668301987361"
+      },
+      {
+        "entry_time": 1595347260000,
+        "call_time": 1595347200000,
+        "year": 2020,
+        "holding_hours": 143.98333333333332,
+        "exit_event": "take",
+        "net_usdt": "2881.449307257360310730400000",
+        "net_over_entry_equity": "0.9380794552442034688938079641"
+      },
+      {
+        "entry_time": 1602216060000,
+        "call_time": 1602216000000,
+        "year": 2020,
+        "holding_hours": 156.01666666666668,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "796.719277939239819999999995",
+        "net_over_entry_equity": "0.1338327460298606261850964158"
+      },
+      {
+        "entry_time": 1603170060000,
+        "call_time": 1603170000000,
+        "year": 2020,
+        "holding_hours": 260.03333333333336,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "4310.944718985051746500000001",
+        "net_over_entry_equity": "0.6386758893734426799418935263"
+      },
+      {
+        "entry_time": 1608274860000,
+        "call_time": 1608274800000,
+        "year": 2020,
+        "holding_hours": 182.03333333333333,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1937.64495510312306994419999",
+        "net_over_entry_equity": "0.1751818893155430107357671405"
+      },
+      {
+        "entry_time": 1612972860000,
+        "call_time": 1612972800000,
+        "year": 2021,
+        "holding_hours": 203.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "3744.70872642389096708050000",
+        "net_over_entry_equity": "0.2880898495092352052813081682"
+      },
+      {
+        "entry_time": 1627297260000,
+        "call_time": 1627297200000,
+        "year": 2021,
+        "holding_hours": 10.983333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-3250.42398535741834000000000",
+        "net_over_entry_equity": "-0.1941349687430719398803841885"
+      },
+      {
+        "entry_time": 1633773660000,
+        "call_time": 1633773600000,
+        "year": 2021,
+        "holding_hours": 151.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "4434.09507601315357980920000",
+        "net_over_entry_equity": "0.3286294244367040269655846786"
+      },
+      {
+        "entry_time": 1648573260000,
+        "call_time": 1648573200000,
+        "year": 2022,
+        "holding_hours": 46.983333333333334,
+        "exit_event": "stop",
+        "net_usdt": "-2539.33428836145768000000000",
+        "net_over_entry_equity": "-0.1416502860252009373623988769"
+      },
+      {
+        "entry_time": 1659330060000,
+        "call_time": 1659330000000,
+        "year": 2022,
+        "holding_hours": 109.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-1557.52644897638971036560001",
+        "net_over_entry_equity": "-0.1012205615659535089459132656"
+      },
+      {
+        "entry_time": 1673582460000,
+        "call_time": 1673582400000,
+        "year": 2023,
+        "holding_hours": 146.08333333333334,
+        "exit_event": "regime_exit_deadline",
+        "net_usdt": "7174.31979786188873041730691",
+        "net_over_entry_equity": "0.5187533511656998105160602828"
+      },
+      {
+        "entry_time": 1674612060000,
+        "call_time": 1674612000000,
+        "year": 2023,
+        "holding_hours": 198.03333333333333,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "4309.60769522877671599999998",
+        "net_over_entry_equity": "0.2051779434571093321044682209"
+      },
+      {
+        "entry_time": 1678953660000,
+        "call_time": 1678953600000,
+        "year": 2023,
+        "holding_hours": 125.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "12649.67932141948816000000000",
+        "net_over_entry_equity": "0.4997137224335694326260799006"
+      },
+      {
+        "entry_time": 1681387260000,
+        "call_time": 1681387200000,
+        "year": 2023,
+        "holding_hours": 104.05,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-4718.36959367134570600000002",
+        "net_over_entry_equity": "-0.1242868985638285795286979477"
+      },
+      {
+        "entry_time": 1687500060000,
+        "call_time": 1687500000000,
+        "year": 2023,
+        "holding_hours": 182.01666666666668,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "487.56871580316828800000000",
+        "net_over_entry_equity": "0.01466585473658437032200533491"
+      },
+      {
+        "entry_time": 1697518860000,
+        "call_time": 1697518800000,
+        "year": 2023,
+        "holding_hours": 160.98333333333332,
+        "exit_event": "take",
+        "net_usdt": "32574.81230177550855958187384",
+        "net_over_entry_equity": "0.9656737436342360748919021599"
+      },
+      {
+        "entry_time": 1698566460000,
+        "call_time": 1698566400000,
+        "year": 2023,
+        "holding_hours": 170.05,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1426.66837195753416400000000",
+        "net_over_entry_equity": "0.02151592877944672917495034410"
+      },
+      {
+        "entry_time": 1707832860000,
+        "call_time": 1707832800000,
+        "year": 2024,
+        "holding_hours": 0.3333333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-5586.29547031234000000000000",
+        "net_over_entry_equity": "-0.08247376562176683701605826960"
+      },
+      {
+        "entry_time": 1709118060000,
+        "call_time": 1709118000000,
+        "year": 2024,
+        "holding_hours": 260.0833333333333,
+        "exit_event": "regime_exit_deadline",
+        "net_usdt": "35943.68122979772938201810001",
+        "net_over_entry_equity": "0.5783569847683240811785109302"
+      },
+      {
+        "entry_time": 1716447660000,
+        "call_time": 1716447600000,
+        "year": 2024,
+        "holding_hours": 5.983333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-3362.70791736291432475303598",
+        "net_over_entry_equity": "-0.03428130458600468595657402328"
+      },
+      {
+        "entry_time": 1731164460000,
+        "call_time": 1731164400000,
+        "year": 2024,
+        "holding_hours": 156.03333333333333,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "28855.93700440637092772740003",
+        "net_over_entry_equity": "0.3046160179299013065292167169"
+      },
+      {
+        "entry_time": 1745722860000,
+        "call_time": 1745722800000,
+        "year": 2025,
+        "holding_hours": 31.016666666666666,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "70.6773720011295000000000",
+        "net_over_entry_equity": "0.0005718936068790534524159517577"
+      },
+      {
+        "entry_time": 1752390060000,
+        "call_time": 1752390000000,
+        "year": 2025,
+        "holding_hours": 224.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "479.1176312049370586313000",
+        "net_over_entry_equity": "0.003874616312512911673261523886"
+      },
+      {
+        "entry_time": 1759363260000,
+        "call_time": 1759363200000,
+        "year": 2025,
+        "holding_hours": 104.08333333333333,
+        "exit_event": "regime_exit_deadline",
+        "net_usdt": "19670.2618731559703438195545",
+        "net_over_entry_equity": "0.1584591122544435552912341192"
+      },
+      {
+        "entry_time": 1775437260000,
+        "call_time": 1775437200000,
+        "year": 2026,
+        "holding_hours": 32.983333333333334,
+        "exit_event": "stop",
+        "net_usdt": "-11897.7469269891727889821760",
+        "net_over_entry_equity": "-0.08273534718640203567552291826"
+      },
+      {
+        "entry_time": 1781650860000,
+        "call_time": 1781650800000,
+        "year": 2026,
+        "holding_hours": 10.983333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-1416.6822632357524209741266",
+        "net_over_entry_equity": "-0.01073999712811280215420066923"
+      },
+      {
+        "entry_time": 1787227260000,
+        "call_time": 1787227200000,
+        "year": 2026,
+        "holding_hours": 243.08333333333334,
+        "exit_event": "regime_exit_deadline",
+        "net_usdt": "34331.4138148201497789670755",
+        "net_over_entry_equity": "0.2630952134578035422430877416"
+      }
+    ]
+  },
+  {
+    "account": "UC4-PF55-development-r01",
+    "result": {
+      "cagr": 0.5480441774626006,
+      "mdd_conservative_envelope": "0.4499858095500866121399153613",
+      "final_cny": "57431.34526404410912714424867",
+      "fees_usdt": "357.89357564940675",
+      "funding_bound_paid_usdt": "3359.5357048045743676365",
+      "holding_hours": 5211
+    },
+    "counts": {
+      "invocations": 468,
+      "decision_actions": {
+        "no_signal": 254,
+        "deferred_entry": 143,
+        "hold": 49,
+        "regime_exit": 17,
+        "campaign_consumed": 3,
+        "unfunded_parent:protection": 2
+      },
+      "parents": 145,
+      "filled_parents": 28,
+      "unfilled_child_reasons": {
+        "stop_budget": 629,
+        "minimum_or_unchanged": 6
+      },
+      "closed_trades": 28
+    },
+    "initial_usdt": "1432.011696912359164014793153",
+    "final_usdt": "8232.46828703937804637829315",
+    "reconciliation_error_usdt": "0E-24",
+    "parents": [
+      {
+        "call_time": 1578074400000,
+        "year": 2020,
+        "signal_age_hours": 6.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.455",
+        "risk_budget_usdt": "238.47505935376200",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1580184000000,
+        "year": 2020,
+        "signal_age_hours": 24.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.527",
+        "risk_budget_usdt": "378.96518110124250",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1581271200000,
+        "year": 2020,
+        "signal_age_hours": 94.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.623",
+        "risk_budget_usdt": "291.46050078775000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1581552000000,
+        "year": 2020,
+        "signal_age_hours": 28.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.600",
+        "risk_budget_usdt": "380.87491623180000",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1584720000000,
+        "year": 2020,
+        "signal_age_hours": 28.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.304",
+        "risk_budget_usdt": "421.65060092755600",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1586116800000,
+        "year": 2020,
+        "signal_age_hours": 92.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.472",
+        "risk_budget_usdt": "86.61806870188600",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1587355200000,
+        "year": 2020,
+        "signal_age_hours": 88.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.569",
+        "risk_budget_usdt": "83.52450013580100",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1588161600000,
+        "year": 2020,
+        "signal_age_hours": 140.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.579",
+        "risk_budget_usdt": "288.34484784983250",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1589760000000,
+        "year": 2020,
+        "signal_age_hours": 96.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.376",
+        "risk_budget_usdt": "178.22368090561550",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1591030800000,
+        "year": 2020,
+        "signal_age_hours": 97.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.467",
+        "risk_budget_usdt": "116.64933483216000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1592341200000,
+        "year": 2020,
+        "signal_age_hours": 17.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.313",
+        "risk_budget_usdt": "200.7427403917589692753619180",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1594094400000,
+        "year": 2020,
+        "signal_age_hours": 20.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.325",
+        "risk_budget_usdt": "137.0800469604898240523619180",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1595347200000,
+        "year": 2020,
+        "signal_age_hours": 40.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.441",
+        "risk_budget_usdt": "104.4052042864444990523619180",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1598803200000,
+        "year": 2020,
+        "signal_age_hours": 12.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.649",
+        "risk_budget_usdt": "157.09656912116200",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1600300800000,
+        "year": 2020,
+        "signal_age_hours": 92.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.491",
+        "risk_budget_usdt": "194.44070860751200",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1601575200000,
+        "year": 2020,
+        "signal_age_hours": 86.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "-0E-14",
+        "terminal_reason": "unfunded_parent:protection"
+      },
+      {
+        "call_time": 1602216000000,
+        "year": 2020,
+        "signal_age_hours": 12.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.595",
+        "risk_budget_usdt": "238.49107926894625",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1603170000000,
+        "year": 2020,
+        "signal_age_hours": 181.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.751",
+        "risk_budget_usdt": "269.05980630121675",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1605261600000,
+        "year": 2020,
+        "signal_age_hours": 10.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.513",
+        "risk_budget_usdt": "488.25879833992500",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1607050800000,
+        "year": 2020,
+        "signal_age_hours": 95.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.525",
+        "risk_budget_usdt": "325.63175660676000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1608274800000,
+        "year": 2020,
+        "signal_age_hours": 131.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.406",
+        "risk_budget_usdt": "1382.03316002309950",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1609192800000,
+        "year": 2020,
+        "signal_age_hours": 82.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.375",
+        "risk_budget_usdt": "351.54517871400650",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1611594000000,
+        "year": 2021,
+        "signal_age_hours": 1.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.393",
+        "risk_budget_usdt": "1249.67119250617050",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1611986400000,
+        "year": 2021,
+        "signal_age_hours": 18.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.346",
+        "risk_budget_usdt": "855.83877527221000",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1615291200000,
+        "year": 2021,
+        "signal_age_hours": 12.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.359",
+        "risk_budget_usdt": "1860.22405941325000",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1617253200000,
+        "year": 2021,
+        "signal_age_hours": 65.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.407",
+        "risk_budget_usdt": "970.53413825068750",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1618095600000,
+        "year": 2021,
+        "signal_age_hours": 19.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.394",
+        "risk_budget_usdt": "681.81626420065000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1619967600000,
+        "year": 2021,
+        "signal_age_hours": 47.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.311",
+        "risk_budget_usdt": "305.46452900379000",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1622142000000,
+        "year": 2021,
+        "signal_age_hours": 35.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.122",
+        "risk_budget_usdt": "251.4104585046420230557269180",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1625068800000,
+        "year": 2021,
+        "signal_age_hours": 28.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1627297200000,
+        "year": 2021,
+        "signal_age_hours": 59.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1627466400000,
+        "year": 2021,
+        "signal_age_hours": 106.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1627729200000,
+        "year": 2021,
+        "signal_age_hours": 11.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1628272800000,
+        "year": 2021,
+        "signal_age_hours": 22.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1628442000000,
+        "year": 2021,
+        "signal_age_hours": 69.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1629003600000,
+        "year": 2021,
+        "signal_age_hours": 29.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1629828000000,
+        "year": 2021,
+        "signal_age_hours": 98.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "-0E-14",
+        "terminal_reason": "unfunded_parent:protection"
+      },
+      {
+        "call_time": 1630915200000,
+        "year": 2021,
+        "signal_age_hours": 100.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1630983600000,
+        "year": 2021,
+        "signal_age_hours": 119.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1631664000000,
+        "year": 2021,
+        "signal_age_hours": 0.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1631732400000,
+        "year": 2021,
+        "signal_age_hours": 19.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1631800800000,
+        "year": 2021,
+        "signal_age_hours": 38.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1631869200000,
+        "year": 2021,
+        "signal_age_hours": 57.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1631980800000,
+        "year": 2021,
+        "signal_age_hours": 88.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1633179600000,
+        "year": 2021,
+        "signal_age_hours": 29.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1633442400000,
+        "year": 2021,
+        "signal_age_hours": 102.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1633510800000,
+        "year": 2021,
+        "signal_age_hours": 121.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1633773600000,
+        "year": 2021,
+        "signal_age_hours": 194.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1634317200000,
+        "year": 2021,
+        "signal_age_hours": 345.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1635865200000,
+        "year": 2021,
+        "signal_age_hours": 3.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1636128000000,
+        "year": 2021,
+        "signal_age_hours": 76.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1636560000000,
+        "year": 2021,
+        "signal_age_hours": 64.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1640235600000,
+        "year": 2021,
+        "signal_age_hours": 45.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1642107600000,
+        "year": 2022,
+        "signal_age_hours": 49.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1644498000000,
+        "year": 2022,
+        "signal_age_hours": 141.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1644566400000,
+        "year": 2022,
+        "signal_age_hours": 160.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1644958800000,
+        "year": 2022,
+        "signal_age_hours": 269.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1645027200000,
+        "year": 2022,
+        "signal_age_hours": 288.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1646283600000,
+        "year": 2022,
+        "signal_age_hours": 61.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1647075600000,
+        "year": 2022,
+        "signal_age_hours": 77.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1647637200000,
+        "year": 2022,
+        "signal_age_hours": 1.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1648573200000,
+        "year": 2022,
+        "signal_age_hours": 121.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1652670000000,
+        "year": 2022,
+        "signal_age_hours": 3.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1652738400000,
+        "year": 2022,
+        "signal_age_hours": 22.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1652806800000,
+        "year": 2022,
+        "signal_age_hours": 41.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1654005600000,
+        "year": 2022,
+        "signal_age_hours": 34.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1654660800000,
+        "year": 2022,
+        "signal_age_hours": 48.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1654729200000,
+        "year": 2022,
+        "signal_age_hours": 67.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1656169200000,
+        "year": 2022,
+        "signal_age_hours": 103.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1656237600000,
+        "year": 2022,
+        "signal_age_hours": 122.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1657353600000,
+        "year": 2022,
+        "signal_age_hours": 104.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1657422000000,
+        "year": 2022,
+        "signal_age_hours": 123.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1657933200000,
+        "year": 2022,
+        "signal_age_hours": 5.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1658325600000,
+        "year": 2022,
+        "signal_age_hours": 114.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1658394000000,
+        "year": 2022,
+        "signal_age_hours": 133.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1660114800000,
+        "year": 2022,
+        "signal_age_hours": 47.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1660284000000,
+        "year": 2022,
+        "signal_age_hours": 94.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1660453200000,
+        "year": 2022,
+        "signal_age_hours": 141.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1662728400000,
+        "year": 2022,
+        "signal_age_hours": 5.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1662796800000,
+        "year": 2022,
+        "signal_age_hours": 24.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1662966000000,
+        "year": 2022,
+        "signal_age_hours": 71.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1663034400000,
+        "year": 2022,
+        "signal_age_hours": 90.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1665064800000,
+        "year": 2022,
+        "signal_age_hours": 54.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1665871200000,
+        "year": 2022,
+        "signal_age_hours": 42.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1665982800000,
+        "year": 2022,
+        "signal_age_hours": 73.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1666638000000,
+        "year": 2022,
+        "signal_age_hours": 23.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1669827600000,
+        "year": 2022,
+        "signal_age_hours": 13.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1670371200000,
+        "year": 2022,
+        "signal_age_hours": 164.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1671102000000,
+        "year": 2022,
+        "signal_age_hours": 47.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1671645600000,
+        "year": 2022,
+        "signal_age_hours": 26.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1671714000000,
+        "year": 2022,
+        "signal_age_hours": 45.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1672664400000,
+        "year": 2023,
+        "signal_age_hours": 5.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1672927200000,
+        "year": 2023,
+        "signal_age_hours": 78.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1673470800000,
+        "year": 2023,
+        "signal_age_hours": 69.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1673582400000,
+        "year": 2023,
+        "signal_age_hours": 100.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1673845200000,
+        "year": 2023,
+        "signal_age_hours": 173.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674108000000,
+        "year": 2023,
+        "signal_age_hours": 246.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674219600000,
+        "year": 2023,
+        "signal_age_hours": 277.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674612000000,
+        "year": 2023,
+        "signal_age_hours": 386.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674781200000,
+        "year": 2023,
+        "signal_age_hours": 433.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1676862000000,
+        "year": 2023,
+        "signal_age_hours": 111.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1678953600000,
+        "year": 2023,
+        "signal_age_hours": 80.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1679065200000,
+        "year": 2023,
+        "signal_age_hours": 111.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1679234400000,
+        "year": 2023,
+        "signal_age_hours": 158.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1679403600000,
+        "year": 2023,
+        "signal_age_hours": 205.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1680339600000,
+        "year": 2023,
+        "signal_age_hours": 69.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1681387200000,
+        "year": 2023,
+        "signal_age_hours": 84.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1681498800000,
+        "year": 2023,
+        "signal_age_hours": 115.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1682492400000,
+        "year": 2023,
+        "signal_age_hours": 7.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1682604000000,
+        "year": 2023,
+        "signal_age_hours": 38.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1682866800000,
+        "year": 2023,
+        "signal_age_hours": 111.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1684846800000,
+        "year": 2023,
+        "signal_age_hours": 9.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1687107600000,
+        "year": 2023,
+        "signal_age_hours": 33.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1687500000000,
+        "year": 2023,
+        "signal_age_hours": 142.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1687892400000,
+        "year": 2023,
+        "signal_age_hours": 251.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1688155200000,
+        "year": 2023,
+        "signal_age_hours": 324.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1688223600000,
+        "year": 2023,
+        "signal_age_hours": 343.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691179200000,
+        "year": 2023,
+        "signal_age_hours": 68.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691290800000,
+        "year": 2023,
+        "signal_age_hours": 99.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691402400000,
+        "year": 2023,
+        "signal_age_hours": 130.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691794800000,
+        "year": 2023,
+        "signal_age_hours": 83.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691863200000,
+        "year": 2023,
+        "signal_age_hours": 102.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1692950400000,
+        "year": 2023,
+        "signal_age_hours": 36.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1693119600000,
+        "year": 2023,
+        "signal_age_hours": 83.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1693188000000,
+        "year": 2023,
+        "signal_age_hours": 102.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1694217600000,
+        "year": 2023,
+        "signal_age_hours": 24.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1694548800000,
+        "year": 2023,
+        "signal_age_hours": 8.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1694941200000,
+        "year": 2023,
+        "signal_age_hours": 117.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1695204000000,
+        "year": 2023,
+        "signal_age_hours": 190.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1696140000000,
+        "year": 2023,
+        "signal_age_hours": 90.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1696402800000,
+        "year": 2023,
+        "signal_age_hours": 163.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1696471200000,
+        "year": 2023,
+        "signal_age_hours": 182.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1696734000000,
+        "year": 2023,
+        "signal_age_hours": 255.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1697518800000,
+        "year": 2023,
+        "signal_age_hours": 29.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1697911200000,
+        "year": 2023,
+        "signal_age_hours": 138.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1698022800000,
+        "year": 2023,
+        "signal_age_hours": 169.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1699790400000,
+        "year": 2023,
+        "signal_age_hours": 112.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1700182800000,
+        "year": 2023,
+        "signal_age_hours": 29.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1700251200000,
+        "year": 2023,
+        "signal_age_hours": 48.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1701298800000,
+        "year": 2023,
+        "signal_age_hours": 27.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1701367200000,
+        "year": 2023,
+        "signal_age_hours": 46.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1701910800000,
+        "year": 2023,
+        "signal_age_hours": 197.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1702022400000,
+        "year": 2023,
+        "signal_age_hours": 228.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1702191600000,
+        "year": 2023,
+        "signal_age_hours": 275.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1703026800000,
+        "year": 2023,
+        "signal_age_hours": 19.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.2123989360987670557269180000",
+        "terminal_reason": "deadline"
+      }
+    ],
+    "closed_trades": [
+      {
+        "entry_time": 1578074460000,
+        "call_time": 1578074400000,
+        "year": 2020,
+        "holding_hours": 416.01666666666665,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "544.934234671069732601000000",
+        "net_over_entry_equity": "0.3805375583495812481052148351"
+      },
+      {
+        "entry_time": 1580184060000,
+        "call_time": 1580184000000,
+        "year": 2020,
+        "holding_hours": 229.01666666666668,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "256.195356255772875220800001",
+        "net_over_entry_equity": "0.1295914835923580243519097521"
+      },
+      {
+        "entry_time": 1581271260000,
+        "call_time": 1581271200000,
+        "year": 2020,
+        "holding_hours": 47.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "54.559087916355704471499997",
+        "net_over_entry_equity": "0.02443154323170807512939428950"
+      },
+      {
+        "entry_time": 1581552060000,
+        "call_time": 1581552000000,
+        "year": 2020,
+        "holding_hours": 19.016666666666666,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-92.862035079099965700000000",
+        "net_over_entry_equity": "-0.04059186948746750772876957685"
+      },
+      {
+        "entry_time": 1584720060000,
+        "call_time": 1584720000000,
+        "year": 2020,
+        "holding_hours": 182.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-146.995325513486219056000000",
+        "net_over_entry_equity": "-0.06697319013854191264829073676"
+      },
+      {
+        "entry_time": 1586116860000,
+        "call_time": 1586116800000,
+        "year": 2020,
+        "holding_hours": 146.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "21.879434787181472491200000",
+        "net_over_entry_equity": "0.01068413673566685233841970480"
+      },
+      {
+        "entry_time": 1587355260000,
+        "call_time": 1587355200000,
+        "year": 2020,
+        "holding_hours": 6.516666666666667,
+        "exit_event": "stop",
+        "net_usdt": "-83.492316369911500000000000",
+        "net_over_entry_equity": "-0.04033986120792299014782979363"
+      },
+      {
+        "entry_time": 1588161660000,
+        "call_time": 1588161600000,
+        "year": 2020,
+        "holding_hours": 293.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "214.156463805962839032600000",
+        "net_over_entry_equity": "0.1078205693214104992131227814"
+      },
+      {
+        "entry_time": 1589760060000,
+        "call_time": 1589760000000,
+        "year": 2020,
+        "holding_hours": 81.98333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-180.611603118162071908800000",
+        "net_over_entry_equity": "-0.08208175932934105200247250646"
+      },
+      {
+        "entry_time": 1591030860000,
+        "call_time": 1591030800000,
+        "year": 2020,
+        "holding_hours": 22.466666666666665,
+        "exit_event": "stop",
+        "net_usdt": "-130.674661610429421201000000",
+        "net_over_entry_equity": "-0.06469763314293598794879623760"
+      },
+      {
+        "entry_time": 1592341260000,
+        "call_time": 1592341200000,
+        "year": 2020,
+        "holding_hours": 73.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-63.662693431269145223000000",
+        "net_over_entry_equity": "-0.03370000646906222449015257879"
+      },
+      {
+        "entry_time": 1594094460000,
+        "call_time": 1594094400000,
+        "year": 2020,
+        "holding_hours": 201.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-32.674842674045325000000000",
+        "net_over_entry_equity": "-0.01789973098609578843609993949"
+      },
+      {
+        "entry_time": 1595347260000,
+        "call_time": 1595347200000,
+        "year": 2020,
+        "holding_hours": 887.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "672.971180194660363940700000",
+        "net_over_entry_equity": "0.3753821651636603309053027966"
+      },
+      {
+        "entry_time": 1598803260000,
+        "call_time": 1598803200000,
+        "year": 2020,
+        "holding_hours": 67.15,
+        "exit_event": "stop",
+        "net_usdt": "-168.152866962217461448300000",
+        "net_over_entry_equity": "-0.06819586725412343447659147308"
+      },
+      {
+        "entry_time": 1600300860000,
+        "call_time": 1600300800000,
+        "year": 2020,
+        "holding_hours": 107.65,
+        "exit_event": "stop",
+        "net_usdt": "-192.848546645446793718200000",
+        "net_over_entry_equity": "-0.08393546840377472252384258247"
+      },
+      {
+        "entry_time": 1602216060000,
+        "call_time": 1602216000000,
+        "year": 2020,
+        "holding_hours": 156.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "271.600041512033474999999998",
+        "net_over_entry_equity": "0.1290425426339824205955607929"
+      },
+      {
+        "entry_time": 1603170060000,
+        "call_time": 1603170000000,
+        "year": 2020,
+        "holding_hours": 333.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1357.929622140931423846400002",
+        "net_over_entry_equity": "0.5714392082501331641066506052"
+      },
+      {
+        "entry_time": 1605261660000,
+        "call_time": 1605261600000,
+        "year": 2020,
+        "holding_hours": 291.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1369.521962408661744130200000",
+        "net_over_entry_equity": "0.3667449898356722073387365877"
+      },
+      {
+        "entry_time": 1607050860000,
+        "call_time": 1607050800000,
+        "year": 2020,
+        "holding_hours": 9.2,
+        "exit_event": "stop",
+        "net_usdt": "-326.454486813756525000000000",
+        "net_over_entry_equity": "-0.06396322311286210561779318886"
+      },
+      {
+        "entry_time": 1608274860000,
+        "call_time": 1608274800000,
+        "year": 2020,
+        "holding_hours": 182.01666666666668,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "502.458690404493731610800000",
+        "net_over_entry_equity": "0.1051756361201995752650966407"
+      },
+      {
+        "entry_time": 1609192860000,
+        "call_time": 1609192800000,
+        "year": 2020,
+        "holding_hours": 315.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "3402.712021956882345412500000",
+        "net_over_entry_equity": "0.6444788633200728917030916883"
+      },
+      {
+        "entry_time": 1611594060000,
+        "call_time": 1611594000000,
+        "year": 2021,
+        "holding_hours": 21.733333333333334,
+        "exit_event": "stop",
+        "net_usdt": "-1242.912461641921050000000000",
+        "net_over_entry_equity": "-0.1431514428183206540417964146"
+      },
+      {
+        "entry_time": 1611986460000,
+        "call_time": 1611986400000,
+        "year": 2021,
+        "holding_hours": 647.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "3505.582663464912016898999999",
+        "net_over_entry_equity": "0.4712065621861560992042472162"
+      },
+      {
+        "entry_time": 1615291260000,
+        "call_time": 1615291200000,
+        "year": 2021,
+        "holding_hours": 198.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "214.52129709350470614140000",
+        "net_over_entry_equity": "0.01959963024867870198778606038"
+      },
+      {
+        "entry_time": 1617253260000,
+        "call_time": 1617253200000,
+        "year": 2021,
+        "holding_hours": 66.98333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-1149.64348538338529338790000",
+        "net_over_entry_equity": "-0.1030174931599722326312301352"
+      },
+      {
+        "entry_time": 1618095660000,
+        "call_time": 1618095600000,
+        "year": 2021,
+        "holding_hours": 172.3,
+        "exit_event": "stop",
+        "net_usdt": "-1188.24675474164033397080000",
+        "net_over_entry_equity": "-0.1187053952091236437817827684"
+      },
+      {
+        "entry_time": 1619967660000,
+        "call_time": 1619967600000,
+        "year": 2021,
+        "holding_hours": 33.833333333333336,
+        "exit_event": "stop",
+        "net_usdt": "-338.13532693208918682060000",
+        "net_over_entry_equity": "-0.03832950903286429503219796066"
+      },
+      {
+        "entry_time": 1622142060000,
+        "call_time": 1622142000000,
+        "year": 2021,
+        "holding_hours": 10.683333333333334,
+        "exit_event": "stop",
+        "net_usdt": "-251.19805956854325600000000",
+        "net_over_entry_equity": "-0.02960961090472179948410797776"
+      }
+    ]
+  },
+  {
+    "account": "UC4-RR-development-r17",
+    "result": {
+      "cagr": 0.4441415502558126,
+      "mdd_conservative_envelope": "0.4999747117508550308327169390",
+      "final_cny": "43496.28483229331639843698807",
+      "fees_usdt": "360.45483831978600",
+      "funding_bound_paid_usdt": "2692.1321184739804060037",
+      "holding_hours": 6588
+    },
+    "counts": {
+      "invocations": 468,
+      "decision_actions": {
+        "no_signal": 249,
+        "deferred_entry": 124,
+        "hold": 63,
+        "regime_exit": 23,
+        "campaign_consumed": 7,
+        "unfunded_parent:protection": 2
+      },
+      "parents": 126,
+      "filled_parents": 49,
+      "unfilled_child_reasons": {
+        "stop_budget": 542
+      },
+      "closed_trades": 49
+    },
+    "initial_usdt": "1432.011696912359164014793153",
+    "final_usdt": "6234.953819026592758011093156",
+    "reconciliation_error_usdt": "0E-24",
+    "parents": [
+      {
+        "call_time": 1578074400000,
+        "year": 2020,
+        "signal_age_hours": 6.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.273",
+        "risk_budget_usdt": "143.2011696912359164014793153",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1580184000000,
+        "year": 2020,
+        "signal_age_hours": 24.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.244",
+        "risk_budget_usdt": "175.9029880925144753575393153",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1581271200000,
+        "year": 2020,
+        "signal_age_hours": 94.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.403",
+        "risk_budget_usdt": "187.8474315450544703392993153",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1581552000000,
+        "year": 2020,
+        "signal_age_hours": 28.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.304",
+        "risk_budget_usdt": "191.3838677861890865354493152",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1584720000000,
+        "year": 2020,
+        "signal_age_hours": 28.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.134",
+        "risk_budget_usdt": "186.6202874766618136066493152",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1586116800000,
+        "year": 2020,
+        "signal_age_hours": 92.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.415",
+        "risk_budget_usdt": "76.15783582898875",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1587355200000,
+        "year": 2020,
+        "signal_age_hours": 88.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.500",
+        "risk_budget_usdt": "73.48121929755400",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1588161600000,
+        "year": 2020,
+        "signal_age_hours": 140.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.351",
+        "risk_budget_usdt": "174.7179737207735340199493152",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1589760000000,
+        "year": 2020,
+        "signal_age_hours": 96.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.321",
+        "risk_budget_usdt": "151.98770757433200",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1591030800000,
+        "year": 2020,
+        "signal_age_hours": 97.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.399",
+        "risk_budget_usdt": "99.63797350247000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1592341200000,
+        "year": 2020,
+        "signal_age_hours": 17.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.251",
+        "risk_budget_usdt": "161.1165717852315144362093152",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1594094400000,
+        "year": 2020,
+        "signal_age_hours": 20.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.370",
+        "risk_budget_usdt": "156.0113525995291005541093152",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1595347200000,
+        "year": 2020,
+        "signal_age_hours": 40.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.639",
+        "risk_budget_usdt": "152.2914474335608635541093152",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1598803200000,
+        "year": 2020,
+        "signal_age_hours": 12.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.658",
+        "risk_budget_usdt": "159.27510397800400",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1600300800000,
+        "year": 2020,
+        "signal_age_hours": 92.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.497",
+        "risk_budget_usdt": "196.81676614650400",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1601575200000,
+        "year": 2020,
+        "signal_age_hours": 86.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "-0E-14",
+        "terminal_reason": "unfunded_parent:protection"
+      },
+      {
+        "call_time": 1602216000000,
+        "year": 2020,
+        "signal_age_hours": 12.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.535",
+        "risk_budget_usdt": "213.2346107400235977268393152",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1603170000000,
+        "year": 2020,
+        "signal_age_hours": 181.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.670",
+        "risk_budget_usdt": "237.6688157447959152268393153",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1605261600000,
+        "year": 2020,
+        "signal_age_hours": 10.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.380",
+        "risk_budget_usdt": "358.8381584388427813356393156",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1607050800000,
+        "year": 2020,
+        "signal_age_hours": 95.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.473",
+        "risk_budget_usdt": "293.67160271757800",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1608274800000,
+        "year": 2020,
+        "signal_age_hours": 131.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.128",
+        "risk_budget_usdt": "430.8722350116291216008393156",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1609192800000,
+        "year": 2020,
+        "signal_age_hours": 82.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.318",
+        "risk_budget_usdt": "298.01037992507150",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1611594000000,
+        "year": 2021,
+        "signal_age_hours": 1.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.233",
+        "risk_budget_usdt": "735.3358826954909074588593156",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1611986400000,
+        "year": 2021,
+        "signal_age_hours": 18.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.269",
+        "risk_budget_usdt": "661.6466705930564024588593156",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1615291200000,
+        "year": 2021,
+        "signal_age_hours": 12.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.182",
+        "risk_budget_usdt": "934.1905250647504292062093156",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1617253200000,
+        "year": 2021,
+        "signal_age_hours": 65.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.345",
+        "risk_budget_usdt": "823.20004015480000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1618095600000,
+        "year": 2021,
+        "signal_age_hours": 19.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.333",
+        "risk_budget_usdt": "576.66869574561000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1619967600000,
+        "year": 2021,
+        "signal_age_hours": 47.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.263",
+        "risk_budget_usdt": "258.31887822507000",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1622142000000,
+        "year": 2021,
+        "signal_age_hours": 35.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.231",
+        "risk_budget_usdt": "475.6404561122858177402232880",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1625068800000,
+        "year": 2021,
+        "signal_age_hours": 28.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.316",
+        "risk_budget_usdt": "85.64130406789100",
+        "terminal_reason": "protection_or_exit:stop"
+      },
+      {
+        "call_time": 1627297200000,
+        "year": 2021,
+        "signal_age_hours": 59.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.039",
+        "risk_budget_usdt": "195.0332529103839237402232880",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1628272800000,
+        "year": 2021,
+        "signal_age_hours": 22.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.044",
+        "risk_budget_usdt": "254.0711226597784455936232880",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1629003600000,
+        "year": 2021,
+        "signal_age_hours": 29.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.301",
+        "risk_budget_usdt": "273.58031087895550",
+        "terminal_reason": "target_filled"
+      },
+      {
+        "call_time": 1629828000000,
+        "year": 2021,
+        "signal_age_hours": 98.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "-0E-14",
+        "terminal_reason": "unfunded_parent:protection"
+      },
+      {
+        "call_time": 1630915200000,
+        "year": 2021,
+        "signal_age_hours": 100.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.064",
+        "risk_budget_usdt": "168.5899979982419755936232880",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1631664000000,
+        "year": 2021,
+        "signal_age_hours": 0.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.021",
+        "risk_budget_usdt": "83.94443249038376759362328803",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1633179600000,
+        "year": 2021,
+        "signal_age_hours": 29.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.008",
+        "risk_budget_usdt": "42.16893790439871959362328800",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1635865200000,
+        "year": 2021,
+        "signal_age_hours": 3.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.022",
+        "risk_budget_usdt": "96.51120102452828341042328800",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1636560000000,
+        "year": 2021,
+        "signal_age_hours": 64.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.025",
+        "risk_budget_usdt": "72.88837765264179514222328799",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1640235600000,
+        "year": 2021,
+        "signal_age_hours": 45.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.068",
+        "risk_budget_usdt": "37.03057262630117014222328800",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1642107600000,
+        "year": 2022,
+        "signal_age_hours": 49.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.195",
+        "risk_budget_usdt": "78.57838757678821414222328800",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1644498000000,
+        "year": 2022,
+        "signal_age_hours": 141.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.019",
+        "risk_budget_usdt": "39.45089252388031541422328800",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1646283600000,
+        "year": 2022,
+        "signal_age_hours": 61.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.044",
+        "risk_budget_usdt": "20.35113199256440411447328800",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1647075600000,
+        "year": 2022,
+        "signal_age_hours": 77.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.010",
+        "risk_budget_usdt": "10.30022398927440411447328800",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1647637200000,
+        "year": 2022,
+        "signal_age_hours": 1.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.002",
+        "risk_budget_usdt": "5.217744692584897577973288000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1648573200000,
+        "year": 2022,
+        "signal_age_hours": 121.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.005",
+        "risk_budget_usdt": "5.421663373644102577973288000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1652670000000,
+        "year": 2022,
+        "signal_age_hours": 3.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "3.062247199326902577973288000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1652738400000,
+        "year": 2022,
+        "signal_age_hours": 22.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.002",
+        "risk_budget_usdt": "3.062247199326902577973288000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1654005600000,
+        "year": 2022,
+        "signal_age_hours": 34.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "1.839594984444402577973288000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1654660800000,
+        "year": 2022,
+        "signal_age_hours": 48.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.002",
+        "risk_budget_usdt": "1.839594984444402577973288000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1656169200000,
+        "year": 2022,
+        "signal_age_hours": 103.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.9584300618983420295732880002",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1656237600000,
+        "year": 2022,
+        "signal_age_hours": 122.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.9584300618983420295732880002",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1657353600000,
+        "year": 2022,
+        "signal_age_hours": 104.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.9584300618983420295732880002",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1657422000000,
+        "year": 2022,
+        "signal_age_hours": 123.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.004",
+        "risk_budget_usdt": "0.9584300618983420295732880002",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1657933200000,
+        "year": 2022,
+        "signal_age_hours": 5.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1658325600000,
+        "year": 2022,
+        "signal_age_hours": 114.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1658394000000,
+        "year": 2022,
+        "signal_age_hours": 133.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1660114800000,
+        "year": 2022,
+        "signal_age_hours": 47.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1660284000000,
+        "year": 2022,
+        "signal_age_hours": 94.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1660453200000,
+        "year": 2022,
+        "signal_age_hours": 141.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1662728400000,
+        "year": 2022,
+        "signal_age_hours": 5.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1662796800000,
+        "year": 2022,
+        "signal_age_hours": 24.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1662966000000,
+        "year": 2022,
+        "signal_age_hours": 71.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1663034400000,
+        "year": 2022,
+        "signal_age_hours": 90.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1665064800000,
+        "year": 2022,
+        "signal_age_hours": 54.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1665871200000,
+        "year": 2022,
+        "signal_age_hours": 42.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.004",
+        "risk_budget_usdt": "0.5324375601383420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1666638000000,
+        "year": 2022,
+        "signal_age_hours": 23.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1669827600000,
+        "year": 2022,
+        "signal_age_hours": 13.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1670371200000,
+        "year": 2022,
+        "signal_age_hours": 164.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1671102000000,
+        "year": 2022,
+        "signal_age_hours": 47.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1671645600000,
+        "year": 2022,
+        "signal_age_hours": 26.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1671714000000,
+        "year": 2022,
+        "signal_age_hours": 45.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1672664400000,
+        "year": 2023,
+        "signal_age_hours": 5.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1672927200000,
+        "year": 2023,
+        "signal_age_hours": 78.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1673470800000,
+        "year": 2023,
+        "signal_age_hours": 69.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1673582400000,
+        "year": 2023,
+        "signal_age_hours": 100.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1673845200000,
+        "year": 2023,
+        "signal_age_hours": 173.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674108000000,
+        "year": 2023,
+        "signal_age_hours": 246.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674219600000,
+        "year": 2023,
+        "signal_age_hours": 277.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674612000000,
+        "year": 2023,
+        "signal_age_hours": 386.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1674781200000,
+        "year": 2023,
+        "signal_age_hours": 433.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1676862000000,
+        "year": 2023,
+        "signal_age_hours": 111.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1678953600000,
+        "year": 2023,
+        "signal_age_hours": 80.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1679065200000,
+        "year": 2023,
+        "signal_age_hours": 111.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1679234400000,
+        "year": 2023,
+        "signal_age_hours": 158.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1679403600000,
+        "year": 2023,
+        "signal_age_hours": 205.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1680339600000,
+        "year": 2023,
+        "signal_age_hours": 69.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1681387200000,
+        "year": 2023,
+        "signal_age_hours": 84.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1681498800000,
+        "year": 2023,
+        "signal_age_hours": 115.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1682492400000,
+        "year": 2023,
+        "signal_age_hours": 7.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1682604000000,
+        "year": 2023,
+        "signal_age_hours": 38.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1682866800000,
+        "year": 2023,
+        "signal_age_hours": 111.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1684846800000,
+        "year": 2023,
+        "signal_age_hours": 9.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1687107600000,
+        "year": 2023,
+        "signal_age_hours": 33.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1687500000000,
+        "year": 2023,
+        "signal_age_hours": 142.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1687892400000,
+        "year": 2023,
+        "signal_age_hours": 251.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1688155200000,
+        "year": 2023,
+        "signal_age_hours": 324.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1688223600000,
+        "year": 2023,
+        "signal_age_hours": 343.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691179200000,
+        "year": 2023,
+        "signal_age_hours": 68.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691290800000,
+        "year": 2023,
+        "signal_age_hours": 99.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691402400000,
+        "year": 2023,
+        "signal_age_hours": 130.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691794800000,
+        "year": 2023,
+        "signal_age_hours": 83.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1691863200000,
+        "year": 2023,
+        "signal_age_hours": 102.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1692950400000,
+        "year": 2023,
+        "signal_age_hours": 36.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1693119600000,
+        "year": 2023,
+        "signal_age_hours": 83.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1693188000000,
+        "year": 2023,
+        "signal_age_hours": 102.0,
+        "first_fill_delay_minutes": 1.0,
+        "filled_btc": "0.002",
+        "risk_budget_usdt": "0.3179015394183420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1694217600000,
+        "year": 2023,
+        "signal_age_hours": 24.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1694548800000,
+        "year": 2023,
+        "signal_age_hours": 8.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1694941200000,
+        "year": 2023,
+        "signal_age_hours": 117.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1695204000000,
+        "year": 2023,
+        "signal_age_hours": 190.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1696140000000,
+        "year": 2023,
+        "signal_age_hours": 90.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1696402800000,
+        "year": 2023,
+        "signal_age_hours": 163.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1696471200000,
+        "year": 2023,
+        "signal_age_hours": 182.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1696734000000,
+        "year": 2023,
+        "signal_age_hours": 255.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1697518800000,
+        "year": 2023,
+        "signal_age_hours": 29.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1697911200000,
+        "year": 2023,
+        "signal_age_hours": 138.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1698022800000,
+        "year": 2023,
+        "signal_age_hours": 169.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1699790400000,
+        "year": 2023,
+        "signal_age_hours": 112.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1700182800000,
+        "year": 2023,
+        "signal_age_hours": 29.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1700251200000,
+        "year": 2023,
+        "signal_age_hours": 48.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1701298800000,
+        "year": 2023,
+        "signal_age_hours": 27.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1701367200000,
+        "year": 2023,
+        "signal_age_hours": 46.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1701910800000,
+        "year": 2023,
+        "signal_age_hours": 197.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1702022400000,
+        "year": 2023,
+        "signal_age_hours": 228.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1702191600000,
+        "year": 2023,
+        "signal_age_hours": 275.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      },
+      {
+        "call_time": 1703026800000,
+        "year": 2023,
+        "signal_age_hours": 19.0,
+        "first_fill_delay_minutes": null,
+        "filled_btc": "0",
+        "risk_budget_usdt": "0.1576630915358420295732880000",
+        "terminal_reason": "deadline"
+      }
+    ],
+    "closed_trades": [
+      {
+        "entry_time": 1578074460000,
+        "call_time": 1578074400000,
+        "year": 2020,
+        "holding_hours": 416.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "327.018184012785589560600000",
+        "net_over_entry_equity": "0.2283627883193188017910568290"
+      },
+      {
+        "entry_time": 1580184060000,
+        "call_time": 1580184000000,
+        "year": 2020,
+        "holding_hours": 229.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "119.444434525399949817600000",
+        "net_over_entry_equity": "0.06790358470919169643379168378"
+      },
+      {
+        "entry_time": 1581271260000,
+        "call_time": 1581271200000,
+        "year": 2020,
+        "holding_hours": 47.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "35.364362411346161961499999",
+        "net_over_entry_equity": "0.01882610910379371262219634480"
+      },
+      {
+        "entry_time": 1581552060000,
+        "call_time": 1581552000000,
+        "year": 2020,
+        "holding_hours": 19.016666666666666,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-47.635803095272729288000000",
+        "net_over_entry_equity": "-0.02489018726933174224046694599"
+      },
+      {
+        "entry_time": 1584720060000,
+        "call_time": 1584720000000,
+        "year": 2020,
+        "holding_hours": 182.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-64.793992167128793926000000",
+        "net_over_entry_equity": "-0.03471969368562447464536857925"
+      },
+      {
+        "entry_time": 1586116860000,
+        "call_time": 1586116800000,
+        "year": 2020,
+        "holding_hours": 146.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "19.237214908220998059000000",
+        "net_over_entry_equity": "0.01067898304157415692184714455"
+      },
+      {
+        "entry_time": 1587355260000,
+        "call_time": 1587355200000,
+        "year": 2020,
+        "holding_hours": 6.516666666666667,
+        "exit_event": "stop",
+        "net_usdt": "-73.466360299975000000000000",
+        "net_over_entry_equity": "-0.04035180719665584202799711183"
+      },
+      {
+        "entry_time": 1588161660000,
+        "call_time": 1588161600000,
+        "year": 2020,
+        "holding_hours": 293.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "129.825421063718405009400000",
+        "net_over_entry_equity": "0.07430570438688786386138524618"
+      },
+      {
+        "entry_time": 1589760060000,
+        "call_time": 1589760000000,
+        "year": 2020,
+        "holding_hours": 81.98333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-154.192352662047939049800000",
+        "net_over_entry_equity": "-0.08214807081513014018331618849"
+      },
+      {
+        "entry_time": 1591030860000,
+        "call_time": 1591030800000,
+        "year": 2020,
+        "holding_hours": 22.466666666666665,
+        "exit_event": "stop",
+        "net_usdt": "-111.647087757090661797000000",
+        "net_over_entry_equity": "-0.06480511834691061888616824864"
+      },
+      {
+        "entry_time": 1592341260000,
+        "call_time": 1592341200000,
+        "year": 2020,
+        "holding_hours": 73.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-51.052191857024138821000000",
+        "net_over_entry_equity": "-0.03168649338261537788124849037"
+      },
+      {
+        "entry_time": 1594094460000,
+        "call_time": 1594094400000,
+        "year": 2020,
+        "holding_hours": 201.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-37.199051659682370000000000",
+        "net_over_entry_equity": "-0.02384381074829207677332382216"
+      },
+      {
+        "entry_time": 1595347260000,
+        "call_time": 1595347200000,
+        "year": 2020,
+        "holding_hours": 887.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "975.121505996344608975300000",
+        "net_over_entry_equity": "0.6402995850582838041214658889"
+      },
+      {
+        "entry_time": 1598803260000,
+        "call_time": 1598803200000,
+        "year": 2020,
+        "holding_hours": 67.15,
+        "exit_event": "stop",
+        "net_usdt": "-170.484724901601062608600000",
+        "net_over_entry_equity": "-0.06824750573806630345200141260"
+      },
+      {
+        "entry_time": 1600300860000,
+        "call_time": 1600300800000,
+        "year": 2020,
+        "holding_hours": 107.65,
+        "exit_event": "stop",
+        "net_usdt": "-195.205148030116204639400000",
+        "net_over_entry_equity": "-0.08386717481502841619155244018"
+      },
+      {
+        "entry_time": 1602216060000,
+        "call_time": 1602216000000,
+        "year": 2020,
+        "holding_hours": 156.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "244.342050047723175000000001",
+        "net_over_entry_equity": "0.1145883631178551397819302282"
+      },
+      {
+        "entry_time": 1603170060000,
+        "call_time": 1603170000000,
+        "year": 2020,
+        "holding_hours": 333.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1211.693426940468661088000003",
+        "net_over_entry_equity": "0.5098243213537787617664947282"
+      },
+      {
+        "entry_time": 1605261660000,
+        "call_time": 1605261600000,
+        "year": 2020,
+        "holding_hours": 291.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "1014.460712895304995652000000",
+        "net_over_entry_equity": "0.2827070335297690349526549380"
+      },
+      {
+        "entry_time": 1607050860000,
+        "call_time": 1607050800000,
+        "year": 2020,
+        "holding_hours": 9.2,
+        "exit_event": "stop",
+        "net_usdt": "-294.119947167441593000000000",
+        "net_over_entry_equity": "-0.06389963595776680805866182353"
+      },
+      {
+        "entry_time": 1608274860000,
+        "call_time": 1608274800000,
+        "year": 2020,
+        "holding_hours": 182.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "159.136682219181629670400000",
+        "net_over_entry_equity": "0.03693361263226593724374253165"
+      },
+      {
+        "entry_time": 1609192860000,
+        "call_time": 1609192800000,
+        "year": 2020,
+        "holding_hours": 315.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "2885.499794619436228909800000",
+        "net_over_entry_equity": "0.6458350126393997023898629656"
+      },
+      {
+        "entry_time": 1611594060000,
+        "call_time": 1611594000000,
+        "year": 2021,
+        "holding_hours": 21.733333333333334,
+        "exit_event": "stop",
+        "net_usdt": "-736.892121024345050000000000",
+        "net_over_entry_equity": "-0.1002116363916785215004838496"
+      },
+      {
+        "entry_time": 1611986460000,
+        "call_time": 1611986400000,
+        "year": 2021,
+        "holding_hours": 647.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "2725.438544716940267473500000",
+        "net_over_entry_equity": "0.4119175181935151359527316646"
+      },
+      {
+        "entry_time": 1615291260000,
+        "call_time": 1615291200000,
+        "year": 2021,
+        "holding_hours": 198.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "108.754529445732190857200000",
+        "net_over_entry_equity": "0.01164157915626410558886137178"
+      },
+      {
+        "entry_time": 1617253260000,
+        "call_time": 1617253200000,
+        "year": 2021,
+        "holding_hours": 66.98333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-974.513519551026845746500000",
+        "net_over_entry_equity": "-0.1031159244144764546397756943"
+      },
+      {
+        "entry_time": 1618095660000,
+        "call_time": 1618095600000,
+        "year": 2021,
+        "holding_hours": 172.3,
+        "exit_event": "stop",
+        "net_usdt": "-1004.279617586208708660600000",
+        "net_over_entry_equity": "-0.1184830448550997584955062565"
+      },
+      {
+        "entry_time": 1619967660000,
+        "call_time": 1619967600000,
+        "year": 2021,
+        "holding_hours": 33.833333333333336,
+        "exit_event": "stop",
+        "net_usdt": "-285.947237887908219079800000",
+        "net_over_entry_equity": "-0.03826985297676331361107677984"
+      },
+      {
+        "entry_time": 1622142060000,
+        "call_time": 1622142000000,
+        "year": 2021,
+        "holding_hours": 10.683333333333334,
+        "exit_event": "stop",
+        "net_usdt": "-475.629112789618788000000000",
+        "net_over_entry_equity": "-0.06618904081420208982655987996"
+      },
+      {
+        "entry_time": 1625068860000,
+        "call_time": 1625068800000,
+        "year": 2021,
+        "holding_hours": 0.06666666666666667,
+        "exit_event": "stop",
+        "net_usdt": "-85.585293614185000000000000",
+        "net_over_entry_equity": "-0.01275433548868488358703060144"
+      },
+      {
+        "entry_time": 1627297260000,
+        "call_time": 1627297200000,
+        "year": 2021,
+        "holding_hours": 120.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "118.075739498789043706800000",
+        "net_over_entry_equity": "0.01782354678775827038495703638"
+      },
+      {
+        "entry_time": 1628272860000,
+        "call_time": 1628272800000,
+        "year": 2021,
+        "holding_hours": 156.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "98.287701623935560000000000",
+        "net_over_entry_equity": "0.01457673109072680280225108833"
+      },
+      {
+        "entry_time": 1629003660000,
+        "call_time": 1629003600000,
+        "year": 2021,
+        "holding_hours": 2.7666666666666666,
+        "exit_event": "stop",
+        "net_usdt": "-269.249950947008500000000000",
+        "net_over_entry_equity": "-0.03935788003246334955919676589"
+      },
+      {
+        "entry_time": 1630915260000,
+        "call_time": 1630915200000,
+        "year": 2021,
+        "holding_hours": 30.783333333333335,
+        "exit_event": "stop",
+        "net_usdt": "-169.291131015716416000000000",
+        "net_over_entry_equity": "-0.02576016536415297105596123256"
+      },
+      {
+        "entry_time": 1631664060000,
+        "call_time": 1631664000000,
+        "year": 2021,
+        "holding_hours": 131.81666666666666,
+        "exit_event": "stop",
+        "net_usdt": "-83.550989171970096000000000",
+        "net_over_entry_equity": "-0.01304968874047302039796908667"
+      },
+      {
+        "entry_time": 1633179660000,
+        "call_time": 1633179600000,
+        "year": 2021,
+        "holding_hours": 467.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "108.684526240259127633600000",
+        "net_over_entry_equity": "0.01719970449318816663948789678"
+      },
+      {
+        "entry_time": 1635865260000,
+        "call_time": 1635865200000,
+        "year": 2021,
+        "holding_hours": 120.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "-47.245646743772976536400000",
+        "net_over_entry_equity": "-0.007350363921860655340322650337"
+      },
+      {
+        "entry_time": 1636560060000,
+        "call_time": 1636560000000,
+        "year": 2021,
+        "holding_hours": 4.816666666666666,
+        "exit_event": "stop",
+        "net_usdt": "-71.715610052681250000000000",
+        "net_over_entry_equity": "-0.01123995966774867997989745518"
+      },
+      {
+        "entry_time": 1640235660000,
+        "call_time": 1640235600000,
+        "year": 2021,
+        "holding_hours": 73.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "83.095629900974088000000000",
+        "net_over_entry_equity": "0.01317159393659945701473871405"
+      },
+      {
+        "entry_time": 1642107660000,
+        "call_time": 1642107600000,
+        "year": 2022,
+        "holding_hours": 3.0166666666666666,
+        "exit_event": "stop",
+        "net_usdt": "-78.254990105815797456000000",
+        "net_over_entry_equity": "-0.01224303764822201636971982545"
+      },
+      {
+        "entry_time": 1644498060000,
+        "call_time": 1644498000000,
+        "year": 2022,
+        "holding_hours": 11.416666666666666,
+        "exit_event": "stop",
+        "net_usdt": "-38.199521062631822599500000",
+        "net_over_entry_equity": "-0.006050412190510398942009920235"
+      },
+      {
+        "entry_time": 1646283660000,
+        "call_time": 1646283600000,
+        "year": 2022,
+        "holding_hours": 1.1333333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-20.101816006580000000000000",
+        "net_over_entry_equity": "-0.003203302702678857299782849956"
+      },
+      {
+        "entry_time": 1647075660000,
+        "call_time": 1647075600000,
+        "year": 2022,
+        "holding_hours": 37.8,
+        "exit_event": "stop",
+        "net_usdt": "-10.164958593379013073000000",
+        "net_over_entry_equity": "-0.001625031224153864831583805136"
+      },
+      {
+        "entry_time": 1647637260000,
+        "call_time": 1647637200000,
+        "year": 2022,
+        "holding_hours": 109.0,
+        "exit_event": "regime_exit_slice",
+        "net_usdt": "0.407837362118410000000000",
+        "net_over_entry_equity": "0.00006530544926753042908139675609"
+      },
+      {
+        "entry_time": 1648573260000,
+        "call_time": 1648573200000,
+        "year": 2022,
+        "holding_hours": 8.7,
+        "exit_event": "stop",
+        "net_usdt": "-4.718832348634400000000000",
+        "net_over_entry_equity": "-0.0007555593763530589999998909415"
+      },
+      {
+        "entry_time": 1652738460000,
+        "call_time": 1652738400000,
+        "year": 2022,
+        "holding_hours": 40.733333333333334,
+        "exit_event": "stop",
+        "net_usdt": "-2.445304429765000000000000",
+        "net_over_entry_equity": "-0.0003918277997039577606339213881"
+      },
+      {
+        "entry_time": 1654660860000,
+        "call_time": 1654660800000,
+        "year": 2022,
+        "holding_hours": 60.45,
+        "exit_event": "stop",
+        "net_usdt": "-1.762329845092121096800000",
+        "net_over_entry_equity": "-0.0002825008174796274573282455781"
+      },
+      {
+        "entry_time": 1657422060000,
+        "call_time": 1657422000000,
+        "year": 2022,
+        "holding_hours": 1.25,
+        "exit_event": "stop",
+        "net_usdt": "-0.851985003520000000000000",
+        "net_over_entry_equity": "-0.0001366114714454719550964661424"
+      },
+      {
+        "entry_time": 1665871260000,
+        "call_time": 1665871200000,
+        "year": 2022,
+        "holding_hours": 0.9833333333333333,
+        "exit_event": "stop",
+        "net_usdt": "-0.429072041440000000000000",
+        "net_over_entry_equity": "-0.00006880892437000397054984467843"
+      },
+      {
+        "entry_time": 1693188060000,
+        "call_time": 1693188000000,
+        "year": 2023,
+        "holding_hours": 3.5166666666666666,
+        "exit_event": "stop_gap",
+        "net_usdt": "-0.320476895765000000000000",
+        "net_over_entry_equity": "-0.00005139740139011690552840635350"
+      }
+    ]
+  }
+]

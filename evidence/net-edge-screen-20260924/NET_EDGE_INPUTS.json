@@ -1,0 +1,178 @@
+{
+  "main_at_read": "82d844470a7adbb7a19706ef9c76831151cc99de",
+  "archives": [
+    {
+      "library_file_id": "libfile_7579b3804a4c8191b16800c40c81d5df",
+      "bytes": 184635190,
+      "sha256": "ca1dab14d2501a31d2122bc22d3001c34392033a6e9de786a6727886b13c5a1e",
+      "contains": "nested SX60 originals"
+    },
+    {
+      "library_file_id": "libfile_025da54ab3a8819185df560eb62f5e5a",
+      "bytes": 4197340,
+      "sha256": "769e3517cdbbedf6581ac313224285f63e8ca215099bce3fc633fe72c014c4ad",
+      "contains": "PF55 account"
+    },
+    {
+      "library_file_id": "libfile_9f4c5e3529d481919b25437d394e2f4b",
+      "bytes": 36488329,
+      "sha256": "c769a815543f4c52c58b46fca0cf9dcdf2b54f5ede12dd44cbf23e051f7f885e",
+      "contains": "RR account"
+    }
+  ],
+  "account_files": [
+    {
+      "account": "SX60-development",
+      "files": {
+        "result.json": {
+          "bytes": 5688,
+          "sha256": "5b2c84ff98fced4eede26874b5189b742fa9889359427288ca5d0a3b6da279ea"
+        },
+        "equity.csv.gz": {
+          "bytes": 1153763,
+          "sha256": "06e26e10114a61fa42106f5291557d13ca0109c344e8a6bfaf846aef6dc96606"
+        },
+        "orders.csv.gz": {
+          "bytes": 6623,
+          "sha256": "a44f1df52677ca17d23f6c5c81336da5ff707def0b03f325b1cf87f2600475a1"
+        },
+        "decisions.csv.gz": {
+          "bytes": 13737,
+          "sha256": "dcb27467bdf16b59041dc7bd9a5fc495ef359b907019b7b5025e3423afe13e51"
+        },
+        "execution.jsonl": {
+          "bytes": 445539,
+          "sha256": "f74aaa75eeb62594a5b0d96ea31ff2bd7c6276f42be52001a0bd39a33db060b6"
+        },
+        "execution_summary.json": {
+          "bytes": 91492,
+          "sha256": "8f909bdbd116b4866928a8032d522b5327d83c1f6129e88c450395c929da1f6c"
+        },
+        "inputs.json": {
+          "bytes": 54724,
+          "sha256": "6be2542579e693348826bd9ab33685c462ac608b9bc6b156c8cb173362f33ac3"
+        },
+        "invocations.json": {
+          "bytes": 7021,
+          "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd"
+        }
+      },
+      "sx60_manifest_match": true
+    },
+    {
+      "account": "SX60-full",
+      "files": {
+        "result.json": {
+          "bytes": 5776,
+          "sha256": "b2e6b6b71ff765331fad3e6626ea82d3cb234ea5edbf920912401be35dc0671c"
+        },
+        "equity.csv.gz": {
+          "bytes": 1877089,
+          "sha256": "a41cdd77c5442bda2c3ff0c6d4f2c0e92d1b4aa0e02fda4aa305840276bd17f9"
+        },
+        "orders.csv.gz": {
+          "bytes": 9802,
+          "sha256": "96e6871c3a30d22044ec2160ecabd07346f58905801ec021b54357a325cb9f30"
+        },
+        "decisions.csv.gz": {
+          "bytes": 22197,
+          "sha256": "86260d75fb7a9c754a8b093b55f53a3136205cc9850e49224fd41313097e0cdd"
+        },
+        "execution.jsonl": {
+          "bytes": 737299,
+          "sha256": "fdde28a8aaeb73c1470eb2746a403ff103c1d064800d78f90256ee9b11a8477e"
+        },
+        "execution_summary.json": {
+          "bytes": 145720,
+          "sha256": "fd8d82dcda8ddd49141b67545d77098b5ed202b56289fabb07d5e753f47e9619"
+        },
+        "inputs.json": {
+          "bytes": 93397,
+          "sha256": "c55958280527716e1a71c598b01dd3a585a5c6636b09b8cbc9e44cf5a472cf00"
+        },
+        "invocations.json": {
+          "bytes": 11926,
+          "sha256": "4e48e33467e699608be89e62749f438f3cc436d2c533b90d419159d694372e4f"
+        }
+      },
+      "sx60_manifest_match": true
+    },
+    {
+      "account": "UC4-PF55-development-r01",
+      "files": {
+        "result.json": {
+          "bytes": 6218,
+          "sha256": "68ddd45c363a608dd547e797902f100b97dfcb0ccc17b4038185cd17cca72712"
+        },
+        "equity.csv.gz": {
+          "bytes": 1873053,
+          "sha256": "c928951b655949cee4b83eafe60bf9407e6d40603d0f47cc662387355e4d87a0"
+        },
+        "orders.csv.gz": {
+          "bytes": 10991,
+          "sha256": "0abdc25e6d67102a75029327538b9f1fa640f8bf74b0af6ecb460e3d5e3e1e0a"
+        },
+        "decisions.csv.gz": {
+          "bytes": 17521,
+          "sha256": "7830e1c3df0d1df08858abca757873dd645e0d23debe8bfa00aa7e4a17986541"
+        },
+        "execution.jsonl": {
+          "bytes": 1102134,
+          "sha256": "91250ae9cacce2e927c484afd63f84b0973f98ab06406f811b32d9aa94ecdd06"
+        },
+        "execution_summary.json": {
+          "bytes": 281626,
+          "sha256": "3c65c05e0b52146b8ded1248d33422878dad1980704c9165f53f357fe8bae958"
+        },
+        "inputs.json": {
+          "bytes": 365563,
+          "sha256": "b53e7dade2cd44f5c56aa7b0679dde80f72576200b5ba6cbbe7add35d1a9713d"
+        },
+        "invocations.json": {
+          "bytes": 7021,
+          "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd"
+        }
+      },
+      "sx60_manifest_match": false
+    },
+    {
+      "account": "UC4-RR-development-r17",
+      "files": {
+        "result.json": {
+          "bytes": 6096,
+          "sha256": "9f9571f3c57ab0d219561fec41ac144de9fa70c587c8dd04561d653a667a141a"
+        },
+        "equity.csv.gz": {
+          "bytes": 2298690,
+          "sha256": "9ce487bd40c47af85f56452f5eaa03a0ac5a25299bbb0dd7474adb2d60c179f6"
+        },
+        "orders.csv.gz": {
+          "bytes": 13944,
+          "sha256": "ec9398efe2d2d7be199d9ed058d0715da8ee7af50e7a72cae9efb4817b329a46"
+        },
+        "decisions.csv.gz": {
+          "bytes": 18642,
+          "sha256": "6e3649d31510fdfbf3fb790c0b36f6126ab7c2fd3306c2a83f12fdb690ce6d69"
+        },
+        "execution.jsonl": {
+          "bytes": 1041625,
+          "sha256": "337f2a99be94f329af41c4b9b249ef38df56978a34d04afa35666700aba33dea"
+        },
+        "execution_summary.json": {
+          "bytes": 269218,
+          "sha256": "2dfd2a66bed325419a9c626770cd993647e90dab7d5a68d336691f9365f0d9ae"
+        },
+        "inputs.json": {
+          "bytes": 413533,
+          "sha256": "f1ba68f0c63c3e72ee9d40554cb77819c01413ef5227939d5429a53ff822d715"
+        },
+        "invocations.json": {
+          "bytes": 7021,
+          "sha256": "30264cd37e646734945db85f542cc28db20bf73749d7be0a732b78b895e662bd"
+        }
+      },
+      "sx60_manifest_match": false
+    }
+  ],
+  "derived_json_sha256": "20a7100a5953189f290e6e2a65ee2d889d59085d2fb1eba2a2b5101b69899ed0"
+}
