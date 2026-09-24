@@ -35,6 +35,7 @@ jobs:
               with zipfile.ZipFile(io.BytesIO(raw)) as archive:
                   if len(archive.namelist())!=1 or archive.testzip() is not None: raise ValueError(f'bad archive {kind}')
                   rows=list(csv.reader(io.TextIOWrapper(archive.open(archive.namelist()[0]))))
+              if rows and not rows[0][0].isdigit(): rows=rows[1:]
               from datetime import datetime,timezone
               start=int(datetime.fromisoformat(day).replace(tzinfo=timezone.utc).timestamp()*1000)
               if [int(row[0]) for row in rows]!=list(range(start,start+86400000,60000)):
