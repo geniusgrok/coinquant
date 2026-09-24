@@ -56,7 +56,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add evidence/unified-channel-20260924/minutes/daily
+          git add evidence/unified-channel-20260924/minutes
           if ! git diff --cached --quiet; then
             git commit -m 'Preserve verified April 18 UC4 minute originals'
             git push origin HEAD:research/uc4-evidence-fix-20260924
