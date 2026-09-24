@@ -26,3 +26,40 @@ jobs:
           name: downside-minutes-${{ matrix.batch }}
           path: downloads/
           retention-days: 2
+  preserve:
+    needs: download
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: downside-minutes-*
+          path: evidence/downside-channel-20260924/minutes
+      - name: Check every requested official original before saving
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path('evidence/downside-channel-20260924/minutes')
+          count = 0
+          for i in range(4):
+              batch = root/f'downside-minutes-{i}'
+              requested = json.loads((Path('evidence/downside-channel-20260924')/f'missing_{i}.json').read_text())['requests']
+              receipts = json.loads((batch/'RECEIPT.json').read_text())
+              verified = {(r['day'],r['kind']) for r in receipts if r['status'] == 'verified'}
+              assert verified == {(r['day'],kind) for r in requested for kind in ('klines','markPriceKlines')}
+              count += len(verified)
+          assert count == 302
+          print('Verified official archives:',count)
+          PY
+      - name: Preserve complete files on research branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add evidence/downside-channel-20260924/minutes
+          git diff --cached --quiet || git commit -m 'Preserve verified downside minute originals'
+          git push origin HEAD:research/downside-channel-20260924
