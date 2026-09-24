@@ -90,6 +90,16 @@ def main():
                     if exc.code != 404 or path.startswith('monthly/'):
                         receipts.append(dict(day=day, kind=kind, path=path, status=f'HTTP {exc.code}'))
                         break
+                except ValueError as exc:
+                    rejected = args.output/'rejected'/path
+                    if hashlib.sha256(raw).hexdigest().lower() == checksum.decode().split()[0].lower():
+                        rejected.parent.mkdir(parents=True, exist_ok=True)
+                        rejected.write_bytes(raw)
+                        Path(str(rejected)+'.CHECKSUM').write_bytes(checksum)
+                    receipts.append(dict(day=day, kind=kind, path=path, status='rejected_original',
+                                         error=str(exc), bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest()))
+                    if path.startswith('monthly/'):
+                        break
                 except Exception as exc:
                     receipts.append(dict(day=day, kind=kind, path=path, status='failed', error=str(exc)))
                     break
