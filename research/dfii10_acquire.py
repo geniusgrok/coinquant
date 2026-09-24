@@ -62,9 +62,10 @@ def retrieve(out):
         common = [("form[units]", "lin"),
                   ("form[obs_start_date]", START),
                   ("form[obs_end_date]", END),
+                  ("form[entered_vintage_dates]", ""),
                   ("form[file_type]", "3"),
                   ("form[file_format]", "csv"),
-                  ("form[download_data]", "")]
+                  ("form[download_data]", "Download data")]
         for label, selected, limit in (
             ("single", [dates[0]], 60),
             ("all", dates, 210),
@@ -81,10 +82,13 @@ def retrieve(out):
                     payload = response.read()
                     record["http_status"] = response.status
                     record["content_type"] = response.headers.get("Content-Type")
+                    record["final_url"] = response.geturl()
                     record["response_bytes"] = len(payload)
                     record["response_sha256"] = sha256(payload).hexdigest()
                 if not payload.startswith(b"PK\x03\x04"):
                     record["error"] = "non-ZIP response: " + payload[:180].decode("utf-8", "replace")
+                    if label == "single":
+                        (out / "DFII10_ALFRED_single_response.html").write_bytes(payload)
                     if label == "single":
                         break
                     continue
