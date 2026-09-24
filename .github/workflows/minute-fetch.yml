@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   fetch:
@@ -15,8 +15,25 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch and verify requested public archives
-        run: python3 research/fetch_missing_minutes.py evidence/executable-opportunities-20260924/MISSING_MINUTES.json recovered-minutes
+      - name: Restore and verify first official batch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download 35963907395 --name official-minutes-35963907395 --dir recovered-minutes
+          python3 research/fetch_missing_minutes.py evidence/executable-opportunities-20260924/MISSING_MINUTES.json recovered-minutes
+          mv recovered-minutes/REQUEST.json recovered-minutes/FIRST_REQUEST.json
+          mv recovered-minutes/RECEIPT.json recovered-minutes/FIRST_RECEIPT.json
+      - name: Fetch and verify next held-protection day
+        run: python3 research/fetch_missing_minutes.py evidence/c7-call-expiry-20260924/MISSING_MINUTES.json recovered-minutes
+      - name: Preserve complete official originals on research branch
+        run: |
+          mkdir -p evidence/c7-call-expiry-20260924/minutes
+          cp -a recovered-minutes/. evidence/c7-call-expiry-20260924/minutes/
+          git config user.name coinquant-research
+          git config user.email 332557824+geniusgrok@users.noreply.github.com
+          git add evidence/c7-call-expiry-20260924/minutes
+          git commit -m "Preserve checked official minute originals for C7"
+          git push origin HEAD:refs/heads/research/minute-acceptance-20260924
       - uses: actions/upload-artifact@v4
         if: always()
         with:
