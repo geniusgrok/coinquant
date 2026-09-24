@@ -1,0 +1,26 @@
+name: One-time official minute recovery
+
+on:
+  push:
+    branches: [research/minute-acceptance-20260924]
+    paths: [.github/workflows/minute-fetch.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch and verify requested public archives
+        run: python3 research/fetch_missing_minutes.py evidence/executable-opportunities-20260924/MISSING_MINUTES.json recovered-minutes
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: official-minutes-${{ github.run_id }}
+          path: recovered-minutes/
+          if-no-files-found: error
+          compression-level: 0
