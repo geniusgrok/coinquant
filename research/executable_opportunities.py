@@ -175,7 +175,9 @@ def execute(event, states, calls, prepared, store, instrument):
         if account.q and missing_protection_minutes(t,account,mark,store.tables):
             if not store.hour(t):
                 row.update(status='data_insufficient',unknown=f'held_protection_minute:{iso(t)}');break
-        for st,sbar,smark in steps(t,bar,mark,store.tables):
+        # A trade-only archive does not establish the simultaneous mark path.
+        minute_path=store.tables if all(t in store.tables[k] for k in store.tables) else None
+        for st,sbar,smark in steps(t,bar,mark,minute_path):
             so,sh,slo,sc=sbar;smo,smh,sml,smc=smark
             if parent and parent.call_time==t and parent.available(st) and st>=parent.start:
                 child=parent.attempt(st,account,so,smo,store.quotes,instrument)
