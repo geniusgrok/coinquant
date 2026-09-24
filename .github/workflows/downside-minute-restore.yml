@@ -5,6 +5,7 @@ on:
     paths:
       - evidence/downside-channel-20260924/missing_*.json
       - .github/workflows/downside-minute-restore.yml
+      - research/fetch_missing_minutes.py
 jobs:
   download:
     strategy:
