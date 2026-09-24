@@ -5,8 +5,10 @@ The receipt records the request and response even when a download fails.
 from datetime import date
 from hashlib import sha256
 from html.parser import HTMLParser
+from html import unescape
 import json
 from pathlib import Path
+import re
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -87,8 +89,9 @@ def retrieve(out):
                     record["response_sha256"] = sha256(payload).hexdigest()
                 if not payload.startswith(b"PK\x03\x04"):
                     record["error"] = "non-ZIP response: " + payload[:180].decode("utf-8", "replace")
-                    if label == "single":
-                        (out / "DFII10_ALFRED_single_response.html").write_bytes(payload)
+                    record["error_detail"] = [unescape(re.sub(r"<[^>]*>", "", item.decode("utf-8", "replace"))).strip()
+                        for item in re.findall(rb'<p class="error">(.*?)</p>', payload, re.S)]
+                    (out / f"DFII10_ALFRED_{label}_response.html").write_bytes(payload)
                     if label == "single":
                         break
                     continue
