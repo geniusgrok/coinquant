@@ -1,23 +1,26 @@
-name: Temporary DFII10 official download
+name: Temporary DFII10 minute recovery
 on:
   push:
     branches: [research/dfii10-causal-20260924]
-    paths: [.github/workflows/temporary-dfii10-recovery.yml, research/dfii10_acquire.py]
+    paths: [.github/workflows/temporary-dfii10-recovery.yml]
 permissions:
   contents: read
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Fetch official historical vintages with response audit
-        run: python research/dfii10_acquire.py recovered/alfred
+      - name: Fetch official trade and mark minute originals and checksums
+        run: python research/acquire_exit_minutes.py --output recovered/minutes --request evidence/real-yield-20260924/MINUTE_REQUEST.json
+      - name: Preserve original directory in one transport file
+        if: always()
+        run: tar -C recovered -czf recovered/dfii10-minutes.tar.gz minutes
       - uses: actions/upload-artifact@v4
         with:
-          name: dfii10-audit
-          path: recovered/alfred/*
+          name: dfii10-minute-originals
+          path: recovered/dfii10-minutes.tar.gz
           compression-level: 0
           retention-days: 2
