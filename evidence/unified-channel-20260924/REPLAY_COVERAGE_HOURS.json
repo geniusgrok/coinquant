@@ -1,0 +1,20 @@
+{
+  "schema": "coinquant.uc4.replay_coverage.v1",
+  "base_file": "evidence/unified-channel-20260924/COVERAGE_HOURS.json",
+  "base_input_identity": "454282a079d1020e6564deefe6000144eb9473b8aa373c2108c8037beb16c2ae",
+  "new_hours": [
+    1620086400000
+  ],
+  "hours": [
+    1587376800000,
+    1590055200000,
+    1591110000000,
+    1599044400000,
+    1600686000000,
+    1607083200000,
+    1611669600000,
+    1617494400000,
+    1618714800000,
+    1620086400000
+  ]
+}
