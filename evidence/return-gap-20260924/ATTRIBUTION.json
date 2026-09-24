@@ -1,0 +1,91 @@
+{
+  "source_archive_sha256": "76de79836cb0526318d457aadcb9151ccffbd153ff75191a01d139c39ad0e3c9",
+  "final_cny": "1149830.577467841415769839619",
+  "cagr": 1.0262621107382985,
+  "mdd_conservative_envelope": "0.3988511525411302503194848743",
+  "annual": {
+    "2020": {
+      "last_close_time": "1609455600000",
+      "equity_usdt": "12998.40564602692821570489314",
+      "cumulative_fees_usdt": "207.84629509722300",
+      "cumulative_funding_usdt": "480.0460864162079483099",
+      "net_change_usdt": "11566.39394911456905169009999",
+      "fees_usdt": "207.84629509722300",
+      "funding_usdt": "480.0460864162079483099"
+    },
+    "2021": {
+      "last_close_time": "1640991600000",
+      "equity_usdt": "17926.78546310655442259459314",
+      "cumulative_fees_usdt": "420.31797181858650",
+      "cumulative_funding_usdt": "1544.6872010352182414202",
+      "net_change_usdt": "4928.37981707962620688970000",
+      "fees_usdt": "212.47167672136350",
+      "funding_usdt": "1064.6411146190102931103"
+    },
+    "2022": {
+      "last_close_time": "1672527600000",
+      "equity_usdt": "13829.92472576870703222899313",
+      "cumulative_fees_usdt": "599.94836925563400",
+      "cumulative_funding_usdt": "1617.4796576860181317858",
+      "net_change_usdt": "-4096.86073733784739036560001",
+      "fees_usdt": "179.63039743704750",
+      "funding_usdt": "72.7924566507998903656"
+    },
+    "2023": {
+      "last_close_time": "1704063600000",
+      "equity_usdt": "67734.21133614372594422817384",
+      "cumulative_fees_usdt": "1713.764242246668608580825530",
+      "cumulative_funding_usdt": "2713.5315433927760523065",
+      "net_change_usdt": "53904.28661037501891199918071",
+      "fees_usdt": "1113.815872991034608580825530",
+      "funding_usdt": "1096.0518857067579205207"
+    },
+    "2024": {
+      "last_close_time": "1735686000000",
+      "equity_usdt": "123584.8261826725719292206379",
+      "cumulative_fees_usdt": "3157.821912485470203203227554",
+      "cumulative_funding_usdt": "7532.5441271139213025610",
+      "net_change_usdt": "55850.61484652884598499246406",
+      "fees_usdt": "1444.057670238801594622402024",
+      "funding_usdt": "4819.0125837211452502545"
+    },
+    "2025": {
+      "last_close_time": "1767222000000",
+      "equity_usdt": "143804.8830590346088316714924",
+      "cumulative_fees_usdt": "4503.236279421042311674082086",
+      "cumulative_funding_usdt": "8656.8708297991235861120",
+      "net_change_usdt": "20220.0568763620369024508545",
+      "fees_usdt": "1345.414366935572108470854532",
+      "funding_usdt": "1124.3267026852022835510"
+    },
+    "2026": {
+      "last_close_time": "1789862400000",
+      "equity_usdt": "164821.9055456898334006822653",
+      "cumulative_fees_usdt": "6068.961212762306457583025473",
+      "cumulative_funding_usdt": "9891.2061605814960831168",
+      "net_change_usdt": "21017.0224866552245690107729",
+      "fees_usdt": "1565.724933341264145908943387",
+      "funding_usdt": "1234.3353307823724970048"
+    }
+  },
+  "close_hours": 58896,
+  "flat_close_hours": 54990,
+  "orders": {
+    "capital_reduce": 4,
+    "entry": 30,
+    "funding_adverse_bound": 459,
+    "rebalance_add": 71,
+    "regime_exit_deadline": 4,
+    "regime_exit_slice": 57,
+    "stop": 6,
+    "take": 2
+  },
+  "decisions": {
+    "capital_reduce": 2,
+    "deferred_entry": 30,
+    "hold": 23,
+    "no_signal": 717,
+    "regime_exit": 22,
+    "unfunded_parent:protection": 1
+  }
+}
