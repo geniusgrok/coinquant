@@ -14,7 +14,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Fetch official trade and mark minute originals and checksums
-        run: python research/acquire_exit_minutes.py --output recovered/minutes --request evidence/real-yield-20260924/MINUTE_REQUEST.json
+        run: python -m research.acquire_exit_minutes --output recovered/minutes --request evidence/real-yield-20260924/MINUTE_REQUEST.json
       - name: Preserve original directory in one transport file
         if: always()
         run: tar -C recovered -czf recovered/dfii10-minutes.tar.gz minutes
