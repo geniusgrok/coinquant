@@ -5,30 +5,8 @@ on:
     paths:
       - evidence/downside-channel-20260924/missing_*.json
       - .github/workflows/downside-minute-restore.yml
-      - research/fetch_missing_minutes.py
 jobs:
-  download:
-    strategy:
-      fail-fast: false
-      matrix:
-        batch: [0, 1, 2, 3]
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
-      - name: Fetch and verify public Binance minutes
-        run: python3 -m research.fetch_missing_minutes evidence/downside-channel-20260924/missing_${{ matrix.batch }}.json downloads
-      - name: Preserve originals and receipt
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: downside-minutes-${{ matrix.batch }}
-          path: downloads/
-          retention-days: 2
   preserve:
-    needs: download
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -39,11 +17,13 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           pattern: downside-minutes-*
+          run-id: 35977571261
+          github-token: ${{ github.token }}
           path: evidence/downside-channel-20260924/minutes
       - name: Check every requested official original before saving
         run: |
           python3 - <<'PY'
-          import json
+          import hashlib, json
           from pathlib import Path
           root = Path('evidence/downside-channel-20260924/minutes')
           count = 0
@@ -52,10 +32,27 @@ jobs:
               requested = json.loads((Path('evidence/downside-channel-20260924')/f'missing_{i}.json').read_text())['requests']
               receipts = json.loads((batch/'RECEIPT.json').read_text())
               verified = {(r['day'],r['kind']) for r in receipts if r['status'] == 'verified'}
-              assert verified == {(r['day'],kind) for r in requested for kind in ('klines','markPriceKlines')}
+              expected = {(r['day'],kind) for r in requested for kind in ('klines','markPriceKlines')}
+              if i == 0:
+                  expected.remove(('2020-12-17','markPriceKlines'))
+                  rejected = [r for r in receipts if r['status'] == 'rejected_original']
+                  assert {r['path'] for r in rejected} == {
+                      'daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-12-17.zip',
+                      'monthly/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2020-12.zip'}
+                  assert all(r['day'] == '2020-12-17' and r['kind'] == 'markPriceKlines' for r in rejected)
+              else:
+                  assert all(r['status'] == 'verified' for r in receipts)
+              assert verified == expected
+              for r in receipts:
+                  if r['status'] not in ('verified','rejected_original'):
+                      raise ValueError('unclassified public minute response')
+                  target = batch/('data/futures/um' if r['status']=='verified' else 'rejected/data/futures/um')/r['path']
+                  raw = target.read_bytes()
+                  assert len(raw) == r['bytes'] and hashlib.sha256(raw).hexdigest() == r['sha256']
+                  assert (target.parent/(target.name+'.CHECKSUM')).read_text().split()[0].lower() == r['sha256']
               count += len(verified)
-          assert count == 302
-          print('Verified official archives:',count)
+          assert count == 301
+          print('Verified official archives:',count,'; invalid official mark originals retained: 2')
           PY
       - name: Preserve complete files on research branch
         run: |
