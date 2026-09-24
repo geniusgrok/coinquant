@@ -1,0 +1,358 @@
+{
+  "source_archive": "COINQUANT_HR60_FULL_ACCOUNT_20260923.zip",
+  "source_archive_bytes": 9857907,
+  "source_archive_sha256": "76de79836cb0526318d457aadcb9151ccffbd153ff75191a01d139c39ad0e3c9",
+  "source_member_prefix": "results/SX60-full-control/",
+  "files": {
+    "BUFFER_AUDIT.json": {
+      "bytes": 737,
+      "sha256": "9bd2f5e30131fe392f43fcb283cd502029a8a8afe3624cafb5cf0025251bc082",
+      "git_blob_sha1": "149d8517b3bf70d6b7b2bed04439864f7d292c40"
+    },
+    "FINITE_BUDGET.json": {
+      "bytes": 6170,
+      "sha256": "2d1d6648037302d72405b85714af7e748dfe216da9f2fc78feb3ce36077e270f",
+      "git_blob_sha1": "11a1f6c53a35d37670047a6cf8fab993e82dd55b"
+    },
+    "LEDGER_AUDIT.json": {
+      "bytes": 346,
+      "sha256": "2d8c866cf83ace3222bc5b8bce184e6745871e9c2d9d6faeea03b4d25a0ae6dc",
+      "git_blob_sha1": "523e9c73d9f7da94805246bbc22beda3623cf057"
+    },
+    "RISK_AUDIT.json": {
+      "bytes": 2926,
+      "sha256": "3759a8d405559f4f5288c4140e1e54d37bb2fbf8b0cfd022937e3c002ea3b520",
+      "git_blob_sha1": "5714520fd0396cfc0ead46f01d5b036e839e79b3"
+    },
+    "decisions.csv.gz": {
+      "bytes": 22199,
+      "sha256": "0e8324706830100bf4fb0a9817011ac64a991f5514b00aa24c90ff729970dfac",
+      "git_blob_sha1": "8d2b6c2ea5855b6873339cdc25612e54315fee83"
+    },
+    "equity.csv.gz": {
+      "bytes": 1975721,
+      "sha256": "b6bc34cb4063e0c3ea7a56e2bb7ba0846c883a59cfc37a328e3df1f9f8645eb5",
+      "git_blob_sha1": "58d8f4dd8cf40cdfda4470bb3839e921172af4af",
+      "parts": [
+        {
+          "file": "equity.csv.gz.part000",
+          "offset": 0,
+          "bytes": 65536,
+          "sha256": "38f99ec41c58cd17c96abae413231878cae0318df98710e0d7d708cd1107f27d",
+          "git_blob_sha1": "b0313fc7f86d3365abfbe2eae730e475b15d9a76"
+        },
+        {
+          "file": "equity.csv.gz.part001",
+          "offset": 65536,
+          "bytes": 65536,
+          "sha256": "7d1bcdac5caeec40b1f81f4b7baf1382e650e807ef2e6866ec7ad899d0af4f3e",
+          "git_blob_sha1": "6ff4b631e29a3fa2176163b02d1affa4693a2134"
+        },
+        {
+          "file": "equity.csv.gz.part002",
+          "offset": 131072,
+          "bytes": 65536,
+          "sha256": "456f59dfecbcccf5c51249b905a5f16d04e0791db3b318e8f290f18e8eb57b28",
+          "git_blob_sha1": "1dd37768023e8aea6eeabe8d9a9407e65a9a1234"
+        },
+        {
+          "file": "equity.csv.gz.part003",
+          "offset": 196608,
+          "bytes": 65536,
+          "sha256": "fdface776a0fab4bd05313e3c3602864e8700c19cc219c5633d9f697449e7150",
+          "git_blob_sha1": "cf567c3c0eaa995c1cc97ecfe83a3a6959623d8d"
+        },
+        {
+          "file": "equity.csv.gz.part004",
+          "offset": 262144,
+          "bytes": 65536,
+          "sha256": "ed52b2418870ca5e91de1920c2c96358738dcebbbce6956a398d83df893a98e4",
+          "git_blob_sha1": "f63d046887cc7820800131f00ac4589cb5047c4e"
+        },
+        {
+          "file": "equity.csv.gz.part005",
+          "offset": 327680,
+          "bytes": 65536,
+          "sha256": "ac30bf096df1cb6f4e82e4451a061b437ac8086f30e495e9e87ebe48ff1c7984",
+          "git_blob_sha1": "1976c131e72403d82bc1a68fb5f4bc7697ec9aba"
+        },
+        {
+          "file": "equity.csv.gz.part006",
+          "offset": 393216,
+          "bytes": 65536,
+          "sha256": "353e52f22fb3ce5d83921f2528de615e33f0918333ace0488c80222d4f460ad1",
+          "git_blob_sha1": "dd5a4a8b0d34725b2a918e9bf96a62512a57f1a8"
+        },
+        {
+          "file": "equity.csv.gz.part007",
+          "offset": 458752,
+          "bytes": 65536,
+          "sha256": "16bfc7f7683c140ee9c75d31b235dc5efe6a01d4c04aaf1d2c3b9eb14f684038",
+          "git_blob_sha1": "1f8e9b07a62b912bca53fa23275dc4f5f75ce9a1"
+        },
+        {
+          "file": "equity.csv.gz.part008",
+          "offset": 524288,
+          "bytes": 65536,
+          "sha256": "a674b46cba1cc396e4bb2c6a6aad3accd89ba4b931ab387bac6408627b876f28",
+          "git_blob_sha1": "2dd8e9ac4c46ed64a6ba8254f36db31db23cc7ca"
+        },
+        {
+          "file": "equity.csv.gz.part009",
+          "offset": 589824,
+          "bytes": 65536,
+          "sha256": "27290dfe78882317c4cd3e45893d095b9e007e5c5e3f13496fa4f64739820c00",
+          "git_blob_sha1": "dd02111c35653628d3d0743dd9b43932de9aa23e"
+        },
+        {
+          "file": "equity.csv.gz.part010",
+          "offset": 655360,
+          "bytes": 65536,
+          "sha256": "29f1375a25bf8a498cb8904f32fbd63fdcd183c9c3314636966bf48081096e18",
+          "git_blob_sha1": "e69c44eeb438d26325e4550b96379b5e38a1779f"
+        },
+        {
+          "file": "equity.csv.gz.part011",
+          "offset": 720896,
+          "bytes": 65536,
+          "sha256": "73cfa51b4046967a3ecc5bd21927af894ebbf9b529844e66e0dc0ce7ae9dc7a9",
+          "git_blob_sha1": "7cb2f93f9ad0d3e3f0fd44875edb49796381fdfa"
+        },
+        {
+          "file": "equity.csv.gz.part012",
+          "offset": 786432,
+          "bytes": 65536,
+          "sha256": "07d340b8a6fc0acba3dbb17ab612273096604e7568371f49b50d112a4e86a606",
+          "git_blob_sha1": "a7af7315aa6ff9af71ed6abb57992ee780a0f69a"
+        },
+        {
+          "file": "equity.csv.gz.part013",
+          "offset": 851968,
+          "bytes": 65536,
+          "sha256": "a300680e16f573410f475dc538a2e52e301f50df828f97ff2478dd13c1e4dd01",
+          "git_blob_sha1": "4a69f81f7791662c920b138e5eeae99c245a3241"
+        },
+        {
+          "file": "equity.csv.gz.part014",
+          "offset": 917504,
+          "bytes": 65536,
+          "sha256": "375534737326d041e94ed936c11a5c6f3cacb1e164121eeac19c57e719de72cc",
+          "git_blob_sha1": "806dcaaf20d42698a16b79896463f03d8b0ce3b6"
+        },
+        {
+          "file": "equity.csv.gz.part015",
+          "offset": 983040,
+          "bytes": 65536,
+          "sha256": "7efddb32f172fc741ff6a1edcaa13e41f97d7cde6b6f06a3bc579d63fb3a3e86",
+          "git_blob_sha1": "b8fa9e4c09a85116eb8078b6f4b861d00ba4f766"
+        },
+        {
+          "file": "equity.csv.gz.part016",
+          "offset": 1048576,
+          "bytes": 65536,
+          "sha256": "84434e1d5778598f40550dd23643f8bd1cdb51fe23675ccc3e51d5f72938b1b5",
+          "git_blob_sha1": "a9cffcfb8a95d6dc9ae8381c00bccff69d1d0d4c"
+        },
+        {
+          "file": "equity.csv.gz.part017",
+          "offset": 1114112,
+          "bytes": 65536,
+          "sha256": "e31706bb64e5864d93e9954f1b602647da6055833f858dd41682e2473a4ce392",
+          "git_blob_sha1": "5fae36088e1dfbe3fb8e7698b952e251385140a0"
+        },
+        {
+          "file": "equity.csv.gz.part018",
+          "offset": 1179648,
+          "bytes": 65536,
+          "sha256": "f15b85d96c27c01a80a98000264e7d814d171f2a896b2a527e574482d5840d90",
+          "git_blob_sha1": "1170143d31360222aa57ad1113c6b754084b76e8"
+        },
+        {
+          "file": "equity.csv.gz.part019",
+          "offset": 1245184,
+          "bytes": 65536,
+          "sha256": "3c96469e97e4cfb9c8d7e6ab139f1b80c670eeb7a9cb288c0390e6a13c5a1190",
+          "git_blob_sha1": "0cff7e201b1233033fc8bfb07e556be302bb0385"
+        },
+        {
+          "file": "equity.csv.gz.part020",
+          "offset": 1310720,
+          "bytes": 65536,
+          "sha256": "1caddbdffa3161721cf8d75e210e719ce2d7c192a6440414a305f9ca7a7e81ec",
+          "git_blob_sha1": "696e453e862e38d969c2dc9948efc8e0ace4c229"
+        },
+        {
+          "file": "equity.csv.gz.part021",
+          "offset": 1376256,
+          "bytes": 65536,
+          "sha256": "14463ae7e674017b8179de642205f838146048dcccb2a8a9db8e3623ed1f9528",
+          "git_blob_sha1": "0f14105eae093c6a4d3eb448bc6cedb48f34be1b"
+        },
+        {
+          "file": "equity.csv.gz.part022",
+          "offset": 1441792,
+          "bytes": 65536,
+          "sha256": "f6ef28508f82d72793a4d9a645be2cb3b3a4a05db7e05ce747f67919c4b802bd",
+          "git_blob_sha1": "ec6d4c44dace3880ecaf65ecbe96448f30afcfc7"
+        },
+        {
+          "file": "equity.csv.gz.part023",
+          "offset": 1507328,
+          "bytes": 65536,
+          "sha256": "5ed611b8c4d9e691b28f8b670ff6348b8d4fdb892adb318d653fc069293e4428",
+          "git_blob_sha1": "64905f35cfe081f832bcae54a0fcab12310eb8ee"
+        },
+        {
+          "file": "equity.csv.gz.part024",
+          "offset": 1572864,
+          "bytes": 65536,
+          "sha256": "8c24f51034d699c3cba9ec6e96d4bb8c481c3281440e394ead80fb1781bc6bda",
+          "git_blob_sha1": "4ed3f9d3def04f5ec2c521833e9a8d55ce9981a9"
+        },
+        {
+          "file": "equity.csv.gz.part025",
+          "offset": 1638400,
+          "bytes": 65536,
+          "sha256": "05e783e81e24fd9b8b5fd3215ced4ae9f5f7c126d452ff4575e0f803a38cf266",
+          "git_blob_sha1": "2f4143578eda8bbd31e66c773afc856df8855207"
+        },
+        {
+          "file": "equity.csv.gz.part026",
+          "offset": 1703936,
+          "bytes": 65536,
+          "sha256": "11b04288c4c94c65b806f0de514e562cd9aa25cdba2665bdbdd4e7fde4293f92",
+          "git_blob_sha1": "2b8b191f20836937baace6d74088121529c08cf7"
+        },
+        {
+          "file": "equity.csv.gz.part027",
+          "offset": 1769472,
+          "bytes": 65536,
+          "sha256": "1a9f6025e0bc3465530e4bbe962b5d4ef7676977be0be760e2219d7a4fa356f8",
+          "git_blob_sha1": "1cce686647ea07112956d60735673d01f6f71c35"
+        },
+        {
+          "file": "equity.csv.gz.part028",
+          "offset": 1835008,
+          "bytes": 65536,
+          "sha256": "137dfd136f0d388c94f97f81b46e8bdb39c47e9151f873d9b6131c1bb7067b7a",
+          "git_blob_sha1": "7e68fdb118ebf4baaeee6f98b7850463f2e6f297"
+        },
+        {
+          "file": "equity.csv.gz.part029",
+          "offset": 1900544,
+          "bytes": 65536,
+          "sha256": "87c3ae7e96eaee1edd76c350eb16769b2a7621a4dba7e2402ec156b6929b49c9",
+          "git_blob_sha1": "56c2b3bb21052c4a26626ba312b3d4aa8f4158cd"
+        },
+        {
+          "file": "equity.csv.gz.part030",
+          "offset": 1966080,
+          "bytes": 9641,
+          "sha256": "6df66510c23677b0d223ff1bfc053a3db4ff29b03e1d25a7689eed57a65134fd",
+          "git_blob_sha1": "b1d0dd3b2fb9d5a3c3bb59b77ff66977cf0bcd6d"
+        }
+      ]
+    },
+    "execution.jsonl": {
+      "bytes": 737299,
+      "sha256": "611aad70b42c97f3b9411816a3a427de05c66ea541a7498ce9fe2af1c997cb7f",
+      "git_blob_sha1": "4286320e53c1974aeae61f6af2c82e9d2afe7554",
+      "parts": [
+        {
+          "file": "execution.jsonl.part000",
+          "offset": 0,
+          "bytes": 65536,
+          "sha256": "64e08eddb7fa3ccf07e734641e349ca5697bea1e14f4460efeb6164b54969f4c",
+          "git_blob_sha1": "80e86db2d427464f9784161871ff817d91cecf27"
+        },
+        {
+          "file": "execution.jsonl.part001",
+          "offset": 65536,
+          "bytes": 65536,
+          "sha256": "bf4d84386d327ba1816cd42189a2787530b1cb2fbff0eee00896c38e942b49d7",
+          "git_blob_sha1": "ff493777e6b367ab9e33dbc1b15397d641b568d7"
+        },
+        {
+          "file": "execution.jsonl.part002",
+          "offset": 131072,
+          "bytes": 65536,
+          "sha256": "35c33fbb0155f96d6d778ad21766edaee89e833a58ec4c9b757db59be289ac47",
+          "git_blob_sha1": "77e961d10806250f2d5b8738248a5f9effb631d4"
+        },
+        {
+          "file": "execution.jsonl.part003",
+          "offset": 196608,
+          "bytes": 65536,
+          "sha256": "b5075a7f3c631d4999aedac21a8c002d41a589854091944e598a033bc7877398",
+          "git_blob_sha1": "7faed72767e88a9c58d050300285ed7ffad90c64"
+        },
+        {
+          "file": "execution.jsonl.part004",
+          "offset": 262144,
+          "bytes": 65536,
+          "sha256": "0f3a5d6c2e7ba84185d1542564d2ee3c04ff2728ecb504703e3640e16b53bc61",
+          "git_blob_sha1": "4fc5a296131ba14dd5adc237e87a36b5b8bf7db4"
+        },
+        {
+          "file": "execution.jsonl.part005",
+          "offset": 327680,
+          "bytes": 65536,
+          "sha256": "e8fbfbc0a2c1c0f7398147d28b60616357e0b2afea877cf6f61ae37fa15168c1",
+          "git_blob_sha1": "e236f2adbb58a75f35df2fccac9b9d4def54225f"
+        },
+        {
+          "file": "execution.jsonl.part006",
+          "offset": 393216,
+          "bytes": 65536,
+          "sha256": "48484876c12a9df14bb2f089ba435803c398b32d5c0f5adb0f57b14b293175a5",
+          "git_blob_sha1": "8532b43b7e715be60c7b4a6e4d68ea04779eec5e"
+        },
+        {
+          "file": "execution.jsonl.part007",
+          "offset": 458752,
+          "bytes": 65536,
+          "sha256": "64d555a5b1e801ed29a7be06f3db75815c55c8dc85e7a19612198c594a25c5d3",
+          "git_blob_sha1": "1f8c353afca2c85deeef3338451ac3caaa474a96"
+        },
+        {
+          "file": "execution.jsonl.part008",
+          "offset": 524288,
+          "bytes": 65536,
+          "sha256": "0e2547bad718306330ef89c66ba49fca5bb2d54e021c3195af9e743dc54a06d4",
+          "git_blob_sha1": "4fa01d554b5be3e7c13e95ca6c21340df6292cc5"
+        },
+        {
+          "file": "execution.jsonl.part009",
+          "offset": 589824,
+          "bytes": 65536,
+          "sha256": "d5588bf7d3a1597a694c9a703e3f92c699aa95f5d8795b8ff189fae0f5255f79",
+          "git_blob_sha1": "b30dd637d24153841e20d1d9199b413471396d9a"
+        },
+        {
+          "file": "execution.jsonl.part010",
+          "offset": 655360,
+          "bytes": 65536,
+          "sha256": "04b2e143b83caaa88dc61a18dd33f58a8a8edfb6daf3c1b1a265cb1219e30e57",
+          "git_blob_sha1": "6e7fa4116acab744ae2541cd631fb07aeaff7a6a"
+        },
+        {
+          "file": "execution.jsonl.part011",
+          "offset": 720896,
+          "bytes": 16403,
+          "sha256": "f04a3e3a703fc3cd6cb1e7e0618eb09b5e46ad7ab656a46fe2cca096a393fdf3",
+          "git_blob_sha1": "63908cdcd5dca4d9ac2df0567385639e8ddaca18"
+        }
+      ]
+    },
+    "orders.csv.gz": {
+      "bytes": 9799,
+      "sha256": "5001bb9baa6fe23ed49297fac1d06a4d07089a102f82c87db39fd523238f5360",
+      "git_blob_sha1": "fc32062445f9c100f258d9a6ab19d0dbcea7d6a4"
+    },
+    "result.json": {
+      "bytes": 6229,
+      "sha256": "b97bb9d99b7afcbad28d880d10cf09eebfd417fadb3b7b48389fcf66ef609560",
+      "git_blob_sha1": "39f434fac5663048fd88a2c825246ecf7126eedf"
+    }
+  }
+}

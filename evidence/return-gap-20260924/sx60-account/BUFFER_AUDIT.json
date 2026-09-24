@@ -1,0 +1,22 @@
+{
+  "minimum_original_last_fill_gap_coverage": {
+    "time": 1775437500000,
+    "event": "slice_confirmed",
+    "gap_coverage_usdt": "-3E-23",
+    "gap_boundary": "61275.4269115940",
+    "call_time": 1775437200000,
+    "quantity": "7.783",
+    "wallet": "143401.7756259072163316714924",
+    "margin": "63312.1430742582805865000000",
+    "equity": "142023.9265933561963316714924",
+    "free_wallet": "80089.6325516489357451714924",
+    "funding_since_entry": "0E-19"
+  },
+  "negative_gap_observations": 0,
+  "affected_parents": 0,
+  "zero_free_observations": 0,
+  "funding_margin_draws": [],
+  "total_funding_taken_from_margin": "0",
+  "original_gap_maintained": true,
+  "qualification": "READ_ONLY_BUFFER_DIAGNOSTIC_NOT_NATIVE_SAFETY"
+}
