@@ -2,7 +2,7 @@ name: Temporary DFII10 official download
 on:
   push:
     branches: [research/dfii10-causal-20260924]
-    paths: [.github/workflows/temporary-dfii10-recovery.yml]
+    paths: [.github/workflows/temporary-dfii10-recovery.yml, research/dfii10_acquire.py]
 permissions:
   contents: read
 jobs:
