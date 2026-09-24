@@ -1,0 +1,54 @@
+name: UC4 temporary official minute recovery
+on:
+  push:
+    branches: [research/uc4-evidence-fix-20260924]
+    paths: [.github/workflows/uc4-minute-recovery.yml]
+permissions:
+  contents: write
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/uc4-evidence-fix-20260924
+      - name: Download and validate official 2021-04-18 minute originals
+        run: |
+          python3 - <<'PY'
+          import csv, hashlib, io, pathlib, urllib.request, zipfile
+          day='2021-04-18'
+          root=pathlib.Path('evidence/unified-channel-20260924/minutes/daily')
+          for kind in ('klines','markPriceKlines'):
+              name=f'BTCUSDT-1m-{day}.zip'
+              relative=f'daily/{kind}/BTCUSDT/1m/{name}'
+              base='https://data.binance.vision/data/futures/um/'
+              def get(url):
+                  with urllib.request.urlopen(url,timeout=60) as response:
+                      if response.url != url or response.status != 200: raise ValueError(f'unexpected official response {url}')
+                      return response.read()
+              raw=get(base+relative)
+              checksum=get(base+relative+'.CHECKSUM')
+              actual=hashlib.sha256(raw).hexdigest()
+              if checksum.decode().split()[0].lower()!=actual: raise ValueError(f'checksum mismatch {kind}')
+              with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+                  if len(archive.namelist())!=1 or archive.testzip() is not None: raise ValueError(f'bad archive {kind}')
+                  rows=list(csv.reader(io.TextIOWrapper(archive.open(archive.namelist()[0]))))
+              from datetime import datetime,timezone
+              start=int(datetime(2021,4,18,tzinfo=timezone.utc).timestamp()*1000)
+              if [int(row[0]) for row in rows]!=list(range(start,start+86400000,60000)):
+                  raise ValueError(f'incomplete minutes {kind}')
+              if any(int(row[6])!=int(row[0])+59999 for row in rows):raise ValueError(f'bad minute close {kind}')
+              target=root/kind/'BTCUSDT'/'1m'/name
+              target.parent.mkdir(parents=True,exist_ok=True)
+              target.write_bytes(raw)
+              pathlib.Path(str(target)+'.CHECKSUM').write_bytes(checksum)
+              print(kind,len(raw),actual,flush=True)
+          PY
+      - name: Commit verified originals to research branch
+        run: |
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add evidence/unified-channel-20260924/minutes/daily
+          git commit -m 'Preserve verified April 18 UC4 minute originals'
+          git push origin HEAD:research/uc4-evidence-fix-20260924
