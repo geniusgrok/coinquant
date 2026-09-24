@@ -67,7 +67,7 @@ def retrieve(out):
                   ("form[file_format]", "csv"),
                   ("form[download_data]", "Download data")]
         for label, selected, limit in (
-            ("single", [dates[0]], 60),
+            ("single", [next(d for d in dates if d >= "2020-01-02")], 60),
             ("all", dates, 210),
         ):
             params = common + [("form[selected_vintage_dates][]", d) for d in selected]
