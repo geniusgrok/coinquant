@@ -1,0 +1,415 @@
+{
+  "first_pass_only": true,
+  "days": 16,
+  "events": 23,
+  "requests": [
+    {
+      "day": "2021-11-06",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1635854400000,
+          "call_time": 1636128000000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2021-11-06.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2021-11-06.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2022-02-17",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1643990400000,
+          "call_time": 1644958800000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55"
+          ],
+          "already_filled": true
+        },
+        {
+          "core": "UC4",
+          "campaign": 1643990400000,
+          "call_time": 1645027200000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-02-17.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-02-17.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2022-03-31",
+      "events": [
+        {
+          "core": "SX60",
+          "campaign": 1648425600000,
+          "call_time": 1648573200000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "SX60"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-03-31.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-03-31.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2022-06-27",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1655798400000,
+          "call_time": 1656169200000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        },
+        {
+          "core": "UC4",
+          "campaign": 1655798400000,
+          "call_time": 1656237600000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-06-27.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-06-27.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2022-10-07",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1664870400000,
+          "call_time": 1665064800000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-07.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-07.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2022-10-20",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1665720000000,
+          "call_time": 1665982800000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2022-10-20.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2022-10-20.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-01-18",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1673222400000,
+          "call_time": 1673845200000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-01-18.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-01-18.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-02-21",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1676462400000,
+          "call_time": 1676862000000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-02-21.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-02-21.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-03-22",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1678665600000,
+          "call_time": 1679403600000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-03-22.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-03-22.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-05-24",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1684814400000,
+          "call_time": 1684846800000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-05-24.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-05-24.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-06-28",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1686988800000,
+          "call_time": 1687892400000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-06-28.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-06-28.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-09-10",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1694131200000,
+          "call_time": 1694217600000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-10.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-10.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-09-21",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1694520000000,
+          "call_time": 1695204000000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-09-21.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-09-21.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-10-11",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1695816000000,
+          "call_time": 1696140000000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        },
+        {
+          "core": "UC4",
+          "campaign": 1695816000000,
+          "call_time": 1696402800000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        },
+        {
+          "core": "UC4",
+          "campaign": 1695816000000,
+          "call_time": 1696471200000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        },
+        {
+          "core": "UC4",
+          "campaign": 1695816000000,
+          "call_time": 1696734000000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-10-11.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-10-11.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-11-13",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1699387200000,
+          "call_time": 1699790400000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-11-13.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-11-13.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    },
+    {
+      "day": "2023-12-11",
+      "events": [
+        {
+          "core": "UC4",
+          "campaign": 1701201600000,
+          "call_time": 1701910800000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        },
+        {
+          "core": "UC4",
+          "campaign": 1701201600000,
+          "call_time": 1702022400000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        },
+        {
+          "core": "UC4",
+          "campaign": 1701201600000,
+          "call_time": 1702191600000,
+          "reason": "held_protection_minute",
+          "sources": [
+            "PF55",
+            "RR"
+          ],
+          "already_filled": true
+        }
+      ],
+      "official_required": [
+        "daily/klines/BTCUSDT/1m/BTCUSDT-1m-2023-12-11.zip",
+        "daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2023-12-11.zip"
+      ],
+      "note": "download both official ZIP and CHECKSUM; verify exact hourly reconstruction"
+    }
+  ]
+}
