@@ -57,5 +57,32 @@ jobs:
           git config user.name github-actions
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add evidence/unified-channel-20260924/minutes/daily
-          git commit -m 'Preserve verified April 18 UC4 minute originals'
-          git push origin HEAD:research/uc4-evidence-fix-20260924
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve verified April 18 UC4 minute originals'
+            git push origin HEAD:research/uc4-evidence-fix-20260924
+          fi
+      - name: Read back source bytes and Git blob IDs from remote ref
+        run: |
+          git fetch origin refs/heads/research/uc4-evidence-fix-20260924
+          python3 - <<'PY'
+          import hashlib,pathlib,subprocess
+          root=pathlib.Path('evidence/unified-channel-20260924/minutes')
+          days=('2020-06-02','2020-09-02','2020-09-21','2021-01-26','2021-04-04','2021-04-18')
+          for day in days:
+              for kind in ('klines','markPriceKlines'):
+                  monthly=day=='2021-01-26' and kind=='markPriceKlines'
+                  date=day[:7] if monthly else day
+                  folder='monthly' if monthly else 'daily'
+                  p=root/folder/kind/'BTCUSDT'/'1m'/f'BTCUSDT-1m-{date}.zip'
+                  raw=p.read_bytes()
+                  expected=pathlib.Path(str(p)+'.CHECKSUM').read_text().split()[0]
+                  if hashlib.sha256(raw).hexdigest()!=expected:raise ValueError(f'local checksum {p}')
+                  for file in (p,pathlib.Path(str(p)+'.CHECKSUM')):
+                      local=file.read_bytes()
+                      remote=subprocess.check_output(['git','show',f'FETCH_HEAD:{file.as_posix()}'])
+                      if local!=remote:raise ValueError(f'remote byte mismatch {file}')
+                      oid=subprocess.check_output(['git','rev-parse',f'FETCH_HEAD:{file.as_posix()}'],text=True).strip()
+                      blob=hashlib.sha1(b'blob '+str(len(local)).encode()+b'\\0'+local).hexdigest()
+                      if oid!=blob:raise ValueError(f'Git blob OID mismatch {file}')
+                      print(file,len(local),hashlib.sha256(local).hexdigest(),oid)
+          PY
