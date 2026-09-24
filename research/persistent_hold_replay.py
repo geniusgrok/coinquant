@@ -116,7 +116,11 @@ def recoverable_budget(equity: D, peak: D) -> D:
     return max(ZERO, min(equity * D('.10'), (equity - peak * D('.50')) / 2))
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,recoverable_risk=False):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,recoverable_risk=False,call_hold_days=None):
+    if call_hold_days is not None and (call_hold_days != 7 or reference != 'channel_core'
+            or execution is None or not execution.sliced or D(risk_scale) != D(6)
+            or schedule != 'sparse' or recoverable_risk):
+        raise ValueError('C7 requires the frozen UC4 / SX60 6.0 seven-day call policy')
     if recoverable_risk and (reference != 'channel_core' or execution is None or D(risk_scale) != D('3.6')):
         raise ValueError('recoverable allocation requires UC4 3.6 bounded entry')
     channel_core = reference == 'channel_core'
@@ -234,7 +238,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if execution is not None:
         from research.bounded_execution import BoundedEntry, exit_fill
         if execution.stress:slip*=2
-    entry_window=None;parent_entries=[];exit_events=[]
+    entry_window=None;parent_entries=[];exit_events=[];first_entry_call=None
     renewal_entry_equity={};renewal_basis={};renewal_basis_finalized=set();renewal_pending=None
     renewal_confirmed_children={}
     sustainable=execution is not None and execution.sustainable
@@ -497,9 +501,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                 turnover+=change['amount']*price;entry_time=t
                                 ow.writerow([t,change['event'],str(change['amount']),str(price),'',str(account.q)])
                 elif targeting:
-                    if account.q and (trail_invalid if native_trail_order else
+                    if account.q and ((call_hold_days is not None and first_entry_call is not None
+                            and t >= first_entry_call + call_hold_days*DAY) or
+                            (trail_invalid if native_trail_order else
                             (disposition(opportunity,account.q,last_entry_epoch,entry_side)=='exit' and not hold_permission)
-                            if mechanism else account.q*direction<=0):
+                            if mechanism else account.q*direction<=0)):
                         if sustainable and execution.planned_exit!='instant':
                             if t not in execution.refined_hours or minutes is None or t not in minutes['klines']:
                                 raise ValueError(f'missing planned exit minute path at {t}')
@@ -640,6 +646,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                         observe(st,'slice_confirmed',smo)
                         if child['event']=='entry':
                             last_entry_epoch=entry_window.campaign
+                            if call_hold_days is not None:first_entry_call=entry_window.call_time
                             delays.append((t-regime_since)//HOUR)
                 if (renewal_risk and entry_window is not None and entry_window.call_time==t
                         and entry_window.terminal_reason):
@@ -839,6 +846,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['execution']=execution.configuration()
         result['candidate']=f'L{risk_scale:.1f}-'+('five-minute' if execution.sliced else 'instant-impact-control')
         if reference=='post_impulse_restart':result['candidate']='PIR1'
+        if call_hold_days is not None:result['candidate']='C7-call-expiry'
         result['limitations'].extend(['Causal minute capacity is not order-book depth; IOC fills and immediate protection are proxies', 'Additional exit impact is the preregistered linear stress, not historical calibration'])
     if multiscale:
         result['candidate']='M60'

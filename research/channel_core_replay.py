@@ -19,6 +19,7 @@ from research.sustainable_validation import finite_budget_check
 PROTOCOL = 'evidence/unified-channel-20260924/PROTOCOL.md'
 RISK_CONTROL = 'evidence/unified-channel-20260924/RISK_CONTROL_PROTOCOL.md'
 RECOVERABLE = 'evidence/recoverable-risk-20260924/PROTOCOL.md'
+C7_PROTOCOL = 'evidence/c7-call-expiry-20260924/PROTOCOL.md'
 SOURCES_UC4 = tuple(dict.fromkeys((*SOURCES, 'coinquant/channel_core.py',
     'coinquant/capital.py', 'research/planned_exit.py', 'research/channel_core_replay.py', PROTOCOL)))
 
@@ -56,19 +57,21 @@ def prepared(bounded, sx60, more, full=False, extra_hours=()):
     return root, completed, hours
 
 
-def run_account(root, prepared, output, *, full=False, stress=False, risk_scale=D(6), recoverable_risk=False):
+def run_account(root, prepared, output, *, full=False, stress=False, risk_scale=D(6), recoverable_risk=False, c7=False):
     cache, minutes, quotes, validation, data_id = prepared
     if risk_scale not in (D(6), D('3.6')):
         raise ValueError('UC4 predeclared risk scales only')
     if recoverable_risk and risk_scale != D('3.6'):
         raise ValueError('recoverable risk is frozen to UC4 3.6')
+    if c7 and (recoverable_risk or risk_scale != D(6)):
+        raise ValueError('C7 uses one frozen SX60 6.0 risk scale')
     cfg = ExecutionStudy(True, stress, frozenset(validation['hours']), quotes, risk_scale, True, 'sliced')
     output.parent.mkdir(parents=True, exist_ok=True)
     if output.exists() or output.with_name(output.name+'.invocation.json').exists():
         raise ValueError('existing original account; refusing overwrite')
-    protocol = RECOVERABLE if recoverable_risk else RISK_CONTROL if risk_scale == D('3.6') else PROTOCOL
+    protocol = C7_PROTOCOL if c7 else RECOVERABLE if recoverable_risk else RISK_CONTROL if risk_scale == D('3.6') else PROTOCOL
     sources = SOURCES_UC4 + ('research/persistent_hold_replay.py',protocol)
-    frozen = dict(candidate='UC4-recoverable' if recoverable_risk else 'UC4-risk-control' if risk_scale == D('3.6') else 'UC4',
+    frozen = dict(candidate='C7-call-expiry' if c7 else 'UC4-recoverable' if recoverable_risk else 'UC4-risk-control' if risk_scale == D('3.6') else 'UC4',
         full_window=full, stress=stress, risk_scale=str(risk_scale),
         configuration=cfg.configuration(), input_identity=data_id,
         source_identity={p:digest(p) for p in sources},
@@ -81,7 +84,7 @@ def run_account(root, prepared, output, *, full=False, stress=False, risk_scale=
                 entry_side='long',short_risk_scale=D(0),risk_scale=risk_scale,
                 quantity_rules=root/'quantity/current-instrument.json',cached_inputs=cache,
                 cached_minutes=minutes,execution=cfg,full_window=full,
-                recoverable_risk=recoverable_risk)
+                recoverable_risk=recoverable_risk,call_hold_days=7 if c7 else None)
         result['candidate']=frozen['candidate']
         result['complete_source_identity']=frozen['source_identity']
         result['protocol_sha256']=frozen['protocol_sha256']
@@ -112,15 +115,16 @@ def main():
     p.add_argument('--stress',action='store_true')
     p.add_argument('--risk-control-3.6',dest='risk_control_36',action='store_true',help='one prespecified risk attribution control')
     p.add_argument('--recoverable-risk',action='store_true',help='frozen dynamic per-mother drawdown allocation')
+    p.add_argument('--call-expiry-c7',action='store_true',help='seven days then next original call planned exit')
     p.add_argument('--coverage-hours',type=Path,help='held protection crossings found in a previous account')
     a=p.parse_args()
     extra_hours=json.loads(a.coverage_hours.read_text())['hours'] if a.coverage_hours else ()
     root, data, hours=prepared(a.bounded_originals,a.sx60_originals,a.new_data,a.full_window,extra_hours)
-    if a.risk_control_36 and a.recoverable_risk:
+    if sum((a.risk_control_36,a.recoverable_risk,a.call_expiry_c7))>1:
         p.error('select one risk variant')
     result=run_account(root,data,a.output,full=a.full_window,stress=a.stress,
                        risk_scale=D('3.6') if a.risk_control_36 or a.recoverable_risk else D(6),
-                       recoverable_risk=a.recoverable_risk)
+                       recoverable_risk=a.recoverable_risk,c7=a.call_expiry_c7)
     print(json.dumps({k:result[k] for k in ('candidate','cagr','mdd_conservative_envelope',
                                             'final_cny','counts','development_hard_checks_passed')},indent=2))
 
