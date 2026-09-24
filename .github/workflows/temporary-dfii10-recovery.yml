@@ -1,4 +1,4 @@
-name: Temporary DFII10 data and repository recovery
+name: Temporary DFII10 official download
 on:
   push:
     branches: [research/dfii10-causal-20260924]
@@ -8,113 +8,16 @@ permissions:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Fetch official historical vintages
+      - name: Fetch official historical vintages with response audit
         run: python research/dfii10_acquire.py recovered/alfred
-      - name: Package tracked snapshot and hash each part
-        run: |
-          mkdir -p recovered/repo
-          git ls-files -z | tar --null -T - -cf recovered/repo/repository.tar
-          sha256sum recovered/repo/repository.tar > recovered/repo/SHA256SUMS
-          split -b 16m -d -a 2 recovered/repo/repository.tar recovered/repo/part
-          sha256sum recovered/repo/part* >> recovered/repo/SHA256SUMS
-          wc -c recovered/repo/part* | tail -n 1
-          test "$(find recovered/repo -maxdepth 1 -name 'part*' | wc -l)" -le 12
-          rm recovered/repo/repository.tar
       - uses: actions/upload-artifact@v4
         with:
-          name: dfii10-receipt
-          path: |
-            recovered/alfred/*
-            recovered/repo/SHA256SUMS
+          name: dfii10-audit
+          path: recovered/alfred/*
           compression-level: 0
           retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-00
-          path: recovered/repo/part00
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-01
-          path: recovered/repo/part01
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-02
-          path: recovered/repo/part02
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-03
-          path: recovered/repo/part03
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-04
-          path: recovered/repo/part04
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-05
-          path: recovered/repo/part05
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-06
-          path: recovered/repo/part06
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-07
-          path: recovered/repo/part07
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-08
-          path: recovered/repo/part08
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-09
-          path: recovered/repo/part09
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-10
-          path: recovered/repo/part10
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dfii10-repo-11
-          path: recovered/repo/part11
-          if-no-files-found: ignore
-          compression-level: 0
-          retention-days: 2
-
