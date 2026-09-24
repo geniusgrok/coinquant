@@ -1,0 +1,28 @@
+name: Temporary public downside minute restore
+on:
+  push:
+    branches: [research/downside-channel-20260924]
+    paths:
+      - evidence/downside-channel-20260924/missing_*.json
+      - .github/workflows/downside-minute-restore.yml
+jobs:
+  download:
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [0, 1, 2, 3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch and verify public Binance minutes
+        run: python3 -m research.fetch_missing_minutes evidence/downside-channel-20260924/missing_${{ matrix.batch }}.json downloads
+      - name: Preserve originals and receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: downside-minutes-${{ matrix.batch }}
+          path: downloads/
+          retention-days: 2
