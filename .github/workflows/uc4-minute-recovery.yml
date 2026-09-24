@@ -17,9 +17,10 @@ jobs:
         run: |
           python3 - <<'PY'
           import csv, hashlib, io, pathlib, urllib.request, zipfile
-          day='2021-04-18'
+          days=('2020-06-02','2020-09-02','2020-09-21','2021-01-26','2021-04-04')
           root=pathlib.Path('evidence/unified-channel-20260924/minutes/daily')
-          for kind in ('klines','markPriceKlines'):
+          for day in days:
+           for kind in ('klines','markPriceKlines'):
               name=f'BTCUSDT-1m-{day}.zip'
               relative=f'daily/{kind}/BTCUSDT/1m/{name}'
               base='https://data.binance.vision/data/futures/um/'
