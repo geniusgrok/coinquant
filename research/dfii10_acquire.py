@@ -68,10 +68,10 @@ def retrieve(out):
                   ("form[file_type]", "3"),
                   ("form[file_format]", "csv"),
                   ("form[download_data]", "Download data")]
-        for label, selected, limit in (
-            ("single", [next(d for d in dates if d >= "2020-01-02")], 60),
-            ("all", dates, 210),
-        ):
+        requests = [("single", [next(d for d in dates if d >= "2020-01-02")], 60)]
+        requests.extend((f"batch-{start:04d}", dates[start:start + 400], 90)
+                        for start in range(0, len(dates), 400))
+        for label, selected, limit in requests:
             params = common + [("form[selected_vintage_dates][]", d) for d in selected]
             body = urllib.parse.urlencode(params).encode()
             record = {"label": label, "selected_count": len(selected),
