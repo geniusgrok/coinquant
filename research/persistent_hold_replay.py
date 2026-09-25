@@ -116,7 +116,7 @@ def recoverable_budget(equity: D, peak: D) -> D:
     return max(ZERO, min(equity * D('.10'), (equity - peak * D('.50')) / 2))
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,recoverable_risk=False,call_hold_days=None,macro_calls=None,absence_stress=False):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,recoverable_risk=False,call_hold_days=None,macro_calls=None,absence_stress=False,active_core=None):
     if absence_stress and (not full_window or schedule!='sparse' or execution is None or not execution.sustainable):
         raise ValueError('absence stress requires a full-window funded sparse account')
     if macro_calls is not None and (reference!='impulse_hold' or execution is None
@@ -133,6 +133,17 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     if reference == 'channel_core_short' and (entry_side != 'short' or execution is not None):
         raise ValueError('short channel is a diagnostic until bounded execution is signed')
     multiscale = reference == 'multiscale'
+    if active_core is not None:
+        if (active_core not in ('coherent_trend','restart_budget') or
+                reference != ('multiscale' if active_core=='coherent_trend' else 'post_impulse_restart') or
+                D(risk_scale) not in ((D('3.6'),D('4.8')) if multiscale else (D('4.8'),D(6))) or
+                D(short_risk_scale if short_risk_scale is not None else risk_scale)!=0 or
+                schedule!='sparse' or execution is None or not execution.sliced or
+                not execution.sustainable or execution.planned_exit!='sliced' or
+                execution.stop_risk_share is not None or conditional_hold or renewal_risk or
+                recoverable_risk or macro_calls is not None or call_hold_days is not None):
+            raise ValueError('active core requires its frozen sparse single-account execution')
+        from coinquant.active_core import coherent_trend, mother_stop_share
     if conditional_hold and (reference != 'impulse_hold' or D(risk_scale) != 6 or
             D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0 or
             schedule != 'sparse' or execution is None or not execution.sliced or
@@ -140,7 +151,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         raise ValueError('H60 requires the frozen SX60 entry, funds and execution')
     if renewal_risk and not conditional_hold:
         raise ValueError('HR60 requires the frozen H60 renewal permissions')
-    if multiscale and (D(risk_scale) != 6 or D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0
+    if multiscale and (D(risk_scale) != 6 and active_core!='coherent_trend' or D(short_risk_scale if short_risk_scale is not None else risk_scale) != 0
             or schedule != 'sparse' or execution is None or not execution.sliced
             or not execution.sustainable or execution.planned_exit != 'sliced'):
         raise ValueError('M60 requires its frozen sparse long SX60 execution and capital controls')
@@ -370,6 +381,8 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         for t in range(start,end,HOUR):
             signal_time=published_daily_key(t) if multiscale else (t//model_interval*model_interval if mechanism else None)
             opportunity=opportunities.get(signal_time) if mechanism else None
+            if active_core=='coherent_trend':
+                opportunity=coherent_trend(signal_states.get(signal_time))
             if mechanism:
                 regime=opportunity.direction if opportunity else 0
                 campaign_epoch=opportunity.identity if opportunity else -t
@@ -597,8 +610,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                     entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
                                         previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,
                                         budget=D('3.6') if macro_selected else risk_scale,capital=capital,
-                                        stop_risk_share=(available_risk/account.equity(mo)
-                                                         if available_risk is not None else D('.03') if macro_selected else execution.stop_risk_share))
+                                        stop_risk_share=(mother_stop_share(active_core,opportunity) if active_core else
+                                                         available_risk/account.equity(mo) if available_risk is not None else
+                                                         D('.03') if macro_selected else execution.stop_risk_share))
                                     if renewal_risk and entry_window.maximum:
                                         renewal_entry_equity[entry_window.identity]=entry_equity_before
                                         execution_record('renewal_entry_basis_started',dict(time=t,
@@ -929,7 +943,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['renewal_risk_basis_count']=sum(basis is not None for basis in renewal_basis.values())
     sources=output/'measured_source';sources.mkdir()
     source_hashes={}
-    sources_to_copy=(Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('research/invocation_draws.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ())+((Path('coinquant/multiscale.py'),) if multiscale or conditional_hold else ())+((Path('coinquant/conditional_hold.py'),) if conditional_hold else ())+((Path('coinquant/renewal_risk.py'),) if renewal_risk else ())+((Path('evidence/post-impulse-restart-20260923/PROTOCOL.md'),) if reference=='post_impulse_restart' else ())
+    sources_to_copy=(Path(__file__),Path('research/edge_allocation.py'),Path('research/volatility_target.py'),Path('research/linear_replay.py'),Path('research/minute_evidence.py'),Path('coinquant/binance.py'),Path('research/spec.json'),Path('research/invocation_draws.json'),Path('coinquant/opportunities.py'),Path('coinquant/campaign.py'),Path('coinquant/linear_account.py'),Path('coinquant/linear_sizing.py'),Path('research/native_trail.py'))+((Path('research/bounded_execution.py'),) if execution is not None else ())+((Path('coinquant/multiscale.py'),) if multiscale or conditional_hold else ())+((Path('coinquant/conditional_hold.py'),) if conditional_hold else ())+((Path('coinquant/renewal_risk.py'),) if renewal_risk else ())+((Path('coinquant/active_core.py'),) if active_core else ())+((Path('evidence/post-impulse-restart-20260923/PROTOCOL.md'),) if reference=='post_impulse_restart' else ())
     for source in sources_to_copy:
         raw=source.read_bytes()
         if not (payoff and payoff.get('scenario')):
