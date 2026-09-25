@@ -99,9 +99,9 @@ def anchored_state(window, previous, anchor):
     return previous, anchor
 
 
-def decision_times(frozen, end, schedule):
+def decision_times(frozen, end, schedule, absence_stress=False):
     if schedule == 'sparse':
-        return set(t for t in invocations(frozen) if t < end)
+        return set(t for t in invocations(frozen,stress=absence_stress) if t < end)
     if schedule == 'four_hour':
         return set(range(timestamp(frozen['start']), end, 4*HOUR))
     if schedule == 'hourly':
@@ -116,7 +116,13 @@ def recoverable_budget(equity: D, peak: D) -> D:
     return max(ZERO, min(equity * D('.10'), (equity - peak * D('.50')) / 2))
 
 
-def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,recoverable_risk=False,call_hold_days=None):
+def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse',quantity_rules=None,lifecycle='persistent',allocation='fixed',reference='channel',protection='fixed',full_window=False,minute_days=(),risk_scale=D(1),entry_side='both',short_risk_scale=None,native_trail_order=None,payoff=None,cached_inputs=None,cached_minutes=None,entry_capacity_unlimited=False,execution=None,daily_warmup=(),conditional_hold=False,renewal_risk=False,recoverable_risk=False,call_hold_days=None,macro_calls=None,absence_stress=False):
+    if absence_stress and (not full_window or schedule!='sparse' or execution is None or not execution.sustainable):
+        raise ValueError('absence stress requires a full-window funded sparse account')
+    if macro_calls is not None and (reference!='impulse_hold' or execution is None
+            or not execution.sliced or not execution.sustainable or risk_scale!=D(6)
+            or schedule!='sparse' or conditional_hold or renewal_risk or recoverable_risk):
+        raise ValueError('DFII10 requires the frozen SX60 continuous account')
     if call_hold_days is not None and (call_hold_days != 7 or reference != 'channel_core'
             or execution is None or not execution.sliced or D(risk_scale) != D(6)
             or schedule != 'sparse' or recoverable_risk):
@@ -190,6 +196,11 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             D(frozen['slippage_fraction'])+D(frozen['spread_fraction'])/2,daily_warmup)
     if mechanism:
         from coinquant.campaign import disposition
+    if macro_calls is not None:
+        from coinquant.opportunities import Opportunity
+        from research.dfii10_overlay import active as macro_state
+        if set(macro_calls) != set(t for t in invocations(frozen,stress=absence_stress) if t<end):
+            raise ValueError('macro snapshots do not match the frozen invocation schedule')
     if multiscale:
         opportunities={t:s.opportunity for t,s in signal_states.items()}
         fractions={t:s.fraction for t,s in signal_states.items()}
@@ -232,7 +243,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     edge_observations=deque(maxlen=252);day_funding=ZERO;prior_day_direction=regime;previous_daily_close=daily[-1][2]
     initial=D(frozen['initial_cny'])/D(frozen['cny_per_usd'])
     account=Account(initial*(1-D(frozen['initial_conversion_cost'])))
-    peak=initial;mdd=ZERO;counts=Counter();seen=[];triggers={t for t in decision_times(frozen,end,schedule) if t>=start}
+    peak=initial;mdd=ZERO;counts=Counter();seen=[];triggers={t for t in decision_times(frozen,end,schedule,absence_stress) if t>=start}
     instrument=json.loads(quantity_rules.read_text())['instrument'] if quantity_rules else None
     if quantity_rules:identity.append(dict(path=str(quantity_rules),sha256=hashlib.sha256(quantity_rules.read_bytes()).hexdigest()))
     exposure_sum=ZERO;max_exposure=ZERO;holding_hours=0;turnover=ZERO;regime_since=start;delays=[];binding=Counter();campaign_epoch=0;last_entry_epoch=-1
@@ -247,6 +258,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
     capital=None;gap_anchor_mark=None;gap_anchor_child=''
     planned_window=None;planned_parents=[]
     extended_epoch=None;extension_checked=None
+    macro_epoch=None
     if execution is not None and execution.planned_exit!='instant':
         from research.planned_exit import PlannedExit
     funding_times=sorted(funding)
@@ -384,6 +396,47 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             if t in triggers:
                 seen.append(t);counts['invocations']+=1
                 window=list(daily)
+                macro_selected=False
+                if macro_calls is not None:
+                    row=macro_calls[t]
+                    if row['call_time_ms']!=t or (row['latest_value_available_utc'] is not None
+                            and timestamp(row['latest_value_available_utc'])>=t) or (
+                            row['prior20_value_available_utc'] is not None
+                            and timestamp(row['prior20_value_available_utc'])>=t):
+                        raise ValueError('future macro value in invocation snapshot')
+                    state=macro_state(row)
+                    original=opportunity
+                    macro_holding=bool(account.q and last_entry_epoch < -1)
+                    if not state:
+                        macro_epoch=None
+                    elif macro_holding:
+                        macro_epoch=last_entry_epoch
+                    elif not account.q and (original is None or original.direction<=0):
+                        if macro_epoch is None:macro_epoch=-t
+                    else:
+                        macro_epoch=None
+                    if macro_holding:
+                        # Disposition must see the macro identity, even when a
+                        # simultaneous SX60 signal would compete for capital.
+                        opportunity=(Opportunity(last_entry_epoch,1,account.sl,account.tp,None)
+                                     if state else None)
+                        macro_selected=state
+                        if state and original is not None and original.direction>0:
+                            counts['sx60_opportunity_blocked_by_macro']+=1
+                    elif not account.q and macro_epoch is not None:
+                        stop=min(x[1] for x in window[-10:])
+                        if stop>0 and stop<min(o,mo):
+                            opportunity=Opportunity(macro_epoch,1,stop,o*(o/stop)**20,None)
+                            macro_selected=True
+                        else:
+                            counts['macro_invalid_stop_geometry']+=1
+                    if macro_selected:
+                        campaign_epoch=macro_epoch
+                        regime_since=-macro_epoch
+                    execution_record('macro_model',dict(time=t,call_time=t,state=state,
+                        selected=macro_selected,macro_epoch=macro_epoch,
+                        original_opportunity=original.identity if original else None,
+                        position_is_macro=macro_holding,**row))
                 if multiscale:
                     state=signal_states.get(signal_time)
                     execution_record('model_signal',dict(time=t,call_time=t,decision_complete=t+60_000,
@@ -391,10 +444,14 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                         state=state.record() if state else None,consumed_campaign=last_entry_epoch,
                         position_campaign=last_entry_epoch if account.q else None))
                 direction=1 if reference=='long' else max(0,regime) if reference=='long_flat' else regime
+                if macro_selected:direction=1
                 if entry_side=='long' and direction<0 or entry_side=='short' and direction>0:direction=0
                 edge_target=(volatility_fraction(daily_returns,slip+spread/2) if allocation=='volatility' else D(1) if allocation=='unit' else target_fraction(edge_observations) if allocation=='edge' else D(2))
                 if mechanism and not channel_core:edge_target=fractions.get(signal_time,ZERO)
                 edge_target*=short_risk_scale if direction<0 else risk_scale
+                if macro_selected:
+                    edge_target=volatility_fraction(daily_returns,slip+spread/2)*D('3.6')
+                    if account.q and not edge_target:edge_target=D(1)
                 if not edge_target:direction=0
                 if reference=='channel_position':edge_target*=channel_position(daily)[1]
                 available_risk=(recoverable_budget(account.equity(mo),peak)
@@ -538,9 +595,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                                 if execution is not None and execution.sliced:
                                     entry_equity_before=account.equity(mo) if renewal_risk else None
                                     entry_window=BoundedEntry.freeze(account,t,campaign_epoch,edge_target,o,mo,sl,tp,
-                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,budget=risk_scale,capital=capital,
+                                        previous_quote,instrument,slip,spread,opportunity.entry_limit,stress=execution.stress,
+                                        budget=D('3.6') if macro_selected else risk_scale,capital=capital,
                                         stop_risk_share=(available_risk/account.equity(mo)
-                                                         if available_risk is not None else execution.stop_risk_share))
+                                                         if available_risk is not None else D('.03') if macro_selected else execution.stop_risk_share))
                                     if renewal_risk and entry_window.maximum:
                                         renewal_entry_equity[entry_window.identity]=entry_equity_before
                                         execution_record('renewal_entry_basis_started',dict(time=t,
@@ -755,6 +813,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 for price in sorted((smh,sml),key=account.equity,reverse=True):observe(st,'conservative_envelope',price)
                 hit_liq=(long and sml<=liq) or (not long and smh>=liq)
                 hit_stop=(long and sml<=account.sl) or (not long and smh>=account.sl)
+                hit_take=(long and smh>=account.tp) or (not long and sml<=account.tp)
+                if (macro_calls is not None and last_entry_epoch < -1
+                        and hit_stop and hit_take):
+                    raise ValueError(f'unresolved macro stop/take ordering at {iso(st)}')
                 if hit_liq:
                     if hit_stop:counts['unresolved_same_interval_stop_liquidation']+=1
                     close(st,'liquidation',account.liquidation(ZERO),True)
@@ -763,7 +825,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                     trail_peak,trigger=trail_step(trail_peak,smark,account.sl,native_trail_order)
                     if trigger is not None:close(st,'native_trail_or_stop',min(trigger,so))
                 elif hit_stop:close(st,'stop',min(account.sl,so) if long else max(account.sl,so))
-                elif (long and smh>=account.tp) or (not long and sml<=account.tp):close(st,'take',account.tp)
+                elif hit_take:close(st,'take',account.tp)
             observe(t+HOUR,'close',mc)
             exposure=abs(account.q)*mc/account.equity(mc) if account.equity(mc)>0 else ZERO
             exposure_sum+=exposure;max_exposure=max(max_exposure,exposure);holding_hours+=bool(account.q)
@@ -824,6 +886,7 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
         result['entry_execution']='same_price_capacity_reference_NOT_tradable'
         result['limitations'].append('Entry capacity alone removed; optimistic diagnostic, not an execution bound')
     result['reference']=reference
+    if absence_stress:result['frozen_absence_stress']=True
     result['candidate']=('L18' if allocation=='edge' else 'L17' if lifecycle=='one_campaign' else 'L7' if baseline else 'L9')+'-minute-refined'
     if targeting:result['candidate']='L21' if allocation=='volatility' else 'B1' if reference=='long' else 'B2'
     result['risk_scale']=str(risk_scale)
