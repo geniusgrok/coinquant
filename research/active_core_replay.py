@@ -17,15 +17,21 @@ from research.sustainable_validation import finite_budget_check
 from research.verify_account_ledger import verify
 
 PROTOCOL = 'evidence/active-core-20260925/PROTOCOL.md'
+NEW_PROTOCOL = 'evidence/post-pr38-causal-short-20260925/PROTOCOL.md'
 SOURCES_ACTIVE = tuple(dict.fromkeys((*SOURCES, 'coinquant/active_core.py',
     'coinquant/multiscale.py', 'coinquant/capital.py', 'research/planned_exit.py',
     'research/sustainable_replay.py', 'research/multiscale_data.py',
     'research/active_core_replay.py', 'research/execution_risk_audit.py',
-    'research/sustainable_validation.py', PROTOCOL)))
+    'research/sustainable_validation.py', 'research/active_core_replay.py', PROTOCOL, NEW_PROTOCOL)))
 CONFIGS = {'A36': ('coherent_trend','multiscale',D('3.6')),
            'A48': ('coherent_trend','multiscale',D('4.8')),
            'B48': ('restart_budget','post_impulse_restart',D('4.8')),
-           'B60': ('restart_budget','post_impulse_restart',D(6))}
+           'B60': ('restart_budget','post_impulse_restart',D(6)),
+           'S0': (None,'impulse_hold',D(6)),
+           'R1': ('mother_cap_only','impulse_hold',D(6)),
+           'R2': ('restart_uncapped','post_impulse_restart',D(6)),
+           'C2': ('short_2','impulse_hold',D(6)),
+           'C4': ('short_4','impulse_hold',D(6))}
 
 
 def restart_hours(cache, full=False, absence=False):
@@ -50,8 +56,23 @@ def restart_hours(cache, full=False, absence=False):
 
 def prepared_inputs(bounded,sx60,extra,*,full=False,absence=False,config='A36'):
     root,prepared,warmup,_=restore_inputs(bounded,sx60,extra,full=full)
-    if config.startswith('B'):
+    if config.startswith('B') or config in ('S0','R1','R2'):
         hours=restart_hours(prepared[0],full,absence)
+        prepared=extend_minutes(prepared,[bounded/'inputs',sx60/'exit-minutes',*extra],hours)
+    if config.startswith('C'):
+        from coinquant.active_core import short_campaigns
+        from coinquant.multiscale import daily_snapshots, published_daily_key
+        cache=prepared[0]
+        cfg=spec();start=timestamp(cfg['start']);end=timestamp(cfg['end' if full else 'development_end'])
+        states=daily_snapshots(cache[2],cache[0]['klines'],start,end,
+            D(cfg['slippage_fraction'])+D(cfg['spread_fraction'])/2,warmup)
+        campaigns=short_campaigns(states)
+        hours=[];previous=False
+        for t in invocations(cfg,stress=absence):
+            if t>=end:break
+            active=campaigns.get(published_daily_key(t)) is not None
+            if active or previous:hours.append(t)
+            previous=active
         prepared=extend_minutes(prepared,[bounded/'inputs',sx60/'exit-minutes',*extra],hours)
     return root,prepared,warmup
 
@@ -66,7 +87,7 @@ def run_account(root,prepared,warmup,output,config,*,full=False,stress=False,abs
     if output.exists() or invocation.exists():raise ValueError('account originals already exist')
     sources={name:digest(name) for name in SOURCES_ACTIVE}
     frozen=dict(config=config,family=family,reference=reference,full=full,stress=stress,
-        absence=absence,source_identity=sources,protocol_sha256=digest(PROTOCOL),
+        absence=absence,source_identity=sources,protocol_sha256=digest(NEW_PROTOCOL),
         configuration=settings.configuration(),input_identity=data_id,
         daily_warmup=[[str(x) for x in row] for row in warmup],
         minute_validation=validation)
@@ -75,10 +96,11 @@ def run_account(root,prepared,warmup,output,config,*,full=False,stress=False,abs
         with output.with_suffix('.log').open('w') as log,contextlib.redirect_stdout(log):
             result=run(root/'native',root/'warmup',root/'repairs',output,
                 allocation='volatility',reference=reference,lifecycle='one_campaign',
-                entry_side='long',short_risk_scale=D(0),risk_scale=scale,
+                entry_side='both' if config.startswith('C') else 'long',
+                short_risk_scale=D('3.6') if config.startswith('C') else D(0),risk_scale=scale,
                 quantity_rules=root/'quantity/current-instrument.json',cached_inputs=cache,
                 cached_minutes=minutes,execution=settings,full_window=full,
-                absence_stress=absence,daily_warmup=warmup if config.startswith('A') else (),
+                absence_stress=absence,daily_warmup=warmup if config.startswith(('A','C')) else (),
                 active_core=family)
         result.update(candidate=config,complete_source_identity=sources,
             protocol_sha256=frozen['protocol_sha256'],input_identity=data_id)
@@ -116,7 +138,7 @@ def main():
     if (a.full_window or a.stress or a.absence):
         if not a.selection: p.error('formal or stress replay requires frozen development selection')
         selected=json.loads(a.selection.read_text())
-        if selected['config']!=a.config or selected['protocol_sha256']!=digest(PROTOCOL):
+        if selected['config']!=a.config or selected['protocol_sha256']!=digest(NEW_PROTOCOL):
             p.error('selected source/protocol/config differs')
         if selected['source_identity']!={name:digest(name) for name in SOURCES_ACTIVE}:
             p.error('measured source differs from development selection')

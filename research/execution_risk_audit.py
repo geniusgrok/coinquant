@@ -25,14 +25,14 @@ def audit(path: Path) -> dict:
     for r in accepted:
         p=parents[r['parent_id']]
         q,price,mark,entry,margin,free=map(D,(r['quantity_after'],r['price'],r['mark'],r['entry_price'],r['margin'],r['free_wallet']))
-        stop=D(p['stop']);boundary=stop-mark*GAP
-        reserve=q*max(price,mark)*(FUNDING_RESERVE+FEE)
-        gap_cover=margin+q*(boundary-entry)-q*boundary*(MMR+FEE)
+        stop=D(p['stop']);direction=1 if q>0 else -1;boundary=stop-direction*mark*GAP
+        reserve=abs(q)*max(price,mark)*(FUNDING_RESERVE+FEE)
+        gap_cover=margin+q*(boundary-entry)-abs(q)*boundary*(MMR+FEE)
         excess=free-reserve
         for name,value in (('entry_free_after_all_reserves',excess),('entry_gap_coverage',gap_cover)):
             record(minima,name,value,r,True)
             if value < D('-1e-18'):violations.append(dict(time=r['time'],rule=name,value=str(value)))
-        if q>D(p['maximum']) or D(r['stop_risk'])>D(p['risk_budget']) or D(r['accepted'])>D(r['capacity']):
+        if abs(q)>D(p['maximum']) or D(r['stop_risk'])>D(p['risk_budget']) or D(r['accepted'])>D(r['capacity']):
             violations.append(dict(time=r['time'],rule='parent_risk_quantity_or_capacity'))
     filled=Counter()
     for r in accepted:filled[r['parent_id']]+=D(r['accepted'])
@@ -46,17 +46,18 @@ def audit(path: Path) -> dict:
             violations.append(dict(time=r['time'],rule='wallet_margin_equity',event=r['event']))
         if not q:continue
         count+=1
-        liq=(q*entry-margin)/(q*(1-MMR-FEE))
+        direction=1 if q>0 else -1
+        liq=(q*entry-margin)/(q-abs(q)*(MMR+FEE))
         values={'free_wallet':wallet-margin,
-                'mark_to_liquidation_fraction':(mark-liq)/mark,
-                'stop_to_liquidation_fraction':(stop-liq)/mark,
-                'isolated_equity_less_maintenance_and_fee':margin+q*(mark-entry)-q*mark*(MMR+FEE),
-                'stop_coverage_usdt':margin+q*(stop-entry)-q*stop*(MMR+FEE),
-                'rolling_reserve_surplus_usdt':wallet-margin-q*max(mark,entry)*(FUNDING_RESERVE+FEE)}
+                'mark_to_liquidation_fraction':direction*(mark-liq)/mark,
+                'stop_to_liquidation_fraction':direction*(stop-liq)/mark,
+                'isolated_equity_less_maintenance_and_fee':margin+q*(mark-entry)-abs(q)*mark*(MMR+FEE),
+                'stop_coverage_usdt':margin+q*(stop-entry)-abs(q)*stop*(MMR+FEE),
+                'rolling_reserve_surplus_usdt':wallet-margin-abs(q)*max(mark,entry)*(FUNDING_RESERVE+FEE)}
         for name,value in values.items():record(minima,name,value,r,True)
-        for name,value in (('margin_equity',margin/equity),('exposure',q*mark/equity),('margin_usdt',margin),('notional_usdt',q*mark)):
+        for name,value in (('margin_equity',margin/equity),('exposure',abs(q)*mark/equity),('margin_usdt',margin),('notional_usdt',abs(q)*mark)):
             record(maxima,name,value,r)
-        if liq>=stop or liq>=mark:
+        if direction*(stop-liq)<=0 or direction*(mark-liq)<=0:
             violations.append(dict(time=r['time'],rule='liquidation_geometry',event=r['event']))
     funded=[p for p in parents.values() if D(p['maximum'])>0]
     shortfall=sum((D(p['raw_target'])-D(p['maximum']) for p in funded),D(0))
@@ -98,7 +99,7 @@ def buffer_audit(path: Path) -> dict:
             continue
         if 'gap_anchor_child' in r:
             eligible = [c for c in children if c['child_id']==r['gap_anchor_child']
-                        and int(c['time'])<=t and q<=D(c['quantity_after'])
+                and int(c['time'])<=t and q*D(c['quantity_after'])>0 and abs(q)<=abs(D(c['quantity_after']))
                         and D(c['entry_price'])==D(r['average_entry'])
                         and D(c['mark'])==D(r['gap_anchor_mark'])]
         else:
@@ -107,8 +108,8 @@ def buffer_audit(path: Path) -> dict:
         if not eligible:
             raise ValueError('saved holding has no causal confirmed child anchor')
         child = eligible[-1]; parent = parents[child['parent_id']]
-        boundary = D(r['sl'])-D(child['mark'])*GAP
-        coverage = margin+q*(boundary-D(r['average_entry']))-q*boundary*(MMR+FEE)
+        boundary = D(r['sl'])-(1 if q>0 else -1)*D(child['mark'])*GAP
+        coverage = margin+q*(boundary-D(r['average_entry']))-abs(q)*boundary*(MMR+FEE)
         if minimum is None or coverage<D(minimum['gap_coverage_usdt']):
             minimum = dict(time=t, event=r['event'], gap_coverage_usdt=str(coverage),
                            gap_boundary=str(boundary), call_time=parent['call_time'],

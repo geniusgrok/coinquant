@@ -20,4 +20,25 @@ def mother_stop_share(family, opportunity):
         return D('.08')
     if family == 'restart_budget':
         return D('.04') if opportunity.parent_identity is not None else D('.08')
+    if family == 'mother_cap_only':
+        return D('.08')
+    if family == 'restart_uncapped':
+        return D('.04') if opportunity.parent_identity is not None else None
+    if family in ('short_2','short_4'):
+        return (D('.02') if family=='short_2' else D('.04')) if opportunity.direction<0 else None
     raise ValueError('unknown frozen active core')
+
+
+def short_campaigns(snapshots):
+    """Daily published short state; invalid or cold days rearm the next campaign."""
+    active=None
+    result={}
+    for key,snapshot in sorted(snapshots.items()):
+        negative=(snapshot is not None and len(snapshot.components)==3
+                  and all(value<0 for value in snapshot.components))
+        if not negative:
+            active=None
+        elif active is None:
+            active=-key
+        result[key]=active
+    return result

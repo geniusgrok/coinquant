@@ -8,6 +8,25 @@ from research.planned_exit import PlannedExit, MINUTE
 
 
 class PlannedExitTests(unittest.TestCase):
+    def test_short_partial_buy_to_close_and_protection_competition(self):
+        now=9*HOUR
+        a=Account(D(10000))
+        a.open(D(-10),D(100),D(120),D(20))
+        budget=CapitalBudget.from_history(now,{0:D('-.0001'),8*HOUR:D('-.0001')},
+            D(600000),D('.001'),D('.0002'),direction=-1)
+        self.assertEqual(budget.adverse_rate,D('.0001'))
+        p=PlannedExit.freeze(a,now,7,D(100),D(100),'short-child',budget,sliced=True,stress=False)
+        quotes={t:D(5000) for t in range(now-MINUTE,p.deadline+MINUTE,MINUTE)}
+        c=p.attempt(p.start,a,D(100),D(100),quotes,None)
+        self.assertLess(a.q,0)
+        self.assertGreater(D(c['accepted']),0)
+        self.assertGreater(D(c['fill_price']),D(100))
+        restored=PlannedExit.restore(p.record())
+        self.assertEqual(restored.identity,p.identity)
+        a.close(abs(a.q),D(121))
+        self.assertEqual(restored.attempt(p.start+MINUTE,a,D(121),D(121),quotes,None)['reason'],'protection_closed')
+        self.assertEqual(a.q,0)
+
     def fixture(self, sliced=True, stress=False):
         now=9*HOUR
         a=Account(D(10000),D(10),D(100),D(350),D(80),D(160))
