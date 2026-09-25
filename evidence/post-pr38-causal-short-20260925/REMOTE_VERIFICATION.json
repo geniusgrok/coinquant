@@ -1,0 +1,54 @@
+{
+  "verified_at_utc": "2026-09-25T10:38:59.475689+00:00",
+  "repository": "geniusgrok/coinquant",
+  "connection": "personal / geniusgrok",
+  "branch": "research/pr38-causal-short-20260925",
+  "verified_branch_sha": "f2e03fcda131f8aeca6115b6d114379c70e7c339",
+  "verified_tree_sha": "26948f2f654b0994c0728ca1c8f2447dcd6f5a8d",
+  "verification": "Fetched each of 238 referenced part files plus each manifest from the research branch with GitHub connector encoding=base64; compared decoded content byte for byte to the local committed source and checked Git blob OIDs; reassembled all three byte-identical archives and validated their lengths, SHA-256 and every member hash with reassemble.py.",
+  "packages": {
+    "development": {
+      "manifest_path": "evidence/post-pr38-causal-short-20260925/originals/development.manifest.json",
+      "manifest_blob_oid": "5ea88ddc3aa710cda13659e66a4d0df2f397f10b",
+      "parts": 56,
+      "archive_size": 10921933,
+      "archive_sha256": "4d75b6dc6fa7e0a27a1dc67bedffbeaf27dc4f9abe3544f01590025c3684998a",
+      "members": 268,
+      "remote_parts_byte_equal": true,
+      "remote_manifest_byte_equal": true,
+      "archive_and_member_sha256_verified": true
+    },
+    "formal": {
+      "manifest_path": "evidence/post-pr38-causal-short-20260925/originals/formal.manifest.json",
+      "manifest_blob_oid": "2e0492f64ab0a41be67d96ca35da18acf9a486d6",
+      "parts": 35,
+      "archive_size": 6878736,
+      "archive_sha256": "85d0009b237ccc1017a05e696891f1de67623e198b2ef764ac834dadb53b2c39",
+      "members": 72,
+      "remote_parts_byte_equal": true,
+      "remote_manifest_byte_equal": true,
+      "archive_and_member_sha256_verified": true
+    },
+    "minute-source": {
+      "manifest_path": "evidence/post-pr38-causal-short-20260925/originals/minute-source.manifest.json",
+      "manifest_blob_oid": "1f31901a29a35210c7e2fa32c7f70a618e4b1427",
+      "parts": 147,
+      "archive_size": 28850407,
+      "archive_sha256": "3971baae9a64f6e4d8e6192a4905166073429f7d224f4133b28223e4b604d5b6",
+      "members": 1190,
+      "remote_parts_byte_equal": true,
+      "remote_manifest_byte_equal": true,
+      "archive_and_member_sha256_verified": true
+    }
+  },
+  "economic_conclusion": {
+    "candidate": "C4",
+    "formal_calls": 795,
+    "cagr_percent": 102.363557,
+    "mdd_percent": 39.871851,
+    "target_cagr_percent_minimum": 150,
+    "target_mdd_percent_strictly_below": 50,
+    "qualification": "NOT_QUALIFIED",
+    "stress_and_absence": "Not run under frozen protocol after formal economic failure"
+  }
+}
