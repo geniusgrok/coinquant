@@ -388,6 +388,10 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
             opportunity=opportunities.get(signal_time) if mechanism else None
             if active_core=='coherent_trend':
                 opportunity=coherent_trend(signal_states.get(signal_time))
+            if short_states and opportunity is not None and opportunity.direction<0:
+                # C's short side belongs solely to the completed three-scale
+                # state. The existing impulse model supplies longs only.
+                opportunity=None
             if mechanism:
                 regime=opportunity.direction if opportunity else 0
                 campaign_epoch=opportunity.identity if opportunity else -t
@@ -854,9 +858,9 @@ def run(root,warmup,repairs,output,minutes=None,baseline=False,schedule='sparse'
                 hit_liq=(long and sml<=liq) or (not long and smh>=liq)
                 hit_stop=(long and sml<=account.sl) or (not long and smh>=account.sl)
                 hit_take=(long and smh>=account.tp) or (not long and sml<=account.tp)
-                if (macro_calls is not None and last_entry_epoch < -1
-                        and hit_stop and hit_take):
-                    raise ValueError(f'unresolved macro stop/take ordering at {iso(st)}')
+                if ((macro_calls is not None and last_entry_epoch < -1 and hit_stop and hit_take)
+                        or (short_states and account.q<0 and hit_stop and (hit_take or hit_liq))):
+                    raise ValueError(f'unresolved protective order at {iso(st)}; obtain finer trade/mark evidence')
                 if hit_liq:
                     if hit_stop:counts['unresolved_same_interval_stop_liquidation']+=1
                     close(st,'liquidation',account.liquidation(ZERO),True)

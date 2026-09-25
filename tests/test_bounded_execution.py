@@ -189,6 +189,26 @@ class TimelineTests(unittest.TestCase):
             self.assertTrue(buffer_audit(output)['original_gap_maintained'])
             self.assertFalse(finite_budget_check(output)['seven_day_entry_violations'])
 
+    def test_original_negative_impulse_cannot_bypass_short_state(self):
+        from coinquant.multiscale import published_daily_key
+        frozen,model,cached,minutes=self.fixture()
+        model.update=lambda *args: Opportunity(T-4*HOUR,-1,D(105),D(80),None)
+        state=SimpleNamespace(components=(D(-1),D(-1),D(1)),fraction=D('.5'))
+        execution=ExecutionStudy(True,False,frozenset(),{},D(6),True,'sliced')
+        with tempfile.TemporaryDirectory() as directory:
+            output=Path(directory)/'out'
+            with (patch('research.persistent_hold_replay.spec',return_value=frozen),
+                  patch('research.persistent_hold_replay.decision_times',return_value=[T]),
+                  patch('coinquant.campaign.Campaign',model),
+                  patch('coinquant.multiscale.daily_snapshots',return_value={published_daily_key(T):state}),
+                  contextlib.redirect_stdout(io.StringIO())):
+                r=run(Path('.'),Path('.'),Path('.'),output,allocation='volatility',
+                    reference='impulse_hold',lifecycle='one_campaign',entry_side='both',
+                    risk_scale=D(6),short_risk_scale=D('3.6'),cached_inputs=cached,
+                    cached_minutes=(minutes,[]),execution=execution,active_core='short_2')
+            self.assertEqual(r['counts'].get('entry',0),0)
+            self.assertEqual(json.loads((output/'execution_summary.json').read_text())['parents'],[])
+
     def fixture(self,stop=False):
         def row(t):return [t,'100','101','99','100','6000',t+HOUR-1,'600000','6000']
         warm={t:row(t) for t in range(timestamp('2019-12-01T00:00:00Z'),T,HOUR)}
