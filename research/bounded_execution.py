@@ -82,38 +82,44 @@ class BoundedEntry:
     liquidity_limited: bool = False
     risk_scale: D = D('3.6')
     capital: dict | None = None
+    direction: int = 1
 
     @property
     def identity(self) -> str:
-        return client_id(f'research:binance:BTCUSDT:L{self.risk_scale:.1f}', self.call_time, 'bounded-entry')
+        side='L' if self.direction==1 else 'S'
+        return client_id(f'research:binance:BTCUSDT:{side}{self.risk_scale:.1f}', self.call_time, 'bounded-entry')
 
     @classmethod
     def freeze(cls, account: Account, call_time: int, campaign: int, fraction: D,
                quote: D, mark: D, stop: D, take: D, previous_hour_quote: D,
                instrument: dict | None, slippage: D, spread: D,
                entry_limit: D | None = None, *, stress: bool = False,
-               budget: D = D('3.6'), capital=None, stop_risk_share: D | None = None) -> BoundedEntry:
+               budget: D = D('3.6'), capital=None, stop_risk_share: D | None = None,
+               direction: int = 1) -> BoundedEntry:
         selected_budget = risk_scale(budget)
+        if direction not in (-1,1):
+            raise ValueError('invalid mother direction')
         if stop_risk_share is not None:
             stop_risk_share = D(stop_risk_share)
             if not stop_risk_share.is_finite() or not ZERO < stop_risk_share <= 1:
                 raise ValueError('invalid frozen stop risk share')
         if account.q or account.wallet <= 0:
             raise ValueError('mother intent requires the reconciled flat account')
-        price = quote * (1 + slippage + spread / 2)
+        price = quote * (1 + direction*(slippage + spread / 2))
         trial = replace(account)
-        change = funded_target(trial, 1, fraction, price, mark, stop, take,
+        change = funded_target(trial, direction, fraction, price, mark, stop, take,
                                D('Infinity'), instrument, intended_add=True, capital=capital)
         maximum = abs(trial.q)
-        original_stop_fill = stop * (1 - slippage - spread / 2)
-        budget = maximum * (price - original_stop_fill + FEE*(price + original_stop_fill))
+        original_stop_fill = stop * (1 - direction*(slippage + spread / 2))
+        budget = maximum * (direction*(price - original_stop_fill) + FEE*(price + original_stop_fill))
         if stop_risk_share is not None:
             budget = min(budget, account.equity(mark) * stop_risk_share)
         start = call_time + MINUTE * (2 if stress else 1)
         result = cls(call_time, campaign, start, start + WINDOW, maximum,
                      D(change['requested']), budget, price, quote, stop, take, entry_limit,
                      previous_hour_quote, slippage, spread, account.fees, account.funding,
-                     risk_scale=selected_budget, capital=capital.record() if capital else None)
+                     risk_scale=selected_budget, capital=capital.record() if capital else None,
+                     direction=direction)
         if not maximum:
             result.finish('unfunded_parent:' + change['reason'], call_time)
         return result
@@ -158,12 +164,14 @@ class BoundedEntry:
             self.finish('unresolved_readiness', now, unresolved=True)
             record['reason'] = self.terminal_reason
             return record
-        if account.q < 0 or abs(account.q) != self.filled:
+        if (account.q and account.q*self.direction<0) or abs(account.q) != self.filled:
             self.finish('position_changed', now, unresolved=True)
             record['reason'] = self.terminal_reason
             return record
-        price = quote * (1 + self.slippage + self.spread / 2)
-        if not self.stop < min(price, mark) <= max(price, mark) < self.take or (self.entry_limit is not None and price >= self.entry_limit):
+        price = quote * (1 + self.direction*(self.slippage + self.spread / 2))
+        geometry=(self.stop < min(price, mark) <= max(price, mark) < self.take
+                  if self.direction>0 else self.take < min(price, mark) <= max(price, mark) < self.stop)
+        if not geometry or (self.entry_limit is not None and self.direction*(price-self.entry_limit)>=0):
             self.finish('quote_invalidated', now)
             record['reason'] = self.terminal_reason
             return record
@@ -184,7 +192,7 @@ class BoundedEntry:
 
         def preview(cap: D):
             trial = replace(account)
-            change = funded_target(trial, 1, ZERO, price, mark, self.stop, self.take,
+            change = funded_target(trial, self.direction, ZERO, price, mark, self.stop, self.take,
                                    cap, instrument, intended_add=True, target_quantity=self.maximum, capital=capital)
             return trial, change
 
@@ -207,8 +215,8 @@ class BoundedEntry:
                       stop_risk=str(self.loss_at_stop(trial)))
         amount = D(change['amount'])
         if amount:
-            if (trial.q > self.maximum or self.loss_at_stop(trial) > self.risk_budget
-                    or trial.q < account.q or trial.margin > trial.wallet):
+            if (abs(trial.q) > self.maximum or self.loss_at_stop(trial) > self.risk_budget
+                    or (trial.q-account.q)*self.direction < 0 or trial.margin > trial.wallet):
                 raise ValueError('child violates frozen quantity, risk or wallet bounds')
             # Same existing account object. The model assumes IOC fill + protection
             # confirmation at this boundary, NOT a native response or ACK.
@@ -219,7 +227,7 @@ class BoundedEntry:
             self.last_fill = now
             record.update(quantity_after=str(account.q), entry_price=str(account.entry),
                           margin=str(account.margin), free_wallet=str(account.wallet-account.margin),
-                          entry_fee=str(amount*price*FEE), delay_price_cost=str(amount*(price-self.original_price)))
+                          entry_fee=str(amount*price*FEE), delay_price_cost=str(self.direction*amount*(price-self.original_price)))
             if self.filled == self.maximum:
                 self.finish('target_filled', now)
         return record
@@ -236,8 +244,9 @@ class BoundedEntry:
     def restore(cls, record: dict) -> BoundedEntry:
         """Use with the existing State meta store; never create a fresh deadline."""
         from dataclasses import fields
-        values = {f.name: record[f.name] for f in fields(cls) if f.name not in ('risk_scale', 'capital')}
+        values = {f.name: record[f.name] for f in fields(cls) if f.name not in ('risk_scale', 'capital', 'direction')}
         values['capital'] = record.get('capital')
+        values['direction'] = record.get('direction', 1)
         values['risk_scale'] = risk_scale(record.get('risk_scale', '3.6'))
         for name in ('maximum', 'raw_target', 'risk_budget', 'original_price', 'original_quote',
                      'stop', 'take', 'previous_hour_quote', 'slippage', 'spread',
@@ -255,7 +264,8 @@ class BoundedEntry:
                 or not ZERO <= result.filled <= result.maximum
                 or min(result.maximum,result.risk_budget,result.slippage,result.spread)<ZERO
                 or min(result.stop,result.original_quote,result.previous_hour_quote)<=0
-                or result.stop>=result.take
+                or result.direction not in (-1,1)
+                or result.direction*(result.take-result.stop)<=0
                 or len(set(result.attempted))!=len(result.attempted)
                 or any(type(t) is not int or t<result.start or t>=result.deadline or (t-result.start)%MINUTE for t in result.attempted)
                 or record['parent_id'] != result.identity):

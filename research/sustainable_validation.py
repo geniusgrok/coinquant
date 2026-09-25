@@ -35,7 +35,7 @@ def cash_components(path):
         else:
             e=exits[(t,event)].popleft();assert D(e['quantity'])==qty
             ref=D(e['reference']);gross+=qty*(ref-average)
-            exit_basic+=qty*ref*(D(e['base_slippage'])+D(e['spread'])/2)
+            exit_basic+=abs(qty)*ref*(D(e['base_slippage'])+D(e['spread'])/2)
             exit_extra+=D(e['extra_impact_usdt']);q-=qty
             if not q:average=D(0)
         assert q==D(o['quantity_after'])

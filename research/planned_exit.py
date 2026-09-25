@@ -33,20 +33,21 @@ class PlannedExit:
     attempted: list[int] = field(default_factory=list)
     terminal_reason: str = ''
     unresolved: bool = False
+    direction: int = 1
 
     @property
     def identity(self):
-        return client_id('research:binance:BTCUSDT', self.call_time, 'planned-exit')
+        return client_id('research:binance:BTCUSDT'+(':S' if self.direction<0 else ''), self.call_time, 'planned-exit')
 
     @classmethod
     def freeze(cls, account, now, campaign, reference, anchor_mark, anchor_child,
                budget, *, sliced, stress):
-        if account.q <= 0 or not budget.valid:
-            raise ValueError('planned exit requires a known funded long position')
+        if not account.q or not budget.valid:
+            raise ValueError('planned exit requires a known funded position')
         start=now+(2 if stress else 1)*MINUTE
-        return cls(now,campaign,start,start+WINDOW,account.q,reference,anchor_mark,
+        return cls(now,campaign,start,start+WINDOW,abs(account.q),reference,anchor_mark,
                    anchor_child,budget.previous_hour_quote,budget.slippage,budget.spread,
-                   budget.record(),sliced)
+                   budget.record(),sliced,direction=1 if account.q>0 else -1)
 
     def finish(self, reason, *, unresolved=False):
         if not self.terminal_reason:
@@ -66,7 +67,7 @@ class PlannedExit:
             record['reason']=self.terminal_reason;return record
         if not account.q:
             self.finish('protection_closed');record['reason']=self.terminal_reason;return record
-        if account.q != self.maximum-self.filled or account.q < 0:
+        if account.q != self.direction*(self.maximum-self.filled):
             self.finish('unreconciled_position',unresolved=True)
             record['reason']=self.terminal_reason;return record
         if now > self.deadline:
@@ -77,7 +78,7 @@ class PlannedExit:
         if safe and (now<self.start or (now-self.start)%MINUTE):
             return record
         self.attempted.append(now)
-        amount=account.q
+        amount=abs(account.q)
         capacity_quote=self.previous_hour_quote
         event='regime_exit'
         if not safe:
@@ -107,14 +108,14 @@ class PlannedExit:
                 event='regime_exit_deadline'
         if not amount:
             record['reason']='zero_executable_capacity';return record
-        price,impact=exit_fill(reference,amount,capacity_quote,self.slippage,self.spread)
+        price,impact=exit_fill(reference,self.direction*amount,capacity_quote,self.slippage,self.spread)
         # Account.close is the only ledger mutation. Native acknowledgement alone
         # cannot reach this branch: outcome/protection must be confirmed above.
         account.close(amount,price);self.filled+=amount
         record.update(impact,event=event,accepted=str(amount),quantity_after=str(account.q),
                       reason='safety' if not safe else 'deadline' if now==self.deadline else 'confirmed',
                       original_anchor=self.anchor_child,
-                      delay_price_cost=str(amount*(self.original_reference-reference)))
+                      delay_price_cost=str(self.direction*amount*(self.original_reference-reference)))
         if not account.q:self.finish('closed')
         return record
 
@@ -124,7 +125,7 @@ class PlannedExit:
     @classmethod
     def restore(cls, record):
         names=cls.__dataclass_fields__
-        values={name:record[name] for name in names}
+        values={name:record.get(name,1) if name=='direction' else record[name] for name in names}
         for name in ('maximum','original_reference','anchor_mark','previous_hour_quote','slippage','spread','filled'):
             values[name]=D(values[name])
             if not values[name].is_finite():raise ValueError('nonfinite planned exit state')
@@ -132,6 +133,7 @@ class PlannedExit:
         CapitalBudget.restore(result.capital)
         if (result.start-result.call_time not in (MINUTE,2*MINUTE)
                 or result.deadline!=result.start+WINDOW or not ZERO<=result.filled<=result.maximum
+                or result.direction not in (-1,1)
                 or min(result.maximum,result.original_reference,result.anchor_mark,result.previous_hour_quote)<=0
                 or len(set(result.attempted))!=len(result.attempted)
                 or any(type(t) is not int or t<result.call_time or t>result.deadline for t in result.attempted)

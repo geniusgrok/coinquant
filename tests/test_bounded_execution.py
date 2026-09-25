@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from types import SimpleNamespace
 from unittest.mock import patch
 
 from coinquant.linear_account import Account, LOT
@@ -24,6 +25,29 @@ HOUR = 3600000
 
 
 class BoundedTests(unittest.TestCase):
+    def test_short_slices_budget_funding_sign_and_restart(self):
+        a=Account(D(10000))
+        p=BoundedEntry.freeze(a,T,T-4*HOUR,D('3.6'),D(100),D(100),
+            D(120),D('2.6'),D(6000000),None,D('.001'),D('.0002'),
+            direction=-1,stop_risk_share=D('.02'))
+        self.assertEqual(p.direction,-1)
+        self.assertEqual(p.risk_budget,D(200))
+        quotes={t:D(100000) for t in range(T-MINUTE,T+8*MINUTE,MINUTE)}
+        first=p.attempt(p.start,a,D(100),D(100),quotes,None)
+        self.assertLess(a.q,0)
+        self.assertEqual(D(first['accepted']),abs(a.q))
+        self.assertLessEqual(p.loss_at_stop(a),D(200))
+        q=BoundedEntry.restore(p.record())
+        self.assertEqual(q.identity,p.identity)
+        a.pay_funding(D(100),D('-.001'))
+        self.assertGreater(a.funding,0)
+        before=replace(a)
+        q.attempt(q.start+MINUTE,a,D(100),D(100),quotes,None,outcome_known=False)
+        self.assertTrue(q.unresolved)
+        self.assertEqual(a,before)
+        q.attempt(q.start+2*MINUTE,a,D(100),D(100),quotes,None)
+        self.assertEqual(a,before)
+
     def parent(self):
         account = Account(D(10000))
         parent = BoundedEntry.freeze(account,T,T-4*HOUR,D('3.6'),D(10000),D(10000),
@@ -132,6 +156,39 @@ class BoundedTests(unittest.TestCase):
 
 
 class TimelineTests(unittest.TestCase):
+    def test_short_uses_shared_timeline_ledger_and_signed_risk_audits(self):
+        from coinquant.multiscale import published_daily_key
+        from research.execution_risk_audit import audit, buffer_audit
+        from research.sustainable_validation import finite_budget_check
+        frozen,model,cached,minutes=self.fixture()
+        model.update=lambda *args: None
+        prior={T-i*8*HOUR:D('-.0001') for i in range(1,22)}
+        prior[T+2*MINUTE]=D('-.0001')
+        cached=(cached[0],prior,cached[2],cached[3])
+        state=SimpleNamespace(components=(D(-1),D(-1),D(-1)),fraction=D('.5'))
+        execution=ExecutionStudy(True,False,frozenset([T]),
+            {t:D(10000) for t in range(T-MINUTE,T+HOUR,MINUTE)},D(6),True,'sliced')
+        with tempfile.TemporaryDirectory() as directory:
+            output=Path(directory)/'out'
+            with (patch('research.persistent_hold_replay.spec',return_value=frozen),
+                  patch('research.persistent_hold_replay.decision_times',return_value=[T]),
+                  patch('coinquant.campaign.Campaign',model),
+                  patch('coinquant.multiscale.daily_snapshots',return_value={published_daily_key(T):state}),
+                  contextlib.redirect_stdout(io.StringIO())):
+                run(Path('.'),Path('.'),Path('.'),output,allocation='volatility',
+                    reference='impulse_hold',lifecycle='one_campaign',entry_side='both',
+                    risk_scale=D(6),short_risk_scale=D('3.6'),cached_inputs=cached,
+                    cached_minutes=(minutes,[]),execution=execution,active_core='short_2')
+            import csv
+            with gzip.open(output/'orders.csv.gz','rt') as stream:
+                orders=list(csv.DictReader(stream))
+            self.assertTrue(any(D(row['quantity_btc'])<0 for row in orders if row['event']=='entry'))
+            self.assertTrue(any(row['event']=='funding_adverse_bound' and D(row['quantity_btc'])<0 for row in orders))
+            self.assertEqual(verify(output)['max_equity_error_usdt'],'0')
+            self.assertTrue(audit(output)['passed'])
+            self.assertTrue(buffer_audit(output)['original_gap_maintained'])
+            self.assertFalse(finite_budget_check(output)['seven_day_entry_violations'])
+
     def fixture(self,stop=False):
         def row(t):return [t,'100','101','99','100','6000',t+HOUR-1,'600000','6000']
         warm={t:row(t) for t in range(timestamp('2019-12-01T00:00:00Z'),T,HOUR)}
