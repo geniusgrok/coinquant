@@ -1,0 +1,480 @@
+{
+  "commit": "26334e1aceff5c4ce232262aa0f5ac1f9ad76daa",
+  "tree": "f0ea157402403f5bd7f0d1f1d522dfb44bd12286",
+  "integration_parent": "04153d5eda780c44b8d8b63c93091cc4e645a628",
+  "method": "git fetch remote branch; compare Git tree and each changed blob OID, bytes, length, SHA-256; verify deletions",
+  "entries": [
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "73c44c9c2e850bd0adacf54f78817db2e0caaab2",
+      "size": 6221,
+      "sha256": "39cd5e2c1c5dcd432365bbe9190b0e202e173c0dbb6f7aa2f0ec15a2d129d0e7"
+    },
+    {
+      "path": "HANDOFF_PROMPT.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "93045cf5d5be99dd9a1bf34ac83565909636a095",
+      "size": 8662,
+      "sha256": "e7c959656f2fb347769bd9f4fb7ee50ba8c525a8b8b8e2c4f5e25c3c05ceb864"
+    },
+    {
+      "path": "PROJECT_STATE.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e71d926a2c43b06fef496742daed997d06902851",
+      "size": 35209,
+      "sha256": "0603aa86a3506138d3c0c3dc7577a1bcc657249a4775d67f84f40d005d0d052b"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bcd1eec20b162ae8442e9b8064fdc86d047c776e",
+      "size": 4873,
+      "sha256": "c3686878d770bad40c9594f2a6e35711f80fa4302e4cb4c2465fa2ac949472ed"
+    },
+    {
+      "path": "coinquant/binance.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8350c46a88015f547fed320a99ab3061fdf649a8",
+      "size": 33594,
+      "sha256": "51c0c1ff202c6a393a96417f5b68a71d0466cfa829bb0a4ef5dec6b5f6c97c35"
+    },
+    {
+      "path": "coinquant/binance_safety.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "231ebb0ef43cf7f77f5e6190c4d6ad639ec8ecac",
+      "size": 16571,
+      "sha256": "3ee70211923480f18a2219860123973d23be43646340b200e51cdd6f200338aa"
+    },
+    {
+      "path": "coinquant/bybit.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": null,
+      "size": 0,
+      "sha256": null
+    },
+    {
+      "path": "coinquant/cli.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "71d97f6c6b027693122bcd241045c8426cd54620",
+      "size": 3867,
+      "sha256": "f636718918b15895c721cdd9a3cb8a8f92e5f95d4a4a03aeb3a5fa8d7512c765"
+    },
+    {
+      "path": "coinquant/config.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "565d5dc44c12f88421d11e8fb67d7d3b255e3a74",
+      "size": 1445,
+      "sha256": "7455cbf1aec8a57b7ab8cd790902b8834d880895a3c996dd0200b49f538c6764"
+    },
+    {
+      "path": "coinquant/decode.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": null,
+      "size": 0,
+      "sha256": null
+    },
+    {
+      "path": "coinquant/execution.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": null,
+      "size": 0,
+      "sha256": null
+    },
+    {
+      "path": "coinquant/lifecycle.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8c35303611f2620f64fd1dc8a9d2fbb0e25ae07e",
+      "size": 16152,
+      "sha256": "997980446a0fa87ded2c60227caf5df3374f45ea2713fbaef61a08cc53dc1645"
+    },
+    {
+      "path": "coinquant/linear_preview.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4c6e1b387f8ee3b8cc1631b0041c40c92f8718c5",
+      "size": 2445,
+      "sha256": "10b4c58ece529311a2be26d940ce7277f1ea51c5bf5e022b94830a52e22fe4a2"
+    },
+    {
+      "path": "coinquant/model.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": null,
+      "size": 0,
+      "sha256": null
+    },
+    {
+      "path": "coinquant/native_preview.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cbb564734c44d082f5b64adfe5aaa2d9aa07bd12",
+      "size": 5893,
+      "sha256": "dc4d0d7e4cf7986e35f96acae3b92363843c631e40245c6e0a48d285d205e9d9"
+    },
+    {
+      "path": "coinquant/ownership.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "743f1118735a659d07833a32e515dfc3c042a59c",
+      "size": 7380,
+      "sha256": "cce1a0db8fe97782fee3cb73a5543f732c8ec2be342b4a3fb062bd2f4e2ed177"
+    },
+    {
+      "path": "coinquant/pending.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": null,
+      "size": 0,
+      "sha256": null
+    },
+    {
+      "path": "coinquant/replay.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": null,
+      "size": 0,
+      "sha256": null
+    },
+    {
+      "path": "coinquant/rest.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": null,
+      "size": 0,
+      "sha256": null
+    },
+    {
+      "path": "coinquant/session.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "222eee6a3f78c4349b2fde514eb09ea2e62794a2",
+      "size": 5365,
+      "sha256": "d4f6c4b954e3d6d42c9c331436073fad77896fba2fad8d1901166324424d9f84"
+    },
+    {
+      "path": "coinquant/state.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c51c17be9043cc8accb1919ad66435918f3fcc31",
+      "size": 7381,
+      "sha256": "7e26b337fb71a94bde6e405fa0ea9eb827964a8364a080fe4139f6226a19b3e8"
+    },
+    {
+      "path": "config.example.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "26280b3935637752b4f35fa6f1948ec5a95df273",
+      "size": 118,
+      "sha256": "18da1c5e81a510da170af5b0893f62422d7e1a03675434ffb15a44c065a9ee68"
+    },
+    {
+      "path": "evidence/bounded-session-20260926/RESULT.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9d5c327bd49ffb99ea06ff7dc0d61685dabb4398",
+      "size": 4385,
+      "sha256": "0a6ba70a5e64f4037660cb53a07fcfccef732415ad3b84a81d43db17c1996d2e"
+    },
+    {
+      "path": "evidence/bounded-session-20260926/VERIFICATION.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2b12ddaaa4df30830e060937f3913ad9ea2784c9",
+      "size": 10643,
+      "sha256": "9300bac5b7a8da8e829352b3784cf56eb48c91127aff37665bd47ece8dc31dc8"
+    },
+    {
+      "path": "research/acquire_v5.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3c387195bb333c622223e7d35e76d6127af9f8e2",
+      "size": 18172,
+      "sha256": "053ee644debf5799be3b6488d8b59e9653de928c221152c201938a6ace6dcdf3"
+    },
+    {
+      "path": "research/legacy/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b6205a37e05584afaa557febf54235726b9798bd",
+      "size": 82,
+      "sha256": "77ad591b2ac19cfc96337c7c6746a2afc57bf07c1fe4ca413a13f9539533189f"
+    },
+    {
+      "path": "research/legacy/bybit.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f0a2ac5b64b1f8c77c1e0ef50fedcf38718050bc",
+      "size": 9177,
+      "sha256": "538bf84470a291a741afa74b176096303c05cce021ef3f457d9a82b74e45d46f"
+    },
+    {
+      "path": "research/legacy/config.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "27b011fea4cf277378495324a02a07119496c15a",
+      "size": 2770,
+      "sha256": "0749b49838a85ece641cbe549c61d900f78e31deca6264c52abd34a6778546d0"
+    },
+    {
+      "path": "research/legacy/decode.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3fa5393b5fd143db9bd9bf86ec21f7d92ef8fcd3",
+      "size": 6344,
+      "sha256": "9e270bc2040dbedfdfdda5e9cbe1085e5cffabf566ba765f7fa95cecef956187"
+    },
+    {
+      "path": "research/legacy/execution.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "808df455a5801310202058fb536af086d81d4917",
+      "size": 20527,
+      "sha256": "397d91de19a3571beb0d7caad4cc9f677e13c1188bcf1b67f42a3a08a18f808a"
+    },
+    {
+      "path": "research/legacy/model.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c6d8e2712d7dc46ca7f20187f6607ff754006585",
+      "size": 16947,
+      "sha256": "d3a7dcbe893c70d4ea32334ad92fa2539b57fd1fc8669346fbb00258a5ad1b93"
+    },
+    {
+      "path": "research/legacy/pending.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7a7d6121e15c7806d8b6a108f7dad7915b19aa06",
+      "size": 9117,
+      "sha256": "7b88e14d3193f3529da5fe426e639562be5589df455a52fd20ce7d3cb30c413c"
+    },
+    {
+      "path": "research/legacy/replay.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c48e40c8ab6f962a815b1fbec120f67260b9b35b",
+      "size": 29460,
+      "sha256": "8513d278231bb6d8edfa9bca712a4bcb9f045147348b57fe63b66533bb1f0da2"
+    },
+    {
+      "path": "research/legacy/rest.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b2e4fe6c9a36d99eeb73d07174db7289d627e41f",
+      "size": 5400,
+      "sha256": "b74f1d4404f64b2d1685af4e056d2dc428c7710f3dda49e7003949346306068e"
+    },
+    {
+      "path": "research/linear_replay.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a31abf1b90f067409a8eb37e1e9fec97aa300533",
+      "size": 11122,
+      "sha256": "22ebb99ab74c41e1f6a29a72219c5e589feb9b563be683f217c5f6d4cb36bf09"
+    },
+    {
+      "path": "research/refined_replay.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3bc3dbbc3fa67bc72d47c781967ffcdec73ef94e",
+      "size": 3706,
+      "sha256": "e497c752b64e2fcb8068611087c3214e230e1a3c2c234b87be7b2e49d4b486ca"
+    },
+    {
+      "path": "research/resolve_ambiguities.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7548cb36fb8099b9d1c33c348506fce8c1ef44ec",
+      "size": 6475,
+      "sha256": "b8552c50edf64f600fd01eeb940ae59197988151d56053be3a71a9614c36f12f"
+    },
+    {
+      "path": "research/session_replay.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "98e34e66e77a0c942dd3f4d85f33aba70fb4b2ce",
+      "size": 2831,
+      "sha256": "f12795a9dc9e005b90cdf84358ed9427e41815f99d875942bf86ab807cb308e8"
+    },
+    {
+      "path": "research/sparse_trend.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a15bf5797da4d8d96daf45cf153a809567ebf5d0",
+      "size": 1505,
+      "sha256": "302813078c542b9448fd077aeb4bc391376771ce29655a838666d949db4d75f3"
+    },
+    {
+      "path": "tests/session_venue.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "37db5284397342d5f957ffeb941e2aec34d57c19",
+      "size": 7137,
+      "sha256": "e62e82986705a8d5e47399bda392319e7ae02ba18df27f72abfb7770cf520b3a"
+    },
+    {
+      "path": "tests/test_active_core.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "51d25417f344eea3e8a1f3303ef0f17df2cfa6bc",
+      "size": 1955,
+      "sha256": "db040f1bc577513e7657dcd43a048d344581e2631053d66b32661835cd61fd93"
+    },
+    {
+      "path": "tests/test_adapter.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e74c26b96b170ec9b440491602d5f3d620fc9d40",
+      "size": 7129,
+      "sha256": "497922d262cb6e97c0c25802a8a07eb98cbff1b7f6d58610021a1530ea936700"
+    },
+    {
+      "path": "tests/test_binance_cli.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6f18f4e539102df473528b905e916f490e25e9f6",
+      "size": 4333,
+      "sha256": "91c154d6a595e656168385447033420425df3875016396a9122ea1a0af42013e"
+    },
+    {
+      "path": "tests/test_binance_intent_read.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "64c2fdb8163856cbeee1ae703145a6c549659767",
+      "size": 1464,
+      "sha256": "504a509dc087827d6c2e65a31451cc4a56ae8dcacce58c1280e837be4a8f84e7"
+    },
+    {
+      "path": "tests/test_binance_market.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0d1f489eefbacb57f0e0a828d536394b0eea5247",
+      "size": 1853,
+      "sha256": "c42f664c962ea034d958bccddc8c4777339f091d5a7e00ba82f56ed803ca8a21"
+    },
+    {
+      "path": "tests/test_binance_readonly.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "36a1bfdb8c5626ab6956d470e201fe72b57fb3e4",
+      "size": 6503,
+      "sha256": "8cfd6d59608005ca1fa086ad29b3cccb715dfb25412681b7c261b220a6a9dced"
+    },
+    {
+      "path": "tests/test_binance_recovery.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0e86d9bea93ce9ad5d84fb4fb60e1bb83893e6dc",
+      "size": 3535,
+      "sha256": "b3f9d227084a829d781ff14e6edbb1546615ff1c54bdadcad27d85369437cb29"
+    },
+    {
+      "path": "tests/test_binance_safety.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "95b481e0902fa5de4990ada378404af2b68ede3d",
+      "size": 6498,
+      "sha256": "8ab1324a738aa1458e76751a7ac97aeaf4553866f2efbf84086a89b4bec456a7"
+    },
+    {
+      "path": "tests/test_binance_writer.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "06f66698ccf167f4bed206930a64df6c8456eec6",
+      "size": 2679,
+      "sha256": "e7bfcae960f70519b68ec5ca04aba5f14cf7278e2d55ffe997084d646b1f4537"
+    },
+    {
+      "path": "tests/test_campaign.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "69aeab7e169c40bdd1b5dbc1965ec049b5236fb4",
+      "size": 4139,
+      "sha256": "6831e16f151474fa4f3a0da9ee2cf45f3d1a39efc809a944e14e436e7e0d2b45"
+    },
+    {
+      "path": "tests/test_execution.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e2377fb629554c0db52bc6a91ac2c686561bb480",
+      "size": 11970,
+      "sha256": "f04df6e18dbc1a94ed27ec30469829e603ae8e87e6231326652b0b7dbf477136"
+    },
+    {
+      "path": "tests/test_model.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bf223a0e8e5e884a843ffe345bfe24c77215d9ea",
+      "size": 7857,
+      "sha256": "28f8e832225ea2440aa0a1355a958e6a12cba3fbe12e63e7bb3c583f309d3118"
+    },
+    {
+      "path": "tests/test_observation.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "42381eea817fc1979eebe30fc76b13e488d907d3",
+      "size": 2275,
+      "sha256": "9d3c1c08f9c249ac8a5eea7ad7ba6c95c8dabcec5eee8377895cd03e879714eb"
+    },
+    {
+      "path": "tests/test_pending.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e919c5578a43e40d186f9169704a3ba08c067f47",
+      "size": 11711,
+      "sha256": "b1e3059630bde470eaf19b3b4b5379b75097de07d1468535ad8f312e7d292261"
+    },
+    {
+      "path": "tests/test_pending_replay.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "35f4a44b0ab838fc8b5fc30e8956720afbd7ae8a",
+      "size": 5649,
+      "sha256": "e32fdc255d830e817f98adb97a309fd58694af561321015281831dc897de7761"
+    },
+    {
+      "path": "tests/test_refined_replay.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a555e79a949af3440f8317f624b04de093ddb5d4",
+      "size": 2313,
+      "sha256": "635adaab30fe4b50c3af796980e0a28ec2c332856aa0f6e7f4ae499ea7eb35cb"
+    },
+    {
+      "path": "tests/test_replay.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a4dcbff839ce6e09a2cd4faa48824a49272b96c",
+      "size": 10976,
+      "sha256": "8b72cc1d126abc155d2f50aeec029ee2bb13a7fe8a66c4875b1874dc1ecb1c78"
+    },
+    {
+      "path": "tests/test_session.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f469a6a6f1084b50db7d35f034f62ff902ac0f6b",
+      "size": 16937,
+      "sha256": "84d6ae323f121ec7804fa569beea1a556e4119a83d24b382037f839db8fd82b1"
+    },
+    {
+      "path": "tests/test_state.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d55c2fd5da028dd5113e45334f1e8f4386c46491",
+      "size": 2926,
+      "sha256": "eeb19b273efe0633de334affde5d1d677b474cdd7ec16b7aa7db8b782aca2697"
+    }
+  ]
+}
