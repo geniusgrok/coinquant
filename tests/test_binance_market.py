@@ -5,7 +5,7 @@ from coinquant.types import Unknown
 
 class NativeMarket(unittest.TestCase):
     def test_checkpoint_pages_without_truncation(self):
-        interval=14400000;start=interval*800;end=start+241*interval;now=end+1
+        interval=14400000;start=interval*800;end=start+2001*interval;now=end+1
         reader=Binance(clock=lambda:now/1000);pages=[]
         def get(path,parameters=None):
             if path.endswith('/time'):return {'serverTime':now}
@@ -13,8 +13,9 @@ class NativeMarket(unittest.TestCase):
             return [[t,'100','102','99','101','2',t+interval-1,'200',1,'1','100']
                     for t in range(parameters['startTime'],parameters['endTime']+1,interval)]
         reader.get=get;market=reader.completed_market(start=start)
-        self.assertEqual(len(market['candles']),241)
-        self.assertEqual([p['limit'] for p in pages],[120,120,1])
+        self.assertEqual(len(market['candles']),2001)
+        self.assertEqual([p['limit'] for p in pages],[1000,1000,1])
+        self.assertEqual([p['startTime'] for p in pages],[start,start+1000*interval,start+2000*interval])
         self.assertEqual(market['candles'][0]['time'],start)
         pages.clear();self.assertEqual(reader.completed_market(start=end)['candles'],[])
         self.assertEqual(pages,[])

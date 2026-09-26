@@ -1,0 +1,115 @@
+{
+  "book": {
+    "bytes": 9113,
+    "file": "book.json",
+    "sha256": "4ba96c7f999809d3ee638c0e04b801fcccc919915ca21853fb15e2f5cab2a09e"
+  },
+  "checks": [
+    "current BTCUSDT perpetual instrument rules decoded",
+    "live mark and 100-level order book freshness/order validated"
+  ],
+  "elapsed_seconds": 68.42,
+  "error": "Unknown: Binance request unavailable; read by stable identity before any retry",
+  "finished_at_ms": 1790390362353,
+  "interruptions": [
+    {
+      "attempt": 1,
+      "reason": "Binance request unavailable; read by stable identity before any retry"
+    }
+  ],
+  "mark": {
+    "bytes": 265,
+    "file": "mark.json",
+    "sha256": "77196055dd55bfbb349c224e8a9e0b249670a516909a5292dda10b97b303958f"
+  },
+  "private_requests": 0,
+  "requests": [
+    {
+      "elapsed_seconds": 9.606,
+      "parameters": {},
+      "path": "/fapi/v1/exchangeInfo",
+      "received_at_ms": 1790390303539
+    },
+    {
+      "elapsed_seconds": 7.255,
+      "parameters": {
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/premiumIndex",
+      "received_at_ms": 1790390310794
+    },
+    {
+      "elapsed_seconds": 7.209,
+      "parameters": {
+        "limit": 100,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/depth",
+      "received_at_ms": 1790390318004
+    },
+    {
+      "elapsed_seconds": 6.748,
+      "parameters": {},
+      "path": "/fapi/v1/time",
+      "received_at_ms": 1790390324754
+    },
+    {
+      "elapsed_seconds": 6.995,
+      "parameters": {
+        "endTime": 1576886399999,
+        "interval": "4h",
+        "limit": 120,
+        "startTime": 1575158400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390331749
+    },
+    {
+      "elapsed_seconds": 7.232,
+      "parameters": {
+        "endTime": 1578614399999,
+        "interval": "4h",
+        "limit": 120,
+        "startTime": 1576886400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390338985
+    },
+    {
+      "elapsed_seconds": 7.939,
+      "parameters": {
+        "endTime": 1580342399999,
+        "interval": "4h",
+        "limit": 120,
+        "startTime": 1578614400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390346925
+    },
+    {
+      "elapsed_seconds": 7.414,
+      "parameters": {
+        "endTime": 1582070399999,
+        "interval": "4h",
+        "limit": 120,
+        "startTime": 1580342400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390354340
+    }
+  ],
+  "rounded_quantity_btc": "0.010",
+  "rules": {
+    "bytes": 2266,
+    "file": "rules.json",
+    "sha256": "a730dabf5b6710dafb1bc70db1ab579083ad0699e07b5f59e1f20a5617445c7f"
+  },
+  "source_commit": "f80999e5e33f55ef6c4b91649031bf6859015fc2",
+  "started_at_ms": 1790390293933,
+  "status": "INCOMPLETE",
+  "writes": 0
+}

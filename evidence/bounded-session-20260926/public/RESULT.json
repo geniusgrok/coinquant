@@ -1,0 +1,385 @@
+{
+  "account_validation": {
+    "reason": "No account config or Binance credential variables in this environment; no private requests made",
+    "status": "NOT_RUN"
+  },
+  "book": {
+    "bytes": 9113,
+    "file": "book.json",
+    "sha256": "94a675ae11098db04bed8b0f964074bcceadd0d733dede60ff8907913dc24124"
+  },
+  "checkpoint": {
+    "bytes": 7567,
+    "file": "checkpoint.json",
+    "sha256": "7d78642fcd0f4064f1fb38773aed6848749f7c40047bb4d409e6e4dfeaa27460"
+  },
+  "checks": [
+    "current BTCUSDT perpetual instrument rules decoded",
+    "live mark and 100-level order book freshness/order validated",
+    "production advance rebuilt complete four-hour model from fixed origin",
+    "production model checkpoint resumed without cold-bootstrap consumption"
+  ],
+  "elapsed_seconds": 235.642,
+  "finished_at_ms": 1790390703209,
+  "initial_checkpoint_last": 1582070400000,
+  "interruptions": [
+    {
+      "attempt": 1,
+      "reason": "Binance request unavailable; read by stable identity before any retry"
+    },
+    {
+      "attempt": 2,
+      "reason": "Binance request unavailable; read by stable identity before any retry"
+    },
+    {
+      "attempt": 3,
+      "reason": "Binance request unavailable; read by stable identity before any retry"
+    },
+    {
+      "attempt": 4,
+      "reason": "Binance request unavailable; read by stable identity before any retry"
+    },
+    {
+      "attempt": 5,
+      "reason": "Binance request unavailable; read by stable identity before any retry"
+    },
+    {
+      "attempt": 6,
+      "reason": "Binance request unavailable; read by stable identity before any retry"
+    }
+  ],
+  "mark": {
+    "bytes": 265,
+    "file": "mark.json",
+    "sha256": "e245214ff32ffec3a40d8ae336b9b3ecbe02916b194b2d590cece68b008761ef"
+  },
+  "model": {
+    "complete_through": 1790380800000,
+    "consumed_campaign": null,
+    "origin": 1575158400000,
+    "reconstructed": true,
+    "total_bars": 14946
+  },
+  "offline_validation": {
+    "command": "python -m unittest discover -s tests -v",
+    "compileall": "PASS",
+    "elapsed_seconds": 2.399,
+    "git_diff_check": "PASS",
+    "python": "3.13.15",
+    "result": "PASS",
+    "tests": 345
+  },
+  "private_requests": 0,
+  "public_probe_python": "3.12.14",
+  "requests": [
+    {
+      "elapsed_seconds": 9.314,
+      "parameters": {},
+      "path": "/fapi/v1/exchangeInfo",
+      "received_at_ms": 1790390476883,
+      "response_sha256": "e8b4bf48ff52744fe1d6bc409757d875d1f421cead6954dfdea7293778f00ddc"
+    },
+    {
+      "elapsed_seconds": 7.43,
+      "parameters": {
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/premiumIndex",
+      "received_at_ms": 1790390484321,
+      "response_sha256": "b8b78b6fbaed651070ba855ece31e9f173e5aadabc92be176848b7e64e78d83c"
+    },
+    {
+      "elapsed_seconds": 7.756,
+      "parameters": {
+        "limit": 100,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/depth",
+      "received_at_ms": 1790390492077,
+      "response_sha256": "34a74b21f528e21878f2e0234c417455747fffd1d854fc00f7bada35fca82643"
+    },
+    {
+      "elapsed_seconds": 6.85,
+      "parameters": {},
+      "path": "/fapi/v1/time",
+      "received_at_ms": 1790390498933,
+      "response_sha256": "15f27901d9c24e0963a439efc090d9911a1e8b2c6ea270f1e468f7a862e26a77"
+    },
+    {
+      "elapsed_seconds": 7.665,
+      "parameters": {
+        "endTime": 1596470399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1582070400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390506599,
+      "response_sha256": "714cb270157f04a595e7e09e052948d5b5eb71a06fedb0d0b53c415920988870"
+    },
+    {
+      "elapsed_seconds": 7.017,
+      "parameters": {},
+      "path": "/fapi/v1/time",
+      "received_at_ms": 1790390522634,
+      "response_sha256": "5f8887c3a09811db9e89510a5fc619f7136974c12417153b7cabec85ff7b6c13"
+    },
+    {
+      "elapsed_seconds": 7.201,
+      "parameters": {
+        "endTime": 1610870399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1596470400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390529835,
+      "response_sha256": "cfc7b66bbabce7a51b5c0d43732ea71f61adade38ddf9bd569d356d2d233d167"
+    },
+    {
+      "elapsed_seconds": 7.207,
+      "parameters": {
+        "endTime": 1625270399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1610870400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390537050,
+      "response_sha256": "2558bb73602d25c9aa0039c8cf3f00a1bdb62ca26eba31943daa52816d475f04"
+    },
+    {
+      "elapsed_seconds": 7.697,
+      "parameters": {
+        "endTime": 1639670399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1625270400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390544756,
+      "response_sha256": "1b5b776b1908ea54c90e39f4af6b280677948548d3aa285d9beef3a78be1a346"
+    },
+    {
+      "elapsed_seconds": 7.392,
+      "parameters": {
+        "endTime": 1654070399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1639670400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390552155,
+      "response_sha256": "c9d8028cb3b2f7a396d6589a22c2da6f943a46aa3c692f7024d98deae479f918"
+    },
+    {
+      "elapsed_seconds": 7.829,
+      "parameters": {
+        "endTime": 1668470399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1654070400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390559992,
+      "response_sha256": "99727121fa554b468ed86a8ff0a9eb06c464a6bac4ab18e2a4fb10a1561f9779"
+    },
+    {
+      "elapsed_seconds": 7.284,
+      "parameters": {
+        "endTime": 1682870399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1668470400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390567284,
+      "response_sha256": "ac7ebc74b9233f97420362d43c9f33caac115538347cd7610fa1c440a99e0c13"
+    },
+    {
+      "elapsed_seconds": 7.286,
+      "parameters": {
+        "endTime": 1697270399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1682870400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390574578,
+      "response_sha256": "cd0311e7d8501b9ff365902fc7a15d824269fff8db1a4e1ff35d129f1d2d0886"
+    },
+    {
+      "elapsed_seconds": 7.641,
+      "parameters": {
+        "endTime": 1711670399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1697270400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390582227,
+      "response_sha256": "fd2a560d98a95393fed6e74820e76e9d03801ad2998e07d31b1ee5576c75734c"
+    },
+    {
+      "elapsed_seconds": 1.608,
+      "parameters": {},
+      "path": "/fapi/v1/time",
+      "received_at_ms": 1790390592855,
+      "response_sha256": "95818212b86f2163c7f88fe85eb0c2a878b89af379f824f029f4a55e12c2061f"
+    },
+    {
+      "elapsed_seconds": 2.117,
+      "parameters": {},
+      "path": "/fapi/v1/time",
+      "received_at_ms": 1790390603981,
+      "response_sha256": "648f3d83b2c15a856d4c8ced01e8757e0675191eb3ac1e06688da08991677367"
+    },
+    {
+      "elapsed_seconds": 7.782,
+      "parameters": {},
+      "path": "/fapi/v1/time",
+      "received_at_ms": 1790390620773,
+      "response_sha256": "7c0b1f557a24df87666dd47f69468b8892c857c5cafd9b14812f51184dfc6378"
+    },
+    {
+      "elapsed_seconds": 8.678,
+      "parameters": {
+        "endTime": 1726070399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1711670400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390629451,
+      "response_sha256": "5dd24116598d3f3c95bed3e49ca2b73722d169f5ba343b9b031bbe0914ec57db"
+    },
+    {
+      "elapsed_seconds": 8.882,
+      "parameters": {
+        "endTime": 1740470399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1726070400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390638340,
+      "response_sha256": "ed174666e1a52c570bd6652f37ad5348d3dd47ee8860e24072bd621910355560"
+    },
+    {
+      "elapsed_seconds": 8.296,
+      "parameters": {},
+      "path": "/fapi/v1/time",
+      "received_at_ms": 1790390664662,
+      "response_sha256": "ffe0d2eeb64e43370877ce3a023753fa9adc1ccf58c5656decadd162c809d234"
+    },
+    {
+      "elapsed_seconds": 7.613,
+      "parameters": {
+        "endTime": 1754870399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1740470400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390672275,
+      "response_sha256": "39b02feebdda7c4d4e26fde09ccf77ba7371e2c1a95473966970d22849c975e7"
+    },
+    {
+      "elapsed_seconds": 7.735,
+      "parameters": {
+        "endTime": 1769270399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1754870400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390680017,
+      "response_sha256": "bbd6390fd333196cb32b57bd5354ea7776a04b21a0a2bfc70c2a2a0bd7f7b320"
+    },
+    {
+      "elapsed_seconds": 7.463,
+      "parameters": {
+        "endTime": 1783670399999,
+        "interval": "4h",
+        "limit": 1000,
+        "startTime": 1769270400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390687488,
+      "response_sha256": "9eee6ee258476137f04a20801bfa2f7cf63628f516c585dfd6a4e238fef8d023"
+    },
+    {
+      "elapsed_seconds": 7.507,
+      "parameters": {
+        "endTime": 1790380799999,
+        "interval": "4h",
+        "limit": 466,
+        "startTime": 1783670400000,
+        "symbol": "BTCUSDT"
+      },
+      "path": "/fapi/v1/klines",
+      "received_at_ms": 1790390695003,
+      "response_sha256": "67bbefbf80dc63e3cc88c5665e1f85d30d93b5178ceb4e8383647c89eab878c5"
+    },
+    {
+      "elapsed_seconds": 8.2,
+      "parameters": {},
+      "path": "/fapi/v1/time",
+      "received_at_ms": 1790390703208,
+      "response_sha256": "f0b54e9fa2b132c33638f3d415f2326bdd7163647bf1ccc841d1b195ad2e1bce"
+    }
+  ],
+  "rounded_quantity_btc": "0.010",
+  "rules": {
+    "bytes": 2266,
+    "file": "rules.json",
+    "sha256": "a730dabf5b6710dafb1bc70db1ab579083ad0699e07b5f59e1f20a5617445c7f"
+  },
+  "source_commit": "f80999e5e33f55ef6c4b91649031bf6859015fc2",
+  "source_commit_is_baseline": true,
+  "source_sha256": {
+    "coinquant/__init__.py": "fe919747f40d205f7d0f5804ecc9de9244b4c6ed48c4a78ad233b703c87ba1b3",
+    "coinquant/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "coinquant/active_core.py": "a15927a338c489bae752923641ff3b041e5bdb60042178721f2b4f9020580bfd",
+    "coinquant/binance.py": "c3b99fb3e96287167f7bb3ee4557cfd46245b0bc3ebe9c007e6bc520fef00c56",
+    "coinquant/binance_safety.py": "3ee70211923480f18a2219860123973d23be43646340b200e51cdd6f200338aa",
+    "coinquant/campaign.py": "05f7a0170f68a51d8e89b92d0533ce0b7adcc755db31df35464574647f117f14",
+    "coinquant/capital.py": "9ce5e29b774249754ca28d78d443ece2c03982010825b19681c96d23bd5cd930",
+    "coinquant/channel_core.py": "6daa25dc73e0f0a5480e4940431380ffcced4a2f98d3ec804acf5a8c4050cc49",
+    "coinquant/cli.py": "f636718918b15895c721cdd9a3cb8a8f92e5f95d4a4a03aeb3a5fa8d7512c765",
+    "coinquant/conditional_hold.py": "101fb45d89a7f648fbf9cd9bf9fddaf0555a5d8169ea83fcc2c399ce28da89e7",
+    "coinquant/config.py": "7455cbf1aec8a57b7ab8cd790902b8834d880895a3c996dd0200b49f538c6764",
+    "coinquant/data.py": "fc6910ccc1f415af370114bd74ff577e0a83886f52e03b714003abf93fb6332d",
+    "coinquant/lifecycle.py": "997980446a0fa87ded2c60227caf5df3374f45ea2713fbaef61a08cc53dc1645",
+    "coinquant/linear_account.py": "186da222a2a55c8ba71190c73c7ae973a17a2f69a024075c9b761c0235d42339",
+    "coinquant/linear_preview.py": "10b4c58ece529311a2be26d940ce7277f1ea51c5bf5e022b94830a52e22fe4a2",
+    "coinquant/linear_sizing.py": "8dab4a44d23ae349465bc15b60fcab8f53ab59f9590af7f0776359e1666d6275",
+    "coinquant/multiscale.py": "ae29dbd89905b15e30d9bf3d3460b6b1dd82293c435719c101a19e9c026b5388",
+    "coinquant/native_preview.py": "dc4d0d7e4cf7986e35f96acae3b92363843c631e40245c6e0a48d285d205e9d9",
+    "coinquant/opportunities.py": "1c23ba0653da553fde3be3798d3b88687fe58e0b883218cebd93819568057d61",
+    "coinquant/ownership.py": "cce1a0db8fe97782fee3cb73a5543f732c8ec2be342b4a3fb062bd2f4e2ed177",
+    "coinquant/renewal_risk.py": "3aaaa810546dce37e8869c5e28e6ec14447fde1554893c0f475c53f59db30e78",
+    "coinquant/research.py": "724b12c98c7a14f6fc6b2f23e77312a39136e557c32136d890e8672171729e05",
+    "coinquant/session.py": "d4f6c4b954e3d6d42c9c331436073fad77896fba2fad8d1901166324424d9f84",
+    "coinquant/state.py": "7e26b337fb71a94bde6e405fa0ea9eb827964a8364a080fe4139f6226a19b3e8",
+    "coinquant/types.py": "094dfb426391f7d89f02bfc9c2c0eea2d027f88b319d04b6b051386c752b0cd3"
+  },
+  "started_at_ms": 1790390467567,
+  "status": "PASS_PUBLIC_ONLY",
+  "verification_script_sha256": "6638af62c95c1337ac7e201c2174211b883b5fc58984513a7c2345d0fe16fb4d",
+  "writes": 0
+}
