@@ -176,7 +176,7 @@ def build(input_root: Path, account_root: Path, output: Path) -> dict:
                                    'midpoint stop; far 20R take; 42-bar expiry',
                    status_alignment='all saved call regimes match reconstructed signal direction',
                    invocation_draws_sha256=sha256(Path('research/invocation_draws.json')),
-                   spec_sha256=sha256(Path('research/spec.json')),
+                   spec_sha256=sha256(Path('research/legacy/spec.json')),
                    account_decisions_sha256=sha256(decisions_path),
                    account_orders_sha256=sha256(orders_path),
                    account_inputs_sha256=sha256(account_root/'inputs.json'),

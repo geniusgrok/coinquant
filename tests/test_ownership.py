@@ -54,7 +54,7 @@ class OwnershipTests(TestCase):
             entry['status']='CANCELED'
             payload=dict(symbol='BTCUSDT',side='SELL',positionSide='BOTH',type='MARKET',quantity='.003',reduceOnly='true')
             state.prepare('cq-exit','binance_order',payload)
-            exit_order=dict(payload,orderId=2,reduceOnly=True)
+            exit_order=dict(payload,orderId=2,reduceOnly=True,status='FILLED',origQty='.003',executedQty='.003')
             r.query_intent.side_effect=lambda identity,**kw:dict(parent=entry if identity=='cq-entry' else exit_order,child=None)
             r.get.return_value=[t,dict(t,id=12,orderId=2,side='SELL')]
             s.update(quantity_btc='0',entry='0',possible_entry_remainders=0)

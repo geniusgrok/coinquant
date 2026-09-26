@@ -24,7 +24,7 @@ SOURCES = ('research/persistent_hold_replay.py', 'research/bounded_execution.py'
            'research/bounded_execution_data.py', 'research/bounded_execution_replay.py',
            'research/minute_evidence.py', 'research/verify_account_ledger.py',
            'coinquant/linear_account.py', 'coinquant/linear_sizing.py',
-           'coinquant/campaign.py', 'coinquant/opportunities.py', 'research/spec.json', 'research/invocation_draws.json')
+           'coinquant/campaign.py', 'coinquant/opportunities.py', 'research/legacy/spec.json', 'research/invocation_draws.json')
 
 
 def digest(path):

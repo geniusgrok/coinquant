@@ -1,5 +1,13 @@
 # Coinquant 有限会话工程恢复入口（2026-09-26）
 
+## 2026-09-26 PR #43 复核与修复
+
+从 main `7294efb09f3c359cdf8770e723bc21aa8035ce23` 和 PR #43 原头 `e7175cf92a38b0c5bb600dda11f45ffca29b2f59` 逐项验证，结果见 `REVIEW-20260926.md`。已修复原报告的恢复/审计缺陷，以及漏掉的外部保护冒充、满页快照阻塞和替换中断恢复；终态/成交归档、密集 ID 分页、签名现金流水与逐轮实际观察共用原账户数据库。资金审计故障不会阻止已确认退出；收尾失败清除陈旧账户观察。独立复核无剩余已确认代码缺陷，Python 3.13 全部 362 项离线测试通过。验证身份见 `evidence/pr43-review-20260926/VERIFICATION.json`；远端发布、CI、合并以 GitHub 实际状态为准。
+
+当前 `research/spec.json` 已明确 Binance BTCUSDT 有限会话；旧规格逐字节保存在 `research/legacy/spec.json`，冻结历史调用及经济结果不改。零成交终态 IOC 的逐轮重评和冷启动消费已有机会是当前明确策略，未擅自改为新的入场规则。未观察到的交易所保留期缺口仍未知，不插值为连续权益。
+
+本次不运行经济验收，不发真实/Testnet 订单。原生账户与订单验证、当前会话完整成本后经济账户仍未完成；`run --execute` 保持硬门。不要把合并或离线测试称为生产资格完成。
+
 后续补充：已完成真实公共接口与14,946根4h历史的模型重建/中断恢复；分页1000及动态权重修复，345项测试通过。先读 PROJECT_STATE 顶部与 `evidence/bounded-session-20260926/public/RESULT.json`，勿重复原先未实测公开接口的判断。私有账户配置/凭据未提供；原生交易资格仍未完成。
 
 当前任务：完成经济验收以外的全部工程。读取实时远端main和`AGENTS.md`、`PROJECT_STATE.md`顶部、`evidence/bounded-session-20260926/{RESULT.md,VERIFICATION.json}`。本轮基线为`e8e5f2aea8fe8af390190443b3a9d75e97b0884d`，工程分支`engineering/bounded-session-20260926`；实际HEAD/PR以远端为准。
