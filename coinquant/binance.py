@@ -20,7 +20,7 @@ PRIVATE = {'/api/v3/account', '/fapi/v3/account', '/fapi/v1/accountConfig',
            '/fapi/v1/symbolConfig', '/fapi/v3/positionRisk', '/fapi/v1/openOrders',
            '/fapi/v1/openAlgoOrders', '/fapi/v1/userTrades',
            '/fapi/v1/commissionRate', '/fapi/v1/leverageBracket',
-           '/fapi/v1/order', '/fapi/v1/algoOrder'}
+           '/fapi/v1/order', '/fapi/v1/algoOrder', '/fapi/v1/income'}
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -97,7 +97,8 @@ class Binance:
                  '/fapi/v1/exchangeInfo':1,'/fapi/v1/time':1,'/fapi/v1/depth':5,
                  '/fapi/v1/klines':2,
                  '/fapi/v1/commissionRate':20,'/fapi/v1/leverageBracket':1,
-                 '/fapi/v1/order':1,'/fapi/v1/algoOrder':1,'/fapi/v1/positionMargin':1}
+                 '/fapi/v1/order':1,'/fapi/v1/algoOrder':1,'/fapi/v1/positionMargin':1,
+                 '/fapi/v1/income':30}
         weight=40 if path.endswith(('/openOrders','/openAlgoOrders')) and 'symbol' not in params else weights[path]
         if path == '/fapi/v1/klines':
             limit=params.get('limit',500)
@@ -375,8 +376,8 @@ class Binance:
             first=observe()
             fills=self.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','limit':1000})
             second=observe()
-            if not isinstance(fills,list) or len(fills)>=1000:
-                raise Unknown('recent trade response is missing or may be truncated')
+            if not isinstance(fills,list) or len(fills)>1000:
+                raise Unknown('recent trade response is missing or oversized')
             if any(f.get('symbol')!='BTCUSDT' for f in fills):
                 raise Unknown('unexpected recent trade scope')
             if (any(type(f.get('id')) is not int or f['id']<0 for f in fills)
@@ -395,6 +396,7 @@ class Binance:
                                   second['positions'],second['orders'],second['algos'],ticker['markPrice'])
             report.update(mark_time=ticker['time'],mark_price=ticker['markPrice'],
                           recent_fill_count=len(fills),last_fill_id=max((f['id'] for f in fills),default=-1),
+                          recent_fill_window_complete=len(fills)<1000,
                           observed_at_ms=int(self.clock()*1000),recovery_history_complete=False)
             self.check_all_orders=False
             return report

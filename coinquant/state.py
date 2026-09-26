@@ -47,6 +47,9 @@ class State:
             self.db.execute('PRAGMA synchronous=FULL')
             self.db.execute('CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)')
             self.db.execute('CREATE TABLE IF NOT EXISTS intents (id TEXT PRIMARY KEY, kind TEXT NOT NULL, payload TEXT NOT NULL, status TEXT NOT NULL, result TEXT NOT NULL, updated REAL NOT NULL)')
+            self.db.execute('CREATE TABLE IF NOT EXISTS native_fills (trade_id INTEGER PRIMARY KEY, entry_id TEXT NOT NULL, payload TEXT NOT NULL)')
+            self.db.execute('CREATE TABLE IF NOT EXISTS observations (sequence INTEGER PRIMARY KEY, recorded_at REAL NOT NULL, payload TEXT NOT NULL)')
+            self.db.execute('CREATE TABLE IF NOT EXISTS native_income (kind TEXT NOT NULL, transaction_id INTEGER NOT NULL, payload TEXT NOT NULL, PRIMARY KEY(kind,transaction_id))')
             saved = self.get('identity')
             if saved is not None and saved != self.identity:
                 raise Blocked('state directory belongs to another account or environment')
@@ -129,6 +132,11 @@ class State:
 
     def report(self, value: dict) -> None:
         # Reports deliberately exclude raw API-key metadata and signed requests.
+        # Keep each actual observation/unknown gap; never fabricate valuations
+        # while the process was stopped or an exchange read was unavailable.
+        with self.db:
+            self.db.execute('INSERT INTO observations(recorded_at,payload) VALUES (?,?)',
+                            (time(),json.dumps(serial(value),sort_keys=True,allow_nan=False)))
         output = self.directory / 'latest.json'
         temporary = output.with_suffix('.tmp')
         with open(temporary, 'w', encoding='utf-8') as stream:

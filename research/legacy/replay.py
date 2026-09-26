@@ -480,7 +480,7 @@ def run(manifest, output, config, *, stress=False):
         raise Blocked('evidence output must be empty; refusing to overwrite original results')
     identity = dict(source_sha256=source_identity(), config=serial(config),
                     dataset_manifest_sha256=digest(manifest), dataset=dataset.manifest,
-                    research_spec=frozen, research_spec_sha256=digest(Path(__file__).resolve().parent.parent / 'research/spec.json'),
+                    research_spec=frozen, research_spec_sha256=digest(Path(__file__).resolve().parent / 'spec.json'),
                     stress=stress)
     (directory / 'identity.json').write_text(json.dumps(identity, indent=2) + '\n')
     with open(directory / 'invocations.csv', 'w', newline='') as stream:

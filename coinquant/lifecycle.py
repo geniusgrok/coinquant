@@ -8,6 +8,7 @@ from decimal import Decimal as D
 
 from . import binance_safety as safety
 from .native_preview import entry_preview
+from .ownership import owned_observation
 from .state import client_id
 from .types import Blocked, Unknown, number, floor_step
 
@@ -44,6 +45,17 @@ class Lifecycle:
         """Cancel/replace, never amend an order with an ambiguous cumulative fill."""
         if any(a.get('closePosition') is not True and a.get('reduceOnly') is not True for a in snapshot['open_algos']):
             raise Unknown('unmanaged conditional entry; cannot assume it is canceled')
+        for algo in snapshot['open_algos']:
+            row=self.state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(algo.get('clientAlgoId'),)).fetchone()
+            if not row or row[0]!='binance_algo':
+                raise Unknown('unowned conditional protection cannot establish managed safety')
+            payload=json.loads(row[1])
+            if (any(algo.get(k)!=payload.get(k) for k in ('symbol','side','positionSide','workingType'))
+                    or algo.get('orderType')!=payload.get('type')
+                    or algo.get('closePosition') is not True or payload.get('closePosition')!='true'
+                    or algo.get('priceProtect') is not False or payload.get('priceProtect')!='false'
+                    or number(algo.get('triggerPrice'),positive=True)!=number(payload.get('triggerPrice'),positive=True)):
+                raise Unknown('native protection differs from its durable request')
         for order in snapshot['open_orders']:
             if order.get('reduceOnly') is True:
                 raise Unknown('working reduction must settle before strategy actions')
@@ -95,7 +107,7 @@ class Lifecycle:
         expected = number(plan['quantity_btc'])
         if q*expected <= 0 or abs(q) > abs(expected):
             raise Unknown('entry fill direction or size conflicts with its plan')
-        observed = self.reader.query_intent(plan['id'])['parent']
+        observed = owned_observation(self.state,self.reader,plan['id'])['parent']
         if number(observed['executedQty']) != abs(q):
             raise Unknown('actual position is not the verified entry fill')
         # The reserve was calculated before entry; scale to actual executed size.
@@ -138,7 +150,7 @@ class Lifecycle:
                 operation={**operation,'quantity':str(abs(q))}
                 self.state.set('position_exit',operation)
             if row and row[0]=='confirmed':
-                terminal=self.reader.query_intent(prior)['parent']
+                terminal=owned_observation(self.state,self.reader,prior)['parent']
                 if terminal.get('status') not in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED'):
                     raise Unknown('confirmed reduction is not terminal at exchange')
                 if number(terminal['executedQty'])<=0:
@@ -188,7 +200,10 @@ class Lifecycle:
         plan = self.state.get('entry_plan')
         if plan:
             return self.protect_entry(snapshot,plan)
-        if not snapshot['native_full_position_protected'] or not snapshot['stop_before_liquidation']:
+        replacement=self.state.get('session_replacement')
+        if replacement:
+            return self.complete_replacement(replacement,self.instrument())
+        if not self.planned_protection(snapshot):
             protection = self.state.get('position_protection')
             if not protection:
                 raise Unknown('unprotected position has no owned protection plan')
@@ -200,6 +215,26 @@ class Lifecycle:
                 self.close(snapshot)
                 raise
         return snapshot
+
+    def planned_protection(self,snapshot):
+        protection=self.state.get('position_protection')
+        if not protection:return False
+        active={a.get('clientAlgoId'):a for a in snapshot['open_algos']}
+        for kind,price in (('STOP_MARKET',protection['stop']),('TAKE_PROFIT_MARKET',protection['take'])):
+            identity=client_id(self.state.identity,protection['epoch'],kind)
+            order=active.get(identity)
+            if order is None or order.get('algoStatus')!='NEW':return False
+            if order.get('orderType')!=kind or number(order['triggerPrice'])!=number(price):
+                raise Unknown('active protection does not match the owned position plan')
+        return snapshot['native_full_position_protected'] and snapshot['stop_before_liquidation']
+
+    def complete_replacement(self,replacement,rules):
+        result=safety.replace_protection(self.reader,self.state,self.send,self.uid,
+            replacement['old_epoch'],replacement['epoch'],replacement['stop'],replacement['take'],
+            instrument=rules,authorized=self.authorized)
+        self.state.set('position_protection',{k:v for k,v in replacement.items() if k!='old_epoch'})
+        self.state.set('session_replacement',None)
+        return result
 
     def enter(self, model, snapshot):
         if self.state.pending() or snapshot['possible_entry_remainders'] or number(snapshot['quantity_btc']):
@@ -256,12 +291,7 @@ class Lifecycle:
         if replacement is None:
             replacement=dict(old_epoch=protection['epoch'],epoch=self.epoch(),stop=str(stop),take=str(take),campaign=opportunity.identity)
             self.state.set('session_replacement',replacement)
-        result=safety.replace_protection(self.reader,self.state,self.send,self.uid,
-            replacement['old_epoch'],replacement['epoch'],replacement['stop'],replacement['take'],
-            instrument=rules,authorized=self.authorized)
-        self.state.set('position_protection',{k:v for k,v in replacement.items() if k!='old_epoch'})
-        self.state.set('session_replacement',None)
-        return result
+        return self.complete_replacement(replacement,rules)
 
     def decide(self, model, snapshot):
         """One shared decision path: existing exposure is settled before new risk."""
@@ -276,6 +306,6 @@ class Lifecycle:
 
     def finish(self):
         snapshot=self.recover_exposure(self.settle())
-        if number(snapshot['quantity_btc']) and (not snapshot['native_full_position_protected'] or not snapshot['stop_before_liquidation']):
+        if number(snapshot['quantity_btc']) and not self.planned_protection(snapshot):
             raise Unknown('session ended without confirmed exchange-hosted protection')
         return snapshot

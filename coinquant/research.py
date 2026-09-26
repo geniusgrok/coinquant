@@ -6,7 +6,7 @@ from pathlib import Path
 
 from .types import Blocked, number
 
-SPEC_PATH = Path(__file__).resolve().parent.parent / 'research' / 'spec.json'
+SPEC_PATH = Path(__file__).resolve().parent.parent / 'research' / 'legacy' / 'spec.json'
 
 
 def timestamp(text):
@@ -32,6 +32,7 @@ def digest(path):
 
 
 def spec():
+    """Load the preserved historical benchmark, never current session acceptance."""
     value = json.loads(SPEC_PATH.read_text(encoding='utf-8'))
     if (value['start'] != '2020-01-01T00:00:00Z' or value['initial_cny'] != '10000'
             or value['leverage'] != 20 or value['symbol'] != 'BTCUSD'
@@ -39,7 +40,7 @@ def spec():
             or value.get('liquidity_activity_basis_ms') != 60_000
             or value['cagr_minimum_inclusive'] != '1.5' or value['mdd_maximum_exclusive'] != '0.5'
             or value['end'] != '2026-09-20T00:00:00Z'):
-        raise Blocked('formal economic mandate changed; do not silently qualify')
+        raise Blocked('frozen historical benchmark changed; not current session qualification')
     if timestamp(value['end']) > int(datetime.now(timezone.utc).timestamp() * 1000):
         raise Blocked('research endpoint is in the future')
     for name in ('spread_fraction', 'slippage_fraction', 'volume_participation',
@@ -52,7 +53,7 @@ def spec():
 def invocations(value, *, stress=False):
     """No price, signal, profit, local PRNG state or parameter search is consulted."""
     start, end = timestamp(value['start']), timestamp(value['end'])
-    schedule_path = SPEC_PATH.with_name('invocation_draws.json')
+    schedule_path = SPEC_PATH.parent.parent / 'invocation_draws.json'
     try:
         raw = schedule_path.read_bytes()
         draws = json.loads(raw)

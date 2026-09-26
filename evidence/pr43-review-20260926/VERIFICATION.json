@@ -1,0 +1,52 @@
+{
+  "date": "2026-09-26",
+  "base_main": "7294efb09f3c359cdf8770e723bc21aa8035ce23",
+  "original_pr_head": "e7175cf92a38b0c5bb600dda11f45ffca29b2f59",
+  "python": "3.13.15",
+  "verification": [
+    {
+      "command": "python -m unittest discover -s tests -q",
+      "tests": 362,
+      "result": "passed",
+      "notes": "Existing tests/test_replay.py fixture emitted an unclosed-file ResourceWarning; no failure."
+    },
+    {
+      "command": "python -m compileall -q coinquant research tests",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "independent_review": {
+    "new_regression_tests": 16,
+    "result": "passed; no remaining material finding after revisions"
+  },
+  "source_sha256": {
+    "coinquant/binance.py": "ffcb28c739a6becd17c865fc141a6ebd004faede4d2ebb4ed09797fa13cc562b",
+    "coinquant/binance_safety.py": "335b5ed9d1510a79244b02c0706967a05668875f097a20e01ba47a5e0c677c57",
+    "coinquant/lifecycle.py": "1f1c9260e53e95e015a3c1311389135c44846546eed71799eecdf7f04a7e5ade",
+    "coinquant/ownership.py": "6f7781c298f82f86f7fc2d2b71d3fe8d6afd952c729df868f1f5541130d27ea0",
+    "coinquant/research.py": "c2565accb04216e1ae476aa4614f468dba01712c2f9fef4c32d619b4dc7c99ad",
+    "coinquant/session.py": "7f90b4bd365c6bdcc689e8df85221596a2457a6f17c99899a2cc9045aff1e8c2",
+    "coinquant/state.py": "e43864573bb91861cc743f26b6afb7cfdf5e8ea914474b343618e9cffcf821b2",
+    "research/bounded_execution_replay.py": "d00d04e9c8487c7873d625f99b2524a3979a2b7b64fd929ebb055321422f3615",
+    "research/legacy/replay.py": "7e74d16a96e5fdf619435eb6b57db5f144cb90657eed2ace216ee4578ac20808",
+    "research/opportunity_coverage.py": "5d2cd029ab5e7d8d9301485a5079f3fbc5d2ce9a4356e96423cecfa7e8fa3ca2",
+    "research/persistent_hold_replay.py": "e213feff359eb02e11e32bd80fc80384e871e2bd600229a115c08223f7f8201b",
+    "research/spec.json": "fff2082ba97af4157f5dcf10a57e3c2e41d0b162218e54be025762900b530522",
+    "tests/session_venue.py": "f40ed3740e1fdb8d39c34239798bb3eabdf9bf6e7d16dea7aaddc337f1573ed3",
+    "tests/test_acceptance.py": "b0c2b9edf322a747c0f98a55740e002f7c26a595e57e9c1ff6452f63769de42b",
+    "tests/test_ownership.py": "a6104498fdc1e88af3ecdb6c49e7deb18b38d838390bd62becbfc56ec6e5f1a4",
+    "coinquant/audit.py": "22748fe884376599a31ec82033ee0197ac154a2253054a02d7baa3c37011371b",
+    "research/legacy/spec.json": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9",
+    "tests/test_pr43.py": "e54ed7b6c3349d0d6fa548f27edaf372f996bfae83562aa416572c10f3c5a7f1"
+  },
+  "native_account_access": false,
+  "trading_writes": false,
+  "economic_rerun": false,
+  "native_qualification": "NOT_QUALIFIED",
+  "economic_qualification": "NOT_MEASURED_FOR_CURRENT_SESSION",
+  "remote_verification": "Verify exact committed tree, file bytes and PR head CI before normal merge; remote results are recorded in PR metadata."
+}

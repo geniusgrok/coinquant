@@ -7,6 +7,7 @@ from .native_preview import entry_preview
 from .ownership import reconcile
 from .state import State
 from .types import Blocked, Unknown, number
+from .audit import income
 
 
 def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True):
@@ -22,7 +23,10 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True):
         raise Unknown('unsettled intents block decisions')
     result=preview(model,snapshot,side='both')
     result.update(ownership=ownership,reconstructed_market_only=reconstructed)
+    audit=None
     if execute:
+        # Missing cashflow audit blocks new risk, never a verified reduction.
+        if result['action']=='enter':audit=income(reader,state)
         action,snapshot=engine.decide(model,snapshot)
         # A fill may occur in any write/read race. Reconcile again before deciding
         # on another campaign, never mark a preview or request as consumed.
@@ -30,9 +34,10 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True):
         result['action']=action
     elif result['action']=='enter':
         result.update(entry_preview(reader,model,snapshot,side='both'))
+    if audit is None:audit=income(reader,state)
     return dict(status='executed' if execute and engine.actions else 'no_action' if execute else 'read_only',
                 actual=snapshot,model_preview=result,market_through=market['complete_through'],
-                actions=engine.actions,write_attempted=bool(engine.actions))
+                actions=engine.actions,write_attempted=bool(engine.actions),income_audit=audit)
 
 
 def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sleep, stopping=lambda:False):
@@ -44,7 +49,8 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
     """
     started=monotonic();deadline=started+config.session_seconds
     report=dict(status='read_only',cycles=0,write_attempted=False,errors=[],
-                qualification='NOT_QUALIFIED',stop_reason='deadline',cleanup='not_required')
+                qualification='NOT_QUALIFIED',stop_reason='deadline',cleanup='not_required',
+                session_started_at_ms=int(reader.clock()*1000))
     identity='binance:BTCUSDT:live:'+config.account_uid
     with State(config.state_dir,identity) as state:
         prior_writes=state.get('write_attempt_count') or 0
@@ -53,6 +59,9 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                 reader.begin_cycle(min(120,max(1,deadline-monotonic())))
                 report['cycles']+=1
                 report['observation_current']=False
+                report.pop('actual',None)
+                report.pop('model_preview',None)
+                report['actions']=[]
                 try:
                     current=cycle(reader,state,config.account_uid,execute=execute,
                                   may_enter=lambda:monotonic()<deadline and not stopping())
@@ -85,7 +94,14 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                 except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError) as exc:
                     report.update(status='unknown',cleanup='unresolved',reason=str(exc) if isinstance(exc,(Blocked,Unknown)) else 'Cleanup could not be verified')
                     report['observation_current']=False
+                    report.pop('actual',None)
+                    report.pop('model_preview',None)
                 report['write_attempted'] |= bool(engine.actions)
+                if report['cleanup']=='verified':
+                    try:report['income_audit']=income(reader,state,force=True)
+                    except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError) as exc:
+                        report.update(status='unknown',income_audit={'status':'unresolved'},
+                                      reason=str(exc) if isinstance(exc,(Blocked,Unknown)) else 'Income audit unavailable')
             report['pending_intents']=len(state.pending())
             report['write_attempted']=(state.get('write_attempt_count') or 0)>prior_writes
             if report['pending_intents']:

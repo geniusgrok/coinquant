@@ -50,6 +50,10 @@ def settled_protection(reader,state,identity):
     """Retain conclusive terminal child evidence before exchange history expires."""
     settled=state.get('settled_protection') or {}
     if identity in settled:return True
+    archived=(state.get('terminal_native_orders') or {}).get(identity)
+    if archived and 'algoStatus' in archived['parent']:
+        settled[identity]=archived;state.set('settled_protection',settled)
+        return True
     if not reader.conditional_terminal(identity):return False
     observed=reader.query_intent(identity,conditional=True)
     parent,child=observed['parent'],observed['child']
