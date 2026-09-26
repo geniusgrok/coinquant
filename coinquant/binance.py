@@ -99,6 +99,11 @@ class Binance:
                  '/fapi/v1/commissionRate':20,'/fapi/v1/leverageBracket':1,
                  '/fapi/v1/order':1,'/fapi/v1/algoOrder':1,'/fapi/v1/positionMargin':1}
         weight=40 if path.endswith(('/openOrders','/openAlgoOrders')) and 'symbol' not in params else weights[path]
+        if path == '/fapi/v1/klines':
+            limit=params.get('limit',500)
+            if type(limit) is not int or not 1<=limit<=1500:
+                raise Blocked('invalid Binance candle page size')
+            weight=1 if limit<100 else 2 if limit<500 else 5 if limit<=1000 else 10
         self.ensure_capacity(weight)
         if any(k in params for k in ('signature', 'timestamp', 'recvWindow')):
             raise Blocked('caller cannot override request signing fields')
@@ -156,8 +161,10 @@ class Binance:
         if end-start>160*120*interval:
             raise Unknown('history exceeds bounded recovery; import verified checkpoint')
         candles=[]
-        for cursor in range(start,end,120*interval):
-            page_end=min(end,cursor+120*interval)
+        # Full bootstrap needs years of bars; 1000 keeps the documented weight
+        # at five while avoiding hundreds of small network round trips.
+        for cursor in range(start,end,1000*interval):
+            page_end=min(end,cursor+1000*interval)
             count=(page_end-cursor)//interval
             rows = self.get('/fapi/v1/klines', {'symbol':'BTCUSDT','interval':'4h',
                                              'startTime':cursor,'endTime':page_end-1,'limit':count})

@@ -1,5 +1,7 @@
 # Coinquant 有限会话工程恢复入口（2026-09-26）
 
+后续补充：已完成真实公共接口与14,946根4h历史的模型重建/中断恢复；分页1000及动态权重修复，345项测试通过。先读 PROJECT_STATE 顶部与 `evidence/bounded-session-20260926/public/RESULT.json`，勿重复原先未实测公开接口的判断。私有账户配置/凭据未提供；原生交易资格仍未完成。
+
 当前任务：完成经济验收以外的全部工程。读取实时远端main和`AGENTS.md`、`PROJECT_STATE.md`顶部、`evidence/bounded-session-20260926/{RESULT.md,VERIFICATION.json}`。本轮基线为`e8e5f2aea8fe8af390190443b3a9d75e97b0884d`，工程分支`engineering/bounded-session-20260926`；实际HEAD/PR以远端为准。
 
 已接入有限会话、单配置、Binance受限写入代码、完整订单恢复/保护/退出路径、生产同路径接口事件回放，旧Bybit代码已隔离到research/legacy；未运行经济验收，也没有真实/Testnet订单。独立审查发现的成交序号边界、保护回读丢失、过期历史、退出数量竞争、请求权重、替换日志和回放CLI问题已逐项处理，最终验证见记录。

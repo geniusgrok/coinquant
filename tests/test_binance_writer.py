@@ -44,3 +44,17 @@ class WriterTests(TestCase):
         for _ in range(3):
             with self.assertRaises(Unknown):venue.get('/fapi/v1/time')
         self.assertEqual(opener.open.call_count,1)
+
+    def test_candle_weight_tracks_page_size_and_reserves_before_request(self):
+        import time
+        opener=Mock();opener.open.side_effect=lambda *a,**k:BytesIO(b'[]')
+        venue=Binance(opener=opener)
+        for limit,cost in ((1,1),(99,1),(100,2),(499,2),(500,5),(1000,5),(1500,10)):
+            venue.get('/fapi/v1/klines',{'symbol':'BTCUSDT','limit':limit})
+            self.assertEqual(venue.request_weights[-1][1],cost)
+        count=opener.open.call_count
+        for limit in (True,0,1501,'1000'):
+            with self.assertRaises(Blocked):venue.get('/fapi/v1/klines',{'limit':limit})
+        venue.request_weights.clear();venue.request_weights.append((time.monotonic(),2196))
+        with self.assertRaises(Unknown):venue.get('/fapi/v1/klines',{'limit':1000})
+        self.assertEqual(opener.open.call_count,count)
