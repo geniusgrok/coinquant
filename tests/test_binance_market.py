@@ -1,12 +1,12 @@
 import unittest
-from coinquant.binance import BinanceReadOnly
+from coinquant.binance import Binance
 from coinquant.types import Unknown
 
 
 class NativeMarket(unittest.TestCase):
     def test_checkpoint_pages_without_truncation(self):
         interval=14400000;start=interval*800;end=start+241*interval;now=end+1
-        reader=BinanceReadOnly(clock=lambda:now/1000);pages=[]
+        reader=Binance(clock=lambda:now/1000);pages=[]
         def get(path,parameters=None):
             if path.endswith('/time'):return {'serverTime':now}
             pages.append(parameters)
@@ -23,7 +23,7 @@ class NativeMarket(unittest.TestCase):
         interval=14400000; end=interval*1000; now=end+1234
         rows=[[t,'100','102','99','101','2',t+interval-1,'200',1,'1','100']
               for t in range(end-120*interval,end,interval)]
-        reader=BinanceReadOnly(clock=lambda:now/1000)
+        reader=Binance(clock=lambda:now/1000)
         def get(path,parameters=None):
             if path.endswith('/time'):return {'serverTime':now}
             self.assertEqual(parameters['endTime'],end-1)

@@ -1,4 +1,6 @@
 {
   "account_uid": "",
-  "state_dir": "~/.coinquant/binance-btcusdt"
+  "state_dir": "~/.coinquant/binance-btcusdt",
+  "session_seconds": 300,
+  "poll_seconds": 5
 }

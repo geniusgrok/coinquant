@@ -4,11 +4,11 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
-from coinquant.bybit import Bybit
-from coinquant.config import Config
-from coinquant.execution import run_once, coverage
-from coinquant.model import decide
-from coinquant.pending import record, valid
+from research.legacy.bybit import Bybit
+from research.legacy.config import Config
+from research.legacy.execution import run_once, coverage
+from research.legacy.model import decide
+from research.legacy.pending import record, valid
 from coinquant.state import State, client_id
 from coinquant.types import D, ModelConfig, Position, Target, Unknown
 from test_execution import FakeVenue, protectors
@@ -70,7 +70,7 @@ class PendingTests(unittest.TestCase):
         return Config(account_uid='12345', max_position_usd=D(10000), state_dir=path)
 
     def invoke(self, venue, config, t):
-        with patch('coinquant.execution.decide', return_value=t):
+        with patch('research.legacy.execution.decide', return_value=t):
             return run_once(venue, config, execute=True)
 
     def test_hosted_entry_survives_exit_and_same_candle_does_not_duplicate(self):
@@ -209,12 +209,12 @@ class CrossEntryIdentityTests(unittest.TestCase):
         v = ConditionalVenue()
         with TemporaryDirectory() as first, TemporaryDirectory() as lost:
             config = Config(account_uid='12345', max_position_usd=D(10000), state_dir=first)
-            with patch('coinquant.execution.decide', return_value=target()):
+            with patch('research.legacy.execution.decide', return_value=target()):
                 run_once(v, config, execute=True)
             v.trigger(next(iter(v.records)))
             v.s = replace(v.s, position=Position(), orders=(), mark=D(30745))
             immediate = replace(target(), trigger_price=D(0))
-            with patch('coinquant.execution.decide', return_value=immediate):
+            with patch('research.legacy.execution.decide', return_value=immediate):
                 report = run_once(v, replace(config, state_dir=lost), execute=True)
         self.assertEqual(v.s.position.quantity, 0)
         self.assertEqual(len(v.writes), 1)
@@ -224,7 +224,7 @@ class CrossEntryIdentityTests(unittest.TestCase):
         v = ConditionalVenue()
         with TemporaryDirectory() as path:
             config = Config(account_uid='12345', max_position_usd=D(10000), state_dir=path)
-            with patch('coinquant.execution.decide', return_value=target()):
+            with patch('research.legacy.execution.decide', return_value=target()):
                 run_once(v, config, execute=True)
             v.trigger(next(iter(v.records)))
             v.s = replace(v.s, orders=())

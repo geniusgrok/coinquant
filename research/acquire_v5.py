@@ -23,7 +23,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, build_opener
 
-from coinquant.rest import NoRedirect, OFFICIAL_HOSTS
+from research.legacy.rest import NoRedirect, OFFICIAL_HOSTS
 
 SYMBOL = "BTCUSD"
 CATEGORY = "inverse"

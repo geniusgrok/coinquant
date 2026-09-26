@@ -14,8 +14,8 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
-from coinquant import replay
-from coinquant.config import load
+from research.legacy import replay
+from research.legacy.config import load
 from coinquant.data import Dataset, Tick, MINUTE
 from coinquant.research import digest, iso
 from coinquant.types import Bar, Blocked, D

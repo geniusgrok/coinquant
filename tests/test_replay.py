@@ -9,7 +9,7 @@ import tempfile
 import unittest
 
 from coinquant.data import Dataset, HOUR, MINUTE
-from coinquant.replay import (Account, LIQUIDATION_REASON, STOP_REASON, TAKE_REASON,
+from research.legacy.replay import (Account, LIQUIDATION_REASON, STOP_REASON, TAKE_REASON,
                                 _open_exit_terms, _pending_exit_terms, _replay,
                                 liquidation_takeover)
 from coinquant.research import digest, invocations, iso, spec, timestamp
@@ -116,7 +116,7 @@ class ReplayTests(unittest.TestCase):
         self.assertAlmostEqual(a.wallet, before - margin)
 
     def test_liquidation_takeover_consumes_only_isolated_position_margin(self):
-        from coinquant.model import bankruptcy_price
+        from research.legacy.model import bankruptcy_price
 
         r = sample().rules
         a = Account(D('1'))

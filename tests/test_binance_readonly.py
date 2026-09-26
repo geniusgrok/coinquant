@@ -5,7 +5,7 @@ import unittest
 from decimal import Decimal
 from urllib.error import URLError
 
-from coinquant.binance import BinanceReadOnly, NoRedirect, validate_account_mode, account_report
+from coinquant.binance import Binance, NoRedirect, validate_account_mode, account_report
 from coinquant.types import Blocked, Unknown
 
 
@@ -19,7 +19,7 @@ class Opener:
 
 class BinanceReadTests(unittest.TestCase):
     def test_signs_exact_query_and_returns_only_uid(self):
-        o=Opener();v=BinanceReadOnly(key='test-key',secret='test-secret',opener=o,clock=lambda:1)
+        o=Opener();v=Binance(key='test-key',secret='test-secret',opener=o,clock=lambda:1)
         self.assertEqual(v.account_identity(),'123')
         request=o.requests[0];query,signature=request.full_url.split('?',1)[1].split('&signature=')
         self.assertEqual(signature,hmac.new(b'test-secret',query.encode(),hashlib.sha256).hexdigest())
@@ -27,13 +27,13 @@ class BinanceReadTests(unittest.TestCase):
         self.assertTrue(request.full_url.startswith('https://api.binance.com/api/v3/account?'))
 
     def test_public_get_never_sends_key_or_signature(self):
-        o=Opener(b'{"serverTime":1000}');v=BinanceReadOnly(key='test-key',secret='test-secret',opener=o)
+        o=Opener(b'{"serverTime":1000}');v=Binance(key='test-key',secret='test-secret',opener=o)
         v.get('/fapi/v1/time');r=o.requests[0]
         self.assertNotIn('signature',r.full_url)
         self.assertNotIn('X-mbx-apikey',r.headers)
 
     def test_out_of_scope_request_and_redirect_blocked(self):
-        v=BinanceReadOnly(opener=Opener())
+        v=Binance(opener=Opener())
         for path in ['/fapi/v1/order','/sapi/v1/capital/withdraw/apply','https://example.com']:
             with self.assertRaises(Blocked):v.get(path)
         with self.assertRaises(Blocked):NoRedirect().redirect_request()
@@ -42,9 +42,9 @@ class BinanceReadTests(unittest.TestCase):
     def test_unavailable_is_unknown_and_error_does_not_leak_secrets(self):
         class Broken:
             def open(self,*args,**kwargs):raise URLError('secret-url-and-key')
-        with self.assertRaises(Unknown) as e:BinanceReadOnly(opener=Broken()).get('/fapi/v1/time')
+        with self.assertRaises(Unknown) as e:Binance(opener=Broken()).get('/fapi/v1/time')
         self.assertNotIn('secret-url',str(e.exception))
-        with self.assertRaises(Unknown):BinanceReadOnly(opener=Opener(b'{}'),key='k',secret='s').account_identity()
+        with self.assertRaises(Unknown):Binance(opener=Opener(b'{}'),key='k',secret='s').account_identity()
 
     def test_missing_or_wrong_account_mode_blocks(self):
         account={'dualSidePosition':False,'multiAssetsMargin':False}
@@ -84,7 +84,7 @@ class BinanceReadTests(unittest.TestCase):
         with self.assertRaises(Unknown):account_report(123,config,symbol,a,[p],[],algos,'110000')
 
     def test_bounded_snapshot_does_not_turn_racing_wallet_into_stable_state(self):
-        class Fixture(BinanceReadOnly):
+        class Fixture(Binance):
             def __init__(self,racing=False):
                 super().__init__(clock=lambda:1000);self.racing=racing;self.observations=0
             def account_identity(self):return '123'

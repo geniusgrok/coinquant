@@ -3,14 +3,14 @@
 Current rules are never substituted for historical replay evidence. No method
 here sends an order, transfers funds, or marks a campaign as filled.
 """
-from decimal import Decimal as D
+from decimal import Decimal as D, ROUND_CEILING
 from .types import Blocked, Unknown, number, floor_step
 from .linear_account import Account
 from .linear_sizing import funded_target
 
 
-def entry_preview(reader, model, snapshot):
-    if model.action(number(snapshot['quantity_btc']))!='enter':
+def entry_preview(reader, model, snapshot, *, side='long'):
+    if model.action(number(snapshot['quantity_btc']),side)!='enter':
         raise Blocked('entry preview requires a fresh flat campaign')
     if snapshot['possible_entry_remainders']:
         raise Unknown('entry remainder must be reconciled before sizing')
@@ -67,19 +67,24 @@ def entry_preview(reader, model, snapshot):
     if not 0<=available<=wallet:raise Unknown('unsupported available collateral')
     if available!=wallet:raise Unknown('unexplained reserved collateral; no new quantity')
     if abs(int(reader.clock()*1000)-stamp)>15000:raise Unknown('book expired during account refresh')
-    price=asks[0][0]*D('1.001');mark=number(fresh['mark_price'],positive=True)
-    capacity=sum((q for p,q in asks if p<=price),D(0))*D('.01')
     opportunity=model.model.active
-    stop=floor_step(opportunity.stop,tick)
-    take=floor_step(opportunity.take,tick)+tick
-    if not number(filters[0]['minPrice'])<=stop<take<=number(filters[0]['maxPrice']):
+    direction=opportunity.direction
+    raw_price=(asks[0][0]*D('1.001') if direction>0 else bids[0][0]*D('.999'))
+    price=(floor_step(raw_price,tick) if direction>0 else (raw_price/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
+    mark=number(fresh['mark_price'],positive=True)
+    capacity=sum((q for p,q in (asks if direction>0 else bids) if (p<=price if direction>0 else p>=price)),D(0))*D('.01')
+    stop=(floor_step(opportunity.stop,tick) if direction>0 else (opportunity.stop/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
+    take=(floor_step(opportunity.take,tick)+tick if direction>0 else floor_step(opportunity.take,tick))
+    if not all(number(filters[0]['minPrice'])<=p<=number(filters[0]['maxPrice']) for p in (stop,take,price)):
         raise Blocked('protection outside current price limits')
     account=Account(wallet)
-    result=funded_target(account,1,model.fraction('3.6','.0011'),price,mark,stop,take,capacity,
+    result=funded_target(account,direction,model.fraction('3.6','.0011'),price,mark,stop,take,capacity,
                          instrument,fee=fee,maintenance=mmr,notional_limit=cap)
     return dict(quantity_btc=str(account.q),entry_estimate=str(price),stop=str(stop),take=str(take),
                 allocated_margin_usdt=str(account.margin),constraint=result['reason'],
                 quantity_status='read-only conservative native-input preview',
                 fee=str(fee),maintenance_bound=str(mmr),maintenance_deduction='0',notional_cap=str(cap),
                 rule_scope='current observation only; not historical evidence',
-                native_execution_verified=False)
+                native_execution_verified=False,instrument=instrument,
+                side='BUY' if direction>0 else 'SELL',campaign=opportunity.identity,
+                observed_at=fresh['mark_time'])

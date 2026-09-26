@@ -5,8 +5,8 @@ from decimal import ROUND_CEILING
 from .bybit import TERMINAL
 from . import pending
 from .model import decide, protected, repair_target, validate_risk_increase
-from .state import State, client_id
-from .types import D, INTERVAL_MS, ZERO, Blocked, Unknown, Target, floor_step, number, serial
+from coinquant.state import State, client_id
+from coinquant.types import D, INTERVAL_MS, ZERO, Blocked, Unknown, Target, floor_step, number, serial
 
 
 def _coverage(snapshot) -> bool:

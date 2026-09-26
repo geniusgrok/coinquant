@@ -4,7 +4,7 @@ import time
 from . import decode
 from .config import Config
 from .rest import Rest
-from .types import (Bar, Blocked, CATEGORY, D, INTERVAL_MS, SYMBOL, Unknown,
+from coinquant.types import (Bar, Blocked, CATEGORY, D, INTERVAL_MS, SYMBOL, Unknown,
                     number, serial)
 
 SCOPE = {'category': CATEGORY, 'symbol': SYMBOL}

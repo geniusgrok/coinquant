@@ -1,4 +1,4 @@
-"""Binance bounded observation adapter; no order or account-setting writes.
+"""Single Binance adapter with bounded reads and explicitly authorized order writes.
 
 Private reads require explicitly supplied credentials; raw identity/balance
 responses must never be printed or persisted.
@@ -7,6 +7,7 @@ import hashlib
 import hmac
 import json
 import time
+from collections import deque
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import HTTPRedirectHandler, Request, build_opener
@@ -27,18 +28,78 @@ class NoRedirect(HTTPRedirectHandler):
         raise Blocked('Binance API redirects are refused')
 
 
-class BinanceReadOnly:
-    def __init__(self, *, key='', secret='', opener=None, clock=time.time):
+class Binance:
+    def __init__(self, *, key='', secret='', opener=None, clock=time.time, authorize_writes=False):
         self.key, self.secret = key, secret
         self.opener = opener or build_opener(NoRedirect())
         self.clock = clock
+        self.authorize_writes = authorize_writes is True
+        self.cooldown_until = 0
+        self.request_weights = deque()
+        self.check_all_orders = True
         self.deadline = time.monotonic() + 120
+
+    def begin_cycle(self, seconds=120):
+        self.deadline = time.monotonic() + min(120, max(1, seconds))
+        self.check_all_orders = True
+
+    def ensure_capacity(self, reserve):
+        now=time.monotonic()
+        while self.request_weights and self.request_weights[0][0]<=now-60:
+            self.request_weights.popleft()
+        if sum(cost for _,cost in self.request_weights)+reserve>2200:
+            raise Unknown('local request-weight reserve unavailable; wait before new risk')
 
     def get(self, path, parameters=None):
         if path not in PUBLIC | PRIVATE:
             raise Blocked('operation outside Binance read-only allowlist')
-        private = path in PRIVATE
+        return self._request('GET', path, parameters)
+
+    def send(self, method, path, parameters):
+        if not self.authorize_writes:
+            raise Blocked('explicit Binance write authorization required')
+        allowed = {('POST', '/fapi/v1/order'), ('DELETE', '/fapi/v1/order'),
+                   ('POST', '/fapi/v1/algoOrder'), ('DELETE', '/fapi/v1/algoOrder'),
+                   ('POST', '/fapi/v1/positionMargin')}
+        if (method, path) not in allowed:
+            raise Blocked('order lifecycle only; account-setting writes are forbidden')
+        p = parameters
+        if path == '/fapi/v1/algoOrder' and method == 'DELETE':
+            if set(p) != {'clientAlgoId'} or not p['clientAlgoId'].startswith('cq-'):
+                raise Blocked('only identified owned protection may be canceled')
+        elif p.get('symbol') != 'BTCUSDT':
+            raise Blocked('only BTCUSDT writes are supported')
+        if method == 'POST' and path.endswith('/order'):
+            if (p.get('positionSide') != 'BOTH' or p.get('side') not in ('BUY', 'SELL')
+                    or not str(p.get('newClientOrderId', '')).startswith('cq-')
+                    or number(p.get('quantity'), positive=True) <= 0):
+                raise Blocked('invalid identified ordinary order')
+            if p.get('reduceOnly') != 'true' and (p.get('type') != 'LIMIT' or p.get('timeInForce') != 'IOC'):
+                raise Blocked('new exposure requires bounded IOC limit execution')
+        if method == 'POST' and path.endswith('/algoOrder'):
+            if (p.get('type') not in ('STOP_MARKET', 'TAKE_PROFIT_MARKET')
+                    or p.get('closePosition') != 'true' or p.get('positionSide') != 'BOTH'
+                    or p.get('workingType') != 'MARK_PRICE' or p.get('priceProtect') != 'false'
+                    or p.get('side') not in ('BUY', 'SELL') or 'quantity' in p or 'reduceOnly' in p):
+                raise Blocked('only native full-position mark protection is supported')
+        if path.endswith('/positionMargin') and (p.get('type') != 1 or number(p.get('amount'), positive=True) <= 0):
+            raise Blocked('margin withdrawal is forbidden')
+        return self._request(method, path, p)
+
+    def _request(self, method, path, parameters=None):
+        private = method != 'GET' or path in PRIVATE
         params = dict(parameters or {})
+        # Conservative per-process rolling budget; leave headroom under the usual
+        # 2400/min allowance. Unfiltered order scans are restricted to cycle start.
+        weights={'/api/v3/account':20,'/fapi/v1/accountConfig':5,'/fapi/v1/symbolConfig':5,
+                 '/fapi/v3/account':5,'/fapi/v3/positionRisk':5,'/fapi/v1/openOrders':5,
+                 '/fapi/v1/openAlgoOrders':1,'/fapi/v1/userTrades':5,'/fapi/v1/premiumIndex':1,
+                 '/fapi/v1/exchangeInfo':1,'/fapi/v1/time':1,'/fapi/v1/depth':5,
+                 '/fapi/v1/klines':2,
+                 '/fapi/v1/commissionRate':20,'/fapi/v1/leverageBracket':1,
+                 '/fapi/v1/order':1,'/fapi/v1/algoOrder':1,'/fapi/v1/positionMargin':1}
+        weight=40 if path.endswith(('/openOrders','/openAlgoOrders')) and 'symbol' not in params else weights[path]
+        self.ensure_capacity(weight)
         if any(k in params for k in ('signature', 'timestamp', 'recvWindow')):
             raise Blocked('caller cannot override request signing fields')
         if 'symbol' in params and params['symbol'] != 'BTCUSDT':
@@ -53,21 +114,35 @@ class BinanceReadOnly:
         if private:
             query += '&signature=' + hmac.new(self.secret.encode(),query.encode(),hashlib.sha256).hexdigest()
         host = 'api.binance.com' if path == '/api/v3/account' else 'fapi.binance.com'
-        request = Request('https://'+host+path+('?' + query if query else ''),headers=headers,method='GET')
+        if method == 'GET':
+            url, data = 'https://'+host+path+('?' + query if query else ''), None
+        else:
+            url, data = 'https://'+host+path, query.encode()
+            headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        request = Request(url, data=data, headers=headers, method=method)
         remaining = self.deadline-time.monotonic()
+        if time.monotonic() < self.cooldown_until:
+            raise Unknown('Binance rate limit cooldown; no request sent')
         if remaining <= 0: raise Unknown('bounded Binance observation deadline exceeded')
         try:
+            self.request_weights.append((time.monotonic(),weight))
             with self.opener.open(request, timeout=min(8,remaining)) as response:
                 raw = response.read(2000001)
             if len(raw)>2000000: raise Unknown('oversized Binance response')
             result = json.loads(raw)
-        except (HTTPError, URLError, TimeoutError, OSError, ValueError):
-            raise Unknown('Binance observation unavailable; no empty-account inference') from None
-        if not isinstance(result,(dict,list)) or (isinstance(result,dict) and 'code' in result):
+        except HTTPError as exc:
+            if exc.code in (418,429):
+                try:delay=max(60,min(86400,float(exc.headers.get('Retry-After','60'))))
+                except (TypeError,ValueError):delay=60
+                self.cooldown_until=time.monotonic()+delay
+            raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown') from None
+        except (URLError, TimeoutError, OSError, ValueError):
+            raise Unknown('Binance request unavailable; read by stable identity before any retry') from None
+        if not isinstance(result,(dict,list)) or (isinstance(result,dict) and 'code' in result and not (method != 'GET' and result['code'] == 200)):
             raise Unknown('unexpected Binance read response')
         return result
 
-    def completed_market(self, start=None):
+    def completed_market(self, start=None, *, on_page=None):
         """Page complete four-hour bars from an exact checkpoint; never truncate."""
         response = self.get('/fapi/v1/time')
         now = response.get('serverTime') if isinstance(response, dict) else None
@@ -88,6 +163,7 @@ class BinanceReadOnly:
                                              'startTime':cursor,'endTime':page_end-1,'limit':count})
             if not isinstance(rows, list) or len(rows) != count:
                 raise Unknown('complete Binance market history unavailable')
+            page=[]
             for offset, row in enumerate(rows):
                 if (not isinstance(row, list) or len(row) < 11
                         or type(row[0]) is not int or row[0] != cursor+offset*interval
@@ -97,8 +173,10 @@ class BinanceReadOnly:
                 o,h,l,c,v = [number(x) for x in row[1:6]]
                 if not 0 < l <= min(o,c) <= max(o,c) <= h or v < 0:
                     raise Unknown('invalid native Binance candle values')
-                candles.append({'time':row[0],'open':str(o),'high':str(h),'low':str(l),
-                                'close':str(c),'volume':str(v)})
+                page.append({'time':row[0],'open':str(o),'high':str(h),'low':str(l),
+                             'close':str(c),'volume':str(v)})
+            if on_page is not None:on_page(page)
+            candles.extend(page)
         return {'server_time':now,'complete_through':end,'interval_ms':interval,'candles':candles}
 
     def account_identity(self):
@@ -171,6 +249,27 @@ class BinanceReadOnly:
         resolved = 0
         for intent in state.pending():
             kind, payload = intent['kind'], intent['payload']
+            if kind=='binance_cancel':
+                try:
+                    target=payload['origClientOrderId']
+                    original=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(target,)).fetchone()
+                    if not original or original[0]!='binance_order' or payload.get('symbol')!='BTCUSDT':
+                        raise Unknown('cancellation ownership missing')
+                    expected=json.loads(original[1])
+                    parent=self.query_intent(target)['parent']
+                    if any(parent.get(k)!=expected.get(k) for k in ('symbol','side','positionSide','type')):
+                        raise Unknown('cancellation target scope changed')
+                    filled=number(parent['executedQty']);quantity=number(parent['origQty'],positive=True)
+                    if not 0<=filled<=quantity or quantity!=number(expected['quantity'],positive=True):
+                        raise Unknown('canceled fill quantity conflicts')
+                    if parent['status'] in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED'):
+                        if parent['status']=='FILLED' and filled!=quantity or parent['status']=='REJECTED' and filled:
+                            raise Unknown('invalid terminal cancellation')
+                        state.finish(intent['id'],'confirmed',{'status':parent['status'],'executed_quantity':str(filled)})
+                        resolved+=1
+                except (Blocked,Unknown,KeyError,TypeError,ValueError,ArithmeticError):
+                    pass
+                continue
             if kind=='binance_algo_cancel':
                 try:
                     target=payload['clientAlgoId']
@@ -214,6 +313,13 @@ class BinanceReadOnly:
                         raise Unknown('recovered trigger conflicts with durable intent')
                     if parent.get('workingType') != payload.get('workingType'):
                         raise Unknown('recovered trigger source conflicts with durable intent')
+                    if parent.get('algoStatus')=='NEW' and child is None and payload.get('closePosition')=='true':
+                        # Lost POST/readback can leave an accepted protective leg
+                        # active. Matching native readback resolves acceptance,
+                        # allowing the durable lifecycle to install its other leg.
+                        state.finish(intent['id'],'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
+                        resolved+=1
+                        continue
                     parent_terminal = parent.get('algoStatus') in ('FINISHED', 'CANCELED', 'EXPIRED', 'REJECTED')
                     if not parent_terminal:
                         continue
@@ -250,14 +356,15 @@ class BinanceReadOnly:
     def snapshot(self, expected_uid):
         uid=self.account_identity()
         if uid!=str(expected_uid):raise Blocked('Binance account UID does not match the configured account')
+        scan_all=self.check_all_orders
         for _ in range(2):
             def observe():
                 return {'config':self.get('/fapi/v1/accountConfig'),
                         'symbol':self.get('/fapi/v1/symbolConfig',{'symbol':'BTCUSDT'}),
                         'account':self.get('/fapi/v3/account'),
                         'positions':self.get('/fapi/v3/positionRisk',{'symbol':'BTCUSDT'}),
-                        'orders':self.get('/fapi/v1/openOrders'),
-                        'algos':self.get('/fapi/v1/openAlgoOrders')}
+                        'orders':self.get('/fapi/v1/openOrders',{} if scan_all else {'symbol':'BTCUSDT'}),
+                        'algos':self.get('/fapi/v1/openAlgoOrders',{} if scan_all else {'symbol':'BTCUSDT'})}
             first=observe()
             fills=self.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','limit':1000})
             second=observe()
@@ -265,6 +372,9 @@ class BinanceReadOnly:
                 raise Unknown('recent trade response is missing or may be truncated')
             if any(f.get('symbol')!='BTCUSDT' for f in fills):
                 raise Unknown('unexpected recent trade scope')
+            if (any(type(f.get('id')) is not int or f['id']<0 for f in fills)
+                    or len({f['id'] for f in fills})!=len(fills)):
+                raise Unknown('invalid native fill cursor')
             if observation_key(first)!=observation_key(second):continue
             symbols=second['symbol']
             if not isinstance(symbols,list) or len(symbols)!=1:
@@ -277,7 +387,9 @@ class BinanceReadOnly:
             report=account_report(uid,second['config'],symbols[0],second['account'],
                                   second['positions'],second['orders'],second['algos'],ticker['markPrice'])
             report.update(mark_time=ticker['time'],mark_price=ticker['markPrice'],
-                          recent_fill_count=len(fills),recovery_history_complete=False)
+                          recent_fill_count=len(fills),last_fill_id=max((f['id'] for f in fills),default=-1),
+                          observed_at_ms=int(self.clock()*1000),recovery_history_complete=False)
+            self.check_all_orders=False
             return report
         raise Unknown('Binance account changed during bounded reconciliation')
 
@@ -396,10 +508,11 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
             'isolated_wallet_usdt':str(isolated),'native_liquidation_price':str(liquidation),
             'stop_before_liquidation':bool(safe_stops),
             'protective_algos':protective,'possible_entry_remainders':len(entries),
+            'open_orders':orders,'open_algos':algos,
             'qualification':'NOT_QUALIFIED','writes_supported':False}
 
 
-def market_quantity(maximum, mark, instrument):
+def market_quantity(maximum, mark, instrument, *, reduce_only=False):
     """Round DOWN a risk-sized quantity using one observed native filter snapshot.
 
     This validates quantity/minimum shape, not fill certainty or historical rules.
@@ -430,5 +543,5 @@ def market_quantity(maximum, mark, instrument):
     unit=Decimal(10)**min(s.as_tuple().exponent for s in positive)
     step=unit*lcm(*(int(s/unit) for s in positive))
     q=(min(maximum,*maxima)//step)*step
-    if q<max(minima) or q*mark<notional:return Decimal(0)
+    if q<max(minima) or (not reduce_only and q*mark<notional):return Decimal(0)
     return q

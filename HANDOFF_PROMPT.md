@@ -1,3 +1,13 @@
+# Coinquant 有限会话工程恢复入口（2026-09-26）
+
+当前任务：完成经济验收以外的全部工程。读取实时远端main和`AGENTS.md`、`PROJECT_STATE.md`顶部、`evidence/bounded-session-20260926/{RESULT.md,VERIFICATION.json}`。本轮基线为`e8e5f2aea8fe8af390190443b3a9d75e97b0884d`，工程分支`engineering/bounded-session-20260926`；实际HEAD/PR以远端为准。
+
+已接入有限会话、单配置、Binance受限写入代码、完整订单恢复/保护/退出路径、生产同路径接口事件回放，旧Bybit代码已隔离到research/legacy；未运行经济验收，也没有真实/Testnet订单。独立审查发现的成交序号边界、保护回读丢失、过期历史、退出数量竞争、请求权重、替换日志和回放CLI问题已逐项处理，最终验证见记录。
+
+**不能声称全部生产资格完成。** 原生成交/保护的非原子窗口、真实close-all替换接受行为和交易所故障恢复仍需指定账户/环境/资金上限及当前明确交易授权后验证；`run --execute`保持阻止。源代码远端逐项回读已完成，见 REMOTE_VERIFICATION.json；读取分支对应 PR 的实际 CI/合并状态，之后只处理原生验收阻塞；不启动新的策略研究或修改经济门槛。
+
+以下为历史研究恢复入口，不作为当前工程验收：
+
 # Coinquant 当前恢复入口（2026-09-24）
 
 **最新单一入口（2026-09-25 PR #38 后）**：先核对实时 `geniusgrok/coinquant` main、PR、`AGENTS.md` 和 `PROJECT_STATE.md` 顶部，读取 `evidence/post-pr38-causal-short-20260925/{PROTOCOL.md,SELECTION.json,RESULT.md,ATTRIBUTION.json,FORMAL_ATTRIBUTION.json,REMOTE_VERIFICATION.json,reassemble.py}`。本轮从 `main` `3f1700f7141741c63c5635ba6816f65e26eae2f1` 冻结四格 R1/R2 与两档非对称短侧 C2/C4，完成各 468 次开发；R2/C2/C4 过开发双门，按终值选唯一 C4。补齐并核验 550 份新增 Binance 官方分钟 ZIP/CHECKSUM 后，正式 C4 完成 795 次，成本后 **102.363557% CAGR、39.871851% MDD、CNY 1,139,853.43**；账本与安全硬门通过，收益 <150%，正式经济否决。开发前缀订单/权益/决策逐行完全相同；按事前停止规则未运行压力或 787 缺席，未换备选。正式空头共同钱包内净额 −4,351.891827 USDT；开发正值不延伸为正式优势。完整新账户与原始分钟数据在 `evidence/post-pr38-causal-short-20260925/originals/` 确定性分卷，按 `reassemble.py` 和各清单逐字节复核。若接续，避免重复本次冻结机制或以额外风险档位追收益；真实原生执行资格仍 `NOT_QUALIFIED`，生产 B36/3.6、execute 阻止不动。下面 PR #38 前叙述是阶段历史。

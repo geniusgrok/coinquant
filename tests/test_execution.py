@@ -3,9 +3,9 @@ from decimal import Decimal as D
 import tempfile
 import unittest
 
-from coinquant.config import Config
-from coinquant.execution import coverage, run_once
-from coinquant.model import decide, liquidation_price, repair_target
+from research.legacy.config import Config
+from research.legacy.execution import coverage, run_once
+from research.legacy.model import decide, liquidation_price, repair_target
 from coinquant.types import Position, Unknown, ModelConfig
 from test_model import sample, history
 
@@ -225,7 +225,7 @@ class ExecutionTests(unittest.TestCase):
         unsafe = replace(decide(history(), venue.s, ModelConfig()), quantity=D(5000))
         with tempfile.TemporaryDirectory() as path:
             from unittest.mock import patch
-            with patch('coinquant.execution.decide', return_value=unsafe):
+            with patch('research.legacy.execution.decide', return_value=unsafe):
                 r = run_once(venue, self.config(path), execute=True)
         self.assertEqual(r['status'], 'blocked')
         self.assertEqual(venue.writes, [])
@@ -237,7 +237,7 @@ class ExecutionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as path:
             config = self.config(path)
             from unittest.mock import patch
-            with patch('coinquant.execution.decide', return_value=unsafe):
+            with patch('research.legacy.execution.decide', return_value=unsafe):
                 first = run_once(venue, config, execute=True)
             second = run_once(venue, config, execute=True)
         self.assertEqual(first['status'], 'blocked')

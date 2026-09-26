@@ -6,12 +6,12 @@ import json
 import time
 import unittest
 
-from coinquant import decode
-from coinquant.bybit import Bybit
-from coinquant.config import Config
-from coinquant.execution import coverage, run_once
-from coinquant.model import decide
-from coinquant.rest import Rest
+from research.legacy import decode
+from research.legacy.bybit import Bybit
+from research.legacy.config import Config
+from research.legacy.execution import coverage, run_once
+from research.legacy.model import decide
+from research.legacy.rest import Rest
 from coinquant.types import Blocked, Unknown
 from test_execution import FakeVenue
 from test_model import sample, history

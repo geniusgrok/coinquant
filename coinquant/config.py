@@ -1,60 +1,34 @@
-"""Strict single current configuration; no credential values in this file."""
-from dataclasses import dataclass, field, fields
-from pathlib import Path
+"""One account, model and bounded-session configuration; never contains secrets."""
+from dataclasses import dataclass, fields
 import json
+from pathlib import Path
 
-from .types import Blocked, D, ModelConfig, number
+from .types import Blocked
 
 
 @dataclass(frozen=True)
 class Config:
-    environment: str = 'testnet'
-    api_host: str = ''
-    account_uid: str = ''
-    max_position_usd: D = D(0)
-    state_dir: str = '~/.coinquant/testnet'
-    model: ModelConfig = field(default_factory=ModelConfig)
+    account_uid: str
+    state_dir: str
+    session_seconds: int = 300
+    poll_seconds: int = 5
 
     def __post_init__(self):
-        if self.environment not in ('testnet', 'live'):
-            raise Blocked('environment must explicitly be testnet or live')
-        if not isinstance(self.api_host, str) or not isinstance(self.account_uid, str) or not isinstance(self.state_dir, str):
-            raise Blocked('api_host, account_uid and state_dir must be strings')
-        if '://' in self.api_host or '/' in self.api_host:
-            raise Blocked('api_host must be an approved hostname, not a URL')
-        if number(self.max_position_usd) < 0:
-            raise Blocked('negative authorized position limit')
-
-    def authorize(self, actual_uid: str, execute: bool) -> None:
-        if not execute:
-            raise Blocked('read-only invocation cannot send exchange writes')
-        if not self.account_uid or self.account_uid != actual_uid:
-            raise Blocked('explicit configured account UID does not match the exchange')
-        if self.max_position_usd <= 0:
-            raise Blocked('a positive account exposure authorization limit is required')
+        if (not isinstance(self.account_uid, str) or not self.account_uid.isascii()
+                or not self.account_uid.isdigit() or int(self.account_uid) <= 0
+                or not isinstance(self.state_dir, str) or not self.state_dir.strip()):
+            raise Blocked('explicit Binance UID and persistent state_dir required')
+        if (type(self.session_seconds) is not int or not 1 <= self.session_seconds <= 86400
+                or type(self.poll_seconds) is not int or not 1 <= self.poll_seconds <= 60
+                or self.poll_seconds > self.session_seconds):
+            raise Blocked('session must be 1..86400 seconds; poll 1..60 and no longer than session')
 
 
-def load(path: str | Path) -> Config:
+def load(path):
     try:
-        data = json.loads(Path(path).read_text(encoding='utf-8'))
-        allowed = {f.name for f in fields(Config)}
-        if not isinstance(data, dict) or set(data) - allowed:
-            raise Blocked('unknown configuration field; no aliases or profile overrides')
-        raw_model = data.pop('model', {})
-        defaults = ModelConfig()
-        names = {f.name for f in fields(ModelConfig)}
-        if not isinstance(raw_model, dict) or set(raw_model) - names:
-            raise Blocked('unknown model parameter')
-        converted = {}
-        for key, value in raw_model.items():
-            if isinstance(getattr(defaults, key), int):
-                if type(value) is not int:
-                    raise Blocked('indicator periods must be integers')
-                converted[key] = value
-            else:
-                converted[key] = number(value, key)
-        if 'max_position_usd' in data:
-            data['max_position_usd'] = number(data['max_position_usd'])
-        return Config(**data, model=ModelConfig(**converted))
+        data = json.loads(Path(path).read_text())
+        if not isinstance(data, dict) or set(data) - {f.name for f in fields(Config)}:
+            raise Blocked('unknown configuration field; no exchange/model switches')
+        return Config(**data)
     except (OSError, ValueError, TypeError) as exc:
         raise Blocked('configuration cannot be read or validated') from exc
