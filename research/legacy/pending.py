@@ -6,8 +6,8 @@ remain offline. This contract follows Bybit's documented order fields; actual
 exchange integration remains a separate qualification, not a mock-test claim.
 """
 from .model import liquidation_price, validate_risk_increase
-from .state import client_id
-from .types import D, SYMBOL, Blocked, Unknown, number
+from coinquant.state import client_id
+from coinquant.types import D, SYMBOL, Blocked, Unknown, number
 
 
 def prices(order):

@@ -1,5 +1,5 @@
 import unittest
-from coinquant.binance import BinanceReadOnly
+from coinquant.binance import Binance
 from coinquant.types import Unknown
 
 
@@ -9,7 +9,7 @@ class IntentRead(unittest.TestCase):
                       algoStatus='CANCELED',side='BUY',positionSide='BOTH')
         child = dict(symbol='BTCUSDT',orderId=42,status='PARTIALLY_FILLED',
                      executedQty='0.001',side='BUY',positionSide='BOTH')
-        reader=BinanceReadOnly();calls=[]
+        reader=Binance();calls=[]
         def get(path, params):
             calls.append((path,params))
             return parent if path.endswith('algoOrder') else child
@@ -22,7 +22,7 @@ class IntentRead(unittest.TestCase):
         with self.assertRaises(Unknown):reader.query_intent('cq-1',conditional=True)
 
     def test_missing_history_never_becomes_retry_permission(self):
-        reader=BinanceReadOnly()
+        reader=Binance()
         def get(*args):raise Unknown('history unavailable')
         reader.get=get
         with self.assertRaises(Unknown):reader.query_intent('cq-1')

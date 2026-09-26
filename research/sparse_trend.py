@@ -8,7 +8,7 @@ strategy. Venue sizing/protection and a native linear replay remain required.
 from dataclasses import dataclass
 from decimal import Decimal as D
 
-from coinquant.model import validate_bars
+from research.legacy.model import validate_bars
 from coinquant.types import Bar, Blocked, INTERVAL_MS, ZERO
 
 LOOKBACK = 120  # 20 days of complete 4h returns, frozen before measurement

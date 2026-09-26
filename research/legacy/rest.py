@@ -8,7 +8,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, build_opener, HTTPRedirectHandler
 from urllib.error import HTTPError, URLError
 
-from .types import Blocked, Unknown
+from coinquant.types import Blocked, Unknown
 
 
 OFFICIAL_HOSTS = {

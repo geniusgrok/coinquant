@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from coinquant.data import Dataset, Tick, HOUR, MINUTE
-from coinquant.replay import _replay
+from research.legacy.replay import _replay
 from coinquant.types import ModelConfig, Target, ZERO, Blocked
 from test_replay import dataset_fixture
 
@@ -27,7 +27,7 @@ class RefinedReplayTests(unittest.TestCase):
                 def decide(bars,snapshot,cfg,**kw):
                     calls.append((snapshot.time,bars.copy()))
                     return Target(bars[-1].time,ZERO,snapshot.mark,ZERO,ZERO,ZERO,ZERO,ZERO,'test flat')
-                with patch.object(ds,'ticks',lambda:iter(rows)),patch('coinquant.replay.decide',side_effect=decide):
+                with patch.object(ds,'ticks',lambda:iter(rows)),patch('research.legacy.replay.decide',side_effect=decide):
                     result=_replay(ds,ModelConfig(),frozen,out)
                 seen.append(calls)
                 self.assertEqual(result['invocations'],len(calls))

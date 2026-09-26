@@ -12,11 +12,11 @@ import gzip
 import json
 from pathlib import Path
 
-from .data import Dataset, MINUTE
+from coinquant.data import Dataset, MINUTE
 from .model import bankruptcy_price, decide, liquidation_price, validate_risk_increase
 from .pending import validate_target
-from .research import economic_limits, digest, invocations, iso, source_identity, spec, timestamp
-from .types import Bar, Blocked, INTERVAL_MS, Position, Snapshot, ZERO, floor_step, serial
+from coinquant.research import economic_limits, digest, invocations, iso, source_identity, spec, timestamp
+from coinquant.types import Bar, Blocked, INTERVAL_MS, Position, Snapshot, ZERO, floor_step, serial
 
 
 class Account:

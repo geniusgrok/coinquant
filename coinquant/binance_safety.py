@@ -46,6 +46,28 @@ def _once(state, identity, kind, payload, send, method, path):
         pass
 
 
+def settled_protection(reader,state,identity):
+    """Retain conclusive terminal child evidence before exchange history expires."""
+    settled=state.get('settled_protection') or {}
+    if identity in settled:return True
+    if not reader.conditional_terminal(identity):return False
+    observed=reader.query_intent(identity,conditional=True)
+    parent,child=observed['parent'],observed['child']
+    if parent.get('algoStatus') not in ('CANCELED','EXPIRED','REJECTED','FINISHED'):
+        raise Unknown('protective terminal state changed')
+    if child is not None:
+        if (child.get('status') not in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
+                or not 0<=D(child['executedQty'])<=D(child['origQty'])
+                or child['status']=='FILLED' and D(child['executedQty'])!=D(child['origQty'])
+                or child['status']=='REJECTED' and D(child['executedQty'])):
+            raise Unknown('protective child terminal state changed')
+    elif parent['algoStatus']=='FINISHED':
+        raise Unknown('finished protection lacks child evidence')
+    settled[identity]=observed
+    state.set('settled_protection',settled)
+    return True
+
+
 def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authorized=False):
     """Install full-position SL then TP, retaining every existing protection.
 
@@ -119,7 +141,7 @@ def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized
     """Bounded reduce-only market request; caller supplies rule-rounded quantity."""
     before=_gate(reader,state,uid,authorized);q=D(before['quantity_btc']);qty=D(quantity)
     if before['possible_entry_remainders'] or not 0<qty<=abs(q):raise Blocked('unsafe reduction')
-    if market_quantity(qty,before['mark_price'],instrument)!=qty:raise Blocked('reduction violates native quantity rule')
+    if market_quantity(qty,before['mark_price'],instrument,reduce_only=True)!=qty:raise Blocked('reduction violates native quantity rule')
     identity=client_id(state.identity,epoch,'reduce')
     payload=dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL' if q>0 else 'BUY',
         type='MARKET',quantity=str(qty),reduceOnly='true',newClientOrderId=identity)
@@ -203,11 +225,11 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     if q and q!=original:raise Unknown('partial fill or exposure change; retain protection and reconcile')
 
     def retire(identity):
-        if reader.conditional_terminal(identity):return
+        if settled_protection(reader,state,identity):return
         cancel_id=client_id(state.identity,epoch,'retire:'+identity)
         payload=dict(clientAlgoId=identity)
         _once(state,cancel_id,'binance_algo_cancel',payload,send,'DELETE','/fapi/v1/algoOrder')
-        if not reader.conditional_terminal(identity):raise Unknown('protection cancellation/child unresolved')
+        if not settled_protection(reader,state,identity):raise Unknown('protection cancellation/child unresolved')
         state.finish(cancel_id,'confirmed',{'target':identity,'terminal':True})
 
     if q:

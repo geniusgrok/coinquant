@@ -1,5 +1,5 @@
 """Strict decoding for the documented current Bybit inverse/UNIFIED schema."""
-from .types import D, ZERO, SYMBOL, Blocked, Unknown, Position, Rules, Snapshot, number
+from coinquant.types import D, ZERO, SYMBOL, Blocked, Unknown, Position, Rules, Snapshot, number
 
 
 def one(rows: list[dict], name: str) -> dict:

@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from decimal import Decimal as D
 from coinquant.state import State
-from coinquant.binance import BinanceReadOnly
+from coinquant.binance import Binance
 from coinquant.binance_safety import protect_existing,cancel_entry,reduce_existing,add_margin
 from coinquant.types import Blocked,Unknown
 from tests.test_binance_quantity import instrument
@@ -10,7 +10,7 @@ from tests.test_binance_quantity import instrument
 def rules():
     r=instrument();r['filters'].append(dict(filterType='PRICE_FILTER',tickSize='.1',minPrice='1',maxPrice='1000000'));return r
 
-class Native(BinanceReadOnly):
+class Native(Binance):
     def __init__(self):
         self.orders={};self.sent=[];self.q='.003';self.margin='30';self.remainders=0
     def snapshot(self,uid):
@@ -108,3 +108,10 @@ class SafetyTests(unittest.TestCase):
             self.native.remainders=1
         with self.assertRaises(Unknown):self.protect(send,authorized=True)
         self.assertEqual(len(self.native.sent),1)
+
+    def test_reduce_only_below_entry_min_notional_can_close(self):
+        instrument=rules()
+        for f in instrument['filters']:
+            if f['filterType']=='MIN_NOTIONAL':f['notional']='1000'
+        result=reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',instrument=instrument,authorized=True)
+        self.assertEqual(result['quantity_btc'],'0')

@@ -6,7 +6,7 @@ marks the complete wallet to USD/CNY. It does NOT claim to bound fiat drawdown.
 """
 from decimal import Decimal as D, ROUND_CEILING
 
-from .types import (INTERVAL_MS, ZERO, Bar, Blocked, ModelConfig, Snapshot,
+from coinquant.types import (INTERVAL_MS, ZERO, Bar, Blocked, ModelConfig, Snapshot,
                     Target, floor_step, number)
 
 

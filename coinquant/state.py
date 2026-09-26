@@ -91,7 +91,15 @@ class State:
                     or self.identity!=f"binance:BTCUSDT:live:{flat_snapshot.get('account_uid')}"):
                 raise Blocked('entry campaign requires a reconciled flat owned account')
             links=self.get('entry_campaigns') or {}
-            links[identity]=dict(campaign=campaign,prepared_at=int(time()*1000))
+            observed_at=flat_snapshot.get('observed_at_ms',int(time()*1000))
+            if type(observed_at) is not int or observed_at<=0:
+                raise Blocked('invalid entry observation clock')
+            cursor=flat_snapshot.get('last_fill_id')
+            if cursor is not None and (type(cursor) is not int or cursor < -1):
+                raise Blocked('invalid native flat fill cursor')
+            # Market timestamps are not fill boundaries. A recent-time overlap
+            # tolerates clock skew; the observed trade id excludes prior fills.
+            links[identity]=dict(campaign=campaign,prepared_at=observed_at-(15000 if cursor is not None else 0),after_trade_id=cursor)
         with self.db:
             self.db.execute('INSERT INTO intents VALUES (?,?,?,?,?,?)',
                             (identity, kind, encoded, 'unknown', '{}', time()))

@@ -33,6 +33,12 @@ def reconcile(state, reader, model, snapshot):
         native[str(observed['orderId'])]=(identity,observed)
     if not filled:
         if number(snapshot['quantity_btc']):raise Unknown('position has no verified campaign fill')
+        terminal=all(o['status'] in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED') for _,o in native.values())
+        if terminal and not snapshot['possible_entry_remainders'] and not state.pending():
+            again=reader.snapshot(snapshot['account_uid'])
+            if any(again.get(k)!=snapshot.get(k) for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders')):
+                raise Unknown('account changed while settling zero-fill entries')
+            _archive_links(state,links)
         return {'status':'no_campaign_fill'}
     start,identity,link,entry=max(filled,key=lambda x:x[0])
     now=int(reader.clock()*1000)
@@ -48,15 +54,19 @@ def reconcile(state, reader, model, snapshot):
         page=reader.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','startTime':begin,'endTime':end,'limit':1000})
         if not isinstance(page,list) or len(page)>=1000:raise Unknown('fill history may be truncated')
         for trade in page:
-            if trade['id'] in ids or type(trade['time']) is not int or not begin<=trade['time']<=end:
+            if type(trade.get('id')) is not int or trade['id']<0 or trade['id'] in ids or type(trade['time']) is not int or not begin<=trade['time']<=end:
                 raise Unknown('invalid fill chronology')
+            if link.get('after_trade_id') is not None and trade['id']<=link['after_trade_id']:
+                continue
             ids.add(trade['id']);trades.append(trade)
     # Resolve owned protection children and reductions; ACK alone is not used.
+    settled_protection=state.get('settled_protection') or {}
     for oid,kind,raw in state.db.execute("SELECT id,kind,payload FROM intents WHERE updated>=?",(start/1000,)):
         if kind not in ('binance_order','binance_algo') or oid in links:continue
         payload=json.loads(raw)
         if payload.get('reduceOnly')!='true' and payload.get('closePosition')!='true':continue
-        observed=reader.query_intent(oid,conditional=kind=='binance_algo')
+        observed=(settled_protection[oid] if kind=='binance_algo' and oid in settled_protection
+                  else reader.query_intent(oid,conditional=kind=='binance_algo'))
         parent=observed['parent'];order=observed['child'] if kind=='binance_algo' else parent
         if any(parent.get(k)!=payload.get(k) for k in ('symbol','side','positionSide')):
             raise Unknown('reduction scope mismatch')
@@ -90,11 +100,15 @@ def reconcile(state, reader, model, snapshot):
             for oid,observed in native.values() if oid in links):
         # Keep the campaign audit trail, but do not query terminal old entries
         # forever after an independently reconciled flat boundary.
-        settled=state.get('settled_entry_campaigns') or {}
-        settled.update(links)
-        with state.db:
-            for key,value in (('settled_entry_campaigns',settled),('entry_campaigns',{})):
-                state.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',(key,json.dumps(value,sort_keys=True)))
+        _archive_links(state,links)
     return {'status':'reconciled','campaign':campaign,'quantity':str(total),'fill_count':len(trades),
             'protection_confirmed':snapshot.get('native_full_position_protected',False),
             'entry_remainder':snapshot['possible_entry_remainders']}
+
+
+def _archive_links(state,links):
+    settled=state.get('settled_entry_campaigns') or {}
+    settled.update(links)
+    with state.db:
+        for key,value in (('settled_entry_campaigns',settled),('entry_campaigns',{})):
+            state.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',(key,json.dumps(value,sort_keys=True)))

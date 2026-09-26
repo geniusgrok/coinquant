@@ -4,7 +4,7 @@ import unittest
 
 from coinquant.state import State, client_id
 from coinquant.types import Blocked, Unknown
-from coinquant.config import Config
+from research.legacy.config import Config
 
 
 class StateTests(unittest.TestCase):
