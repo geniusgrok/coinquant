@@ -16,9 +16,12 @@ from tests.session_venue import Venue
 
 class SessionTests(TestCase):
     def setUp(self):
+        # Fixture quantities are chosen for exact halving on the 0.001 BTC step.
+        from unittest.mock import patch
+        self.risk=patch('coinquant.campaign.PRIMARY_RISK','6');self.risk.start()
         self.tmp=tempfile.TemporaryDirectory();self.directory=self.tmp.name
         self.venue=Venue();self.venue.seed(self.directory)
-    def tearDown(self):self.tmp.cleanup()
+    def tearDown(self):self.tmp.cleanup();self.risk.stop()
     def run_session(self,execute=True,seconds=11,wait=None):
         return run(Config('123',self.directory,seconds,1),self.venue,execute=execute,
                    monotonic=self.venue.monotonic,wait=wait or self.venue.wait)
@@ -153,6 +156,7 @@ class SessionTests(TestCase):
         self.assertTrue(r['write_attempted'])
 
     def test_complete_native_tape_replays_identical_requests_and_decisions(self):
+        self.risk.stop()  # the subprocess replay imports the production default
         from copy import deepcopy
         from research.session_replay import replay
         with State(self.directory,'binance:BTCUSDT:live:123') as s:checkpoint=s.get('linear_campaign')

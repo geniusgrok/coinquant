@@ -11,7 +11,8 @@ class AcceptanceTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256(historical).hexdigest(),current['legacy_benchmark']['sha256'])
         self.assertEqual(json.loads(historical),spec())
         self.assertEqual((current['venue'],current['symbol'],current['leverage']),('binance','BTCUSDT',20))
-        self.assertEqual(current['economic_qualification'],'NOT_MEASURED_FOR_CURRENT_SESSION')
+        self.assertEqual(current['economic_qualification'],'REPLAY_MEASURED_NOT_NATIVE')
+        self.assertEqual(current['native_qualification'],'NOT_QUALIFIED')
 
     def test_authorized_exact_boundaries(self):
         frozen = spec()
