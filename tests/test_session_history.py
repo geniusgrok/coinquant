@@ -157,6 +157,15 @@ class SessionHistoryTests(TestCase):
         self.assertEqual(missed, 0)
         self.assertIsNone(TradePrints(directory).window(base + 86_400_000 + 1000, base + 86_400_000 + 2000))
 
+    def test_bootstrap_flag_lets_the_first_active_impulse_enter(self):
+        exchange, start, _price = self._exchange('unresolved')
+        directory = tempfile.mkdtemp()
+        from coinquant.state import State
+        with State(directory, 'binance:BTCUSDT:live:1') as state:
+            state.set('enter_unconsumed_bootstrap', True)
+        run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
+        self.assertGreaterEqual(exchange.funnel['ioc_submitted'], 1)
+
     def test_schedule_module_does_not_hand_future_starts_to_the_exchange(self):
         source = Path('research/session_exchange.py').read_text(encoding='utf-8')
         self.assertNotIn('invocation_draws', source)

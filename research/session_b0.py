@@ -96,13 +96,17 @@ def _harvest(state_dir):
                 cleanup=rows[-1].get('cleanup') if rows else None)
 
 
-def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None):
+def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None, enter_bootstrap=False):
     wallet = (D(10000) / FX) * (1 - CONVERSION)
     book = TradePrints(prints) if matcher == 'trade_print' else None
     if matcher == 'trade_print' and prints is None:
         raise ValueError('trade_print requires --prints')
     exchange = SessionExchange(market, starts[0], wallet, matcher=matcher, prints=book)
     config = Config('1', str(state_dir), 300, 5)
+    if enter_bootstrap:
+        from coinquant.state import State
+        with State(str(state_dir), 'binance:BTCUSDT:live:' + config.account_uid) as state:
+            state.set('enter_unconsumed_bootstrap', True)
     sessions = []
     for index, start in enumerate(starts):
         if exchange.now_ms > start:
@@ -153,6 +157,7 @@ def main():
     parser.add_argument('--state', type=Path, default=Path('/dev/shm/coinquant-session-b0'))
     parser.add_argument('--matcher', choices=('unresolved', 'bar_through', 'trade_print'), default='unresolved')
     parser.add_argument('--prints', type=Path, default=None)
+    parser.add_argument('--enter-bootstrap', action='store_true')
     parser.add_argument('--output', type=Path, default=ROOT / 'evidence' / 'session-b0-20260927')
     parser.add_argument('--limit', type=int, default=0)
     args = parser.parse_args()
@@ -164,12 +169,15 @@ def main():
     market = load_base(args.market)
     starts = committed['starts_ms'][:args.limit or None]
     args.state.mkdir(parents=True, exist_ok=True)
-    result = run_account(market, starts, args.state, matcher=args.matcher, prints=args.prints)
+    result = run_account(market, starts, args.state, matcher=args.matcher, prints=args.prints,
+                         enter_bootstrap=args.enter_bootstrap)
     result['market'] = {key: market.identity[key] for key in ('four_hour_bars', 'funding_points', 'funding_gap_from',
                                                               'warmup_trade_sha256', 'warmup_funding_sha256')}
     args.output.mkdir(parents=True, exist_ok=True)
     if args.matcher == 'unresolved' and not args.limit:
         name = 'B0_SUMMARY.json'
+    elif args.matcher == 'trade_print' and args.enter_bootstrap and not args.limit:
+        name = 'B1_SUMMARY.json'
     elif args.matcher == 'trade_print' and not args.limit:
         name = 'PRINT_SUMMARY.json'
     else:

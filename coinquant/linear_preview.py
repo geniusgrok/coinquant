@@ -23,8 +23,10 @@ def advance(state, venue):
             model.update(bar['time']+model.model.interval,bar['high'],bar['low'],bar['close'])
     if model.last!=market['complete_through']:
         raise Blocked('market and checkpoint boundaries differ')
-    if bootstrap:
+    if bootstrap and not state.get('enter_unconsumed_bootstrap'):
         # Price reconstruction cannot establish historical fill ownership.
+        # The research flag leaves a still-active impulse eligible. Live state
+        # does not set it, so a cold start still consumes that impulse.
         model.consumed=model.model.active.identity if model.model.active else None
     state.set('linear_campaign',model.checkpoint())
     state.set('market_bootstrap',False)
