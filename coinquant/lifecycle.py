@@ -13,6 +13,10 @@ from .ownership import owned_observation
 from .state import client_id
 from .types import Blocked, Unknown, number, floor_step
 
+ENTRY_RESERVE = 800
+TOPUP_RESERVE = 400
+PREVIEW_WEIGHT = 250
+
 
 class Lifecycle:
     def __init__(self, reader, state, uid, *, authorized=False, may_enter=lambda:True, session=None):
@@ -243,6 +247,8 @@ class Lifecycle:
     def enter(self, model, snapshot):
         if self.state.pending() or snapshot['possible_entry_remainders'] or number(snapshot['quantity_btc']):
             raise Unknown('entry requires reconciled flat account')
+        # Measured entry+protection cost is about 350 weight; preview about 200.
+        self.reader.ensure_capacity(ENTRY_RESERVE+PREVIEW_WEIGHT)
         plan = entry_preview(self.reader,model,snapshot,side=research_side(self.state))
         self.entry_constraint = plan.get('constraint')
         if not number(plan['quantity_btc']):
@@ -261,7 +267,7 @@ class Lifecycle:
             raise Unknown('account changed between sizing and entry')
         if abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
             raise Unknown('entry preflight expired')
-        self.reader.ensure_capacity(1600)
+        self.reader.ensure_capacity(ENTRY_RESERVE)
         if not self.may_enter():
             raise Blocked('session deadline or stop request prohibits a new entry')
         # An entry begun within the session retains a bounded protection budget;
@@ -389,6 +395,10 @@ class Lifecycle:
         if abs(number(snapshot['quantity_btc'])) >= number(fill['requested']):
             return snapshot
         try:
+            self.reader.ensure_capacity(TOPUP_RESERVE+PREVIEW_WEIGHT)
+        except Unknown:
+            return snapshot  # a later poll of this session may add
+        try:
             plan = topup_preview(self.reader, model, snapshot, fill['requested'],
                                  protection['stop'], protection['take'])
         except ValueError:
@@ -402,7 +412,7 @@ class Lifecycle:
             raise Unknown('account changed between top-up sizing and order')
         if abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
             raise Unknown('top-up preflight expired')
-        self.reader.ensure_capacity(400)
+        self.reader.ensure_capacity(TOPUP_RESERVE)
         if not self.may_enter():
             raise Blocked('session deadline or stop request prohibits a new entry')
         self.reader.deadline=self.reader.monotonic()+120

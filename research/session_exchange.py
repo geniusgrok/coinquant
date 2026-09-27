@@ -18,6 +18,9 @@ MAINTENANCE = D('0.005')    # single 20x tier proxy, not dated brackets
 LIQUIDATION_FEE = D('0.0125')  # field on the 2026-09-26 public rules snapshot
 RULES_PATH = Path(__file__).resolve().parents[1] / 'evidence' / 'bounded-session-20260926' / 'public' / 'rules.json'
 MINUTE = 60_000
+# Worst 1m mark low/high relative to trade low/high, 2020-01-01..2026-09-20.
+MARK_BELOW_TRADE = D('-0.0237')
+MARK_ABOVE_TRADE = D('0.0412')
 
 
 def _text(value):
@@ -56,6 +59,7 @@ class SessionExchange(Binance):
         self.funnel = {'ioc_submitted': 0, 'ioc_zero': 0, 'ioc_filled': 0,
                        'protections': 0, 'triggers': 0, 'liquidations': 0, 'funding': 0}
         self.print_miss_days = set()
+        self.bounded_minutes = []
         self.unknown_from = None
         self.peak_cny = D(10000)
         self.mdd_close = D(0)
@@ -238,12 +242,21 @@ class SessionExchange(Binance):
             self.unknown_from = self.unknown_from or end_ms
 
     def _on_minute(self, open_ms):
+        if not self.q:
+            return
         row = self.market.minute('mark', open_ms)
-        if row is None or not self.q:
-            if self.q and row is None:
+        bounded = row is None
+        if bounded:
+            trade = self.market.minute('trade', open_ms)
+            if trade is None:
                 self.known_path = False
                 self.unknown_from = self.unknown_from or open_ms
-            return
+                return
+            # Missing mark minute: the trade range widened by the worst mark/trade
+            # divergence observed in the window. The adverse bound is applied.
+            row = (trade[0], trade[1] * (1 + MARK_ABOVE_TRADE), trade[2] * (1 + MARK_BELOW_TRADE),
+                   trade[3], trade[4])
+            self.bounded_minutes.append(open_ms)
         open_, high, low, close, _volume = row
         long = self.q > 0
         stop, take = self._triggers()
@@ -258,6 +271,13 @@ class SessionExchange(Binance):
             hits.append('take')
         if (low <= liq if long else high >= liq):
             hits.append('liq')
+        if bounded and hits:
+            # Pessimistic: a reachable liquidation wins, then the stop; a take is not assumed.
+            if 'liq' in hits:
+                self._liquidate(liq)
+            elif 'stop' in hits:
+                self._trigger('STOP_MARKET', min(stop, open_) if long else max(stop, open_))
+            return
         if len(hits) > 1:
             self.known_path = False
             self.unknown_from = self.unknown_from or open_ms
