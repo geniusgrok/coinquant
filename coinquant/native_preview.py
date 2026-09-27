@@ -8,7 +8,9 @@ from .types import Blocked, Unknown, number, floor_step
 from .linear_account import Account
 from .linear_sizing import funded_target
 
-BOOK_PARTICIPATION=D('.01')
+# Share of visible depth inside the IOC limit taken per order; later polls of
+# the entry session may top up the rest of the committed campaign size.
+BOOK_PARTICIPATION=D('.25')
 
 
 def _venue(reader, model, snapshot, direction):

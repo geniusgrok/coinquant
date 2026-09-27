@@ -1,0 +1,20 @@
+{
+  "protocol": "research/redesign-PROTOCOL.md",
+  "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
+  "rounds": [
+    {
+      "round": "M1",
+      "registered": "2026-09-27",
+      "model": "SX60+DFII10 default (coinquant.campaign.Campaign, risk 6.0 primary / 3.6 macro)",
+      "trials": [
+        {"name": "F0", "args": []},
+        {"name": "F0-fee150", "args": ["--fee", "0.001125"], "stress": "cost +50%"},
+        {"name": "F0-slip2", "args": ["--trigger-slippage", "0.002", "--market-slippage", "0.001"], "stress": "exit slippage x2"},
+        {"name": "F0-part10", "args": ["--participation", "0.1"], "stress": "depth participation 10%"},
+        {"name": "F0-absence", "args": ["--sequence", "absence"], "stress": "legacy absence sequence"},
+        {"name": "F0-skip", "args": ["--sequence", "random_skip"], "stress": "seeded 20% skip"},
+        {"name": "F0-block", "args": ["--sequence", "block_21d"], "stress": "seeded 21-day block"}
+      ]
+    }
+  ]
+}

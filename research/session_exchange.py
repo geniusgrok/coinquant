@@ -75,6 +75,17 @@ class SessionExchange(Binance):
         self._note_cash()
 
     _dfii10_history = None
+    fx = staticmethod(lambda _now: D('6.9762'))
+    exit_conversion = D(0)
+    fee = FEE
+    trigger_slippage = D(0)
+    market_slippage = D(0)
+
+    def _slipped(self, price, rate):
+        return price * (1 - rate) if self.q > 0 else price * (1 + rate)
+
+    def _cny(self):
+        return self.fx(self.now_ms) * (1 - self.exit_conversion)
     print_window_ms = 1000
 
     def dfii10_snapshot(self):
@@ -155,7 +166,7 @@ class SessionExchange(Binance):
         if not self.q:
             return D(0)
         # Same shape as the linear proxy. Dated brackets are not claimed.
-        return (self.q * self.entry - self.margin) / (self.q - abs(self.q) * (MAINTENANCE + FEE))
+        return (self.q * self.entry - self.margin) / (self.q - abs(self.q) * (MAINTENANCE + self.fee))
 
     def _position(self, mark):
         pnl = self.q * (mark - self.entry) if self.q else D(0)
@@ -167,7 +178,7 @@ class SessionExchange(Binance):
 
     def _note(self, price, kind):
         equity = self.wallet + (self.q * (D(price) - self.entry) if self.q else D(0))
-        cny = equity * D('6.9762')
+        cny = equity * self._cny()
         if cny > self.peak_cny:
             self.peak_cny = cny
         if self.peak_cny > 0:
@@ -209,7 +220,7 @@ class SessionExchange(Binance):
 
     def _note_cash(self):
         if not self.q:
-            equity = self.wallet * D('6.9762')
+            equity = self.wallet * self._cny()
             if equity > self.peak_cny:
                 self.peak_cny = equity
             if self.peak_cny > 0 and self.known_path:
@@ -311,7 +322,7 @@ class SessionExchange(Binance):
                      if item['algoStatus'] == 'NEW' and item['orderType'] == kind), None)
         if algo is None or not self.q:
             return
-        self._close_all(price, algo)
+        self._close_all(self._slipped(price, self.trigger_slippage), algo)
         self.funnel['triggers'] += 1
 
     def _liquidate(self, price):
@@ -347,7 +358,7 @@ class SessionExchange(Binance):
                 other['algoStatus'] = 'CANCELED'
 
     def _apply_open(self, side, quantity, price):
-        fee = quantity * price * FEE
+        fee = quantity * price * self.fee
         self.wallet -= fee
         self.fees += fee
         signed = quantity if side == 'BUY' else -quantity
@@ -369,7 +380,7 @@ class SessionExchange(Binance):
         else:
             realized = quantity * (self.entry - price)
             self.q += quantity
-        fee = quantity * price * FEE
+        fee = quantity * price * self.fee
         self.wallet += realized - fee
         self.fees += fee
         if not self.q:
@@ -482,7 +493,7 @@ class SessionExchange(Binance):
         if path.endswith('/exchangeInfo'):
             return {'symbols': [self.rules]}
         if path.endswith('/commissionRate'):
-            return dict(symbol='BTCUSDT', takerCommissionRate=_text(FEE), makerCommissionRate=_text(FEE))
+            return dict(symbol='BTCUSDT', takerCommissionRate=_text(self.fee), makerCommissionRate=_text(self.fee))
         if path.endswith('/leverageBracket'):
             return dict(symbol='BTCUSDT', brackets=[dict(
                 notionalFloor='0', notionalCap='100000000', maintMarginRatio=_text(MAINTENANCE),
@@ -592,12 +603,13 @@ class SessionExchange(Binance):
                      reduceOnly=reduce, status='NEW')
         if reduce or params.get('type') == 'MARKET':
             _observed, mark = self._mark_state()
+            mark = self._slipped(mark, self.market_slippage)
             self._apply_close(quantity, mark)
             order['status'] = 'FILLED'
             order['executedQty'] = _text(quantity)
             order['price'] = _text(mark)
             self._trade(params['side'], order_id, quantity, mark)
-        elif quantity * D(params['price']) * (D(1) / 20 + FEE) > self.wallet - self.margin:
+        elif quantity * D(params['price']) * (D(1) / 20 + self.fee) > self.wallet - self.margin:
             order['status'] = 'REJECTED'
             self.funnel['ioc_zero'] += 1
         else:

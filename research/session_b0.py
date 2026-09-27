@@ -99,7 +99,8 @@ def _harvest(state_dir):
 def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None, enter_bootstrap=False,
                  mechanism='impulse_hold', side='both', chase_bound=False, funding_gate=False,
                  exchange_options=None):
-    wallet = (D(10000) / FX) * (1 - CONVERSION)
+    rate = (exchange_options or {}).get('fx', lambda _now: FX)
+    wallet = (D(10000) / rate(starts[0])) * (1 - CONVERSION)
     book = TradePrints(prints) if matcher == 'trade_print' else None
     if matcher == 'trade_print' and prints is None:
         raise ValueError('trade_print requires --prints')
@@ -142,7 +143,7 @@ def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None,
     if exchange.now_ms < end:
         exchange.advance_unattended(end)
     equity = exchange.wallet + (exchange.q * (exchange._mark_state()[1] - exchange.entry) if exchange.q else D(0))
-    final_cny = equity * FX
+    final_cny = equity * exchange._cny()
     years = D(timestamp(END) - timestamp('2020-01-01T00:00:00Z')) / D(YEAR_MS)
     cagr = D(final_cny) / D(10000)
     cagr = (float(cagr) ** (1 / float(years)) - 1) if cagr > 0 else -1

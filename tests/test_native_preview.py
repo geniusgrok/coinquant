@@ -6,7 +6,7 @@ from unittest import TestCase
 from unittest.mock import Mock
 from coinquant.campaign import Campaign, ORIGIN
 from coinquant.opportunities import Opportunity
-from coinquant.native_preview import entry_preview
+from coinquant.native_preview import BOOK_PARTICIPATION, entry_preview
 from coinquant.linear_account import Account
 from coinquant.linear_sizing import funded_target
 from coinquant.types import Unknown
@@ -36,7 +36,7 @@ class NativePreviewTests(TestCase):
     def test_native_inputs_use_identical_funding_function_without_consumption(self):
         m,r,s,values,instrument=self.fixture();before=m.checkpoint()
         p=entry_preview(r,m,s);a=Account(D(1000))
-        expected=funded_target(a,1,m.entry_fraction('.0011'),D('100.1'),D(100),D(90),D('200.1'),D(10),instrument,fee=D('.0005'),maintenance=D('.005'),notional_limit=D(100000))
+        expected=funded_target(a,1,m.entry_fraction('.0011'),D('100.1'),D(100),D(90),D('200.1'),D(1000)*BOOK_PARTICIPATION,instrument,fee=D('.0005'),maintenance=D('.005'),notional_limit=D(100000))
         self.assertEqual(p['quantity_btc'],str(a.q));self.assertGreater(a.q,0)
         self.assertEqual(p['allocated_margin_usdt'],str(a.margin));self.assertEqual(p['constraint'],expected['reason'])
         self.assertEqual(m.checkpoint(),before)
