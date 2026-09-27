@@ -328,9 +328,13 @@ class SessionExchange(Binance):
         fee = quantity * price * FEE
         self.wallet -= fee
         self.fees += fee
-        self.q = quantity if side == 'BUY' else -quantity
-        self.entry = price
-        self.margin = quantity * price / 20
+        signed = quantity if side == 'BUY' else -quantity
+        if self.q and (self.q > 0) != (signed > 0):
+            raise Unknown('historical venue does not net an opposite entry')
+        total = abs(self.q) + quantity
+        self.entry = (abs(self.q) * self.entry + quantity * price) / total
+        self.q += signed
+        self.margin += quantity * price / 20
         self._income('COMMISSION', self.now_ms, -fee)
 
     def _apply_close(self, quantity, price):
@@ -571,6 +575,9 @@ class SessionExchange(Binance):
             order['executedQty'] = _text(quantity)
             order['price'] = _text(mark)
             self._trade(params['side'], order_id, quantity, mark)
+        elif quantity * D(params['price']) * (D(1) / 20 + FEE) > self.wallet - self.margin:
+            order['status'] = 'REJECTED'
+            self.funnel['ioc_zero'] += 1
         else:
             self.funnel['ioc_submitted'] += 1
             filled = self._fill_ioc(params['side'], D(params['price']), quantity)

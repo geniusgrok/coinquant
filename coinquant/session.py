@@ -10,8 +10,8 @@ from .types import Blocked, Unknown, number
 from .audit import income
 
 
-def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True):
-    engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter)
+def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None):
+    engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter,session=session)
     if execute:
         snapshot=engine.recover_exposure(engine.settle())
     else:
@@ -70,7 +70,8 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                 report['actions']=[]
                 try:
                     current=cycle(reader,state,config.account_uid,execute=execute,
-                                  may_enter=lambda:monotonic()<deadline and not stopping())
+                                  may_enter=lambda:monotonic()<deadline and not stopping(),
+                                  session=report['session_started_at_ms'])
                     report.update(current,write_attempted=report['write_attempted'] or current['write_attempted'])
                     report['observation_current']=True
                     report.pop('reason',None)

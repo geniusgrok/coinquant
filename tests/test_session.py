@@ -70,12 +70,28 @@ class SessionTests(TestCase):
         a=self.run_session(seconds=2);b=self.run_session(seconds=2)
         self.assertEqual(a['cleanup'],'unresolved');self.assertEqual(b['status'],'unknown')
         self.assertEqual(len([x for x in self.venue.sent if x[1].endswith('/order')]),1)
-    def test_partial_fill_protects_actual_size_and_never_adds(self):
+    def test_partial_fill_protects_actual_size_then_tops_up_under_same_protection(self):
         self.venue.fraction=D('.5');r=self.run_session(seconds=3)
-        self.assertEqual(r['cleanup'],'verified');self.assertEqual(len(self.venue.orders),1)
+        self.assertEqual(r['cleanup'],'verified',r);self.assertGreater(len(self.venue.orders),1)
+        entries=[p for _,path,p in self.venue.sent if path.endswith('/order') and p.get('timeInForce')=='IOC']
+        self.assertEqual(D(entries[1]['quantity']),D(entries[0]['quantity'])/2)
+        stops=[p for _,path,p in self.venue.sent if path.endswith('/algoOrder') and p.get('type')=='STOP_MARKET']
+        self.assertEqual(len(stops),1)
+        self.assertTrue(r['actual']['native_full_position_protected'])
+        self.assertTrue(r['actual']['stop_before_liquidation'])
+        sent=[path for _,path,_ in self.venue.sent]
+        first_add=[i for i,(_,path,p) in enumerate(self.venue.sent) if p is entries[1] or p==entries[1]][0]
+        self.assertEqual(sent[first_add-1],'/fapi/v1/positionMargin')
         with State(self.directory,'binance:BTCUSDT:live:123') as s:
             self.assertIsNone(s.get('entry_plan'))
             self.assertIsNotNone(s.get('position_protection'))
+            self.assertEqual(len(s.get('entry_campaigns')),len(entries))
+
+    def test_later_session_never_tops_up_an_earlier_entry(self):
+        self.venue.fraction=D('.5');self.run_session(seconds=1)
+        count=len(self.venue.orders)
+        self.venue.fraction=D(1);r=self.run_session(seconds=3)
+        self.assertEqual(r['cleanup'],'verified',r);self.assertEqual(len(self.venue.orders),count)
     def test_failed_protection_attempts_reduce_only_and_reports_unknown(self):
         self.venue.reject_protection=True;r=self.run_session(seconds=1)
         self.assertEqual(self.venue.q,0);self.assertEqual(r['status'],'unknown')

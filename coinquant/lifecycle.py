@@ -8,15 +8,16 @@ from decimal import Decimal as D
 
 from . import binance_safety as safety
 from .linear_preview import research_side
-from .native_preview import entry_preview
+from .native_preview import entry_preview, topup_preview
 from .ownership import owned_observation
 from .state import client_id
 from .types import Blocked, Unknown, number, floor_step
 
 
 class Lifecycle:
-    def __init__(self, reader, state, uid, *, authorized=False, may_enter=lambda:True):
+    def __init__(self, reader, state, uid, *, authorized=False, may_enter=lambda:True, session=None):
         self.reader, self.state, self.uid = reader, state, uid
+        self.session = session
         self.authorized = authorized is True
         self.may_enter = may_enter
         self.actions = []
@@ -193,6 +194,7 @@ class Lifecycle:
                     replacement['done']=True
                     self.state.set('binance_protection_replacement',replacement)
                 self.state.set('entry_plan',None)
+                self.state.set('entry_fill',None)
                 self.state.set('position_exit',None)
                 self.state.set('position_protection',None)
                 self.state.set('session_replacement',None)
@@ -274,6 +276,8 @@ class Lifecycle:
                        price=plan['entry_estimate'],newClientOrderId=identity,newOrderRespType='RESULT')
         plan.update(epoch=epoch,id=identity)
         self.state.set('entry_plan',plan)
+        self.state.set('entry_fill',dict(campaign=plan['campaign'],requested=plan['requested_btc'],
+                                         session=self.session))
         self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh)
         try:
             self.send('POST','/fapi/v1/order',payload)
@@ -364,7 +368,62 @@ class Lifecycle:
             snapshot=self.close(snapshot)
         elif action=='hold':
             snapshot=self.maintain(model,snapshot)
+            snapshot=self.top_up(model,snapshot)
         return action,snapshot
+
+    def top_up(self, model, snapshot):
+        """Within the entry's own session, IOC-add toward the committed campaign size.
+
+        Margin is added before the order so the enlarged isolated position still
+        liquidates beyond the unchanged close-all stop. IOC leaves no remainder.
+        """
+        fill = self.state.get('entry_fill')
+        protection = self.state.get('position_protection')
+        if (not fill or self.session is None or fill.get('session') != self.session or not protection
+                or fill.get('campaign') != protection.get('campaign') or model.active is None
+                or model.active.identity != fill['campaign'] or not self.may_enter()):
+            return snapshot
+        if (self.state.pending() or snapshot['possible_entry_remainders'] or snapshot['open_orders']
+                or not self.planned_protection(snapshot)):
+            return snapshot
+        if abs(number(snapshot['quantity_btc'])) >= number(fill['requested']):
+            return snapshot
+        try:
+            plan = topup_preview(self.reader, model, snapshot, fill['requested'],
+                                 protection['stop'], protection['take'])
+        except ValueError:
+            return snapshot
+        self.entry_constraint = plan['constraint']
+        if not number(plan['quantity_btc']):
+            return snapshot
+        fresh = self.snapshot()
+        if (any(fresh[k] != snapshot[k] for k in ('quantity_btc','wallet_usdt','possible_entry_remainders'))
+                or fresh['open_orders'] or not self.planned_protection(fresh)):
+            raise Unknown('account changed between top-up sizing and order')
+        if abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
+            raise Unknown('top-up preflight expired')
+        self.reader.ensure_capacity(800)
+        if not self.may_enter():
+            raise Blocked('session deadline or stop request prohibits a new entry')
+        self.reader.deadline=self.reader.monotonic()+120
+        epoch = self.epoch()
+        # The venue moves the add's initial margin into the isolated wallet on fill.
+        target = (number(plan['allocated_margin_usdt'])
+                  - number(plan['quantity_btc'])*number(plan['entry_estimate'])/20)
+        if number(fresh['isolated_wallet_usdt']) < target:
+            fresh = safety.add_margin(self.reader,self.state,self.send,self.uid,epoch,
+                                      target,authorized=self.authorized)
+        identity = client_id(self.state.identity,epoch,'entry')
+        payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
+                       timeInForce='IOC',quantity=plan['quantity_btc'],
+                       price=plan['entry_estimate'],newClientOrderId=identity,newOrderRespType='RESULT')
+        self.state.prepare(identity,'binance_order',payload,campaign=fill['campaign'],position_snapshot=fresh)
+        try:
+            self.send('POST','/fapi/v1/order',payload)
+        except Exception:
+            pass  # query, never resend an uncertain write
+        snapshot = self.settle()
+        return self.recover_exposure(snapshot)
 
     def finish(self):
         snapshot=self.recover_exposure(self.settle())

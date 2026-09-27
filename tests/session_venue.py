@@ -91,7 +91,9 @@ class Venue(Binance):
             self.q+=signed
             if not self.q:self.entry=self.margin=D(0)
         else:
-            self.q+=signed;self.entry=D(order['price']);self.margin=abs(self.q)*self.entry/20
+            price=D(order['price'])
+            if amount:self.entry=(abs(self.q)*self.entry+amount*price)/(abs(self.q)+amount)
+            self.q+=signed;self.margin+=amount*price/20
             self.wallet-=amount*self.entry*D('.0005')
         if amount:
             self.trades.append(dict(symbol='BTCUSDT',positionSide='BOTH',side=order['side'],orderId=order['orderId'],id=len(self.trades)+1,time=self.now,qty=str(amount)))

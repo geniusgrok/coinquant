@@ -138,7 +138,13 @@ def reconcile(state, reader, model, snapshot):
                 raise Unknown('account changed while settling zero-fill entries')
             _archive_links(state,links)
         return {'status':'no_campaign_fill'}
-    start,identity,link,entry=max(filled,key=lambda x:x[0])
+    # A campaign may own its first entry plus later adds; all share one history boundary.
+    owner=max(filled,key=lambda x:(x[0],not x[2].get('add')))[2]['campaign']
+    group=sorted((x for x in filled if x[2]['campaign']==owner),key=lambda x:(x[0],bool(x[2].get('add'))))
+    start,identity,link,_entry=group[0]
+    members={x[1] for x in group}
+    if group[0][2].get('add'):
+        raise Unknown('campaign add has no filled first entry')
     now=int(reader.clock()*1000)
     current=datetime.fromtimestamp(now/1000,timezone.utc)
     month_index=current.year*12+current.month-1-3
@@ -184,12 +190,13 @@ def reconcile(state, reader, model, snapshot):
         order=native.get(str(trade['orderId']))
         if order is None or trade['side']!=order[1]['side']:
             raise Unknown('external or unowned fill prevents campaign inference')
-        if order[0] in links and order[0]!=identity:
+        if order[0] in links and order[0] not in members:
             raise Unknown('multiple entry campaigns overlap in native fills')
         qty=number(trade['qty'],positive=True)
         total+=qty if trade['side']=='BUY' else -qty
-        if order[0]==identity:entry_total+=qty
-    if entry_total!=number(entry['executedQty']) or total!=number(snapshot['quantity_btc']):
+        if order[0] in members:entry_total+=qty
+    if (entry_total!=sum((number(x[3]['executedQty']) for x in group),D(0))
+            or total!=number(snapshot['quantity_btc'])):
         raise Unknown('native fills do not reconcile to current position')
     again=reader.snapshot(snapshot['account_uid'])
     if any(again[k]!=snapshot[k] for k in ('quantity_btc','entry','wallet_usdt','possible_entry_remainders')):
