@@ -402,7 +402,7 @@ class Lifecycle:
             raise Unknown('account changed between top-up sizing and order')
         if abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
             raise Unknown('top-up preflight expired')
-        self.reader.ensure_capacity(800)
+        self.reader.ensure_capacity(400)
         if not self.may_enter():
             raise Blocked('session deadline or stop request prohibits a new entry')
         self.reader.deadline=self.reader.monotonic()+120

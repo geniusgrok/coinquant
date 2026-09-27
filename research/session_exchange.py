@@ -119,11 +119,13 @@ class SessionExchange(Binance):
         return observed, row[3]
 
     def _completed_minute(self):
+        # Values come from the last completed minute; the response is stamped at
+        # the request instant like the live venue. Sub-minute paths are unknown.
         boundary = self.now_ms // MINUTE * MINUTE
         open_ms = boundary - MINUTE
         if open_ms < 0:
             return None, None
-        return open_ms, boundary
+        return open_ms, self.now_ms
 
     def _book(self):
         open_ms, observed = self._completed_minute()
@@ -153,7 +155,7 @@ class SessionExchange(Binance):
 
     def _position(self, mark):
         pnl = self.q * (mark - self.entry) if self.q else D(0)
-        liq = self._liquidation()
+        liq = max(D(0), self._liquidation()) if self.q > 0 else self._liquidation()
         return dict(symbol='BTCUSDT', positionSide='BOTH', positionAmt=_text(self.q),
                     entryPrice=_text(self.entry if self.q else 0), isolatedWallet=_text(self.margin if self.q else 0),
                     updateTime=self.now_ms, marginAsset='USDT', markPrice=_text(mark),

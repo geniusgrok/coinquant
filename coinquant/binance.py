@@ -38,6 +38,7 @@ class Binance:
         self.cooldown_until = 0
         self.request_weights = deque()
         self.check_all_orders = True
+        self.all_orders_checked_at = None
         self.deadline = self.monotonic() + 120
         self._dfii10 = None
 
@@ -58,7 +59,11 @@ class Binance:
 
     def begin_cycle(self, seconds=120):
         self.deadline = self.monotonic() + min(120, max(1, seconds))
-        self.check_all_orders = True
+        # Weight-40 all-symbol scans run at most once per rolling minute.
+        last = self.all_orders_checked_at
+        if last is None or self.monotonic() - last >= 60:
+            self.check_all_orders = True
+        self._cycle_config = None
 
     def ensure_capacity(self, reserve):
         now=self.monotonic()
@@ -117,7 +122,8 @@ class Binance:
                  '/fapi/v1/commissionRate':20,'/fapi/v1/leverageBracket':1,
                  '/fapi/v1/order':1,'/fapi/v1/algoOrder':1,'/fapi/v1/positionMargin':1,
                  '/fapi/v1/income':30}
-        weight=40 if path.endswith(('/openOrders','/openAlgoOrders')) and 'symbol' not in params else weights[path]
+        weight=(40 if path.endswith(('/openOrders','/openAlgoOrders')) and 'symbol' not in params
+                else 1 if path=='/fapi/v1/openOrders' else weights[path])
         if path == '/fapi/v1/klines':
             limit=params.get('limit',500)
             if type(limit) is not int or not 1<=limit<=1500:
@@ -210,11 +216,16 @@ class Binance:
         return {'server_time':now,'complete_through':end,'interval_ms':interval,'candles':candles}
 
     def account_identity(self):
+        # One API key belongs to one account; a verified UID holds for this adapter.
+        cached = getattr(self, '_verified_uid', None)
+        if cached is not None:
+            return cached
         raw = self.get('/api/v3/account', {'omitZeroBalances':'true'})
         uid = raw.get('uid') if isinstance(raw,dict) else None
         if type(uid) is not int or uid <= 0:
             raise Unknown('Binance account UID is unavailable')
-        return str(uid)  # do not retain or log the raw spot account response
+        self._verified_uid = str(uid)
+        return self._verified_uid  # do not retain or log the raw spot account response
 
     def query_intent(self, client_identity, *, conditional=False):
         """Observe a stable identity, including the conditional order's child.
@@ -388,9 +399,12 @@ class Binance:
         if uid!=str(expected_uid):raise Blocked('Binance account UID does not match the configured account')
         scan_all=self.check_all_orders
         for _ in range(2):
+            # Position mode, margin type and leverage are read once per cycle.
+            config=getattr(self,'_cycle_config',None)
+            if config is None:
+                config=(self.get('/fapi/v1/accountConfig'),self.get('/fapi/v1/symbolConfig',{'symbol':'BTCUSDT'}))
             def observe():
-                return {'config':self.get('/fapi/v1/accountConfig'),
-                        'symbol':self.get('/fapi/v1/symbolConfig',{'symbol':'BTCUSDT'}),
+                return {'config':config[0],'symbol':config[1],
                         'account':self.get('/fapi/v3/account'),
                         'positions':self.get('/fapi/v3/positionRisk',{'symbol':'BTCUSDT'}),
                         'orders':self.get('/fapi/v1/openOrders',{} if scan_all else {'symbol':'BTCUSDT'}),
@@ -420,6 +434,8 @@ class Binance:
                           recent_fill_count=len(fills),last_fill_id=max((f['id'] for f in fills),default=-1),
                           recent_fill_window_complete=len(fills)<1000,
                           observed_at_ms=int(self.clock()*1000),recovery_history_complete=False)
+            if scan_all:self.all_orders_checked_at=self.monotonic()
+            self._cycle_config=config
             self.check_all_orders=False
             return report
         raise Unknown('Binance account changed during bounded reconciliation')
@@ -495,7 +511,10 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
     if abs(wallet+unrealized-number(account.get('totalMarginBalance'))) > number('.00000001'):
         raise Unknown('account equity arithmetic is inconsistent')
     entry=number(pos.get('entryPrice'),positive=True) if q else number(0)
-    liquidation=number(pos.get('liquidationPrice'),positive=True) if q else number(0)
+    # An over-collateralised isolated long reports 0: it cannot be liquidated.
+    liquidation=(number(pos.get('liquidationPrice')) if q>0 else
+                 number(pos.get('liquidationPrice'),positive=True) if q else number(0))
+    if liquidation<0:raise Unknown('invalid native liquidation price')
     isolated=number(pos.get('isolatedWallet')) if q else number(0)
     if isolated<0:raise Unknown('invalid isolated USDT wallet')
     if q and number(ap[0].get('isolatedWallet')) != isolated:

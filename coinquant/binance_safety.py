@@ -87,7 +87,7 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
     if tick<=0 or any(p%tick or not D(rule['minPrice'])<=p<=D(rule['maxPrice']) for p in (stop,take)):
         raise Blocked('protection violates native price filter')
     if not q or before['possible_entry_remainders']:raise Blocked('flat or entry remainder unresolved')
-    if not (0<liq<stop<mark<take if q>0 else 0<take<mark<stop<liq):
+    if not (0<=liq<stop<mark<take if q>0 else 0<take<mark<stop<liq):
         raise Blocked('invalid protection or liquidation geometry')
     for kind,trigger in (('STOP_MARKET',stop),('TAKE_PROFIT_MARKET',take)):
         identity=client_id(state.identity,epoch,kind)
