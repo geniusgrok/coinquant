@@ -1,8 +1,8 @@
 # Coinquant 有限会话工程恢复入口（2026-09-27）
 
-## 2026-09-27 当前会话 B0
+## 2026-09-27 当前会话账户
 
-先核对实时 `geniusgrok/coinquant` main。本轮从 `302e1fe9cc30149dac160ea91d32405dbe9fa849` 开始，证据在 `evidence/session-b0-20260927/`。`PROTOCOL.md` 与 `SCHEDULE.json` 冻结 795 场、300 秒、5 秒轮询和 1000 毫秒延迟。`RESULT.md` 与 `B0_SUMMARY.json` 是 `unresolved` 现金账户：91/91 IOC 零成交，执行类别 `trade_print_absent`，原生 `NOT_QUALIFIED`。打印规则在 `PRINT_RULE.md`，对应收益还没有。不要把兑换后的人民币 9,990 当成策略 CAGR，不要跑缺席 787，不要改执行硬门或 1600 权重预留，除非打印漏斗证明预留是剩余瓶颈。下文 PR #43 段是上一工程入口。
+先核对实时 `geniusgrok/coinquant` main。本轮从 `302e1fe9cc30149dac160ea91d32405dbe9fa849` 开始，证据在 `evidence/session-b0-20260927/`。打印上界账户是当前对照，不是资格通过。`horizon_hold` 已因已知路径 MDD 超过 50% 停止；`2023-02-24` 标记价缺口之后的终值不是已知路径。生产默认保持 `impulse_hold` 与 `both`。不要跑缺席 787，不要改执行硬门或 1600 权重预留。`B3_PROTOCOL.md` 只把研究侧设为 `long`，该账户收益还没有。原生资格 `NOT_QUALIFIED`。下文 PR #43 段是上一工程入口。
 
 ## 2026-09-26 PR #43 复核与修复
 

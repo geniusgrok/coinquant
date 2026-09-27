@@ -178,6 +178,17 @@ class SessionHistoryTests(TestCase):
         self.assertFalse(exchange.known_path)
         self.assertTrue(exchange.print_miss_days)
 
+    def test_research_side_blocks_the_opposite_impulse(self):
+        exchange, _start, _price = self._exchange('unresolved')
+        directory = tempfile.mkdtemp()
+        from coinquant.state import State
+        with State(directory, 'binance:BTCUSDT:live:1') as state:
+            state.set('enter_unconsumed_bootstrap', True)
+            state.set('research_side', 'short')
+        run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
+        self.assertEqual(exchange.funnel['ioc_submitted'], 0)
+        self.assertEqual(exchange.q, 0)
+
     def test_bootstrap_flag_lets_the_first_active_impulse_enter(self):
         exchange, start, _price = self._exchange('unresolved')
         directory = tempfile.mkdtemp()

@@ -97,21 +97,24 @@ def _harvest(state_dir):
 
 
 def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None, enter_bootstrap=False,
-                 mechanism='impulse_hold'):
+                 mechanism='impulse_hold', side='both'):
     wallet = (D(10000) / FX) * (1 - CONVERSION)
     book = TradePrints(prints) if matcher == 'trade_print' else None
     if matcher == 'trade_print' and prints is None:
         raise ValueError('trade_print requires --prints')
+    if side not in ('long', 'short', 'both'):
+        raise ValueError('unsupported research side')
     exchange = SessionExchange(market, starts[0], wallet, matcher=matcher, prints=book)
     config = Config('1', str(state_dir), 300, 5)
-    if enter_bootstrap:
+    if enter_bootstrap or mechanism != 'impulse_hold' or side != 'both':
         from coinquant.state import State
         with State(str(state_dir), 'binance:BTCUSDT:live:' + config.account_uid) as state:
-            state.set('enter_unconsumed_bootstrap', True)
-    if mechanism != 'impulse_hold':
-        from coinquant.state import State
-        with State(str(state_dir), 'binance:BTCUSDT:live:' + config.account_uid) as state:
-            state.set('research_mechanism', mechanism)
+            if enter_bootstrap:
+                state.set('enter_unconsumed_bootstrap', True)
+            if mechanism != 'impulse_hold':
+                state.set('research_mechanism', mechanism)
+            if side != 'both':
+                state.set('research_side', side)
     sessions = []
     for index, start in enumerate(starts):
         if exchange.now_ms > start:
@@ -139,7 +142,7 @@ def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None,
     execution_class = {'unresolved': 'trade_print_absent', 'bar_through': 'noncausal_minute_bound',
                        'trade_print': 'print_quantity_upper_bound'}[matcher]
     return dict(matcher=matcher, qualification='NOT_QUALIFIED',
-                execution_class=execution_class,
+                execution_class=execution_class, research_side=side, mechanism=mechanism,
                 sessions=len(sessions), final_usdt=str(equity), final_cny=str(final_cny),
                 cagr=cagr, mdd_close=str(exchange.mdd_close), mdd_envelope=str(exchange.mdd_envelope),
                 mdd_close_at=exchange.mdd_close_at, mdd_envelope_at=exchange.mdd_envelope_at,
@@ -165,6 +168,7 @@ def main():
     parser.add_argument('--prints', type=Path, default=None)
     parser.add_argument('--enter-bootstrap', action='store_true')
     parser.add_argument('--mechanism', choices=('impulse_hold', 'horizon_hold'), default='impulse_hold')
+    parser.add_argument('--side', choices=('long', 'short', 'both'), default='both')
     parser.add_argument('--output', type=Path, default=ROOT / 'evidence' / 'session-b0-20260927')
     parser.add_argument('--limit', type=int, default=0)
     args = parser.parse_args()
@@ -177,7 +181,7 @@ def main():
     starts = committed['starts_ms'][:args.limit or None]
     args.state.mkdir(parents=True, exist_ok=True)
     result = run_account(market, starts, args.state, matcher=args.matcher, prints=args.prints,
-                         enter_bootstrap=args.enter_bootstrap, mechanism=args.mechanism)
+                         enter_bootstrap=args.enter_bootstrap, mechanism=args.mechanism, side=args.side)
     result['market'] = {key: market.identity[key] for key in ('four_hour_bars', 'funding_points', 'funding_gap_from',
                                                               'warmup_trade_sha256', 'warmup_funding_sha256')}
     args.output.mkdir(parents=True, exist_ok=True)
@@ -187,6 +191,8 @@ def main():
         name = 'HORIZON_SUMMARY.json'
     elif args.matcher == 'trade_print' and args.enter_bootstrap and not args.limit:
         name = 'B1_SUMMARY.json'
+    elif args.matcher == 'trade_print' and args.side == 'long' and args.mechanism == 'impulse_hold' and not args.limit:
+        name = 'LONG_SUMMARY.json'
     elif args.matcher == 'trade_print' and not args.limit:
         name = 'PRINT_SUMMARY.json'
     else:

@@ -1,8 +1,12 @@
 # Coinquant 当前状态
 
-## 2026-09-27 当前会话 B0（执行数据阻塞）
+## 2026-09-27 当前会话账户（B2 已否决，B3 尚未出收益）
 
-从 main `302e1fe9cc30149dac160ea91d32405dbe9fa849` 出发。795 个冻结会话起点、每场 300 秒、轮询 5 秒、请求延迟 1000 毫秒已在收益前写入 `evidence/session-b0-20260927/PROTOCOL.md`。生产 `session.run` → `Lifecycle` 对 vision 行情跑完 `unresolved` 账户：91 笔 IOC 全部零成交，终点空仓，人民币终值只含初始 10bp 兑换。执行类别 `trade_print_absent`，原生资格 `NOT_QUALIFIED`。漏斗、两处整场标记价缺口和权重预留的实测见同目录 `RESULT.md` 与 `B0_SUMMARY.json`。`ensure_capacity(1600)` 与 `run --execute` 硬门未改。缺席 787 场未跑。下一步是这 91 个 UTC 日的 aggTrades，规则已写入 `PRINT_RULE.md`，打印账户收益尚未产生。
+从 main `302e1fe9cc30149dac160ea91d32405dbe9fa849` 出发。证据在 `evidence/session-b0-20260927/`。`unresolved` 现金账户、打印上界和冷启动消融见 `RESULT.md`。打印上界是数量上界，不是资格通过：人民币终值 `124187.8086783026967819643128`，CAGR `45.49158368395816%`，收盘 MDD `36.533513275934858%`。
+
+`horizon_hold` 在已知路径上的收盘 MDD 已到 `0.9109745842126844225467563699`（`2022-11-10T20:59:00Z`）。按 `B2_PROTOCOL.md` 停止该状态。`2023-02-24` 标记价全日缺口时账户有多仓，其后的终值不是已知路径。不要引用 `HORIZON_SUMMARY.json` 的负 CAGR 作为 B2 通过或失败终值。生产默认仍是 `impulse_hold`，侧仍是 `both`。`run --execute` 硬门和 1600 权重预留未改。原生资格 `NOT_QUALIFIED`。缺席 787 场未跑。
+
+下一批只改研究侧为 `long`，规则已写入 `B3_PROTOCOL.md`，收益尚未产生。
 
 ## 2026-09-26 PR #43 复核与修复
 

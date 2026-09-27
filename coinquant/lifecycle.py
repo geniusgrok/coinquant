@@ -7,6 +7,7 @@ import json
 from decimal import Decimal as D
 
 from . import binance_safety as safety
+from .linear_preview import research_side
 from .native_preview import entry_preview
 from .ownership import owned_observation
 from .state import client_id
@@ -240,7 +241,7 @@ class Lifecycle:
     def enter(self, model, snapshot):
         if self.state.pending() or snapshot['possible_entry_remainders'] or number(snapshot['quantity_btc']):
             raise Unknown('entry requires reconciled flat account')
-        plan = entry_preview(self.reader,model,snapshot,side='both')
+        plan = entry_preview(self.reader,model,snapshot,side=research_side(self.state))
         self.entry_constraint = plan.get('constraint')
         if not number(plan['quantity_btc']):
             return snapshot
@@ -298,7 +299,7 @@ class Lifecycle:
 
     def decide(self, model, snapshot):
         """One shared decision path: existing exposure is settled before new risk."""
-        action=model.action(number(snapshot['quantity_btc']),'both')
+        action=model.action(number(snapshot['quantity_btc']),research_side(self.state))
         if action=='enter':
             snapshot=self.enter(model,snapshot)
         elif action=='exit':

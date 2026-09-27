@@ -4,6 +4,14 @@ from .types import Blocked
 from decimal import Decimal as D
 
 
+def research_side(state):
+    """Live state leaves this unset, so the production book stays two-sided."""
+    side=state.get('research_side') or 'both'
+    if side not in ('long','short','both'):
+        raise Blocked('unsupported research side')
+    return side
+
+
 def advance(state, venue):
     saved=state.get('linear_campaign')
     mechanism=state.get('research_mechanism') or 'impulse_hold'
