@@ -1,5 +1,9 @@
 # Coinquant 当前状态
 
+## 2026-09-27 当前会话 B0（执行数据阻塞）
+
+从 main `302e1fe9cc30149dac160ea91d32405dbe9fa849` 出发。795 个冻结会话起点、每场 300 秒、轮询 5 秒、请求延迟 1000 毫秒已在收益前写入 `evidence/session-b0-20260927/PROTOCOL.md`。生产 `session.run` → `Lifecycle` 对 vision 行情跑完 `unresolved` 账户：91 笔 IOC 全部零成交，终点空仓，人民币终值只含初始 10bp 兑换。执行类别 `trade_print_absent`，原生资格 `NOT_QUALIFIED`。漏斗、两处整场标记价缺口和权重预留的实测见同目录 `RESULT.md` 与 `B0_SUMMARY.json`。`ensure_capacity(1600)` 与 `run --execute` 硬门未改。缺席 787 场未跑。下一步是这 91 个 UTC 日的 aggTrades，规则已写入 `PRINT_RULE.md`，打印账户收益尚未产生。
+
 ## 2026-09-26 PR #43 复核与修复
 
 从 main `7294efb09f3c359cdf8770e723bc21aa8035ce23` 和 PR #43 原头 `e7175cf92a38b0c5bb600dda11f45ffca29b2f59` 逐项验证，结果见 `REVIEW-20260926.md`。已修复原报告的恢复/审计缺陷，以及漏掉的外部保护冒充、满页快照阻塞和替换中断恢复；终态/成交归档、密集 ID 分页、签名现金流水与逐轮实际观察共用原账户数据库。资金审计故障不会阻止已确认退出；收尾失败清除陈旧账户观察。独立复核无剩余已确认代码缺陷，Python 3.13 全部 362 项离线测试通过。验证身份见 `evidence/pr43-review-20260926/VERIFICATION.json`；远端发布、CI、合并以 GitHub 实际状态为准。

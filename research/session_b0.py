@@ -15,7 +15,7 @@ from coinquant.config import Config
 from coinquant.research import invocations, iso, spec, timestamp
 from coinquant.session import run
 from research.session_exchange import SessionExchange
-from research.session_market import load_base
+from research.session_market import TradePrints, load_base
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -96,9 +96,12 @@ def _harvest(state_dir):
                 cleanup=rows[-1].get('cleanup') if rows else None)
 
 
-def run_account(market, starts, state_dir, *, matcher='unresolved'):
+def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None):
     wallet = (D(10000) / FX) * (1 - CONVERSION)
-    exchange = SessionExchange(market, starts[0], wallet, matcher=matcher)
+    book = TradePrints(prints) if matcher == 'trade_print' else None
+    if matcher == 'trade_print' and prints is None:
+        raise ValueError('trade_print requires --prints')
+    exchange = SessionExchange(market, starts[0], wallet, matcher=matcher, prints=book)
     config = Config('1', str(state_dir), 300, 5)
     sessions = []
     for index, start in enumerate(starts):
@@ -124,8 +127,10 @@ def run_account(market, starts, state_dir, *, matcher='unresolved'):
     years = D(timestamp(END) - timestamp('2020-01-01T00:00:00Z')) / D(YEAR_MS)
     cagr = D(final_cny) / D(10000)
     cagr = (float(cagr) ** (1 / float(years)) - 1) if cagr > 0 else -1
+    execution_class = {'unresolved': 'trade_print_absent', 'bar_through': 'noncausal_minute_bound',
+                       'trade_print': 'print_quantity_upper_bound'}[matcher]
     return dict(matcher=matcher, qualification='NOT_QUALIFIED',
-                execution_class='trade_print_absent' if matcher == 'unresolved' else 'noncausal_minute_bound',
+                execution_class=execution_class,
                 sessions=len(sessions), final_usdt=str(equity), final_cny=str(final_cny),
                 cagr=cagr, mdd_close=str(exchange.mdd_close), mdd_envelope=str(exchange.mdd_envelope),
                 mdd_close_at=exchange.mdd_close_at, mdd_envelope_at=exchange.mdd_envelope_at,
@@ -146,7 +151,8 @@ def main():
     parser.add_argument('command', choices=('schedule', 'run'))
     parser.add_argument('--market', type=Path, default=Path('/tmp/coinquant-session-market'))
     parser.add_argument('--state', type=Path, default=Path('/dev/shm/coinquant-session-b0'))
-    parser.add_argument('--matcher', choices=('unresolved', 'bar_through'), default='unresolved')
+    parser.add_argument('--matcher', choices=('unresolved', 'bar_through', 'trade_print'), default='unresolved')
+    parser.add_argument('--prints', type=Path, default=None)
     parser.add_argument('--output', type=Path, default=ROOT / 'evidence' / 'session-b0-20260927')
     parser.add_argument('--limit', type=int, default=0)
     args = parser.parse_args()
@@ -158,11 +164,16 @@ def main():
     market = load_base(args.market)
     starts = committed['starts_ms'][:args.limit or None]
     args.state.mkdir(parents=True, exist_ok=True)
-    result = run_account(market, starts, args.state, matcher=args.matcher)
+    result = run_account(market, starts, args.state, matcher=args.matcher, prints=args.prints)
     result['market'] = {key: market.identity[key] for key in ('four_hour_bars', 'funding_points', 'funding_gap_from',
                                                               'warmup_trade_sha256', 'warmup_funding_sha256')}
     args.output.mkdir(parents=True, exist_ok=True)
-    name = 'B0_SUMMARY.json' if args.matcher == 'unresolved' and not args.limit else f'SUMMARY_{args.matcher}_{len(starts)}.json'
+    if args.matcher == 'unresolved' and not args.limit:
+        name = 'B0_SUMMARY.json'
+    elif args.matcher == 'trade_print' and not args.limit:
+        name = 'PRINT_SUMMARY.json'
+    else:
+        name = f'SUMMARY_{args.matcher}_{len(starts)}.json'
     (args.output / name).write_text(json.dumps(result) + '\n', encoding='utf-8')
     print(json.dumps({key: result[key] for key in ('matcher', 'final_cny', 'cagr', 'mdd_close', 'mdd_envelope',
                                                     'known_path', 'position', 'funnel')}, default=str))

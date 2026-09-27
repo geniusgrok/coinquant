@@ -32,7 +32,7 @@ class _Offline:
 
 
 class SessionExchange(Binance):
-    def __init__(self, market, now_ms, wallet, *, matcher='unresolved', uid=1):
+    def __init__(self, market, now_ms, wallet, *, matcher='unresolved', uid=1, prints=None):
         self.market = market
         self.now_ms = int(now_ms)
         self.wallet = D(wallet)
@@ -42,6 +42,7 @@ class SessionExchange(Binance):
         self.fees = D(0)
         self.funding_paid = D(0)
         self.matcher = matcher
+        self.prints = prints
         self.uid = int(uid)
         self.orders = {}
         self.by_order_id = {}
@@ -343,6 +344,8 @@ class SessionExchange(Binance):
         if self.matcher == 'unresolved':
             self.funnel['ioc_zero'] += 1
             return D(0)
+        if self.matcher == 'trade_print':
+            return self._fill_from_prints(side, limit, quantity)
         if self.matcher != 'bar_through':
             raise ValueError('unknown matcher')
         # Non-causal sensitivity: the minute that contains the latency instant.
@@ -360,6 +363,37 @@ class SessionExchange(Binance):
             return D(0)
         self.funnel['ioc_filled'] += 1
         return quantity
+
+    def _fill_from_prints(self, side, limit, quantity):
+        """Quantity is an upper bound: the whole matching print can be taken.
+
+        The fill price stays at the limit. A missing official file is unknown,
+        which is different from a present file that contains no matching print.
+        """
+        if self.prints is None:
+            raise Unknown('trade prints were not loaded')
+        start, end = self.now_ms + 1000, self.now_ms + 2000
+        rows = self.prints.window(start, end)
+        if rows is None:
+            self.known_path = False
+            self.unknown_from = self.unknown_from or self.now_ms
+            self.funnel['ioc_zero'] += 1
+            return D(0)
+        remain = quantity
+        for price, qty in rows:
+            if side == 'BUY' and price > limit:
+                continue
+            if side == 'SELL' and price < limit:
+                continue
+            remain -= min(remain, qty)
+            if remain <= 0:
+                break
+        filled = quantity - remain
+        if filled <= 0:
+            self.funnel['ioc_zero'] += 1
+            return D(0)
+        self.funnel['ioc_filled'] += 1
+        return filled
 
     def _reply(self, method, path, params):
         if self.unknown_from is not None and method == 'POST' and path.endswith('/order') and params.get('reduceOnly') != 'true':

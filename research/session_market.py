@@ -228,6 +228,55 @@ def load_base(root):
     return Market(bars, series, root, digests)
 
 
+class TradePrints:
+    """Daily aggTrades. One cached day. Missing files are unknown, not empty."""
+
+    def __init__(self, root):
+        self.root = Path(root)
+        self._day_ms = None
+        self._rows = None
+
+    def window(self, start_ms, end_ms):
+        if end_ms <= start_ms:
+            return []
+        collected = []
+        day = (start_ms // 86_400_000) * 86_400_000
+        last = ((end_ms - 1) // 86_400_000) * 86_400_000
+        while day <= last:
+            rows = self._load(day)
+            if rows is None:
+                return None
+            collected.extend(rows)
+            day += 86_400_000
+        import bisect
+        index = bisect.bisect_left(collected, (start_ms,))
+        matched = []
+        while index < len(collected) and collected[index][0] < end_ms:
+            _stamp, _identity, price, qty = collected[index]
+            matched.append((price, qty))
+            index += 1
+        return matched
+
+    def _load(self, day_ms):
+        if self._day_ms == day_ms:
+            return self._rows
+        stamp = datetime.fromtimestamp(day_ms / 1000, timezone.utc)
+        name = f"BTCUSDT-aggTrades-{stamp:%Y-%m-%d}.zip"
+        path = self.root / name
+        if not path.exists():
+            self._day_ms, self._rows = day_ms, None
+            return None
+        _checksum(path)
+        parsed = []
+        for row in _read_zip_rows(path):
+            if row[0] in ('agg_trade_id', 'a'):
+                continue
+            parsed.append((int(row[5]), int(row[0]), D(row[1]), D(row[2])))
+        parsed.sort()
+        self._day_ms, self._rows = day_ms, parsed
+        return parsed
+
+
 def fetch(root, workers=8):
     """Download vision zips and their official checksums. Safe to repeat."""
     import subprocess

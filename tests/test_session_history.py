@@ -1,4 +1,6 @@
+import hashlib
 import tempfile
+import zipfile
 from datetime import datetime, timezone
 from decimal import Decimal as D
 from pathlib import Path
@@ -8,7 +10,7 @@ from coinquant.campaign import ORIGIN
 from coinquant.config import Config
 from coinquant.session import run
 from research.session_exchange import SessionExchange
-from research.session_market import FOUR, Market, four_hour_from_hours, WARMUP_TRADE, WARMUP_TRADE_SHA, _require
+from research.session_market import FOUR, Market, TradePrints, four_hour_from_hours, WARMUP_TRADE, WARMUP_TRADE_SHA, _require
 import json
 
 
@@ -121,6 +123,39 @@ class SessionHistoryTests(TestCase):
         self.assertEqual(len(exchange.sent), sent)
         self.assertGreaterEqual(exchange.funnel['triggers'], 1)
         self.assertTrue(exchange.known_path)
+
+    def test_trade_print_window_fills_at_the_limit(self):
+        directory = Path(tempfile.mkdtemp())
+        day = datetime(2020, 1, 3, tzinfo=timezone.utc)
+        base = int(day.timestamp() * 1000) + 60_000
+        # Columns match vision aggTrades: id, price, qty, first, last, time, maker flag.
+        lines = [
+            f'1,100,1,1,1,{base + 999},false',
+            f'2,99.5,0.003,2,2,{base + 1000},false',
+            f'3,101,5,3,3,{base + 1200},true',
+            f'4,100,0.004,4,4,{base + 1999},false',
+            f'5,90,9,5,5,{base + 2000},false',
+        ]
+        payload = ('\n'.join(lines) + '\n').encode()
+        path = directory / 'BTCUSDT-aggTrades-2020-01-03.zip'
+        with zipfile.ZipFile(path, 'w') as archive:
+            archive.writestr('BTCUSDT-aggTrades-2020-01-03.csv', payload)
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        Path(str(path) + '.CHECKSUM').write_text(digest + '  BTCUSDT-aggTrades-2020-01-03.zip\n', encoding='utf-8')
+        prints = TradePrints(directory)
+        window = prints.window(base + 1000, base + 2000)
+        self.assertEqual(window, [(D('99.5'), D('0.003')), (D('101'), D('5')), (D('100'), D('0.004'))])
+        exchange, _start, _price = self._exchange('trade_print')
+        exchange.prints = prints
+        exchange.now_ms = base
+        filled = exchange._fill_from_prints('BUY', D('100'), D('0.01'))
+        self.assertEqual(filled, D('0.007'))
+        self.assertEqual(exchange.funnel['ioc_filled'], 1)
+        self.assertTrue(exchange.known_path)
+        exchange.funnel['ioc_filled'] = 0
+        missed = exchange._fill_from_prints('BUY', D('99'), D('0.01'))
+        self.assertEqual(missed, 0)
+        self.assertIsNone(TradePrints(directory).window(base + 86_400_000 + 1000, base + 86_400_000 + 2000))
 
     def test_schedule_module_does_not_hand_future_starts_to_the_exchange(self):
         source = Path('research/session_exchange.py').read_text(encoding='utf-8')
