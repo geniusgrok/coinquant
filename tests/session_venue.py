@@ -28,6 +28,10 @@ class Venue(Binance):
     def wait(self,seconds):self.now+=int(seconds*1000)
     def monotonic(self):return self.now/1000
 
+    def dfii10_snapshot(self):
+        return dict(missing_reason='fixture_absent',latest_value=None,prior20_value=None,
+                    latest_value_available_ms=None,prior20_value_available_ms=None)
+
     def seed(self,directory):
         m=Campaign();m.last=self.now//14400000*14400000;m.model.last=m.last
         m.returns.extend([D('.02')]*20)

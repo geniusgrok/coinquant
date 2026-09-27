@@ -1,4 +1,5 @@
 from decimal import Decimal as D
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 from unittest import TestCase
@@ -35,7 +36,7 @@ class NativePreviewTests(TestCase):
     def test_native_inputs_use_identical_funding_function_without_consumption(self):
         m,r,s,values,instrument=self.fixture();before=m.checkpoint()
         p=entry_preview(r,m,s);a=Account(D(1000))
-        expected=funded_target(a,1,m.fraction('3.6','.0011'),D('100.1'),D(100),D(90),D('200.1'),D(10),instrument,fee=D('.0005'),maintenance=D('.005'),notional_limit=D(100000))
+        expected=funded_target(a,1,m.entry_fraction('.0011'),D('100.1'),D(100),D(90),D('200.1'),D(10),instrument,fee=D('.0005'),maintenance=D('.005'),notional_limit=D(100000))
         self.assertEqual(p['quantity_btc'],str(a.q));self.assertGreater(a.q,0)
         self.assertEqual(p['allocated_margin_usdt'],str(a.margin));self.assertEqual(p['constraint'],expected['reason'])
         self.assertEqual(m.checkpoint(),before)
@@ -47,6 +48,18 @@ class NativePreviewTests(TestCase):
             elif field=='book':values['/fapi/v1/depth']['E']-=20000
             else:r.snapshot.return_value['quantity_btc']='1'
             with self.assertRaises(Unknown):entry_preview(r,m,s)
+
+    def test_macro_parent_quantity_respects_three_percent_stop_budget(self):
+        m,r,s,_,_=self.fixture()
+        m.model.active=None;m.daily_lows.extend([D(90)]*10)
+        now=m.last+1000
+        row=dict(missing_reason=None,latest_value='1',prior20_value='1.3',
+                 latest_observation_date=datetime.fromtimestamp(m.last/1000,timezone.utc).date().isoformat(),
+                 latest_value_available_ms=m.last-1,prior20_value_available_ms=m.last-1)
+        m.select_macro(row,'100',now)
+        plan=entry_preview(r,m,s,side='long')
+        self.assertLess(plan['campaign'],0)
+        self.assertLessEqual(D(plan['quantity_btc'])*(D(plan['entry_estimate'])-D(plan['stop'])),D(30))
 
     def test_liquidation_uses_supplied_closing_fee(self):
         a=Account(D(1000),q=D(1),entry=D(100),margin=D(20))

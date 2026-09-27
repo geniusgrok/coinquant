@@ -14,6 +14,7 @@ import sqlite3
 from time import time
 
 from .types import Blocked, Unknown, serial, number
+from .campaign import ORIGIN
 
 
 def client_id(account: str, candle: int, operation: str) -> str:
@@ -85,7 +86,7 @@ class State:
             raise Unknown('intent already exists; reconcile it instead of resending')
         links=None
         if campaign is not None:
-            if (type(campaign) is not int or campaign<=0 or kind!='binance_order'
+            if (type(campaign) is not int or campaign==0 or kind!='binance_order'
                     or payload.get('symbol')!='BTCUSDT' or payload.get('positionSide')!='BOTH'
                     or payload.get('side') not in ('BUY','SELL') or payload.get('reduceOnly')=='true'
                     or not flat_snapshot or number(flat_snapshot.get('quantity_btc'))!=0
@@ -97,6 +98,8 @@ class State:
             observed_at=flat_snapshot.get('observed_at_ms',int(time()*1000))
             if type(observed_at) is not int or observed_at<=0:
                 raise Blocked('invalid entry observation clock')
+            if campaign<0 and not ORIGIN<=-campaign<=observed_at+15000:
+                raise Blocked('invalid macro campaign identity')
             cursor=flat_snapshot.get('last_fill_id')
             if cursor is not None and (type(cursor) is not int or cursor < -1):
                 raise Blocked('invalid native flat fill cursor')

@@ -1,5 +1,6 @@
 import json
 import tempfile
+from datetime import datetime, timezone
 from decimal import Decimal as D
 from pathlib import Path
 from unittest import TestCase
@@ -28,11 +29,35 @@ class SessionTests(TestCase):
         self.assertTrue(result['actual']['native_full_position_protected'])
         self.assertEqual(len([p for m,path,p in self.venue.sent if path.endswith('/order') and p.get('reduceOnly')!='true']),1)
         self.assertEqual(result['pending_intents'],0)
-    def test_short_uses_same_engine_and_buy_close_all(self):
+    def test_negative_impulse_does_not_enter_in_promoted_long_only_model(self):
         self.venue=Venue(-1);self.venue.seed(self.directory)
         r=self.run_session(seconds=2)
-        self.assertLess(self.venue.q,0);self.assertEqual(r['cleanup'],'verified')
-        self.assertTrue(all(p['side']=='BUY' for m,path,p in self.venue.sent if path.endswith('/algoOrder') and m=='POST'))
+        self.assertEqual(self.venue.q,0);self.assertEqual(r['cleanup'],'verified')
+        self.assertEqual(self.venue.sent,[])
+
+    def test_macro_entry_restart_and_false_state_reduce_same_owned_position(self):
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            m=Campaign.restore(state.get('linear_campaign'))
+            m.model.active=None;m.daily_lows.extend([D(90000)]*10)
+            state.set('linear_campaign',m.checkpoint())
+        row=dict(missing_reason=None,latest_value='1',prior20_value='1.3',
+                 latest_observation_date=datetime.fromtimestamp(self.venue.now/1000,timezone.utc).date().isoformat(),
+                 latest_value_available_ms=self.venue.now-1000,
+                 prior20_value_available_ms=self.venue.now-1000)
+        self.venue.dfii10_snapshot=lambda:row
+        first=self.run_session(seconds=2)
+        self.assertEqual(first['cleanup'],'verified',first)
+        self.assertGreater(self.venue.q,0)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            m=Campaign.restore(state.get('linear_campaign'))
+            self.assertLess(m.position_campaign,0)
+        before=len(self.venue.orders)
+        self.assertEqual(self.run_session(seconds=1)['cleanup'],'verified')
+        self.assertEqual(len(self.venue.orders),before)
+        self.venue.dfii10_snapshot=lambda:dict(row,missing_reason='stale')
+        last=self.run_session(seconds=1)
+        self.assertEqual(last['cleanup'],'verified',last)
+        self.assertEqual(self.venue.q,0)
     def test_read_only_runs_repeatedly_without_orders(self):
         r=self.run_session(False,seconds=3)
         self.assertEqual(r['cycles'],3);self.assertEqual(r['status'],'read_only');self.assertEqual(self.venue.sent,[])
@@ -116,10 +141,11 @@ class SessionTests(TestCase):
         from research.session_replay import replay
         with State(self.directory,'binance:BTCUSDT:live:123') as s:checkpoint=s.get('linear_campaign')
         tape=dict(start_ms=self.venue.now,records=[])
-        for method in ('get','send'):
+        for method in ('get','send','dfii10_snapshot'):
             original=getattr(self.venue,method)
             def capture(*args,_original=original,_method=method):
-                verb,path,p=('GET',args[0],args[1] if len(args)>1 else {}) if _method=='get' else args
+                verb,path,p=(('GET',args[0],args[1] if len(args)>1 else {}) if _method=='get'
+                             else ('MACRO','/dfii10',{}) if _method=='dfii10_snapshot' else args)
                 rec=dict(method=verb,path=path,parameters=deepcopy(p or {}),time_ms=self.venue.now)
                 try:r=_original(*args);rec['response']=deepcopy(r);return r
                 except Unknown:rec['unknown']=True;raise
@@ -260,6 +286,7 @@ class SessionTests(TestCase):
                 response=backend.get(url.path,p) if request.method=='GET' else backend.send(request.method,url.path,p)
                 return BytesIO(json.dumps(response).encode())
         reader=Binance(key='fixture',secret='fixture',clock=backend.clock,opener=HTTP(),authorize_writes=True)
+        reader._dfii10=type('Macro',(),{'snapshot':lambda _,now:backend.dfii10_snapshot()})()
         result=run(Config('123',self.directory,1,1),reader,execute=True,monotonic=backend.monotonic,wait=backend.wait)
         self.assertEqual(result['cleanup'],'verified',result)
         self.assertTrue(result['actual']['native_full_position_protected'])

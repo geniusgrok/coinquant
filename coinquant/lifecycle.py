@@ -274,7 +274,7 @@ class Lifecycle:
         protection = self.state.get('position_protection')
         if not protection:
             raise Unknown('position protection ownership unavailable')
-        opportunity = model.model.active
+        opportunity = model.active
         if opportunity is None or opportunity.identity != protection['campaign']:
             raise Unknown('protection and model campaign disagree')
         rules = self.instrument()
