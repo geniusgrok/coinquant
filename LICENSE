@@ -1,3 +1,35 @@
+Coinquant repository rights notice (effective 2026-09-27)
+
+This public repository hosts geniusgrok's personal research code and records
+for the owner's own use. Public visibility is not a grant of permission to
+copy, modify, redistribute, sublicense, or use newly published material in
+another project or a trading system. For material first published after commit
+57396528132b40793af453b6cbd82ba2d2706048, geniusgrok reserves all rights
+to original material geniusgrok owns. Prior written permission from the
+applicable rights holder is required for those acts, except to the extent
+allowed by applicable law or GitHub's Terms of Service.
+
+This notice does not revoke any permission already granted. Material available
+at or before the commit above remains subject to its existing MIT license to
+the extent it was lawfully licensed under that license. Rights in third-party
+material remain with its respective owners. The earlier MIT notice is retained
+verbatim below; it must be preserved where its terms require it. A later
+repository notice cannot make previously MIT-licensed material exclusive.
+
+This repository is research, not a live-trading product. It is not intended
+for live trading and makes no representation of trading safety or returns.
+The research and code are provided as-is, without warranty or investment
+advice, to the extent permitted by law.
+
+中文说明：本公开仓库仅托管 geniusgrok 本人的研究代码和记录，仅供本人使用。
+公开可见不等于允许复制、修改、再发布或用于实盘。对于上述提交之后首次
+发表、且由 geniusgrok 享有权利的原创内容，保留所有权利；他人使用须事先
+取得相应权利人的书面许可，但法律及 GitHub 服务条款允许的行为除外。
+本声明不追溯撤销既有 MIT 授权，也不影响第三方权利。本项目不可作为
+实盘交易工具，研究结果不是投资建议或收益保证。
+
+--- Historical MIT notice for previously published material (unchanged) ---
+
 MIT License
 
 Copyright (c) 2020 thefourgreaterrors@gmail.com

@@ -1,12 +1,16 @@
 # Coinquant
 
-个人使用的 Binance BTCUSDT U 本位永续系统，交易所设置20×，单向逐仓、单账户。手动启动一个有限会话，会话内持续读取真实行情与账户状态、重复判断，超时或 Ctrl-C 后退出；没有后台守护进程。
+本公开仓库仅用于托管仓库所有者 geniusgrok 的个人量化研究代码和实验记录，项目仅供所有者本人使用。公开可见不代表开放授权或邀请他人使用、贡献，也不代表已进行、计划进行或能够安全进行实盘交易。未经相应权利人事先书面许可，不得将未获既有许可覆盖的内容复制、改编、修改、再发布、作为自己的作品署名或用于交易系统。具体权利范围及既有 MIT 授权的限制见 [LICENSE](LICENSE)。
+
+**不得将本仓库作为实盘交易工具使用。** 策略、回测和收益数字仅为研究记录，不是投资建议、收益保证或可执行性证明。历史模拟不能证明真实撮合、费用、资金费、强平、网络故障和保护单失效等风险已得到控制；任何擅自使用所产生的行为与损失由使用者自行承担。
+
+研究对象是个人使用的 Binance BTCUSDT U 本位永续系统，交易所设置20×，单向逐仓、单账户。手动启动一个有限会话，会话内持续读取真实行情与账户状态、重复判断，超时或 Ctrl-C 后退出；没有后台守护进程。
 
 **当前是工程集成版本。命令行仍禁止真实交易写入：原生交易所接入验证与经济验收均未完成。离线验证通过不等于生产资格。**
 
-## 使用
+## 所有者本地研究
 
-Python 3.13；生产运行仅使用标准库。
+Python 3.13；项目运行仅使用标准库。
 
 ```sh
 git clone https://github.com/geniusgrok/coinquant.git
@@ -16,7 +20,7 @@ python -m coinquant status --config config.json
 python -m coinquant run --config config.json
 ```
 
-在配置中填写自己的 Binance `account_uid` 和固定 `state_dir`。凭据只从 `COINQUANT_BINANCE_KEY`、`COINQUANT_BINANCE_SECRET` 环境变量读取，不写入配置或仓库。`status` 单次观察；`run` 默认观察300秒，每5秒重新核对，输出和状态目录的 `latest.json` 标明结果。配置只包含四项：
+仅供仓库所有者在授权账户上进行本地只读研究。在配置中填写所有者的 Binance `account_uid` 和固定 `state_dir`。凭据只从 `COINQUANT_BINANCE_KEY`、`COINQUANT_BINANCE_SECRET` 环境变量读取，不写入配置或仓库。`status` 单次观察；`run` 默认观察300秒，每5秒重新核对，输出和状态目录的 `latest.json` 标明结果。配置只包含四项：
 
 | 配置 | 含义 |
 |---|---|
