@@ -71,6 +71,7 @@ class SessionExchange(Binance):
         self._note_cash()
 
     _dfii10_history = None
+    print_window_ms = 1000
 
     def dfii10_snapshot(self):
         if SessionExchange._dfii10_history is None:
@@ -396,7 +397,8 @@ class SessionExchange(Binance):
         """
         if self.prints is None:
             raise Unknown('trade prints were not loaded')
-        start, end = self.now_ms + 1000, self.now_ms + 2000
+        start = self.now_ms + 1000
+        end = start + self.print_window_ms
         rows = self.prints.window(start, end)
         if rows is None:
             day = datetime.fromtimestamp(self.now_ms / 1000, timezone.utc).strftime('%Y-%m-%d')

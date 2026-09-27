@@ -97,7 +97,8 @@ def _harvest(state_dir):
 
 
 def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None, enter_bootstrap=False,
-                 mechanism='impulse_hold', side='both', chase_bound=False, funding_gate=False):
+                 mechanism='impulse_hold', side='both', chase_bound=False, funding_gate=False,
+                 exchange_options=None):
     wallet = (D(10000) / FX) * (1 - CONVERSION)
     book = TradePrints(prints) if matcher == 'trade_print' else None
     if matcher == 'trade_print' and prints is None:
@@ -105,6 +106,8 @@ def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None,
     if side not in ('long', 'short', 'both'):
         raise ValueError('unsupported research side')
     exchange = SessionExchange(market, starts[0], wallet, matcher=matcher, prints=book)
+    for key, value in (exchange_options or {}).items():
+        setattr(exchange, key, value)
     config = Config('1', str(state_dir), 300, 5)
     if enter_bootstrap or mechanism != 'impulse_hold' or side != 'both' or chase_bound or funding_gate:
         from coinquant.state import State
@@ -154,7 +157,7 @@ def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None,
                 mdd_close_at=exchange.mdd_close_at, mdd_envelope_at=exchange.mdd_envelope_at,
                 known_path=exchange.known_path, unknown_from=exchange.unknown_from,
                 position=str(exchange.q), fees=str(exchange.fees), funding=str(exchange.funding_paid),
-                funnel=dict(exchange.funnel), print_miss_days=sorted(exchange.print_miss_days),
+                funnel=dict(exchange.funnel), trades=exchange.trades, print_miss_days=sorted(exchange.print_miss_days),
                 session_rows=sessions)
 
 

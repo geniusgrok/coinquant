@@ -8,6 +8,8 @@ from .types import Blocked, Unknown, number, floor_step
 from .linear_account import Account
 from .linear_sizing import funded_target
 
+BOOK_PARTICIPATION=D('.01')
+
 
 def entry_preview(reader, model, snapshot, *, side='long'):
     if model.action(number(snapshot['quantity_btc']),side)!='enter':
@@ -72,7 +74,7 @@ def entry_preview(reader, model, snapshot, *, side='long'):
     raw_price=(asks[0][0]*D('1.001') if direction>0 else bids[0][0]*D('.999'))
     price=(floor_step(raw_price,tick) if direction>0 else (raw_price/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
     mark=number(fresh['mark_price'],positive=True)
-    capacity=sum((q for p,q in (asks if direction>0 else bids) if (p<=price if direction>0 else p>=price)),D(0))*D('.01')
+    capacity=sum((q for p,q in (asks if direction>0 else bids) if (p<=price if direction>0 else p>=price)),D(0))*BOOK_PARTICIPATION
     stop=(floor_step(opportunity.stop,tick) if direction>0 else (opportunity.stop/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
     take=(floor_step(opportunity.take,tick)+tick if direction>0 else floor_step(opportunity.take,tick))
     if not all(number(filters[0]['minPrice'])<=p<=number(filters[0]['maxPrice']) for p in (stop,take,price)):
