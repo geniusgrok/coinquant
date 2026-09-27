@@ -29,15 +29,16 @@ class NoRedirect(HTTPRedirectHandler):
 
 
 class Binance:
-    def __init__(self, *, key='', secret='', opener=None, clock=time.time, authorize_writes=False):
+    def __init__(self, *, key='', secret='', opener=None, clock=time.time, authorize_writes=False, monotonic=None):
         self.key, self.secret = key, secret
         self.opener = opener or build_opener(NoRedirect())
         self.clock = clock
+        self._monotonic = monotonic
         self.authorize_writes = authorize_writes is True
         self.cooldown_until = 0
         self.request_weights = deque()
         self.check_all_orders = True
-        self.deadline = time.monotonic() + 120
+        self.deadline = self.monotonic() + 120
         self._dfii10 = None
 
     def dfii10_snapshot(self):
@@ -45,12 +46,22 @@ class Binance:
         if self._dfii10 is None:self._dfii10=Source()
         return self._dfii10.snapshot(int(self.clock()*1000))
 
+    def monotonic(self):
+        """Budget clock for this adapter. Subclasses and replay inject their own.
+
+        Session deadlines and this adapter must share one clock. The process
+        wall monotonic is only the default when nobody injected one.
+        """
+        if self._monotonic is not None:
+            return self._monotonic()
+        return time.monotonic()
+
     def begin_cycle(self, seconds=120):
-        self.deadline = time.monotonic() + min(120, max(1, seconds))
+        self.deadline = self.monotonic() + min(120, max(1, seconds))
         self.check_all_orders = True
 
     def ensure_capacity(self, reserve):
-        now=time.monotonic()
+        now=self.monotonic()
         while self.request_weights and self.request_weights[0][0]<=now-60:
             self.request_weights.popleft()
         if sum(cost for _,cost in self.request_weights)+reserve>2200:
@@ -95,6 +106,7 @@ class Binance:
     def _request(self, method, path, parameters=None):
         private = method != 'GET' or path in PRIVATE
         params = dict(parameters or {})
+        self._inflight = (method, path, dict(parameters or {}))
         # Conservative per-process rolling budget; leave headroom under the usual
         # 2400/min allowance. Unfiltered order scans are restricted to cycle start.
         weights={'/api/v3/account':20,'/fapi/v1/accountConfig':5,'/fapi/v1/symbolConfig':5,
@@ -132,27 +144,31 @@ class Binance:
             url, data = 'https://'+host+path, query.encode()
             headers['Content-Type'] = 'application/x-www-form-urlencoded'
         request = Request(url, data=data, headers=headers, method=method)
-        remaining = self.deadline-time.monotonic()
-        if time.monotonic() < self.cooldown_until:
+        remaining = self.deadline-self.monotonic()
+        if self.monotonic() < self.cooldown_until:
             raise Unknown('Binance rate limit cooldown; no request sent')
         if remaining <= 0: raise Unknown('bounded Binance observation deadline exceeded')
         try:
-            self.request_weights.append((time.monotonic(),weight))
-            with self.opener.open(request, timeout=min(8,remaining)) as response:
-                raw = response.read(2000001)
-            if len(raw)>2000000: raise Unknown('oversized Binance response')
-            result = json.loads(raw)
+            self.request_weights.append((self.monotonic(),weight))
+            result = self._transport(request, timeout=min(8,remaining))
         except HTTPError as exc:
             if exc.code in (418,429):
                 try:delay=max(60,min(86400,float(exc.headers.get('Retry-After','60'))))
                 except (TypeError,ValueError):delay=60
-                self.cooldown_until=time.monotonic()+delay
+                self.cooldown_until=self.monotonic()+delay
             raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown') from None
         except (URLError, TimeoutError, OSError, ValueError):
             raise Unknown('Binance request unavailable; read by stable identity before any retry') from None
         if not isinstance(result,(dict,list)) or (isinstance(result,dict) and 'code' in result and not (method != 'GET' and result['code'] == 200)):
             raise Unknown('unexpected Binance read response')
         return result
+
+    def _transport(self, request, timeout):
+        """Network exchange. Historical replay overrides this and does not patch time."""
+        with self.opener.open(request, timeout=timeout) as response:
+            raw = response.read(2000001)
+        if len(raw)>2000000: raise Unknown('oversized Binance response')
+        return json.loads(raw)
 
     def completed_market(self, start=None, *, on_page=None):
         """Page complete four-hour bars from an exact checkpoint; never truncate."""

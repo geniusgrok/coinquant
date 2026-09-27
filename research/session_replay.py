@@ -20,7 +20,8 @@ class Tape(Binance):
         self.records=records
         self.index=0
         self.now=start_ms
-        super().__init__(clock=lambda:self.now/1000,authorize_writes=True)
+        super().__init__(key='replay',secret='replay',clock=lambda:self.now/1000,
+                         authorize_writes=True,monotonic=lambda:self.now/1000)
 
     def _request(self, method, path, parameters=None):
         if self.index>=len(self.records):
