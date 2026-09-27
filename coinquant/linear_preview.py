@@ -6,8 +6,11 @@ from decimal import Decimal as D
 
 def advance(state, venue):
     saved=state.get('linear_campaign')
-    model=Campaign.restore(saved) if saved is not None else Campaign()
-    if model.model.mechanism!='impulse_hold' or model.model.interval!=14400000:
+    mechanism=state.get('research_mechanism') or 'impulse_hold'
+    if mechanism not in ('impulse_hold','horizon_hold'):
+        raise Blocked('unsupported research mechanism')
+    model=Campaign.restore(saved) if saved is not None else Campaign(mechanism)
+    if model.model.mechanism!=mechanism or model.model.interval!=14400000:
         raise Blocked('checkpoint does not match current L model')
     if saved is None:state.set('market_bootstrap',True)
     bootstrap=bool(state.get('market_bootstrap'))

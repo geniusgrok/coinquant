@@ -24,7 +24,7 @@ class Opportunity:
 
 class Opportunities:
     def __init__(self, mechanism, interval=FOUR_HOURS):
-        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','post_impulse_restart'):raise ValueError('unknown mechanism')
+        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','post_impulse_restart','horizon_hold'):raise ValueError('unknown mechanism')
         if interval not in (3600000,FOUR_HOURS,86400000) or (interval==86400000 and mechanism!='swing'):raise ValueError('unsupported completed interval')
         self.interval=interval
         self.mechanism=mechanism;self.bars=deque(maxlen=21);self.tr=deque(maxlen=14)
@@ -34,6 +34,8 @@ class Opportunities:
         if mechanism=='post_impulse_restart':
             self.original=Opportunities('impulse_hold',interval)
             self.restart_context=None;self.restart_child=None
+        if mechanism=='horizon_hold':
+            self.horizon=deque(maxlen=43)
 
     def update(self, end, high, low, close):
         if self.last is not None and end!=self.last+self.interval:raise ValueError('incomplete model clock')
@@ -84,6 +86,18 @@ class Opportunities:
                         take=close+2*(close-stop)
                         self.armed=None
                         if take>0:self.active=Opportunity(identity,side,stop,take,expiry)
+        elif self.mechanism=='horizon_hold':
+            self.horizon.append((end,high,low,close))
+            if len(self.horizon)==43 and prior_atr and not self.active:
+                past=self.horizon[0][3]
+                move=close-past
+                if abs(move)>3*prior_atr:
+                    side=1 if move>0 else -1
+                    extreme=min(row[2] for row in self.horizon) if side>0 else max(row[1] for row in self.horizon)
+                    stop=(close+extreme)/2
+                    if side*(close-stop)>0:
+                        take=close*(close/stop)**20
+                        if take>0:self.active=Opportunity(end,side,stop,take,end+42*FOUR_HOURS)
         elif self.mechanism in ('shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse'):
             shock=bool(prior_atr and abs(close-prior)>3*prior_atr)
             if self.mechanism=='persistent_impulse' and shock and self.active and self.active.direction*(close-prior)<0:
