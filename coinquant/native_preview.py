@@ -23,9 +23,16 @@ def _venue(reader, model, snapshot, direction):
     filters=[f for f in instrument['filters'] if f.get('filterType')=='PRICE_FILTER']
     if len(filters)!=1:raise Unknown('missing unique price rule')
     tick=number(filters[0]['tickSize'],positive=True)
-    commission=reader.get('/fapi/v1/commissionRate',{'symbol':'BTCUSDT'})
-    if commission.get('symbol')!='BTCUSDT':raise Unknown('commission scope')
-    fee=number(commission['takerCommissionRate'])
+    # Weight 20 per read; one reader keeps the account rate for at most a minute.
+    now=reader.monotonic()
+    cached=vars(reader).get('_commission') if isinstance(now,(int,float)) else None
+    if cached and 0<=now-cached[0]<60:
+        fee=cached[1]
+    else:
+        commission=reader.get('/fapi/v1/commissionRate',{'symbol':'BTCUSDT'})
+        if commission.get('symbol')!='BTCUSDT':raise Unknown('commission scope')
+        fee=number(commission['takerCommissionRate'])
+        if isinstance(now,(int,float)):reader._commission=(now,fee)
     brackets=reader.get('/fapi/v1/leverageBracket',{'symbol':'BTCUSDT'})
     if isinstance(brackets,list):
         if len(brackets)!=1:raise Unknown('ambiguous leverage brackets')

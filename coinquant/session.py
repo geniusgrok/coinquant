@@ -40,7 +40,9 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
         action,snapshot=engine.decide(model,snapshot)
         # A fill may occur in any write/read race. Reconcile again before deciding
         # on another campaign, never mark a preview or request as consumed.
-        if len(engine.actions)>writes:reconcile(state,reader,model,snapshot)
+        latest=engine.reconciled
+        if len(engine.actions)>writes and not (latest and latest[0] is snapshot and latest[1]==len(engine.actions)):
+            reconcile(state,reader,model,snapshot)
         result['action']=action
         if engine.entry_constraint is not None:
             result['entry_constraint']=engine.entry_constraint

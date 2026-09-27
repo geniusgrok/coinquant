@@ -13,9 +13,11 @@ from .ownership import owned_observation
 from .state import client_id
 from .types import Blocked, Unknown, number, floor_step
 
+# Measured: first entry with protection about 400; an add under standing
+# close-all protection about 130 (210 with a margin transfer); preview about 60.
 ENTRY_RESERVE = 800
-TOPUP_RESERVE = 400
-PREVIEW_WEIGHT = 250
+TOPUP_RESERVE = 250
+PREVIEW_WEIGHT = 100
 
 
 class Lifecycle:
@@ -249,7 +251,6 @@ class Lifecycle:
     def enter(self, model, snapshot):
         if self.state.pending() or snapshot['possible_entry_remainders'] or number(snapshot['quantity_btc']):
             raise Unknown('entry requires reconciled flat account')
-        # Measured entry+protection cost is about 350 weight; preview about 200.
         self.reader.ensure_capacity(ENTRY_RESERVE+PREVIEW_WEIGHT)
         plan = entry_preview(self.reader,model,snapshot,side=research_side(self.state))
         self.entry_constraint = plan.get('constraint')

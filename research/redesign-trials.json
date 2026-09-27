@@ -91,6 +91,32 @@
           ]
         }
       ]
+    },
+    {
+      "round": "R2",
+      "registered": "2026-09-27",
+      "hypothesis": "From 2023 campaigns fill far below target (liquidity_cap) and most hold polls skip a top-up only because the request-weight reserve is unavailable. Measured reserves (top-up 250, preview 100), no duplicate post-write reconcile and a one-minute commission cache raise the IOC count per session under the same 2200/min cap.",
+      "model": "SX60+DFII10 default; production weight changes in coinquant (lifecycle reserves, session reconcile, preview commission cache)",
+      "trials": [
+        {
+          "name": "R2-p6",
+          "args": []
+        },
+        {
+          "name": "R2-p7",
+          "args": [
+            "--primary-risk",
+            "7"
+          ]
+        },
+        {
+          "name": "R2-p7.5",
+          "args": [
+            "--primary-risk",
+            "7.5"
+          ]
+        }
+      ]
     }
   ]
 }
