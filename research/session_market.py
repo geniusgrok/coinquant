@@ -228,8 +228,47 @@ def load_base(root):
     return Market(bars, series, root, digests)
 
 
+def _iter_zip_rows(path):
+    """Stream one CSV member. Callers that need random access keep their own rows."""
+    with zipfile.ZipFile(path) as archive:
+        names = [name for name in archive.namelist() if not name.endswith('/')]
+        if len(names) != 1:
+            raise ValueError(f'unexpected archive members in {path}')
+        with archive.open(names[0]) as raw:
+            for line in raw:
+                text = line.decode('utf-8').strip()
+                if not text or text.startswith('calc_time') or text.startswith('open_time'):
+                    continue
+                yield text.split(',')
+
+
+def _scaled_int(text, places):
+    """Exact integer of a decimal string times 10**places. Extra digits fail closed."""
+    negative = text.startswith('-')
+    body = text[1:] if negative else text
+    if '.' in body:
+        whole, frac = body.split('.')
+        if not frac.isdigit() or (whole and not whole.isdigit()):
+            raise ValueError(f'print scale {text}')
+        frac = frac.rstrip('0')
+        if len(frac) > places:
+            raise ValueError(f'print scale {text}')
+        frac = frac.ljust(places, '0')
+    else:
+        if not body.isdigit():
+            raise ValueError(f'print scale {text}')
+        whole, frac = body, '0' * places
+    value = int((whole or '0') + frac)
+    return -value if negative else value
+
+
 class TradePrints:
-    """Daily aggTrades. One cached day. Missing files are unknown, not empty."""
+    """Daily aggTrades. One cached day. Missing files are unknown, not empty.
+
+    Rows stay as integers: transact time, agg id, and price/quantity scaled by
+    1e8. Historical prints are finer than the current 0.1 tick. The public
+    window still returns Decimals, in (time, agg id) order.
+    """
 
     def __init__(self, root):
         self.root = Path(root)
@@ -239,22 +278,21 @@ class TradePrints:
     def window(self, start_ms, end_ms):
         if end_ms <= start_ms:
             return []
-        collected = []
+        import bisect
+        matched = []
         day = (start_ms // 86_400_000) * 86_400_000
         last = ((end_ms - 1) // 86_400_000) * 86_400_000
         while day <= last:
             rows = self._load(day)
             if rows is None:
                 return None
-            collected.extend(rows)
+            times, _ids, prices, qtys = rows
+            index = bisect.bisect_left(times, start_ms)
+            scale = D(10) ** 8
+            while index < len(times) and times[index] < end_ms:
+                matched.append((D(prices[index]) / scale, D(qtys[index]) / scale))
+                index += 1
             day += 86_400_000
-        import bisect
-        index = bisect.bisect_left(collected, (start_ms,))
-        matched = []
-        while index < len(collected) and collected[index][0] < end_ms:
-            _stamp, _identity, price, qty = collected[index]
-            matched.append((price, qty))
-            index += 1
         return matched
 
     def _load(self, day_ms):
@@ -267,14 +305,31 @@ class TradePrints:
             self._day_ms, self._rows = day_ms, None
             return None
         _checksum(path)
-        parsed = []
-        for row in _read_zip_rows(path):
+        import array
+        times, ids, prices, qtys = (array.array('q') for _ in range(4))
+        ordered = True
+        previous = None
+        for row in _iter_zip_rows(path):
             if row[0] in ('agg_trade_id', 'a'):
                 continue
-            parsed.append((int(row[5]), int(row[0]), D(row[1]), D(row[2])))
-        parsed.sort()
-        self._day_ms, self._rows = day_ms, parsed
-        return parsed
+            stamp_ms, identity = int(row[5]), int(row[0])
+            key = (stamp_ms, identity)
+            if previous is not None and key < previous:
+                ordered = False
+            previous = key
+            times.append(stamp_ms)
+            ids.append(identity)
+            prices.append(_scaled_int(row[1], 8))
+            qtys.append(_scaled_int(row[2], 8))
+        if not ordered:
+            order = sorted(range(len(times)), key=lambda index: (times[index], ids[index]))
+            times = array.array('q', (times[index] for index in order))
+            ids = array.array('q', (ids[index] for index in order))
+            prices = array.array('q', (prices[index] for index in order))
+            qtys = array.array('q', (qtys[index] for index in order))
+        packed = (times, ids, prices, qtys)
+        self._day_ms, self._rows = day_ms, packed
+        return packed
 
 
 def fetch(root, workers=8):
