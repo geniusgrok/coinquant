@@ -7,13 +7,89 @@
       "registered": "2026-09-27",
       "model": "SX60+DFII10 default (coinquant.campaign.Campaign, risk 6.0 primary / 3.6 macro)",
       "trials": [
-        {"name": "F0", "args": []},
-        {"name": "F0-fee150", "args": ["--fee", "0.001125"], "stress": "cost +50%"},
-        {"name": "F0-slip2", "args": ["--trigger-slippage", "0.002", "--market-slippage", "0.001"], "stress": "exit slippage x2"},
-        {"name": "F0-part10", "args": ["--participation", "0.1"], "stress": "depth participation 10%"},
-        {"name": "F0-absence", "args": ["--sequence", "absence"], "stress": "legacy absence sequence"},
-        {"name": "F0-skip", "args": ["--sequence", "random_skip"], "stress": "seeded 20% skip"},
-        {"name": "F0-block", "args": ["--sequence", "block_21d"], "stress": "seeded 21-day block"}
+        {
+          "name": "F0",
+          "args": []
+        },
+        {
+          "name": "F0-fee150",
+          "args": [
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%"
+        },
+        {
+          "name": "F0-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2"
+        },
+        {
+          "name": "F0-part10",
+          "args": [
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%"
+        },
+        {
+          "name": "F0-absence",
+          "args": [
+            "--sequence",
+            "absence"
+          ],
+          "stress": "legacy absence sequence"
+        },
+        {
+          "name": "F0-skip",
+          "args": [
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "seeded 20% skip"
+        },
+        {
+          "name": "F0-block",
+          "args": [
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "seeded 21-day block"
+        }
+      ]
+    },
+    {
+      "round": "R1",
+      "registered": "2026-09-27",
+      "hypothesis": "M1 MDD 41.6% leaves headroom; screening shows primary risk monotone in CAGR and MDD. Macro risk inert (3% stop cap binds).",
+      "model": "SX60+DFII10 default with PRIMARY_RISK varied",
+      "trials": [
+        {
+          "name": "R1-p6.5",
+          "args": [
+            "--primary-risk",
+            "6.5"
+          ]
+        },
+        {
+          "name": "R1-p7",
+          "args": [
+            "--primary-risk",
+            "7"
+          ]
+        },
+        {
+          "name": "R1-p7.5",
+          "args": [
+            "--primary-risk",
+            "7.5"
+          ]
+        }
       ]
     }
   ]

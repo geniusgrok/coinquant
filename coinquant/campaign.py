@@ -13,6 +13,8 @@ from .opportunities import Opportunities, Opportunity, FOUR_HOURS
 from .linear_sizing import target_fraction
 from .types import Blocked, ZERO
 
+PRIMARY_RISK = '6'
+MACRO_RISK = '3.6'
 ORIGIN = 1575158400000  # 2019-12-01T00:00Z, fixed research warmup identity
 DAY = 86400000
 
@@ -103,8 +105,8 @@ class Campaign:
                     self.macro_opportunity=Opportunity(self.macro_epoch,1,stop,price*(price/stop)**20,None)
 
     def entry_fraction(self, friction):
-        return self.fraction('3.6' if self.macro_opportunity is not None and
-                             self.active is self.macro_opportunity else '6',friction)
+        return self.fraction(MACRO_RISK if self.macro_opportunity is not None and
+                             self.active is self.macro_opportunity else PRIMARY_RISK,friction)
 
     def action(self, quantity, side='long'):
         if quantity and self.position_campaign is None:
