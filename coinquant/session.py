@@ -21,7 +21,12 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
     model.select_macro(reader.dfii10_snapshot(),snapshot['mark_price'],int(reader.clock()*1000),
                        bootstrap=reconstructed)
     state.set('linear_campaign',model.checkpoint())
-    ownership=reconcile(state,reader,model,snapshot)
+    # Recovery already reconciled this exact observation when it wrote nothing.
+    prior=engine.reconciled
+    if execute and prior and prior[0] is snapshot and prior[1]==len(engine.actions)==0:
+        ownership=prior[2]
+    else:
+        ownership=reconcile(state,reader,model,snapshot)
     if state.pending():
         raise Unknown('unsettled intents block decisions')
     side=research_side(state)
@@ -31,10 +36,11 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
     if execute:
         # Missing cashflow audit blocks new risk, never a verified reduction.
         if result['action']=='enter':audit=income(reader,state)
+        writes=len(engine.actions)
         action,snapshot=engine.decide(model,snapshot)
         # A fill may occur in any write/read race. Reconcile again before deciding
         # on another campaign, never mark a preview or request as consumed.
-        reconcile(state,reader,model,snapshot)
+        if len(engine.actions)>writes:reconcile(state,reader,model,snapshot)
         result['action']=action
         if engine.entry_constraint is not None:
             result['entry_constraint']=engine.entry_constraint

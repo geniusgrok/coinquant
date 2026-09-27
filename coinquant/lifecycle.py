@@ -26,6 +26,7 @@ class Lifecycle:
         self.may_enter = may_enter
         self.actions = []
         self.entry_constraint = None
+        self.reconciled = None
 
     def send(self, method, path, payload):
         if not self.authorized:
@@ -186,7 +187,8 @@ class Lifecycle:
             checkpoint=self.state.get('linear_campaign')
             if checkpoint is None:
                 raise Unknown('position recovery lacks its model/ownership checkpoint')
-            reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot)
+            self.reconciled=(snapshot,len(self.actions),
+                             reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot))
         if not number(snapshot['quantity_btc']):
             snapshot = self.cleanup_flat(snapshot)
             if not self.state.pending():
