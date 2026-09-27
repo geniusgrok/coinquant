@@ -1,5 +1,11 @@
 # Coinquant 有限会话工程恢复入口（2026-09-27）
 
+## 2026-09-27 经济重建之后接着做什么（本节优先）
+
+先核对实时 main 与分支 `cursor/economic-rebuild-86f8` 的 PR。先读 `evidence/rebuild-20260927/RESULT.md` 和 `research/redesign-PROTOCOL.md`。
+
+现默认（主信号风险 7.5）在会话回放上 152.16% / MDD 44.51%，压力下成本、滑点、深度各一项就跌到 145–149%。不要再加大风险倍数去追余量。下一步两件：一是找一条在开发段与留出段都为正的空头规则（S1 的 72 组都不行）；二是在明确授权的真实账户上核对成交、保护、断线与迟到成交。在这两件完成前 `run --execute` 保持阻止。行情在 `/data/coinquant-market`，逐笔在 `/data/coinquant-prints`；一次完整试验 `python -m research.rebuild <名> [参数]` 约 10–25 分钟。
+
 ## 2026-09-27 接着做什么
 
 先核对实时 `geniusgrok/coinquant` main。这一轮从 `302e1fe9cc30149dac160ea91d32405dbe9fa849` 开始。给人看的说明在 `evidence/session-b0-20260927/RESULT.md`。
