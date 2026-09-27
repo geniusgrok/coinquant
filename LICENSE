@@ -1,55 +1,12 @@
-Coinquant repository rights notice (effective 2026-09-27)
+Coinquant — personal research rights notice
+Copyright (c) 2026 geniusgrok
 
-This public repository hosts geniusgrok's personal research code and records
-for the owner's own use. Public visibility is not a grant of permission to
-copy, modify, redistribute, sublicense, or use newly published material in
-another project or a trading system. For material first published after commit
-57396528132b40793af453b6cbd82ba2d2706048, geniusgrok reserves all rights
-to original material geniusgrok owns. Prior written permission from the
-applicable rights holder is required for those acts, except to the extent
-allowed by applicable law or GitHub's Terms of Service.
+本公开仓库仅用于托管 geniusgrok 的个人研究代码与记录，项目仅供仓库所有者本人使用。公开可见不代表开放授权。
 
-This notice does not revoke any permission already granted. Material available
-at or before the commit above remains subject to its existing MIT license to
-the extent it was lawfully licensed under that license. Rights in third-party
-material remain with its respective owners. The earlier MIT notice is retained
-verbatim below; it must be preserved where its terms require it. A later
-repository notice cannot make previously MIT-licensed material exclusive.
+geniusgrok 对其拥有著作权的原创代码、文档和研究成果保留所有权利。本声明不向他人授予使用、复制、抄袭、修改、改编、发布、分发、再许可或用于交易系统的许可。需要使用相关内容，应事先取得权利人的书面授权；不得冒名署名。
 
-This repository is research, not a live-trading product. It is not intended
-for live trading and makes no representation of trading safety or returns.
-The research and code are provided as-is, without warranty or investment
-advice, to the extent permitted by law.
+本项目仅为研究记录，不代表正在实盘交易，也不可作为实盘交易工具使用。策略、回测及收益数据并非投资建议、收益承诺或安全验证。代码和资料按现状提供，不作任何担保；擅自使用产生的风险和损失由使用者自行承担。
 
-中文说明：本公开仓库仅托管 geniusgrok 本人的研究代码和记录，仅供本人使用。
-公开可见不等于允许复制、修改、再发布或用于实盘。对于上述提交之后首次
-发表、且由 geniusgrok 享有权利的原创内容，保留所有权利；他人使用须事先
-取得相应权利人的书面许可，但法律及 GitHub 服务条款允许的行为除外。
-本声明不追溯撤销既有 MIT 授权，也不影响第三方权利。本项目不可作为
-实盘交易工具，研究结果不是投资建议或收益保证。
+This public repository hosts geniusgrok's personal research code and records for the owner's use only. Public visibility does not grant an open-source license. geniusgrok reserves all rights in original material that geniusgrok owns. This notice grants others no permission to use, copy, modify, adapt, publish, distribute, sublicense, or incorporate that material into a trading system. Written permission from the rights holder is required. Do not misrepresent authorship.
 
---- Historical MIT notice for previously published material (unchanged) ---
-
-MIT License
-
-Copyright (c) 2020 thefourgreaterrors@gmail.com
-Copyright (c) 2018 noda.sin@gmail.com
-
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+The project is research only. It does not represent live trading and must not be used as a live-trading tool. Strategies, backtests and returns are not investment advice, a return guarantee or proof of safety. The material is provided as-is without warranty; any unauthorized use and its consequences are the user's responsibility.
