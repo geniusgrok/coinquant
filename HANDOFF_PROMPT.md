@@ -8,9 +8,9 @@
 
 正式程序保持原来的四小时大跳，多空都做。不要打开真实下单，不要跑那 787 次“人没来”的测试，不要改下单开关、1600 的请求预留或 3.6 的风险尺度。
 
-`average_hold` 已经跑过。2020-01-19 13:09 的标记价缺口时有持仓，`known_path` 从那里起为假。`AVERAGE_SUMMARY.json` 里的终点不要引用。缺口前收盘回撤是 `0.0869504727101655036558296372`。不要改 21 根或一倍波动去躲开这个缺口。
+`average_hold` 已跑完。2020-01-19 13:09 起 `known_path` 为假，不要引用 `AVERAGE_SUMMARY.json` 的终点。资金费过滤也已跑完，见 `FUNDING_SUMMARY.json`：人民币终值 `96685.11295138440077936670447`，低于打印对照，不要改 `0.0001`。两条都不要重跑来凑结果。
 
-下一笔规则在 `B6_PROTOCOL.md`，还没有盈亏。命令用原来的大跳、多空都做，加上 `--funding-gate`，输出必须是 `FUNDING_SUMMARY.json`，不要覆盖 `PRINT_SUMMARY.json`。门槛 `0.0001` 不要改。行情在 `/tmp/coinquant-session-market`，逐笔成交在 `/tmp/coinquant-session-aggtrades`。
+正式程序保持四小时大跳和多空。不要打开真实下单，不要跑 787 次缺席测试，不要改 3.6 或 1600。给人看的全文在 `RESULT.md`。下一步必须是一条新规则：多空都能做，而且不是几乎每根 K 线都在场内。行情仍在 `/tmp/coinquant-session-market`，逐笔成交在 `/tmp/coinquant-session-aggtrades`。
 
 下文 PR #43 段是上一轮工程入口，句子保持原样。
 
