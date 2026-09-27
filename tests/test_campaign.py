@@ -1,4 +1,6 @@
 from decimal import Decimal as D
+from datetime import datetime, timezone
+from hashlib import sha256
 import json
 import unittest
 import tempfile
@@ -11,6 +13,62 @@ from coinquant.linear_preview import advance, preview
 
 
 class CampaignTests(unittest.TestCase):
+    def test_promoted_macro_priority_consumption_and_restart(self):
+        m=Campaign()
+        for i in range(11*6):
+            m.update(ORIGIN+(i+1)*14400000,D(101),D(90),D(100))
+        self.assertEqual(len(m.daily_lows),10)
+        m.model.active=Opportunity(m.last,1,D(90),D(200),m.last+14400000)
+        m.primary_consumed=m.model.active.identity
+        true=dict(missing_reason=None,latest_value='1',prior20_value='1.3',
+                  latest_value_available_ms=m.last-1000,prior20_value_available_ms=m.last-1000,
+                  latest_observation_date=datetime.fromtimestamp(m.last/1000,timezone.utc).date().isoformat())
+        t=m.last+1000;m.select_macro(true,'100',t)
+        self.assertEqual(m.active.identity,-t)
+        self.assertEqual(m.action(D(0)),'enter')
+        m.filled(-t)
+        m=Campaign.restore(json.loads(json.dumps(m.checkpoint())))
+        m.select_macro(true,'100',t+2000)
+        self.assertEqual(m.action(D(1)),'hold')
+        m.select_macro(dict(true,missing_reason='stale'),'100',t+2500)
+        self.assertEqual(m.action(D(1)),'exit')
+        m=Campaign.restore(json.loads(json.dumps(m.checkpoint())))
+        m.position_campaign=None
+        self.assertEqual(m.action(D(0)),'flat')
+        m.select_macro(dict(true,missing_reason='stale'), '100',t+3000)
+        self.assertIsNone(m.macro_epoch)
+        m.select_macro(true,'100',t+4000)
+        self.assertEqual(m.action(D(0)),'enter')
+        self.assertNotEqual(m.active.identity,-t)
+
+    def test_macro_cold_start_does_not_infer_old_unseen_campaign(self):
+        m=Campaign()
+        for i in range(11*6):m.update(ORIGIN+(i+1)*14400000,D(101),D(90),D(100))
+        now=m.last+1000
+        row=dict(missing_reason=None,latest_value='1',prior20_value='1.3',
+                 latest_value_available_ms=m.last-1,prior20_value_available_ms=m.last-1,
+                 latest_observation_date=datetime.fromtimestamp(m.last/1000,timezone.utc).date().isoformat())
+        m.select_macro(row,'100',now,bootstrap=True)
+        self.assertEqual(m.action(D(0)),'consumed')
+
+    def test_legacy_checkpoint_imports_only_verified_daily_lows(self):
+        m=Campaign()
+        for i in range(12*6):m.update(ORIGIN+(i+1)*14400000,D(101),D(90),D(100))
+        old=m.checkpoint();body=old['body'];body['version']=1
+        for key in ('primary_consumed','macro_consumed','day_low','daily_lows','macro_epoch',
+                    'macro_opportunity','macro_observation'):body.pop(key)
+        old['sha256']=sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()
+        with tempfile.TemporaryDirectory() as tmp,State(tmp,'test') as state:
+            state.set('linear_campaign',old)
+            venue=Mock()
+            start=(m.last//86400000-10)*86400000
+            bars=[dict(time=t,low='90') for t in range(start,m.last,14400000)]
+            venue.completed_market.side_effect=[dict(candles=bars),dict(
+                interval_ms=14400000,complete_through=m.last,candles=[])]
+            restored,_,_=advance(state,venue)
+            self.assertEqual(list(restored.daily_lows),[D(90)]*10)
+            self.assertEqual(state.get('linear_campaign')['body']['version'],3)
+
     def test_read_only_resume_and_unknown_ownership(self):
         with tempfile.TemporaryDirectory() as tmp, State(tmp,'test') as state:
             m=Campaign()

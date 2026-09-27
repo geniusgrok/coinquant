@@ -38,6 +38,9 @@ class Tape(Binance):
     def wait(self,seconds):
         self.now+=int(seconds*1000)
 
+    def dfii10_snapshot(self):
+        return self._request('MACRO','/dfii10',{})
+
 
 def replay(tape, config, *, execute=False):
     reader=Tape(tape['records'],tape['start_ms'])

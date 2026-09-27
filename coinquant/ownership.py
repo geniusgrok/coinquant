@@ -195,7 +195,8 @@ def reconcile(state, reader, model, snapshot):
     if any(again[k]!=snapshot[k] for k in ('quantity_btc','entry','wallet_usdt','possible_entry_remainders')):
         raise Unknown('account changed during ownership recovery')
     campaign=link['campaign']
-    if type(campaign) is not int or not 0<campaign<=model.last:raise Unknown('invalid campaign clock')
+    if type(campaign) is not int or not (0<campaign<=model.last or -(model.last+14400000)<campaign<0):
+        raise Unknown('invalid campaign clock')
     with state.db:
         for trade in trades:
             prior=state.db.execute('SELECT entry_id,payload FROM native_fills WHERE trade_id=?',(trade['id'],)).fetchone()
@@ -205,7 +206,9 @@ def reconcile(state, reader, model, snapshot):
                              (trade['id'],identity,json.dumps(trade,sort_keys=True)))
         state.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
                          ('ownership_coverage',json.dumps(dict(entry_id=identity,start=start,through=now))))
-    model.consumed=max(model.consumed or campaign,campaign) if not total else campaign
+    if campaign<0:model.macro_consumed=campaign
+    else:model.primary_consumed=campaign
+    model.consumed=campaign
     model.position_campaign=campaign if total else None
     state.set('linear_campaign',model.checkpoint())
     if not total and snapshot['possible_entry_remainders']==0 and all(

@@ -38,6 +38,12 @@ class Binance:
         self.request_weights = deque()
         self.check_all_orders = True
         self.deadline = time.monotonic() + 120
+        self._dfii10 = None
+
+    def dfii10_snapshot(self):
+        from .dfii10 import Source
+        if self._dfii10 is None:self._dfii10=Source()
+        return self._dfii10.snapshot(int(self.clock()*1000))
 
     def begin_cycle(self, seconds=120):
         self.deadline = time.monotonic() + min(120, max(1, seconds))

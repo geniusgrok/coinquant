@@ -15,11 +15,18 @@
   "model": {
     "mechanism": "impulse_hold",
     "interval_ms": 14400000,
-    "risk_scale": "3.6",
-    "sides": [
-      "long",
-      "short"
-    ]
+    "risk_scale": "6.0",
+    "sides": ["long"],
+    "overlay": {
+      "series": "ALFRED DFII10",
+      "latest_vs_prior_20_observations_minimum_decline_percentage_points": "0.25",
+      "vintage_available_after_eastern_date_end_hours": 48,
+      "maximum_latest_observation_age_utc_days": 7,
+      "only_when_primary_has_no_executable_long_and_account_is_flat": true,
+      "overlay_risk_scale": "3.6",
+      "overlay_parent_stop_risk_share": "0.03",
+      "entry": "one per continuous true state, ten completed UTC daily lows as stop"
+    }
   },
   "execution": {
     "runner": "coinquant.session.run",
@@ -41,6 +48,12 @@
   ],
   "account_evidence": "one continuous account including unattended exposure; observation gaps cannot be interpolated into complete MDD",
   "economic_qualification": "NOT_MEASURED_FOR_CURRENT_SESSION",
+  "selected_historical_account": {
+    "name": "SX60+DFII10",
+    "cost_net_cagr_percent": "108.228852",
+    "continuous_mdd_percent": "39.779796",
+    "scope": "frozen sparse-invocation proxy only; not a measurement of the current session"
+  },
   "native_qualification": "NOT_QUALIFIED",
   "legacy_benchmark": {
     "path": "research/legacy/spec.json",

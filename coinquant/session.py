@@ -18,10 +18,13 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True):
         reader.recover_pending(state)
         snapshot=reader.snapshot(uid)
     model,market,reconstructed=advance(state,reader)
+    model.select_macro(reader.dfii10_snapshot(),snapshot['mark_price'],int(reader.clock()*1000),
+                       bootstrap=reconstructed)
+    state.set('linear_campaign',model.checkpoint())
     ownership=reconcile(state,reader,model,snapshot)
     if state.pending():
         raise Unknown('unsettled intents block decisions')
-    result=preview(model,snapshot,side='both')
+    result=preview(model,snapshot,side='long')
     result.update(ownership=ownership,reconstructed_market_only=reconstructed)
     audit=None
     if execute:
@@ -33,7 +36,7 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True):
         reconcile(state,reader,model,snapshot)
         result['action']=action
     elif result['action']=='enter':
-        result.update(entry_preview(reader,model,snapshot,side='both'))
+        result.update(entry_preview(reader,model,snapshot,side='long'))
     if audit is None:audit=income(reader,state)
     return dict(status='executed' if execute and engine.actions else 'no_action' if execute else 'read_only',
                 actual=snapshot,model_preview=result,market_through=market['complete_through'],

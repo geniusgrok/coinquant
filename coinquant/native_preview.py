@@ -67,7 +67,7 @@ def entry_preview(reader, model, snapshot, *, side='long'):
     if not 0<=available<=wallet:raise Unknown('unsupported available collateral')
     if available!=wallet:raise Unknown('unexplained reserved collateral; no new quantity')
     if abs(int(reader.clock()*1000)-stamp)>15000:raise Unknown('book expired during account refresh')
-    opportunity=model.model.active
+    opportunity=model.active
     direction=opportunity.direction
     raw_price=(asks[0][0]*D('1.001') if direction>0 else bids[0][0]*D('.999'))
     price=(floor_step(raw_price,tick) if direction>0 else (raw_price/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
@@ -78,8 +78,15 @@ def entry_preview(reader, model, snapshot, *, side='long'):
     if not all(number(filters[0]['minPrice'])<=p<=number(filters[0]['maxPrice']) for p in (stop,take,price)):
         raise Blocked('protection outside current price limits')
     account=Account(wallet)
-    result=funded_target(account,direction,model.fraction('3.6','.0011'),price,mark,stop,take,capacity,
-                         instrument,fee=fee,maintenance=mmr,notional_limit=cap)
+    fraction=model.entry_fraction('.0011')
+    target=None
+    if opportunity is model.macro_opportunity:
+        # The macro parent has the historical 3% equity-to-stop loss ceiling.
+        if price<=stop:raise Blocked('macro stop must be below executable entry')
+        target=min(wallet*fraction/max(price,mark),wallet*D('.03')/(price-stop))
+    result=funded_target(account,direction,fraction,price,mark,stop,take,capacity,
+                         instrument,fee=fee,maintenance=mmr,notional_limit=cap,
+                         target_quantity=target)
     return dict(quantity_btc=str(account.q),entry_estimate=str(price),stop=str(stop),take=str(take),
                 allocated_margin_usdt=str(account.margin),constraint=result['reason'],
                 quantity_status='read-only conservative native-input preview',
