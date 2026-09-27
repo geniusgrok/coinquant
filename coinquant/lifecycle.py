@@ -245,6 +245,10 @@ class Lifecycle:
         self.entry_constraint = plan.get('constraint')
         if not number(plan['quantity_btc']):
             return snapshot
+        if self.state.get('research_chase_bound') and not self._within_chase_bound(model, plan):
+            # The campaign stays unconsumed. A later fresh poll can enter inside the bound.
+            self.entry_constraint = 'chase_bound'
+            return snapshot
         # Recheck after all sizing inputs. Never treat a preview as an order.
         fresh = self.snapshot()
         if any(fresh[k] != snapshot[k] for k in ('quantity_btc','wallet_usdt','available_usdt','possible_entry_remainders')) or fresh['open_algos'] or fresh['open_orders']:
@@ -273,6 +277,34 @@ class Lifecycle:
             pass  # query, never resend an uncertain write
         snapshot = self.settle()
         return self.recover_exposure(snapshot)
+
+    def _within_chase_bound(self, model, plan):
+        """Entry may not extend more than one signal risk beyond that bar's close.
+
+        The risk distance is the signal close minus its own stop. No new multiple.
+        """
+        opportunity = model.model.active
+        if opportunity is None:
+            raise Unknown('chase bound requires the active opportunity')
+        interval = model.model.interval
+        if type(opportunity.identity) is not int or opportunity.identity % interval:
+            raise Unknown('opportunity identity is not a completed bar')
+        open_ms = opportunity.identity - interval
+        rows = self.reader.get('/fapi/v1/klines', {
+            'symbol': 'BTCUSDT', 'interval': '4h', 'startTime': open_ms,
+            'endTime': opportunity.identity - 1, 'limit': 1})
+        if len(rows) != 1 or int(rows[0][0]) != open_ms:
+            raise Unknown('signal bar unavailable for the chase bound')
+        close = number(rows[0][4], positive=True)
+        span = abs(close - opportunity.stop)
+        if span <= 0:
+            return False
+        price = number(plan['entry_estimate'], positive=True)
+        if opportunity.direction > 0:
+            return price <= close + span
+        if opportunity.direction < 0:
+            return price >= close - span
+        return False
 
     def maintain(self, model, snapshot):
         protection = self.state.get('position_protection')
