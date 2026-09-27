@@ -145,7 +145,8 @@ def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None,
                 mdd_close_at=exchange.mdd_close_at, mdd_envelope_at=exchange.mdd_envelope_at,
                 known_path=exchange.known_path, unknown_from=exchange.unknown_from,
                 position=str(exchange.q), fees=str(exchange.fees), funding=str(exchange.funding_paid),
-                funnel=dict(exchange.funnel), session_rows=sessions)
+                funnel=dict(exchange.funnel), print_miss_days=sorted(exchange.print_miss_days),
+                session_rows=sessions)
 
 
 def main():

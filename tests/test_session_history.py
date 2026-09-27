@@ -157,6 +157,27 @@ class SessionHistoryTests(TestCase):
         self.assertEqual(missed, 0)
         self.assertIsNone(TradePrints(directory).window(base + 86_400_000 + 1000, base + 86_400_000 + 2000))
 
+    def test_missing_print_reject_does_not_leave_an_unknown_intent(self):
+        exchange, _start, _price = self._exchange('trade_print')
+        exchange.prints = TradePrints(Path(tempfile.mkdtemp()))
+        directory = tempfile.mkdtemp()
+        from coinquant.state import State
+        with State(directory, 'binance:BTCUSDT:live:1') as state:
+            state.set('enter_unconsumed_bootstrap', True)
+        run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
+        exchange.advance_unattended(exchange.now_ms + 86_400_000)
+        minute = exchange.now_ms // 60_000 * 60_000 - 60_000
+        _plant(exchange.market.identity['trade'], minute, _price)
+        _plant(exchange.market.identity['mark'], minute, _price)
+        run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
+        import sqlite3
+        rows = sqlite3.connect(str(Path(directory) / 'intents.sqlite')).execute(
+            "SELECT status FROM intents WHERE kind='binance_order'").fetchall()
+        self.assertGreaterEqual(len(rows), 2)
+        self.assertTrue(all(status == 'confirmed' for status, in rows))
+        self.assertFalse(exchange.known_path)
+        self.assertTrue(exchange.print_miss_days)
+
     def test_bootstrap_flag_lets_the_first_active_impulse_enter(self):
         exchange, start, _price = self._exchange('unresolved')
         directory = tempfile.mkdtemp()

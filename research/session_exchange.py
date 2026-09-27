@@ -4,6 +4,7 @@ Market rows and fills are the replacement boundary. Order checks, weight, and
 the session coordinator stay on the production path. This is not a live venue
 and it does not know the future session schedule.
 """
+from datetime import datetime, timezone
 from decimal import Decimal as D
 import json
 from pathlib import Path
@@ -54,6 +55,7 @@ class SessionExchange(Binance):
         self.sent = []
         self.funnel = {'ioc_submitted': 0, 'ioc_zero': 0, 'ioc_filled': 0,
                        'protections': 0, 'triggers': 0, 'liquidations': 0, 'funding': 0}
+        self.print_miss_days = set()
         self.unknown_from = None
         self.peak_cny = D(10000)
         self.mdd_close = D(0)
@@ -375,6 +377,8 @@ class SessionExchange(Binance):
         start, end = self.now_ms + 1000, self.now_ms + 2000
         rows = self.prints.window(start, end)
         if rows is None:
+            day = datetime.fromtimestamp(self.now_ms / 1000, timezone.utc).strftime('%Y-%m-%d')
+            self.print_miss_days.add(day)
             self.known_path = False
             self.unknown_from = self.unknown_from or self.now_ms
             self.funnel['ioc_zero'] += 1
@@ -397,7 +401,10 @@ class SessionExchange(Binance):
 
     def _reply(self, method, path, params):
         if self.unknown_from is not None and method == 'POST' and path.endswith('/order') and params.get('reduceOnly') != 'true':
-            raise Unknown('trigger sequence unknown; no new exposure')
+            # The coordinator already journaled this identity. A raised send is
+            # indistinguishable from a lost response, so return a terminal reject
+            # that a later query can settle. The fill itself is still refused.
+            return self._reject_new_exposure(params)
         if path.endswith('/klines'):
             step = {'4h': 14_400_000, '1m': MINUTE}.get(params.get('interval'))
             if step is None:
@@ -512,9 +519,20 @@ class SessionExchange(Binance):
             return self._accept_order(params)
         raise Unknown('historical venue has no response for ' + path)
 
+    def _reject_new_exposure(self, params):
+        order_id = self._id()
+        order = dict(symbol='BTCUSDT', orderId=order_id, clientOrderId=params['newClientOrderId'],
+                     side=params['side'], positionSide='BOTH', type=params['type'],
+                     origQty=_text(params['quantity']), executedQty='0', price=params.get('price', '0'),
+                     reduceOnly=False, status='REJECTED')
+        self.orders[order['clientOrderId']] = order
+        self.by_order_id[order_id] = order
+        self.funnel['ioc_zero'] += 1
+        return dict(order)
+
     def _accept_order(self, params):
         if self.unknown_from is not None and params.get('reduceOnly') != 'true':
-            raise Unknown('trigger sequence unknown; no new exposure')
+            return self._reject_new_exposure(params)
         order_id = self._id()
         reduce = params.get('reduceOnly') == 'true'
         quantity = D(params['quantity'])
