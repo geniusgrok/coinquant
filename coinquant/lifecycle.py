@@ -19,6 +19,7 @@ class Lifecycle:
         self.authorized = authorized is True
         self.may_enter = may_enter
         self.actions = []
+        self.entry_constraint = None
 
     def send(self, method, path, payload):
         if not self.authorized:
@@ -240,6 +241,7 @@ class Lifecycle:
         if self.state.pending() or snapshot['possible_entry_remainders'] or number(snapshot['quantity_btc']):
             raise Unknown('entry requires reconciled flat account')
         plan = entry_preview(self.reader,model,snapshot,side='both')
+        self.entry_constraint = plan.get('constraint')
         if not number(plan['quantity_btc']):
             return snapshot
         # Recheck after all sizing inputs. Never treat a preview as an order.
@@ -253,8 +255,9 @@ class Lifecycle:
             raise Blocked('session deadline or stop request prohibits a new entry')
         # An entry begun within the session retains a bounded protection budget;
         # the trading deadline must not cut network access immediately after fill.
-        import time
-        self.reader.deadline=time.monotonic()+120
+        # Use the adapter clock. A wall monotonic here would outlive a virtual session
+        # or expire a historical one immediately.
+        self.reader.deadline=self.reader.monotonic()+120
         epoch = self.epoch()
         identity = client_id(self.state.identity,epoch,'entry')
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',

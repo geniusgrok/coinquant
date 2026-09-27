@@ -32,6 +32,8 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True):
         # on another campaign, never mark a preview or request as consumed.
         reconcile(state,reader,model,snapshot)
         result['action']=action
+        if engine.entry_constraint is not None:
+            result['entry_constraint']=engine.entry_constraint
     elif result['action']=='enter':
         result.update(entry_preview(reader,model,snapshot,side='both'))
     if audit is None:audit=income(reader,state)
