@@ -24,7 +24,7 @@ class Opportunity:
 
 class Opportunities:
     def __init__(self, mechanism, interval=FOUR_HOURS):
-        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','post_impulse_restart','horizon_hold'):raise ValueError('unknown mechanism')
+        if mechanism not in ('squeeze','sweep','shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse','swing','post_impulse_restart','horizon_hold','average_hold'):raise ValueError('unknown mechanism')
         if interval not in (3600000,FOUR_HOURS,86400000) or (interval==86400000 and mechanism!='swing'):raise ValueError('unsupported completed interval')
         self.interval=interval
         self.mechanism=mechanism;self.bars=deque(maxlen=21);self.tr=deque(maxlen=14)
@@ -98,6 +98,16 @@ class Opportunities:
                     if side*(close-stop)>0:
                         take=close*(close/stop)**20
                         if take>0:self.active=Opportunity(end,side,stop,take,end+42*FOUR_HOURS)
+        elif self.mechanism=='average_hold':
+            # Research only. The live default never selects this branch.
+            # After 21 completed bars, the side is where this close sits against
+            # the average already maintained above. The stop is one prior ATR.
+            if len(self.bars)>=21 and prior_atr and not self.active and close!=self.ema:
+                side=1 if close>self.ema else -1
+                stop=close-prior_atr if side>0 else close+prior_atr
+                if stop>0 and side*(close-stop)>0:
+                    take=close*(close/stop)**20
+                    if take>0:self.active=Opportunity(end,side,stop,take,end+42*FOUR_HOURS)
         elif self.mechanism in ('shock','impulse','impulse_hold','impulse_validity','impulse_confirmation','persistent_impulse'):
             shock=bool(prior_atr and abs(close-prior)>3*prior_atr)
             if self.mechanism=='persistent_impulse' and shock and self.active and self.active.direction*(close-prior)<0:

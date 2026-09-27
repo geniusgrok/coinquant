@@ -170,7 +170,7 @@ def main():
     parser.add_argument('--matcher', choices=('unresolved', 'bar_through', 'trade_print'), default='unresolved')
     parser.add_argument('--prints', type=Path, default=None)
     parser.add_argument('--enter-bootstrap', action='store_true')
-    parser.add_argument('--mechanism', choices=('impulse_hold', 'horizon_hold'), default='impulse_hold')
+    parser.add_argument('--mechanism', choices=('impulse_hold', 'horizon_hold', 'average_hold'), default='impulse_hold')
     parser.add_argument('--side', choices=('long', 'short', 'both'), default='both')
     parser.add_argument('--chase-bound', action='store_true')
     parser.add_argument('--output', type=Path, default=ROOT / 'evidence' / 'session-b0-20260927')
@@ -194,6 +194,9 @@ def main():
         name = 'B0_SUMMARY.json'
     elif args.matcher == 'trade_print' and args.mechanism == 'horizon_hold' and not args.limit:
         name = 'HORIZON_SUMMARY.json'
+    elif (args.matcher == 'trade_print' and args.mechanism == 'average_hold' and args.side == 'both'
+          and not args.chase_bound and not args.enter_bootstrap and not args.limit):
+        name = 'AVERAGE_SUMMARY.json'
     elif args.matcher == 'trade_print' and args.enter_bootstrap and not args.limit:
         name = 'B1_SUMMARY.json'
     elif (args.matcher == 'trade_print' and args.side == 'long' and args.chase_bound

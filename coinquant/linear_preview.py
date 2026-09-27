@@ -15,7 +15,7 @@ def research_side(state):
 def advance(state, venue):
     saved=state.get('linear_campaign')
     mechanism=state.get('research_mechanism') or 'impulse_hold'
-    if mechanism not in ('impulse_hold','horizon_hold'):
+    if mechanism not in ('impulse_hold','horizon_hold','average_hold'):
         raise Blocked('unsupported research mechanism')
     model=Campaign.restore(saved) if saved is not None else Campaign(mechanism)
     if model.model.mechanism!=mechanism or model.model.interval!=14400000:
