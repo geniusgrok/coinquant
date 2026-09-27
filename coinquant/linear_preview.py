@@ -4,10 +4,21 @@ from .types import Blocked
 from decimal import Decimal as D
 
 
+def research_side(state):
+    """Live state leaves this unset, so the production book stays two-sided."""
+    side=state.get('research_side') or 'both'
+    if side not in ('long','short','both'):
+        raise Blocked('unsupported research side')
+    return side
+
+
 def advance(state, venue):
     saved=state.get('linear_campaign')
-    model=Campaign.restore(saved) if saved is not None else Campaign()
-    if model.model.mechanism!='impulse_hold' or model.model.interval!=14400000:
+    mechanism=state.get('research_mechanism') or 'impulse_hold'
+    if mechanism not in ('impulse_hold','horizon_hold','average_hold'):
+        raise Blocked('unsupported research mechanism')
+    model=Campaign.restore(saved) if saved is not None else Campaign(mechanism)
+    if model.model.mechanism!=mechanism or model.model.interval!=14400000:
         raise Blocked('checkpoint does not match current L model')
     if saved is None:state.set('market_bootstrap',True)
     bootstrap=bool(state.get('market_bootstrap'))
@@ -23,8 +34,10 @@ def advance(state, venue):
             model.update(bar['time']+model.model.interval,bar['high'],bar['low'],bar['close'])
     if model.last!=market['complete_through']:
         raise Blocked('market and checkpoint boundaries differ')
-    if bootstrap:
+    if bootstrap and not state.get('enter_unconsumed_bootstrap'):
         # Price reconstruction cannot establish historical fill ownership.
+        # The research flag leaves a still-active impulse eligible. Live state
+        # does not set it, so a cold start still consumes that impulse.
         model.consumed=model.model.active.identity if model.model.active else None
     state.set('linear_campaign',model.checkpoint())
     state.set('market_bootstrap',False)

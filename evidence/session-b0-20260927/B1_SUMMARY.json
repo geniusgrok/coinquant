@@ -1,0 +1,37 @@
+{
+  "matcher": "trade_print",
+  "qualification": "NOT_QUALIFIED",
+  "execution_class": "print_quantity_upper_bound",
+  "sessions": 795,
+  "final_usdt": "17801.64110522959444711509315",
+  "final_cny": "124187.8086783026967819643128",
+  "cagr": 0.4549158368395816,
+  "mdd_close": "0.3653351327593485812267846734",
+  "mdd_envelope": "0.3653719264813975708371574798",
+  "mdd_close_at": 1586120820000,
+  "mdd_envelope_at": 1586120820000,
+  "known_path": true,
+  "unknown_from": null,
+  "position": "0.000",
+  "fees": "1264.5047136569028900",
+  "funding": "1007.4653784005618268997",
+  "funnel": {
+    "ioc_submitted": 55,
+    "ioc_zero": 4,
+    "ioc_filled": 51,
+    "protections": 102,
+    "triggers": 19,
+    "liquidations": 0,
+    "funding": 695
+  },
+  "market": {
+    "four_hour_bars": 14910,
+    "funding_points": 7398,
+    "funding_gap_from": 1788220800000,
+    "warmup_trade_sha256": "62e9a9ecddccac737f99032a224f7a2a1932756cf200db34fb5c5641b72c4094",
+    "warmup_funding_sha256": "25a949a83bc5305727fb86f0d6e3e297235a03990d6404a3f160a2ce82bd82b3"
+  },
+  "session_rows": "byte-identical to PRINT_SUMMARY.json session_rows",
+  "print_summary_sha256": "a2db32d747ad16efa5c0137e773c0353b2dcf266c2a53a6a3998b0fe33447bbd",
+  "b1_full_sha256": "a2db32d747ad16efa5c0137e773c0353b2dcf266c2a53a6a3998b0fe33447bbd"
+}
