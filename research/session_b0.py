@@ -97,7 +97,7 @@ def _harvest(state_dir):
 
 
 def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None, enter_bootstrap=False,
-                 mechanism='impulse_hold', side='both', chase_bound=False):
+                 mechanism='impulse_hold', side='both', chase_bound=False, funding_gate=False):
     wallet = (D(10000) / FX) * (1 - CONVERSION)
     book = TradePrints(prints) if matcher == 'trade_print' else None
     if matcher == 'trade_print' and prints is None:
@@ -106,7 +106,7 @@ def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None,
         raise ValueError('unsupported research side')
     exchange = SessionExchange(market, starts[0], wallet, matcher=matcher, prints=book)
     config = Config('1', str(state_dir), 300, 5)
-    if enter_bootstrap or mechanism != 'impulse_hold' or side != 'both' or chase_bound:
+    if enter_bootstrap or mechanism != 'impulse_hold' or side != 'both' or chase_bound or funding_gate:
         from coinquant.state import State
         with State(str(state_dir), 'binance:BTCUSDT:live:' + config.account_uid) as state:
             if enter_bootstrap:
@@ -117,6 +117,8 @@ def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None,
                 state.set('research_side', side)
             if chase_bound:
                 state.set('research_chase_bound', True)
+            if funding_gate:
+                state.set('research_funding_gate', True)
     sessions = []
     for index, start in enumerate(starts):
         if exchange.now_ms > start:
@@ -146,6 +148,7 @@ def run_account(market, starts, state_dir, *, matcher='unresolved', prints=None,
     return dict(matcher=matcher, qualification='NOT_QUALIFIED',
                 execution_class=execution_class, research_side=side, mechanism=mechanism,
                 research_chase_bound=bool(chase_bound),
+                research_funding_gate=bool(funding_gate),
                 sessions=len(sessions), final_usdt=str(equity), final_cny=str(final_cny),
                 cagr=cagr, mdd_close=str(exchange.mdd_close), mdd_envelope=str(exchange.mdd_envelope),
                 mdd_close_at=exchange.mdd_close_at, mdd_envelope_at=exchange.mdd_envelope_at,
@@ -173,6 +176,7 @@ def main():
     parser.add_argument('--mechanism', choices=('impulse_hold', 'horizon_hold', 'average_hold'), default='impulse_hold')
     parser.add_argument('--side', choices=('long', 'short', 'both'), default='both')
     parser.add_argument('--chase-bound', action='store_true')
+    parser.add_argument('--funding-gate', action='store_true')
     parser.add_argument('--output', type=Path, default=ROOT / 'evidence' / 'session-b0-20260927')
     parser.add_argument('--limit', type=int, default=0)
     args = parser.parse_args()
@@ -186,7 +190,7 @@ def main():
     args.state.mkdir(parents=True, exist_ok=True)
     result = run_account(market, starts, args.state, matcher=args.matcher, prints=args.prints,
                          enter_bootstrap=args.enter_bootstrap, mechanism=args.mechanism, side=args.side,
-                         chase_bound=args.chase_bound)
+                         chase_bound=args.chase_bound, funding_gate=args.funding_gate)
     result['market'] = {key: market.identity[key] for key in ('four_hour_bars', 'funding_points', 'funding_gap_from',
                                                               'warmup_trade_sha256', 'warmup_funding_sha256')}
     args.output.mkdir(parents=True, exist_ok=True)
@@ -195,8 +199,11 @@ def main():
     elif args.matcher == 'trade_print' and args.mechanism == 'horizon_hold' and not args.limit:
         name = 'HORIZON_SUMMARY.json'
     elif (args.matcher == 'trade_print' and args.mechanism == 'average_hold' and args.side == 'both'
-          and not args.chase_bound and not args.enter_bootstrap and not args.limit):
+          and not args.chase_bound and not args.enter_bootstrap and not args.funding_gate and not args.limit):
         name = 'AVERAGE_SUMMARY.json'
+    elif (args.matcher == 'trade_print' and args.funding_gate and args.mechanism == 'impulse_hold'
+          and args.side == 'both' and not args.chase_bound and not args.enter_bootstrap and not args.limit):
+        name = 'FUNDING_SUMMARY.json'
     elif args.matcher == 'trade_print' and args.enter_bootstrap and not args.limit:
         name = 'B1_SUMMARY.json'
     elif (args.matcher == 'trade_print' and args.side == 'long' and args.chase_bound

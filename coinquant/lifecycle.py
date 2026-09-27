@@ -249,6 +249,10 @@ class Lifecycle:
             # The campaign stays unconsumed. A later fresh poll can enter inside the bound.
             self.entry_constraint = 'chase_bound'
             return snapshot
+        if self.state.get('research_funding_gate') and not self._funding_allows(plan):
+            # Crowded funding skips this poll only. The campaign stays open.
+            self.entry_constraint = 'funding_gate'
+            return snapshot
         # Recheck after all sizing inputs. Never treat a preview as an order.
         fresh = self.snapshot()
         if any(fresh[k] != snapshot[k] for k in ('quantity_btc','wallet_usdt','available_usdt','possible_entry_remainders')) or fresh['open_algos'] or fresh['open_orders']:
@@ -277,6 +281,28 @@ class Lifecycle:
             pass  # query, never resend an uncertain write
         snapshot = self.settle()
         return self.recover_exposure(snapshot)
+
+    def _funding_allows(self, plan):
+        """Skip a new entry when the last settled funding already charges that side.
+
+        0.0001 per eight hours is the exchange's ordinary quoted rate. A long is
+        skipped only above it, a short only below its negative. The campaign
+        is not consumed.
+        """
+        query = getattr(self.reader, 'last_settled_funding', None)
+        if query is None:
+            raise Blocked('funding gate requires settled funding on the reader')
+        rate = query(int(self.reader.clock() * 1000))
+        if rate is None:
+            return False
+        rate = number(rate)
+        neutral = number('0.0001')
+        side = plan.get('side')
+        if side == 'BUY':
+            return rate <= neutral
+        if side == 'SELL':
+            return rate >= -neutral
+        raise Blocked('funding gate requires a buy or sell plan')
 
     def _within_chase_bound(self, model, plan):
         """Entry may not extend more than one signal risk beyond that bar's close.

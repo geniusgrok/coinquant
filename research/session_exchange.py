@@ -70,6 +70,17 @@ class SessionExchange(Binance):
                          monotonic=lambda: self.now_ms / 1000.0)
         self._note_cash()
 
+    def last_settled_funding(self, now_ms):
+        """Last official settlement at or before now. Later rates stay unused."""
+        import bisect
+        series = self.market.funding
+        if not series:
+            return None
+        index = bisect.bisect_right(series, (int(now_ms), D('1')))
+        if index == 0:
+            return None
+        return series[index - 1][1]
+
     def _transport(self, request, timeout):
         method, path, params = self._inflight
         if method != 'GET':
