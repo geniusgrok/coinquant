@@ -1,4 +1,4 @@
-"""Current native inputs for a read-only, conservatively funded entry preview.
+"""Current native inputs for a conservatively funded entry preview.
 
 Current rules are never substituted for historical replay evidence. No method
 here sends an order, transfers funds, or marks a campaign as filled.

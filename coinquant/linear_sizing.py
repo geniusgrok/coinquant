@@ -1,4 +1,4 @@
-"""Shared pure target sizing. Native writes and historical rules are not qualified."""
+"""Shared pure target sizing; routine production remains unqualified."""
 from dataclasses import replace
 from decimal import Decimal as D
 from coinquant.types import ZERO, floor_step
@@ -21,7 +21,7 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
 
     Allocation is market-volatility based, never inverse stop-distance. Capital
     constraints may shrink it. Existing allocated margin is retained on adds.
-    Native write ordering remains unverified, so this is an economic diagnostic.
+    Native write ordering remains unverified in a real account.
     """
     if direction not in (-1, 1) or min(price, mark, sl, tp) <= 0 or fraction < 0:
         raise ValueError('invalid target')

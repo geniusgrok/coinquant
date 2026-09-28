@@ -75,7 +75,7 @@ class EnvironmentTests(TestCase):
                 with self.assertRaises(Blocked):
                     observe(config)
 
-    def test_demo_execute_stays_blocked_before_credentials(self):
+    def test_demo_execute_without_trial_flags_stays_blocked_before_credentials(self):
         with tempfile.TemporaryDirectory() as tmp:
             config = self._config(tmp, environment='demo')
             with patch('coinquant.cli.Binance') as venue, patch('sys.stdout', io.StringIO()), \
