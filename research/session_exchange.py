@@ -305,19 +305,23 @@ class SessionExchange(Binance):
         adverse = [(kind, value, level(value)) for kind, value in (('stop', stop), ('liq', liq))
                    if value is not None and value > 0]
         good = level(take) if take is not None else None
-        # Equity path on the proxy mark: each new favorable extreme is a peak
-        # before any later adverse extreme is measured against it.
+        # Prints are an ordered path, so every point both raises the peak and is
+        # measured against it. Points that are neither a new high nor a new low
+        # since the last high cannot change either, whatever the segmentation.
         best = worst = None
         for stamp, price, _qty in rows:
+            extreme = True
             if best is None or ((price > best) if long else (price < best)):
                 best = worst = price
+            elif (price < worst) if long else (price > worst):
+                worst = price
+            else:
+                extreme = False
+            if extreme:
                 mark = D(price) / scale * ratio
                 if take is not None:
                     mark = min(mark, take) if long else max(mark, take)
-                self._note_at(stamp, mark, 'favorable')
-            elif (price < worst) if long else (price > worst):
-                worst = price
-                self._note_at(stamp, D(price) / scale * ratio, 'envelope')
+                self._note_at(stamp, mark, 'envelope')
             for kind, value, bound in adverse:
                 if (price <= bound) if long else (price >= bound):
                     trade_price = D(price) / scale

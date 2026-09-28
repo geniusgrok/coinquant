@@ -569,6 +569,69 @@
         }
       ],
       "outcome": "Every M4 account equals its M3 counterpart (P4 and P3: identical final value, MDD, fees, funding and trade list). No attended print trigger or partial-minute adverse event occurs in this history, so neither defect affected the recorded numbers."
+    },
+    {
+      "round": "M5",
+      "registered": "2026-09-28",
+      "hypothesis": "Meter M5: every recorded print point, including the first of each scan segment, is measured against the running equity peak, so drawdown no longer depends on polling steps. Parameters unchanged.",
+      "model": "PRIMARY_RISK 7.5, --mark-gap bound (default)",
+      "trials": [
+        {
+          "name": "P5",
+          "args": [],
+          "stress": "default reproduction"
+        },
+        {
+          "name": "M5-fee150",
+          "args": [
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%"
+        },
+        {
+          "name": "M5-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2"
+        },
+        {
+          "name": "M5-part10",
+          "args": [
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%"
+        },
+        {
+          "name": "M5-skip",
+          "args": [
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "seeded 20% skip"
+        },
+        {
+          "name": "M5-absence",
+          "args": [
+            "--sequence",
+            "absence"
+          ],
+          "stress": "legacy absence sequence"
+        },
+        {
+          "name": "M5-block",
+          "args": [
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "seeded 21-day block"
+        }
+      ]
     }
   ]
 }

@@ -364,3 +364,20 @@ class IntraminuteEventTests(TestCase):
         self.assertEqual(order['status'], 'EXPIRED')
         self.assertEqual(D(order['executedQty']), 0)
         self.assertEqual(exchange.q, 0)
+
+    def test_print_path_drawdown_does_not_depend_on_polling_steps(self):
+        for sign in (1, -1):
+            path = [(1000, 10000, 1), (6000, 10000 - sign * 1000, 1), (11_000, 10000 + sign * 2000, 1)]
+            results = []
+            for steps in ((20,), (5, 5, 5, 5)):
+                exchange = self._venue(path)
+                exchange.q, exchange.entry, exchange.margin = D(sign), D(10000), D(2000)
+                exchange.held_from = exchange.now_ms
+                exchange.algos['cq-take'] = dict(algoStatus='NEW', orderType='TAKE_PROFIT_MARKET',
+                                                 triggerPrice=str(10000 + sign * 1200))
+                for seconds in steps:
+                    exchange.wait(seconds)
+                self.assertEqual(exchange.q, 0)
+                results.append((exchange.mdd_envelope, exchange.wallet, exchange.trades[-1]['time']))
+            self.assertEqual(results[0], results[1])
+            self.assertAlmostEqual(float(results[0][0]), 0.10, places=3)
