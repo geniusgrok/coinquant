@@ -63,17 +63,20 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
                 actions=engine.actions,write_attempted=bool(engine.actions),income_audit=audit)
 
 
-def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sleep, stopping=lambda:False):
+def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sleep, stopping=lambda:False,
+        trial_mode=None, source_digest=None):
     """Finite deadline plus bounded cleanup. No timers survive this function.
 
     `execute` is an explicit operation authorization, not a qualification claim.
-    The public CLI rejects it before credentials until both release gates pass.
+    The public CLI requires an explicit bounded trial gate before credentials.
     Offline replay injects a non-network venue and virtual clock here.
     """
     started=monotonic();deadline=started+config.session_seconds
     report=dict(status='read_only',cycles=0,write_attempted=False,errors=[],
                 qualification='NOT_QUALIFIED',stop_reason='deadline',cleanup='not_required',
                 session_started_at_ms=int(reader.clock()*1000))
+    if trial_mode is not None:report['trial_mode']=trial_mode
+    if source_digest is not None:report['source_digest']=source_digest
     if (getattr(reader,'environment','live')!=config.environment
             or getattr(reader,'capital_limit',None)!=config.capital_limit):
         raise Blocked('exchange adapter and configuration differ in environment or capital limit')
@@ -129,6 +132,7 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                         report.update(status='unknown',income_audit={'status':'unresolved'},
                                       reason=str(exc) if isinstance(exc,(Blocked,Unknown)) else 'Income audit unavailable')
             report['pending_intents']=len(state.pending())
+            if execute:report['entry_timing']=state.get('entry_timing')
             report['write_attempted']=(state.get('write_attempt_count') or 0)>prior_writes
             if report['pending_intents']:
                 report.update(status='unknown',reason='Durable intents require recovery')

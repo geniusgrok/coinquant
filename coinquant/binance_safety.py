@@ -141,11 +141,19 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
                 or D(parent.get('triggerPrice','0'))!=trigger or observed['child'] is not None):
             raise Unknown('native protection not confirmed active; reconcile exposure')
         state.finish(identity,'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
+        timing=state.get('entry_timing') if kind=='STOP_MARKET' else None
+        plan=state.get('entry_plan') if timing else None
+        if timing and kind=='STOP_MARKET' and plan and plan.get('epoch')==epoch:
+            timing['stop_accepted_at_ms']=int(reader.clock()*1000)
+            state.set('entry_timing',timing)
         if kind=='TAKE_PROFIT_MARKET':break  # the final readback follows
         observed_account=reader.snapshot(uid)
         if (observed_account['account_uid']!=str(uid) or D(observed_account['quantity_btc'])!=q
                 or observed_account['possible_entry_remainders']):
             raise Unknown('exposure changed between protection legs; reconcile before next write')
+        if timing and plan and plan.get('epoch')==epoch:
+            timing['stop_account_readback_at_ms']=int(reader.clock()*1000)
+            state.set('entry_timing',timing)
     after=reader.snapshot(uid)
     if (D(after['quantity_btc'])!=q or after['possible_entry_remainders']
             or not after['native_full_position_protected'] or not after['stop_before_liquidation']):
@@ -244,7 +252,7 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     No atomic amendment or duplicate-close-all acceptance is assumed. Rejection or
     missing readback retains old protection and blocks cancellation. A durable
     journal pins the request/exposure across crashes; uncertain writes never retry.
-    This injected-sender lifecycle is not enabled by the production read-only CLI.
+    The default CLI is read-only; controlled trials use this same lifecycle.
     """
     import json
     if authorized is not True:raise Blocked('explicit operation authorization required')

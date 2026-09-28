@@ -5,8 +5,8 @@ Copyright (c) 2026 geniusgrok
 
 geniusgrok 对其拥有著作权的原创代码、文档和研究成果保留所有权利。本声明不向他人授予使用、复制、抄袭、修改、改编、发布、分发、再许可或用于交易系统的许可。需要使用相关内容，应事先取得权利人的书面授权；不得冒名署名。
 
-本项目仅为研究记录，不代表正在实盘交易，也不可作为实盘交易工具使用。策略、回测及收益数据并非投资建议、收益承诺或安全验证。代码和资料按现状提供，不作任何担保；擅自使用产生的风险和损失由使用者自行承担。
+本项目以个人研究为目的；仓库所有者可在专用账户进行受控 Demo 与小额主网验证。这不代表常规生产运行已经通过资格验证，也不向他人授予实盘使用许可。策略、回测及收益数据并非投资建议、收益承诺或安全验证。代码和资料按现状提供，不作任何担保；擅自使用产生的风险和损失由使用者自行承担。
 
 This public repository hosts geniusgrok's personal research code and records for the owner's use only. Public visibility does not grant an open-source license. geniusgrok reserves all rights in original material that geniusgrok owns. This notice grants others no permission to use, copy, modify, adapt, publish, distribute, sublicense, or incorporate that material into a trading system. Written permission from the rights holder is required. Do not misrepresent authorship.
 
-The project is research only. It does not represent live trading and must not be used as a live-trading tool. Strategies, backtests and returns are not investment advice, a return guarantee or proof of safety. The material is provided as-is without warranty; any unauthorized use and its consequences are the user's responsibility.
+The project is for personal research. The owner may perform controlled Demo and small live trials in dedicated accounts. This does not establish qualification for routine production use or grant anyone else permission to trade with this material. Strategies, backtests and returns are not investment advice, a return guarantee or proof of safety. The material is provided as-is without warranty; any unauthorized use and its consequences are the user's responsibility.

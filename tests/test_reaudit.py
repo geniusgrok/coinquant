@@ -166,7 +166,7 @@ class ReauditTests(TestCase):
         log=self.venue.log
         entry=next(i for i,(_,m,path,p) in enumerate(log) if p.get('timeInForce')=='IOC')
         stop=next(i for i,(_,m,path,p) in enumerate(log) if m=='POST' and p.get('type')=='STOP_MARKET')
-        self.assertEqual(len([x for x in log[entry+1:stop] if x[1]=='GET']),23)
+        self.assertEqual(len([x for x in log[entry+1:stop] if x[1]=='GET']),22)
         self.assertTrue(any('startTime' in p for _,m,path,p in log[entry+1:stop] if path.endswith('/userTrades')))
 
     def test_owned_fill_is_protected_or_reduced_within_the_reserved_budget_under_latency(self):
@@ -179,7 +179,15 @@ class ReauditTests(TestCase):
                 log=self.venue.log
                 entry=next(i for i,(_,m,path,p) in enumerate(log) if p.get('timeInForce')=='IOC')
                 stop=next(i for i,(_,m,path,p) in enumerate(log) if m=='POST' and p.get('type')=='STOP_MARKET')
-                self.assertEqual(len([x for x in log[entry+1:stop] if x[1]=='GET']),23)
+                self.assertEqual(len([x for x in log[entry+1:stop] if x[1]=='GET']),22)
+                if latency==1:
+                    self.assertEqual((log[stop][0]-log[entry][0])/1000,23)
+                    with State(self.directory,'binance:BTCUSDT:live:123') as state:
+                        times=state.get('entry_timing')
+                    self.assertEqual(times['entry_send_attempt_at_ms'],log[entry][0])
+                    self.assertEqual(times['stop_send_attempt_at_ms'],log[stop][0])
+                    self.assertLessEqual(times['fill_confirmed_at_ms'],times['stop_send_attempt_at_ms'])
+                    self.assertLessEqual(times['stop_send_attempt_at_ms'],times['stop_accepted_at_ms'])
                 protected={a['orderType'] for a in self.venue.algos.values() if a['algoStatus']=='NEW'}
                 # Full native protection, or a reduce-only exit removed the exposure.
                 self.assertTrue(self.venue.q==0 or protected=={'STOP_MARKET','TAKE_PROFIT_MARKET'},
