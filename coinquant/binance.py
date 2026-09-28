@@ -25,10 +25,15 @@ PRIVATE = {'/api/v3/account', '/fapi/v3/account', '/fapi/v1/accountConfig',
            '/fapi/v1/order', '/fapi/v1/algoOrder', '/fapi/v1/income',
            '/fapi/v1/positionMargin/history'}
 # Documented request/validation refusals. Anything else, including -1006/-1007
-# and every 5xx, keeps an unknown execution status.
+# and every other 5xx, keeps an unknown execution status.
 REJECT_CODES = frozenset({-1021, -1022, -2010, -2011, -2013, -2014, -2015, -2018, -2019,
                           -2020, -2021, -2022, -2024, -2025}
                          | set(range(-1199, -1099)) | set(range(-4999, -3999)))
+# HTTP 503 bodies Binance documents as failed operations (-1008 is matched by
+# code). "Unknown error, please check your request or try again later." and
+# every other 503 keep an unknown execution status.
+FAILED_503 = frozenset({'Service Unavailable.',
+                        'Internal error; unable to process your request. Please try again.'})
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -185,9 +190,11 @@ class Binance:
                 try:delay=max(60,min(86400,float(exc.headers.get('Retry-After','60'))))
                 except (TypeError,ValueError):delay=60
                 self.cooldown_until=self.monotonic()+delay
-            code=_error_code(exc)
+            code,message=_error_body(exc)
             if method != 'GET' and exc.code in (400,401) and code in REJECT_CODES:
                 raise Rejected(f'Binance rejected the request with code {code}') from None
+            if method != 'GET' and exc.code == 503 and (code == -1008 or message in FAILED_503):
+                raise Rejected('Binance reported a failed operation with HTTP 503') from None
             raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown') from None
         except (URLError, TimeoutError, OSError, ValueError, Blocked):
             # A refused redirect or broken response arrives after the request left.
@@ -511,14 +518,20 @@ class Binance:
         raise Unknown('Binance account changed during bounded reconciliation')
 
 
-def _error_code(error):
-    """Native error code of an HTTP error body, or None when it is not readable."""
+def _error_body(error):
+    """Native error code and message of an HTTP error body; None when unreadable."""
     try:
-        body = json.loads(error.read(4097)[:4096])
+        raw = error.read(4097)[:4096].decode()
     except Exception:
-        return None
-    code = body.get('code') if isinstance(body, dict) else None
-    return code if type(code) is int else None
+        return None, None
+    try:
+        body = json.loads(raw)
+    except ValueError:
+        return None, raw.strip()
+    if not isinstance(body, dict):
+        return None, None
+    code, message = body.get('code'), body.get('msg')
+    return (code if type(code) is int else None), (message.strip() if isinstance(message, str) else None)
 
 
 def observation_key(value):

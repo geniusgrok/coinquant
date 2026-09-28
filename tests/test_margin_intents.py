@@ -88,9 +88,13 @@ class HTTP:
         return BytesIO(self.answer)
 
 
-def rejection(status,code):
-    body=json.dumps(dict(code=code,msg='fixture')).encode()
+def rejection(status,code,msg='fixture'):
+    body=json.dumps(dict(code=code,msg=msg)).encode()
     return HTTPError('https://fapi.binance.com/fapi/v1/order',status,'fixture',Message(),BytesIO(body))
+
+
+def plain(status,text):
+    return HTTPError('https://fapi.binance.com/fapi/v1/order',status,'fixture',Message(),BytesIO(text.encode()))
 
 
 class WriteClassificationTests(unittest.TestCase):
@@ -123,6 +127,26 @@ class WriteClassificationTests(unittest.TestCase):
             self.state.db.execute("DELETE FROM intents");self.state.db.commit()
             reader,_http=self.reader(answer)
             self.assertEqual(self.attempt(reader)[0],'unknown',answer)
+
+    def test_documented_503_failures_are_terminal_and_other_503s_stay_unknown(self):
+        failed=(rejection(503,-1008,'Request throttled by system-level protection. Reduce-only/close-position orders are exempt. Please try again.'),
+                rejection(503,-1001,'Service Unavailable.'),plain(503,'Service Unavailable.'),
+                rejection(503,-1001,'Internal error; unable to process your request. Please try again.'))
+        unknown=(rejection(503,-1001,'Unknown error, please check your request or try again later.'),
+                 rejection(503,-1001),plain(503,'<html>gateway</html>'),rejection(502,-1008))
+        for answer,status in [(a,'rejected') for a in failed]+[(a,'unknown') for a in unknown]:
+            self.state.db.execute("DELETE FROM intents");self.state.db.commit()
+            reader,_http=self.reader(answer)
+            self.assertEqual(self.attempt(reader)[0],status,answer)
+
+    def test_overloaded_add_does_not_block_the_exit_of_the_existing_position(self):
+        from coinquant.binance_safety import reduce_existing
+        reader,_http=self.reader(rejection(503,-1008,'Request throttled by system-level protection.'))
+        self.assertEqual(self.attempt(reader)[0],'rejected')
+        native=Native()
+        after=reduce_existing(native,self.state,native.send,'123',100,'.003',instrument=rules(),authorized=True)
+        self.assertEqual(after['quantity_btc'],'0')
+        self.assertEqual([p['reduceOnly'] for _,_,p in native.sent],['true'])
 
     def test_numeric_margin_amount_is_parsed_exactly(self):
         reader,_http=self.reader(b'{"amount":623.19382938882948900,"code":200,"type":1}')
