@@ -175,8 +175,8 @@ def reconcile(state, reader, model, snapshot):
         merged[trade['id']]=trade
     trades=sorted(merged.values(),key=lambda t:(t['time'],t['id']))
     # Resolve owned protection children and reductions; ACK alone is not used.
-    for oid,kind,raw in state.db.execute("SELECT id,kind,payload FROM intents WHERE updated>=?",(start/1000,)):
-        if kind not in ('binance_order','binance_algo') or oid in links:continue
+    for oid,kind,raw,status in state.db.execute("SELECT id,kind,payload,status FROM intents WHERE updated>=?",(start/1000,)):
+        if kind not in ('binance_order','binance_algo') or oid in links or status=='rejected':continue
         payload=json.loads(raw)
         if payload.get('reduceOnly')!='true' and payload.get('closePosition')!='true':continue
         observed=owned_observation(state,reader,oid,conditional=kind=='binance_algo')

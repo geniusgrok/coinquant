@@ -24,6 +24,11 @@ def client_id(account: str, candle: int, operation: str) -> str:
     return 'cq-' + hashlib.sha256(identity).hexdigest()[:30]
 
 
+def retryable(kind, payload):
+    return (kind in ('binance_algo', 'binance_algo_cancel', 'binance_cancel', 'binance_margin')
+            or kind == 'binance_order' and payload.get('reduceOnly') == 'true')
+
+
 class State:
     def __init__(self, directory: str | Path, identity: str):
         self.directory = Path(directory).expanduser().resolve()
@@ -88,9 +93,13 @@ class State:
     def prepare(self, identity: str, kind: str, payload: dict, *, campaign=None, flat_snapshot=None,
                 position_snapshot=None, result=None) -> None:
         encoded = json.dumps(serial(payload), sort_keys=True, separators=(',', ':'))
-        row = self.db.execute('SELECT payload FROM intents WHERE id=?', (identity,)).fetchone()
+        row = self.db.execute('SELECT kind,status,result FROM intents WHERE id=?', (identity,)).fetchone()
         if row:
-            raise Unknown('intent already exists; reconcile it instead of resending')
+            # A rejected intent left nothing at the exchange under this identity,
+            # so a safety operation may try it again. Entries always take a new epoch.
+            if row[1] != 'rejected' or row[0] != kind or not retryable(kind, payload):
+                raise Unknown('intent already exists; reconcile it instead of resending')
+            result = {**(result or {}), 'prior_rejection': json.loads(row[2])}
         links=None
         if campaign is not None and position_snapshot is not None:
             # An add inherits the fill-history boundary of the campaign's first entry.
@@ -133,7 +142,8 @@ class State:
             # tolerates clock skew; the observed trade id excludes prior fills.
             links[identity]=dict(campaign=campaign,prepared_at=observed_at-(15000 if cursor is not None else 0),after_trade_id=cursor)
         with self.db:
-            self.db.execute('INSERT INTO intents VALUES (?,?,?,?,?,?)',
+            self.db.execute('INSERT OR REPLACE INTO intents VALUES (?,?,?,?,?,?)' if row else
+                            'INSERT INTO intents VALUES (?,?,?,?,?,?)',
                             (identity, kind, encoded, 'unknown', json.dumps(serial(result or {}), sort_keys=True), time()))
             if links is not None:
                 self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('entry_campaigns',json.dumps(links,sort_keys=True)))

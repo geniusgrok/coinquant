@@ -35,13 +35,22 @@ def _gate(reader, state, uid, authorized, *, canceling_entry=False):
 
 def _once(state, identity, kind, payload, send, method, path):
     # Existing intent means possibly sent, even after a crash before HTTP began.
-    old=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(identity,)).fetchone()
-    if old:
+    old=state.db.execute('SELECT kind,payload,status FROM intents WHERE id=?',(identity,)).fetchone()
+    if old and old[2]!='rejected':
         import json
         if old[0]!=kind or json.loads(old[1])!=payload:raise Unknown('stable intent payload changed')
         return
     state.prepare(identity,kind,payload)
     send_once(state,identity,send,method,path,payload)
+    # A refused cancel usually means the target is already terminal; callers
+    # settle cancellations from the target's own state.
+    if not kind.endswith('_cancel') and rejected(state,identity):
+        raise Blocked('request was not sent or was refused by Binance; nothing changed at the exchange')
+
+
+def rejected(state, identity):
+    row=state.db.execute('SELECT status FROM intents WHERE id=?',(identity,)).fetchone()
+    return bool(row) and row[0]=='rejected'
 
 
 def send_once(state, identity, send, method, path, payload):
@@ -60,7 +69,7 @@ def send_once(state, identity, send, method, path, payload):
 def settled_protection(reader,state,identity):
     """Retain conclusive terminal child evidence before exchange history expires."""
     settled=state.get('settled_protection') or {}
-    if identity in settled:return True
+    if identity in settled or rejected(state,identity):return True
     archived=(state.get('terminal_native_orders') or {}).get(identity)
     if archived and 'algoStatus' in archived['parent']:
         settled[identity]=archived;state.set('settled_protection',settled)
@@ -218,7 +227,7 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     """
     import json
     if authorized is not True:raise Blocked('explicit operation authorization required')
-    if state.identity!=f'binance:BTCUSDT:live:{uid}':raise Blocked('account scope mismatch')
+    if state.identity!=scope(reader.environment,uid):raise Blocked('account scope mismatch')
     if old_epoch==epoch:raise Blocked('replacement needs a distinct stable epoch')
     old_ids=[client_id(state.identity,old_epoch,k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')]
     new_ids=[client_id(state.identity,epoch,k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')]
