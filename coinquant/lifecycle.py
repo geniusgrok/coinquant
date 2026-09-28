@@ -20,10 +20,13 @@ TOPUP_RESERVE = 250
 PREVIEW_WEIGHT = 100
 # Network budget reserved for an owned fill's protection, and separately for
 # the bounded reduction after protection failed; neither is cut by the session
-# deadline. The reduction needs one full observation (ten reads) and its write
-# even when every response takes nearly the 8 s request timeout.
+# deadline. The reduction needs one full observation (ten reads), the fill proof
+# (two reads) and its write even when every response takes nearly the 8 s
+# request timeout.
 PROTECT_SECONDS = 120
-REDUCE_SECONDS = 90
+REDUCE_SECONDS = 120
+# Contract rules from the entry preflight are reused only within one session.
+RULES_FRESH_MS = 300000
 
 
 
@@ -130,12 +133,14 @@ class Lifecycle:
         return snapshot
 
     def retire_stale(self, snapshot):
-        """Retire never-observed risk-reducing requests on a verified flat account.
+        """Retire unresolved risk-reducing requests on a verified flat account.
 
         With no position, no working order or conditional order and no possible
-        entry, such a request can no longer change exposure: it was never
-        accepted, or it would be visible. Its signed timestamp expired long ago,
-        so it cannot be accepted later. Entries and partial fills are never retired.
+        entry, such a request can no longer change exposure. It may have run
+        earlier (a transfer, or a close-all order cancelled by flat cleanup);
+        `void` does not assert that it was never accepted. Its signed timestamp
+        expired long ago, so it cannot be accepted later. Entries and partial
+        fills are never retired.
         """
         if (number(snapshot['quantity_btc']) or snapshot['possible_entry_remainders']
                 or snapshot['open_orders'] or snapshot['open_algos'] or blocking(self.state)):
@@ -218,8 +223,10 @@ class Lifecycle:
             raise Unknown('actual position is not the verified entry fill')
         # The reserve was calculated before entry; scale to actual executed size.
         target = number(plan['allocated_margin_usdt'])*abs(q/expected)
-        # Rules observed by this entry's own preflight, seconds before the order.
-        rules = plan.get('instrument') or self.instrument()
+        # Rules from this entry's own preflight; a plan resumed later reads them again.
+        fresh = (type(plan.get('observed_at')) is int
+                 and 0 <= int(self.reader.clock()*1000)-plan['observed_at'] <= RULES_FRESH_MS)
+        rules = plan.get('instrument') if fresh and plan.get('instrument') else self.instrument()
         self.reserve(PROTECT_SECONDS)
         try:
             # With an earlier transfer unresolved, protection is still tried
@@ -233,10 +240,13 @@ class Lifecycle:
         except (Blocked, Unknown):
             # Native entry and protection are NOT atomic. Try a bounded reduction
             # with its own budget, but never assert that a disconnected venue accepted it.
+            # Only the proven own fill is reduced: a manual or external fill that
+            # arrived meanwhile leaves the whole position untouched and unknown.
             self.reserve(REDUCE_SECONDS)
             try:
                 current = self.snapshot()
-                if number(current['quantity_btc']) and not current['possible_entry_remainders']:
+                if (number(current['quantity_btc']) == q and not current['possible_entry_remainders']
+                        and self.entry_fill_proven(plan, current)):
                     self.close(current, rules, observed=True)
             except (Blocked, Unknown):
                 pass

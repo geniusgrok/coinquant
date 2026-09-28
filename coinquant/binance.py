@@ -479,9 +479,12 @@ class Binance:
         now=int(self.clock()*1000);begin=prepared-15000
         if not begin<now<=begin+29*86400000:
             raise Unknown('margin history window unavailable; operator review required')
-        for (other,) in state.db.execute("SELECT result FROM intents WHERE kind='binance_margin' AND id!=? AND status!='rejected'",(intent['id'],)):
+        for other,updated in state.db.execute("SELECT result,updated FROM intents WHERE kind='binance_margin' AND id!=? AND status!='rejected'",(intent['id'],)):
+            # Intents from before preparation times were recorded are bounded by
+            # their last local update, which follows the transfer.
             at=json.loads(other).get('prepared_at_ms')
-            if type(at) is not int or at>=begin-15000:
+            if type(at) is not int:at=int(updated*1000)
+            if at>=begin-15000:
                 raise Unknown('another margin transfer may own a history row in this window')
         rows=self.get('/fapi/v1/positionMargin/history',
                       {'symbol':'BTCUSDT','startTime':begin,'endTime':now,'limit':500})
@@ -557,7 +560,7 @@ def _error_body(error):
     try:
         body = json.loads(raw)
     except ValueError:
-        return None, raw.strip()
+        return None, None  # a proxy or CDN text body is not a Binance answer
     if not isinstance(body, dict):
         return None, None
     code, message = body.get('code'), body.get('msg')
