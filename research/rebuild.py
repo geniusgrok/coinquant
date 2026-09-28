@@ -126,6 +126,7 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
           trigger_slippage='0.001', market_slippage='0.0005', fee='0.00075',
           primary_risk=None, mark_gap='bound', market='/data/coinquant-market', prints='/data/coinquant-prints',
           state=None, limit=0, out=None):
+    source = source_identity()
     schedule = session_schedule.load()
     frozen = (schedule['primary'] if sequence == 'primary' else schedule['stress'][sequence])['starts_ms']
     starts = frozen[:limit or None]
@@ -160,7 +161,7 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
                   trigger_slippage=str(trigger_slippage), market_slippage=str(market_slippage), fee=str(fee),
                   mark_gap=mark_gap, fx=FX_BASIS, conversion='0.001 each way',
                   latency_ms=1000, price_stamp='last trade print at or before the request',
-                  source=source_identity(), market_identity=identity, **effective)
+                  source=source, market_identity=identity, **effective)
     Path(out).mkdir(parents=True, exist_ok=True)
     (Path(out) / f'{name}.json').write_text(json.dumps(result, default=str) + '\n', encoding='utf-8')
     return result
