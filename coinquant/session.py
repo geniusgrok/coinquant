@@ -1,7 +1,7 @@
 """Manually started finite sessions; live and replay use this exact coordinator."""
 import time
 
-from .lifecycle import Lifecycle
+from .lifecycle import Lifecycle, blocking
 from .linear_preview import advance, preview
 from .native_preview import entry_preview
 from .ownership import reconcile
@@ -27,7 +27,7 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
         ownership=prior[2]
     else:
         ownership=reconcile(state,reader,model,snapshot)
-    if state.pending():
+    if blocking(state):
         raise Unknown('unsettled intents block decisions')
     result=preview(model,snapshot)
     result.update(ownership=ownership,reconstructed_market_only=reconstructed)

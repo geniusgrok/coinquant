@@ -17,6 +17,14 @@ class Unknown(RuntimeError):
     """An exchange write or account observation has an uncertain outcome."""
 
 
+class NotSent(Unknown):
+    """The request was refused locally and never reached the exchange."""
+
+
+class Rejected(Unknown):
+    """The exchange definitively refused a write; nothing was executed."""
+
+
 def number(value: Any, name: str = "number", *, positive: bool = False) -> D:
     try:
         result = D(str(value))

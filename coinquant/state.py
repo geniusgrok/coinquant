@@ -80,7 +80,7 @@ class State:
                             (key, json.dumps(serial(value), sort_keys=True)))
 
     def prepare(self, identity: str, kind: str, payload: dict, *, campaign=None, flat_snapshot=None,
-                position_snapshot=None) -> None:
+                position_snapshot=None, result=None) -> None:
         encoded = json.dumps(serial(payload), sort_keys=True, separators=(',', ':'))
         row = self.db.execute('SELECT payload FROM intents WHERE id=?', (identity,)).fetchone()
         if row:
@@ -126,7 +126,7 @@ class State:
             links[identity]=dict(campaign=campaign,prepared_at=observed_at-(15000 if cursor is not None else 0),after_trade_id=cursor)
         with self.db:
             self.db.execute('INSERT INTO intents VALUES (?,?,?,?,?,?)',
-                            (identity, kind, encoded, 'unknown', '{}', time()))
+                            (identity, kind, encoded, 'unknown', json.dumps(serial(result or {}), sort_keys=True), time()))
             if links is not None:
                 self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('entry_campaigns',json.dumps(links,sort_keys=True)))
         # A crash immediately after this commit must be treated as possibly sent.

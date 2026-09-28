@@ -19,6 +19,15 @@ TOPUP_RESERVE = 250
 PREVIEW_WEIGHT = 100
 
 
+def margin_pending(state):
+    return any(p['kind']=='binance_margin' for p in state.pending())
+
+
+def blocking(state):
+    """Unknown intents that block every decision; a margin transfer blocks only new risk."""
+    return [p for p in state.pending() if p['kind']!='binance_margin']
+
+
 class Lifecycle:
     def __init__(self, reader, state, uid, *, authorized=False, may_enter=lambda:True, session=None):
         self.reader, self.state, self.uid = reader, state, uid
@@ -106,7 +115,9 @@ class Lifecycle:
         self.reader.recover_pending(self.state)
         snapshot = self.cancel_entries(self.snapshot())
         self.reader.recover_pending(self.state)
-        if self.state.pending():
+        # An unresolved margin transfer blocks new risk (entry, add and the next
+        # transfer all require no pending intent) but not protection or exits.
+        if blocking(self.state):
             raise Unknown('durable operation remains unknown; no additional risk')
         return snapshot
 
@@ -125,9 +136,11 @@ class Lifecycle:
         target = number(plan['allocated_margin_usdt'])*abs(q/expected)
         rules = self.instrument()
         try:
-            if number(snapshot['isolated_wallet_usdt']) < target:
+            # With an earlier transfer unresolved, protection is still tried
+            # against the observed liquidation price; it never sends another.
+            if number(snapshot['isolated_wallet_usdt']) < target and not margin_pending(self.state):
                 snapshot = safety.add_margin(self.reader,self.state,self.send,self.uid,
-                    plan['epoch'],target,authorized=self.authorized)
+                    plan['epoch'],target,instrument=rules,authorized=self.authorized)
             snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                 plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized)
         except (Blocked, Unknown):
@@ -168,6 +181,9 @@ class Lifecycle:
                     raise Unknown('zero-fill reduction requires review before another attempt')
                 # Only a known terminal partial may create a fresh remainder order.
                 # Unknown outcomes keep the previous identity and never resend.
+                operation=None
+            elif row and row[0]=='rejected':
+                # Refused locally or by Binance: nothing executed under that identity.
                 operation=None
         if operation is None:
             operation = dict(epoch=self.epoch(), quantity=str(abs(q)),direction=1 if q>0 else -1)
@@ -292,10 +308,7 @@ class Lifecycle:
         self.state.set('entry_fill',dict(campaign=plan['campaign'],requested=plan['requested_btc'],
                                          session=self.session,stop_budget=plan.get('stop_budget_usdt')))
         self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh)
-        try:
-            self.send('POST','/fapi/v1/order',payload)
-        except Exception:
-            pass  # query, never resend an uncertain write
+        safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
         return self.recover_exposure(snapshot)
 
@@ -384,7 +397,7 @@ class Lifecycle:
                   - number(plan['quantity_btc'])*number(plan['entry_estimate'])/20)
         if number(fresh['isolated_wallet_usdt']) < target:
             fresh = safety.add_margin(self.reader,self.state,self.send,self.uid,epoch,
-                                      target,authorized=self.authorized)
+                                      target,instrument=self.instrument(),authorized=self.authorized)
             # The transfer takes time. The deadline, a stop request and the quote
             # are checked again; the added margin only lowers risk.
             if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
@@ -403,10 +416,7 @@ class Lifecycle:
                        timeInForce='IOC',quantity=plan['quantity_btc'],
                        price=plan['entry_estimate'],newClientOrderId=identity,newOrderRespType='RESULT')
         self.state.prepare(identity,'binance_order',payload,campaign=fill['campaign'],position_snapshot=fresh)
-        try:
-            self.send('POST','/fapi/v1/order',payload)
-        except Exception:
-            pass  # query, never resend an uncertain write
+        safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
         return self.recover_exposure(snapshot)
 
