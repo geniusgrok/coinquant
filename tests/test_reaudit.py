@@ -1,5 +1,6 @@
 """Offline reproductions of the 7c9b2b7 re-audit findings on the real session path."""
 import tempfile
+from decimal import Decimal as D
 from unittest import TestCase
 from unittest.mock import patch
 from urllib.parse import parse_qsl, urlsplit
@@ -112,6 +113,29 @@ class ReauditTests(TestCase):
         self.assertEqual((self.margins(),self.posts(),self.reductions()),([],[],[]))
         self.assertEqual(result['cleanup'],'unresolved')
         self.assertTrue(any('external or unowned fill' in e['reason'] for e in result['errors']),result['errors'])
+
+    def test_external_reopen_is_not_adopted_on_the_trade_id_proof(self):
+        # A fill a day before the flat snapshot gives the entry a trade-ID cursor.
+        self.venue.trades.append(dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL',orderId=900,id=1,
+                                      time=self.venue.now-86400000,qty='.01'))
+        self.test_external_close_and_equal_manual_reopen_is_never_touched()
+
+    def test_failed_protection_never_reduces_a_manual_fill_that_arrived_between_legs(self):
+        original=self.venue.send
+        def manual_after_stop(method,path,p):
+            answer=original(method,path,p)
+            if method=='POST' and path.endswith('/algoOrder') and p['type']=='STOP_MARKET':
+                self.venue.manual=901
+                self.venue.fill(dict(side='BUY',reduceOnly=False,price=str(self.venue.mark),orderId=901,
+                                     executedQty='0'),D('0.005'))
+            return answer
+        self.venue.send=manual_after_stop
+        result=self.session()
+        owned=[p for m,path,p in self.venue.sent if p.get('timeInForce')=='IOC']
+        self.assertEqual(len(owned),1)
+        self.assertEqual(self.reductions(),[])
+        self.assertGreater(self.venue.q,0)
+        self.assertEqual(result['cleanup'],'unresolved')
 
     def test_manual_position_after_restart_is_not_adopted_during_a_history_outage(self):
         original=self.venue.send
