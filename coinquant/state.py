@@ -150,8 +150,9 @@ class State:
         # A crash immediately after this commit must be treated as possibly sent.
 
     def finish(self, identity: str, status: str, result: dict) -> None:
-        # void: a never-observed risk-reducing request retired on a verified flat
-        # account after its signed timestamp expired (Lifecycle.retire_stale).
+        # void: a risk-reducing request retired on a verified flat account after
+        # its signed timestamp expired (Lifecycle.retire_stale). It can no longer
+        # change exposure; whether it was ever accepted is not asserted.
         if status not in ('unknown', 'partial', 'confirmed', 'rejected', 'void'):
             raise ValueError('invalid intent status')
         prior=self.db.execute('SELECT result FROM intents WHERE id=?',(identity,)).fetchone()
