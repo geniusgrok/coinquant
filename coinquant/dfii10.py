@@ -3,6 +3,7 @@ import csv
 from datetime import date, datetime, time, timedelta, timezone
 from decimal import Decimal as D
 from hashlib import sha256
+from pathlib import Path
 from html.parser import HTMLParser
 from io import StringIO
 from urllib.parse import urlencode
@@ -120,6 +121,12 @@ class Source:
             reason=('insufficient_20_prior_observations' if prior is None else
                     'stale_observation_over_7_calendar_days' if
                     (datetime.fromtimestamp(now/1000,timezone.utc).date()-latest).days>7 else None)
+            digest=sha256(raw).hexdigest()
+            cache=Path.home()/'.local'/'state'/'coinquant'/'dfii10'
+            cache.mkdir(parents=True, exist_ok=True, mode=0o700)
+            stored=cache/f'{digest}.zip'
+            if not stored.exists():
+                stored.write_bytes(raw)
             row=dict(latest_value=str(updates[latest][0]) if latest else None,
                      prior20_value=str(updates[prior][0]) if prior else None,
                      latest_observation_date=str(latest) if latest else None,
@@ -127,7 +134,7 @@ class Source:
                      latest_value_available_ms=available(updates[latest][1]) if latest else None,
                      prior20_value_available_ms=available(updates[prior][1]) if prior else None,
                      asof_vintage_date=str(dates[-1]),missing_reason=reason,
-                     response_sha256=sha256(raw).hexdigest())
+                     response_sha256=digest)
             self.cached=row;self.fetched_at=now;self.failed_at=None
             return row
         except (OSError,ValueError,KeyError,IndexError,UnicodeError,BadZipFile) as exc:

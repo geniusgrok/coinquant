@@ -7,6 +7,8 @@ never reach a live reader.
 import argparse
 import hashlib
 import json
+import os
+import re
 import shutil
 import sqlite3
 import subprocess
@@ -122,6 +124,40 @@ def source_identity():
                 python_sources_sha256=digest.hexdigest())
 
 
+_NAME = re.compile(r'[A-Za-z0-9][A-Za-z0-9._-]{0,48}\Z')
+
+
+def scratch_dir(name):
+    """Trial state lives only under the machine scratch root, never an arbitrary path."""
+    if not _NAME.fullmatch(name):
+        raise ValueError('trial name must be a short safe token')
+    root = Path('/dev/shm') if Path('/dev/shm').is_dir() else Path('/tmp')
+    path = (root / f'cq-{name}').resolve()
+    if path.parent != root.resolve():
+        raise ValueError('trial state path escaped the scratch directory')
+    return path
+
+
+def _under_scratch(path):
+    path = Path(path).resolve()
+    roots = []
+    for candidate in (Path('/tmp'), Path('/dev/shm')):
+        if candidate.is_dir():
+            roots.append(candidate.resolve())
+    if path in roots:
+        return False
+    return any(root in path.parents for root in roots)
+
+
+def _allowed_output(path):
+    path = Path(path).resolve()
+    roots = [OUT.resolve(), PARTIAL.resolve()]
+    for candidate in (Path('/tmp'), Path('/dev/shm')):
+        if candidate.is_dir():
+            roots.append(candidate.resolve())
+    return any(path == root or root in path.parents for root in roots)
+
+
 def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
           trigger_slippage='0.001', market_slippage='0.0005', fee='0.00075',
           primary_risk=None, mark_gap='bound', market='/data/coinquant-market', prints='/data/coinquant-prints',
@@ -141,7 +177,12 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
             campaign.PRIMARY_RISK = str(primary_risk)
         effective = dict(book_participation=str(native_preview.BOOK_PARTICIPATION),
                          primary_risk=campaign.PRIMARY_RISK, macro_risk=campaign.MACRO_RISK)
-        state = Path(state or f'/dev/shm/cq-{name}')
+        if state is None:
+            state = scratch_dir(name)
+        else:
+            state = Path(state).resolve()
+            if not _under_scratch(state):
+                raise ValueError('trial state must stay in the scratch directory')
         if state.exists():
             shutil.rmtree(state)
         state.mkdir(parents=True)
@@ -155,15 +196,31 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
     identity = dict(base.identity)
     identity['loaded_minute_files'] = dict(sorted(base.loaded.items()))
     identity['loaded_print_files'] = dict(sorted(exchange.prints.loaded.items()))
-    result.update(trial=name, sequence=sequence, schedule_sha256=schedule['primary']['sha256'],
+    chosen = schedule['primary'] if sequence == 'primary' else schedule['stress'][sequence]
+    unresolved = sum(1 for row in result.get('session_rows') or []
+                     if row.get('cleanup') != 'verified' or row.get('report_status') not in ('no_action', 'executed'))
+    result.update(trial=name, sequence=sequence, schedule_sha256=chosen['sha256'],
+                  executed_starts_sha256=hashlib.sha256(
+                      json.dumps(starts, separators=(',', ':')).encode()).hexdigest(),
                   sessions_requested=len(frozen), sessions_executed=len(starts), complete=complete,
+                  schedule_complete=complete,
+                  complete_means='executed session count equals the selected frozen sequence',
+                  execution_unresolved=unresolved,
                   print_window_ms=int(print_window_ms),
                   trigger_slippage=str(trigger_slippage), market_slippage=str(market_slippage), fee=str(fee),
                   mark_gap=mark_gap, fx=FX_BASIS, conversion='0.001 each way',
                   latency_ms=1000, price_stamp='last trade print at or before the request',
                   source=source, market_identity=identity, **effective)
-    Path(out).mkdir(parents=True, exist_ok=True)
-    (Path(out) / f'{name}.json').write_text(json.dumps(result, default=str) + '\n', encoding='utf-8')
+    if not _NAME.fullmatch(name):
+        raise ValueError('trial name must be a short safe token')
+    destination = Path(out)
+    if not _allowed_output(destination):
+        raise ValueError('trial output must stay in the evidence or scratch directory')
+    destination.mkdir(parents=True, exist_ok=True)
+    payload = json.dumps(result, default=str) + '\n'
+    temporary = destination / f'.{name}.json.partial'
+    temporary.write_text(payload, encoding='utf-8')
+    os.replace(temporary, destination / f'{name}.json')
     return result
 
 

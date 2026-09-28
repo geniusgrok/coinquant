@@ -36,13 +36,14 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
     audit=None
     if execute:
         # Missing cashflow audit blocks new risk, never a verified reduction.
-        if result['action']=='enter':audit=income(reader,state)
+        if result['action']=='enter':audit=income(reader,state,wallet=snapshot.get('wallet_usdt'))
         elif result['action']=='hold':
             # A hold may add to the position; the add needs the same prior audit.
-            # Maintaining existing protection does not.
+            # Maintaining existing protection does not. An unexplained wallet
+            # change blocks the add and still allows protection.
             try:
-                audit=income(reader,state)
-                engine.may_add=True
+                audit=income(reader,state,wallet=snapshot.get('wallet_usdt'))
+                engine.may_add=audit.get('wallet_closure')!='unexplained'
             except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError):
                 engine.may_add=False
         writes=len(engine.actions)
@@ -132,6 +133,9 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                         report.update(status='unknown',income_audit={'status':'unresolved'},
                                       reason=str(exc) if isinstance(exc,(Blocked,Unknown)) else 'Income audit unavailable')
             report['pending_intents']=len(state.pending())
+            if config.capital_limit is not None:
+                report['sizing_capital_usdt']=str(config.capital_limit)
+                report['sizing_capital_means']='model sizing capital, not a cumulative loss limit'
             if execute:report['entry_timing']=state.get('entry_timing')
             report['write_attempted']=(state.get('write_attempt_count') or 0)>prior_writes
             if report['pending_intents']:

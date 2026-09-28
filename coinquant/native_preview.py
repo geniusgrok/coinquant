@@ -120,7 +120,9 @@ def entry_preview(reader, model, snapshot):
                 side='BUY' if direction>0 else 'SELL',campaign=opportunity.identity,
                 observed_at=v['fresh']['mark_time'],
                 stop_budget_usdt=None if budget is None else str(budget),
-                sizing_capital_usdt=str(capital))
+                macro_budget_means=None if budget is None else 'price distance to the stop; excludes fees, slippage and funding',
+                sizing_capital_usdt=str(capital),
+                sizing_capital_means='model sizing capital, not a cumulative loss limit')
 
 
 def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=None):

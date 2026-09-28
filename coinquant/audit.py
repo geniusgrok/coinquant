@@ -4,7 +4,7 @@ import json
 from .types import Unknown, number
 
 
-def income(reader,state,*,force=False):
+def income(reader,state,*,force=False,wallet=None):
     now=int(reader.clock()*1000)
     coverage=state.get('income_coverage')
     if coverage and now<coverage['through']:
@@ -35,6 +35,7 @@ def income(reader,state,*,force=False):
         page_number+=1
     result=dict(origin=coverage['origin'] if coverage else start,through=now,
                 observed_transactions=0,continuous_equity_verified=False,
+                wallet_closure='collected',
                 scope='native cashflows only; observation gaps are not interpolated')
     with state.db:
         for (kind,identity),event in observed.items():
@@ -42,5 +43,27 @@ def income(reader,state,*,force=False):
             if prior and json.loads(prior[0])!=event:raise Unknown('native cashflow changed after observation')
             state.db.execute('INSERT OR IGNORE INTO native_income VALUES (?,?,?)',(kind,identity,json.dumps(event,sort_keys=True)))
         result['observed_transactions']=state.db.execute('SELECT COUNT(*) FROM native_income').fetchone()[0]
+        if wallet is not None:
+            result['wallet_closure']=_wallet_closure(state, number(wallet), now)
         state.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('income_coverage',json.dumps(result,sort_keys=True)))
     return result
+
+
+def _wallet_closure(state, wallet, now):
+    """Compare the wallet change since the previous anchor with income rows.
+
+    The first observation only sets the anchor. A later difference that the
+    saved cashflows do not explain stays unexplained and blocks new risk.
+    Isolated margin moves are not income and are not treated as profit.
+    """
+    total=sum((number(json.loads(payload).get('income'))
+               for payload, in state.db.execute('SELECT payload FROM native_income')), number(0))
+    anchor=state.get('wallet_anchor')
+    if anchor is None:
+        state.set('wallet_anchor', {'wallet':str(wallet),'income':str(total),'through':now})
+        return 'anchored'
+    gap=(wallet-number(anchor['wallet']))-(total-number(anchor['income']))
+    if gap==0:
+        state.set('wallet_anchor', {'wallet':str(wallet),'income':str(total),'through':now})
+        return 'explained'
+    return 'unexplained'
