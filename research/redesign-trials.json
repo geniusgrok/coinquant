@@ -686,7 +686,13 @@
           "name": "P6",
           "args": [],
           "stress": "default reproduction",
-          "result": null
+          "result": {
+            "evidence": "evidence/rebuild-20260927/P6.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73",
+            "source_git_head": "8c22f7cd6bd650a9f014ba047a6dcee5067a1396"
+          }
         },
         {
           "name": "M6-fee150",
@@ -695,7 +701,13 @@
             "0.001125"
           ],
           "stress": "cost +50%",
-          "result": null
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M6-fee150.json",
+            "final_cny": "4564761",
+            "cost_net_cagr_percent": "148.78",
+            "continuous_mdd_envelope_percent": "45.00",
+            "source_git_head": "8c22f7cd6bd650a9f014ba047a6dcee5067a1396"
+          }
         },
         {
           "name": "M6-slip2",
@@ -706,7 +718,13 @@
             "0.001"
           ],
           "stress": "exit slippage x2",
-          "result": null
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M6-slip2.json",
+            "final_cny": "4625195",
+            "cost_net_cagr_percent": "149.27",
+            "continuous_mdd_envelope_percent": "45.09",
+            "source_git_head": "8c22f7cd6bd650a9f014ba047a6dcee5067a1396"
+          }
         },
         {
           "name": "M6-part10",
@@ -715,7 +733,13 @@
             "0.1"
           ],
           "stress": "depth participation 10%",
-          "result": null
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M6-part10.json",
+            "final_cny": "4465655",
+            "cost_net_cagr_percent": "147.97",
+            "continuous_mdd_envelope_percent": "44.73",
+            "source_git_head": "8c22f7cd6bd650a9f014ba047a6dcee5067a1396"
+          }
         },
         {
           "name": "M6-skip",
@@ -724,7 +748,13 @@
             "random_skip"
           ],
           "stress": "seeded 20% skip",
-          "result": null
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M6-skip.json",
+            "final_cny": "1091282",
+            "cost_net_cagr_percent": "101.06",
+            "continuous_mdd_envelope_percent": "44.68",
+            "source_git_head": "8c22f7cd6bd650a9f014ba047a6dcee5067a1396"
+          }
         },
         {
           "name": "M6-absence",
@@ -733,7 +763,13 @@
             "absence"
           ],
           "stress": "legacy absence sequence",
-          "result": null
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M6-absence.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73",
+            "source_git_head": "8c22f7cd6bd650a9f014ba047a6dcee5067a1396"
+          }
         },
         {
           "name": "M6-block",
@@ -742,10 +778,16 @@
             "block_21d"
           ],
           "stress": "seeded 21-day block",
-          "result": null
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M6-block.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73",
+            "source_git_head": "8c22f7cd6bd650a9f014ba047a6dcee5067a1396"
+          }
         }
       ],
-      "outcome": null
+      "outcome": "Every M6 account has the same final value, fees, funding and MDD as its M5 counterpart. The only path difference: DFII10 is no longer read when it cannot change the decision, which shifts one IOC fill's time and quantity and one session's cycle count. No boundary funding followed a stop inside its minute, and no position was held across an uncovered funding time."
     }
   ]
 }
