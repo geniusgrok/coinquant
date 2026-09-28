@@ -206,15 +206,17 @@ class WriteClassificationTests(unittest.TestCase):
         reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
         self.state.prepare('cq-x','binance_order',payload,result={'prepared_at_ms':int(now[0]*1000)})
         send_once(self.state,'cq-x',lambda *a:(_ for _ in ()).throw(TimeoutError()),'POST','/fapi/v1/order',payload)
-        for later,pending in ((0,1),(299,1),(301,1)):
+        for later,pending in ((0,1),(299,1),(301,0)):
             now[0]=1770004800.0+later
             reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
+            reader.snapshot=lambda uid:{'quantity_btc':'0','possible_entry_remainders':0}
             self.assertEqual(reader.recover_pending(self.state)['pending'],pending,later)
-        self.assertEqual(self.state.db.execute("SELECT status FROM intents").fetchone()[0],'unknown')
+        status,result=self.state.db.execute("SELECT status,result FROM intents").fetchone()
+        self.assertEqual(status,'rejected')
+        self.assertTrue(json.loads(result)['query_absent_within_retention'])
         native=Native()
-        with self.assertRaises(Unknown):
-            reduce_existing(native,self.state,native.send,'123',100,'.003',instrument=rules(),authorized=True)
-        self.assertEqual(native.sent,[])
+        after=reduce_existing(native,self.state,native.send,'123',100,'.003',instrument=rules(),authorized=True)
+        self.assertEqual(after['quantity_btc'],'0')
 
     def test_missing_order_without_a_preparation_time_or_past_retention_stays_unknown(self):
         now=[1770004800.0]

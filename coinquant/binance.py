@@ -42,9 +42,13 @@ REJECT_CODES = frozenset({
 # every other 503 keep an unknown execution status.
 FAILED_503 = frozenset({'Service Unavailable.',
                         'Internal error; unable to process your request. Please try again.'})
-# A signed request expires, but its query visibility is independent of that
-# deadline. Never infer rejection from elapsed time and a missing query.
+# A signed request is refused after timestamp+recvWindow (5 s). Past this age a
+# request that is still not visible can no longer be accepted.
 UNACCEPTED_AFTER_MS = 300000
+# Binance keeps a canceled or expired zero-fill order queryable for about three
+# days. Inside one day, "order does not exist" means this identity was not accepted.
+# A failed query is not this observation. After the retention window it stays unknown.
+QUERYABLE_MS = 86400000
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -373,11 +377,11 @@ class Binance:
         unsupported intent kinds stay pending; never infer resolution.
         A canceled conditional parent does not settle a still-active child.
         """
-        # Migrate the old time-based false rejection in place. Keep the original
-        # client identity and payload; a later native order can still be found.
+        # Reopen the old inference that treated any aged missing query as rejection.
+        # A rejection that recorded an explicit -2013 inside the query retention stays.
         for identity, raw in state.db.execute("SELECT id,result FROM intents WHERE kind='binance_order' AND status='rejected'").fetchall():
             result=json.loads(raw)
-            if 'absent_at_ms' in result:
+            if 'absent_at_ms' in result and not result.get('query_absent_within_retention'):
                 state.finish(identity,'unknown',{**result,'legacy_absence_reopened':True})
         resolved = 0
         for intent in state.pending():
@@ -430,6 +434,8 @@ class Binance:
                 try:
                     observed = self.query_intent(intent['id'], conditional=conditional)
                 except Missing:
+                    if not conditional and self.absent_within_retention(state, intent):
+                        resolved += 1
                     continue
                 parent, child = observed['parent'], observed['child']
                 for field in ('symbol', 'side', 'positionSide'):
@@ -501,6 +507,30 @@ class Binance:
                 # Keep independent recoverable intents moving, never erase unknowns.
                 continue
         return {'resolved': resolved, 'pending': len(state.pending())}
+
+    def absent_within_retention(self, state, intent):
+        """An ordinary order Binance reports as nonexistent, after its signature
+        expired and while a zero-fill order would still be queryable, was not
+        accepted. A failed query never reaches here. Without a preparation time,
+        or once retention has passed, the intent stays unknown."""
+        row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
+        result=json.loads(row[0]) if row else {}
+        prepared=result.get('prepared_at_ms')
+        now=int(self.clock()*1000)
+        if (intent['status']!='unknown' or type(prepared) is not int
+                or not UNACCEPTED_AFTER_MS<=now-prepared<QUERYABLE_MS):
+            return False
+        # A live position can be the fill this query failed to show. Only a flat
+        # account, with no entry remainder, can treat the identity as absent.
+        try:
+            snap=self.snapshot(state.identity.rsplit(':',1)[-1])
+        except Exception:
+            return False
+        if number(snap.get('quantity_btc')) or snap.get('possible_entry_remainders'):
+            return False
+        state.finish(intent['id'],'rejected',{**result,'absent_at_ms':now,
+                                               'query_absent_within_retention':True})
+        return True
 
     def recover_margin(self, state, intent):
         """Settle a transfer whose answer was lost from bounded native margin history.

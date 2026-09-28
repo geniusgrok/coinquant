@@ -83,7 +83,7 @@ class ReviewRegressions(TestCase):
         self.venue.send=original;self.venue.fail_reads=False
         self.assertEqual(self.session()['cleanup'],'verified')
         self.assertEqual(len([a for a in self.venue.algos.values() if a['algoStatus']=='NEW']),2)
-        self.assertEqual(len(self.venue.algos),4)
+        self.assertEqual(len(self.venue.algos),6)
 
     def test_unknown_observations_are_retained_without_stale_equity(self):
         self.session();self.venue.fail_reads=True

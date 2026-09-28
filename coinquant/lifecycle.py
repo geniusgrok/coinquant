@@ -42,6 +42,42 @@ def _protection_fits(snapshot, stop, take):
     return 0 < take < mark < stop < liq
 
 
+def _guard_prices(snapshot, plan, rules):
+    """A stop that fits the current liquidation, one tick on the safe side of it.
+
+    The planned stop is installed after margin is added. This only covers the
+    transfer. None when no price sits between liquidation and the mark.
+    """
+    from decimal import ROUND_CEILING, ROUND_FLOOR
+    filters = [item for item in rules.get('filters', []) if item.get('filterType') == 'PRICE_FILTER']
+    if len(filters) != 1:
+        return None
+    tick = number(filters[0].get('tickSize'), positive=True)
+    floor = number(filters[0].get('minPrice'))
+    ceiling = number(filters[0].get('maxPrice'), positive=True)
+    q = number(snapshot['quantity_btc'])
+    mark = number(snapshot['mark_price'])
+    liq = number(snapshot['native_liquidation_price'])
+    planned_take = number(plan['take'])
+    if q > 0:
+        stop = (liq / tick).to_integral_value(rounding=ROUND_CEILING) * tick
+        if stop <= liq:
+            stop += tick
+        take = planned_take if planned_take > mark else mark + tick
+        if not (liq < stop < mark < take):
+            return None
+    else:
+        stop = (liq / tick).to_integral_value(rounding=ROUND_FLOOR) * tick
+        if stop >= liq:
+            stop -= tick
+        take = planned_take if 0 < planned_take < mark else mark - tick
+        if not (0 < take < mark < stop < liq):
+            return None
+    if not floor <= stop <= ceiling or not floor <= take <= ceiling or stop % tick or take % tick:
+        return None
+    return stop, take
+
+
 def margin_pending(state):
     return any(p['kind']=='binance_margin' for p in state.pending())
 
@@ -77,9 +113,10 @@ class Lifecycle:
             field=None
             if path=='/fapi/v1/order' and payload.get('newClientOrderId')==plan['id']:
                 field='entry_send_attempt_at_ms'
-            elif (path=='/fapi/v1/algoOrder' and payload.get('type')=='STOP_MARKET'
-                  and payload.get('clientAlgoId')==client_id(self.state.identity,plan['epoch'],'STOP_MARKET')):
-                field='stop_send_attempt_at_ms'
+            elif path=='/fapi/v1/algoOrder' and payload.get('type')=='STOP_MARKET' and plan:
+                # The first stop for this fill, including a guard placed before margin.
+                if 'stop_send_attempt_at_ms' not in timing:
+                    field='stop_send_attempt_at_ms'
             if field:
                 timing[field]=int(self.reader.clock()*1000)
                 self.state.set('entry_timing',timing)
@@ -257,14 +294,35 @@ class Lifecycle:
             # Place the stop before the margin transfer when liquidation already
             # sits beyond it, so that write is not a bare position.
             fits = _protection_fits(snapshot, plan['stop'], plan['take'])
-            if fits:
+            if plan.get('guard_epoch') is not None:
+                guard = (number(plan['guard_stop']), number(plan['guard_take']))
+                guard_epoch = plan['guard_epoch']
+            else:
+                guard = None if fits else _guard_prices(snapshot, plan, rules)
+                guard_epoch = None
+                if guard is not None:
+                    guard_epoch = self.epoch()
+                    plan['guard_epoch'] = guard_epoch
+                    plan['guard_stop'] = str(guard[0])
+                    plan['guard_take'] = str(guard[1])
+                    self.state.set('entry_plan', plan)
+            if guard is not None:
+                # Cover the fill at the current liquidation before moving margin.
+                snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
+                    guard_epoch,guard[0],guard[1],instrument=rules,authorized=self.authorized,
+                    snapshot=snapshot)
+            elif fits:
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
                     snapshot=snapshot)
             if number(snapshot['isolated_wallet_usdt']) < target and not margin_pending(self.state):
                 snapshot = safety.add_margin(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],target,instrument=rules,authorized=self.authorized,snapshot=snapshot)
-            if not fits:
+            if guard_epoch is not None:
+                snapshot = safety.replace_protection(self.reader,self.state,self.send,self.uid,
+                    guard_epoch,plan['epoch'],plan['stop'],plan['take'],instrument=rules,
+                    authorized=self.authorized)
+            elif not fits:
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
                     snapshot=snapshot)

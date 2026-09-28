@@ -94,7 +94,10 @@ class SessionTests(TestCase):
         entries=[p for _,path,p in self.venue.sent if path.endswith('/order') and p.get('timeInForce')=='IOC']
         self.assertEqual(D(entries[1]['quantity']),D(entries[0]['quantity'])/2)
         stops=[p for _,path,p in self.venue.sent if path.endswith('/algoOrder') and p.get('type')=='STOP_MARKET']
-        self.assertEqual(len(stops),1)
+        self.assertEqual(len(stops),2)
+        live=[a for a in self.venue.algos.values() if a.get('orderType')=='STOP_MARKET' and a.get('algoStatus')=='NEW']
+        self.assertEqual(len(live),1)
+        self.assertEqual(D(live[0]['triggerPrice']),D('95000'))
         self.assertTrue(r['actual']['native_full_position_protected'])
         self.assertTrue(r['actual']['stop_before_liquidation'])
         sent=[path for _,path,_ in self.venue.sent]
@@ -249,8 +252,11 @@ class SessionTests(TestCase):
         self.venue.fail_reads=False;self.venue.send=original
         second=self.run_session(seconds=2)
         self.assertEqual(second['cleanup'],'verified');self.assertEqual(second['pending_intents'],0)
-        self.assertEqual(len([p for _,_,p in self.venue.sent if p.get('type')=='STOP_MARKET']),1)
-        self.assertEqual(len([p for _,_,p in self.venue.sent if p.get('type')=='TAKE_PROFIT_MARKET']),1)
+        stops=[p for _,_,p in self.venue.sent if p.get('type')=='STOP_MARKET']
+        self.assertEqual(len({p['clientAlgoId'] for p in stops if p.get('clientAlgoId')}),len(stops))
+        self.assertLessEqual(len(stops),2)
+        live=[a for a in self.venue.algos.values() if a.get('algoStatus')=='NEW']
+        self.assertEqual({a['orderType'] for a in live},{'STOP_MARKET','TAKE_PROFIT_MARKET'})
 
     def test_zero_fill_retries_archive_terminal_entries(self):
         self.venue.fraction=D(0)

@@ -1,14 +1,16 @@
 """Local single-writer lock and synchronous durable exchange intents.
 
 The database is a recovery aid, never an authority for balances or positions.
-Use one persistent state directory per account on one machine. Concurrent agents
-on different machines require an external shared lease and are not supported.
+Use one persistent state directory per account on one machine. A second host is
+refused for 10 minutes when it opens that same directory. Two copies of the
+directory cannot see each other; that is not supported.
 """
 from __future__ import annotations
 
 import hashlib
 import json
 import os
+import socket
 from pathlib import Path
 import sqlite3
 from time import time
@@ -80,6 +82,13 @@ class State:
             if saved is not None and saved != self.identity:
                 raise Blocked('state directory belongs to another account or environment')
             self.set('identity', self.identity)
+            host = socket.gethostname()
+            prior = self.get('writer_host')
+            now = time()
+            if (isinstance(prior, dict) and prior.get('host') not in (None, host)
+                    and type(prior.get('at')) is float and now-prior['at'] < 600):
+                raise Blocked('this account state was written by another machine in the last 10 minutes')
+            self.set('writer_host', {'host': host, 'pid': os.getpid(), 'at': now})
             return self
         except (OSError, sqlite3.Error) as exc:
             self.__exit__(None, None, None)

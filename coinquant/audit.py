@@ -9,7 +9,9 @@ def income(reader,state,*,force=False,wallet=None):
     coverage=state.get('income_coverage')
     if coverage and now<coverage['through']:
         raise Unknown('income observation clock regressed')
-    if coverage and not force and now-coverage['through']<60000:
+    # A wallet gap is re-read immediately. A settled closure can wait a minute.
+    if (coverage and not force and now-coverage['through']<60000
+            and coverage.get('wallet_closure') not in ('pending_income', 'unexplained')):
         return coverage
     # Re-read an overlap for late publication and deduplicate by native identity.
     # First use only establishes a recent audit origin, never past qualification.
@@ -66,4 +68,11 @@ def _wallet_closure(state, wallet, now):
     if gap==0:
         state.set('wallet_anchor', {'wallet':str(wallet),'income':str(total),'through':now})
         return 'explained'
+    # Income can be published after the wallet already moved. One quiet minute
+    # is waiting, not a reason to stop adds. A gap that is still there after
+    # that minute blocks new risk.
+    seen=anchor.get('gap_since')
+    if type(seen) is not int or now-seen<60000:
+        state.set('wallet_anchor', {**anchor, 'gap_since': now if type(seen) is not int else seen, 'gap': str(gap)})
+        return 'pending_income'
     return 'unexplained'

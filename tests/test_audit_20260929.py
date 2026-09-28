@@ -100,6 +100,74 @@ class AccountLockTests(unittest.TestCase):
             two.cleanup()
 
 
+class AbsentOrderTests(unittest.TestCase):
+    def test_explicit_missing_inside_retention_is_terminal_and_stays_terminal(self):
+        tmp = tempfile.TemporaryDirectory()
+        now = [1770004800.0]
+        venue = Venue()
+        venue.now = int(now[0] * 1000)
+        venue.clock = lambda: now[0]
+        with State(tmp.name, 'binance:BTCUSDT:live:123') as state:
+            payload = dict(symbol='BTCUSDT', side='BUY', positionSide='BOTH', type='LIMIT', quantity='0.001')
+            state.prepare('cq-x', 'binance_order', payload, result={'prepared_at_ms': int(now[0] * 1000)})
+            now[0] += 301
+            venue.now += 301000
+            venue.clock = lambda: now[0]
+            self.assertTrue(venue.absent_within_retention(state, {'id': 'cq-x', 'status': 'unknown'}))
+            self.assertEqual(state.db.execute("SELECT status FROM intents WHERE id='cq-x'").fetchone()[0], 'rejected')
+            venue.recover_pending(state)
+            self.assertEqual(state.db.execute("SELECT status FROM intents WHERE id='cq-x'").fetchone()[0], 'rejected')
+        tmp.cleanup()
+
+    def test_missing_before_expiry_or_after_retention_stays_unknown(self):
+        tmp = tempfile.TemporaryDirectory()
+        now = [1770004800.0]
+        venue = Venue()
+        venue.now = int(now[0] * 1000)
+        venue.clock = lambda: now[0]
+        with State(tmp.name, 'binance:BTCUSDT:live:123') as state:
+            payload = dict(symbol='BTCUSDT', side='BUY', positionSide='BOTH', type='LIMIT', quantity='0.001')
+            state.prepare('cq-x', 'binance_order', payload, result={'prepared_at_ms': int(now[0] * 1000)})
+            now[0] += 299
+            venue.clock = lambda: now[0]
+            self.assertFalse(venue.absent_within_retention(state, {'id': 'cq-x', 'status': 'unknown'}))
+            now[0] += 2 * 86400
+            venue.clock = lambda: now[0]
+            self.assertFalse(venue.absent_within_retention(state, {'id': 'cq-x', 'status': 'unknown'}))
+            self.assertEqual(state.pending()[0]['status'], 'unknown')
+        tmp.cleanup()
+
+
+class WalletGapTests(unittest.TestCase):
+    def test_a_fresh_gap_waits_and_an_old_gap_blocks(self):
+        from coinquant.audit import _wallet_closure
+        tmp = tempfile.TemporaryDirectory()
+        with State(tmp.name, 'binance:BTCUSDT:live:wallet') as state:
+            self.assertEqual(_wallet_closure(state, D('10'), 1_000_000), 'anchored')
+            self.assertEqual(_wallet_closure(state, D('9'), 1_030_000), 'pending_income')
+            self.assertEqual(_wallet_closure(state, D('9'), 1_090_000), 'unexplained')
+            self.assertEqual(_wallet_closure(state, D('10'), 1_100_000), 'explained')
+        tmp.cleanup()
+
+
+class WriterHostTests(unittest.TestCase):
+    def test_a_live_writer_on_another_machine_blocks_the_next_open(self):
+        tmp = tempfile.TemporaryDirectory()
+        with State(tmp.name, 'binance:BTCUSDT:live:host') as state:
+            state.set('writer_host', {'host': 'other-host', 'pid': 1, 'at': __import__('time').time()})
+        with self.assertRaises(Blocked):
+            State(tmp.name, 'binance:BTCUSDT:live:host').__enter__()
+        import sqlite3
+        connection = sqlite3.connect(tmp.name + '/intents.sqlite')
+        connection.execute("UPDATE meta SET value=? WHERE key='writer_host'",
+                           (json.dumps({'host': 'other-host', 'pid': 1, 'at': 1.0}),))
+        connection.commit()
+        connection.close()
+        with State(tmp.name, 'binance:BTCUSDT:live:host') as state:
+            self.assertEqual(state.get('writer_host')['host'], __import__('socket').gethostname())
+        tmp.cleanup()
+
+
 class TrialPathTests(unittest.TestCase):
     def test_names_and_output_roots_are_bounded(self):
         self.assertEqual(scratch_dir('P7').name, 'cq-P7')
