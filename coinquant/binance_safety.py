@@ -3,6 +3,7 @@
 The injected sender is used by offline lifecycle tests. Production CLI stays
 read-only until authorized native lifecycle validation and economic acceptance.
 """
+import json
 from decimal import Decimal as D, ROUND_CEILING
 from .config import scope
 from .state import client_id
@@ -10,37 +11,48 @@ from .binance import market_quantity
 from .types import Blocked, NotSent, Rejected, Unknown
 
 
-def _gate(reader, state, uid, authorized, *, canceling_entry=False):
+def risk_reducing(state, pending):
+    """Whether an unsettled intent can only lower exposure if it executes.
+
+    Margin additions, reduce-only orders, close-all protection and its
+    cancellation qualify. Any other intent could still open or add risk.
+    """
+    kind,payload=pending['kind'],pending['payload']
+    if kind=='binance_algo_cancel':
+        owner=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(payload.get('clientAlgoId'),)).fetchone()
+        return bool(owner and owner[0]=='binance_algo'
+                    and json.loads(owner[1]).get('symbol')=='BTCUSDT'
+                    and json.loads(owner[1]).get('closePosition')=='true')
+    return (kind=='binance_margin' or
+            kind=='binance_order' and payload.get('reduceOnly')=='true' or
+            kind=='binance_algo' and (payload.get('closePosition')=='true' or payload.get('reduceOnly')=='true'))
+
+
+def _gate(reader, state, uid, authorized, *, canceling_entry=False, snapshot=None):
+    """Scope and pending-intent checks before a safety write.
+
+    `snapshot` may only be an observation taken after the caller's latest write.
+    """
     if authorized is not True:raise Blocked('explicit operation authorization required')
     if state.identity != scope(reader.environment, uid):
         raise Blocked('state and native reader account scope differ')
-    reader.recover_pending(state)
+    if snapshot is None or state.pending():reader.recover_pending(state)
     if not canceling_entry:
-        for pending in state.pending():
-            kind,payload=pending['kind'],pending['payload']
-            safe=(kind=='binance_margin' or
-                  kind=='binance_order' and payload.get('reduceOnly')=='true' or
-                  kind=='binance_algo' and (payload.get('closePosition')=='true' or payload.get('reduceOnly')=='true'))
-            if kind=='binance_algo_cancel':
-                import json
-                owner=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(payload.get('clientAlgoId'),)).fetchone()
-                safe=bool(owner and owner[0]=='binance_algo'
-                          and json.loads(owner[1]).get('symbol')=='BTCUSDT'
-                          and json.loads(owner[1]).get('closePosition')=='true')
-            if not safe:raise Unknown('unsettled possible entry intent; reconcile before reporting safety')
-    snapshot=reader.snapshot(uid)
+        if not all(risk_reducing(state,p) for p in state.pending()):
+            raise Unknown('unsettled possible entry intent; reconcile before reporting safety')
+    if snapshot is None:snapshot=reader.snapshot(uid)
     if snapshot['account_uid']!=str(uid):raise Blocked('account mismatch')
     return snapshot
 
 
-def _once(state, identity, kind, payload, send, method, path):
+def _once(state, identity, kind, payload, send, method, path, *, at_ms):
     # Existing intent means possibly sent, even after a crash before HTTP began.
     old=state.db.execute('SELECT kind,payload,status FROM intents WHERE id=?',(identity,)).fetchone()
     if old and old[2]!='rejected':
-        import json
         if old[0]!=kind or json.loads(old[1])!=payload:raise Unknown('stable intent payload changed')
         return
-    state.prepare(identity,kind,payload)
+    # The adapter clock at preparation bounds when the signed request can be accepted.
+    state.prepare(identity,kind,payload,result={'prepared_at_ms':at_ms})
     send_once(state,identity,send,method,path,payload)
     # A refused cancel usually means the target is already terminal; callers
     # settle cancellations from the target's own state.
@@ -51,6 +63,12 @@ def _once(state, identity, kind, payload, send, method, path):
 def rejected(state, identity):
     row=state.db.execute('SELECT status FROM intents WHERE id=?',(identity,)).fetchone()
     return bool(row) and row[0]=='rejected'
+
+
+def absent(state, identity):
+    """Nothing exists at the exchange under this identity: refused or retired void."""
+    row=state.db.execute('SELECT status FROM intents WHERE id=?',(identity,)).fetchone()
+    return bool(row) and row[0] in ('rejected','void')
 
 
 def send_once(state, identity, send, method, path, payload):
@@ -69,7 +87,7 @@ def send_once(state, identity, send, method, path, payload):
 def settled_protection(reader,state,identity):
     """Retain conclusive terminal child evidence before exchange history expires."""
     settled=state.get('settled_protection') or {}
-    if identity in settled or rejected(state,identity):return True
+    if identity in settled or absent(state,identity):return True
     archived=(state.get('terminal_native_orders') or {}).get(identity)
     if archived and 'algoStatus' in archived['parent']:
         settled[identity]=archived;state.set('settled_protection',settled)
@@ -114,7 +132,7 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
         payload=dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL' if q>0 else 'BUY',
             algoType='CONDITIONAL',type=kind,triggerPrice=str(trigger),closePosition='true',
             workingType='MARK_PRICE',priceProtect='false',clientAlgoId=identity)
-        _once(state,identity,'binance_algo',payload,send,'POST','/fapi/v1/algoOrder')
+        _once(state,identity,'binance_algo',payload,send,'POST','/fapi/v1/algoOrder',at_ms=int(reader.clock()*1000))
         observed=reader.query_intent(identity,conditional=True);parent=observed['parent']
         expected=dict(symbol='BTCUSDT',positionSide='BOTH',side=payload['side'],
             orderType=kind,closePosition=True,workingType='MARK_PRICE',priceProtect=False,
@@ -149,7 +167,7 @@ def cancel_entry(reader,state,send,uid,epoch,entry_id,*,authorized=False):
     payload=dict(symbol='BTCUSDT',origClientOrderId=entry_id)
     terminal=('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
     if original.get('status') not in terminal:
-        _once(state,identity,'binance_cancel',payload,send,'DELETE','/fapi/v1/order')
+        _once(state,identity,'binance_cancel',payload,send,'DELETE','/fapi/v1/order',at_ms=int(reader.clock()*1000))
     final=reader.query_intent(entry_id)['parent']
     qty=D(final.get('origQty','0'));filled=D(final.get('executedQty','-1'))
     if (final.get('status') not in terminal or not 0<=filled<=qty or qty<=0
@@ -169,7 +187,7 @@ def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized
     identity=client_id(state.identity,epoch,'reduce')
     payload=dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL' if q>0 else 'BUY',
         type='MARKET',quantity=str(qty),reduceOnly='true',newClientOrderId=identity)
-    _once(state,identity,'binance_order',payload,send,'POST','/fapi/v1/order')
+    _once(state,identity,'binance_order',payload,send,'POST','/fapi/v1/order',at_ms=int(reader.clock()*1000))
     reader.recover_pending(state)
     if any(p['id']==identity for p in state.pending()):raise Unknown('reduction result unresolved')
     after=reader.snapshot(uid);remaining=D(after['quantity_btc'])
@@ -267,7 +285,7 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
         if settled_protection(reader,state,identity):return
         cancel_id=client_id(state.identity,epoch,'retire:'+identity)
         payload=dict(clientAlgoId=identity)
-        _once(state,cancel_id,'binance_algo_cancel',payload,send,'DELETE','/fapi/v1/algoOrder')
+        _once(state,cancel_id,'binance_algo_cancel',payload,send,'DELETE','/fapi/v1/algoOrder',at_ms=int(reader.clock()*1000))
         if not settled_protection(reader,state,identity):raise Unknown('protection cancellation/child unresolved')
         state.finish(cancel_id,'confirmed',{'target':identity,'terminal':True})
 

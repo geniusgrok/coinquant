@@ -19,13 +19,23 @@ TOPUP_RESERVE = 250
 PREVIEW_WEIGHT = 100
 
 
+# A signed request is refused after timestamp+recvWindow (5 s); this leaves a
+# wide margin for clock skew before a never-observed request is retired.
+STALE_INTENT_MS = 300000
+
+
 def margin_pending(state):
     return any(p['kind']=='binance_margin' for p in state.pending())
 
 
 def blocking(state):
-    """Unknown intents that block every decision; a margin transfer blocks only new risk."""
-    return [p for p in state.pending() if p['kind']!='binance_margin']
+    """Unknown intents that block every decision.
+
+    A risk-reducing intent (margin, reduce-only, close-all protection or its
+    cancellation) blocks only new risk: entry, add and every enter/top-up gate
+    still require no pending intent. Protection and exits remain possible.
+    """
+    return [p for p in state.pending() if not safety.risk_reducing(state,p)]
 
 
 class Lifecycle:
@@ -102,7 +112,7 @@ class Lifecycle:
                 raise Unknown('unowned conditional order blocks new exposure')
             cancel_id = client_id(self.state.identity, 0, 'flat-retire:'+identity)
             safety._once(self.state, cancel_id, 'binance_algo_cancel', {'clientAlgoId':identity},
-                         self.send, 'DELETE', '/fapi/v1/algoOrder')
+                         self.send, 'DELETE', '/fapi/v1/algoOrder', at_ms=int(self.reader.clock()*1000))
             if not safety.settled_protection(self.reader,self.state,identity):
                 raise Unknown('flat protection child or cancellation unresolved')
             self.state.finish(cancel_id, 'confirmed', {'target':identity, 'terminal':True})
@@ -111,12 +121,34 @@ class Lifecycle:
                 raise Unknown('account changed during flat cleanup')
         return snapshot
 
+    def retire_stale(self, snapshot):
+        """Retire never-observed risk-reducing requests on a verified flat account.
+
+        With no position, no working order or conditional order and no possible
+        entry, such a request can no longer change exposure: it was never
+        accepted, or it would be visible. Its signed timestamp expired long ago,
+        so it cannot be accepted later. Entries and partial fills are never retired.
+        """
+        if (number(snapshot['quantity_btc']) or snapshot['possible_entry_remainders']
+                or snapshot['open_orders'] or snapshot['open_algos'] or blocking(self.state)):
+            return
+        observed = snapshot.get('observed_at_ms')
+        if type(observed) is not int:
+            return
+        for pending in self.state.pending():
+            row = self.state.db.execute('SELECT result FROM intents WHERE id=?', (pending['id'],)).fetchone()
+            result = json.loads(row[0])
+            prepared = result.get('prepared_at_ms')
+            if pending['status'] != 'unknown' or type(prepared) is not int or observed-prepared < STALE_INTENT_MS:
+                continue
+            self.state.finish(pending['id'], 'void', {**result, 'flat_observed_at_ms': observed})
+
     def settle(self):
         self.reader.recover_pending(self.state)
         snapshot = self.cancel_entries(self.snapshot())
         self.reader.recover_pending(self.state)
-        # An unresolved margin transfer blocks new risk (entry, add and the next
-        # transfer all require no pending intent) but not protection or exits.
+        # An unresolved risk-reducing intent blocks new risk (entry, add and the
+        # next transfer all require no pending intent) but not protection or exits.
         if blocking(self.state):
             raise Unknown('durable operation remains unknown; no additional risk')
         return snapshot
@@ -221,6 +253,7 @@ class Lifecycle:
                 raise
         if not number(snapshot['quantity_btc']):
             snapshot = self.cleanup_flat(snapshot)
+            self.retire_stale(snapshot)
             if not self.state.pending():
                 replacement=self.state.get('binance_protection_replacement')
                 if replacement and not replacement.get('done'):
