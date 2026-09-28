@@ -10,7 +10,7 @@ from urllib.error import HTTPError
 from coinquant.binance import Binance
 from coinquant.binance_safety import add_margin, send_once
 from coinquant.state import State
-from coinquant.types import Blocked, Unknown
+from coinquant.types import Blocked, Missing, Unknown
 from tests.test_binance_safety import Native, rules
 
 
@@ -71,13 +71,34 @@ class MarginIntentTests(unittest.TestCase):
         self.native.history.append(dict(self.native.history[0],amount='3'))
         self.assertEqual(self.native.recover_pending(self.state)['pending'],1)
 
-    def test_absent_transfer_is_terminal_only_after_a_complete_late_window(self):
+    def test_absent_history_never_proves_the_transfer_failed(self):
         def send(*args):raise TimeoutError()
         with self.assertRaises(Unknown):self.add(send)
+        start=self.native.clock()
+        for later in (0,601,86400):
+            self.native.clock=lambda:start+later
+            self.assertEqual(self.native.recover_pending(self.state)['pending'],1)
+        self.assertEqual(self.intents()[0][0],'unknown')
+
+    def test_an_earlier_equal_add_is_never_attributed_to_a_lost_one(self):
+        self.add(target='40')
+        start=self.native.clock();self.native.clock=lambda:start+5
+        def lost(*args):raise TimeoutError()
+        with self.assertRaises(Unknown):
+            add_margin(self.native,self.state,lost,'123',200,'50',instrument=rules(),authorized=True)
+        self.assertEqual(len(self.native.history),1)
         self.assertEqual(self.native.recover_pending(self.state)['pending'],1)
-        start=self.native.clock();self.native.clock=lambda:start+601
-        self.assertEqual(self.native.recover_pending(self.state)['pending'],0)
-        self.assertEqual(self.intents()[0][0],'rejected')
+        with self.assertRaises(Unknown):
+            add_margin(self.native,self.state,self.native.send,'123',300,'60',instrument=rules(),authorized=True)
+        self.assertEqual(len(self.native.sent),1)
+
+    def test_a_distant_earlier_transfer_does_not_make_history_ambiguous(self):
+        self.add(target='40')
+        start=self.native.clock();self.native.clock=lambda:start+60
+        def lost(*args):self.native.send(*args);raise TimeoutError()
+        with self.assertRaises(Unknown):
+            add_margin(self.native,self.state,lost,'123',200,'50',instrument=rules(),authorized=True)
+        self.assertEqual(self.native.recover_pending(self.state),{'resolved':1,'pending':0})
 
 
 class HTTP:
@@ -88,9 +109,13 @@ class HTTP:
         return BytesIO(self.answer)
 
 
-def rejection(status,code):
-    body=json.dumps(dict(code=code,msg='fixture')).encode()
+def rejection(status,code,msg='fixture'):
+    body=json.dumps(dict(code=code,msg=msg)).encode()
     return HTTPError('https://fapi.binance.com/fapi/v1/order',status,'fixture',Message(),BytesIO(body))
+
+
+def plain(status,text):
+    return HTTPError('https://fapi.binance.com/fapi/v1/order',status,'fixture',Message(),BytesIO(text.encode()))
 
 
 class WriteClassificationTests(unittest.TestCase):
@@ -124,6 +149,26 @@ class WriteClassificationTests(unittest.TestCase):
             reader,_http=self.reader(answer)
             self.assertEqual(self.attempt(reader)[0],'unknown',answer)
 
+    def test_documented_503_failures_are_terminal_and_other_503s_stay_unknown(self):
+        failed=(rejection(503,-1008,'Request throttled by system-level protection. Reduce-only/close-position orders are exempt. Please try again.'),
+                rejection(503,-1001,'Service Unavailable.'),plain(503,'Service Unavailable.'),
+                rejection(503,-1001,'Internal error; unable to process your request. Please try again.'))
+        unknown=(rejection(503,-1001,'Unknown error, please check your request or try again later.'),
+                 rejection(503,-1001),plain(503,'<html>gateway</html>'),rejection(502,-1008))
+        for answer,status in [(a,'rejected') for a in failed]+[(a,'unknown') for a in unknown]:
+            self.state.db.execute("DELETE FROM intents");self.state.db.commit()
+            reader,_http=self.reader(answer)
+            self.assertEqual(self.attempt(reader)[0],status,answer)
+
+    def test_overloaded_add_does_not_block_the_exit_of_the_existing_position(self):
+        from coinquant.binance_safety import reduce_existing
+        reader,_http=self.reader(rejection(503,-1008,'Request throttled by system-level protection.'))
+        self.assertEqual(self.attempt(reader)[0],'rejected')
+        native=Native()
+        after=reduce_existing(native,self.state,native.send,'123',100,'.003',instrument=rules(),authorized=True)
+        self.assertEqual(after['quantity_btc'],'0')
+        self.assertEqual([p['reduceOnly'] for _,_,p in native.sent],['true'])
+
     def test_numeric_margin_amount_is_parsed_exactly(self):
         reader,_http=self.reader(b'{"amount":623.19382938882948900,"code":200,"type":1}')
         answer=reader.send('POST','/fapi/v1/positionMargin',dict(symbol='BTCUSDT',positionSide='BOTH',
@@ -131,9 +176,38 @@ class WriteClassificationTests(unittest.TestCase):
         self.assertEqual(answer['amount'],D('623.19382938882948900'))
 
     def test_read_rejections_remain_unknown(self):
+        for path,answer in (('/fapi/v1/order',rejection(400,-1102)),('/fapi/v1/algoOrder',rejection(400,-2013))):
+            reader,_http=self.reader(answer)
+            with self.assertRaises(Unknown) as caught:reader.get(path,{'symbol':'BTCUSDT','origClientOrderId':'cq-x'})
+            self.assertEqual(type(caught.exception),Unknown)
+        # A missing ordinary order is a distinct observation, never a write rejection.
         reader,_http=self.reader(rejection(400,-2013))
-        with self.assertRaises(Unknown) as caught:reader.get('/fapi/v1/order',{'symbol':'BTCUSDT','origClientOrderId':'cq-x'})
-        self.assertEqual(type(caught.exception),Unknown)
+        with self.assertRaises(Missing):reader.get('/fapi/v1/order',{'symbol':'BTCUSDT','origClientOrderId':'cq-x'})
+
+    def test_lost_add_that_never_arrived_stops_blocking_the_exit_after_its_signature_expired(self):
+        from coinquant.binance_safety import reduce_existing
+        payload=dict(self.payload,newClientOrderId='cq-x')
+        now=[1770004800.0]
+        reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
+        self.state.prepare('cq-x','binance_order',payload,result={'prepared_at_ms':int(now[0]*1000)})
+        send_once(self.state,'cq-x',lambda *a:(_ for _ in ()).throw(TimeoutError()),'POST','/fapi/v1/order',payload)
+        for later,pending in ((0,1),(299,1),(301,0)):
+            now[0]=1770004800.0+later
+            reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
+            self.assertEqual(reader.recover_pending(self.state)['pending'],pending,later)
+        self.assertEqual(self.state.db.execute("SELECT status FROM intents").fetchone()[0],'rejected')
+        native=Native()
+        after=reduce_existing(native,self.state,native.send,'123',100,'.003',instrument=rules(),authorized=True)
+        self.assertEqual(after['quantity_btc'],'0')
+
+    def test_missing_order_without_a_preparation_time_or_past_retention_stays_unknown(self):
+        now=[1770004800.0]
+        self.state.prepare('cq-x','binance_order',self.payload)
+        self.state.prepare('cq-y','binance_order',dict(self.payload,newClientOrderId='cq-y'),
+                           result={'prepared_at_ms':int(now[0]*1000)})
+        now[0]+=2*86400
+        reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
+        self.assertEqual(reader.recover_pending(self.state)['pending'],2)
 
     def test_margin_rejection_blocks_without_pending(self):
         native=Native()

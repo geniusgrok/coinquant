@@ -25,6 +25,10 @@ class Rejected(Unknown):
     """The exchange definitively refused a write; nothing was executed."""
 
 
+class Missing(Unknown):
+    """An ordinary-order identity query answered -2013: no such order exists now."""
+
+
 def number(value: Any, name: str = "number", *, positive: bool = False) -> D:
     try:
         result = D(str(value))

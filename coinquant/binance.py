@@ -14,7 +14,7 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from decimal import Decimal
 
-from coinquant.types import Blocked, NotSent, Rejected, Unknown, number
+from coinquant.types import Blocked, Missing, NotSent, Rejected, Unknown, number
 
 PUBLIC = {'/fapi/v1/time', '/fapi/v1/exchangeInfo', '/fapi/v1/klines',
           '/fapi/v1/premiumIndex', '/fapi/v1/depth'}
@@ -25,10 +25,21 @@ PRIVATE = {'/api/v3/account', '/fapi/v3/account', '/fapi/v1/accountConfig',
            '/fapi/v1/order', '/fapi/v1/algoOrder', '/fapi/v1/income',
            '/fapi/v1/positionMargin/history'}
 # Documented request/validation refusals. Anything else, including -1006/-1007
-# and every 5xx, keeps an unknown execution status.
+# and every other 5xx, keeps an unknown execution status.
 REJECT_CODES = frozenset({-1021, -1022, -2010, -2011, -2013, -2014, -2015, -2018, -2019,
                           -2020, -2021, -2022, -2024, -2025}
                          | set(range(-1199, -1099)) | set(range(-4999, -3999)))
+# HTTP 503 bodies Binance documents as failed operations (-1008 is matched by
+# code). "Unknown error, please check your request or try again later." and
+# every other 503 keep an unknown execution status.
+FAILED_503 = frozenset({'Service Unavailable.',
+                        'Internal error; unable to process your request. Please try again.'})
+# A signed request is refused after timestamp+recvWindow (5 s). Past this age a
+# request that is still not visible can no longer be accepted.
+UNACCEPTED_AFTER_MS = 300000
+# Binance keeps even a canceled/expired zero-fill order queryable for three
+# days; well inside that, "order does not exist" means it was never accepted.
+QUERYABLE_MS = 86400000
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -185,9 +196,13 @@ class Binance:
                 try:delay=max(60,min(86400,float(exc.headers.get('Retry-After','60'))))
                 except (TypeError,ValueError):delay=60
                 self.cooldown_until=self.monotonic()+delay
-            code=_error_code(exc)
+            code,message=_error_body(exc)
             if method != 'GET' and exc.code in (400,401) and code in REJECT_CODES:
                 raise Rejected(f'Binance rejected the request with code {code}') from None
+            if method != 'GET' and exc.code == 503 and (code == -1008 or message in FAILED_503):
+                raise Rejected('Binance reported a failed operation with HTTP 503') from None
+            if method == 'GET' and path == '/fapi/v1/order' and exc.code == 400 and code == -2013:
+                raise Missing('Binance reports that the order does not exist') from None
             raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown') from None
         except (URLError, TimeoutError, OSError, ValueError, Blocked):
             # A refused redirect or broken response arrives after the request left.
@@ -363,7 +378,12 @@ class Binance:
                 continue
             try:
                 conditional = kind == 'binance_algo'
-                observed = self.query_intent(intent['id'], conditional=conditional)
+                try:
+                    observed = self.query_intent(intent['id'], conditional=conditional)
+                except Missing:
+                    if not conditional and self.never_accepted(state, intent):
+                        resolved += 1
+                    continue
                 parent, child = observed['parent'], observed['child']
                 for field in ('symbol', 'side', 'positionSide'):
                     if field not in payload or payload[field] != parent.get(field):
@@ -428,13 +448,29 @@ class Binance:
                 continue
         return {'resolved': resolved, 'pending': len(state.pending())}
 
+    def never_accepted(self, state, intent):
+        """An ordinary order Binance reports as nonexistent, long after its signed
+        request expired and well inside the documented query retention, was
+        never accepted. Without its preparation time it stays unknown."""
+        row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
+        result=json.loads(row[0]) if row else {}
+        prepared=result.get('prepared_at_ms');now=int(self.clock()*1000)
+        if (intent['status']!='unknown' or type(prepared) is not int
+                or not UNACCEPTED_AFTER_MS<=now-prepared<QUERYABLE_MS):
+            return False
+        state.finish(intent['id'],'rejected',{**result,'absent_at_ms':now})
+        return True
+
     def recover_margin(self, state, intent):
         """Settle a transfer whose answer was lost from bounded native margin history.
 
         A margin write has no client identity. Exactly one matching user add in
-        the window after preparation confirms it; any other add there is
-        ambiguous and stays unknown. An empty complete window long after the
-        request shows the add was not applied. Balance changes never decide it.
+        the window after preparation confirms it, and only when no other margin
+        intent could have produced a row in that window; any other add there is
+        ambiguous and stays unknown. An empty window is not treated as final: a
+        history publication delay is not documented. Such an intent is only
+        retired by the verified flat account (Lifecycle.retire_stale).
+        Balance changes never decide it.
         """
         row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
         prepared=json.loads(row[0]).get('prepared_at_ms') if row else None
@@ -443,6 +479,10 @@ class Binance:
         now=int(self.clock()*1000);begin=prepared-15000
         if not begin<now<=begin+29*86400000:
             raise Unknown('margin history window unavailable; operator review required')
+        for (other,) in state.db.execute("SELECT result FROM intents WHERE kind='binance_margin' AND id!=? AND status!='rejected'",(intent['id'],)):
+            at=json.loads(other).get('prepared_at_ms')
+            if type(at) is not int or at>=begin-15000:
+                raise Unknown('another margin transfer may own a history row in this window')
         rows=self.get('/fapi/v1/positionMargin/history',
                       {'symbol':'BTCUSDT','startTime':begin,'endTime':now,'limit':500})
         if not isinstance(rows,list) or len(rows)>=500:
@@ -457,10 +497,7 @@ class Binance:
                 adds.append(r)
         amount=number(intent['payload']['amount'],positive=True)
         if len(adds)==1 and number(adds[0].get('amount'))==amount:
-            state.finish(intent['id'],'confirmed',{'amount':str(amount),'history_time':adds[0]['time']})
-            return True
-        if not adds and now-prepared>=600000:
-            state.finish(intent['id'],'rejected',{'history_absent':[begin,now]})
+            state.finish(intent['id'],'confirmed',{'prepared_at_ms':prepared,'amount':str(amount),'history_time':adds[0]['time']})
             return True
         return False
 
@@ -511,14 +548,20 @@ class Binance:
         raise Unknown('Binance account changed during bounded reconciliation')
 
 
-def _error_code(error):
-    """Native error code of an HTTP error body, or None when it is not readable."""
+def _error_body(error):
+    """Native error code and message of an HTTP error body; None when unreadable."""
     try:
-        body = json.loads(error.read(4097)[:4096])
+        raw = error.read(4097)[:4096].decode()
     except Exception:
-        return None
-    code = body.get('code') if isinstance(body, dict) else None
-    return code if type(code) is int else None
+        return None, None
+    try:
+        body = json.loads(raw)
+    except ValueError:
+        return None, raw.strip()
+    if not isinstance(body, dict):
+        return None, None
+    code, message = body.get('code'), body.get('msg')
+    return (code if type(code) is int else None), (message.strip() if isinstance(message, str) else None)
 
 
 def observation_key(value):

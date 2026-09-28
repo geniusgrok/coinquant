@@ -1,8 +1,8 @@
 # Coinquant 接续入口（2026-09-28）
 
-先核对实时 `geniusgrok/coinquant` main，再读 `AGENTS.md`、`PROJECT_STATE.md`、`evidence/rebuild-20260927/RESULT.md` 与 `research/redesign-PROTOCOL.md` 的 M6 部分。
+先核对实时 `geniusgrok/coinquant` main，再读 `AGENTS.md`、`PROJECT_STATE.md`、`evidence/rebuild-20260927/RESULT.md` 与 `research/redesign-PROTOCOL.md` 的 M7 部分。
 
-当前默认：SX60＋DFII10，主信号风险7.5，宏观3.6；P6 153.87% CAGR／44.73% MDD（与 M5 相同），建立在所有者接受的2020-01-19标记价缺口边界上（`path_complete=false`）。成本/滑点/深度压力 CAGR 148–149%，随机跳过20%会话 101%。
+当前默认：SX60＋DFII10，主信号风险7.5，宏观3.6；P7 153.86% CAGR／44.73% MDD（MDD 与 M6 相同），建立在所有者接受的2020-01-19标记价缺口边界上（`path_complete=false`）。成本/滑点/深度压力 CAGR 148–149%，随机跳过20%会话 101%。
 
 规则：
 

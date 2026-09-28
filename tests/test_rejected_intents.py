@@ -58,10 +58,10 @@ class RejectedIntentTests(unittest.TestCase):
         def refuse(*args):
             raise Rejected('Binance rejected the request with code -2011')
         _once(self.state, 'cq-cancel', 'binance_algo_cancel', {'clientAlgoId': 'cq-x'}, refuse,
-              'DELETE', '/fapi/v1/algoOrder')
+              'DELETE', '/fapi/v1/algoOrder', at_ms=0)
         status = self.state.db.execute("SELECT status FROM intents WHERE id='cq-cancel'").fetchone()[0]
         self.assertEqual(status, 'rejected')
         sent = []
         _once(self.state, 'cq-cancel', 'binance_algo_cancel', {'clientAlgoId': 'cq-x'},
-              lambda *args: sent.append(args), 'DELETE', '/fapi/v1/algoOrder')
+              lambda *args: sent.append(args), 'DELETE', '/fapi/v1/algoOrder', at_ms=0)
         self.assertEqual(len(sent), 1)

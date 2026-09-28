@@ -176,10 +176,15 @@ def reconcile(state, reader, model, snapshot):
     trades=sorted(merged.values(),key=lambda t:(t['time'],t['id']))
     # Resolve owned protection children and reductions; ACK alone is not used.
     for oid,kind,raw,status in state.db.execute("SELECT id,kind,payload,status FROM intents WHERE updated>=?",(start/1000,)):
-        if kind not in ('binance_order','binance_algo') or oid in links or status=='rejected':continue
+        if kind not in ('binance_order','binance_algo') or oid in links or status in ('rejected','void'):continue
         payload=json.loads(raw)
         if payload.get('reduceOnly')!='true' and payload.get('closePosition')!='true':continue
-        observed=owned_observation(state,reader,oid,conditional=kind=='binance_algo')
+        try:observed=owned_observation(state,reader,oid,conditional=kind=='binance_algo')
+        except Unknown:
+            # A never-observed reduction still blocks new risk as a pending intent.
+            # Any fill it made is unowned below, so skipping it cannot hide exposure.
+            if status=='unknown':continue
+            raise
         parent=observed['parent'];order=observed['child'] if kind=='binance_algo' else parent
         if any(parent.get(k)!=payload.get(k) for k in ('symbol','side','positionSide')):
             raise Unknown('reduction scope mismatch')

@@ -22,7 +22,7 @@ class Venue(Binance):
         self.orders={};self.algos={};self.trades=[];self.calls=[];self.sent=[]
         self.fraction=D(1);self.timeout_after_entry=False;self.timeout_before_entry=False
         self.reject_protection=False;self.partial_exit=False;self.fail_reads=False
-        self.mark=D(100000)
+        self.mark=D(100000);self.updated=self.now
         self.rules=rules();self.rules.update(status='TRADING',contractType='PERPETUAL',marginAsset='USDT')
 
     def wait(self,seconds):self.now+=int(seconds*1000)
@@ -50,17 +50,19 @@ class Venue(Binance):
         if path.endswith('/symbolConfig'):return [dict(symbol='BTCUSDT',marginType='ISOLATED',leverage=20,isAutoAddMargin=False)]
         pnl=self.q*(self.mark-self.entry)
         position=dict(symbol='BTCUSDT',positionSide='BOTH',positionAmt=str(self.q),entryPrice=str(self.entry),
-                      isolatedWallet=str(self.margin),updateTime=self.now,marginAsset='USDT',markPrice=str(self.mark),
+                      isolatedWallet=str(self.margin),updateTime=self.updated,marginAsset='USDT',markPrice=str(self.mark),
                       unRealizedProfit=str(pnl),liquidationPrice=str(self.liquidation()) if self.q else '0')
         if path=='/fapi/v3/account':
-            return dict(assets=[dict(asset='USDT',walletBalance=str(self.wallet),updateTime=self.now)],
+            return dict(assets=[dict(asset='USDT',walletBalance=str(self.wallet),updateTime=self.updated)],
                 positions=[position],totalWalletBalance=str(self.wallet),totalUnrealizedProfit=str(pnl),
                 totalMarginBalance=str(self.wallet+pnl),availableBalance=str(self.wallet-self.margin))
         if path.endswith('/positionRisk'):return [position]
         if path.endswith('/openOrders'):return [deepcopy(o) for o in self.orders.values() if o['status'] in ('NEW','PARTIALLY_FILLED')]
         if path.endswith('/openAlgoOrders'):return [deepcopy(o) for o in self.algos.values() if o['algoStatus']=='NEW']
         if path.endswith('/userTrades'):
-            rows=[deepcopy(t) for t in self.trades if p.get('startTime',0)<=t['time']<=p.get('endTime',self.now) and t['id']>=p.get('fromId',0)]
+            # Binance's default read covers the last seven days.
+            default=0 if 'fromId' in p else self.now-7*86400000
+            rows=[deepcopy(t) for t in self.trades if p.get('startTime',default)<=t['time']<=p.get('endTime',self.now) and t['id']>=p.get('fromId',0)]
             return rows[:p.get('limit',1000)] if 'fromId' in p or 'startTime' in p else rows[-p.get('limit',1000):]
         if path.endswith('/income'):return []
         if path.endswith('/premiumIndex'):return dict(symbol='BTCUSDT',time=self.now,markPrice=str(self.mark))
@@ -84,6 +86,7 @@ class Venue(Binance):
         return (self.q*self.entry-self.margin)/(self.q-abs(self.q)*D('.0055'))
 
     def fill(self,order,amount):
+        self.updated=self.now
         signed=amount if order['side']=='BUY' else -amount
         if order['reduceOnly']:
             self.wallet+=-signed*(self.mark-self.entry)-amount*self.mark*D('.0005')
@@ -102,7 +105,7 @@ class Venue(Binance):
     def send(self,method,path,p):
         self.sent.append((method,path,deepcopy(p)));self.calls.append((method,path,deepcopy(p)))
         if path.endswith('/positionMargin'):
-            self.margin+=D(p['amount']);return dict(code=200,type=1,amount=p['amount'])
+            self.margin+=D(p['amount']);self.updated=self.now;return dict(code=200,type=1,amount=p['amount'])
         if path.endswith('/algoOrder'):
             if method=='DELETE':self.algos[p['clientAlgoId']]['algoStatus']='CANCELED';return {}
             if self.reject_protection:raise Unknown('fixture protection rejection')

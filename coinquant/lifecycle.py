@@ -8,8 +8,9 @@ from decimal import Decimal as D
 
 from . import binance_safety as safety
 from .native_preview import entry_preview, topup_preview
-from .ownership import owned_observation
+from .ownership import TERMINAL, owned_observation
 from .state import client_id
+from .binance import UNACCEPTED_AFTER_MS
 from .types import Blocked, Unknown, number, floor_step
 
 # Measured: first entry with protection about 400; an add under standing
@@ -17,6 +18,14 @@ from .types import Blocked, Unknown, number, floor_step
 ENTRY_RESERVE = 800
 TOPUP_RESERVE = 250
 PREVIEW_WEIGHT = 100
+# Network budget reserved for an owned fill's protection, and separately for
+# the bounded reduction after protection failed; neither is cut by the session
+# deadline. The reduction needs one full observation (ten reads) and its write
+# even when every response takes nearly the 8 s request timeout.
+PROTECT_SECONDS = 120
+REDUCE_SECONDS = 90
+
+
 
 
 def margin_pending(state):
@@ -24,8 +33,13 @@ def margin_pending(state):
 
 
 def blocking(state):
-    """Unknown intents that block every decision; a margin transfer blocks only new risk."""
-    return [p for p in state.pending() if p['kind']!='binance_margin']
+    """Unknown intents that block every decision.
+
+    A risk-reducing intent (margin, reduce-only, close-all protection or its
+    cancellation) blocks only new risk: entry, add and every enter/top-up gate
+    still require no pending intent. Protection and exits remain possible.
+    """
+    return [p for p in state.pending() if not safety.risk_reducing(state,p)]
 
 
 class Lifecycle:
@@ -54,6 +68,10 @@ class Lifecycle:
 
     def snapshot(self):
         return self.reader.snapshot(self.uid)
+
+    def reserve(self, seconds):
+        # Use the adapter clock; a wall monotonic would outlive a virtual session.
+        self.reader.deadline = max(self.reader.deadline, self.reader.monotonic()+seconds)
 
     def instrument(self):
         rows = [r for r in self.reader.get('/fapi/v1/exchangeInfo')['symbols'] if r.get('symbol') == 'BTCUSDT']
@@ -102,7 +120,7 @@ class Lifecycle:
                 raise Unknown('unowned conditional order blocks new exposure')
             cancel_id = client_id(self.state.identity, 0, 'flat-retire:'+identity)
             safety._once(self.state, cancel_id, 'binance_algo_cancel', {'clientAlgoId':identity},
-                         self.send, 'DELETE', '/fapi/v1/algoOrder')
+                         self.send, 'DELETE', '/fapi/v1/algoOrder', at_ms=int(self.reader.clock()*1000))
             if not safety.settled_protection(self.reader,self.state,identity):
                 raise Unknown('flat protection child or cancellation unresolved')
             self.state.finish(cancel_id, 'confirmed', {'target':identity, 'terminal':True})
@@ -111,18 +129,84 @@ class Lifecycle:
                 raise Unknown('account changed during flat cleanup')
         return snapshot
 
+    def retire_stale(self, snapshot):
+        """Retire never-observed risk-reducing requests on a verified flat account.
+
+        With no position, no working order or conditional order and no possible
+        entry, such a request can no longer change exposure: it was never
+        accepted, or it would be visible. Its signed timestamp expired long ago,
+        so it cannot be accepted later. Entries and partial fills are never retired.
+        """
+        if (number(snapshot['quantity_btc']) or snapshot['possible_entry_remainders']
+                or snapshot['open_orders'] or snapshot['open_algos'] or blocking(self.state)):
+            return
+        observed = snapshot.get('observed_at_ms')
+        if type(observed) is not int:
+            return
+        for pending in self.state.pending():
+            row = self.state.db.execute('SELECT result FROM intents WHERE id=?', (pending['id'],)).fetchone()
+            result = json.loads(row[0])
+            prepared = result.get('prepared_at_ms')
+            if pending['status'] != 'unknown' or type(prepared) is not int or observed-prepared < UNACCEPTED_AFTER_MS:
+                continue
+            self.state.finish(pending['id'], 'void', {**result, 'flat_observed_at_ms': observed})
+
     def settle(self):
         self.reader.recover_pending(self.state)
         snapshot = self.cancel_entries(self.snapshot())
         self.reader.recover_pending(self.state)
-        # An unresolved margin transfer blocks new risk (entry, add and the next
-        # transfer all require no pending intent) but not protection or exits.
+        # An unresolved risk-reducing intent blocks new risk (entry, add and the
+        # next transfer all require no pending intent) but not protection or exits.
         if blocking(self.state):
             raise Unknown('durable operation remains unknown; no additional risk')
         return snapshot
 
+    def entry_fill_proven(self, plan, snapshot):
+        """Every native fill after the entry's flat boundary is that entry's own
+        fill, and together they are the current position.
+
+        One complete trade page after the flat snapshot's cursor. Without a recent
+        cursor (the default trade read covers seven days) a single time window
+        from the flat boundary is read instead. An external, manual or other
+        owned fill, a missing boundary or an unreadable page is no proof; this
+        never authorizes a write without it.
+        """
+        link = (self.state.get('entry_campaigns') or {}).get(plan['id'])
+        cursor = link.get('after_trade_id') if link else None
+        start = link.get('prepared_at') if link else None
+        q = number(snapshot['quantity_btc'])
+        now = int(self.reader.clock()*1000)
+        if (type(cursor) is not int or cursor < -1 or type(start) is not int or not 0 < start <= now
+                or not q or snapshot['possible_entry_remainders']):
+            return False
+        parent = owned_observation(self.state,self.reader,plan['id'])['parent']
+        if parent.get('status') not in TERMINAL or (q > 0) != (parent.get('side') == 'BUY'):
+            return False
+        if cursor >= 0:
+            query = {'symbol':'BTCUSDT','fromId':cursor+1,'limit':1000}
+        elif now-start < 7*86400000:
+            query = {'symbol':'BTCUSDT','startTime':start,'endTime':now,'limit':1000}
+        else:
+            return False
+        page = self.reader.get('/fapi/v1/userTrades',query)
+        if not isinstance(page,list) or len(page) >= 1000:
+            return False
+        ids = set(); total = D(0)
+        for trade in page:
+            if (trade.get('symbol') != 'BTCUSDT' or trade.get('positionSide') != 'BOTH'
+                    or str(trade.get('orderId')) != str(parent.get('orderId')) or trade.get('side') != parent['side']
+                    or type(trade.get('id')) is not int or trade['id'] <= cursor or trade['id'] in ids):
+                return False
+            ids.add(trade['id']); total += number(trade.get('qty'),positive=True)
+        last = snapshot.get('last_fill_id')
+        return total == number(parent['executedQty']) == abs(q) and (last == cursor or last in ids)
+
     def protect_entry(self, snapshot, plan):
-        """Protect only verified fills of the journaled entry, including partials."""
+        """Protect only verified fills of the journaled entry, including partials.
+
+        `snapshot` must be observed after the latest write; it is reused by the
+        first safety write so protection is not delayed by repeated reads.
+        """
         q = number(snapshot['quantity_btc'])
         if not q:
             return snapshot
@@ -134,22 +218,26 @@ class Lifecycle:
             raise Unknown('actual position is not the verified entry fill')
         # The reserve was calculated before entry; scale to actual executed size.
         target = number(plan['allocated_margin_usdt'])*abs(q/expected)
-        rules = self.instrument()
+        # Rules observed by this entry's own preflight, seconds before the order.
+        rules = plan.get('instrument') or self.instrument()
+        self.reserve(PROTECT_SECONDS)
         try:
             # With an earlier transfer unresolved, protection is still tried
             # against the observed liquidation price; it never sends another.
             if number(snapshot['isolated_wallet_usdt']) < target and not margin_pending(self.state):
                 snapshot = safety.add_margin(self.reader,self.state,self.send,self.uid,
-                    plan['epoch'],target,instrument=rules,authorized=self.authorized)
+                    plan['epoch'],target,instrument=rules,authorized=self.authorized,snapshot=snapshot)
             snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
-                plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized)
+                plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
+                snapshot=snapshot)
         except (Blocked, Unknown):
-            # Native entry and protection are NOT atomic. Try a bounded reduction,
-            # but never assert that a disconnected venue accepted it.
+            # Native entry and protection are NOT atomic. Try a bounded reduction
+            # with its own budget, but never assert that a disconnected venue accepted it.
+            self.reserve(REDUCE_SECONDS)
             try:
                 current = self.snapshot()
                 if number(current['quantity_btc']) and not current['possible_entry_remainders']:
-                    self.close(current, rules)
+                    self.close(current, rules, observed=True)
             except (Blocked, Unknown):
                 pass
             raise
@@ -158,7 +246,9 @@ class Lifecycle:
         self.state.set('entry_plan', None)
         return snapshot
 
-    def close(self, snapshot, rules=None):
+    def close(self, snapshot, rules=None, *, observed=False):
+        """Durable reduce-only exit. `observed`: the snapshot was just read after
+        the latest write and may stand in for the reduction's own gate read."""
         q = number(snapshot['quantity_btc'])
         if not q:
             return snapshot
@@ -191,7 +281,8 @@ class Lifecycle:
         if q*operation['direction']<=0 or abs(q) > number(operation['quantity']):
             raise Unknown('position grew during durable exit')
         result = safety.reduce_existing(self.reader,self.state,self.send,self.uid,
-            operation['epoch'],operation['quantity'],instrument=rules or self.instrument(),authorized=self.authorized)
+            operation['epoch'],operation['quantity'],instrument=rules or self.instrument(),authorized=self.authorized,
+            snapshot=snapshot if observed else None)
         if number(result['quantity_btc']):
             raise Unknown('partial exit remains; reconcile before another reduction')
         self.state.set('position_exit',None)
@@ -212,15 +303,19 @@ class Lifecycle:
                                  reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot))
             except (Blocked,Unknown):
                 # A fill of the journaled entry, sent from a verified flat account,
-                # is protected from its own terminal order evidence even when the
-                # history audit is unavailable. The audit still gates new risk.
+                # is protected when every fill since that flat boundary is its own,
+                # even if the full history audit is unavailable. An external or
+                # manual fill, or no such proof, leaves the position untouched.
+                # The audit still gates new risk.
                 plan=self.state.get('entry_plan')
                 if plan and number(snapshot['quantity_btc']) and not self.state.get('position_exit'):
-                    try:self.protect_entry(snapshot,plan)
+                    try:
+                        if self.entry_fill_proven(plan,snapshot):self.protect_entry(snapshot,plan)
                     except (Blocked,Unknown):pass
                 raise
         if not number(snapshot['quantity_btc']):
             snapshot = self.cleanup_flat(snapshot)
+            self.retire_stale(snapshot)
             if not self.state.pending():
                 replacement=self.state.get('binance_protection_replacement')
                 if replacement and not replacement.get('done'):
@@ -307,9 +402,18 @@ class Lifecycle:
         self.state.set('entry_plan',plan)
         self.state.set('entry_fill',dict(campaign=plan['campaign'],requested=plan['requested_btc'],
                                          session=self.session,stop_budget=plan.get('stop_budget_usdt')))
-        self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh)
+        self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh,
+                           result={'prepared_at_ms':int(self.reader.clock()*1000)})
         safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
+        # Shortest path to protection for this IOC's own proven fill; the full
+        # ownership audit follows before any further decision.
+        try:
+            proven = self.entry_fill_proven(plan,snapshot)
+        except (Blocked,Unknown):
+            proven = False
+        if proven:
+            snapshot = self.protect_entry(snapshot,plan)
         return self.recover_exposure(snapshot)
 
     def maintain(self, model, snapshot):
@@ -415,7 +519,8 @@ class Lifecycle:
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
                        timeInForce='IOC',quantity=plan['quantity_btc'],
                        price=plan['entry_estimate'],newClientOrderId=identity,newOrderRespType='RESULT')
-        self.state.prepare(identity,'binance_order',payload,campaign=fill['campaign'],position_snapshot=fresh)
+        self.state.prepare(identity,'binance_order',payload,campaign=fill['campaign'],position_snapshot=fresh,
+                           result={'prepared_at_ms':int(self.reader.clock()*1000)})
         safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
         return self.recover_exposure(snapshot)
