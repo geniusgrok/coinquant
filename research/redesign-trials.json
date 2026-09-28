@@ -367,7 +367,13 @@
         {
           "name": "P3",
           "args": [],
-          "stress": "default reproduction"
+          "stress": "default reproduction",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/P3.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
         },
         {
           "name": "M3-fee150",
@@ -375,7 +381,13 @@
             "--fee",
             "0.001125"
           ],
-          "stress": "cost +50%"
+          "stress": "cost +50%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-fee150.json",
+            "final_cny": "4564761",
+            "cost_net_cagr_percent": "148.78",
+            "continuous_mdd_envelope_percent": "45.00"
+          }
         },
         {
           "name": "M3-slip2",
@@ -385,7 +397,13 @@
             "--market-slippage",
             "0.001"
           ],
-          "stress": "exit slippage x2"
+          "stress": "exit slippage x2",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-slip2.json",
+            "final_cny": "4625195",
+            "cost_net_cagr_percent": "149.27",
+            "continuous_mdd_envelope_percent": "45.09"
+          }
         },
         {
           "name": "M3-part10",
@@ -393,7 +411,13 @@
             "--participation",
             "0.1"
           ],
-          "stress": "depth participation 10%"
+          "stress": "depth participation 10%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-part10.json",
+            "final_cny": "4465655",
+            "cost_net_cagr_percent": "147.97",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
         },
         {
           "name": "M3-skip",
@@ -401,7 +425,13 @@
             "--sequence",
             "random_skip"
           ],
-          "stress": "seeded 20% skip"
+          "stress": "seeded 20% skip",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-skip.json",
+            "final_cny": "1091282",
+            "cost_net_cagr_percent": "101.06",
+            "continuous_mdd_envelope_percent": "44.68"
+          }
         },
         {
           "name": "M3-absence",
@@ -409,7 +439,13 @@
             "--sequence",
             "absence"
           ],
-          "stress": "legacy absence sequence"
+          "stress": "legacy absence sequence",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-absence.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
         },
         {
           "name": "M3-block",
@@ -417,9 +453,16 @@
             "--sequence",
             "block_21d"
           ],
-          "stress": "seeded 21-day block"
+          "stress": "seeded 21-day block",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-block.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
         }
-      ]
+      ],
+      "outcome": "Base 153.87%/44.73% (M2S 153.84%/44.73%). Fees +50% 148.78%, exit slippage x2 149.27%, participation 10% 147.97%, seeded 20% skip 101.06%; absence and 21-day block equal base; all MDD < 50%. The macro stop budget never bound, no attended print trigger or partial-minute adverse event occurred; fill timing moved funding by +15 USDT and fees by +9 USDT."
     }
   ]
 }
