@@ -148,13 +148,13 @@ class SessionHistoryTests(TestCase):
         exchange, _start, _price = self._exchange('trade_print')
         exchange.prints = prints
         exchange.now_ms = base + 1000  # arrival after the request latency
-        filled = exchange._fill_from_prints('BUY', D('100'), D('0.01'))
+        filled = sum(part for _stamp, part in exchange._fill_from_prints('BUY', D('100'), D('0.01')))
         self.assertEqual(filled, D('0.007'))
         self.assertEqual(exchange.funnel['ioc_filled'], 1)
         self.assertTrue(exchange.known_path)
         exchange.funnel['ioc_filled'] = 0
         missed = exchange._fill_from_prints('BUY', D('99'), D('0.01'))
-        self.assertEqual(missed, 0)
+        self.assertEqual(missed, [])
         self.assertIsNone(TradePrints(directory).window(base + 86_400_000 + 1000, base + 86_400_000 + 2000))
 
     def test_missing_prints_block_observation_before_any_order(self):
@@ -170,7 +170,7 @@ class SessionHistoryTests(TestCase):
         self.assertEqual(exchange.sent, [])
         self.assertEqual(exchange.q, 0)
 
-    def test_ioc_fill_is_registered_at_arrival_and_answered_after_the_window(self):
+    def test_ioc_fill_is_booked_at_its_print_and_answered_after_the_window(self):
         directory = Path(tempfile.mkdtemp())
         exchange, start, price = self._exchange('trade_print')
         day = datetime.fromtimestamp(start / 1000, timezone.utc)
@@ -188,7 +188,8 @@ class SessionHistoryTests(TestCase):
             quantity='0.01', price=str(price + 10), newClientOrderId='cq-t'))
         order = exchange._transport(None, 1)
         self.assertEqual(order['status'], 'FILLED')
-        self.assertEqual(exchange.trades[-1]['time'], sent_at + 1000)
+        self.assertEqual(sent_at + 1000, start + 1000)
+        self.assertEqual(exchange.trades[-1]['time'], start + 1500)
         self.assertEqual(exchange.now_ms, sent_at + 2000)
 
     def test_chase_bound_skips_an_extended_long_and_allows_the_signal_price(self):
@@ -277,3 +278,69 @@ class EnvelopePeakTests(TestCase):
                 self.assertFalse(exchange.hindsight_bounded)
             else:
                 self.assertTrue(exchange.hindsight_bounded)
+
+
+class IntraminuteEventTests(TestCase):
+    MINUTE = 60_000
+
+    def _venue(self, prints, funding=()):
+        day = datetime(2020, 1, 3, tzinfo=timezone.utc)
+        self.m = int(day.timestamp() * 1000) + 10 * self.MINUTE
+        trade, mark = {}, {}
+        _plant(trade, self.m - self.MINUTE, 10000)
+        _plant(mark, self.m - self.MINUTE, 10000)
+        _plant(trade, self.m, 10000, low=D(8500), high=D(10000))
+        _plant(mark, self.m, 10000, low=D(8500), high=D(10000))
+        market = Market({}, [(self.m + at, rate) for at, rate in funding], identity={'trade': trade, 'mark': mark})
+        path = None
+        if prints is not None:
+            directory = Path(tempfile.mkdtemp())
+            path = directory / f'BTCUSDT-aggTrades-{day:%Y-%m-%d}.zip'
+            lines = [f'{i},{price},{qty},{i},{i},{self.m + at},false' for i, (at, price, qty) in enumerate(prints, 1)]
+            with zipfile.ZipFile(path, 'w') as archive:
+                archive.writestr(path.stem + '.csv', ('\n'.join(lines) + '\n').encode())
+            Path(str(path) + '.CHECKSUM').write_text(hashlib.sha256(path.read_bytes()).hexdigest() + '  ' + path.name + '\n', encoding='utf-8')
+        return SessionExchange(market, self.m + 1000, D(10000), matcher='trade_print',
+                               prints=TradePrints(path.parent) if path else None)
+
+    def _hold(self, exchange):
+        exchange.q, exchange.entry, exchange.margin = D(1), D(10000), D(2000)
+        exchange.held_from = exchange.now_ms
+        exchange.algos['cq-stop'] = dict(algoStatus='NEW', orderType='STOP_MARKET', triggerPrice='9000')
+
+    def _close_at(self, exchange, arrival):
+        exchange.wait((arrival - exchange.latency_ms - exchange.now_ms) / 1000)
+        exchange._inflight = ('POST', '/fapi/v1/order', dict(
+            symbol='BTCUSDT', side='SELL', type='MARKET', quantity='1', reduceOnly='true', newClientOrderId='cq-x'))
+        return exchange._transport(None, 1)
+
+    def test_stop_inside_the_minute_precedes_a_later_client_close(self):
+        exchange = self._venue([(1000, 10000, 1), (10_000, 8500, 1), (20_000, 10000, 1)])
+        self._hold(exchange)
+        order = self._close_at(exchange, self.m + 20_000)
+        self.assertEqual(order['status'], 'EXPIRED')
+        self.assertEqual(exchange.funnel['triggers'], 1)
+        self.assertEqual(exchange.trades[-1]['time'], self.m + 10_000)
+        self.assertEqual(D(exchange.trades[-1]['price']), 8500)  # the print gapped through the stop
+        self.assertGreater(exchange.mdd_envelope, D('.09'))
+        self.assertEqual(exchange.q, 0)
+
+    def test_unordered_official_minute_applies_the_adverse_stop_before_a_close(self):
+        exchange = self._venue(None)
+        self._hold(exchange)
+        order = self._close_at(exchange, self.m + 20_000)
+        self.assertEqual(order['status'], 'EXPIRED')
+        self.assertEqual(exchange.funnel['partial_adverse'], 1)
+        self.assertEqual(D(exchange.trades[-1]['price']), 9000)
+
+    def test_fill_after_funding_settlement_pays_no_funding(self):
+        exchange = self._venue([(700, 10000, 5)], funding=[(500, D('0.001'))])
+        exchange.now_ms = self.m - 1000
+        exchange._inflight = ('POST', '/fapi/v1/order', dict(
+            symbol='BTCUSDT', side='BUY', type='LIMIT', timeInForce='IOC',
+            quantity='0.1', price='10010', newClientOrderId='cq-e'))
+        order = exchange._transport(None, 1)
+        self.assertEqual(order['status'], 'FILLED')
+        self.assertEqual(exchange.trades[-1]['time'], self.m + 700)
+        self.assertEqual(exchange.funnel['funding'], 0)
+        self.assertEqual(exchange.funding_paid, 0)

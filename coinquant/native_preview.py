@@ -11,6 +11,8 @@ from .linear_sizing import funded_target
 # Share of visible depth inside the IOC limit taken per order; later polls of
 # the entry session may top up the rest of the committed campaign size.
 BOOK_PARTICIPATION=D('.25')
+# Macro parent: equity-to-stop loss ceiling for the whole campaign position.
+MACRO_STOP_BUDGET=D('.03')
 
 
 def _venue(reader, model, snapshot, direction):
@@ -97,11 +99,12 @@ def entry_preview(reader, model, snapshot, *, side='long'):
         raise Blocked('protection outside current price limits')
     account=Account(wallet)
     fraction=model.entry_fraction('.0011')
-    target=None
+    target=budget=None
     if opportunity is model.macro_opportunity:
         # The macro parent has the historical 3% equity-to-stop loss ceiling.
         if price<=stop:raise Blocked('macro stop must be below executable entry')
-        target=min(wallet*fraction/max(price,mark),wallet*D('.03')/(price-stop))
+        budget=wallet*MACRO_STOP_BUDGET
+        target=min(wallet*fraction/max(price,mark),budget/(price-stop))
     result=funded_target(account,direction,fraction,price,mark,stop,take,v['capacity'],
                          v['instrument'],fee=v['fee'],maintenance=v['mmr'],notional_limit=v['cap'],
                          target_quantity=target)
@@ -113,10 +116,11 @@ def entry_preview(reader, model, snapshot, *, side='long'):
                 rule_scope='current observation only; not historical evidence',
                 native_execution_verified=False,instrument=v['instrument'],
                 side='BUY' if direction>0 else 'SELL',campaign=opportunity.identity,
-                observed_at=v['fresh']['mark_time'])
+                observed_at=v['fresh']['mark_time'],
+                stop_budget_usdt=None if budget is None else str(budget))
 
 
-def topup_preview(reader, model, snapshot, requested, stop, take):
+def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=None):
     """Size an IOC add toward the committed campaign quantity under owned protection.
 
     The existing close-all stop and take stay in force; the add is funded so the
@@ -131,11 +135,24 @@ def topup_preview(reader, model, snapshot, requested, stop, take):
     stop,take=number(stop,positive=True),number(take,positive=True)
     if not all(number(v['rule']['minPrice'])<=p<=number(v['rule']['maxPrice']) for p in (stop,take,price)):
         raise Blocked('protection outside current price limits')
-    account=Account(v['wallet'],q=q,entry=number(snapshot['entry'],positive=True),
-                    margin=number(snapshot['isolated_wallet_usdt']))
+    entry=number(snapshot['entry'],positive=True)
+    target=number(requested)
+    if stop_budget is not None:
+        # The whole position, not only the add, must stay inside the entry's stop budget.
+        room=number(stop_budget)-abs(q)*direction*(entry-stop)
+        per_unit=direction*(price-stop)
+        if per_unit<=0 or room<=0:
+            target=abs(q)
+        else:
+            target=min(target,abs(q)+room/per_unit)
+    account=Account(v['wallet'],q=q,entry=entry,margin=number(snapshot['isolated_wallet_usdt']))
+    if target<=abs(q):
+        return dict(quantity_btc='0',entry_estimate=str(price),stop=str(stop),take=str(take),
+                    allocated_margin_usdt=str(account.margin),constraint='stop_budget',
+                    side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],tick=str(tick))
     result=funded_target(account,direction,D(0),price,mark,stop,take,v['capacity'],
                          v['instrument'],fee=v['fee'],maintenance=v['mmr'],notional_limit=v['cap'],
-                         target_quantity=number(requested),intended_add=True)
+                         target_quantity=target,intended_add=True)
     added=number(result['accepted']) if result['event']=='rebalance_add' else D(0)
     return dict(quantity_btc=str(added),entry_estimate=str(price),stop=str(stop),take=str(take),
                 allocated_margin_usdt=str(account.margin),constraint=result['reason'],

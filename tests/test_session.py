@@ -105,6 +105,21 @@ class SessionTests(TestCase):
             self.assertIsNotNone(s.get('position_protection'))
             self.assertEqual(len(s.get('entry_campaigns')),len(entries))
 
+    def test_margin_transfer_past_the_deadline_sends_no_add(self):
+        self.venue.fraction=D('.5');original=self.venue.send
+        def send(method,path,p):
+            answer=original(method,path,p)
+            if path.endswith('/positionMargin') and any(x.endswith('/algoOrder') for _,x,_ in self.venue.sent):
+                self.venue.now+=12000
+            return answer
+        self.venue.send=send
+        r=self.run_session(seconds=3)
+        entries=[p for _,path,p in self.venue.sent if path.endswith('/order') and p.get('timeInForce')=='IOC']
+        self.assertEqual(len(entries),1)
+        paths=[path for _,path,_ in self.venue.sent]
+        self.assertGreater(len(paths)-paths[::-1].index('/fapi/v1/positionMargin'),paths.index('/fapi/v1/algoOrder'))
+        self.assertTrue(r['actual']['native_full_position_protected'])
+
     def test_later_session_never_tops_up_an_earlier_entry(self):
         self.venue.fraction=D('.5');self.run_session(seconds=1)
         count=len(self.venue.orders)

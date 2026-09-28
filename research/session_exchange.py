@@ -58,7 +58,11 @@ class SessionExchange(Binance):
         self.sent = []
         self.funnel = {'ioc_submitted': 0, 'ioc_zero': 0, 'ioc_filled': 0,
                        'protections': 0, 'triggers': 0, 'liquidations': 0, 'funding': 0,
-                       'gap_forfeits': 0}
+                       'gap_forfeits': 0, 'print_triggers': 0, 'partial_adverse': 0}
+        # Start of the current position/protection configuration, and the last
+        # minute whose prints were scanned for triggers.
+        self.held_from = 0
+        self._scanned = None
         self.hindsight_bounded = False
         self.print_miss_days = set()
         self.bounded_minutes = []
@@ -247,18 +251,115 @@ class SessionExchange(Binance):
         self._advance(self.now_ms + int(D(seconds) * 1000))
 
     def _advance(self, until_ms):
+        """Whole held minutes use the official mark OHLC. Attended or partly held
+        minutes also walk the trade prints, so a trigger takes effect at its
+        print time, before later funding or client actions."""
         while self.now_ms < until_ms:
             if not self.q:
                 self.now_ms = until_ms
                 self._note_cash()
                 return
-            boundary = (self.now_ms // MINUTE + 1) * MINUTE
+            open_ms = self.now_ms // MINUTE * MINUTE
+            boundary = open_ms + MINUTE
             step = min(until_ms, boundary)
+            if step < boundary or self.held_from > open_ms or self._scanned == open_ms:
+                self._scanned = open_ms
+                hit = self._scan(self.now_ms, step)
+                if hit is not None:
+                    stamp, kind, price = hit
+                    self._pay_funding(self.now_ms, stamp)
+                    self.now_ms = max(self.now_ms, stamp)
+                    if self.q:
+                        self._fire(kind, price)
+                    continue
             self._pay_funding(self.now_ms, step)
             if self.q and step == boundary:
-                self._on_minute(boundary - MINUTE)
+                if self.held_from > open_ms:
+                    self._partial(open_ms, True)
+                else:
+                    self._on_minute(open_ms)
             self.now_ms = step
         self._note_cash()
+
+    def _scan(self, start_ms, end_ms):
+        """First print in [start, end) whose proxy mark reaches a trigger.
+
+        The proxy mark is the print scaled by the previous completed minute's
+        official mark/trade ratio, as served to the client. None if unavailable."""
+        if self.prints is None or not self.q or end_ms <= start_ms:
+            return None
+        open_ms = start_ms // MINUTE * MINUTE
+        mark = self.market.minute('mark', open_ms - MINUTE)
+        trade = self.market.minute('trade', open_ms - MINUTE)
+        if mark is None or trade is None or trade[3] <= 0:
+            return None
+        rows = self.prints.raw(start_ms, end_ms)
+        if not rows:
+            return None
+        ratio = mark[3] / trade[3]
+        scale = D(10) ** 8
+        long = self.q > 0
+        stop, take = self._triggers()
+        liq = self._liquidation()
+        level = lambda price: int(price / ratio * scale)
+        adverse = [(kind, value, level(value)) for kind, value in (('stop', stop), ('liq', liq))
+                   if value is not None and value > 0]
+        good = level(take) if take is not None else None
+        for stamp, price, _qty in rows:
+            for kind, value, bound in adverse:
+                if (price <= bound) if long else (price >= bound):
+                    trade_price = D(price) / scale
+                    return stamp, kind, (min(value, trade_price) if long else max(value, trade_price))
+            if good is not None and ((price >= good) if long else (price <= good)):
+                return stamp, 'take', take
+        return None
+
+    def _fire(self, kind, price):
+        self.funnel['print_triggers'] += 1
+        self._note(price, 'envelope')
+        if kind == 'stop':
+            self._trigger('STOP_MARKET', price)
+        elif kind == 'take':
+            self._trigger('TAKE_PROFIT_MARKET', price)
+        else:
+            self._liquidate(price)
+        if kind == 'stop' and self.q:
+            # Without an owned stop the adverse print may still reach liquidation later.
+            return
+        self.held_from = self.now_ms
+
+    def _partial(self, open_ms, at_boundary):
+        """Held only part of this minute. The official minute range also covers
+        time outside the holding, so its order is unknown: the adverse
+        extreme counts for drawdown and a reachable stop or liquidation
+        applies; a take is not assumed."""
+        row = self.market.minute('mark', open_ms)
+        if row is None:
+            self._on_minute(open_ms)
+            return
+        _open, high, low, close, _volume = row
+        long = self.q > 0
+        stop, take = self._triggers()
+        liq = self._liquidation()
+        favorable = high if long else low
+        if take is not None:
+            favorable = min(favorable, take) if long else max(favorable, take)
+        self._note(favorable, 'favorable')
+        self._note(low if long else high, 'envelope')
+        if at_boundary:
+            self._note(close, 'close')
+        if (low <= liq) if long else (high >= liq):
+            self.funnel['partial_adverse'] += 1
+            self._liquidate(liq)
+        elif stop is not None and ((low <= stop) if long else (high >= stop)):
+            self.funnel['partial_adverse'] += 1
+            self._trigger('STOP_MARKET', stop)
+
+    def _settle_change(self):
+        """Close the held segment of this minute before its configuration changes."""
+        if self.q and self.now_ms % MINUTE and self.now_ms > self.held_from:
+            self._partial(self.now_ms // MINUTE * MINUTE, False)
+        self.held_from = self.now_ms
 
     def _note_cash(self):
         if not self.q:
@@ -463,10 +564,10 @@ class SessionExchange(Binance):
         return [dict(algo) for algo in self.algos.values() if algo['algoStatus'] == 'NEW']
 
     def _fill_ioc(self, side, limit, quantity):
-        """Primary rule needs a trade print after the request. None are loaded here."""
+        """[(time, quantity)] fill segments. Unresolved matching never fills."""
         if self.matcher == 'unresolved':
             self.funnel['ioc_zero'] += 1
-            return D(0)
+            return []
         if self.matcher == 'trade_print':
             return self._fill_from_prints(side, limit, quantity)
         if self.matcher != 'bar_through':
@@ -478,14 +579,14 @@ class SessionExchange(Binance):
         row = self.market.minute('trade', open_ms)
         if row is None:
             self.funnel['ioc_zero'] += 1
-            return D(0)
+            return []
         _open, high, low, _close, _volume = row
         through = high <= limit if side == 'BUY' else low >= limit
         if not through:
             self.funnel['ioc_zero'] += 1
-            return D(0)
+            return []
         self.funnel['ioc_filled'] += 1
-        return quantity
+        return [(instant, quantity)]
 
     def _fill_from_prints(self, side, limit, quantity):
         """Quantity is an upper bound: the whole matching print can be taken.
@@ -497,31 +598,44 @@ class SessionExchange(Binance):
             raise Unknown('trade prints were not loaded')
         start = self.now_ms
         end = start + self.print_window_ms
-        rows = self.prints.window(start, end)
+        rows = self.prints.timed(start, end)
         if rows is None:
             day = datetime.fromtimestamp(self.now_ms / 1000, timezone.utc).strftime('%Y-%m-%d')
             self.print_miss_days.add(day)
             self.known_path = False
             self.unknown_from = self.unknown_from or self.now_ms
             self.funnel['ioc_zero'] += 1
-            return D(0)
+            return []
         remain = quantity
-        for price, qty in rows:
+        segments = []
+        for stamp, price, qty in rows:
             if side == 'BUY' and price > limit:
                 continue
             if side == 'SELL' and price < limit:
                 continue
-            remain -= min(remain, qty)
+            take = min(remain, qty)
+            segments.append((stamp, take))
+            remain -= take
             if remain <= 0:
                 break
-        filled = quantity - remain
-        if filled <= 0:
+        if not segments:
             self.funnel['ioc_zero'] += 1
-            return D(0)
+            return []
         self.funnel['ioc_filled'] += 1
-        return filled
+        return segments
 
     def _reply(self, method, path, params):
+        changes = method != 'GET' and (path.endswith('/algoOrder') or path.endswith('/positionMargin') or (
+            path.endswith('/order') and method == 'POST'
+            and (params.get('reduceOnly') == 'true' or params.get('type') == 'MARKET')))
+        if changes:
+            self._settle_change()
+        answer = self._answer(method, path, params)
+        if changes:
+            self.held_from = self.now_ms
+        return answer
+
+    def _answer(self, method, path, params):
         if self.unknown_from is not None and method == 'POST' and path.endswith('/order') and params.get('reduceOnly') != 'true':
             # The coordinator already journaled this identity. A raised send is
             # indistinguishable from a lost response, so return a terminal reject
@@ -686,23 +800,29 @@ class SessionExchange(Binance):
             self.funnel['ioc_zero'] += 1
         else:
             self.funnel['ioc_submitted'] += 1
-            filled = self._fill_ioc(params['side'], D(params['price']), quantity)
-            if filled <= 0:
-                order['status'] = 'EXPIRED'
-                order['executedQty'] = '0'
-            elif filled < quantity:
-                order['status'] = 'EXPIRED'
-                order['executedQty'] = _text(filled)
-                self._apply_open(params['side'], filled, D(params['price']))
-                self._trade(params['side'], order_id, filled, D(params['price']))
-            else:
-                order['status'] = 'FILLED'
-                order['executedQty'] = _text(filled)
-                self._apply_open(params['side'], filled, D(params['price']))
-                self._trade(params['side'], order_id, filled, D(params['price']))
+            arrival = self.now_ms
+            self.orders[order['clientOrderId']] = order
+            self.by_order_id[order_id] = order
+            filled = D(0)
+            adding = bool(self.q)
+            closes = self.funnel['triggers'] + self.funnel['liquidations']
+            for stamp, part in self._fill_ioc(params['side'], D(params['price']), quantity):
+                # Each matched print books at its own time, after earlier funding
+                # and protection events.
+                self._advance(stamp)
+                if adding and (not self.q or self.funnel['triggers'] + self.funnel['liquidations'] != closes):
+                    break  # the rest of an add must not reopen a stopped position
+                self._settle_change()
+                self._apply_open(params['side'], part, D(params['price']))
+                self._trade(params['side'], order_id, part, D(params['price']))
+                self.held_from = self.now_ms
+                filled += part
+            order['executedQty'] = _text(filled)
+            order['status'] = 'FILLED' if filled == quantity else 'EXPIRED'
+            if params.get('timeInForce') == 'IOC':
+                # The response follows the print window the fill was measured on.
+                self._advance(max(self.now_ms, arrival + self.print_window_ms))
+            return dict(order)
         self.orders[order['clientOrderId']] = order
         self.by_order_id[order_id] = order
-        if not reduce and params.get('timeInForce') == 'IOC':
-            # The response follows the print window the fill was measured on.
-            self._advance(self.now_ms + self.print_window_ms)
         return dict(order)

@@ -288,7 +288,7 @@ class Lifecycle:
         plan.update(epoch=epoch,id=identity)
         self.state.set('entry_plan',plan)
         self.state.set('entry_fill',dict(campaign=plan['campaign'],requested=plan['requested_btc'],
-                                         session=self.session))
+                                         session=self.session,stop_budget=plan.get('stop_budget_usdt')))
         self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh)
         try:
             self.send('POST','/fapi/v1/order',payload)
@@ -399,13 +399,15 @@ class Lifecycle:
             return snapshot
         if abs(number(snapshot['quantity_btc'])) >= number(fill['requested']):
             return snapshot
+        if model.active is model.macro_opportunity and fill.get('stop_budget') is None:
+            return snapshot
         try:
             self.reader.ensure_capacity(TOPUP_RESERVE+PREVIEW_WEIGHT)
         except Unknown:
             return snapshot  # a later poll of this session may add
         try:
             plan = topup_preview(self.reader, model, snapshot, fill['requested'],
-                                 protection['stop'], protection['take'])
+                                 protection['stop'], protection['take'], fill.get('stop_budget'))
         except ValueError:
             return snapshot
         self.entry_constraint = plan['constraint']
@@ -428,6 +430,14 @@ class Lifecycle:
         if number(fresh['isolated_wallet_usdt']) < target:
             fresh = safety.add_margin(self.reader,self.state,self.send,self.uid,epoch,
                                       target,authorized=self.authorized)
+            # The transfer takes time. The deadline, a stop request and the quote
+            # are checked again; the added margin only lowers risk.
+            if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
+                return fresh
+            try:
+                self.reader.ensure_capacity(TOPUP_RESERVE)
+            except Unknown:
+                return fresh
         identity = client_id(self.state.identity,epoch,'entry')
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
                        timeInForce='IOC',quantity=plan['quantity_btc'],

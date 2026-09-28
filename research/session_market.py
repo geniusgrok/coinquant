@@ -276,6 +276,19 @@ class TradePrints:
         self._rows = None
 
     def window(self, start_ms, end_ms):
+        rows = self.timed(start_ms, end_ms)
+        return None if rows is None else [(price, qty) for _t, price, qty in rows]
+
+    def timed(self, start_ms, end_ms):
+        """(time, price, quantity) Decimals in [start, end), or None if a day is unavailable."""
+        rows = self.raw(start_ms, end_ms)
+        if rows is None:
+            return None
+        scale = D(10) ** 8
+        return [(t, D(p) / scale, D(q) / scale) for t, p, q in rows]
+
+    def raw(self, start_ms, end_ms):
+        """(time, price*1e8, quantity*1e8) integers in [start, end), or None."""
         if end_ms <= start_ms:
             return []
         import bisect
@@ -288,10 +301,8 @@ class TradePrints:
                 return None
             times, _ids, prices, qtys = rows
             index = bisect.bisect_left(times, start_ms)
-            scale = D(10) ** 8
-            while index < len(times) and times[index] < end_ms:
-                matched.append((D(prices[index]) / scale, D(qtys[index]) / scale))
-                index += 1
+            stop = bisect.bisect_left(times, end_ms)
+            matched.extend(zip(times[index:stop], prices[index:stop], qtys[index:stop]))
             day += 86_400_000
         return matched
 

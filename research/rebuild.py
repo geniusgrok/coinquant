@@ -21,7 +21,7 @@ OUT = ROOT / 'evidence' / 'rebuild-20260927'
 
 def trial(name, *, sequence='primary', participation=None, print_window_ms=1000, side='both',
           trigger_slippage='0.001', market_slippage='0.0005', fee='0.00075',
-          primary_risk=None, mark_gap='forfeit', market='/data/coinquant-market', prints='/data/coinquant-prints', state=None, limit=0):
+          primary_risk=None, mark_gap='bound', market='/data/coinquant-market', prints='/data/coinquant-prints', state=None, limit=0):
     schedule = session_schedule.load()
     starts = (schedule['primary'] if sequence == 'primary' else schedule['stress'][sequence])['starts_ms']
     starts = starts[:limit or None]
@@ -41,7 +41,7 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
     result.update(trial=name, sequence=sequence, schedule_sha256=schedule['primary']['sha256'],
                   book_participation=str(native_preview.BOOK_PARTICIPATION), print_window_ms=int(print_window_ms),
                   trigger_slippage=str(trigger_slippage), market_slippage=str(market_slippage), fee=str(fee),
-                  fx='FRED DEXCHUS dated', primary_risk=campaign.PRIMARY_RISK, macro_risk=campaign.MACRO_RISK, conversion='0.001 each way',
+                  mark_gap=mark_gap, fx='FRED DEXCHUS dated', primary_risk=campaign.PRIMARY_RISK, macro_risk=campaign.MACRO_RISK, conversion='0.001 each way',
                   latency_ms=1000, price_stamp='last trade print at or before the request')
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / f'{name}.json').write_text(json.dumps(result, default=str) + '\n', encoding='utf-8')
@@ -61,8 +61,9 @@ def main():
     parser.add_argument('--print-window-ms', type=int, default=1000)
     parser.add_argument('--side', default='both', choices=('long', 'short', 'both'))
     parser.add_argument('--limit', type=int, default=0)
-    parser.add_argument('--mark-gap', default='forfeit', choices=('forfeit', 'bound'),
-                        help='missing official mark minute: forfeit the isolated wallet, or hindsight trade-range bound')
+    parser.add_argument('--mark-gap', default='bound', choices=('forfeit', 'bound'),
+                        help='missing official mark minute: hindsight trade-range bound (owner-accepted basis, '
+                             'default) or forfeit the isolated wallet')
     args = parser.parse_args()
     result = trial(args.name, sequence=args.sequence, participation=args.participation,
                    print_window_ms=args.print_window_ms, side=args.side, limit=args.limit,

@@ -15,7 +15,7 @@
   "model": {
     "mechanism": "impulse_hold",
     "interval_ms": 14400000,
-    "risk_scale": "6.0",
+    "risk_scale": "7.5",
     "sides": [
       "long"
     ],
@@ -121,8 +121,10 @@
         }
       },
       "targets_met_base": true,
-      "targets_met_all_stresses": false
-    }
+      "targets_met_all_stresses": false,
+      "mark_gap_policy": "bound"
+    },
+    "reproduce": "python -m research.rebuild P2  (defaults: frozen primary schedule, --mark-gap bound, fee 0.00075, trigger slippage 0.001, market slippage 0.0005, participation 0.25)"
   },
   "selected_historical_account": {
     "name": "SX60+DFII10",
