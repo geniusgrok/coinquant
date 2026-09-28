@@ -236,6 +236,84 @@
           "stress": "hindsight mark-gap bound at the reverted default (sensitivity, path_complete false)"
         }
       ]
+    },
+    {
+      "round": "M2S",
+      "registered": "2026-09-28",
+      "hypothesis": "Owner decision (2026-09-28): the 29-minute 2020-01-19 mark gap is treated with the measured-divergence bound; the owner judges a stop trigger there negligible. Under that basis M2-p7.5-bound ranks first and PRIMARY_RISK 7.5 becomes the default. Stress set on the same basis.",
+      "model": "PRIMARY_RISK 7.5 default, --mark-gap bound",
+      "trials": [
+        {
+          "name": "P2",
+          "args": [
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "default reproduction"
+        },
+        {
+          "name": "M2-p7.5-bound-fee150",
+          "args": [
+            "--fee",
+            "0.001125",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "cost +50%"
+        },
+        {
+          "name": "M2-p7.5-bound-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "exit slippage x2"
+        },
+        {
+          "name": "M2-p7.5-bound-part10",
+          "args": [
+            "--participation",
+            "0.1",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "depth participation 10%"
+        },
+        {
+          "name": "M2-p7.5-bound-skip",
+          "args": [
+            "--sequence",
+            "random_skip",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "seeded 20% skip"
+        },
+        {
+          "name": "M2-p7.5-bound-absence",
+          "args": [
+            "--sequence",
+            "absence",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "legacy absence sequence"
+        },
+        {
+          "name": "M2-p7.5-bound-block",
+          "args": [
+            "--sequence",
+            "block_21d",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "seeded 21-day block"
+        }
+      ]
     }
   ]
 }

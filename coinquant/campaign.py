@@ -13,7 +13,7 @@ from .opportunities import Opportunities, Opportunity, FOUR_HOURS
 from .linear_sizing import target_fraction
 from .types import Blocked, ZERO
 
-PRIMARY_RISK = '6'
+PRIMARY_RISK = '7.5'
 MACRO_RISK = '3.6'
 ORIGIN = 1575158400000  # 2019-12-01T00:00Z, fixed research warmup identity
 DAY = 86400000
