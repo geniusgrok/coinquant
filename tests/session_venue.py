@@ -22,7 +22,7 @@ class Venue(Binance):
         self.orders={};self.algos={};self.trades=[];self.calls=[];self.sent=[]
         self.fraction=D(1);self.timeout_after_entry=False;self.timeout_before_entry=False
         self.reject_protection=False;self.partial_exit=False;self.fail_reads=False
-        self.mark=D(100000)
+        self.mark=D(100000);self.updated=self.now
         self.rules=rules();self.rules.update(status='TRADING',contractType='PERPETUAL',marginAsset='USDT')
 
     def wait(self,seconds):self.now+=int(seconds*1000)
@@ -50,10 +50,10 @@ class Venue(Binance):
         if path.endswith('/symbolConfig'):return [dict(symbol='BTCUSDT',marginType='ISOLATED',leverage=20,isAutoAddMargin=False)]
         pnl=self.q*(self.mark-self.entry)
         position=dict(symbol='BTCUSDT',positionSide='BOTH',positionAmt=str(self.q),entryPrice=str(self.entry),
-                      isolatedWallet=str(self.margin),updateTime=self.now,marginAsset='USDT',markPrice=str(self.mark),
+                      isolatedWallet=str(self.margin),updateTime=self.updated,marginAsset='USDT',markPrice=str(self.mark),
                       unRealizedProfit=str(pnl),liquidationPrice=str(self.liquidation()) if self.q else '0')
         if path=='/fapi/v3/account':
-            return dict(assets=[dict(asset='USDT',walletBalance=str(self.wallet),updateTime=self.now)],
+            return dict(assets=[dict(asset='USDT',walletBalance=str(self.wallet),updateTime=self.updated)],
                 positions=[position],totalWalletBalance=str(self.wallet),totalUnrealizedProfit=str(pnl),
                 totalMarginBalance=str(self.wallet+pnl),availableBalance=str(self.wallet-self.margin))
         if path.endswith('/positionRisk'):return [position]
@@ -84,6 +84,7 @@ class Venue(Binance):
         return (self.q*self.entry-self.margin)/(self.q-abs(self.q)*D('.0055'))
 
     def fill(self,order,amount):
+        self.updated=self.now
         signed=amount if order['side']=='BUY' else -amount
         if order['reduceOnly']:
             self.wallet+=-signed*(self.mark-self.entry)-amount*self.mark*D('.0005')
@@ -102,7 +103,7 @@ class Venue(Binance):
     def send(self,method,path,p):
         self.sent.append((method,path,deepcopy(p)));self.calls.append((method,path,deepcopy(p)))
         if path.endswith('/positionMargin'):
-            self.margin+=D(p['amount']);return dict(code=200,type=1,amount=p['amount'])
+            self.margin+=D(p['amount']);self.updated=self.now;return dict(code=200,type=1,amount=p['amount'])
         if path.endswith('/algoOrder'):
             if method=='DELETE':self.algos[p['clientAlgoId']]['algoStatus']='CANCELED';return {}
             if self.reject_protection:raise Unknown('fixture protection rejection')

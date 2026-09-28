@@ -110,13 +110,13 @@ def settled_protection(reader,state,identity):
     return True
 
 
-def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authorized=False):
+def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authorized=False,snapshot=None):
     """Install full-position SL then TP, retaining every existing protection.
 
     There must be no possible entry remainder. A partial position is protected
     by closePosition, never by the requested entry size. ACK is not readback.
     """
-    before=_gate(reader,state,uid,authorized)
+    before=_gate(reader,state,uid,authorized,snapshot=snapshot)
     q=D(before['quantity_btc']);mark=D(before['mark_price']);liq=D(before['native_liquidation_price'])
     stop,take=D(stop),D(take)
     filters=[f for f in instrument.get('filters',[]) if f.get('filterType')=='PRICE_FILTER']
@@ -141,6 +141,7 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
                 or D(parent.get('triggerPrice','0'))!=trigger or observed['child'] is not None):
             raise Unknown('native protection not confirmed active; reconcile exposure')
         state.finish(identity,'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
+        if kind=='TAKE_PROFIT_MARKET':break  # the final readback follows
         observed_account=reader.snapshot(uid)
         if (observed_account['account_uid']!=str(uid) or D(observed_account['quantity_btc'])!=q
                 or observed_account['possible_entry_remainders']):
@@ -179,9 +180,9 @@ def cancel_entry(reader,state,send,uid,epoch,entry_id,*,authorized=False):
     return reader.snapshot(uid)
 
 
-def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized=False):
+def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized=False,snapshot=None):
     """Bounded reduce-only market request; caller supplies rule-rounded quantity."""
-    before=_gate(reader,state,uid,authorized);q=D(before['quantity_btc']);qty=D(quantity)
+    before=_gate(reader,state,uid,authorized,snapshot=snapshot);q=D(before['quantity_btc']);qty=D(quantity)
     if before['possible_entry_remainders'] or not 0<qty<=abs(q):raise Blocked('unsafe reduction')
     if market_quantity(qty,before['mark_price'],instrument,reduce_only=True)!=qty:raise Blocked('reduction violates native quantity rule')
     identity=client_id(state.identity,epoch,'reduce')
@@ -196,7 +197,7 @@ def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized
     return after
 
 
-def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False):
+def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,snapshot=None):
     """Model-selected isolated wallet target; never withdraw or retry unknown adds.
 
     Binance margin writes have no client transaction ID. The amount is rounded up
@@ -204,7 +205,7 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False)
     persisted before the separate wallet readback; a lost answer is settled only
     from native margin history, never from a balance change or a resend.
     """
-    before=_gate(reader,state,uid,authorized)
+    before=_gate(reader,state,uid,authorized,snapshot=snapshot)
     if not D(before['quantity_btc']) or before['possible_entry_remainders']:raise Blocked('unsafe margin scope')
     places=instrument.get('quotePrecision')
     if (instrument.get('symbol')!='BTCUSDT' or instrument.get('marginAsset')!='USDT'

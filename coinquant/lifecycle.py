@@ -8,7 +8,7 @@ from decimal import Decimal as D
 
 from . import binance_safety as safety
 from .native_preview import entry_preview, topup_preview
-from .ownership import owned_observation
+from .ownership import TERMINAL, owned_observation
 from .state import client_id
 from .types import Blocked, Unknown, number, floor_step
 
@@ -17,6 +17,12 @@ from .types import Blocked, Unknown, number, floor_step
 ENTRY_RESERVE = 800
 TOPUP_RESERVE = 250
 PREVIEW_WEIGHT = 100
+# Network budget reserved for an owned fill's protection, and separately for
+# the bounded reduction after protection failed; neither is cut by the session
+# deadline. The reduction needs one full observation (ten reads) and its write
+# even when every response takes nearly the 8 s request timeout.
+PROTECT_SECONDS = 120
+REDUCE_SECONDS = 90
 
 
 # A signed request is refused after timestamp+recvWindow (5 s); this leaves a
@@ -64,6 +70,10 @@ class Lifecycle:
 
     def snapshot(self):
         return self.reader.snapshot(self.uid)
+
+    def reserve(self, seconds):
+        # Use the adapter clock; a wall monotonic would outlive a virtual session.
+        self.reader.deadline = max(self.reader.deadline, self.reader.monotonic()+seconds)
 
     def instrument(self):
         rows = [r for r in self.reader.get('/fapi/v1/exchangeInfo')['symbols'] if r.get('symbol') == 'BTCUSDT']
@@ -153,8 +163,41 @@ class Lifecycle:
             raise Unknown('durable operation remains unknown; no additional risk')
         return snapshot
 
+    def entry_fill_proven(self, plan, snapshot):
+        """Every native fill after the entry's flat boundary is that entry's own
+        fill, and together they are the current position.
+
+        One complete trade-ID page from the flat snapshot's cursor. An external,
+        manual or other owned fill, a missing cursor or an unreadable page is
+        no proof; this never authorizes a write without it.
+        """
+        link = (self.state.get('entry_campaigns') or {}).get(plan['id'])
+        cursor = link.get('after_trade_id') if link else None
+        q = number(snapshot['quantity_btc'])
+        if type(cursor) is not int or cursor < -1 or not q or snapshot['possible_entry_remainders']:
+            return False
+        parent = owned_observation(self.state,self.reader,plan['id'])['parent']
+        if parent.get('status') not in TERMINAL or (q > 0) != (parent.get('side') == 'BUY'):
+            return False
+        page = self.reader.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','fromId':cursor+1,'limit':1000})
+        if not isinstance(page,list) or len(page) >= 1000:
+            return False
+        ids = set(); total = D(0)
+        for trade in page:
+            if (trade.get('symbol') != 'BTCUSDT' or trade.get('positionSide') != 'BOTH'
+                    or str(trade.get('orderId')) != str(parent.get('orderId')) or trade.get('side') != parent['side']
+                    or type(trade.get('id')) is not int or trade['id'] <= cursor or trade['id'] in ids):
+                return False
+            ids.add(trade['id']); total += number(trade.get('qty'),positive=True)
+        last = snapshot.get('last_fill_id')
+        return total == number(parent['executedQty']) == abs(q) and (last == cursor or last in ids)
+
     def protect_entry(self, snapshot, plan):
-        """Protect only verified fills of the journaled entry, including partials."""
+        """Protect only verified fills of the journaled entry, including partials.
+
+        `snapshot` must be observed after the latest write; it is reused by the
+        first safety write so protection is not delayed by repeated reads.
+        """
         q = number(snapshot['quantity_btc'])
         if not q:
             return snapshot
@@ -166,22 +209,26 @@ class Lifecycle:
             raise Unknown('actual position is not the verified entry fill')
         # The reserve was calculated before entry; scale to actual executed size.
         target = number(plan['allocated_margin_usdt'])*abs(q/expected)
-        rules = self.instrument()
+        # Rules observed by this entry's own preflight, seconds before the order.
+        rules = plan.get('instrument') or self.instrument()
+        self.reserve(PROTECT_SECONDS)
         try:
             # With an earlier transfer unresolved, protection is still tried
             # against the observed liquidation price; it never sends another.
             if number(snapshot['isolated_wallet_usdt']) < target and not margin_pending(self.state):
                 snapshot = safety.add_margin(self.reader,self.state,self.send,self.uid,
-                    plan['epoch'],target,instrument=rules,authorized=self.authorized)
+                    plan['epoch'],target,instrument=rules,authorized=self.authorized,snapshot=snapshot)
             snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
-                plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized)
+                plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
+                snapshot=snapshot)
         except (Blocked, Unknown):
-            # Native entry and protection are NOT atomic. Try a bounded reduction,
-            # but never assert that a disconnected venue accepted it.
+            # Native entry and protection are NOT atomic. Try a bounded reduction
+            # with its own budget, but never assert that a disconnected venue accepted it.
+            self.reserve(REDUCE_SECONDS)
             try:
                 current = self.snapshot()
                 if number(current['quantity_btc']) and not current['possible_entry_remainders']:
-                    self.close(current, rules)
+                    self.close(current, rules, observed=True)
             except (Blocked, Unknown):
                 pass
             raise
@@ -190,7 +237,9 @@ class Lifecycle:
         self.state.set('entry_plan', None)
         return snapshot
 
-    def close(self, snapshot, rules=None):
+    def close(self, snapshot, rules=None, *, observed=False):
+        """Durable reduce-only exit. `observed`: the snapshot was just read after
+        the latest write and may stand in for the reduction's own gate read."""
         q = number(snapshot['quantity_btc'])
         if not q:
             return snapshot
@@ -223,7 +272,8 @@ class Lifecycle:
         if q*operation['direction']<=0 or abs(q) > number(operation['quantity']):
             raise Unknown('position grew during durable exit')
         result = safety.reduce_existing(self.reader,self.state,self.send,self.uid,
-            operation['epoch'],operation['quantity'],instrument=rules or self.instrument(),authorized=self.authorized)
+            operation['epoch'],operation['quantity'],instrument=rules or self.instrument(),authorized=self.authorized,
+            snapshot=snapshot if observed else None)
         if number(result['quantity_btc']):
             raise Unknown('partial exit remains; reconcile before another reduction')
         self.state.set('position_exit',None)
@@ -244,11 +294,14 @@ class Lifecycle:
                                  reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot))
             except (Blocked,Unknown):
                 # A fill of the journaled entry, sent from a verified flat account,
-                # is protected from its own terminal order evidence even when the
-                # history audit is unavailable. The audit still gates new risk.
+                # is protected when every fill since that flat boundary is its own,
+                # even if the full history audit is unavailable. An external or
+                # manual fill, or no such proof, leaves the position untouched.
+                # The audit still gates new risk.
                 plan=self.state.get('entry_plan')
                 if plan and number(snapshot['quantity_btc']) and not self.state.get('position_exit'):
-                    try:self.protect_entry(snapshot,plan)
+                    try:
+                        if self.entry_fill_proven(plan,snapshot):self.protect_entry(snapshot,plan)
                     except (Blocked,Unknown):pass
                 raise
         if not number(snapshot['quantity_btc']):
@@ -343,6 +396,14 @@ class Lifecycle:
         self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh)
         safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
+        # Shortest path to protection for this IOC's own proven fill; the full
+        # ownership audit follows before any further decision.
+        try:
+            proven = self.entry_fill_proven(plan,snapshot)
+        except (Blocked,Unknown):
+            proven = False
+        if proven:
+            snapshot = self.protect_entry(snapshot,plan)
         return self.recover_exposure(snapshot)
 
     def maintain(self, model, snapshot):
