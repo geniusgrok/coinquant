@@ -100,6 +100,20 @@ class MarginIntentTests(unittest.TestCase):
             add_margin(self.native,self.state,lost,'123',200,'50',instrument=rules(),authorized=True)
         self.assertEqual(self.native.recover_pending(self.state),{'resolved':1,'pending':0})
 
+    def test_a_margin_row_without_preparation_time_is_bounded_by_its_last_update(self):
+        self.add(target='40')
+        start=self.native.clock()
+        legacy=json.dumps({'amount':'40','acknowledged':True})
+        for updated,settled,target in ((start,{'resolved':1,'pending':0},'50'),(start+59,{'resolved':0,'pending':1},'60')):
+            self.state.db.execute("DELETE FROM intents WHERE id!=(SELECT id FROM intents ORDER BY updated LIMIT 1)")
+            self.state.db.execute("UPDATE intents SET result=?,updated=?",(legacy,updated));self.state.db.commit()
+            self.native.clock=lambda:start+60
+            def lost(*args):self.native.send(*args);raise TimeoutError()
+            with self.assertRaises(Unknown):
+                add_margin(self.native,self.state,lost,'123',200,target,instrument=rules(),authorized=True)
+            self.assertEqual(self.native.recover_pending(self.state),settled,updated)
+            self.native.history=self.native.history[:1]
+
 
 class HTTP:
     def __init__(self,answer):self.answer=answer;self.calls=0
@@ -151,10 +165,11 @@ class WriteClassificationTests(unittest.TestCase):
 
     def test_documented_503_failures_are_terminal_and_other_503s_stay_unknown(self):
         failed=(rejection(503,-1008,'Request throttled by system-level protection. Reduce-only/close-position orders are exempt. Please try again.'),
-                rejection(503,-1001,'Service Unavailable.'),plain(503,'Service Unavailable.'),
+                rejection(503,-1001,'Service Unavailable.'),
                 rejection(503,-1001,'Internal error; unable to process your request. Please try again.'))
         unknown=(rejection(503,-1001,'Unknown error, please check your request or try again later.'),
-                 rejection(503,-1001),plain(503,'<html>gateway</html>'),rejection(502,-1008))
+                 rejection(503,-1001),plain(503,'<html>gateway</html>'),rejection(502,-1008),
+                 plain(503,'Service Unavailable.'))  # a proxy text body is not a Binance answer
         for answer,status in [(a,'rejected') for a in failed]+[(a,'unknown') for a in unknown]:
             self.state.db.execute("DELETE FROM intents");self.state.db.commit()
             reader,_http=self.reader(answer)
