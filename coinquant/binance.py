@@ -680,7 +680,7 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
             'stop_before_liquidation':bool(safe_stops),
             'protective_algos':protective,'possible_entry_remainders':len(entries),
             'open_orders':orders,'open_algos':algos,
-            'qualification':'NOT_QUALIFIED','writes_supported':False}
+            'qualification':'NOT_QUALIFIED'}
 
 
 def market_quantity(maximum, mark, instrument, *, reduce_only=False):

@@ -1,7 +1,8 @@
-"""Exact resumable completed-bar state for the default SX60+DFII10 model (not qualified for live trading).
+"""Exact resumable completed-bar state for the default SX60+DFII10 model.
 
 Market state and execution ownership are separate. Replaying prices can rebuild
-the first, never prove past fills. No exchange writes are performed here.
+the first, never prove past fills. No exchange writes are performed here;
+routine production remains unqualified.
 """
 from collections import deque
 from dataclasses import asdict

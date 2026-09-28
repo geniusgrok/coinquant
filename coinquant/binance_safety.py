@@ -1,7 +1,7 @@
-"""Native Binance safety operations; no entry or network writer is exposed.
+"""Native Binance protection, reduction and margin operations.
 
-The injected sender is used by offline lifecycle tests. Production CLI stays
-read-only until authorized native lifecycle validation and economic acceptance.
+The default CLI is read-only. Explicit bounded trials use these operations
+through the same lifecycle; routine production remains unqualified.
 """
 import json
 from decimal import Decimal as D, ROUND_CEILING
