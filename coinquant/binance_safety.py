@@ -4,6 +4,7 @@ The injected sender is used by offline lifecycle tests. Production CLI stays
 read-only until authorized native lifecycle validation and economic acceptance.
 """
 from decimal import Decimal as D, ROUND_CEILING
+from .config import scope
 from .state import client_id
 from .binance import market_quantity
 from .types import Blocked, NotSent, Rejected, Unknown
@@ -11,7 +12,7 @@ from .types import Blocked, NotSent, Rejected, Unknown
 
 def _gate(reader, state, uid, authorized, *, canceling_entry=False):
     if authorized is not True:raise Blocked('explicit operation authorization required')
-    if state.identity != f'binance:BTCUSDT:live:{uid}':
+    if state.identity != scope(reader.environment, uid):
         raise Blocked('state and native reader account scope differ')
     reader.recover_pending(state)
     if not canceling_entry:

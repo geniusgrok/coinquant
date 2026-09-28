@@ -15,6 +15,7 @@ from time import time
 
 from .types import Blocked, Unknown, serial, number
 from .campaign import ORIGIN
+from .config import ENVIRONMENTS, scope
 
 
 def client_id(account: str, candle: int, operation: str) -> str:
@@ -103,7 +104,8 @@ class State:
                     or payload.get('side')!=('BUY' if q>0 else 'SELL') or payload.get('reduceOnly')=='true'
                     or not q or position_snapshot.get('possible_entry_remainders')!=0
                     or self.pending()
-                    or self.identity!=f"binance:BTCUSDT:live:{position_snapshot.get('account_uid')}"):
+                    or self.identity not in {scope(environment, position_snapshot.get('account_uid'))
+                                             for environment in ENVIRONMENTS}):
                 raise Blocked('campaign add requires the reconciled position of that campaign')
             first=min(group,key=lambda link:link['prepared_at'])
             links[identity]=dict(campaign=campaign,prepared_at=first['prepared_at'],
@@ -115,7 +117,8 @@ class State:
                     or not flat_snapshot or number(flat_snapshot.get('quantity_btc'))!=0
                     or flat_snapshot.get('possible_entry_remainders')!=0
                     or self.pending()
-                    or self.identity!=f"binance:BTCUSDT:live:{flat_snapshot.get('account_uid')}"):
+                    or self.identity not in {scope(environment, flat_snapshot.get('account_uid'))
+                                             for environment in ENVIRONMENTS}):
                 raise Blocked('entry campaign requires a reconciled flat owned account')
             links=self.get('entry_campaigns') or {}
             observed_at=flat_snapshot.get('observed_at_ms',int(time()*1000))

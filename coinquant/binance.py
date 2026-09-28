@@ -36,8 +36,20 @@ class NoRedirect(HTTPRedirectHandler):
         raise Blocked('Binance API redirects are refused')
 
 
+# Spot account identity host and USD-M futures host per environment. Demo is
+# Binance's virtual-balance environment; its UID and account semantics are not
+# natively verified here.
+HOSTS = {'live': ('api.binance.com', 'fapi.binance.com'),
+         'demo': ('demo-api.binance.com', 'demo-fapi.binance.com')}
+
+
 class Binance:
-    def __init__(self, *, key='', secret='', opener=None, clock=time.time, authorize_writes=False, monotonic=None):
+    def __init__(self, *, key='', secret='', opener=None, clock=time.time, authorize_writes=False, monotonic=None,
+                 environment='live', capital_limit=None):
+        if environment not in HOSTS:
+            raise Blocked('unknown Binance environment')
+        self.environment = environment
+        self.capital_limit = None if capital_limit is None else Decimal(capital_limit)
         self.key, self.secret = key, secret
         self.opener = opener or build_opener(NoRedirect())
         self.clock = clock
@@ -153,7 +165,8 @@ class Binance:
         query = urlencode(sorted(params.items()))
         if private:
             query += '&signature=' + hmac.new(self.secret.encode(),query.encode(),hashlib.sha256).hexdigest()
-        host = 'api.binance.com' if path == '/api/v3/account' else 'fapi.binance.com'
+        spot, futures = HOSTS[self.environment]
+        host = spot if path == '/api/v3/account' else futures
         if method == 'GET':
             url, data = 'https://'+host+path+('?' + query if query else ''), None
         else:

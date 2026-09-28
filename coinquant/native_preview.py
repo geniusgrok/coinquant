@@ -78,8 +78,10 @@ def _venue(reader, model, snapshot, direction):
     raw_price=(asks[0][0]*D('1.001') if direction>0 else bids[0][0]*D('.999'))
     price=(floor_step(raw_price,tick) if direction>0 else (raw_price/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
     capacity=sum((q for p,q in (asks if direction>0 else bids) if (p<=price if direction>0 else p>=price)),D(0))*BOOK_PARTICIPATION
+    limit=getattr(reader,'capital_limit',None)
     return dict(instrument=instrument,rule=filters[0],tick=tick,fee=fee,cap=cap,mmr=mmr,fresh=fresh,
                 wallet=wallet,available=available,price=price,capacity=capacity,
+                capital=wallet if limit is None else min(wallet,limit),
                 mark=number(fresh['mark_price'],positive=True))
 
 
@@ -92,19 +94,19 @@ def entry_preview(reader, model, snapshot):
     direction=opportunity.direction
     v=_venue(reader,model,snapshot,direction)
     if v['available']!=v['wallet']:raise Unknown('unexplained reserved collateral; no new quantity')
-    tick,price,mark,wallet=v['tick'],v['price'],v['mark'],v['wallet']
+    tick,price,mark,capital=v['tick'],v['price'],v['mark'],v['capital']
     stop=(floor_step(opportunity.stop,tick) if direction>0 else (opportunity.stop/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
     take=(floor_step(opportunity.take,tick)+tick if direction>0 else floor_step(opportunity.take,tick))
     if not all(number(v['rule']['minPrice'])<=p<=number(v['rule']['maxPrice']) for p in (stop,take,price)):
         raise Blocked('protection outside current price limits')
-    account=Account(wallet)
+    account=Account(capital)
     fraction=model.entry_fraction('.0011')
     target=budget=None
     if opportunity is model.macro_opportunity:
         # The macro parent has the historical 3% equity-to-stop loss ceiling.
         if price<=stop:raise Blocked('macro stop must be below executable entry')
-        budget=wallet*MACRO_STOP_BUDGET
-        target=min(wallet*fraction/max(price,mark),budget/(price-stop))
+        budget=capital*MACRO_STOP_BUDGET
+        target=min(capital*fraction/max(price,mark),budget/(price-stop))
     result=funded_target(account,direction,fraction,price,mark,stop,take,v['capacity'],
                          v['instrument'],fee=v['fee'],maintenance=v['mmr'],notional_limit=v['cap'],
                          target_quantity=target)
@@ -117,7 +119,8 @@ def entry_preview(reader, model, snapshot):
                 native_execution_verified=False,instrument=v['instrument'],
                 side='BUY' if direction>0 else 'SELL',campaign=opportunity.identity,
                 observed_at=v['fresh']['mark_time'],
-                stop_budget_usdt=None if budget is None else str(budget))
+                stop_budget_usdt=None if budget is None else str(budget),
+                sizing_capital_usdt=str(capital))
 
 
 def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=None):
@@ -145,7 +148,7 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
             target=abs(q)
         else:
             target=min(target,abs(q)+room/per_unit)
-    account=Account(v['wallet'],q=q,entry=entry,margin=number(snapshot['isolated_wallet_usdt']))
+    account=Account(v['capital'],q=q,entry=entry,margin=number(snapshot['isolated_wallet_usdt']))
     if target<=abs(q):
         return dict(quantity_btc='0',entry_estimate=str(price),stop=str(stop),take=str(take),
                     allocated_margin_usdt=str(account.margin),constraint='stop_budget',

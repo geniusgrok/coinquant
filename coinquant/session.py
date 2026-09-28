@@ -74,8 +74,10 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
     report=dict(status='read_only',cycles=0,write_attempted=False,errors=[],
                 qualification='NOT_QUALIFIED',stop_reason='deadline',cleanup='not_required',
                 session_started_at_ms=int(reader.clock()*1000))
-    identity='binance:BTCUSDT:live:'+config.account_uid
-    with State(config.state_dir,identity) as state:
+    if (getattr(reader,'environment','live')!=config.environment
+            or getattr(reader,'capital_limit',None)!=config.capital_limit):
+        raise Blocked('exchange adapter and configuration differ in environment or capital limit')
+    with State(config.state_dir,config.scope) as state:
         prior_writes=state.get('write_attempt_count') or 0
         try:
             while monotonic()<deadline and not stopping():
