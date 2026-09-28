@@ -4,7 +4,6 @@ import unittest
 
 from coinquant.state import State, client_id
 from coinquant.types import Blocked, Unknown
-from research.legacy.config import Config
 
 
 class StateTests(unittest.TestCase):
@@ -18,17 +17,13 @@ class StateTests(unittest.TestCase):
             with State(directory, 'testnet:123') as next_run:
                 self.assertEqual(next_run.get('candle'), 123)
 
-    def test_identity_and_default_authorization(self):
+    def test_state_directory_keeps_its_identity(self):
         with tempfile.TemporaryDirectory() as directory:
             with State(directory, 'live:123'):
                 pass
             with self.assertRaises(Blocked):
                 with State(directory, 'testnet:123'):
                     pass
-        with self.assertRaises(Blocked):
-            Config().authorize('123', True)
-        with self.assertRaises(Blocked):
-            Config(account_uid='123', max_position_usd=10).authorize('123', False)
 
     def test_crash_recovery_does_not_duplicate_or_overwrite_intents(self):
         with tempfile.TemporaryDirectory() as directory:

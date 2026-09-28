@@ -1,2 +1,0 @@
-# Numerical regression/statistics for offline research; production remains stdlib.
-numpy==2.3.5

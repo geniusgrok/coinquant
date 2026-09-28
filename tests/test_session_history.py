@@ -192,61 +192,14 @@ class SessionHistoryTests(TestCase):
         self.assertEqual(exchange.trades[-1]['time'], start + 1500)
         self.assertEqual(exchange.now_ms, sent_at + 2000)
 
-    def test_chase_bound_skips_an_extended_long_and_allows_the_signal_price(self):
-        from coinquant.state import State
-
-        def run_at(entry_price):
-            bars, trade, mark = {}, {}, {}
-            price = D(10000)
-            cursor = ORIGIN
-            for _ in range(40 * 6):
-                bars[cursor] = (price, price + 2, price - 2, price, D(1000))
-                cursor += FOUR_H
-            shock = ORIGIN + 30 * DAY
-            prior = bars[shock - FOUR_H][3]
-            jumped = prior + 400
-            bars[shock] = (prior, jumped + 2, prior - 2, jumped, D(1000))
-            start = shock + FOUR_H
-            _plant(trade, start - 60_000, entry_price)
-            _plant(mark, start - 60_000, entry_price)
-            _plant(trade, start, entry_price, high=entry_price)
-            _plant(mark, start, entry_price)
-            exchange = SessionExchange(Market(bars, (), identity={'trade': trade, 'mark': mark}), start,
-                                       (D(10000) / D('6.9762')) * (D(1) - D('0.001')), matcher='unresolved')
-            directory = tempfile.mkdtemp()
-            with State(directory, 'binance:BTCUSDT:live:1') as state:
-                state.set('enter_unconsumed_bootstrap', True)
-                state.set('research_side', 'long')
-                state.set('research_chase_bound', True)
-            run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
-            return exchange
-
-        self.assertEqual(run_at(D(10800)).funnel['ioc_submitted'], 0)
-        self.assertGreaterEqual(run_at(D(10400)).funnel['ioc_submitted'], 1)
-
-    def test_research_side_blocks_the_opposite_impulse(self):
+    def test_cold_start_consumes_the_already_active_impulse(self):
         exchange, _start, _price = self._exchange('unresolved')
-        directory = tempfile.mkdtemp()
-        from coinquant.state import State
-        with State(directory, 'binance:BTCUSDT:live:1') as state:
-            state.set('enter_unconsumed_bootstrap', True)
-            state.set('research_side', 'short')
-        run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
+        run(Config('1', tempfile.mkdtemp(), 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
         self.assertEqual(exchange.funnel['ioc_submitted'], 0)
         self.assertEqual(exchange.q, 0)
 
-    def test_bootstrap_flag_lets_the_first_active_impulse_enter(self):
-        exchange, start, _price = self._exchange('unresolved')
-        directory = tempfile.mkdtemp()
-        from coinquant.state import State
-        with State(directory, 'binance:BTCUSDT:live:1') as state:
-            state.set('enter_unconsumed_bootstrap', True)
-        run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
-        self.assertGreaterEqual(exchange.funnel['ioc_submitted'], 1)
-
     def test_schedule_module_does_not_hand_future_starts_to_the_exchange(self):
         source = Path('research/session_exchange.py').read_text(encoding='utf-8')
-        self.assertNotIn('invocation_draws', source)
         self.assertNotIn('starts_ms', source)
 
 

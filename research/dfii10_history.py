@@ -4,13 +4,78 @@ Reuses the verified ALFRED originals and the frozen availability rule. Only
 vintages whose delayed availability is before `now` are visible, exactly as
 `coinquant.dfii10.Source.snapshot` filters live vintage dates.
 """
+import csv
 from datetime import datetime, timezone
+from decimal import Decimal
+from hashlib import sha256
+from io import TextIOWrapper
+import json
 from pathlib import Path
+from urllib.parse import urlencode
+from zipfile import ZipFile
 
 from coinquant.dfii10 import available
-from research.dfii10_asof import load
 
 ROOT = Path(__file__).resolve().parents[1] / 'evidence' / 'real-yield-20260924' / 'alfred'
+
+COMMON = [('form[units]', 'lin'), ('form[obs_start_date]', '2019-01-01'),
+          ('form[obs_end_date]', '2026-09-19'), ('form[entered_vintage_dates]', ''),
+          ('form[file_type]', '3'), ('form[file_format]', 'csv'),
+          ('form[download_data]', 'Download data')]
+
+
+def load(root):
+    root = Path(root)
+    receipt = json.loads((root/'RECEIPT.json').read_text())
+    assert receipt['observation_start'] == '2019-01-01'
+    assert receipt['observation_end'] == '2026-09-19'
+    updates = {}
+    selected_dates = []
+    counts = {'vintage_dates': 0, 'updates': 0, 'revisions': 0}
+    for attempt in receipt['attempts']:
+        if attempt['label'] == 'single':
+            continue  # acquisition probe duplicates an included batch vintage
+        path = root/attempt['path']
+        raw = path.read_bytes()
+        assert len(raw) == attempt['response_bytes']
+        assert sha256(raw).hexdigest() == attempt['response_sha256']
+        assert attempt['http_status'] == 200 and attempt['content_type'] == 'application/zip'
+        with ZipFile(path) as archive:
+            assert archive.namelist() == attempt['members']
+            names = [n for n in archive.namelist() if n.endswith('.csv')]
+            assert len(names) == 1
+            with archive.open(names[0]) as stream:
+                reader = csv.reader(TextIOWrapper(stream, encoding='utf-8-sig', newline=''))
+                header = next(reader)
+                assert header[0] == 'observation_date'
+                dates = [datetime.strptime(name, 'DFII10_%Y%m%d').date() for name in header[1:]]
+                assert dates == sorted(set(dates))
+                assert len(dates) == attempt['selected_count']
+                selected_dates.extend(dates)
+                batch = {v: [] for v in dates}
+                for row in reader:
+                    assert len(row) == len(header)
+                    observation = datetime.strptime(row[0], '%Y-%m-%d').date()
+                    for vintage, value in zip(dates, row[1:]):
+                        if value:
+                            assert observation <= vintage
+                            number = Decimal(value)
+                            assert number.is_finite()
+                            batch[vintage].append((observation, number))
+                            counts['updates'] += 1
+                for vintage in dates:
+                    assert vintage not in updates
+                    updates[vintage] = batch[vintage]
+        body = urlencode(COMMON + [('form[selected_vintage_dates][]', str(v)) for v in dates]).encode()
+        assert len(body) == attempt['request_bytes']
+        assert sha256(body).hexdigest() == attempt['request_sha256']
+    assert selected_dates == sorted(set(selected_dates))
+    assert len(selected_dates) == receipt['vintages']['count'] == 1914
+    assert [str(selected_dates[0]), str(selected_dates[-1])] == [receipt['vintages']['first'], receipt['vintages']['last']]
+    assert sha256(' '.join(map(str, selected_dates)).encode()).hexdigest() == receipt['vintages']['sha256']
+    assert counts['updates'] == 1929
+    counts['vintage_dates'] = len(selected_dates)
+    return updates, counts
 
 
 class History:

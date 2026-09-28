@@ -1,5 +1,5 @@
 {
-  "scope": "current Binance bounded-session acceptance; economic result measured on the current session timing (current_session_replay)",
+  "scope": "Binance bounded-session acceptance; economic result measured on the session timing (current_session_replay)",
   "start": "2020-01-01T00:00:00Z",
   "end": "2026-09-20T00:00:00Z",
   "end_exclusive": true,
@@ -33,7 +33,7 @@
   "execution": {
     "runner": "coinquant.session.run",
     "lifecycle": "coinquant.lifecycle.Lifecycle",
-    "session_start_schedule": "frozen: research/session_schedule.json (795 primary starts, sha256 in current_session_replay); legacy sparse observations alone do not qualify",
+    "session_start_schedule": "frozen: research/session_schedule.json (795 primary starts, sha256 in current_session_replay)",
     "session_seconds_default": 300,
     "poll_seconds_default": 5,
     "entry": "price-bounded LIMIT IOC; terminal zero fills may be reconsidered on subsequent polls",
@@ -54,24 +54,6 @@
   "current_session_replay": {
     "meter": "M5 (research/redesign-PROTOCOL.md)",
     "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
-    "complete_path_result": {
-      "trial": "M2-p6",
-      "evidence": "evidence/rebuild-20260927/M2-p6.json",
-      "final_cny": "821006",
-      "cost_net_cagr_percent": "92.72",
-      "continuous_mdd_envelope_percent": "75.78",
-      "mark_gap": "2020-01-19 13:09-13:37 UTC, 29 official mark minutes absent; the open isolated position is charged its whole isolated wallet",
-      "note": "worst-case isolated-margin forfeit basis, measured with meter M2 at risk 6 and not rerun under M5; retained for comparison"
-    },
-    "hindsight_sensitivity": {
-      "trial": "M2-p7.5-bound",
-      "final_cny": "5225940",
-      "cost_net_cagr_percent": "153.84",
-      "continuous_mdd_envelope_percent": "44.72",
-      "path_complete": false,
-      "scope": "missing mark minutes bounded by the window's measured mark/trade divergence; not a historical path",
-      "note": "meter M2 result; superseded by accepted_basis (M5)"
-    },
     "scope": "production session.run and Lifecycle on SessionExchange; not a historical order book; native execution not verified",
     "accepted_basis": {
       "decided_by": "account owner, 2026-09-28",
@@ -129,17 +111,6 @@
     },
     "reproduce": "python -m research.rebuild P5  (defaults: frozen primary schedule, --mark-gap bound, fee 0.00075, trigger slippage 0.001, market slippage 0.0005, participation 0.25)"
   },
-  "selected_historical_account": {
-    "name": "SX60+DFII10",
-    "cost_net_cagr_percent": "108.228852",
-    "continuous_mdd_percent": "39.779796",
-    "scope": "historical 2026-09-27 selection; frozen sparse-invocation proxy only; not a measurement of the current session"
-  },
   "native_qualification": "NOT_QUALIFIED",
-  "legacy_benchmark": {
-    "path": "research/legacy/spec.json",
-    "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9",
-    "scope": "immutable historical comparisons only; not current session acceptance"
-  },
   "economic_status": "base meets both targets under the owner-accepted mark-gap bound (path_complete=false); fee, slippage and depth stresses fall below 150% CAGR; economic_qualification stays NOT_MET"
 }

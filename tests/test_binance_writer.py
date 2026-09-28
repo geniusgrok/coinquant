@@ -1,6 +1,5 @@
 import hashlib
 import hmac
-import json
 from io import BytesIO
 from urllib.error import HTTPError
 from unittest import TestCase

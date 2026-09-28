@@ -109,17 +109,6 @@ class SessionExchange(Binance):
             SessionExchange._dfii10_history = history = type(history)()
         return history.snapshot(self.now_ms)
 
-    def last_settled_funding(self, now_ms):
-        """Last official settlement at or before now. Later rates stay unused."""
-        import bisect
-        series = self.market.funding
-        if not series:
-            return None
-        index = bisect.bisect_right(series, (int(now_ms), D('1')))
-        if index == 0:
-            return None
-        return series[index - 1][1]
-
     def _transport(self, request, timeout):
         method, path, params = self._inflight
         if method != 'GET':

@@ -1,32 +1,45 @@
+import inspect
+import json
 import unittest
-from coinquant.research import economic_limits, spec
+from decimal import Decimal as D
+from pathlib import Path
+
+from coinquant import campaign
+from research import rebuild, session_schedule
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def targets_met(spec, cagr, mdd):
+    return D(cagr) >= D(spec['cagr_minimum_inclusive']) and 0 <= D(mdd) < D(spec['mdd_maximum_exclusive'])
+
 
 class AcceptanceTests(unittest.TestCase):
-    def test_current_contract_separates_unchanged_historical_benchmark(self):
-        import hashlib,json
-        from pathlib import Path
-        root=Path(__file__).resolve().parents[1]
-        current=json.loads((root/'research/spec.json').read_text())
-        historical=(root/current['legacy_benchmark']['path']).read_bytes()
-        self.assertEqual(hashlib.sha256(historical).hexdigest(),current['legacy_benchmark']['sha256'])
-        self.assertEqual(json.loads(historical),spec())
-        self.assertEqual((current['venue'],current['symbol'],current['leverage']),('binance','BTCUSDT',20))
-        self.assertEqual(current['economic_qualification'],'NOT_MET')
-        self.assertEqual(current['native_qualification'],'NOT_QUALIFIED')
+    def setUp(self):
+        self.spec = json.loads((ROOT / 'research/spec.json').read_text())
+
+    def test_contract_identity_and_gates(self):
+        spec = self.spec
+        self.assertEqual((spec['venue'], spec['symbol'], spec['leverage']), ('binance', 'BTCUSDT', 20))
+        self.assertEqual((spec['start'], spec['end'], spec['initial_cny']),
+                         ('2020-01-01T00:00:00Z', '2026-09-20T00:00:00Z', '10000'))
+        self.assertEqual(spec['economic_qualification'], 'NOT_MET')
+        self.assertEqual(spec['native_qualification'], 'NOT_QUALIFIED')
 
     def test_recorded_default_matches_code_and_reproduction_command(self):
-        import inspect,json
-        from decimal import Decimal as D
-        from pathlib import Path
-        from coinquant import campaign
-        from research import rebuild
-        current=json.loads((Path(__file__).resolve().parents[1]/'research/spec.json').read_text())
-        self.assertEqual(D(current['model']['risk_scale']),D(campaign.PRIMARY_RISK))
-        basis=current['current_session_replay']['accepted_basis']['mark_gap_policy']
-        self.assertEqual(inspect.signature(rebuild.trial).parameters['mark_gap'].default,basis)
+        replay = self.spec['current_session_replay']
+        self.assertEqual(D(self.spec['model']['risk_scale']), D(campaign.PRIMARY_RISK))
+        self.assertEqual(inspect.signature(rebuild.trial).parameters['mark_gap'].default,
+                         replay['accepted_basis']['mark_gap_policy'])
+        self.assertEqual(session_schedule.load()['primary']['sha256'], replay['schedule_sha256'])
+        for entry in [replay['accepted_basis']['result'], *replay['accepted_basis']['stresses'].values()]:
+            self.assertTrue((ROOT / entry['evidence']).exists(), entry['evidence'])
 
-    def test_authorized_exact_boundaries(self):
-        frozen = spec()
-        self.assertTrue(economic_limits('1.5', '0.499999999999999999', frozen))
-        self.assertFalse(economic_limits('1.499999999999999999', '0.1', frozen))
-        self.assertFalse(economic_limits('2', '0.5', frozen))
+    def test_exact_target_boundaries(self):
+        self.assertTrue(targets_met(self.spec, '1.5', '0.499999999999999999'))
+        self.assertFalse(targets_met(self.spec, '1.499999999999999999', '0.1'))
+        self.assertFalse(targets_met(self.spec, '2', '0.5'))
+
+
+if __name__ == '__main__':
+    unittest.main()

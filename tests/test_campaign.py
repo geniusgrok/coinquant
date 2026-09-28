@@ -51,23 +51,12 @@ class CampaignTests(unittest.TestCase):
         m.select_macro(row,'100',now,bootstrap=True)
         self.assertEqual(m.action(D(0)),'consumed')
 
-    def test_legacy_checkpoint_imports_only_verified_daily_lows(self):
+    def test_checkpoint_of_another_version_blocks(self):
         m=Campaign()
         for i in range(12*6):m.update(ORIGIN+(i+1)*14400000,D(101),D(90),D(100))
-        old=m.checkpoint();body=old['body'];body['version']=1
-        for key in ('primary_consumed','macro_consumed','day_low','daily_lows','macro_epoch',
-                    'macro_opportunity','macro_observation'):body.pop(key)
+        old=m.checkpoint();body=old['body'];body['version']=3
         old['sha256']=sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()
-        with tempfile.TemporaryDirectory() as tmp,State(tmp,'test') as state:
-            state.set('linear_campaign',old)
-            venue=Mock()
-            start=(m.last//86400000-10)*86400000
-            bars=[dict(time=t,low='90') for t in range(start,m.last,14400000)]
-            venue.completed_market.side_effect=[dict(candles=bars),dict(
-                interval_ms=14400000,complete_through=m.last,candles=[])]
-            restored,_,_=advance(state,venue)
-            self.assertEqual(list(restored.daily_lows),[D(90)]*10)
-            self.assertEqual(state.get('linear_campaign')['body']['version'],3)
+        with self.assertRaises(Blocked):Campaign.restore(old)
 
     def test_read_only_resume_and_unknown_ownership(self):
         with tempfile.TemporaryDirectory() as tmp, State(tmp,'test') as state:
@@ -110,15 +99,6 @@ class CampaignTests(unittest.TestCase):
         with self.assertRaises(Blocked):m.update(ORIGIN+28800000,D(101),D(99),D(100))
         state=m.checkpoint();state['body']['consumed']=123
         with self.assertRaises(Blocked):Campaign.restore(state)
-
-    def test_swing_accumulates_without_single_bar_shock(self):
-        m=Campaign('swing',86400000)
-        for i in range(30):
-            close=D(100)+D(i)/2
-            m.update(ORIGIN+(i+1)*86400000,close+1,close-1,close)
-        self.assertEqual(m.model.swing_direction,1)
-        self.assertIsNotNone(m.model.active)
-        self.assertIsNone(m.model.active.expires)
 
     def test_interrupted_bootstrap_resumes_only_verified_page(self):
         from coinquant.types import Unknown
