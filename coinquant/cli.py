@@ -25,8 +25,10 @@ def connect(config, *, authorize_writes=False):
     key,secret=(os.environ.get(name,'') for name in names)
     if not key or not secret:
         raise Blocked(f'explicit Binance {config.environment} read credentials required ({names[0]}, {names[1]})')
-    return Binance(key=key,secret=secret,environment=config.environment,
+    reader=Binance(key=key,secret=secret,environment=config.environment,
                    capital_limit=config.capital_limit,authorize_writes=authorize_writes)
+    reader.align_time=True
+    return reader
 
 
 def source_digest():

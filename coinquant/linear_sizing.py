@@ -39,7 +39,7 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
     delta = min(abs(raw-old), capacity)
     size_reason = ('liquidity_cap' if capacity < abs(raw-old) else
                    'notional_cap' if raw < requested else 'target')
-    delta = market_quantity(delta, price, instrument) if instrument else floor_step(delta, LOT)
+    delta = market_quantity(delta, price, instrument, order='LIMIT') if instrument else floor_step(delta, LOT)
     result = dict(requested=str(requested), accepted='0', reason='minimum_or_unchanged', event='', amount=ZERO)
     if not delta:
         return result
@@ -84,7 +84,7 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
             middle = (low+high)/2
             if preview(middle) is None: high = middle
             else: low = middle
-        delta = market_quantity(low, price, instrument) if instrument else floor_step(low, LOT)
+        delta = market_quantity(low, price, instrument, order='LIMIT') if instrument else floor_step(low, LOT)
         trial = preview(delta) if delta else None
         result['reason'] = 'funding_cap'
     else:

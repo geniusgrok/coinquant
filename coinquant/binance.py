@@ -24,11 +24,19 @@ PRIVATE = {'/api/v3/account', '/fapi/v3/account', '/fapi/v1/accountConfig',
            '/fapi/v1/commissionRate', '/fapi/v1/leverageBracket',
            '/fapi/v1/order', '/fapi/v1/algoOrder', '/fapi/v1/income',
            '/fapi/v1/positionMargin/history'}
-# Documented request/validation refusals. Anything else, including -1006/-1007
-# and every other 5xx, keeps an unknown execution status.
-REJECT_CODES = frozenset({-1021, -1022, -2010, -2011, -2013, -2014, -2015, -2018, -2019,
-                          -2020, -2021, -2022, -2024, -2025}
-                         | set(range(-1199, -1099)) | set(range(-4999, -3999)))
+# A refusal of this request: nothing new was accepted under the identity.
+# -4116 (duplicate client id), -4117 (stop is triggering) and -4115/-4111
+# (duplicate client transfer id) are not in this set: the earlier object may exist.
+# Anything else, including -1006/-1007 and every 5xx, stays an unknown execution.
+REJECT_CODES = frozenset({
+    -1021, -1022, -1100, -1101, -1102, -1103, -1104, -1105, -1106, -1108, -1111,
+    -1114, -1115, -1116, -1117, -1118, -1119, -1120, -1121, -1127, -1128, -1130,
+    -2010, -2011, -2013, -2014, -2015, -2018, -2019, -2020, -2021, -2022, -2024, -2025,
+    -4000, -4001, -4002, -4003, -4004, -4005, -4006, -4007, -4008, -4009, -4010,
+    -4011, -4012, -4013, -4014, -4015, -4016, -4022, -4023, -4024, -4028, -4044,
+    -4045, -4050, -4051, -4054, -4055, -4060, -4061, -4062, -4087, -4118, -4120,
+    -4131, -4137, -4138, -4140, -4141, -4142, -4144, -4164, -4183, -4184,
+})
 # HTTP 503 bodies Binance documents as failed operations (-1008 is matched by
 # code). "Unknown error, please check your request or try again later." and
 # every other 503 keep an unknown execution status.
@@ -69,6 +77,10 @@ class Binance:
         self.all_orders_checked_at = None
         self.deadline = self.monotonic() + 120
         self._dfii10 = None
+        self.align_time = False
+        self.time_offset_ms = 0
+        self.time_aligned_at = None
+        self.server_weight = None
 
     def dfii10_snapshot(self):
         from .dfii10 import Source
@@ -94,12 +106,37 @@ class Binance:
         if last is None or self.monotonic() - last >= 60:
             self.check_all_orders = True
         self._cycle_config = None
+        if self.align_time:
+            self.align_clock()
+
+    def refresh_safety_observation(self):
+        """Drop cached account mode and the all-symbol scan before new risk."""
+        self._cycle_config = None
+        self.check_all_orders = True
+
+    def align_clock(self):
+        """Set the signing offset from Binance server time. Does not widen recvWindow."""
+        host = HOSTS[self.environment][1]
+        local = int(self.clock() * 1000)
+        started = self.monotonic()
+        with self.opener.open(Request('https://' + host + '/fapi/v1/time'), timeout=5) as response:
+            body = json.loads(response.read(10000))
+        server = body.get('serverTime') if isinstance(body, dict) else None
+        if type(server) is not int:
+            raise Unknown('Binance time response is not usable')
+        halfway = int((self.monotonic() - started) * 500)
+        self.time_offset_ms = server - (local + halfway)
+        self.time_aligned_at = self.monotonic()
 
     def ensure_capacity(self, reserve):
         now=self.monotonic()
         while self.request_weights and self.request_weights[0][0]<=now-60:
             self.request_weights.popleft()
-        if sum(cost for _,cost in self.request_weights)+reserve>2200:
+        used=sum(cost for _,cost in self.request_weights)
+        server=self.server_weight
+        if server is not None and server[0] > now-60:
+            used=max(used, server[1])
+        if used+reserve>2200:
             raise NotSent('local request-weight reserve unavailable; wait before new risk')
 
     def get(self, path, parameters=None):
@@ -168,7 +205,9 @@ class Binance:
         if private:
             if not self.key or not self.secret:
                 raise Blocked('explicit Binance credentials required for private reads')
-            params.update(timestamp=int(self.clock()*1000), recvWindow=5000)
+            if self.align_time and (self.time_aligned_at is None or self.monotonic()-self.time_aligned_at > 60):
+                raise NotSent('exchange clock is not aligned; no signed request')
+            params.update(timestamp=int(self.clock()*1000)+self.time_offset_ms, recvWindow=5000)
             headers['X-MBX-APIKEY'] = self.key
         query = urlencode(sorted(params.items()))
         if private:
@@ -211,6 +250,13 @@ class Binance:
     def _transport(self, request, timeout):
         """Network exchange. Historical replay overrides this and does not patch time."""
         with self.opener.open(request, timeout=timeout) as response:
+            headers = getattr(response, 'headers', None)
+            used = headers.get('X-MBX-USED-WEIGHT-1M') if headers is not None else None
+            if used is not None:
+                try:
+                    self.server_weight = (self.monotonic(), int(used))
+                except (TypeError, ValueError):
+                    pass
             raw = response.read(2000001)
         if len(raw)>2000000: raise Unknown('oversized Binance response')
         # Numeric amounts, such as a margin response, stay exact decimals.
@@ -683,13 +729,15 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
             'qualification':'NOT_QUALIFIED'}
 
 
-def market_quantity(maximum, mark, instrument, *, reduce_only=False):
+def market_quantity(maximum, mark, instrument, *, reduce_only=False, order='MARKET'):
     """Round DOWN a risk-sized quantity using one observed native filter snapshot.
 
-    This validates quantity/minimum shape, not fill certainty or historical rules.
-    Caller must retain snapshot provenance and enforce execution lifecycle gates.
-    Never rounds up to manufacture an executable order outside its risk budget.
+    LIMIT uses LOT_SIZE. MARKET also uses MARKET_LOT_SIZE. A reduce-only order
+    may be below the minimum notional. This validates quantity shape, not fill
+    certainty. Never rounds up past the caller's risk budget.
     """
+    if order not in ('MARKET', 'LIMIT'):
+        raise Blocked('unknown order quantity rule')
     from decimal import Decimal
     from math import lcm
     maximum=number(maximum);mark=number(mark,positive=True)
@@ -698,11 +746,12 @@ def market_quantity(maximum, mark, instrument, *, reduce_only=False):
     filters=instrument.get('filters')
     if not isinstance(filters,list):raise Unknown('missing native order filters')
     selected={}
-    for name in ('LOT_SIZE','MARKET_LOT_SIZE','MIN_NOTIONAL'):
+    required=('LOT_SIZE','MIN_NOTIONAL') if order=='LIMIT' else ('LOT_SIZE','MARKET_LOT_SIZE','MIN_NOTIONAL')
+    for name in required:
         rows=[r for r in filters if r.get('filterType')==name]
         if len(rows)!=1:raise Unknown('missing or duplicate native quantity filter')
         selected[name]=rows[0]
-    lots=[selected['LOT_SIZE'],selected['MARKET_LOT_SIZE']]
+    lots=[selected[name] for name in required if name!='MIN_NOTIONAL']
     steps=[number(r.get('stepSize')) for r in lots]
     minima=[number(r.get('minQty')) for r in lots]
     maxima=[number(r.get('maxQty'),positive=True) for r in lots]

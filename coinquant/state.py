@@ -18,6 +18,13 @@ from .campaign import ORIGIN
 from .config import ENVIRONMENTS, scope
 
 
+def _account_lock_path(identity: str) -> Path:
+    """One lock file per account identity, shared by every state directory."""
+    root = Path.home() / '.local' / 'state' / 'coinquant' / 'account-locks'
+    root.mkdir(parents=True, exist_ok=True, mode=0o700)
+    return root / hashlib.sha256(identity.encode()).hexdigest()
+
+
 def client_id(account: str, candle: int, operation: str) -> str:
     # Independent of local state and parameters: lost state cannot change an ID.
     identity = f'BTCUSD|{account}|{candle}|{operation}'.encode()
@@ -34,6 +41,7 @@ class State:
         self.directory = Path(directory).expanduser().resolve()
         self.identity = identity
         self.lock = None
+        self.account_lock = None
         self.db = None
 
     def __enter__(self):
@@ -50,6 +58,17 @@ class State:
             else:
                 import fcntl
                 fcntl.flock(self.lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            self.account_lock = open(_account_lock_path(self.identity), 'a+b')
+            if os.name == 'nt':
+                import msvcrt
+                self.account_lock.seek(0)
+                if self.account_lock.read(1) == b'':
+                    self.account_lock.write(b'0'); self.account_lock.flush()
+                self.account_lock.seek(0)
+                msvcrt.locking(self.account_lock.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(self.account_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             self.db = sqlite3.connect(self.directory / 'intents.sqlite', timeout=0)
             self.db.execute('PRAGMA synchronous=FULL')
             self.db.execute('CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)')
@@ -75,6 +94,8 @@ class State:
         if self.lock is not None:
             # Closing releases the OS lock. Never cancel exchange orders here.
             self.lock.close(); self.lock = None
+        if self.account_lock is not None:
+            self.account_lock.close(); self.account_lock = None
 
     def get(self, key: str):
         row = self.db.execute('SELECT value FROM meta WHERE key=?', (key,)).fetchone()

@@ -79,9 +79,13 @@ def send_once(state, identity, send, method, path, payload):
         state.finish(identity,'rejected',{'not_sent':str(exc)})
     except Rejected as exc:
         state.finish(identity,'rejected',{'native_rejection':str(exc)})
-    except Exception:
+    except Exception as exc:
         # Never interpret transport/API errors as proof that the write failed.
-        pass
+        # Keep the identity unknown and record only the exception type.
+        row=state.db.execute('SELECT result FROM intents WHERE id=?',(identity,)).fetchone()
+        current=json.loads(row[0]) if row else {}
+        current['unresolved']={'stage':'send','error_type':type(exc).__name__}
+        state.finish(identity,'unknown',current)
 
 
 def settled_protection(reader,state,identity):
@@ -287,8 +291,31 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
         journal=dict(request=request,quantity=str(q),done=False)
         state.set(key,journal)
     if journal.get('done'):return before  # same operation must never protect a later position
-    original=D(journal['quantity'])
-    if q and q!=original:raise Unknown('partial fill or exposure change; retain protection and reconcile')
+    if 'original_quantity' not in journal:
+        journal['original_quantity']=journal['quantity']
+        state.set(key,journal)
+    original=D(journal['original_quantity'])
+    if q and q!=D(journal['quantity']):
+        # A smaller same-direction position can continue only after every
+        # prepared protection leg is terminal and one of them actually filled.
+        # An external change, or a child that is still working, stays unknown.
+        if q*original<=0 or abs(q)>abs(original):
+            raise Unknown('exposure grew or reversed during protection replacement')
+        explained=False
+        for identity in old_ids+new_ids:
+            row=state.db.execute('SELECT 1 FROM intents WHERE id=?',(identity,)).fetchone()
+            if not row:
+                continue
+            if not settled_protection(reader,state,identity):
+                raise Unknown('partial fill or exposure change; retain protection and reconcile')
+            child=(state.get('settled_protection') or {}).get(identity,{}).get('child')
+            if child is not None and D(child.get('executedQty') or 0)>0:
+                explained=True
+        if not explained:
+            raise Unknown('position changed without a terminal owned protection fill')
+        journal={**journal,'quantity':str(q)}
+        state.set(key,journal)
+        q=D(q)
 
     def retire(identity):
         if settled_protection(reader,state,identity):return

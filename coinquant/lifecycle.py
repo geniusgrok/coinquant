@@ -10,7 +10,7 @@ from . import binance_safety as safety
 from .native_preview import entry_preview, topup_preview
 from .ownership import TERMINAL, owned_observation
 from .state import client_id
-from .binance import UNACCEPTED_AFTER_MS
+from .binance import UNACCEPTED_AFTER_MS, market_quantity
 from .types import Blocked, Unknown, number, floor_step
 
 # Measured: first entry with protection about 400; an add under standing
@@ -29,6 +29,17 @@ REDUCE_SECONDS = 120
 RULES_FRESH_MS = 300000
 
 
+
+
+def _protection_fits(snapshot, stop, take):
+    """Whether the planned stop already sits on the safe side of liquidation."""
+    q = number(snapshot['quantity_btc'])
+    mark = number(snapshot['mark_price'])
+    liq = number(snapshot['native_liquidation_price'])
+    stop, take = number(stop), number(take)
+    if q > 0:
+        return 0 <= liq < stop < mark < take
+    return 0 < take < mark < stop < liq
 
 
 def margin_pending(state):
@@ -243,12 +254,20 @@ class Lifecycle:
         try:
             # With an earlier transfer unresolved, protection is still tried
             # against the observed liquidation price; it never sends another.
+            # Place the stop before the margin transfer when liquidation already
+            # sits beyond it, so that write is not a bare position.
+            fits = _protection_fits(snapshot, plan['stop'], plan['take'])
+            if fits:
+                snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
+                    plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
+                    snapshot=snapshot)
             if number(snapshot['isolated_wallet_usdt']) < target and not margin_pending(self.state):
                 snapshot = safety.add_margin(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],target,instrument=rules,authorized=self.authorized,snapshot=snapshot)
-            snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
-                plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
-                snapshot=snapshot)
+            if not fits:
+                snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
+                    plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
+                    snapshot=snapshot)
         except (Blocked, Unknown):
             # Native entry and protection are NOT atomic. Try a bounded reduction
             # with its own budget, but never assert that a disconnected venue accepted it.
@@ -276,15 +295,20 @@ class Lifecycle:
             return snapshot
         if snapshot['possible_entry_remainders']:
             raise Unknown('cannot close while a remainder could reopen the position')
+        rules = rules or self.instrument()
         operation = self.state.get('position_exit')
         if operation is not None:
             prior=client_id(self.state.identity,operation['epoch'],'reduce')
             row=self.state.db.execute('SELECT status,result FROM intents WHERE id=?',(prior,)).fetchone()
-            if row is None and q*operation['direction']>0 and abs(q)<number(operation['quantity']):
-                # The preflight rejected before preparing/sending an intent, so
-                # native protection may safely shrink this unsent request.
-                operation={**operation,'quantity':str(abs(q))}
-                self.state.set('position_exit',operation)
+            if row is None and q*operation['direction']>0:
+                # Unsent request. One market order cannot exceed the current
+                # MARKET_LOT_SIZE, so a larger position leaves in slices.
+                legal=market_quantity(abs(q),snapshot['mark_price'],rules,reduce_only=True)
+                if legal<=0:
+                    raise Blocked('position is below the native reducible quantity')
+                if number(operation['quantity'])!=legal:
+                    operation={**operation,'quantity':str(legal),'position_at_request':str(abs(q))}
+                    self.state.set('position_exit',operation)
             if row and row[0]=='confirmed':
                 terminal=owned_observation(self.state,self.reader,prior)['parent']
                 if terminal.get('status') not in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED'):
@@ -298,12 +322,17 @@ class Lifecycle:
                 # Refused locally or by Binance: nothing executed under that identity.
                 operation=None
         if operation is None:
-            operation = dict(epoch=self.epoch(), quantity=str(abs(q)),direction=1 if q>0 else -1)
+            legal=market_quantity(abs(q),snapshot['mark_price'],rules,reduce_only=True)
+            if legal<=0:
+                raise Blocked('position is below the native reducible quantity')
+            operation = dict(epoch=self.epoch(), quantity=str(legal),direction=1 if q>0 else -1,
+                             position_at_request=str(abs(q)))
             self.state.set('position_exit',operation)
-        if q*operation['direction']<=0 or abs(q) > number(operation['quantity']):
+        opened=number(operation.get('position_at_request', operation['quantity']))
+        if q*operation['direction']<=0 or abs(q)>opened:
             raise Unknown('position grew during durable exit')
         result = safety.reduce_existing(self.reader,self.state,self.send,self.uid,
-            operation['epoch'],operation['quantity'],instrument=rules or self.instrument(),authorized=self.authorized,
+            operation['epoch'],operation['quantity'],instrument=rules,authorized=self.authorized,
             snapshot=snapshot if observed else None)
         if number(result['quantity_btc']):
             raise Unknown('partial exit remains; reconcile before another reduction')
@@ -397,6 +426,7 @@ class Lifecycle:
     def enter(self, model, snapshot):
         if self.state.pending() or snapshot['possible_entry_remainders'] or number(snapshot['quantity_btc']):
             raise Unknown('entry requires reconciled flat account')
+        self.reader.refresh_safety_observation()
         self.reader.ensure_capacity(ENTRY_RESERVE+PREVIEW_WEIGHT)
         plan = entry_preview(self.reader,model,snapshot)
         self.entry_constraint = plan.get('constraint')
@@ -502,6 +532,7 @@ class Lifecycle:
         if model.active is model.macro_opportunity and fill.get('stop_budget') is None:
             return snapshot
         try:
+            self.reader.refresh_safety_observation()
             self.reader.ensure_capacity(TOPUP_RESERVE+PREVIEW_WEIGHT)
         except Unknown:
             return snapshot  # a later poll of this session may add
