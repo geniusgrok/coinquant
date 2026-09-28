@@ -10,6 +10,7 @@ from . import binance_safety as safety
 from .native_preview import entry_preview, topup_preview
 from .ownership import TERMINAL, owned_observation
 from .state import client_id
+from .binance import UNACCEPTED_AFTER_MS
 from .types import Blocked, Unknown, number, floor_step
 
 # Measured: first entry with protection about 400; an add under standing
@@ -25,9 +26,6 @@ PROTECT_SECONDS = 120
 REDUCE_SECONDS = 90
 
 
-# A signed request is refused after timestamp+recvWindow (5 s); this leaves a
-# wide margin for clock skew before a never-observed request is retired.
-STALE_INTENT_MS = 300000
 
 
 def margin_pending(state):
@@ -149,7 +147,7 @@ class Lifecycle:
             row = self.state.db.execute('SELECT result FROM intents WHERE id=?', (pending['id'],)).fetchone()
             result = json.loads(row[0])
             prepared = result.get('prepared_at_ms')
-            if pending['status'] != 'unknown' or type(prepared) is not int or observed-prepared < STALE_INTENT_MS:
+            if pending['status'] != 'unknown' or type(prepared) is not int or observed-prepared < UNACCEPTED_AFTER_MS:
                 continue
             self.state.finish(pending['id'], 'void', {**result, 'flat_observed_at_ms': observed})
 
@@ -404,7 +402,8 @@ class Lifecycle:
         self.state.set('entry_plan',plan)
         self.state.set('entry_fill',dict(campaign=plan['campaign'],requested=plan['requested_btc'],
                                          session=self.session,stop_budget=plan.get('stop_budget_usdt')))
-        self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh)
+        self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh,
+                           result={'prepared_at_ms':int(self.reader.clock()*1000)})
         safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
         # Shortest path to protection for this IOC's own proven fill; the full
@@ -520,7 +519,8 @@ class Lifecycle:
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
                        timeInForce='IOC',quantity=plan['quantity_btc'],
                        price=plan['entry_estimate'],newClientOrderId=identity,newOrderRespType='RESULT')
-        self.state.prepare(identity,'binance_order',payload,campaign=fill['campaign'],position_snapshot=fresh)
+        self.state.prepare(identity,'binance_order',payload,campaign=fill['campaign'],position_snapshot=fresh,
+                           result={'prepared_at_ms':int(self.reader.clock()*1000)})
         safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
         return self.recover_exposure(snapshot)

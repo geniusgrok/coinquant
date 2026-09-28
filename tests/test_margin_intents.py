@@ -10,7 +10,7 @@ from urllib.error import HTTPError
 from coinquant.binance import Binance
 from coinquant.binance_safety import add_margin, send_once
 from coinquant.state import State
-from coinquant.types import Blocked, Unknown
+from coinquant.types import Blocked, Missing, Unknown
 from tests.test_binance_safety import Native, rules
 
 
@@ -176,9 +176,38 @@ class WriteClassificationTests(unittest.TestCase):
         self.assertEqual(answer['amount'],D('623.19382938882948900'))
 
     def test_read_rejections_remain_unknown(self):
+        for path,answer in (('/fapi/v1/order',rejection(400,-1102)),('/fapi/v1/algoOrder',rejection(400,-2013))):
+            reader,_http=self.reader(answer)
+            with self.assertRaises(Unknown) as caught:reader.get(path,{'symbol':'BTCUSDT','origClientOrderId':'cq-x'})
+            self.assertEqual(type(caught.exception),Unknown)
+        # A missing ordinary order is a distinct observation, never a write rejection.
         reader,_http=self.reader(rejection(400,-2013))
-        with self.assertRaises(Unknown) as caught:reader.get('/fapi/v1/order',{'symbol':'BTCUSDT','origClientOrderId':'cq-x'})
-        self.assertEqual(type(caught.exception),Unknown)
+        with self.assertRaises(Missing):reader.get('/fapi/v1/order',{'symbol':'BTCUSDT','origClientOrderId':'cq-x'})
+
+    def test_lost_add_that_never_arrived_stops_blocking_the_exit_after_its_signature_expired(self):
+        from coinquant.binance_safety import reduce_existing
+        payload=dict(self.payload,newClientOrderId='cq-x')
+        now=[1770004800.0]
+        reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
+        self.state.prepare('cq-x','binance_order',payload,result={'prepared_at_ms':int(now[0]*1000)})
+        send_once(self.state,'cq-x',lambda *a:(_ for _ in ()).throw(TimeoutError()),'POST','/fapi/v1/order',payload)
+        for later,pending in ((0,1),(299,1),(301,0)):
+            now[0]=1770004800.0+later
+            reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
+            self.assertEqual(reader.recover_pending(self.state)['pending'],pending,later)
+        self.assertEqual(self.state.db.execute("SELECT status FROM intents").fetchone()[0],'rejected')
+        native=Native()
+        after=reduce_existing(native,self.state,native.send,'123',100,'.003',instrument=rules(),authorized=True)
+        self.assertEqual(after['quantity_btc'],'0')
+
+    def test_missing_order_without_a_preparation_time_or_past_retention_stays_unknown(self):
+        now=[1770004800.0]
+        self.state.prepare('cq-x','binance_order',self.payload)
+        self.state.prepare('cq-y','binance_order',dict(self.payload,newClientOrderId='cq-y'),
+                           result={'prepared_at_ms':int(now[0]*1000)})
+        now[0]+=2*86400
+        reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
+        self.assertEqual(reader.recover_pending(self.state)['pending'],2)
 
     def test_margin_rejection_blocks_without_pending(self):
         native=Native()
