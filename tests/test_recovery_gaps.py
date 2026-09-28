@@ -6,7 +6,6 @@ from unittest.mock import patch
 
 from coinquant.config import Config
 from coinquant.session import run
-from coinquant.state import State
 from coinquant.types import Unknown
 from tests.session_venue import Venue
 
