@@ -36,6 +36,14 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
     if execute:
         # Missing cashflow audit blocks new risk, never a verified reduction.
         if result['action']=='enter':audit=income(reader,state)
+        elif result['action']=='hold':
+            # A hold may add to the position; the add needs the same prior audit.
+            # Maintaining existing protection does not.
+            try:
+                audit=income(reader,state)
+                engine.may_add=True
+            except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError):
+                engine.may_add=False
         writes=len(engine.actions)
         action,snapshot=engine.decide(model,snapshot)
         # A fill may occur in any write/read race. Reconcile again before deciding

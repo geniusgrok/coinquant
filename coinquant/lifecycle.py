@@ -29,6 +29,8 @@ class Lifecycle:
         self.actions = []
         self.entry_constraint = None
         self.reconciled = None
+        # Set only by a cashflow audit that completed before this decision.
+        self.may_add = False
 
     def send(self, method, path, payload):
         if not self.authorized:
@@ -388,7 +390,7 @@ class Lifecycle:
         """
         fill = self.state.get('entry_fill')
         protection = self.state.get('position_protection')
-        if (not fill or self.session is None or fill.get('session') != self.session or not protection
+        if (not self.may_add or not fill or self.session is None or fill.get('session') != self.session or not protection
                 or fill.get('campaign') != protection.get('campaign') or model.active is None
                 or model.active.identity != fill['campaign'] or not self.may_enter()):
             return snapshot
