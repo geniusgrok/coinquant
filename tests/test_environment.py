@@ -8,7 +8,7 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from coinquant.binance import Binance
-from coinquant.cli import main, observe
+from coinquant.cli import main, observe, source_digest, trial_gate
 from coinquant.config import Config
 from coinquant.session import run
 from coinquant.state import State
@@ -55,8 +55,9 @@ class EnvironmentTests(TestCase):
                     observe(config)
                 venue.assert_not_called()
             demo = {'COINQUANT_BINANCE_DEMO_KEY': 'demo', 'COINQUANT_BINANCE_DEMO_SECRET': 'demo'}
-            with patch.dict('os.environ', demo, clear=True), patch('coinquant.cli.Binance') as venue:
+            with patch.dict('os.environ', demo, clear=True), patch('coinquant.cli.Binance') as venue,patch('coinquant.cli.Lifecycle.instrument'):
                 venue.return_value.snapshot.return_value = {'equity_usdt': '100'}
+                venue.return_value.recover_pending.return_value={'resolved':0,'pending':0}
                 result = observe(config)
                 self.assertEqual(result['environment'], 'demo')
                 self.assertEqual(venue.call_args.kwargs['environment'], 'demo')
@@ -81,6 +82,33 @@ class EnvironmentTests(TestCase):
                     patch('sys.stderr', io.StringIO()):
                 self.assertEqual(main(['run', '--execute', '--config', str(config)]), 2)
                 venue.assert_not_called()
+
+    def test_controlled_demo_writes_use_the_same_session_and_adapter(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config=self._config(tmp,environment='demo',capital_limit_usdt='100')
+            keys={'COINQUANT_BINANCE_DEMO_KEY':'d','COINQUANT_BINANCE_DEMO_SECRET':'s',
+                  'COINQUANT_BINANCE_KEY':'live','COINQUANT_BINANCE_SECRET':'live'}
+            with patch.dict('os.environ',keys,clear=True),patch('coinquant.cli.Binance') as venue, \
+                    patch('coinquant.session.run',return_value={'status':'no_action'}) as session, \
+                    patch('sys.stdout',io.StringIO()),patch('sys.stderr',io.StringIO()):
+                self.assertEqual(main(['run','--config',str(config),'--execute','--trial','demo',
+                                       '--authorize-uid','123']),0)
+                self.assertEqual(venue.call_args.kwargs['key'],'d')
+                self.assertTrue(venue.call_args.kwargs['authorize_writes'])
+                self.assertTrue(session.call_args.kwargs['execute'])
+                session.assert_called_once()
+
+    def test_live_trial_needs_reviewed_matching_demo_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config=self._config(tmp,environment='live',capital_limit_usdt='100')
+            with self.assertRaises(Blocked):trial_gate(config,Config('123',str(Path(tmp)/'state'),environment='live',capital_limit_usdt='100'),mode='live',uid='123')
+            evidence=Path(tmp)/'evidence.json'
+            proof=dict(source_digest='wrong',demo_uid='456',demo_capital_limit_usdt='100',entry_order_id='1',stop_algo_id='2',
+                       take_algo_id='3',reduction_order_id='4',offline_trigger_order_id='5')
+            evidence.write_text(json.dumps(proof))
+            with self.assertRaises(Blocked):trial_gate(config,Config('123',str(Path(tmp)/'state'),environment='live',capital_limit_usdt='100'),mode='live',uid='123',evidence=evidence)
+            proof['source_digest']=source_digest();evidence.write_text(json.dumps(proof))
+            trial_gate(config,Config('123',str(Path(tmp)/'state'),environment='live',capital_limit_usdt='100'),mode='live',uid='123',evidence=evidence)
 
     def test_session_refuses_an_adapter_for_another_environment_or_limit(self):
         with tempfile.TemporaryDirectory() as tmp:

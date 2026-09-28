@@ -1,7 +1,7 @@
 """The Binance order lifecycle used by both finite sessions and event replay.
 
 No daemon, independent cash ledger or strategy selector. Transport acknowledgments
-never settle an intent. The live CLI remains gated until native qualification.
+never settle an intent. The CLI permits only explicit bounded trial writes.
 """
 import json
 from decimal import Decimal as D
@@ -60,6 +60,18 @@ class Lifecycle:
     def send(self, method, path, payload):
         if not self.authorized:
             raise Blocked('read-only session cannot send orders')
+        plan=self.state.get('entry_plan')
+        if plan and method=='POST':
+            timing=self.state.get('entry_timing') or {'entry_id':plan['id']}
+            field=None
+            if path=='/fapi/v1/order' and payload.get('newClientOrderId')==plan['id']:
+                field='entry_send_attempt_at_ms'
+            elif (path=='/fapi/v1/algoOrder' and payload.get('type')=='STOP_MARKET'
+                  and payload.get('clientAlgoId')==client_id(self.state.identity,plan['epoch'],'STOP_MARKET')):
+                field='stop_send_attempt_at_ms'
+            if field:
+                timing[field]=int(self.reader.clock()*1000)
+                self.state.set('entry_timing',timing)
         self.state.set('write_attempt_count',(self.state.get('write_attempt_count') or 0)+1)
         self.actions.append(dict(method=method, path=path, id=payload.get('newClientOrderId', payload.get('clientAlgoId', payload.get('origClientOrderId')))))
         return self.reader.send(method, path, payload)
@@ -204,9 +216,9 @@ class Lifecycle:
                 return False
             ids.add(trade['id']); total += number(trade.get('qty'),positive=True)
         last = snapshot.get('last_fill_id')
-        return total == number(parent['executedQty']) == abs(q) and (last == cursor or last in ids)
+        return parent if total == number(parent['executedQty']) == abs(q) and (last == cursor or last in ids) else None
 
-    def protect_entry(self, snapshot, plan):
+    def protect_entry(self, snapshot, plan, *, proven_order=None):
         """Protect only verified fills of the journaled entry, including partials.
 
         `snapshot` must be observed after the latest write; it is reused by the
@@ -218,7 +230,7 @@ class Lifecycle:
         expected = number(plan['quantity_btc'])
         if q*expected <= 0 or abs(q) > abs(expected):
             raise Unknown('entry fill direction or size conflicts with its plan')
-        observed = owned_observation(self.state,self.reader,plan['id'])['parent']
+        observed = proven_order or owned_observation(self.state,self.reader,plan['id'])['parent']
         if number(observed['executedQty']) != abs(q):
             raise Unknown('actual position is not the verified entry fill')
         # The reserve was calculated before entry; scale to actual executed size.
@@ -320,7 +332,8 @@ class Lifecycle:
                 plan=self.state.get('entry_plan')
                 if plan and number(snapshot['quantity_btc']) and not self.state.get('position_exit'):
                     try:
-                        if self.entry_fill_proven(plan,snapshot):self.protect_entry(snapshot,plan)
+                        proven=self.entry_fill_proven(plan,snapshot)
+                        if proven:self.protect_entry(snapshot,plan,proven_order=proven)
                     except (Blocked,Unknown):pass
                 raise
         if not number(snapshot['quantity_btc']):
@@ -414,6 +427,7 @@ class Lifecycle:
                                          session=self.session,stop_budget=plan.get('stop_budget_usdt')))
         self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh,
                            result={'prepared_at_ms':int(self.reader.clock()*1000)})
+        self.state.set('entry_timing',{'entry_id':identity})
         safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
         # Shortest path to protection for this IOC's own proven fill; the full
@@ -423,7 +437,11 @@ class Lifecycle:
         except (Blocked,Unknown):
             proven = False
         if proven:
-            snapshot = self.protect_entry(snapshot,plan)
+            timing=self.state.get('entry_timing') or {}
+            if timing.get('entry_id')==identity:
+                timing['fill_confirmed_at_ms']=int(self.reader.clock()*1000)
+                self.state.set('entry_timing',timing)
+            snapshot = self.protect_entry(snapshot,plan,proven_order=proven)
         return self.recover_exposure(snapshot)
 
     def maintain(self, model, snapshot):

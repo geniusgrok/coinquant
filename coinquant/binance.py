@@ -34,12 +34,9 @@ REJECT_CODES = frozenset({-1021, -1022, -2010, -2011, -2013, -2014, -2015, -2018
 # every other 503 keep an unknown execution status.
 FAILED_503 = frozenset({'Service Unavailable.',
                         'Internal error; unable to process your request. Please try again.'})
-# A signed request is refused after timestamp+recvWindow (5 s). Past this age a
-# request that is still not visible can no longer be accepted.
+# A signed request expires, but its query visibility is independent of that
+# deadline. Never infer rejection from elapsed time and a missing query.
 UNACCEPTED_AFTER_MS = 300000
-# Binance keeps even a canceled/expired zero-fill order queryable for three
-# days; well inside that, "order does not exist" means it was never accepted.
-QUERYABLE_MS = 86400000
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -330,6 +327,12 @@ class Binance:
         unsupported intent kinds stay pending; never infer resolution.
         A canceled conditional parent does not settle a still-active child.
         """
+        # Migrate the old time-based false rejection in place. Keep the original
+        # client identity and payload; a later native order can still be found.
+        for identity, raw in state.db.execute("SELECT id,result FROM intents WHERE kind='binance_order' AND status='rejected'").fetchall():
+            result=json.loads(raw)
+            if 'absent_at_ms' in result:
+                state.finish(identity,'unknown',{**result,'legacy_absence_reopened':True})
         resolved = 0
         for intent in state.pending():
             kind, payload = intent['kind'], intent['payload']
@@ -381,8 +384,6 @@ class Binance:
                 try:
                     observed = self.query_intent(intent['id'], conditional=conditional)
                 except Missing:
-                    if not conditional and self.never_accepted(state, intent):
-                        resolved += 1
                     continue
                 parent, child = observed['parent'], observed['child']
                 for field in ('symbol', 'side', 'positionSide'):
@@ -442,24 +443,18 @@ class Binance:
                 if status == 'REJECTED' and executed:
                     raise Unknown('rejected order cannot prove a nonzero fill')
                 state.finish(intent['id'], 'confirmed', {'status': status, 'executed_quantity': str(executed)})
+                if not conditional:
+                    # The terminal parent is immutable. Reuse this verified read
+                    # for immediate fill ownership instead of querying it again
+                    # before the first protective stop.
+                    archived=state.get('terminal_native_orders') or {}
+                    archived[intent['id']]=observed
+                    state.set('terminal_native_orders',archived)
                 resolved += 1
             except (Blocked, Unknown, KeyError, TypeError, ValueError, ArithmeticError):
                 # Keep independent recoverable intents moving, never erase unknowns.
                 continue
         return {'resolved': resolved, 'pending': len(state.pending())}
-
-    def never_accepted(self, state, intent):
-        """An ordinary order Binance reports as nonexistent, long after its signed
-        request expired and well inside the documented query retention, was
-        never accepted. Without its preparation time it stays unknown."""
-        row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
-        result=json.loads(row[0]) if row else {}
-        prepared=result.get('prepared_at_ms');now=int(self.clock()*1000)
-        if (intent['status']!='unknown' or type(prepared) is not int
-                or not UNACCEPTED_AFTER_MS<=now-prepared<QUERYABLE_MS):
-            return False
-        state.finish(intent['id'],'rejected',{**result,'absent_at_ms':now})
-        return True
 
     def recover_margin(self, state, intent):
         """Settle a transfer whose answer was lost from bounded native margin history.

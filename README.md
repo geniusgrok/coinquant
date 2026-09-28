@@ -2,11 +2,11 @@
 
 本公开仓库仅用于托管 geniusgrok 的个人量化研究代码和实验记录，项目仅供仓库所有者本人使用。公开可见不代表开放授权、邀请贡献或实盘交易。未经权利人事先书面许可，不得擅自使用、复制、抄袭、修改、改编、传播其原创代码与研究内容，也不得冒名署名。详见 [LICENSE](LICENSE)。
 
-**不得将本仓库作为实盘交易工具使用。** 策略、回测和收益数字仅为研究记录，不是投资建议、收益保证或可执行性证明。历史模拟不能证明真实撮合、费用、资金费、强平、网络故障和保护单失效等风险已得到控制；任何擅自使用所产生的行为与损失由使用者自行承担。
+**仅仓库所有者可在专用账户中进行受控 Demo 与小额主网验证；常规生产执行仍未获得资格。** 策略、回测和收益数字仅为研究记录，不是投资建议、收益保证或可执行性证明。历史模拟不能证明真实撮合、费用、资金费、强平、网络故障和保护单失效等风险已得到控制；任何擅自使用所产生的行为与损失由使用者自行承担。
 
 研究对象是个人使用的 Binance BTCUSDT U 本位永续系统，交易所设置20×，单向逐仓、单账户。手动启动一个有限会话，会话内持续读取真实行情与账户状态、重复判断，超时或 Ctrl-C 后退出；没有后台守护进程。
 
-**当前是工程集成版本。命令行仍禁止真实交易写入：原生交易所接入验证未完成，经济结果只在所有者接受的缺口口径下、且仅基准达标（见下文）。离线验证通过不等于生产资格。**
+**当前是工程集成版本。默认只读；显式受控 Demo 入口可用于原生验证。小额主网入口要求独立的 Demo 闭环证据和当次 UID 确认。离线验证通过不等于生产资格。**
 
 ## 所有者本地研究
 
@@ -31,11 +31,36 @@ python -m coinquant run --config config.json
 | `environment` | `live`（默认）或 `demo`：Binance 虚拟余额环境（`demo-fapi.binance.com`、`demo-api.binance.com`），使用自己的凭据变量与状态范围 `binance:BTCUSDT:demo:<uid>`；实盘状态目录拒绝 demo 配置，反之亦然 |
 | `capital_limit_usdt` | 可选，十进制字符串。模型只按 `min(钱包, 上限)` 计算仓位、逐仓保证金与宏观止损额度；钱包其余部分不是试验本金。它限制仓位规模，不是亏损上限：逐仓保证金与止损之间的跳空仍可能亏掉整笔逐仓保证金 |
 
-Demo 与实盘共用同一执行器，`run --execute` 在两种环境下都同样被阻止；Demo 账户 UID 接口与订单语义尚未原生验证。
+Demo 与主网共用同一执行器。`run` 默认只读；写入必须显式选择 `--execute --trial demo|live --authorize-uid`，配置必须显式写 `environment` 和正值 `capital_limit_usdt`。主网还须提供与当前执行源码摘要一致、经人工核验的 Demo 原生闭环证据；此 JSON 是审查记录，不是程序自动核验交易所证据的证明。Demo 账户 UID 接口与订单语义尚未原生验证。
 
 首次运行会从固定历史起点重建已完成4小时行情；网络不足以完成重建时返回未知，不用短历史冒充完整模型。已存在的仓位必须有可核验的本系统成交归属；禁止把新空目录当作空账户证明。同一账户只允许一台机器运行，本地锁覆盖整个会话。
 
-`run --execute` 在访问凭据和网络之前拒绝；本轮没有实盘或 Testnet 订单，也没有修改账户设置。不要删除这个阻止来试单。
+所有运行都使用同一个持久状态目录和本机独占锁；禁止其他程序或人工同时交易同一专用账户。检测到外部订单、成交或无法解释的资金变化即停止新风险。异常停止后先以同一目录 `status` 核对，不得删除 SQLite、清空状态或换目录重开。正常结束可保留已核验原生止盈止损的持仓；`latest.json` 的 `cleanup=unresolved` 需要人工接管，先停自动进程并核对交易所持仓、普通与条件订单及原身份。强杀、断电、断网不保证收尾。
+
+### 所有者受控试验入口
+
+先分别复制 [Demo 配置](config.demo.example.json) 与 [小额主网配置](config.live-trial.example.json)，填写实际 UID、固定且互不相同的状态目录和资金上限。用当前交易所只读凭据运行；没有凭据时不会访问交易所。Demo 使用 `COINQUANT_BINANCE_DEMO_KEY/SECRET`，主网使用 `COINQUANT_BINANCE_KEY/SECRET`，不得把密钥写进配置或聊天。API 权限只需读取及 U 本位合约交易；关闭提现与划转权限。账户预先由所有者设置为单向、单资产、BTCUSDT 逐仓、20×、关闭自动追加保证金；程序不会代设。程序会按计划主动追加逐仓保证金，这会增加仓位可承担的资金。专用主网合约账户里只放事前决定可承担风险的测试资金，不自动补钱；配置的上限不是累计亏损保护。按实际交易所最低数量、名义价值和保证金要求确定金额，不足时拒绝交易。
+
+```sh
+python -m coinquant status --config demo.json
+python -m coinquant run --config demo.json
+python -m coinquant run --config demo.json --execute --trial demo --authorize-uid <DEMO_UID>
+# Ctrl-C 请求停止；同一配置和状态目录再次运行即先恢复再决策
+python -m coinquant status --config demo.json
+```
+
+`status` 核对 UID、账户模式、余额、持仓、普通/条件订单及 BTCUSDT 合约规则。Demo 的实际入场、成交、原生止损与止盈、正常停止留仓、重启恢复、实际减仓，以及停进程后至少一种原生保护触发，须分别记录订单身份与账户证据；未出现的部分成交只能记录为未原生验证。`latest.json` 的 `entry_timing` 分别记录入场发送尝试、成交可确认、止损发送尝试、接受及账户回读时间。故障注入结果须与原生事件分开。不能为等待触发而故意在无保护的真实资金仓位上断网。
+
+Demo 闭环经人工核验后，在本机保存私有 `demo-closure.json`，填入 `source_digest`（`python -c 'from coinquant.cli import source_digest; print(source_digest())'`）、`demo_uid`、`demo_capital_limit_usdt`、`entry_order_id`、`stop_algo_id`、`take_algo_id`、`reduction_order_id`、`offline_trigger_order_id`，并保留相应交易所回读和状态目录。此文件只是准入记录，不能替代这些原件；源码变化会使准入失效。主网首次运行前由所有者确定投入总额、停止条件和当次交易意图，使用专用小额账户：
+
+```sh
+python -m coinquant status --config live-trial.json
+python -m coinquant run --config live-trial.json --execute --trial live --authorize-uid <LIVE_UID> --demo-evidence demo-closure.json
+# 正常停止或中断后，用原状态目录核对，再决定是否重启
+python -m coinquant status --config live-trial.json
+```
+
+主网验证尚未执行。首次小额主网运行要核对真实撮合、费用、资金费（发生时）、保护、余额、停止及恢复；任何停止条件都不能保证极端行情的成交价或最大亏损。经济资格仍是独立事项。
 
 ## 已实现的工程路径
 
@@ -88,7 +113,7 @@ Binance 月度/日度 vision 文件由 `python -m research.session_market --root
 - 2020-01-19 13:09–13:37 UTC 缺29分钟官方标记价而账户持仓。上表按账户所有者2026-09-28接受的实测偏离边界计算，不是完整历史路径（`path_complete=false`）；按逐仓保证金全部没收的上限，所有风险倍数 MDD 都超过50%（M2 测量，原件在 Git 历史）。
 - 基准两项达标；成本、滑点、深度三项压力 CAGR 略低于150%，随机跳过会话显著降低收益。参数在同一全历史窗口中选定，没有样本外或前向证据。
 - 人民币估值用 FRED DEXCHUS 的事后观测（H.10 每周发布），USDT 按美元等值，兑换成本0.1%为假设；汇率只用于估值，不进入决策。
-- 开空能力、经济结果与原生交易资格分别报告：默认模型不开空；真实账户上的成交、保护替换、断线和迟到成交核对未做，`run --execute` 保持阻止，资格为 `NOT_QUALIFIED`。
+- 开空能力、经济结果与原生交易资格分别报告：默认模型不开空；真实账户上的成交、保护替换、断线和迟到成交核对未做；受控试验入口不表示常规生产资格，资格为 `NOT_QUALIFIED`。
 
 详见 [经济重建结果](evidence/rebuild-20260927/RESULT.md)。原生工程资格和经济资格分别取得后才能启用生产。
 

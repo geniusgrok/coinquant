@@ -1,0 +1,8 @@
+{
+  "environment": "demo",
+  "account_uid": "",
+  "state_dir": "~/.coinquant/demo-btcusdt",
+  "capital_limit_usdt": "100",
+  "session_seconds": 300,
+  "poll_seconds": 5
+}

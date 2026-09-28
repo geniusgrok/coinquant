@@ -113,9 +113,11 @@ def reconcile(state, reader, model, snapshot):
     # rejected/zero-fill orders must not hide an older actually filled entry.
     filled=[];native={}
     for identity,link in links.items():
-        status=state.db.execute('SELECT status FROM intents WHERE id=?',(identity,)).fetchone()
+        status=state.db.execute('SELECT status,result FROM intents WHERE id=?',(identity,)).fetchone()
         if status and status[0]=='rejected':
-            continue  # never sent, or definitively refused by Binance: no native order
+            if 'absent_at_ms' in json.loads(status[1]):
+                raise Unknown('legacy time-based rejection requires native identity recovery')
+            continue  # locally not sent or definitively refused by Binance
         observed=owned_observation(state,reader,identity)['parent']
         row=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(identity,)).fetchone()
         if not row or row[0]!='binance_order':raise Unknown('missing durable entry intent')

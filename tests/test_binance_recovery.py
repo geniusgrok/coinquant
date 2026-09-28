@@ -2,9 +2,35 @@ import tempfile
 import unittest
 from coinquant.state import State
 from coinquant.binance import Binance
-from coinquant.types import Unknown
+from coinquant.types import Missing, Unknown
 
 class RecoveryTests(unittest.TestCase):
+    def test_late_missing_order_stays_unknown_then_original_fill_recovers(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp,'binance:BTCUSDT:live:123') as state:
+            payload=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='LIMIT',quantity='.001')
+            state.prepare('cq-add','binance_order',payload,result={'prepared_at_ms':100000})
+            reader=Binance(clock=lambda:100301)
+            reader.query_intent=lambda *a,**k:(_ for _ in ()).throw(Missing('late -2013'))
+            self.assertEqual(reader.recover_pending(state),dict(resolved=0,pending=1))
+            self.assertEqual(state.pending()[0]['id'],'cq-add')
+            reader.query_intent=lambda *a,**k:dict(parent=dict(payload,origQty='.001',executedQty='.001',status='FILLED'),child=None)
+            self.assertEqual(reader.recover_pending(state),dict(resolved=1,pending=0))
+            self.assertEqual(state.db.execute("SELECT status FROM intents WHERE id='cq-add'").fetchone()[0],'confirmed')
+
+    def test_old_false_rejection_reopens_without_resending_or_claiming_external_fill(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp,'binance:BTCUSDT:live:123') as state:
+            payload=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='LIMIT',quantity='.001')
+            state.prepare('cq-old','binance_order',payload)
+            state.finish('cq-old','rejected',{'prepared_at_ms':100000,'absent_at_ms':400000})
+            reader=Binance()
+            reader.query_intent=lambda *a,**k:(_ for _ in ()).throw(Missing('still missing'))
+            self.assertEqual(reader.recover_pending(state),dict(resolved=0,pending=1))
+            self.assertEqual(state.pending()[0]['id'],'cq-old')
+            state.prepare('cq-not-sent','binance_order',payload)
+            state.finish('cq-not-sent','rejected',{'not_sent':'local refusal'})
+            self.assertEqual(reader.recover_pending(state),dict(resolved=0,pending=1))
+            self.assertEqual(state.db.execute("SELECT status FROM intents WHERE id='cq-not-sent'").fetchone()[0],'rejected')
+
     def test_terminal_partial_fill_and_unknown_are_independent(self):
         with tempfile.TemporaryDirectory() as tmp, State(tmp,'binance:BTCUSDT:live:123') as state:
             payload=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='LIMIT',quantity='.01')

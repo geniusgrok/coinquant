@@ -199,21 +199,22 @@ class WriteClassificationTests(unittest.TestCase):
         reader,_http=self.reader(rejection(400,-2013))
         with self.assertRaises(Missing):reader.get('/fapi/v1/order',{'symbol':'BTCUSDT','origClientOrderId':'cq-x'})
 
-    def test_lost_add_that_never_arrived_stops_blocking_the_exit_after_its_signature_expired(self):
+    def test_lost_add_cannot_be_declared_rejected_from_age_and_missing_query(self):
         from coinquant.binance_safety import reduce_existing
         payload=dict(self.payload,newClientOrderId='cq-x')
         now=[1770004800.0]
         reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
         self.state.prepare('cq-x','binance_order',payload,result={'prepared_at_ms':int(now[0]*1000)})
         send_once(self.state,'cq-x',lambda *a:(_ for _ in ()).throw(TimeoutError()),'POST','/fapi/v1/order',payload)
-        for later,pending in ((0,1),(299,1),(301,0)):
+        for later,pending in ((0,1),(299,1),(301,1)):
             now[0]=1770004800.0+later
             reader,_http=self.reader(rejection(400,-2013));reader.clock=lambda:now[0]
             self.assertEqual(reader.recover_pending(self.state)['pending'],pending,later)
-        self.assertEqual(self.state.db.execute("SELECT status FROM intents").fetchone()[0],'rejected')
+        self.assertEqual(self.state.db.execute("SELECT status FROM intents").fetchone()[0],'unknown')
         native=Native()
-        after=reduce_existing(native,self.state,native.send,'123',100,'.003',instrument=rules(),authorized=True)
-        self.assertEqual(after['quantity_btc'],'0')
+        with self.assertRaises(Unknown):
+            reduce_existing(native,self.state,native.send,'123',100,'.003',instrument=rules(),authorized=True)
+        self.assertEqual(native.sent,[])
 
     def test_missing_order_without_a_preparation_time_or_past_retention_stays_unknown(self):
         now=[1770004800.0]
