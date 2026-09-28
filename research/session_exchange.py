@@ -62,6 +62,7 @@ class SessionExchange(Binance):
         self.bounded_minutes = []
         self.unknown_from = None
         self.peak_cny = D(10000)
+        self.peak_envelope_cny = D(10000)
         self.mdd_close = D(0)
         self.mdd_envelope = D(0)
         self.mdd_close_at = None
@@ -177,19 +178,29 @@ class SessionExchange(Binance):
                     unRealizedProfit=_text(pnl), liquidationPrice=_text(liq if self.q else 0))
 
     def _note(self, price, kind):
+        """`favorable` only raises the envelope peak; `envelope` is the adverse
+        extreme; `close` is a point of both series. Within a minute the
+        favorable extreme is taken before the adverse one."""
         equity = self.wallet + (self.q * (D(price) - self.entry) if self.q else D(0))
-        cny = equity * self._cny()
+        self._record(equity * self._cny(), kind)
+
+    def _record(self, cny, kind):
+        if cny > self.peak_envelope_cny:
+            self.peak_envelope_cny = cny
+        if kind == 'favorable':
+            return
+        drawdown = 1 - cny / self.peak_envelope_cny
+        if drawdown > self.mdd_envelope:
+            self.mdd_envelope = drawdown
+            self.mdd_envelope_at = self.now_ms
+        if kind != 'close':
+            return
         if cny > self.peak_cny:
             self.peak_cny = cny
-        if self.peak_cny > 0:
-            drawdown = 1 - cny / self.peak_cny
-            if kind == 'envelope':
-                if drawdown > self.mdd_envelope:
-                    self.mdd_envelope = drawdown
-                    self.mdd_envelope_at = self.now_ms
-            elif self.known_path and drawdown > self.mdd_close:
-                self.mdd_close = drawdown
-                self.mdd_close_at = self.now_ms
+        drawdown = 1 - cny / self.peak_cny
+        if self.known_path and drawdown > self.mdd_close:
+            self.mdd_close = drawdown
+            self.mdd_close_at = self.now_ms
 
     def advance_unattended(self, until_ms):
         """Exchange time only: mark, resting protection, funding, liquidation."""
@@ -220,17 +231,7 @@ class SessionExchange(Binance):
 
     def _note_cash(self):
         if not self.q:
-            equity = self.wallet * self._cny()
-            if equity > self.peak_cny:
-                self.peak_cny = equity
-            if self.peak_cny > 0 and self.known_path:
-                drawdown = 1 - equity / self.peak_cny
-                if drawdown > self.mdd_close:
-                    self.mdd_close = drawdown
-                    self.mdd_close_at = self.now_ms
-                if drawdown > self.mdd_envelope:
-                    self.mdd_envelope = drawdown
-                    self.mdd_envelope_at = self.now_ms
+            self._record(self.wallet * self._cny(), 'close')
 
     def _pay_funding(self, start_ms, end_ms):
         if not self.q:
@@ -273,6 +274,10 @@ class SessionExchange(Binance):
         stop, take = self._triggers()
         liq = self._liquidation()
         adverse = low if long else high
+        favorable = high if long else low
+        if take is not None:
+            favorable = min(favorable, take) if long else max(favorable, take)
+        self._note(favorable, 'favorable')
         self._note(adverse, 'envelope')
         self._note(close, 'close')
         hits = []

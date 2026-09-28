@@ -234,3 +234,15 @@ class SessionHistoryTests(TestCase):
         source = Path('research/session_exchange.py').read_text(encoding='utf-8')
         self.assertNotIn('invocation_draws', source)
         self.assertNotIn('starts_ms', source)
+
+
+class EnvelopePeakTests(TestCase):
+    def test_intraminute_high_before_a_fall_is_a_peak(self):
+        minute = ORIGIN + 30 * DAY
+        mark = {minute: (D(100), D(110), D(100), D(100), D(1))}
+        market = Market({}, (), identity={'trade': {}, 'mark': mark})
+        exchange = SessionExchange(market, minute, D(2000))
+        exchange.q, exchange.entry, exchange.margin = D(10), D(100), D(1000)
+        exchange._on_minute(minute)
+        self.assertEqual(exchange.mdd_envelope, 1 - D(2000) / D(2100))
+        self.assertEqual(exchange.mdd_close, 0)
