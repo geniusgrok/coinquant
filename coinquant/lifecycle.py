@@ -182,7 +182,8 @@ class Lifecycle:
         return self.cleanup_flat(result)
 
     def recover_exposure(self, snapshot):
-        # Match the complete native fill history before changing any position.
+        # Match the complete native fill history before changing any position;
+        # only protection of the journaled entry's own verified fill precedes it.
         # A stored plan alone cannot authorize changes to external/manual trades.
         if number(snapshot['quantity_btc']) or self.state.get('entry_campaigns'):
             from .campaign import Campaign
@@ -190,8 +191,18 @@ class Lifecycle:
             checkpoint=self.state.get('linear_campaign')
             if checkpoint is None:
                 raise Unknown('position recovery lacks its model/ownership checkpoint')
-            self.reconciled=(snapshot,len(self.actions),
-                             reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot))
+            try:
+                self.reconciled=(snapshot,len(self.actions),
+                                 reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot))
+            except (Blocked,Unknown):
+                # A fill of the journaled entry, sent from a verified flat account,
+                # is protected from its own terminal order evidence even when the
+                # history audit is unavailable. The audit still gates new risk.
+                plan=self.state.get('entry_plan')
+                if plan and number(snapshot['quantity_btc']) and not self.state.get('position_exit'):
+                    try:self.protect_entry(snapshot,plan)
+                    except (Blocked,Unknown):pass
+                raise
         if not number(snapshot['quantity_btc']):
             snapshot = self.cleanup_flat(snapshot)
             if not self.state.pending():
@@ -328,8 +339,9 @@ class Lifecycle:
 
         A macro campaign's whole position stays inside its entry stop budget.
         Margin is added before the order so the enlarged isolated position still
-        liquidates beyond the unchanged close-all stop; the deadline, stop request
-        and quote are checked again after that transfer. IOC leaves no remainder.
+        liquidates beyond the unchanged close-all stop; the deadline, stop request,
+        quote, position and owned protection are checked again after that transfer.
+        IOC leaves no remainder.
         """
         fill = self.state.get('entry_fill')
         protection = self.state.get('position_protection')
@@ -381,6 +393,11 @@ class Lifecycle:
                 self.reader.ensure_capacity(TOPUP_RESERVE)
             except Unknown:
                 return fresh
+            # The earlier safety checks predate the transfer; the add needs them again.
+            if (number(fresh['quantity_btc'])!=number(snapshot['quantity_btc'])
+                    or fresh['possible_entry_remainders'] or fresh['open_orders']
+                    or not self.planned_protection(fresh)):
+                raise Unknown('exposure or protection changed during the margin transfer; no add')
         identity = client_id(self.state.identity,epoch,'entry')
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
                        timeInForce='IOC',quantity=plan['quantity_btc'],
