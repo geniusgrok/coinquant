@@ -8,6 +8,14 @@
 
 输入未知、外部订单/成交、缺失归属、保护不明时不增加风险。状态和意图先持久化后发送；重试不生成新的操作身份。限流后进入冷却。
 
+写请求结果分三类（2026-09-28 复核后）：本地在发送前拒绝（权重预留、冷却、截止时间）记为 `NotSent`；写请求 HTTP 400/401 且错误码属于文档化的明确拒绝（`binance.REJECT_CODES`：-1021、-1022、-2010、-2011、-2013、-2014、-2015、-2018～-2022、-2024、-2025、-1100～-1199、-4000～-4999）记为 `Rejected`；两者都把意图记为 `rejected`，表示交易所在该身份下没有订单或划转。其余错误（超时、5xx、-1006/-1007 等）保持未知，只能按稳定身份查询，不重发。保护、撤单、保证金和只减仓意图在 `rejected` 后可在同一身份下再试；入场永远换新周期，被拒入场不参与成交归属。
+
+逐仓保证金划转没有客户端 ID：意图在发送前记录准备时刻，明确成功（`code=200`、类型1、金额相等）立即持久化为已确认，钱包回读不一致只报告未知；回答丢失时只从 `/fapi/v1/positionMargin/history` 结算（准备时刻前15秒至今、最长29天；恰好一笔等额用户追加为已确认；准备后至少600秒仍无追加为已拒绝；其他情况保持未知）。金额按合约 `quotePrecision` 向上取整。未决划转只阻止新风险，不阻止保护与退出。
+
+DFII10 只在能改变决定时读取（宏观仓、或空仓且没有未消费的主信号多头），主信号出场与保护维护不依赖它；两次请求共享会话剩余预算，失败后60秒内不重复请求。
+
+`environment: demo` 使用 Binance 虚拟余额环境（`demo-fapi.binance.com`、账户 UID 读 `demo-api.binance.com`），凭据变量 `COINQUANT_BINANCE_DEMO_KEY`/`COINQUANT_BINANCE_DEMO_SECRET`，状态范围 `binance:BTCUSDT:demo:<uid>`，与实盘状态互斥。`capital_limit_usdt` 让仓位与保证金只按 `min(钱包, 上限)` 计算；它限制规模，不是亏损上限。
+
 `research/session_replay.py` 是原生接口事件 tape 回放：复用生产 `session.run` 和 `Lifecycle`，严格匹配请求顺序、参数和时刻；它不是历史经济回放。公共接口已实测：合约规则、标记价格、100档盘口，以及从2019-12-01重建全部已完成4小时K线并从检查点续读（每页1000根、按官方档位计权重）。
 
 ## 必须保持未验证的原生项目
@@ -20,8 +28,13 @@
 | 超时、迟到成交、断连和重启 | 持久化意图、固定身份、原生回读 | 离线故障注入通过；原生未测 |
 | 进程退出后保护真正触发 | 退出保留保护、禁止余单再开仓 | 交易所触发结果未测 |
 | 账户只读核对 | `status` 命令 | 未配置账户 UID 与凭据，未实测 |
+| 明确拒绝错误码分类 | `binance.REJECT_CODES`、`WriteClassificationTests` | 按文档归类；各码在真实写请求上的语义未实测 |
+| 保证金划转回答丢失后的历史结算 | `Binance.recover_margin` | 历史接口的出现延迟、字段与600秒终态窗口未实测 |
+| Demo 环境 | `Binance(environment='demo')`、`tests/test_environment.py` | Demo 现货账户 UID 接口、Demo 合约规则与订单语义未实测 |
+| 长期停机后的恢复 | 成交历史约3个月、资金流水窗口89天（约88天未观察间隔）| 超出后返回未知；没有经验证的外部归档导入入口，只能人工完成账户核对后按受控步骤恢复，不能清空状态或把新目录当空账户 |
+| 实盘连续权益与 MDD | `audit.income` 只保存原生现金流水，`continuous_equity_verified=False` | 停机期间的持仓权益不可重建；前向验证需另行定义账户估值证据，未知区间明确标注，不插值 |
 
-实际接入验收需要当前明确的交易授权、指定账户及有界测试资金。命令行 `--execute` 保持阻止。
+实际接入验收需要当前明确的交易授权、指定账户及有界测试资金。命令行 `--execute` 在实盘与 Demo 下都保持阻止。先在 Demo 验证接口语义与恢复（入场、部分成交、止损/止盈、保护替换、退出、重启与未知结果核对），再在单独授权、专用小额余额（配合 `capital_limit_usdt`）的主网上验证生产撮合与保护。
 
 ## 原生验收执行顺序
 
@@ -31,11 +44,12 @@
 4. 对现有受保护的小额仓位验证新保护回读后撤旧；若交易所拒绝重复保护，保留旧保护并记录不支持，不能宣称可原子改单。
 5. 正常停止后只读回读；确认无入场余单、保护仍在。退出测试资金并核对费用、资金费、成交和钱包闭环。
 
-Testnet 可以验证部分 API 语义，但不能替代生产撮合/流动性和资金风险验收。
+Demo 可以验证部分 API 语义，但不能替代生产撮合/流动性和资金风险验收。
 
 ## 接口依据
 
 2026-09-26 查阅 Binance 官方文档：
 - https://developers.binance.com/docs/derivatives/usds-margined-futures/trade/rest-api （普通订单、IOC、稳定 clientOrderId）
 - https://developers.binance.com/docs/derivatives/usds-margined-futures/trade/rest-api/New-Algo-Order （原生保护）
-- https://developers.binance.com/docs/derivatives/usds-margined-futures/general-info （未知执行结果、429/418限制）
+- https://developers.binance.com/docs/derivatives/usds-margined-futures/general-info （未知执行结果、429/418限制、Demo 端点）
+- 2026-09-28 复核引用：逐仓保证金调整响应与 `/fapi/v1/positionMargin/history`（交易接口文档），成交历史约3个月保留期（更新日志）

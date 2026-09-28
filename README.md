@@ -10,7 +10,7 @@
 
 ## 所有者本地研究
 
-Python 3.13；项目运行仅使用标准库。
+Python 3.13；项目运行仅使用标准库。美东时区来自系统 IANA 时区库；没有系统时区库的环境（如 Windows）须先 `python -m pip install tzdata`，否则 `run` 在读取凭据前即停止。
 
 ```sh
 git clone https://github.com/geniusgrok/coinquant.git
@@ -20,7 +20,7 @@ python -m coinquant status --config config.json
 python -m coinquant run --config config.json
 ```
 
-仅供仓库所有者在授权账户上进行本地只读研究。在配置中填写所有者的 Binance `account_uid` 和固定 `state_dir`。凭据只从 `COINQUANT_BINANCE_KEY`、`COINQUANT_BINANCE_SECRET` 环境变量读取，不写入配置或仓库。`status` 单次观察；`run` 默认观察300秒，每5秒重新核对，输出和状态目录的 `latest.json` 标明结果。配置只包含四项：
+仅供仓库所有者在授权账户上进行本地只读研究。在配置中填写所有者的 Binance `account_uid` 和固定 `state_dir`。实盘凭据只从 `COINQUANT_BINANCE_KEY`、`COINQUANT_BINANCE_SECRET` 环境变量读取，Demo 凭据只从 `COINQUANT_BINANCE_DEMO_KEY`、`COINQUANT_BINANCE_DEMO_SECRET` 读取，都不写入配置或仓库。`status` 单次观察；`run` 默认观察300秒，每5秒重新核对，输出和状态目录的 `latest.json` 标明结果。配置项：
 
 | 配置 | 含义 |
 |---|---|
@@ -28,6 +28,10 @@ python -m coinquant run --config config.json
 | `state_dir` | 此账户持续使用的恢复目录 |
 | `session_seconds` | 本次运行1～86400秒，默认300 |
 | `poll_seconds` | 轮询1～60秒，默认5，不得超过会话时长 |
+| `environment` | `live`（默认）或 `demo`：Binance 虚拟余额环境（`demo-fapi.binance.com`、`demo-api.binance.com`），使用自己的凭据变量与状态范围 `binance:BTCUSDT:demo:<uid>`；实盘状态目录拒绝 demo 配置，反之亦然 |
+| `capital_limit_usdt` | 可选，十进制字符串。模型只按 `min(钱包, 上限)` 计算仓位、逐仓保证金与宏观止损额度；钱包其余部分不是试验本金。它限制仓位规模，不是亏损上限：逐仓保证金与止损之间的跳空仍可能亏掉整笔逐仓保证金 |
+
+Demo 与实盘共用同一执行器，`run --execute` 在两种环境下都同样被阻止；Demo 账户 UID 接口与订单语义尚未原生验证。
 
 首次运行会从固定历史起点重建已完成4小时行情；网络不足以完成重建时返回未知，不用短历史冒充完整模型。已存在的仓位必须有可核验的本系统成交归属；禁止把新空目录当作空账户证明。同一账户只允许一台机器运行，本地锁覆盖整个会话。
 
@@ -54,7 +58,7 @@ python -m coinquant run --config config.json
 ```sh
 python -m unittest discover -s tests -v
 python -m research.session_replay TAPE.json --state-dir NEW_REPLAY_DIRECTORY
-python -m research.rebuild P5
+python -m research.rebuild P6
 ```
 
 接口事件回放使用**同一个生产会话、决策和执行器**，在每个请求精确匹配后才释放对应响应。它验证调用时序与状态恢复，不是CAGR/MDD账户或历史成交模拟。测试不访问交易账户；CI只有一个Python 3.13离线任务、10分钟上限。
