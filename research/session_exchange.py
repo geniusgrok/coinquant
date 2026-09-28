@@ -18,6 +18,7 @@ MAINTENANCE = D('0.005')    # single 20x tier proxy, not dated brackets
 LIQUIDATION_FEE = D('0.0125')  # field on the 2026-09-26 public rules snapshot
 RULES_PATH = Path(__file__).resolve().parents[1] / 'evidence' / 'bounded-session-20260926' / 'public' / 'rules.json'
 MINUTE = 60_000
+DAY = 86_400_000
 # Worst 1m mark low/high relative to trade low/high, 2020-01-01..2026-09-20.
 MARK_BELOW_TRADE = D('-0.0237')
 MARK_ABOVE_TRADE = D('0.0412')
@@ -73,6 +74,7 @@ class SessionExchange(Binance):
         self.mdd_envelope = D(0)
         self.mdd_close_at = None
         self.mdd_envelope_at = None
+        self.daily_cny = {}
         self.known_path = True
         self.rules = json.loads(RULES_PATH.read_text(encoding='utf-8'))['instrument']
         super().__init__(key='historical-proxy', secret='historical-proxy',
@@ -220,6 +222,7 @@ class SessionExchange(Binance):
             self.mdd_envelope_at = self.now_ms
         if kind != 'close':
             return
+        self.daily_cny[self.now_ms // DAY] = cny
         if cny > self.peak_cny:
             self.peak_cny = cny
         drawdown = 1 - cny / self.peak_cny
@@ -246,6 +249,11 @@ class SessionExchange(Binance):
         print time, before later funding or client actions."""
         while self.now_ms < until_ms:
             if not self.q:
+                # Flat cash only moves in CNY when the dated rate changes.
+                changes = getattr(self.fx, 'changes', None)
+                for stamp in (changes(self.now_ms, until_ms) if changes else ()):
+                    self.now_ms = stamp
+                    self._note_cash()
                 self.now_ms = until_ms
                 self._note_cash()
                 return
@@ -262,12 +270,17 @@ class SessionExchange(Binance):
                     if self.q:
                         self._fire(kind, price)
                     continue
-            self._pay_funding(self.now_ms, step)
             if self.q and step == boundary:
+                # A settlement stamped exactly at the boundary follows this
+                # minute's range, so a stop inside the minute is not charged.
+                self._pay_funding(self.now_ms, step - 1)
                 if self.held_from > open_ms:
                     self._partial(open_ms, True)
                 else:
                     self._on_minute(open_ms)
+                self._pay_funding(max(self.now_ms, step - 1), step)
+            else:
+                self._pay_funding(self.now_ms, step)
             self.now_ms = step
         self._note_cash()
 
