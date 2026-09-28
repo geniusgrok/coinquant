@@ -18,9 +18,11 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
         reader.recover_pending(state)
         snapshot=reader.snapshot(uid)
     model,market,reconstructed=advance(state,reader)
-    model.select_macro(reader.dfii10_snapshot(),snapshot['mark_price'],int(reader.clock()*1000),
-                       bootstrap=reconstructed)
-    state.set('linear_campaign',model.checkpoint())
+    # DFII10 is read only when it can change the decision, so its outage never
+    # delays a primary exit or protection maintenance.
+    row=reader.dfii10_snapshot() if model.macro_relevant() else None
+    model.select_macro(row,snapshot['mark_price'],int(reader.clock()*1000),bootstrap=reconstructed)
+    state.set_many({'linear_campaign':model.checkpoint(),'market_bootstrap':False})
     # Recovery already reconciled this exact observation when it wrote nothing.
     prior=engine.reconciled
     if execute and prior and prior[0] is snapshot and prior[1]==len(engine.actions)==0:

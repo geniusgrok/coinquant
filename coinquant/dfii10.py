@@ -7,14 +7,25 @@ from html.parser import HTMLParser
 from io import StringIO
 from urllib.parse import urlencode
 from urllib.request import Request, build_opener, HTTPCookieProcessor
-from zoneinfo import ZoneInfo
+from time import monotonic
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from zipfile import BadZipFile, ZipFile
 from io import BytesIO
 
-from .types import Unknown
+from .types import Blocked, Unknown
 
 URL='https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10'
-EASTERN=ZoneInfo('America/New_York')
+_EASTERN=[]
+
+
+def eastern():
+    """America/New_York with daylight saving; never a fixed UTC offset."""
+    if not _EASTERN:
+        try:_EASTERN.append(ZoneInfo('America/New_York'))
+        except ZoneInfoNotFoundError:
+            raise Blocked('IANA time zone data unavailable; install the tzdata package '
+                          '(python -m pip install tzdata), required on Windows') from None
+    return _EASTERN[0]
 
 
 class _Dates(HTMLParser):
@@ -34,7 +45,7 @@ class _Dates(HTMLParser):
 
 def available(vintage):
     # A dated vintage is not a proven intraday release time.
-    end=datetime.combine(vintage,time.max,EASTERN)
+    end=datetime.combine(vintage,time.max,eastern())
     return int((end.astimezone(timezone.utc)+timedelta(hours=48)).timestamp()*1000)
 
 
@@ -51,16 +62,27 @@ def eligible(row,call):
 
 
 class Source:
-    def __init__(self):
-        self.cached=None;self.fetched_at=0
+    # After a failed fetch the next attempt waits; each poll must not repeat it.
+    RETRY_MS=60000
 
-    def snapshot(self,now):
+    def __init__(self):
+        self.cached=None;self.fetched_at=0;self.failed_at=None
+
+    def snapshot(self,now,budget=60):
+        """Both requests share `budget` seconds, normally the session's remainder."""
         if self.cached is not None and self.fetched_at<=now<self.fetched_at+900000:
             return self.cached
+        if self.failed_at is not None and self.failed_at<=now<self.failed_at+self.RETRY_MS:
+            raise Unknown('ALFRED point-in-time DFII10 unavailable; retry deferred')
         headers={'User-Agent':'coinquant-personal/1.0','Accept':'text/html,application/zip'}
         opener=build_opener(HTTPCookieProcessor())
+        started=monotonic()
+        def timeout(limit):
+            left=min(limit,budget-(monotonic()-started))
+            if left<=0:raise TimeoutError('DFII10 read budget exhausted')
+            return left
         try:
-            with opener.open(Request(URL,headers=headers),timeout=25) as response:
+            with opener.open(Request(URL,headers=headers),timeout=timeout(25)) as response:
                 page=response.read(2_000_001)
             if len(page)>2_000_000:raise ValueError('ALFRED form too large')
             parser=_Dates();parser.feed(page.decode('utf-8'))
@@ -71,7 +93,7 @@ class Source:
                             ('form[file_type]','3'),('form[file_format]','csv'),
                             ('form[download_data]','Download data')]+[
                                 ('form[selected_vintage_dates][]',str(v)) for v in dates]).encode()
-            with opener.open(Request(URL,data=body,headers=headers,method='POST'),timeout=35) as response:
+            with opener.open(Request(URL,data=body,headers=headers,method='POST'),timeout=timeout(35)) as response:
                 raw=response.read(4_000_001)
             if len(raw)>4_000_000:raise ValueError('ALFRED response too large')
             with ZipFile(BytesIO(raw)) as archive:
@@ -106,7 +128,8 @@ class Source:
                      prior20_value_available_ms=available(updates[prior][1]) if prior else None,
                      asof_vintage_date=str(dates[-1]),missing_reason=reason,
                      response_sha256=sha256(raw).hexdigest())
-            self.cached=row;self.fetched_at=now
+            self.cached=row;self.fetched_at=now;self.failed_at=None
             return row
         except (OSError,ValueError,KeyError,IndexError,UnicodeError,BadZipFile) as exc:
+            self.failed_at=now
             raise Unknown('ALFRED point-in-time DFII10 unavailable') from exc

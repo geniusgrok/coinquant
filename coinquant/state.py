@@ -75,9 +75,14 @@ class State:
         return json.loads(row[0]) if row else None
 
     def set(self, key: str, value) -> None:
+        self.set_many({key: value})
+
+    def set_many(self, values: dict) -> None:
+        """Commit several keys in one transaction."""
         with self.db:
-            self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
-                            (key, json.dumps(serial(value), sort_keys=True)))
+            for key, value in values.items():
+                self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
+                                (key, json.dumps(serial(value), sort_keys=True)))
 
     def prepare(self, identity: str, kind: str, payload: dict, *, campaign=None, flat_snapshot=None,
                 position_snapshot=None, result=None) -> None:

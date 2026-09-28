@@ -11,7 +11,7 @@ import json
 
 from .opportunities import Opportunities, Opportunity
 from .linear_sizing import target_fraction
-from .types import Blocked
+from .types import Blocked, Unknown
 
 PRIMARY_RISK = '7.5'
 MACRO_RISK = '3.6'
@@ -74,10 +74,25 @@ class Campaign:
             return primary
         return self.macro_opportunity
 
+    def macro_relevant(self):
+        """Whether DFII10 can change this decision. A primary position, or a flat
+        account with an unconsumed primary long, decides without it."""
+        if self.position_campaign is not None:
+            return self.position_campaign<0
+        primary=self.model.active
+        return not (primary is not None and primary.direction>0 and primary.identity!=self.primary_consumed)
+
     def select_macro(self, row, mark, call, *, bootstrap=False):
+        """`row` None means DFII10 was not read; valid only when it is irrelevant."""
         from .dfii10 import eligible
         if type(call) is not int or not self.last<=call<self.last+self.model.interval:
             raise Blocked('macro decision precedes completed market')
+        if row is None:
+            if self.macro_relevant():
+                raise Unknown('DFII10 observation required for this decision')
+            self.macro_observation=None
+            self.macro_epoch=self.macro_opportunity=None
+            return
         self.macro_observation=row
         active=eligible(row,call)
         primary=self.model.active

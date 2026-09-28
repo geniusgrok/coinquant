@@ -23,10 +23,10 @@ def advance(state, venue):
         raise Blocked('market and checkpoint boundaries differ')
     if bootstrap:
         # Price reconstruction cannot establish historical fill ownership, so a
-        # cold start consumes a still-active impulse.
+        # cold start consumes a still-active impulse. The flag clears only when
+        # the macro step of the same cold start has completed (session.cycle).
         model.consumed=model.primary_consumed=model.model.active.identity if model.model.active else None
     state.set('linear_campaign',model.checkpoint())
-    state.set('market_bootstrap',False)
     return model,market,bootstrap
 
 

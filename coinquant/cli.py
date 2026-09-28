@@ -60,7 +60,9 @@ def main(argv=None):
             # Engineering completion is not permission to trade or qualification.
             if args.execute:
                 raise Blocked('Native exchange validation and economic acceptance remain incomplete; execution unavailable')
+            from .dfii10 import eastern
             from .session import run
+            eastern()  # fail before credentials when time zone data is missing
             config=load(args.config)
             key=os.environ.get('COINQUANT_BINANCE_KEY','')
             secret=os.environ.get('COINQUANT_BINANCE_SECRET','')

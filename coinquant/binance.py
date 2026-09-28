@@ -53,7 +53,9 @@ class Binance:
     def dfii10_snapshot(self):
         from .dfii10 import Source
         if self._dfii10 is None:self._dfii10=Source()
-        return self._dfii10.snapshot(int(self.clock()*1000))
+        remaining=self.deadline-self.monotonic()
+        if remaining<=1:raise Unknown('no session budget left for the DFII10 read')
+        return self._dfii10.snapshot(int(self.clock()*1000),budget=remaining)
 
     def monotonic(self):
         """Budget clock for this adapter. Subclasses and replay inject their own.
