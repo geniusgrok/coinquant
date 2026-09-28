@@ -344,3 +344,23 @@ class IntraminuteEventTests(TestCase):
         self.assertEqual(exchange.trades[-1]['time'], self.m + 700)
         self.assertEqual(exchange.funnel['funding'], 0)
         self.assertEqual(exchange.funding_paid, 0)
+
+    def test_print_path_peak_counts_before_the_stop(self):
+        exchange = self._venue([(1000, 10000, 1), (5000, 12000, 1), (10_000, 8500, 1), (20_000, 10000, 1)])
+        self._hold(exchange)
+        self._close_at(exchange, self.m + 20_000)
+        self.assertEqual(exchange.funnel['triggers'], 1)
+        self.assertGreater(exchange.mdd_envelope, D('.29'))
+
+    def test_stop_found_while_settling_an_add_drops_the_rest(self):
+        exchange = self._venue([(1000, 10000, 1), (20_500, 10000, 5)])
+        self._hold(exchange)
+        exchange.wait(18)
+        exchange._inflight = ('POST', '/fapi/v1/order', dict(
+            symbol='BTCUSDT', side='BUY', type='LIMIT', timeInForce='IOC',
+            quantity='0.1', price='10010', newClientOrderId='cq-a'))
+        order = exchange._transport(None, 1)
+        self.assertEqual(exchange.funnel['partial_adverse'], 1)
+        self.assertEqual(order['status'], 'EXPIRED')
+        self.assertEqual(D(order['executedQty']), 0)
+        self.assertEqual(exchange.q, 0)

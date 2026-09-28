@@ -305,7 +305,19 @@ class SessionExchange(Binance):
         adverse = [(kind, value, level(value)) for kind, value in (('stop', stop), ('liq', liq))
                    if value is not None and value > 0]
         good = level(take) if take is not None else None
+        # Equity path on the proxy mark: each new favorable extreme is a peak
+        # before any later adverse extreme is measured against it.
+        best = worst = None
         for stamp, price, _qty in rows:
+            if best is None or ((price > best) if long else (price < best)):
+                best = worst = price
+                mark = D(price) / scale * ratio
+                if take is not None:
+                    mark = min(mark, take) if long else max(mark, take)
+                self._note_at(stamp, mark, 'favorable')
+            elif (price < worst) if long else (price > worst):
+                worst = price
+                self._note_at(stamp, D(price) / scale * ratio, 'envelope')
             for kind, value, bound in adverse:
                 if (price <= bound) if long else (price >= bound):
                     trade_price = D(price) / scale
@@ -313,6 +325,14 @@ class SessionExchange(Binance):
             if good is not None and ((price >= good) if long else (price <= good)):
                 return stamp, 'take', take
         return None
+
+    def _note_at(self, stamp, price, kind):
+        """Record a path point stamped at its print without moving the clock."""
+        now, self.now_ms = self.now_ms, max(self.now_ms, stamp)
+        try:
+            self._note(price, kind)
+        finally:
+            self.now_ms = now
 
     def _fire(self, kind, price):
         self.funnel['print_triggers'] += 1
@@ -809,10 +829,14 @@ class SessionExchange(Binance):
             for stamp, part in self._fill_ioc(params['side'], D(params['price']), quantity):
                 # Each matched print books at its own time, after earlier funding
                 # and protection events.
+                closed = lambda: (adding or filled) and (
+                    not self.q or self.funnel['triggers'] + self.funnel['liquidations'] != closes)
                 self._advance(stamp)
-                if adding and (not self.q or self.funnel['triggers'] + self.funnel['liquidations'] != closes):
+                if closed():
                     break  # the rest of an add must not reopen a stopped position
                 self._settle_change()
+                if closed():
+                    break
                 self._apply_open(params['side'], part, D(params['price']))
                 self._trade(params['side'], order_id, part, D(params['price']))
                 self.held_from = self.now_ms
