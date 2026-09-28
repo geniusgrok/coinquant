@@ -224,6 +224,16 @@
             "bound"
           ],
           "stress": "hindsight mark-gap bound (sensitivity, path_complete false)"
+        },
+        {
+          "name": "M2-p6-bound",
+          "args": [
+            "--primary-risk",
+            "6",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "hindsight mark-gap bound at the reverted default (sensitivity, path_complete false)"
         }
       ]
     }

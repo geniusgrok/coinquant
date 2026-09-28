@@ -15,8 +15,10 @@
   "model": {
     "mechanism": "impulse_hold",
     "interval_ms": 14400000,
-    "risk_scale": "7.5",
-    "sides": ["long"],
+    "risk_scale": "6.0",
+    "sides": [
+      "long"
+    ],
     "overlay": {
       "series": "ALFRED DFII10",
       "latest_vs_prior_20_observations_minimum_decline_percentage_points": "0.25",
@@ -47,17 +49,27 @@
     "dated executable CNY/USDT conversions including conversion costs"
   ],
   "account_evidence": "one continuous account including unattended exposure; observation gaps cannot be interpolated into complete MDD",
-  "economic_qualification": "REPLAY_MEASURED_NOT_NATIVE",
+  "economic_qualification": "NOT_MET",
   "current_session_replay": {
-    "trial": "R2-p7.5",
-    "evidence": "evidence/rebuild-20260927/R2-p7.5.json",
-    "protocol": "research/redesign-PROTOCOL.md",
+    "meter": "M2 (research/redesign-PROTOCOL.md)",
     "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
-    "final_cny": "4998162.78",
-    "cost_net_cagr_percent": "152.16",
-    "continuous_mdd_envelope_percent": "44.51",
-    "known_path": true,
-    "scope": "production session.run and Lifecycle on SessionExchange (meter M1); stresses below 150% are recorded in the protocol; native execution not verified"
+    "complete_path_result": {
+      "trial": "M2-p6",
+      "evidence": "evidence/rebuild-20260927/M2-p6.json",
+      "final_cny": "821006",
+      "cost_net_cagr_percent": "92.72",
+      "continuous_mdd_envelope_percent": "75.78",
+      "mark_gap": "2020-01-19 13:09-13:37 UTC, 29 official mark minutes absent; the open isolated position is charged its whole isolated wallet"
+    },
+    "hindsight_sensitivity": {
+      "trial": "M2-p7.5-bound",
+      "final_cny": "5225940",
+      "cost_net_cagr_percent": "153.84",
+      "continuous_mdd_envelope_percent": "44.72",
+      "path_complete": false,
+      "scope": "missing mark minutes bounded by the window's measured mark/trade divergence; not a historical path"
+    },
+    "scope": "production session.run and Lifecycle on SessionExchange; not a historical order book; native execution not verified"
   },
   "selected_historical_account": {
     "name": "SX60+DFII10",

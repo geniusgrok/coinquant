@@ -1,10 +1,10 @@
 # Coinquant 有限会话工程恢复入口（2026-09-27）
 
-## 2026-09-27 经济重建之后接着做什么（本节优先）
+## 2026-09-28 经济重建复核之后接着做什么（本节优先）
 
-先核对实时 main 与分支 `cursor/economic-rebuild-86f8` 的 PR。先读 `evidence/rebuild-20260927/RESULT.md` 和 `research/redesign-PROTOCOL.md`。
+先读 `evidence/rebuild-20260927/RESULT.md` 与 `research/redesign-PROTOCOL.md` 的 M2 部分。M1 数字作废。默认风险 6。
 
-现默认（主信号风险 7.5）在会话回放上 152.16% / MDD 44.51%，压力下成本、滑点、深度各一项就跌到 145–149%。不要再加大风险倍数去追余量。下一步两件：一是找一条在开发段与留出段都为正的空头规则（S1 的 72 组都不行）；二是在明确授权的真实账户上核对成交、保护、断线与迟到成交。在这两件完成前 `run --execute` 保持阻止。行情在 `/data/coinquant-market`，逐笔在 `/data/coinquant-prints`；一次完整试验 `python -m research.rebuild <名> [参数]` 约 10–25 分钟。
+卡点是 2020-01-19 13:09–13:37 UTC 的 29 分钟官方标记价缺口：按逐仓上限所有候选 MDD > 50%。可做的方向：一是寻找该时段的其他官方标记价来源；二是让模型在已知数据缺口前后不持仓并事前登记这一规则；三是空头规则与真实账户核对。不要为缺口选择对结果有利的边界。完整试验 `python -m research.rebuild <名> [参数]`，逐笔缓存在 `/data/coinquant-prints-cache`。
 
 ## 2026-09-27 接着做什么
 
