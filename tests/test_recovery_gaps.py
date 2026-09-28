@@ -25,6 +25,9 @@ class RecoveryGapTests(TestCase):
         return [a for a in self.venue.algos.values() if a['algoStatus']=='NEW' and kind in (None,a['orderType'])]
 
     def test_history_outage_after_owned_fill_still_installs_protection(self):
+        # A fill within the default seven-day read gives the flat boundary a trade-ID cursor.
+        self.venue.trades.append(dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL',orderId=900,id=1,
+                                      time=self.venue.now-86400000,qty='.01'))
         original=self.venue.get
         def history_down(path,p=None):
             if path.endswith('/userTrades') and 'startTime' in (p or {}):raise Unknown('fixture history outage')

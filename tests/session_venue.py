@@ -60,7 +60,9 @@ class Venue(Binance):
         if path.endswith('/openOrders'):return [deepcopy(o) for o in self.orders.values() if o['status'] in ('NEW','PARTIALLY_FILLED')]
         if path.endswith('/openAlgoOrders'):return [deepcopy(o) for o in self.algos.values() if o['algoStatus']=='NEW']
         if path.endswith('/userTrades'):
-            rows=[deepcopy(t) for t in self.trades if p.get('startTime',0)<=t['time']<=p.get('endTime',self.now) and t['id']>=p.get('fromId',0)]
+            # Binance's default read covers the last seven days.
+            default=0 if 'fromId' in p else self.now-7*86400000
+            rows=[deepcopy(t) for t in self.trades if p.get('startTime',default)<=t['time']<=p.get('endTime',self.now) and t['id']>=p.get('fromId',0)]
             return rows[:p.get('limit',1000)] if 'fromId' in p or 'startTime' in p else rows[-p.get('limit',1000):]
         if path.endswith('/income'):return []
         if path.endswith('/premiumIndex'):return dict(symbol='BTCUSDT',time=self.now,markPrice=str(self.mark))

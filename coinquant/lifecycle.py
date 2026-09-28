@@ -167,19 +167,30 @@ class Lifecycle:
         """Every native fill after the entry's flat boundary is that entry's own
         fill, and together they are the current position.
 
-        One complete trade-ID page from the flat snapshot's cursor. An external,
-        manual or other owned fill, a missing cursor or an unreadable page is
-        no proof; this never authorizes a write without it.
+        One complete trade page after the flat snapshot's cursor. Without a recent
+        cursor (the default trade read covers seven days) a single time window
+        from the flat boundary is read instead. An external, manual or other
+        owned fill, a missing boundary or an unreadable page is no proof; this
+        never authorizes a write without it.
         """
         link = (self.state.get('entry_campaigns') or {}).get(plan['id'])
         cursor = link.get('after_trade_id') if link else None
+        start = link.get('prepared_at') if link else None
         q = number(snapshot['quantity_btc'])
-        if type(cursor) is not int or cursor < -1 or not q or snapshot['possible_entry_remainders']:
+        now = int(self.reader.clock()*1000)
+        if (type(cursor) is not int or cursor < -1 or type(start) is not int or not 0 < start <= now
+                or not q or snapshot['possible_entry_remainders']):
             return False
         parent = owned_observation(self.state,self.reader,plan['id'])['parent']
         if parent.get('status') not in TERMINAL or (q > 0) != (parent.get('side') == 'BUY'):
             return False
-        page = self.reader.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','fromId':cursor+1,'limit':1000})
+        if cursor >= 0:
+            query = {'symbol':'BTCUSDT','fromId':cursor+1,'limit':1000}
+        elif now-start < 7*86400000:
+            query = {'symbol':'BTCUSDT','startTime':start,'endTime':now,'limit':1000}
+        else:
+            return False
+        page = self.reader.get('/fapi/v1/userTrades',query)
         if not isinstance(page,list) or len(page) >= 1000:
             return False
         ids = set(); total = D(0)

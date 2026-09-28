@@ -134,6 +134,17 @@ class ReauditTests(TestCase):
         self.assertEqual(len(self.venue.sent),1)
         self.assertEqual(result['cleanup'],'unresolved')
 
+    def test_fill_proof_after_a_week_without_trades_uses_the_flat_time_boundary(self):
+        self.venue=Latent(0);self.venue.seed(self.directory)
+        self.venue.trades.append(dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL',orderId=900,id=1,
+                                      time=self.venue.now-30*86400000,qty='.01'))
+        self.assertEqual(self.session()['cleanup'],'verified')
+        log=self.venue.log
+        entry=next(i for i,(_,m,path,p) in enumerate(log) if p.get('timeInForce')=='IOC')
+        stop=next(i for i,(_,m,path,p) in enumerate(log) if m=='POST' and p.get('type')=='STOP_MARKET')
+        self.assertEqual(len([x for x in log[entry+1:stop] if x[1]=='GET']),23)
+        self.assertTrue(any('startTime' in p for _,m,path,p in log[entry+1:stop] if path.endswith('/userTrades')))
+
     def test_owned_fill_is_protected_or_reduced_within_the_reserved_budget_under_latency(self):
         # Up to the 8 s request timeout; the old path needed 54 reads before its first stop.
         for latency in (0,1,2,3,4,5,6,7.9):
