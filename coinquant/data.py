@@ -1,5 +1,8 @@
 """Streaming native-contract input validation; missing funding is never zero.
 
+Research only: this reads the legacy Bybit inverse manifest (research/DATA.md) for
+historical replays. The Binance session path and research.rebuild do not use it.
+
 A manifest identifies complete original files and their provenance. A matching
 hash proves byte identity, not authenticity. Synthetic/proxy provenance remains
 visible in every replay result and cannot be upgraded by favorable metrics.

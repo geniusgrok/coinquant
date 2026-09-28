@@ -1,4 +1,4 @@
-"""Completed four-hour channel state for a single sparse-call target."""
+"""Research-only completed four-hour channel state for a single sparse-call target."""
 from collections import deque
 from dataclasses import dataclass
 from decimal import Decimal as D
