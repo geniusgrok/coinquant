@@ -1,63 +1,14 @@
-# Coinquant 有限会话工程恢复入口（2026-09-27）
+# Coinquant 接续入口（2026-09-28）
 
-## 2026-09-28 经济重建复核之后接着做什么（本节优先）
+先核对实时 `geniusgrok/coinquant` main，再读 `AGENTS.md`、`PROJECT_STATE.md`、`evidence/rebuild-20260927/RESULT.md` 与 `research/redesign-PROTOCOL.md` 的 M5 部分。
 
-先读 `evidence/rebuild-20260927/RESULT.md` 与 `research/redesign-PROTOCOL.md` 的 M5 部分。M1/M2 数字作废，M3、M4、M5 数字相同。默认风险 7.5（所有者接受 2020-01-19 缺口的偏离边界；P5 153.87%/44.73%；压力下 CAGR 148–149%，随机跳过 101%）。
+当前默认：SX60＋DFII10，主信号风险7.5，宏观3.6；P5 153.87% CAGR／44.73% MDD，建立在所有者接受的2020-01-19标记价缺口边界上（`path_complete=false`）。成本/滑点/深度压力 CAGR 148–149%，随机跳过20%会话 101%。
 
-所有者已接受 2020-01-19 13:09–13:37 UTC 29 分钟标记价缺口的偏离边界（`path_complete=false`；按逐仓没收上限所有候选 MDD > 50%，保留作对照）。未完成：成本/滑点/深度压力 CAGR 148–149%，余量薄；默认模型不产生空头入场，“多空都能新开仓”未满足；真实账户上的成交、保护、断线、迟到成交核对未做，`run --execute` 阻止。事先知道数据缺口在哪属于事后信息，不能据此让模型回避缺口；不按压力结果调参。完整试验 `python -m research.rebuild <名> [参数]`，逐笔缓存在 `/data/coinquant-prints-cache`。
+规则：
 
-## 2026-09-27 接着做什么（历史记录，已被上节取代；其中 3.6 尺度、多空都做等说法为当时状态）
+- 不打开 `run --execute`，不发真实或 Testnet 订单，不改账户设置。
+- 不按压力结果或已知数据缺口调参；新的经济测量前先冻结会话时间表与试验登记（`research/redesign-trials.json`）。
+- 完整试验：`python -m research.rebuild <名> [--primary-risk ...] [--fee ...] [--sequence ...]`，结果写入 `evidence/rebuild-20260927/<名>.json`。
+- 离线检查：`python -m unittest discover -s tests`。
 
-先核对实时 `geniusgrok/coinquant` main。这一轮从 `302e1fe9cc30149dac160ea91d32405dbe9fa849` 开始。给人看的说明在 `evidence/session-b0-20260927/RESULT.md`。
-
-现在的程序、多空都做、乐观成交，终点大约 12.4 万元，每年大约 45.5%，最多跌过 36.5%。没有达到每年 150%。只做多的试验不要收成正式配置。看最近七天的那笔因为跌过 91% 已经停用，缺口之后的终点不要引用。
-
-正式程序保持原来的四小时大跳，多空都做。不要打开真实下单，不要跑那 787 次“人没来”的测试，不要改下单开关、1600 的请求预留或 3.6 的风险尺度。
-
-`average_hold` 已跑完。2020-01-19 13:09 起 `known_path` 为假，不要引用 `AVERAGE_SUMMARY.json` 的终点。资金费过滤也已跑完，见 `FUNDING_SUMMARY.json`：人民币终值 `96685.11295138440077936670447`，低于打印对照，不要改 `0.0001`。两条都不要重跑来凑结果。
-
-正式程序保持四小时大跳和多空。不要打开真实下单，不要跑 787 次缺席测试，不要改 3.6 或 1600。给人看的全文在 `RESULT.md`。下一步必须是一条新规则：多空都能做，而且不是几乎每根 K 线都在场内。行情仍在 `/tmp/coinquant-session-market`，逐笔成交在 `/tmp/coinquant-session-aggtrades`。
-
-下文 PR #43 段是上一轮工程入口，句子保持原样。
-
-## 2026-09-26 PR #43 复核与修复
-
-从 main `7294efb09f3c359cdf8770e723bc21aa8035ce23` 和 PR #43 原头 `e7175cf92a38b0c5bb600dda11f45ffca29b2f59` 逐项验证，结果见 `REVIEW-20260926.md`。已修复原报告的恢复/审计缺陷，以及漏掉的外部保护冒充、满页快照阻塞和替换中断恢复；终态/成交归档、密集 ID 分页、签名现金流水与逐轮实际观察共用原账户数据库。资金审计故障不会阻止已确认退出；收尾失败清除陈旧账户观察。独立复核无剩余已确认代码缺陷，Python 3.13 全部 362 项离线测试通过。验证身份见 `evidence/pr43-review-20260926/VERIFICATION.json`；远端发布、CI、合并以 GitHub 实际状态为准。
-
-当前 `research/spec.json` 已明确 Binance BTCUSDT 有限会话；旧规格逐字节保存在 `research/legacy/spec.json`，冻结历史调用及经济结果不改。零成交终态 IOC 的逐轮重评和冷启动消费已有机会是当前明确策略，未擅自改为新的入场规则。未观察到的交易所保留期缺口仍未知，不插值为连续权益。
-
-本次不运行经济验收，不发真实/Testnet 订单。原生账户与订单验证、当前会话完整成本后经济账户仍未完成；`run --execute` 保持硬门。不要把合并或离线测试称为生产资格完成。
-
-后续补充：已完成真实公共接口与14,946根4h历史的模型重建/中断恢复；分页1000及动态权重修复，345项测试通过。先读 PROJECT_STATE 顶部与 `evidence/bounded-session-20260926/public/RESULT.json`，勿重复原先未实测公开接口的判断。私有账户配置/凭据未提供；原生交易资格仍未完成。
-
-当前任务：完成经济验收以外的全部工程。读取实时远端main和`AGENTS.md`、`PROJECT_STATE.md`顶部、`evidence/bounded-session-20260926/{RESULT.md,VERIFICATION.json}`。本轮基线为`e8e5f2aea8fe8af390190443b3a9d75e97b0884d`，工程分支`engineering/bounded-session-20260926`；实际HEAD/PR以远端为准。
-
-已接入有限会话、单配置、Binance受限写入代码、完整订单恢复/保护/退出路径、生产同路径接口事件回放，旧Bybit代码已隔离到research/legacy；未运行经济验收，也没有真实/Testnet订单。独立审查发现的成交序号边界、保护回读丢失、过期历史、退出数量竞争、请求权重、替换日志和回放CLI问题已逐项处理，最终验证见记录。
-
-**不能声称全部生产资格完成。** 原生成交/保护的非原子窗口、真实close-all替换接受行为和交易所故障恢复仍需指定账户/环境/资金上限及当前明确交易授权后验证；`run --execute`保持阻止。源代码远端逐项回读已完成，见 REMOTE_VERIFICATION.json；读取分支对应 PR 的实际 CI/合并状态，之后只处理原生验收阻塞；不启动新的策略研究或修改经济门槛。
-
-以下为历史研究恢复入口，不作为当前工程验收：
-
-# Coinquant 当前恢复入口（2026-09-24）
-
-**最新单一入口（2026-09-25 PR #38 后）**：先核对实时 `geniusgrok/coinquant` main、PR、`AGENTS.md` 和 `PROJECT_STATE.md` 顶部，读取 `evidence/post-pr38-causal-short-20260925/{PROTOCOL.md,SELECTION.json,RESULT.md,ATTRIBUTION.json,FORMAL_ATTRIBUTION.json,REMOTE_VERIFICATION.json,reassemble.py}`。本轮从 `main` `3f1700f7141741c63c5635ba6816f65e26eae2f1` 冻结四格 R1/R2 与两档非对称短侧 C2/C4，完成各 468 次开发；R2/C2/C4 过开发双门，按终值选唯一 C4。补齐并核验 550 份新增 Binance 官方分钟 ZIP/CHECKSUM 后，正式 C4 完成 795 次，成本后 **102.363557% CAGR、39.871851% MDD、CNY 1,139,853.43**；账本与安全硬门通过，收益 <150%，正式经济否决。开发前缀订单/权益/决策逐行完全相同；按事前停止规则未运行压力或 787 缺席，未换备选。正式空头共同钱包内净额 −4,351.891827 USDT；开发正值不延伸为正式优势。完整新账户与原始分钟数据在 `evidence/post-pr38-causal-short-20260925/originals/` 确定性分卷，按 `reassemble.py` 和各清单逐字节复核。若接续，避免重复本次冻结机制或以额外风险档位追收益；真实原生执行资格仍 `NOT_QUALIFIED`，生产 B36/3.6、execute 阻止不动。下面 PR #38 前叙述是阶段历史。
-
-**2026-09-25 主动核心新研发：**先核对实时 main，读取 `PROJECT_STATE.md` 顶部和 `evidence/active-core-20260925/{PROTOCOL.md,RESULT.md,ORIGINALS.json,reassemble.py}`。四套冻结 A/B 核心都完成 468 次开发账户并通过安全审计，但开发最佳 B60 仅 96.842041% CAGR／22.225956% MDD，低于 150% 收益晋级门；没有新正式候选，也不可以在这套冻结表外按已知结果加参数。现有 C 短侧五分钟母单/保护链未成立，不把下行探针当有效替代。23 片重建 255 个账户源与审计原件，全部可逐字节回读。旧最佳完整正式 DFII10 108.228852%／39.779796%，真实执行仍阻止。下文 PR #37 零研究说明是旧阶段，不得当作这次实际研发结论。
-
-**2026-09-25 当前状态**：先核对实时 `main`；PR #36 后对八个账户及 ALFRED/分钟原件完成远端 Git 分片重建校验和逐仓归因回读，见 `evidence/unified-core-20260925/RESULT.md`。本轮没有合格的新统一核心假设，冻结/开发/正式新账户均为 0；没有改变生产/回放经济逻辑或启用 execute。已有最佳同输入正式 DFII10 108.228852% CAGR／39.779796% MDD，仍低于 150% 收益门，完整原件仍在 `evidence/real-yield-20260924/`。若以后有新的事前合格且非旧机制改名的输入/规则，先固定因果资格与选择流程，再实施；不得把这次零候选称为新候选正式经济失败。历史费率、动态 FX、盘口和原生保护资格仍未解决。下文从 PR #35 起的内容为旧阶段说明。
-
-**PR #35 后本轮最新研究**：先实时核对 `geniusgrok/coinquant` main、PR 和树；从 `de15e5b7a178fd0903e5d464da8e92840756ba7a` 出发的唯一 DFII10 宏观覆盖协议已在远端提交 `a1d5dd34267f14c2f2a32174e0a4a319b5928fd9` 事前冻结。`evidence/real-yield-20260924/RESULT.md` 是当前结果和完整原件入口：1,914 个官方 ALFRED vintage 与 170 份官方 trade/mark 日档、逐调用点时快照、八个连续配对账户。开发 468 候选 **183.543015% CAGR／31.587141% MDD** 晋级；正式 795 候选仅 **108.228852%／39.779796%**，<150% 收益门失败；压力 **104.020246%／39.450827%**，缺席 787 次与普通正式数值相同。正式新增宏观仓位直接净额为负，候选账户高于 SX60 不代表宏观独立净优势。按 `ORIGINALS.json` 和 `reassemble.py` 从 Git 分片重建并验证全部源字节；恢复时以实时 main/PR 状态为准。不要再扫描这个机制参数，未来需要实质不同的点时可得机会。生产 B36、默认资金、`run --execute` 阻止都不变；历史代理不是实盘资格。下文各节是先前阶段记录。
-
-**PR #34 后历史阶段**：实时读取 `main` 为 `1dd5db0ff0e90d8a2c723d5939afa6b72b33d612`。最新 SX60 正式对照的逐年收益、已成交/未成交归因、9 份原账户字节、SHA 清单和可执行复现见 `evidence/return-gap-20260924/`。尚无通过点时可用性且有可执行净优势依据的新候选；不运行假账户。正式 150%/<50% 目标仍未达到；恢复时先查实时 HEAD 和该报告，不把下文 PR #33 的状态当作当前 HEAD。生产 B36/execute 阻止不动。
-
-**PR #33 后历史远端状态**：PR #33 已合并，`main` 为 `d4e0decf4c5e83ea7cb4a8f18abc89265dbbaa6e`，tree `22b8ee905c67df461dbc0ba37f6e8ece700b1216`。账户有效 58 片、官方有效 301 ZIP/CHECKSUM、两份无效原档已随主线保存；归档重建 SHA-256 见下。正式目标仍未达到，暂时没有具备点时数据资格和独立净优势依据的新候选；机制去重和下一动作见 `PROJECT_STATE.md` 顶部。先读取实时 main，若已新增合格证据则从原账户起点继续，不重试旧空头及 C7。
-
-下行通道空头简化连续账户探针的 468 次开发调用为 CAGR −34.747968%、保守 MDD 91.036954%、账本误差 0；按事前早停条件停止扩展，不是正式经济否决。它没有 795／压力／787；逐笔证据和数据限制见 `evidence/downside-channel-20260924/RESULT.md`，重建入口为同目录 `archive/reassemble.py`。最佳完成的正式 SX60 为 102.626211%／39.885115%，仍低于收益目标。生产 B36 与 execute 阻止不变。
-
-下文是上一次 C7 阶段的历史恢复说明，以本段实时状态为准。
-
-仓库 `geniusgrok/coinquant`。恢复前读取实时 `main`、`AGENTS.md`、`PROJECT_STATE.md` 及 `evidence/c7-call-expiry-20260924/RESULT.md`，不得用历史 140/2/23 部分包覆盖新原件。当前任务从基线 main `242c8a2a03e7eafa537bd7c6bcc21fea23f53e22` 和研究分支 `research/minute-acceptance-20260924` 开始；远端 PR、最终 HEAD 以实时查询为准。
-
-官方 1m 交易价/mark 的首批 16 日和 C7 另需 2020-11-26，合计 34 个 ZIP/CHECKSUM，已经在研究分支 `evidence/c7-call-expiry-20260924/minutes/` 逐文件回读核验。165 个独立事件已 **163 闭合/2 几何拒绝/0 未知**；原 23 个未知补数后全亏。C7 按原调用七天到期计划退出，在 468 开发账户的 2021-05-28 未知保护小时之前已有收盘回撤 58.012879%，超过 <50% 风险门，经济否决；不外推其 CAGR，不运行其正式/压力/缺席验收。SX60 同版控制完整 468 开发调用 CAGR 162.179152%、保守 MDD 37.209136%，与原原件一致。最佳完整正式 SX60 仍 102.626211%／39.885115%，≥150%/<50% 未达。B36 与 execute 阻止不变。
-
-完整事件、C7 中断原件、SX60 对照原件放在 `evidence/c7-call-expiry-20260924/archive/` 确定性分片；按 `archive/MANIFEST.json` 用 `archive/reassemble.py` 校验重建。报告给出来源身份、风险点和复现。临时取数工作流完成原件保存后必须从待合并版本移除，保留官方原件、取数脚本及回执；合并前核验 PR、强制检查和远端 tree/ref。不要将已否决 C7 的中断前缀当成完整账户，不得因缺少 2021-05-28 后续分钟而忽略在此前已发生的硬性回撤失败。
+剩余工作：原生交易验收（见 `evidence/bounded-session-20260926/RESULT.md`），以及若要多空都能新开仓，需要一条经冻结协议验证的开空规则。

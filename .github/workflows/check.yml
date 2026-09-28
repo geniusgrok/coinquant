@@ -1,14 +1,14 @@
 name: Check
 on:
   push:
-    branches: [main, research/on-demand-btc-20260920]
+    branches: [main]
     paths:
       - 'coinquant/**'
       - 'tests/**'
       - 'main.py'
       - 'config.example.json'
       - 'research/**'
-      - 'requirements-research.txt'
+      - 'evidence/**'
       - '.github/workflows/check.yml'
   pull_request:
     branches: [main]
@@ -18,7 +18,7 @@ on:
       - 'main.py'
       - 'config.example.json'
       - 'research/**'
-      - 'requirements-research.txt'
+      - 'evidence/**'
       - '.github/workflows/check.yml'
   workflow_dispatch:
 permissions:
@@ -40,24 +40,5 @@ jobs:
           python-version: '3.13'
       - name: Compile and run offline checks
         run: |
-          python -m pip install -r requirements-research.txt
           python -m compileall -q coinquant research tests
           python -m unittest discover -s tests -v
-      - name: Export exact workspace for verification
-        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[workspace-export]')
-        run: |
-          set -eu
-          mkdir -p "$RUNNER_TEMP/coinquant-workspace"
-          git archive --format=tar HEAD | gzip -1 > "$RUNNER_TEMP/coinquant-workspace/workspace.tar.gz"
-          git rev-parse HEAD HEAD^{tree} > "$RUNNER_TEMP/coinquant-workspace/IDENTITY.txt"
-          git ls-tree -r HEAD > "$RUNNER_TEMP/coinquant-workspace/TREE.txt"
-          cd "$RUNNER_TEMP/coinquant-workspace"
-          sha256sum workspace.tar.gz > SHA256SUMS
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[workspace-export]')
-        with:
-          name: coinquant-workspace-${{ github.sha }}
-          path: ${{ runner.temp }}/coinquant-workspace/
-          compression-level: 0
-          retention-days: 3
-          if-no-files-found: error
