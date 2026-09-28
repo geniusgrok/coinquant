@@ -59,7 +59,8 @@
       "final_cny": "821006",
       "cost_net_cagr_percent": "92.72",
       "continuous_mdd_envelope_percent": "75.78",
-      "mark_gap": "2020-01-19 13:09-13:37 UTC, 29 official mark minutes absent; the open isolated position is charged its whole isolated wallet"
+      "mark_gap": "2020-01-19 13:09-13:37 UTC, 29 official mark minutes absent; the open isolated position is charged its whole isolated wallet",
+      "note": "worst-case isolated-margin forfeit basis; retained for comparison"
     },
     "hindsight_sensitivity": {
       "trial": "M2-p7.5-bound",
@@ -69,7 +70,59 @@
       "path_complete": false,
       "scope": "missing mark minutes bounded by the window's measured mark/trade divergence; not a historical path"
     },
-    "scope": "production session.run and Lifecycle on SessionExchange; not a historical order book; native execution not verified"
+    "scope": "production session.run and Lifecycle on SessionExchange; not a historical order book; native execution not verified",
+    "accepted_basis": {
+      "decided_by": "account owner, 2026-09-28",
+      "decision": "The 29 missing official mark minutes on 2020-01-19 are bounded by the measured mark/trade divergence; a protection trigger inside the gap is judged negligible. This is an owner acceptance of a hindsight bound, not a complete historical path.",
+      "default_trial": "P2 (PRIMARY_RISK 7.5, --mark-gap bound)",
+      "result": {
+        "evidence": "evidence/rebuild-20260927/P2.json",
+        "final_cny": "5225940",
+        "cost_net_cagr_percent": "153.84",
+        "continuous_mdd_envelope_percent": "44.73"
+      },
+      "path_complete": false,
+      "stresses": {
+        "fee150": {
+          "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-fee150.json",
+          "final_cny": "4564716",
+          "cost_net_cagr_percent": "148.78",
+          "continuous_mdd_envelope_percent": "45.00"
+        },
+        "slip2": {
+          "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-slip2.json",
+          "final_cny": "4626662",
+          "cost_net_cagr_percent": "149.28",
+          "continuous_mdd_envelope_percent": "45.08"
+        },
+        "part10": {
+          "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-part10.json",
+          "final_cny": "4470184",
+          "cost_net_cagr_percent": "148.01",
+          "continuous_mdd_envelope_percent": "44.73"
+        },
+        "skip": {
+          "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-skip.json",
+          "final_cny": "1091382",
+          "cost_net_cagr_percent": "101.06",
+          "continuous_mdd_envelope_percent": "44.68"
+        },
+        "absence": {
+          "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-absence.json",
+          "final_cny": "5225940",
+          "cost_net_cagr_percent": "153.84",
+          "continuous_mdd_envelope_percent": "44.73"
+        },
+        "block": {
+          "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-block.json",
+          "final_cny": "5225940",
+          "cost_net_cagr_percent": "153.84",
+          "continuous_mdd_envelope_percent": "44.73"
+        }
+      },
+      "targets_met_base": true,
+      "targets_met_all_stresses": false
+    }
   },
   "selected_historical_account": {
     "name": "SX60+DFII10",

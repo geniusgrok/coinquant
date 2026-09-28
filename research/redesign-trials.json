@@ -249,7 +249,13 @@
             "--mark-gap",
             "bound"
           ],
-          "stress": "default reproduction"
+          "stress": "default reproduction",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/P2.json",
+            "final_cny": "5225940",
+            "cost_net_cagr_percent": "153.84",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
         },
         {
           "name": "M2-p7.5-bound-fee150",
@@ -259,7 +265,13 @@
             "--mark-gap",
             "bound"
           ],
-          "stress": "cost +50%"
+          "stress": "cost +50%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-fee150.json",
+            "final_cny": "4564716",
+            "cost_net_cagr_percent": "148.78",
+            "continuous_mdd_envelope_percent": "45.00"
+          }
         },
         {
           "name": "M2-p7.5-bound-slip2",
@@ -271,7 +283,13 @@
             "--mark-gap",
             "bound"
           ],
-          "stress": "exit slippage x2"
+          "stress": "exit slippage x2",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-slip2.json",
+            "final_cny": "4626662",
+            "cost_net_cagr_percent": "149.28",
+            "continuous_mdd_envelope_percent": "45.08"
+          }
         },
         {
           "name": "M2-p7.5-bound-part10",
@@ -281,7 +299,13 @@
             "--mark-gap",
             "bound"
           ],
-          "stress": "depth participation 10%"
+          "stress": "depth participation 10%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-part10.json",
+            "final_cny": "4470184",
+            "cost_net_cagr_percent": "148.01",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
         },
         {
           "name": "M2-p7.5-bound-skip",
@@ -291,7 +315,13 @@
             "--mark-gap",
             "bound"
           ],
-          "stress": "seeded 20% skip"
+          "stress": "seeded 20% skip",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-skip.json",
+            "final_cny": "1091382",
+            "cost_net_cagr_percent": "101.06",
+            "continuous_mdd_envelope_percent": "44.68"
+          }
         },
         {
           "name": "M2-p7.5-bound-absence",
@@ -301,7 +331,13 @@
             "--mark-gap",
             "bound"
           ],
-          "stress": "legacy absence sequence"
+          "stress": "legacy absence sequence",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-absence.json",
+            "final_cny": "5225940",
+            "cost_net_cagr_percent": "153.84",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
         },
         {
           "name": "M2-p7.5-bound-block",
@@ -311,9 +347,16 @@
             "--mark-gap",
             "bound"
           ],
-          "stress": "seeded 21-day block"
+          "stress": "seeded 21-day block",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-block.json",
+            "final_cny": "5225940",
+            "cost_net_cagr_percent": "153.84",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
         }
-      ]
+      ],
+      "outcome": "Base 153.84%/44.73% meets both targets under the owner-accepted basis. Cost +50%, exit slippage x2 and 10% participation fall to 148.0-149.3% CAGR (MDD <46%); seeded 20% skip falls to 101.06%. Absence and 21-day block are identical to base."
     }
   ]
 }
