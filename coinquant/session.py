@@ -2,7 +2,7 @@
 import time
 
 from .lifecycle import Lifecycle
-from .linear_preview import advance, preview
+from .linear_preview import advance, preview, research_side
 from .native_preview import entry_preview
 from .ownership import reconcile
 from .state import State
@@ -10,8 +10,8 @@ from .types import Blocked, Unknown, number
 from .audit import income
 
 
-def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True):
-    engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter)
+def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None):
+    engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter,session=session)
     if execute:
         snapshot=engine.recover_exposure(engine.settle())
     else:
@@ -21,22 +21,41 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True):
     model.select_macro(reader.dfii10_snapshot(),snapshot['mark_price'],int(reader.clock()*1000),
                        bootstrap=reconstructed)
     state.set('linear_campaign',model.checkpoint())
-    ownership=reconcile(state,reader,model,snapshot)
+    # Recovery already reconciled this exact observation when it wrote nothing.
+    prior=engine.reconciled
+    if execute and prior and prior[0] is snapshot and prior[1]==len(engine.actions)==0:
+        ownership=prior[2]
+    else:
+        ownership=reconcile(state,reader,model,snapshot)
     if state.pending():
         raise Unknown('unsettled intents block decisions')
-    result=preview(model,snapshot,side='long')
+    side=research_side(state)
+    result=preview(model,snapshot,side=side)
     result.update(ownership=ownership,reconstructed_market_only=reconstructed)
     audit=None
     if execute:
         # Missing cashflow audit blocks new risk, never a verified reduction.
         if result['action']=='enter':audit=income(reader,state)
+        elif result['action']=='hold':
+            # A hold may add to the position; the add needs the same prior audit.
+            # Maintaining existing protection does not.
+            try:
+                audit=income(reader,state)
+                engine.may_add=True
+            except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError):
+                engine.may_add=False
+        writes=len(engine.actions)
         action,snapshot=engine.decide(model,snapshot)
         # A fill may occur in any write/read race. Reconcile again before deciding
         # on another campaign, never mark a preview or request as consumed.
-        reconcile(state,reader,model,snapshot)
+        latest=engine.reconciled
+        if len(engine.actions)>writes and not (latest and latest[0] is snapshot and latest[1]==len(engine.actions)):
+            reconcile(state,reader,model,snapshot)
         result['action']=action
+        if engine.entry_constraint is not None:
+            result['entry_constraint']=engine.entry_constraint
     elif result['action']=='enter':
-        result.update(entry_preview(reader,model,snapshot,side='long'))
+        result.update(entry_preview(reader,model,snapshot,side=side))
     if audit is None:audit=income(reader,state)
     return dict(status='executed' if execute and engine.actions else 'no_action' if execute else 'read_only',
                 actual=snapshot,model_preview=result,market_through=market['complete_through'],
@@ -67,7 +86,8 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                 report['actions']=[]
                 try:
                     current=cycle(reader,state,config.account_uid,execute=execute,
-                                  may_enter=lambda:monotonic()<deadline and not stopping())
+                                  may_enter=lambda:monotonic()<deadline and not stopping(),
+                                  session=report['session_started_at_ms'])
                     report.update(current,write_attempted=report['write_attempted'] or current['write_attempted'])
                     report['observation_current']=True
                     report.pop('reason',None)

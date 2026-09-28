@@ -1,0 +1,680 @@
+{
+  "protocol": "research/redesign-PROTOCOL.md",
+  "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
+  "rounds": [
+    {
+      "round": "M1",
+      "registered": "2026-09-27",
+      "model": "SX60+DFII10 default (coinquant.campaign.Campaign, risk 6.0 primary / 3.6 macro)",
+      "trials": [
+        {
+          "name": "F0",
+          "args": []
+        },
+        {
+          "name": "F0-fee150",
+          "args": [
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%"
+        },
+        {
+          "name": "F0-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2"
+        },
+        {
+          "name": "F0-part10",
+          "args": [
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%"
+        },
+        {
+          "name": "F0-absence",
+          "args": [
+            "--sequence",
+            "absence"
+          ],
+          "stress": "legacy absence sequence"
+        },
+        {
+          "name": "F0-skip",
+          "args": [
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "seeded 20% skip"
+        },
+        {
+          "name": "F0-block",
+          "args": [
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "seeded 21-day block"
+        }
+      ]
+    },
+    {
+      "round": "R1",
+      "registered": "2026-09-27",
+      "hypothesis": "M1 MDD 41.6% leaves headroom; screening shows primary risk monotone in CAGR and MDD. Macro risk inert (3% stop cap binds).",
+      "model": "SX60+DFII10 default with PRIMARY_RISK varied",
+      "trials": [
+        {
+          "name": "R1-p6.5",
+          "args": [
+            "--primary-risk",
+            "6.5"
+          ]
+        },
+        {
+          "name": "R1-p7",
+          "args": [
+            "--primary-risk",
+            "7"
+          ]
+        },
+        {
+          "name": "R1-p7.5",
+          "args": [
+            "--primary-risk",
+            "7.5"
+          ]
+        }
+      ]
+    },
+    {
+      "round": "R2",
+      "registered": "2026-09-27",
+      "hypothesis": "From 2023 campaigns fill far below target (liquidity_cap) and most hold polls skip a top-up only because the request-weight reserve is unavailable. Measured reserves (top-up 250, preview 100), no duplicate post-write reconcile and a one-minute commission cache raise the IOC count per session under the same 2200/min cap.",
+      "model": "SX60+DFII10 default; production weight changes in coinquant (lifecycle reserves, session reconcile, preview commission cache)",
+      "trials": [
+        {
+          "name": "R2-p6",
+          "args": []
+        },
+        {
+          "name": "R2-p7",
+          "args": [
+            "--primary-risk",
+            "7"
+          ]
+        },
+        {
+          "name": "R2-p7.5",
+          "args": [
+            "--primary-risk",
+            "7.5"
+          ]
+        }
+      ]
+    },
+    {
+      "round": "R2S",
+      "registered": "2026-09-27",
+      "hypothesis": "Stress set of the promotion-ranked R2 candidate (R2-p7.5), identical to the M1 stress set.",
+      "model": "R2-p7.5",
+      "trials": [
+        {
+          "name": "R2-p7.5-fee150",
+          "args": [
+            "--primary-risk",
+            "7.5",
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%"
+        },
+        {
+          "name": "R2-p7.5-slip2",
+          "args": [
+            "--primary-risk",
+            "7.5",
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2"
+        },
+        {
+          "name": "R2-p7.5-part10",
+          "args": [
+            "--primary-risk",
+            "7.5",
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%"
+        },
+        {
+          "name": "R2-p7.5-absence",
+          "args": [
+            "--primary-risk",
+            "7.5",
+            "--sequence",
+            "absence"
+          ],
+          "stress": "legacy absence sequence"
+        },
+        {
+          "name": "R2-p7.5-skip",
+          "args": [
+            "--primary-risk",
+            "7.5",
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "seeded 20% skip"
+        },
+        {
+          "name": "R2-p7.5-block",
+          "args": [
+            "--primary-risk",
+            "7.5",
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "seeded 21-day block"
+        }
+      ]
+    },
+    {
+      "round": "M2",
+      "registered": "2026-09-28",
+      "hypothesis": "Meter corrections from the PR review: cashflow audit before any add; MDD envelope peaks include the favorable intraminute extreme; writes take effect after 1000 ms latency and IOC responses return after the print window; book and mark observations are stamped with the last trade print at or before the request; a missing official mark minute with a position forfeits the whole isolated wallet. All earlier M1 results are superseded. Promotion rule unchanged.",
+      "model": "current code, PRIMARY_RISK varied",
+      "trials": [
+        {
+          "name": "M2-p6",
+          "args": [
+            "--primary-risk",
+            "6"
+          ]
+        },
+        {
+          "name": "M2-p7",
+          "args": [
+            "--primary-risk",
+            "7"
+          ]
+        },
+        {
+          "name": "M2-p7.5",
+          "args": [
+            "--primary-risk",
+            "7.5"
+          ]
+        },
+        {
+          "name": "M2-p7.5-bound",
+          "args": [
+            "--primary-risk",
+            "7.5",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "hindsight mark-gap bound (sensitivity, path_complete false)"
+        },
+        {
+          "name": "M2-p6-bound",
+          "args": [
+            "--primary-risk",
+            "6",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "hindsight mark-gap bound at the reverted default (sensitivity, path_complete false)"
+        }
+      ]
+    },
+    {
+      "round": "M2S",
+      "registered": "2026-09-28",
+      "hypothesis": "Owner decision (2026-09-28): the 29-minute 2020-01-19 mark gap is treated with the measured-divergence bound; the owner judges a stop trigger there negligible. Under that basis M2-p7.5-bound ranks first and PRIMARY_RISK 7.5 becomes the default. Stress set on the same basis.",
+      "model": "PRIMARY_RISK 7.5 default, --mark-gap bound",
+      "trials": [
+        {
+          "name": "P2",
+          "args": [
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "default reproduction",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/P2.json",
+            "final_cny": "5225940",
+            "cost_net_cagr_percent": "153.84",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M2-p7.5-bound-fee150",
+          "args": [
+            "--fee",
+            "0.001125",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "cost +50%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-fee150.json",
+            "final_cny": "4564716",
+            "cost_net_cagr_percent": "148.78",
+            "continuous_mdd_envelope_percent": "45.00"
+          }
+        },
+        {
+          "name": "M2-p7.5-bound-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "exit slippage x2",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-slip2.json",
+            "final_cny": "4626662",
+            "cost_net_cagr_percent": "149.28",
+            "continuous_mdd_envelope_percent": "45.08"
+          }
+        },
+        {
+          "name": "M2-p7.5-bound-part10",
+          "args": [
+            "--participation",
+            "0.1",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "depth participation 10%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-part10.json",
+            "final_cny": "4470184",
+            "cost_net_cagr_percent": "148.01",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M2-p7.5-bound-skip",
+          "args": [
+            "--sequence",
+            "random_skip",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "seeded 20% skip",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-skip.json",
+            "final_cny": "1091382",
+            "cost_net_cagr_percent": "101.06",
+            "continuous_mdd_envelope_percent": "44.68"
+          }
+        },
+        {
+          "name": "M2-p7.5-bound-absence",
+          "args": [
+            "--sequence",
+            "absence",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "legacy absence sequence",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-absence.json",
+            "final_cny": "5225940",
+            "cost_net_cagr_percent": "153.84",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M2-p7.5-bound-block",
+          "args": [
+            "--sequence",
+            "block_21d",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "seeded 21-day block",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M2-p7.5-bound-block.json",
+            "final_cny": "5225940",
+            "cost_net_cagr_percent": "153.84",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        }
+      ],
+      "outcome": "Base 153.84%/44.73% meets both targets under the owner-accepted basis. Cost +50%, exit slippage x2 and 10% participation fall to 148.0-149.3% CAGR (MDD <46%); seeded 20% skip falls to 101.06%. Absence and 21-day block are identical to base."
+    },
+    {
+      "round": "M3",
+      "registered": "2026-09-28",
+      "hypothesis": "Meter M3 corrects four review findings (macro top-up stop budget, add after a margin transfer past the deadline, intraminute triggers before a client close, IOC fills booked at their print time). Same default (PRIMARY_RISK 7.5, owner-accepted mark-gap bound) and the same stress set; no parameter changes.",
+      "model": "PRIMARY_RISK 7.5, --mark-gap bound (default)",
+      "trials": [
+        {
+          "name": "P3",
+          "args": [],
+          "stress": "default reproduction",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/P3.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M3-fee150",
+          "args": [
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-fee150.json",
+            "final_cny": "4564761",
+            "cost_net_cagr_percent": "148.78",
+            "continuous_mdd_envelope_percent": "45.00"
+          }
+        },
+        {
+          "name": "M3-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-slip2.json",
+            "final_cny": "4625195",
+            "cost_net_cagr_percent": "149.27",
+            "continuous_mdd_envelope_percent": "45.09"
+          }
+        },
+        {
+          "name": "M3-part10",
+          "args": [
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-part10.json",
+            "final_cny": "4465655",
+            "cost_net_cagr_percent": "147.97",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M3-skip",
+          "args": [
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "seeded 20% skip",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-skip.json",
+            "final_cny": "1091282",
+            "cost_net_cagr_percent": "101.06",
+            "continuous_mdd_envelope_percent": "44.68"
+          }
+        },
+        {
+          "name": "M3-absence",
+          "args": [
+            "--sequence",
+            "absence"
+          ],
+          "stress": "legacy absence sequence",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-absence.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M3-block",
+          "args": [
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "seeded 21-day block",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M3-block.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        }
+      ],
+      "outcome": "Base 153.87%/44.73% (M2S 153.84%/44.73%). Fees +50% 148.78%, exit slippage x2 149.27%, participation 10% 147.97%, seeded 20% skip 101.06%; absence and 21-day block equal base; all MDD < 50%. The macro stop budget never bound, no attended print trigger or partial-minute adverse event occurred; fill timing moved funding by +15 USDT and fees by +9 USDT."
+    },
+    {
+      "round": "M4",
+      "registered": "2026-09-28",
+      "hypothesis": "Meter M4 fixes two M3 defects: print scans record the proxy-mark equity path (peak before a stop), and an add stops filling when settling the held segment closes the position. Parameters unchanged.",
+      "model": "PRIMARY_RISK 7.5, --mark-gap bound (default)",
+      "trials": [
+        {
+          "name": "P4",
+          "args": [],
+          "stress": "default reproduction",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/P4.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M4-fee150",
+          "args": [
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M4-fee150.json",
+            "final_cny": "4564761",
+            "cost_net_cagr_percent": "148.78",
+            "continuous_mdd_envelope_percent": "45.00"
+          }
+        },
+        {
+          "name": "M4-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M4-slip2.json",
+            "final_cny": "4625195",
+            "cost_net_cagr_percent": "149.27",
+            "continuous_mdd_envelope_percent": "45.09"
+          }
+        },
+        {
+          "name": "M4-part10",
+          "args": [
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M4-part10.json",
+            "final_cny": "4465655",
+            "cost_net_cagr_percent": "147.97",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M4-skip",
+          "args": [
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "seeded 20% skip",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M4-skip.json",
+            "final_cny": "1091282",
+            "cost_net_cagr_percent": "101.06",
+            "continuous_mdd_envelope_percent": "44.68"
+          }
+        },
+        {
+          "name": "M4-absence",
+          "args": [
+            "--sequence",
+            "absence"
+          ],
+          "stress": "legacy absence sequence",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M4-absence.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M4-block",
+          "args": [
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "seeded 21-day block",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M4-block.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        }
+      ],
+      "outcome": "Every M4 account equals its M3 counterpart (P4 and P3: identical final value, MDD, fees, funding and trade list). No attended print trigger or partial-minute adverse event occurs in this history, so neither defect affected the recorded numbers."
+    },
+    {
+      "round": "M5",
+      "registered": "2026-09-28",
+      "hypothesis": "Meter M5: every recorded print point, including the first of each scan segment, is measured against the running equity peak, so drawdown no longer depends on polling steps. Parameters unchanged.",
+      "model": "PRIMARY_RISK 7.5, --mark-gap bound (default)",
+      "trials": [
+        {
+          "name": "P5",
+          "args": [],
+          "stress": "default reproduction",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/P5.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M5-fee150",
+          "args": [
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M5-fee150.json",
+            "final_cny": "4564761",
+            "cost_net_cagr_percent": "148.78",
+            "continuous_mdd_envelope_percent": "45.00"
+          }
+        },
+        {
+          "name": "M5-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M5-slip2.json",
+            "final_cny": "4625195",
+            "cost_net_cagr_percent": "149.27",
+            "continuous_mdd_envelope_percent": "45.09"
+          }
+        },
+        {
+          "name": "M5-part10",
+          "args": [
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M5-part10.json",
+            "final_cny": "4465655",
+            "cost_net_cagr_percent": "147.97",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M5-skip",
+          "args": [
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "seeded 20% skip",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M5-skip.json",
+            "final_cny": "1091282",
+            "cost_net_cagr_percent": "101.06",
+            "continuous_mdd_envelope_percent": "44.68"
+          }
+        },
+        {
+          "name": "M5-absence",
+          "args": [
+            "--sequence",
+            "absence"
+          ],
+          "stress": "legacy absence sequence",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M5-absence.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        },
+        {
+          "name": "M5-block",
+          "args": [
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "seeded 21-day block",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M5-block.json",
+            "final_cny": "5230718",
+            "cost_net_cagr_percent": "153.87",
+            "continuous_mdd_envelope_percent": "44.73"
+          }
+        }
+      ],
+      "outcome": "Every M5 account equals its M4 counterpart in every field except the trial name."
+    }
+  ]
+}

@@ -79,13 +79,31 @@ class State:
             self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
                             (key, json.dumps(serial(value), sort_keys=True)))
 
-    def prepare(self, identity: str, kind: str, payload: dict, *, campaign=None, flat_snapshot=None) -> None:
+    def prepare(self, identity: str, kind: str, payload: dict, *, campaign=None, flat_snapshot=None,
+                position_snapshot=None) -> None:
         encoded = json.dumps(serial(payload), sort_keys=True, separators=(',', ':'))
         row = self.db.execute('SELECT payload FROM intents WHERE id=?', (identity,)).fetchone()
         if row:
             raise Unknown('intent already exists; reconcile it instead of resending')
         links=None
-        if campaign is not None:
+        if campaign is not None and position_snapshot is not None:
+            # An add inherits the fill-history boundary of the campaign's first entry.
+            links=self.get('entry_campaigns') or {}
+            group=[link for link in links.values() if link.get('campaign')==campaign]
+            q=number(position_snapshot.get('quantity_btc'))
+            if (type(campaign) is not int or campaign==0 or kind!='binance_order' or not group
+                    or flat_snapshot is not None
+                    or any(link.get('campaign')!=campaign for link in links.values())
+                    or payload.get('symbol')!='BTCUSDT' or payload.get('positionSide')!='BOTH'
+                    or payload.get('side')!=('BUY' if q>0 else 'SELL') or payload.get('reduceOnly')=='true'
+                    or not q or position_snapshot.get('possible_entry_remainders')!=0
+                    or self.pending()
+                    or self.identity!=f"binance:BTCUSDT:live:{position_snapshot.get('account_uid')}"):
+                raise Blocked('campaign add requires the reconciled position of that campaign')
+            first=min(group,key=lambda link:link['prepared_at'])
+            links[identity]=dict(campaign=campaign,prepared_at=first['prepared_at'],
+                                 after_trade_id=first.get('after_trade_id'),add=True)
+        elif campaign is not None:
             if (type(campaign) is not int or campaign==0 or kind!='binance_order'
                     or payload.get('symbol')!='BTCUSDT' or payload.get('positionSide')!='BOTH'
                     or payload.get('side') not in ('BUY','SELL') or payload.get('reduceOnly')=='true'

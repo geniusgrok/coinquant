@@ -7,18 +7,30 @@ import json
 from decimal import Decimal as D
 
 from . import binance_safety as safety
-from .native_preview import entry_preview
+from .linear_preview import research_side
+from .native_preview import entry_preview, topup_preview
 from .ownership import owned_observation
 from .state import client_id
 from .types import Blocked, Unknown, number, floor_step
 
+# Measured: first entry with protection about 400; an add under standing
+# close-all protection about 130 (210 with a margin transfer); preview about 60.
+ENTRY_RESERVE = 800
+TOPUP_RESERVE = 250
+PREVIEW_WEIGHT = 100
+
 
 class Lifecycle:
-    def __init__(self, reader, state, uid, *, authorized=False, may_enter=lambda:True):
+    def __init__(self, reader, state, uid, *, authorized=False, may_enter=lambda:True, session=None):
         self.reader, self.state, self.uid = reader, state, uid
+        self.session = session
         self.authorized = authorized is True
         self.may_enter = may_enter
         self.actions = []
+        self.entry_constraint = None
+        self.reconciled = None
+        # Set only by a cashflow audit that completed before this decision.
+        self.may_add = False
 
     def send(self, method, path, payload):
         if not self.authorized:
@@ -179,7 +191,8 @@ class Lifecycle:
             checkpoint=self.state.get('linear_campaign')
             if checkpoint is None:
                 raise Unknown('position recovery lacks its model/ownership checkpoint')
-            reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot)
+            self.reconciled=(snapshot,len(self.actions),
+                             reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot))
         if not number(snapshot['quantity_btc']):
             snapshot = self.cleanup_flat(snapshot)
             if not self.state.pending():
@@ -191,6 +204,7 @@ class Lifecycle:
                     replacement['done']=True
                     self.state.set('binance_protection_replacement',replacement)
                 self.state.set('entry_plan',None)
+                self.state.set('entry_fill',None)
                 self.state.set('position_exit',None)
                 self.state.set('position_protection',None)
                 self.state.set('session_replacement',None)
@@ -239,8 +253,18 @@ class Lifecycle:
     def enter(self, model, snapshot):
         if self.state.pending() or snapshot['possible_entry_remainders'] or number(snapshot['quantity_btc']):
             raise Unknown('entry requires reconciled flat account')
-        plan = entry_preview(self.reader,model,snapshot,side='both')
+        self.reader.ensure_capacity(ENTRY_RESERVE+PREVIEW_WEIGHT)
+        plan = entry_preview(self.reader,model,snapshot,side=research_side(self.state))
+        self.entry_constraint = plan.get('constraint')
         if not number(plan['quantity_btc']):
+            return snapshot
+        if self.state.get('research_chase_bound') and not self._within_chase_bound(model, plan):
+            # The campaign stays unconsumed. A later fresh poll can enter inside the bound.
+            self.entry_constraint = 'chase_bound'
+            return snapshot
+        if self.state.get('research_funding_gate') and not self._funding_allows(plan):
+            # Crowded funding skips this poll only. The campaign stays open.
+            self.entry_constraint = 'funding_gate'
             return snapshot
         # Recheck after all sizing inputs. Never treat a preview as an order.
         fresh = self.snapshot()
@@ -248,13 +272,14 @@ class Lifecycle:
             raise Unknown('account changed between sizing and entry')
         if abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
             raise Unknown('entry preflight expired')
-        self.reader.ensure_capacity(1600)
+        self.reader.ensure_capacity(ENTRY_RESERVE)
         if not self.may_enter():
             raise Blocked('session deadline or stop request prohibits a new entry')
         # An entry begun within the session retains a bounded protection budget;
         # the trading deadline must not cut network access immediately after fill.
-        import time
-        self.reader.deadline=time.monotonic()+120
+        # Use the adapter clock. A wall monotonic here would outlive a virtual session
+        # or expire a historical one immediately.
+        self.reader.deadline=self.reader.monotonic()+120
         epoch = self.epoch()
         identity = client_id(self.state.identity,epoch,'entry')
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
@@ -262,6 +287,8 @@ class Lifecycle:
                        price=plan['entry_estimate'],newClientOrderId=identity,newOrderRespType='RESULT')
         plan.update(epoch=epoch,id=identity)
         self.state.set('entry_plan',plan)
+        self.state.set('entry_fill',dict(campaign=plan['campaign'],requested=plan['requested_btc'],
+                                         session=self.session,stop_budget=plan.get('stop_budget_usdt')))
         self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh)
         try:
             self.send('POST','/fapi/v1/order',payload)
@@ -269,6 +296,56 @@ class Lifecycle:
             pass  # query, never resend an uncertain write
         snapshot = self.settle()
         return self.recover_exposure(snapshot)
+
+    def _funding_allows(self, plan):
+        """Skip a new entry when the last settled funding already charges that side.
+
+        0.0001 per eight hours is the exchange's ordinary quoted rate. A long is
+        skipped only above it, a short only below its negative. The campaign
+        is not consumed.
+        """
+        query = getattr(self.reader, 'last_settled_funding', None)
+        if query is None:
+            raise Blocked('funding gate requires settled funding on the reader')
+        rate = query(int(self.reader.clock() * 1000))
+        if rate is None:
+            return False
+        rate = number(rate)
+        neutral = number('0.0001')
+        side = plan.get('side')
+        if side == 'BUY':
+            return rate <= neutral
+        if side == 'SELL':
+            return rate >= -neutral
+        raise Blocked('funding gate requires a buy or sell plan')
+
+    def _within_chase_bound(self, model, plan):
+        """Entry may not extend more than one signal risk beyond that bar's close.
+
+        The risk distance is the signal close minus its own stop. No new multiple.
+        """
+        opportunity = model.model.active
+        if opportunity is None:
+            raise Unknown('chase bound requires the active opportunity')
+        interval = model.model.interval
+        if type(opportunity.identity) is not int or opportunity.identity % interval:
+            raise Unknown('opportunity identity is not a completed bar')
+        open_ms = opportunity.identity - interval
+        rows = self.reader.get('/fapi/v1/klines', {
+            'symbol': 'BTCUSDT', 'interval': '4h', 'startTime': open_ms,
+            'endTime': opportunity.identity - 1, 'limit': 1})
+        if len(rows) != 1 or int(rows[0][0]) != open_ms:
+            raise Unknown('signal bar unavailable for the chase bound')
+        close = number(rows[0][4], positive=True)
+        span = abs(close - opportunity.stop)
+        if span <= 0:
+            return False
+        price = number(plan['entry_estimate'], positive=True)
+        if opportunity.direction > 0:
+            return price <= close + span
+        if opportunity.direction < 0:
+            return price >= close - span
+        return False
 
     def maintain(self, model, snapshot):
         protection = self.state.get('position_protection')
@@ -295,14 +372,85 @@ class Lifecycle:
 
     def decide(self, model, snapshot):
         """One shared decision path: existing exposure is settled before new risk."""
-        action=model.action(number(snapshot['quantity_btc']),'both')
+        action=model.action(number(snapshot['quantity_btc']),research_side(self.state))
         if action=='enter':
             snapshot=self.enter(model,snapshot)
         elif action=='exit':
             snapshot=self.close(snapshot)
         elif action=='hold':
             snapshot=self.maintain(model,snapshot)
+            snapshot=self.top_up(model,snapshot)
         return action,snapshot
+
+    def top_up(self, model, snapshot):
+        """Within the entry's own session, IOC-add toward the committed campaign size.
+
+        A macro campaign's whole position stays inside its entry stop budget.
+        Margin is added before the order so the enlarged isolated position still
+        liquidates beyond the unchanged close-all stop; the deadline, stop request
+        and quote are checked again after that transfer. IOC leaves no remainder.
+        """
+        fill = self.state.get('entry_fill')
+        protection = self.state.get('position_protection')
+        if (not self.may_add or not fill or self.session is None or fill.get('session') != self.session or not protection
+                or fill.get('campaign') != protection.get('campaign') or model.active is None
+                or model.active.identity != fill['campaign'] or not self.may_enter()):
+            return snapshot
+        if (self.state.pending() or snapshot['possible_entry_remainders'] or snapshot['open_orders']
+                or not self.planned_protection(snapshot)):
+            return snapshot
+        if abs(number(snapshot['quantity_btc'])) >= number(fill['requested']):
+            return snapshot
+        if model.active is model.macro_opportunity and fill.get('stop_budget') is None:
+            return snapshot
+        try:
+            self.reader.ensure_capacity(TOPUP_RESERVE+PREVIEW_WEIGHT)
+        except Unknown:
+            return snapshot  # a later poll of this session may add
+        try:
+            plan = topup_preview(self.reader, model, snapshot, fill['requested'],
+                                 protection['stop'], protection['take'], fill.get('stop_budget'))
+        except ValueError:
+            return snapshot
+        self.entry_constraint = plan['constraint']
+        if not number(plan['quantity_btc']):
+            return snapshot
+        fresh = self.snapshot()
+        if (any(fresh[k] != snapshot[k] for k in ('quantity_btc','wallet_usdt','possible_entry_remainders'))
+                or fresh['open_orders'] or not self.planned_protection(fresh)):
+            raise Unknown('account changed between top-up sizing and order')
+        if abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
+            raise Unknown('top-up preflight expired')
+        self.reader.ensure_capacity(TOPUP_RESERVE)
+        if not self.may_enter():
+            raise Blocked('session deadline or stop request prohibits a new entry')
+        self.reader.deadline=self.reader.monotonic()+120
+        epoch = self.epoch()
+        # The venue moves the add's initial margin into the isolated wallet on fill.
+        target = (number(plan['allocated_margin_usdt'])
+                  - number(plan['quantity_btc'])*number(plan['entry_estimate'])/20)
+        if number(fresh['isolated_wallet_usdt']) < target:
+            fresh = safety.add_margin(self.reader,self.state,self.send,self.uid,epoch,
+                                      target,authorized=self.authorized)
+            # The transfer takes time. The deadline, a stop request and the quote
+            # are checked again; the added margin only lowers risk.
+            if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
+                return fresh
+            try:
+                self.reader.ensure_capacity(TOPUP_RESERVE)
+            except Unknown:
+                return fresh
+        identity = client_id(self.state.identity,epoch,'entry')
+        payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
+                       timeInForce='IOC',quantity=plan['quantity_btc'],
+                       price=plan['entry_estimate'],newClientOrderId=identity,newOrderRespType='RESULT')
+        self.state.prepare(identity,'binance_order',payload,campaign=fill['campaign'],position_snapshot=fresh)
+        try:
+            self.send('POST','/fapi/v1/order',payload)
+        except Exception:
+            pass  # query, never resend an uncertain write
+        snapshot = self.settle()
+        return self.recover_exposure(snapshot)
 
     def finish(self):
         snapshot=self.recover_exposure(self.settle())

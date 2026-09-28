@@ -29,15 +29,17 @@ class NoRedirect(HTTPRedirectHandler):
 
 
 class Binance:
-    def __init__(self, *, key='', secret='', opener=None, clock=time.time, authorize_writes=False):
+    def __init__(self, *, key='', secret='', opener=None, clock=time.time, authorize_writes=False, monotonic=None):
         self.key, self.secret = key, secret
         self.opener = opener or build_opener(NoRedirect())
         self.clock = clock
+        self._monotonic = monotonic
         self.authorize_writes = authorize_writes is True
         self.cooldown_until = 0
         self.request_weights = deque()
         self.check_all_orders = True
-        self.deadline = time.monotonic() + 120
+        self.all_orders_checked_at = None
+        self.deadline = self.monotonic() + 120
         self._dfii10 = None
 
     def dfii10_snapshot(self):
@@ -45,12 +47,26 @@ class Binance:
         if self._dfii10 is None:self._dfii10=Source()
         return self._dfii10.snapshot(int(self.clock()*1000))
 
+    def monotonic(self):
+        """Budget clock for this adapter. Subclasses and replay inject their own.
+
+        Session deadlines and this adapter must share one clock. The process
+        wall monotonic is only the default when nobody injected one.
+        """
+        if self._monotonic is not None:
+            return self._monotonic()
+        return time.monotonic()
+
     def begin_cycle(self, seconds=120):
-        self.deadline = time.monotonic() + min(120, max(1, seconds))
-        self.check_all_orders = True
+        self.deadline = self.monotonic() + min(120, max(1, seconds))
+        # Weight-40 all-symbol scans run at most once per rolling minute.
+        last = self.all_orders_checked_at
+        if last is None or self.monotonic() - last >= 60:
+            self.check_all_orders = True
+        self._cycle_config = None
 
     def ensure_capacity(self, reserve):
-        now=time.monotonic()
+        now=self.monotonic()
         while self.request_weights and self.request_weights[0][0]<=now-60:
             self.request_weights.popleft()
         if sum(cost for _,cost in self.request_weights)+reserve>2200:
@@ -95,6 +111,7 @@ class Binance:
     def _request(self, method, path, parameters=None):
         private = method != 'GET' or path in PRIVATE
         params = dict(parameters or {})
+        self._inflight = (method, path, dict(parameters or {}))
         # Conservative per-process rolling budget; leave headroom under the usual
         # 2400/min allowance. Unfiltered order scans are restricted to cycle start.
         weights={'/api/v3/account':20,'/fapi/v1/accountConfig':5,'/fapi/v1/symbolConfig':5,
@@ -105,7 +122,8 @@ class Binance:
                  '/fapi/v1/commissionRate':20,'/fapi/v1/leverageBracket':1,
                  '/fapi/v1/order':1,'/fapi/v1/algoOrder':1,'/fapi/v1/positionMargin':1,
                  '/fapi/v1/income':30}
-        weight=40 if path.endswith(('/openOrders','/openAlgoOrders')) and 'symbol' not in params else weights[path]
+        weight=(40 if path.endswith(('/openOrders','/openAlgoOrders')) and 'symbol' not in params
+                else 1 if path=='/fapi/v1/openOrders' else weights[path])
         if path == '/fapi/v1/klines':
             limit=params.get('limit',500)
             if type(limit) is not int or not 1<=limit<=1500:
@@ -132,27 +150,31 @@ class Binance:
             url, data = 'https://'+host+path, query.encode()
             headers['Content-Type'] = 'application/x-www-form-urlencoded'
         request = Request(url, data=data, headers=headers, method=method)
-        remaining = self.deadline-time.monotonic()
-        if time.monotonic() < self.cooldown_until:
+        remaining = self.deadline-self.monotonic()
+        if self.monotonic() < self.cooldown_until:
             raise Unknown('Binance rate limit cooldown; no request sent')
         if remaining <= 0: raise Unknown('bounded Binance observation deadline exceeded')
         try:
-            self.request_weights.append((time.monotonic(),weight))
-            with self.opener.open(request, timeout=min(8,remaining)) as response:
-                raw = response.read(2000001)
-            if len(raw)>2000000: raise Unknown('oversized Binance response')
-            result = json.loads(raw)
+            self.request_weights.append((self.monotonic(),weight))
+            result = self._transport(request, timeout=min(8,remaining))
         except HTTPError as exc:
             if exc.code in (418,429):
                 try:delay=max(60,min(86400,float(exc.headers.get('Retry-After','60'))))
                 except (TypeError,ValueError):delay=60
-                self.cooldown_until=time.monotonic()+delay
+                self.cooldown_until=self.monotonic()+delay
             raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown') from None
         except (URLError, TimeoutError, OSError, ValueError):
             raise Unknown('Binance request unavailable; read by stable identity before any retry') from None
         if not isinstance(result,(dict,list)) or (isinstance(result,dict) and 'code' in result and not (method != 'GET' and result['code'] == 200)):
             raise Unknown('unexpected Binance read response')
         return result
+
+    def _transport(self, request, timeout):
+        """Network exchange. Historical replay overrides this and does not patch time."""
+        with self.opener.open(request, timeout=timeout) as response:
+            raw = response.read(2000001)
+        if len(raw)>2000000: raise Unknown('oversized Binance response')
+        return json.loads(raw)
 
     def completed_market(self, start=None, *, on_page=None):
         """Page complete four-hour bars from an exact checkpoint; never truncate."""
@@ -194,11 +216,16 @@ class Binance:
         return {'server_time':now,'complete_through':end,'interval_ms':interval,'candles':candles}
 
     def account_identity(self):
+        # One API key belongs to one account; a verified UID holds for this adapter.
+        cached = getattr(self, '_verified_uid', None)
+        if cached is not None:
+            return cached
         raw = self.get('/api/v3/account', {'omitZeroBalances':'true'})
         uid = raw.get('uid') if isinstance(raw,dict) else None
         if type(uid) is not int or uid <= 0:
             raise Unknown('Binance account UID is unavailable')
-        return str(uid)  # do not retain or log the raw spot account response
+        self._verified_uid = str(uid)
+        return self._verified_uid  # do not retain or log the raw spot account response
 
     def query_intent(self, client_identity, *, conditional=False):
         """Observe a stable identity, including the conditional order's child.
@@ -372,9 +399,12 @@ class Binance:
         if uid!=str(expected_uid):raise Blocked('Binance account UID does not match the configured account')
         scan_all=self.check_all_orders
         for _ in range(2):
+            # Position mode, margin type and leverage are read once per cycle.
+            config=getattr(self,'_cycle_config',None)
+            if config is None:
+                config=(self.get('/fapi/v1/accountConfig'),self.get('/fapi/v1/symbolConfig',{'symbol':'BTCUSDT'}))
             def observe():
-                return {'config':self.get('/fapi/v1/accountConfig'),
-                        'symbol':self.get('/fapi/v1/symbolConfig',{'symbol':'BTCUSDT'}),
+                return {'config':config[0],'symbol':config[1],
                         'account':self.get('/fapi/v3/account'),
                         'positions':self.get('/fapi/v3/positionRisk',{'symbol':'BTCUSDT'}),
                         'orders':self.get('/fapi/v1/openOrders',{} if scan_all else {'symbol':'BTCUSDT'}),
@@ -404,6 +434,8 @@ class Binance:
                           recent_fill_count=len(fills),last_fill_id=max((f['id'] for f in fills),default=-1),
                           recent_fill_window_complete=len(fills)<1000,
                           observed_at_ms=int(self.clock()*1000),recovery_history_complete=False)
+            if scan_all:self.all_orders_checked_at=self.monotonic()
+            self._cycle_config=config
             self.check_all_orders=False
             return report
         raise Unknown('Binance account changed during bounded reconciliation')
@@ -479,7 +511,10 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
     if abs(wallet+unrealized-number(account.get('totalMarginBalance'))) > number('.00000001'):
         raise Unknown('account equity arithmetic is inconsistent')
     entry=number(pos.get('entryPrice'),positive=True) if q else number(0)
-    liquidation=number(pos.get('liquidationPrice'),positive=True) if q else number(0)
+    # An over-collateralised isolated long reports 0: it cannot be liquidated.
+    liquidation=(number(pos.get('liquidationPrice')) if q>0 else
+                 number(pos.get('liquidationPrice'),positive=True) if q else number(0))
+    if liquidation<0:raise Unknown('invalid native liquidation price')
     isolated=number(pos.get('isolatedWallet')) if q else number(0)
     if isolated<0:raise Unknown('invalid isolated USDT wallet')
     if q and number(ap[0].get('isolatedWallet')) != isolated:

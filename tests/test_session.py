@@ -16,9 +16,12 @@ from tests.session_venue import Venue
 
 class SessionTests(TestCase):
     def setUp(self):
+        # Fixture quantities are chosen for exact halving on the 0.001 BTC step.
+        from unittest.mock import patch
+        self.risk=patch('coinquant.campaign.PRIMARY_RISK','6');self.risk.start()
         self.tmp=tempfile.TemporaryDirectory();self.directory=self.tmp.name
         self.venue=Venue();self.venue.seed(self.directory)
-    def tearDown(self):self.tmp.cleanup()
+    def tearDown(self):self.tmp.cleanup();self.risk.stop()
     def run_session(self,execute=True,seconds=11,wait=None):
         return run(Config('123',self.directory,seconds,1),self.venue,execute=execute,
                    monotonic=self.venue.monotonic,wait=wait or self.venue.wait)
@@ -35,6 +38,21 @@ class SessionTests(TestCase):
         self.assertEqual(self.venue.q,0);self.assertEqual(r['cleanup'],'verified')
         self.assertEqual(self.venue.sent,[])
 
+    def test_unavailable_cashflow_audit_blocks_top_up_before_it_is_sent(self):
+        self.venue.fraction=D('.5');original=self.venue.get;entered=[]
+        def get(path,parameters=None):
+            if path.endswith('/income') and entered:raise Unknown('fixture income unavailable')
+            return original(path,parameters)
+        self.venue.get=get
+        def wait(seconds):
+            entered.append(True);self.venue.wait(61)
+        r=self.run_session(seconds=120,wait=wait)
+        entries=[p for _,path,p in self.venue.sent if path.endswith('/order') and p.get('timeInForce')=='IOC']
+        self.assertEqual(len(entries),1)
+        self.assertGreater(self.venue.q,0)
+        self.assertTrue(any('income' in e['reason'].lower() or 'fixture income' in e['reason'] for e in r['errors']),r['errors'])
+        with State(self.directory,'binance:BTCUSDT:live:123') as s:
+            self.assertIsNotNone(s.get('position_protection'))
     def test_macro_entry_restart_and_false_state_reduce_same_owned_position(self):
         with State(self.directory,'binance:BTCUSDT:live:123') as state:
             m=Campaign.restore(state.get('linear_campaign'))
@@ -70,12 +88,43 @@ class SessionTests(TestCase):
         a=self.run_session(seconds=2);b=self.run_session(seconds=2)
         self.assertEqual(a['cleanup'],'unresolved');self.assertEqual(b['status'],'unknown')
         self.assertEqual(len([x for x in self.venue.sent if x[1].endswith('/order')]),1)
-    def test_partial_fill_protects_actual_size_and_never_adds(self):
+    def test_partial_fill_protects_actual_size_then_tops_up_under_same_protection(self):
         self.venue.fraction=D('.5');r=self.run_session(seconds=3)
-        self.assertEqual(r['cleanup'],'verified');self.assertEqual(len(self.venue.orders),1)
+        self.assertEqual(r['cleanup'],'verified',r);self.assertGreater(len(self.venue.orders),1)
+        entries=[p for _,path,p in self.venue.sent if path.endswith('/order') and p.get('timeInForce')=='IOC']
+        self.assertEqual(D(entries[1]['quantity']),D(entries[0]['quantity'])/2)
+        stops=[p for _,path,p in self.venue.sent if path.endswith('/algoOrder') and p.get('type')=='STOP_MARKET']
+        self.assertEqual(len(stops),1)
+        self.assertTrue(r['actual']['native_full_position_protected'])
+        self.assertTrue(r['actual']['stop_before_liquidation'])
+        sent=[path for _,path,_ in self.venue.sent]
+        first_add=[i for i,(_,path,p) in enumerate(self.venue.sent) if p is entries[1] or p==entries[1]][0]
+        self.assertEqual(sent[first_add-1],'/fapi/v1/positionMargin')
         with State(self.directory,'binance:BTCUSDT:live:123') as s:
             self.assertIsNone(s.get('entry_plan'))
             self.assertIsNotNone(s.get('position_protection'))
+            self.assertEqual(len(s.get('entry_campaigns')),len(entries))
+
+    def test_margin_transfer_past_the_deadline_sends_no_add(self):
+        self.venue.fraction=D('.5');original=self.venue.send
+        def send(method,path,p):
+            answer=original(method,path,p)
+            if path.endswith('/positionMargin') and any(x.endswith('/algoOrder') for _,x,_ in self.venue.sent):
+                self.venue.now+=12000
+            return answer
+        self.venue.send=send
+        r=self.run_session(seconds=3)
+        entries=[p for _,path,p in self.venue.sent if path.endswith('/order') and p.get('timeInForce')=='IOC']
+        self.assertEqual(len(entries),1)
+        paths=[path for _,path,_ in self.venue.sent]
+        self.assertGreater(len(paths)-paths[::-1].index('/fapi/v1/positionMargin'),paths.index('/fapi/v1/algoOrder'))
+        self.assertTrue(r['actual']['native_full_position_protected'])
+
+    def test_later_session_never_tops_up_an_earlier_entry(self):
+        self.venue.fraction=D('.5');self.run_session(seconds=1)
+        count=len(self.venue.orders)
+        self.venue.fraction=D(1);r=self.run_session(seconds=3)
+        self.assertEqual(r['cleanup'],'verified',r);self.assertEqual(len(self.venue.orders),count)
     def test_failed_protection_attempts_reduce_only_and_reports_unknown(self):
         self.venue.reject_protection=True;r=self.run_session(seconds=1)
         self.assertEqual(self.venue.q,0);self.assertEqual(r['status'],'unknown')
@@ -137,6 +186,7 @@ class SessionTests(TestCase):
         self.assertTrue(r['write_attempted'])
 
     def test_complete_native_tape_replays_identical_requests_and_decisions(self):
+        self.risk.stop()  # the subprocess replay imports the production default
         from copy import deepcopy
         from research.session_replay import replay
         with State(self.directory,'binance:BTCUSDT:live:123') as s:checkpoint=s.get('linear_campaign')

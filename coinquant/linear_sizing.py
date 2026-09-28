@@ -30,7 +30,6 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
     fee,maintenance,notional_limit=D(fee),D(maintenance),D(notional_limit)
     if not (fee.is_finite() and maintenance.is_finite() and notional_limit.is_finite() and 0<=fee<D('.05') and 0<=maintenance<D('.05') and notional_limit>0):
         raise ValueError('invalid economic preflight')
-    if account.q and fee!=FEE:raise ValueError('non-default fee requires native reduction accounting')
     old = abs(account.q)
     requested = (max(ZERO, account.equity(mark)*fraction/max(price, mark))
                  if target_quantity is None else D(target_quantity))
@@ -47,6 +46,7 @@ def funded_target(account, direction, fraction, price, mark, sl, tp, capacity, i
     if intended_add is not None and (raw>old)!=intended_add:
         result['reason']='quote_side_changed';return result
     if raw < old:
+        if fee!=FEE:raise ValueError('non-default fee requires native reduction accounting')
         delta = min(delta, old)
         account.close(delta, price)
         result.update(accepted=str(delta), reason='target', event='rebalance_reduce', amount=delta)

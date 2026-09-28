@@ -6,7 +6,7 @@ from unittest import TestCase
 from unittest.mock import Mock
 from coinquant.campaign import Campaign, ORIGIN
 from coinquant.opportunities import Opportunity
-from coinquant.native_preview import entry_preview
+from coinquant.native_preview import BOOK_PARTICIPATION, entry_preview, topup_preview
 from coinquant.linear_account import Account
 from coinquant.linear_sizing import funded_target
 from coinquant.types import Unknown
@@ -36,7 +36,7 @@ class NativePreviewTests(TestCase):
     def test_native_inputs_use_identical_funding_function_without_consumption(self):
         m,r,s,values,instrument=self.fixture();before=m.checkpoint()
         p=entry_preview(r,m,s);a=Account(D(1000))
-        expected=funded_target(a,1,m.entry_fraction('.0011'),D('100.1'),D(100),D(90),D('200.1'),D(10),instrument,fee=D('.0005'),maintenance=D('.005'),notional_limit=D(100000))
+        expected=funded_target(a,1,m.entry_fraction('.0011'),D('100.1'),D(100),D(90),D('200.1'),D(1000)*BOOK_PARTICIPATION,instrument,fee=D('.0005'),maintenance=D('.005'),notional_limit=D(100000))
         self.assertEqual(p['quantity_btc'],str(a.q));self.assertGreater(a.q,0)
         self.assertEqual(p['allocated_margin_usdt'],str(a.margin));self.assertEqual(p['constraint'],expected['reason'])
         self.assertEqual(m.checkpoint(),before)
@@ -65,3 +65,18 @@ class NativePreviewTests(TestCase):
         a=Account(D(1000),q=D(1),entry=D(100),margin=D(20))
         self.assertGreater(a.liquidation(D('.005'),D('.002')),a.liquidation(D('.005'),D('.0005')))
         self.assertEqual(a.liquidation(D('.005'),D('.002')),D(80)/(1-D('.007')))
+
+    def test_top_up_keeps_whole_position_inside_the_stop_budget(self):
+        m,r,s,values,_=self.fixture()
+        now=m.last+1000
+        values['/fapi/v1/depth']=dict(E=now,bids=[['109.9','1000']],asks=[['110','1000']])
+        held=dict(s,quantity_btc='1',entry='100',isolated_wallet_usdt='10',mark_price='110')
+        r.snapshot.return_value=dict(held)
+        free=topup_preview(r,m,held,'5','90','200.1')
+        self.assertGreater(D(free['quantity_btc']),1)
+        plan=topup_preview(r,m,held,'5','90','200.1','30')
+        add=D(plan['quantity_btc'])
+        self.assertGreater(add,0)
+        self.assertLessEqual(1*(100-90)+add*(D(plan['entry_estimate'])-90),30)
+        spent=topup_preview(r,m,held,'5','90','200.1','10')
+        self.assertEqual(spent['quantity_btc'],'0');self.assertEqual(spent['constraint'],'stop_budget')
