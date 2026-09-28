@@ -1,4 +1,8 @@
-"""Validated value objects for the single Bybit BTCUSD inverse contract."""
+"""Validated value objects and outcome types shared by the Binance session path.
+
+SYMBOL, CATEGORY and the inverse bar units remain for the retired Bybit research
+code under research/legacy and its replays; the Binance adapter does not use them.
+"""
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass

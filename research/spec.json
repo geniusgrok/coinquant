@@ -1,5 +1,5 @@
 {
-  "scope": "current Binance bounded-session acceptance; no measured economic result",
+  "scope": "current Binance bounded-session acceptance; economic result measured on the current session timing (current_session_replay)",
   "start": "2020-01-01T00:00:00Z",
   "end": "2026-09-20T00:00:00Z",
   "end_exclusive": true,
@@ -33,12 +33,13 @@
   "execution": {
     "runner": "coinquant.session.run",
     "lifecycle": "coinquant.lifecycle.Lifecycle",
-    "session_start_schedule": "must be frozen before measurement; legacy sparse observations alone do not qualify",
+    "session_start_schedule": "frozen: research/session_schedule.json (795 primary starts, sha256 in current_session_replay); legacy sparse observations alone do not qualify",
     "session_seconds_default": 300,
     "poll_seconds_default": 5,
     "entry": "price-bounded LIMIT IOC; terminal zero fills may be reconsidered on subsequent polls",
     "cold_start": "reconstruct completed bars; consume the already active campaign without inferring historical fills",
-    "stop": "bounded cleanup; native protection survives process exit"
+    "stop": "bounded cleanup; native protection survives process exit",
+    "top_up": "within the entry session only, IOC toward the committed campaign size after a completed cashflow audit; a macro campaign keeps the whole position inside its 3% entry stop budget; margin is added first and the deadline, stop request and quote are re-checked after it"
   },
   "required_dated_inputs": [
     "causal market observations and publication/availability timestamps",
@@ -132,12 +133,13 @@
     "name": "SX60+DFII10",
     "cost_net_cagr_percent": "108.228852",
     "continuous_mdd_percent": "39.779796",
-    "scope": "frozen sparse-invocation proxy only; not a measurement of the current session"
+    "scope": "historical 2026-09-27 selection; frozen sparse-invocation proxy only; not a measurement of the current session"
   },
   "native_qualification": "NOT_QUALIFIED",
   "legacy_benchmark": {
     "path": "research/legacy/spec.json",
     "sha256": "de96f59076ae9be1f88a6e28b6d61bf6b1c53620f7715cb098b04b984b7e7ca9",
     "scope": "immutable historical comparisons only; not current session acceptance"
-  }
+  },
+  "economic_status": "base meets both targets under the owner-accepted mark-gap bound (path_complete=false); fee, slippage and depth stresses fall below 150% CAGR; economic_qualification stays NOT_MET"
 }

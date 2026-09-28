@@ -1,4 +1,4 @@
-"""Exact resumable completed-bar state for the unqualified linear candidate.
+"""Exact resumable completed-bar state for the default SX60+DFII10 model (not qualified for live trading).
 
 Market state and execution ownership are separate. Replaying prices can rebuild
 the first, never prove past fills. No exchange writes are performed here.
@@ -65,8 +65,8 @@ class Campaign:
 
     @property
     def active(self):
-        # The research candidate gives an owned macro position priority while
-        # its state remains true; otherwise the original SX60 long leads.
+        # The default model gives an owned macro position priority while its
+        # state remains true; otherwise the SX60 long leads. Shorts are never active.
         if self.position_campaign is not None and self.position_campaign<0:
             return self.macro_opportunity
         primary=self.model.active
