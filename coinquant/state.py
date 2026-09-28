@@ -15,12 +15,18 @@ from time import time
 
 from .types import Blocked, Unknown, serial, number
 from .campaign import ORIGIN
+from .config import ENVIRONMENTS, scope
 
 
 def client_id(account: str, candle: int, operation: str) -> str:
     # Independent of local state and parameters: lost state cannot change an ID.
     identity = f'BTCUSD|{account}|{candle}|{operation}'.encode()
     return 'cq-' + hashlib.sha256(identity).hexdigest()[:30]
+
+
+def retryable(kind, payload):
+    return (kind in ('binance_algo', 'binance_algo_cancel', 'binance_cancel', 'binance_margin')
+            or kind == 'binance_order' and payload.get('reduceOnly') == 'true')
 
 
 class State:
@@ -75,16 +81,25 @@ class State:
         return json.loads(row[0]) if row else None
 
     def set(self, key: str, value) -> None:
+        self.set_many({key: value})
+
+    def set_many(self, values: dict) -> None:
+        """Commit several keys in one transaction."""
         with self.db:
-            self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
-                            (key, json.dumps(serial(value), sort_keys=True)))
+            for key, value in values.items():
+                self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
+                                (key, json.dumps(serial(value), sort_keys=True)))
 
     def prepare(self, identity: str, kind: str, payload: dict, *, campaign=None, flat_snapshot=None,
-                position_snapshot=None) -> None:
+                position_snapshot=None, result=None) -> None:
         encoded = json.dumps(serial(payload), sort_keys=True, separators=(',', ':'))
-        row = self.db.execute('SELECT payload FROM intents WHERE id=?', (identity,)).fetchone()
+        row = self.db.execute('SELECT kind,status,result FROM intents WHERE id=?', (identity,)).fetchone()
         if row:
-            raise Unknown('intent already exists; reconcile it instead of resending')
+            # A rejected intent left nothing at the exchange under this identity,
+            # so a safety operation may try it again. Entries always take a new epoch.
+            if row[1] != 'rejected' or row[0] != kind or not retryable(kind, payload):
+                raise Unknown('intent already exists; reconcile it instead of resending')
+            result = {**(result or {}), 'prior_rejection': json.loads(row[2])}
         links=None
         if campaign is not None and position_snapshot is not None:
             # An add inherits the fill-history boundary of the campaign's first entry.
@@ -98,7 +113,8 @@ class State:
                     or payload.get('side')!=('BUY' if q>0 else 'SELL') or payload.get('reduceOnly')=='true'
                     or not q or position_snapshot.get('possible_entry_remainders')!=0
                     or self.pending()
-                    or self.identity!=f"binance:BTCUSDT:live:{position_snapshot.get('account_uid')}"):
+                    or self.identity not in {scope(environment, position_snapshot.get('account_uid'))
+                                             for environment in ENVIRONMENTS}):
                 raise Blocked('campaign add requires the reconciled position of that campaign')
             first=min(group,key=lambda link:link['prepared_at'])
             links[identity]=dict(campaign=campaign,prepared_at=first['prepared_at'],
@@ -110,7 +126,8 @@ class State:
                     or not flat_snapshot or number(flat_snapshot.get('quantity_btc'))!=0
                     or flat_snapshot.get('possible_entry_remainders')!=0
                     or self.pending()
-                    or self.identity!=f"binance:BTCUSDT:live:{flat_snapshot.get('account_uid')}"):
+                    or self.identity not in {scope(environment, flat_snapshot.get('account_uid'))
+                                             for environment in ENVIRONMENTS}):
                 raise Blocked('entry campaign requires a reconciled flat owned account')
             links=self.get('entry_campaigns') or {}
             observed_at=flat_snapshot.get('observed_at_ms',int(time()*1000))
@@ -125,8 +142,9 @@ class State:
             # tolerates clock skew; the observed trade id excludes prior fills.
             links[identity]=dict(campaign=campaign,prepared_at=observed_at-(15000 if cursor is not None else 0),after_trade_id=cursor)
         with self.db:
-            self.db.execute('INSERT INTO intents VALUES (?,?,?,?,?,?)',
-                            (identity, kind, encoded, 'unknown', '{}', time()))
+            self.db.execute('INSERT OR REPLACE INTO intents VALUES (?,?,?,?,?,?)' if row else
+                            'INSERT INTO intents VALUES (?,?,?,?,?,?)',
+                            (identity, kind, encoded, 'unknown', json.dumps(serial(result or {}), sort_keys=True), time()))
             if links is not None:
                 self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('entry_campaigns',json.dumps(links,sort_keys=True)))
         # A crash immediately after this commit must be treated as possibly sent.

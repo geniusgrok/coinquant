@@ -43,6 +43,16 @@ class OwnershipTests(TestCase):
                 with self.assertRaises(Unknown):reconcile(state,r,m,s)
                 self.assertEqual(before,m.checkpoint())
 
+    def test_rejected_reduction_has_no_native_order_to_query(self):
+        with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+            m,r,s,t=self.fixture(state)
+            payload=dict(symbol='BTCUSDT',side='SELL',positionSide='BOTH',type='MARKET',quantity='.003',reduceOnly='true')
+            state.prepare('cq-exit','binance_order',payload)
+            state.finish('cq-exit','rejected',{'not_sent':'deadline'})
+            entry=r.query_intent.return_value
+            r.query_intent.side_effect=lambda identity,**kw:entry if identity=='cq-entry' else (_ for _ in ()).throw(Unknown('missing'))
+            self.assertEqual(reconcile(state,r,m,s)['quantity'],'0.003')
+
     def test_lost_journal_cannot_assign_an_existing_position(self):
         with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
             with self.assertRaises(Unknown):reconcile(state,Mock(),Campaign(),{'quantity_btc':'.1'})

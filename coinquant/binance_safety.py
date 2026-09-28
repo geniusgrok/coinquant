@@ -3,15 +3,16 @@
 The injected sender is used by offline lifecycle tests. Production CLI stays
 read-only until authorized native lifecycle validation and economic acceptance.
 """
-from decimal import Decimal as D
+from decimal import Decimal as D, ROUND_CEILING
+from .config import scope
 from .state import client_id
 from .binance import market_quantity
-from .types import Blocked, Unknown
+from .types import Blocked, NotSent, Rejected, Unknown
 
 
 def _gate(reader, state, uid, authorized, *, canceling_entry=False):
     if authorized is not True:raise Blocked('explicit operation authorization required')
-    if state.identity != f'binance:BTCUSDT:live:{uid}':
+    if state.identity != scope(reader.environment, uid):
         raise Blocked('state and native reader account scope differ')
     reader.recover_pending(state)
     if not canceling_entry:
@@ -34,13 +35,32 @@ def _gate(reader, state, uid, authorized, *, canceling_entry=False):
 
 def _once(state, identity, kind, payload, send, method, path):
     # Existing intent means possibly sent, even after a crash before HTTP began.
-    old=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(identity,)).fetchone()
-    if old:
+    old=state.db.execute('SELECT kind,payload,status FROM intents WHERE id=?',(identity,)).fetchone()
+    if old and old[2]!='rejected':
         import json
         if old[0]!=kind or json.loads(old[1])!=payload:raise Unknown('stable intent payload changed')
         return
     state.prepare(identity,kind,payload)
+    send_once(state,identity,send,method,path,payload)
+    # A refused cancel usually means the target is already terminal; callers
+    # settle cancellations from the target's own state.
+    if not kind.endswith('_cancel') and rejected(state,identity):
+        raise Blocked('request was not sent or was refused by Binance; nothing changed at the exchange')
+
+
+def rejected(state, identity):
+    row=state.db.execute('SELECT status FROM intents WHERE id=?',(identity,)).fetchone()
+    return bool(row) and row[0]=='rejected'
+
+
+def send_once(state, identity, send, method, path, payload):
+    """Send a prepared intent. Only a local refusal or a documented native
+    rejection is terminal; every other error keeps the intent unknown."""
     try:send(method,path,payload)
+    except (Blocked,NotSent) as exc:
+        state.finish(identity,'rejected',{'not_sent':str(exc)})
+    except Rejected as exc:
+        state.finish(identity,'rejected',{'native_rejection':str(exc)})
     except Exception:
         # Never interpret transport/API errors as proof that the write failed.
         pass
@@ -49,7 +69,7 @@ def _once(state, identity, kind, payload, send, method, path):
 def settled_protection(reader,state,identity):
     """Retain conclusive terminal child evidence before exchange history expires."""
     settled=state.get('settled_protection') or {}
-    if identity in settled:return True
+    if identity in settled or rejected(state,identity):return True
     archived=(state.get('terminal_native_orders') or {}).get(identity)
     if archived and 'algoStatus' in archived['parent']:
         settled[identity]=archived;state.set('settled_protection',settled)
@@ -158,29 +178,42 @@ def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized
     return after
 
 
-def add_margin(reader,state,send,uid,epoch,target,*,authorized=False):
+def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False):
     """Model-selected isolated wallet target; never withdraw or retry unknown adds.
 
-    Binance margin writes have no client transaction ID. Only a successful response
-    plus native wallet readback resolves this intent; uncertain writes stay blocked.
+    Binance margin writes have no client transaction ID. The amount is rounded up
+    to the settlement asset's native precision. A definitive success response is
+    persisted before the separate wallet readback; a lost answer is settled only
+    from native margin history, never from a balance change or a resend.
     """
     before=_gate(reader,state,uid,authorized)
     if not D(before['quantity_btc']) or before['possible_entry_remainders']:raise Blocked('unsafe margin scope')
-    amount=D(target)-D(before['isolated_wallet_usdt'])
+    places=instrument.get('quotePrecision')
+    if (instrument.get('symbol')!='BTCUSDT' or instrument.get('marginAsset')!='USDT'
+            or type(places) is not int or not 0<=places<=8):
+        raise Blocked('settlement amount precision unavailable')
+    amount=(D(target)-D(before['isolated_wallet_usdt'])).quantize(D(1).scaleb(-places),rounding=ROUND_CEILING)
     if not 0<amount<=D(before['wallet_usdt'])-D(before['isolated_wallet_usdt']):
         raise Blocked('margin addition must be funded from existing wallet')
     identity=client_id(state.identity,epoch,'margin_add')
-    payload=dict(symbol='BTCUSDT',positionSide='BOTH',amount=str(amount),type=1)
+    payload=dict(symbol='BTCUSDT',positionSide='BOTH',amount=format(amount.normalize(),'f'),type=1)
     if any(p['kind']=='binance_margin' for p in state.pending()):raise Unknown('previous margin outcome unresolved')
-    state.prepare(identity,'binance_margin',payload)
+    state.prepare(identity,'binance_margin',payload,result={'prepared_at_ms':int(reader.clock()*1000)})
     try:answer=send('POST','/fapi/v1/positionMargin',payload)
+    except (Blocked,NotSent) as exc:
+        state.finish(identity,'rejected',{'not_sent':str(exc)})
+        raise Blocked('margin transfer was not sent') from None
+    except Rejected as exc:
+        state.finish(identity,'rejected',{'native_rejection':str(exc)})
+        raise Blocked('margin transfer rejected by Binance') from None
     except Exception:raise Unknown('margin outcome unknown; no automatic retry') from None
-    if not isinstance(answer,dict) or answer.get('code')!=200 or answer.get('type')!=1 or D(str(answer.get('amount',0)))!=amount:
+    if (not isinstance(answer,dict) or answer.get('code')!=200 or str(answer.get('type'))!='1'
+            or D(str(answer.get('amount',0)))!=amount):
         raise Unknown('margin response not definitive')
+    state.finish(identity,'confirmed',{'amount':str(amount),'acknowledged':True})
     after=reader.snapshot(uid)
     if D(after['quantity_btc'])!=D(before['quantity_btc']) or D(after['isolated_wallet_usdt'])<D(target):
         raise Unknown('margin/position readback changed; reconcile without retry')
-    state.finish(identity,'confirmed',{'amount':str(amount),'isolated_wallet':after['isolated_wallet_usdt']})
     return after
 
 
@@ -194,7 +227,7 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     """
     import json
     if authorized is not True:raise Blocked('explicit operation authorization required')
-    if state.identity!=f'binance:BTCUSDT:live:{uid}':raise Blocked('account scope mismatch')
+    if state.identity!=scope(reader.environment,uid):raise Blocked('account scope mismatch')
     if old_epoch==epoch:raise Blocked('replacement needs a distinct stable epoch')
     old_ids=[client_id(state.identity,old_epoch,k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')]
     new_ids=[client_id(state.identity,epoch,k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')]

@@ -8,26 +8,28 @@ Binance BTCUSDT U 本位永续，单账户、单向逐仓、交易所20×。手�
 
 `run --execute` 在凭据和网络访问前拒绝；资格 `NOT_QUALIFIED`。
 
-## 经济测量（测量器 M5）
+## 经济测量（测量器 M6）
 
-`python -m research.rebuild P5` 在 `research.session_exchange.SessionExchange` 上运行同一个 `session.run`/`Lifecycle`，冻结795个会话起点（`research/session_schedule.json`）。2020-01-01至2026-09-20（右端不含），人民币10,000元：
+`python -m research.rebuild P6` 在 `research.session_exchange.SessionExchange` 上运行同一个 `session.run`/`Lifecycle`，冻结795个会话起点（`research/session_schedule.json`）。2020-01-01至2026-09-20（右端不含），人民币10,000元：
 
 | 场景 | 期末人民币 | CAGR | 连续 MDD |
 |---|---|---|---|
-| 基准 P5 | 5,230,718 | 153.87% | 44.73% |
+| 基准 P6 | 5,230,718 | 153.87% | 44.73% |
 | 手续费 +50% | 4,564,761 | 148.78% | 45.00% |
 | 出场滑点 ×2 | 4,625,195 | 149.27% | 45.09% |
 | 深度取用 10% | 4,465,655 | 147.97% | 44.73% |
 | 随机跳过 20% 会话 | 1,091,282 | 101.06% | 44.68% |
 | 缺席序列 / 21 天空窗 | 5,230,718 | 153.87% | 44.73% |
 
-2020-01-19 13:09–13:37 UTC 缺29分钟官方标记价而账户持仓；所有者2026-09-28接受以实测标记/成交偏离作边界（`path_complete=false`）。`economic_qualification` 为 `NOT_MET`：基准达标，三项成本压力略低于150%。口径与各轮修正见 `research/redesign-PROTOCOL.md`，结果见 `evidence/rebuild-20260927/RESULT.md`。
+2020-01-19 13:09–13:37 UTC 缺29分钟官方标记价而账户持仓；所有者2026-09-28接受以实测标记/成交偏离作边界（`path_complete=false`）。`economic_qualification` 为 `NOT_MET`：基准达标，三项成本压力略低于150%。M6 与 M5 终值、费用、资金费与 MDD 相同；每份原件记录源码提交（`8c22f7c`）、输入文件摘要、资金费流水与每日权益。口径与各轮修正见 `research/redesign-PROTOCOL.md`，结果与测量局限见 `evidence/rebuild-20260927/RESULT.md`。
 
 ## 未完成
 
-- 原生验证：真实成交后保护建立的时间窗口、重复 close-all 接受行为、超时/迟到成交、交易所断连（`evidence/bounded-session-20260926/RESULT.md`）。需要指定账户、资金上限和当次明确交易授权。
-- 默认模型没有开空路径。
-- 成本、滑点、深度压力下 CAGR 比150%低0.7–2.0个百分点。
+- 原生验证：真实成交后保护建立的时间窗口、重复 close-all 接受行为、超时/迟到成交、交易所断连、明确拒绝错误码、保证金历史结算、Demo 环境语义（`evidence/bounded-session-20260926/RESULT.md`）。先在 Demo（`environment: demo`）验证，再在单独授权的专用小额余额（`capital_limit_usdt`）上验证；需要指定账户和当次明确交易授权。
+- 默认模型只做多，没有开空路径。
+- 成本、滑点、深度压力下 CAGR 比150%低0.7–2.0个百分点；没有前向证据。
+- 超过成交历史（约3个月）与资金流水窗口（约88天未观察）后恢复只能返回未知；没有外部归档导入入口。实盘连续权益与 MDD 没有可核验的重建。
+- Windows 等无系统时区库的环境需要 `tzdata`。
 
 ## 数据
 

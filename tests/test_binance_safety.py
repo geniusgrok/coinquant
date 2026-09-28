@@ -8,10 +8,12 @@ from coinquant.types import Blocked,Unknown
 from tests.test_binance_quantity import instrument
 
 def rules():
-    r=instrument();r['filters'].append(dict(filterType='PRICE_FILTER',tickSize='.1',minPrice='1',maxPrice='1000000'));return r
+    r=instrument();r['filters'].append(dict(filterType='PRICE_FILTER',tickSize='.1',minPrice='1',maxPrice='1000000'))
+    r.update(marginAsset='USDT',quotePrecision=8);return r
 
 class Native(Binance):
     def __init__(self):
+        super().__init__(clock=lambda:1770004800.0)
         self.orders={};self.sent=[];self.q='.003';self.margin='30';self.remainders=0
     def snapshot(self,uid):
         return dict(account_uid=str(uid),quantity_btc=self.q,mark_price='100000',
@@ -80,11 +82,11 @@ class SafetyTests(unittest.TestCase):
         calls=[]
         def send(*a):calls.append(a);raise TimeoutError()
         for epoch in (100,200):
-            with self.assertRaises(Unknown):add_margin(self.native,self.state,send,'123',epoch,'40',authorized=True)
+            with self.assertRaises(Unknown):add_margin(self.native,self.state,send,'123',epoch,'40',instrument=rules(),authorized=True)
         self.assertEqual(len(calls),1)
     def test_model_margin_target_readback(self):
-        result=add_margin(self.native,self.state,self.native.send,'123',100,'40',authorized=True)
-        self.assertEqual(result['isolated_wallet_usdt'],'40')
+        result=add_margin(self.native,self.state,self.native.send,'123',100,'40',instrument=rules(),authorized=True)
+        self.assertEqual(D(result['isolated_wallet_usdt']),40)
         self.assertEqual(self.state.pending(),[])
 
     def test_no_open_order_is_not_proof_unknown_entry_cannot_arrive(self):

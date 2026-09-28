@@ -63,7 +63,7 @@ def main():
     config=Config(state_dir=str(args.state_dir),**data['config'])
     if 'checkpoint' in data:
         from coinquant.state import State
-        with State(config.state_dir,'binance:BTCUSDT:live:'+config.account_uid) as state:
+        with State(config.state_dir,config.scope) as state:
             state.set('linear_campaign',data['checkpoint'])
     result=replay(data,config,execute=data.get('execute') is True)
     print(json.dumps(serial(result),indent=2))

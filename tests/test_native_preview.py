@@ -31,7 +31,18 @@ class NativePreviewTests(TestCase):
             '/fapi/v1/depth':dict(E=now,bids=[['99.9','1000']],asks=[['100','1000']])}
         reader=Mock();reader.clock.return_value=now/1000;reader.get.side_effect=lambda path,params=None:values[path]
         reader.snapshot.return_value=snapshot.copy()
+        reader.capital_limit=None
         return model,reader,snapshot,values,instrument
+
+    def test_capital_limit_sizes_from_the_trial_capital_only(self):
+        m,r,s,_,instrument=self.fixture()
+        r.capital_limit=D(100)
+        p=entry_preview(r,m,s);a=Account(D(100))
+        funded_target(a,1,m.entry_fraction('.0011'),D('100.1'),D(100),D(90),D('200.1'),D(1000)*BOOK_PARTICIPATION,instrument,fee=D('.0005'),maintenance=D('.005'),notional_limit=D(100000))
+        self.assertEqual((p['quantity_btc'],p['sizing_capital_usdt']),(str(a.q),'100'))
+        self.assertLessEqual(D(p['allocated_margin_usdt']),100)
+        m,r,s,_,_=self.fixture()
+        self.assertGreater(D(entry_preview(r,m,s)['quantity_btc']),a.q)
 
     def test_native_inputs_use_identical_funding_function_without_consumption(self):
         m,r,s,values,instrument=self.fixture();before=m.checkpoint()

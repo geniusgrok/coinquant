@@ -1,7 +1,7 @@
 """Manually started finite sessions; live and replay use this exact coordinator."""
 import time
 
-from .lifecycle import Lifecycle
+from .lifecycle import Lifecycle, blocking
 from .linear_preview import advance, preview
 from .native_preview import entry_preview
 from .ownership import reconcile
@@ -18,16 +18,18 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
         reader.recover_pending(state)
         snapshot=reader.snapshot(uid)
     model,market,reconstructed=advance(state,reader)
-    model.select_macro(reader.dfii10_snapshot(),snapshot['mark_price'],int(reader.clock()*1000),
-                       bootstrap=reconstructed)
-    state.set('linear_campaign',model.checkpoint())
+    # DFII10 is read only when it can change the decision, so its outage never
+    # delays a primary exit or protection maintenance.
+    row=reader.dfii10_snapshot() if model.macro_relevant() else None
+    model.select_macro(row,snapshot['mark_price'],int(reader.clock()*1000),bootstrap=reconstructed)
+    state.set_many({'linear_campaign':model.checkpoint(),'market_bootstrap':False})
     # Recovery already reconciled this exact observation when it wrote nothing.
     prior=engine.reconciled
     if execute and prior and prior[0] is snapshot and prior[1]==len(engine.actions)==0:
         ownership=prior[2]
     else:
         ownership=reconcile(state,reader,model,snapshot)
-    if state.pending():
+    if blocking(state):
         raise Unknown('unsettled intents block decisions')
     result=preview(model,snapshot)
     result.update(ownership=ownership,reconstructed_market_only=reconstructed)
@@ -72,8 +74,10 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
     report=dict(status='read_only',cycles=0,write_attempted=False,errors=[],
                 qualification='NOT_QUALIFIED',stop_reason='deadline',cleanup='not_required',
                 session_started_at_ms=int(reader.clock()*1000))
-    identity='binance:BTCUSDT:live:'+config.account_uid
-    with State(config.state_dir,identity) as state:
+    if (getattr(reader,'environment','live')!=config.environment
+            or getattr(reader,'capital_limit',None)!=config.capital_limit):
+        raise Blocked('exchange adapter and configuration differ in environment or capital limit')
+    with State(config.state_dir,config.scope) as state:
         prior_writes=state.get('write_attempt_count') or 0
         try:
             while monotonic()<deadline and not stopping():

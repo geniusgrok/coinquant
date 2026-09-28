@@ -12,7 +12,9 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
-from coinquant.types import Blocked, Unknown, number
+from decimal import Decimal
+
+from coinquant.types import Blocked, NotSent, Rejected, Unknown, number
 
 PUBLIC = {'/fapi/v1/time', '/fapi/v1/exchangeInfo', '/fapi/v1/klines',
           '/fapi/v1/premiumIndex', '/fapi/v1/depth'}
@@ -20,7 +22,13 @@ PRIVATE = {'/api/v3/account', '/fapi/v3/account', '/fapi/v1/accountConfig',
            '/fapi/v1/symbolConfig', '/fapi/v3/positionRisk', '/fapi/v1/openOrders',
            '/fapi/v1/openAlgoOrders', '/fapi/v1/userTrades',
            '/fapi/v1/commissionRate', '/fapi/v1/leverageBracket',
-           '/fapi/v1/order', '/fapi/v1/algoOrder', '/fapi/v1/income'}
+           '/fapi/v1/order', '/fapi/v1/algoOrder', '/fapi/v1/income',
+           '/fapi/v1/positionMargin/history'}
+# Documented request/validation refusals. Anything else, including -1006/-1007
+# and every 5xx, keeps an unknown execution status.
+REJECT_CODES = frozenset({-1021, -1022, -2010, -2011, -2013, -2014, -2015, -2018, -2019,
+                          -2020, -2021, -2022, -2024, -2025}
+                         | set(range(-1199, -1099)) | set(range(-4999, -3999)))
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -28,8 +36,20 @@ class NoRedirect(HTTPRedirectHandler):
         raise Blocked('Binance API redirects are refused')
 
 
+# Spot account identity host and USD-M futures host per environment. Demo is
+# Binance's virtual-balance environment; its UID and account semantics are not
+# natively verified here.
+HOSTS = {'live': ('api.binance.com', 'fapi.binance.com'),
+         'demo': ('demo-api.binance.com', 'demo-fapi.binance.com')}
+
+
 class Binance:
-    def __init__(self, *, key='', secret='', opener=None, clock=time.time, authorize_writes=False, monotonic=None):
+    def __init__(self, *, key='', secret='', opener=None, clock=time.time, authorize_writes=False, monotonic=None,
+                 environment='live', capital_limit=None):
+        if environment not in HOSTS:
+            raise Blocked('unknown Binance environment')
+        self.environment = environment
+        self.capital_limit = None if capital_limit is None else Decimal(capital_limit)
         self.key, self.secret = key, secret
         self.opener = opener or build_opener(NoRedirect())
         self.clock = clock
@@ -45,7 +65,9 @@ class Binance:
     def dfii10_snapshot(self):
         from .dfii10 import Source
         if self._dfii10 is None:self._dfii10=Source()
-        return self._dfii10.snapshot(int(self.clock()*1000))
+        remaining=self.deadline-self.monotonic()
+        if remaining<=1:raise Unknown('no session budget left for the DFII10 read')
+        return self._dfii10.snapshot(int(self.clock()*1000),budget=remaining)
 
     def monotonic(self):
         """Budget clock for this adapter. Subclasses and replay inject their own.
@@ -70,7 +92,7 @@ class Binance:
         while self.request_weights and self.request_weights[0][0]<=now-60:
             self.request_weights.popleft()
         if sum(cost for _,cost in self.request_weights)+reserve>2200:
-            raise Unknown('local request-weight reserve unavailable; wait before new risk')
+            raise NotSent('local request-weight reserve unavailable; wait before new risk')
 
     def get(self, path, parameters=None):
         if path not in PUBLIC | PRIVATE:
@@ -121,7 +143,7 @@ class Binance:
                  '/fapi/v1/klines':2,
                  '/fapi/v1/commissionRate':20,'/fapi/v1/leverageBracket':1,
                  '/fapi/v1/order':1,'/fapi/v1/algoOrder':1,'/fapi/v1/positionMargin':1,
-                 '/fapi/v1/income':30}
+                 '/fapi/v1/positionMargin/history':1,'/fapi/v1/income':30}
         weight=(40 if path.endswith(('/openOrders','/openAlgoOrders')) and 'symbol' not in params
                 else 1 if path=='/fapi/v1/openOrders' else weights[path])
         if path == '/fapi/v1/klines':
@@ -143,7 +165,8 @@ class Binance:
         query = urlencode(sorted(params.items()))
         if private:
             query += '&signature=' + hmac.new(self.secret.encode(),query.encode(),hashlib.sha256).hexdigest()
-        host = 'api.binance.com' if path == '/api/v3/account' else 'fapi.binance.com'
+        spot, futures = HOSTS[self.environment]
+        host = spot if path == '/api/v3/account' else futures
         if method == 'GET':
             url, data = 'https://'+host+path+('?' + query if query else ''), None
         else:
@@ -152,8 +175,8 @@ class Binance:
         request = Request(url, data=data, headers=headers, method=method)
         remaining = self.deadline-self.monotonic()
         if self.monotonic() < self.cooldown_until:
-            raise Unknown('Binance rate limit cooldown; no request sent')
-        if remaining <= 0: raise Unknown('bounded Binance observation deadline exceeded')
+            raise NotSent('Binance rate limit cooldown; no request sent')
+        if remaining <= 0: raise NotSent('bounded Binance observation deadline exceeded; no request sent')
         try:
             self.request_weights.append((self.monotonic(),weight))
             result = self._transport(request, timeout=min(8,remaining))
@@ -162,8 +185,12 @@ class Binance:
                 try:delay=max(60,min(86400,float(exc.headers.get('Retry-After','60'))))
                 except (TypeError,ValueError):delay=60
                 self.cooldown_until=self.monotonic()+delay
+            code=_error_code(exc)
+            if method != 'GET' and exc.code in (400,401) and code in REJECT_CODES:
+                raise Rejected(f'Binance rejected the request with code {code}') from None
             raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown') from None
-        except (URLError, TimeoutError, OSError, ValueError):
+        except (URLError, TimeoutError, OSError, ValueError, Blocked):
+            # A refused redirect or broken response arrives after the request left.
             raise Unknown('Binance request unavailable; read by stable identity before any retry') from None
         if not isinstance(result,(dict,list)) or (isinstance(result,dict) and 'code' in result and not (method != 'GET' and result['code'] == 200)):
             raise Unknown('unexpected Binance read response')
@@ -174,7 +201,8 @@ class Binance:
         with self.opener.open(request, timeout=timeout) as response:
             raw = response.read(2000001)
         if len(raw)>2000000: raise Unknown('oversized Binance response')
-        return json.loads(raw)
+        # Numeric amounts, such as a margin response, stay exact decimals.
+        return json.loads(raw, parse_float=Decimal)
 
     def completed_market(self, start=None, *, on_page=None):
         """Page complete four-hour bars from an exact checkpoint; never truncate."""
@@ -325,6 +353,12 @@ class Binance:
                 except (Blocked,Unknown,KeyError,TypeError,ValueError,ArithmeticError):
                     pass
                 continue
+            if kind=='binance_margin':
+                try:
+                    if self.recover_margin(state,intent):resolved+=1
+                except (Blocked,Unknown,KeyError,TypeError,ValueError,ArithmeticError):
+                    pass
+                continue
             if kind not in ('binance_order', 'binance_algo'):
                 continue
             try:
@@ -394,6 +428,42 @@ class Binance:
                 continue
         return {'resolved': resolved, 'pending': len(state.pending())}
 
+    def recover_margin(self, state, intent):
+        """Settle a transfer whose answer was lost from bounded native margin history.
+
+        A margin write has no client identity. Exactly one matching user add in
+        the window after preparation confirms it; any other add there is
+        ambiguous and stays unknown. An empty complete window long after the
+        request shows the add was not applied. Balance changes never decide it.
+        """
+        row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
+        prepared=json.loads(row[0]).get('prepared_at_ms') if row else None
+        if type(prepared) is not int:
+            raise Unknown('margin intent lacks its preparation time; operator review required')
+        now=int(self.clock()*1000);begin=prepared-15000
+        if not begin<now<=begin+29*86400000:
+            raise Unknown('margin history window unavailable; operator review required')
+        rows=self.get('/fapi/v1/positionMargin/history',
+                      {'symbol':'BTCUSDT','startTime':begin,'endTime':now,'limit':500})
+        if not isinstance(rows,list) or len(rows)>=500:
+            raise Unknown('margin history incomplete')
+        adds=[]
+        for r in rows:
+            if (r.get('symbol')!='BTCUSDT' or r.get('asset','USDT')!='USDT'
+                    or r.get('positionSide','BOTH')!='BOTH' or type(r.get('time')) is not int
+                    or not begin<=r['time']<=now or str(r.get('type')) not in ('1','2')):
+                raise Unknown('unexpected margin history scope')
+            if str(r['type'])=='1' and r.get('deltaType','USER_ADJUST')=='USER_ADJUST':
+                adds.append(r)
+        amount=number(intent['payload']['amount'],positive=True)
+        if len(adds)==1 and number(adds[0].get('amount'))==amount:
+            state.finish(intent['id'],'confirmed',{'amount':str(amount),'history_time':adds[0]['time']})
+            return True
+        if not adds and now-prepared>=600000:
+            state.finish(intent['id'],'rejected',{'history_absent':[begin,now]})
+            return True
+        return False
+
     def snapshot(self, expected_uid):
         uid=self.account_identity()
         if uid!=str(expected_uid):raise Blocked('Binance account UID does not match the configured account')
@@ -441,6 +511,16 @@ class Binance:
         raise Unknown('Binance account changed during bounded reconciliation')
 
 
+def _error_code(error):
+    """Native error code of an HTTP error body, or None when it is not readable."""
+    try:
+        body = json.loads(error.read(4097)[:4096])
+    except Exception:
+        return None
+    code = body.get('code') if isinstance(body, dict) else None
+    return code if type(code) is int else None
+
+
 def observation_key(value):
     """Ignore continuously repriced PnL; compare state that fills/margin writes change."""
     try:
@@ -454,7 +534,7 @@ def observation_key(value):
                 'config':value['config'],'symbol':value['symbol'],
                 'orders':sorted(value['orders'],key=lambda o:o['orderId']),
                 'algos':sorted(value['algos'],key=lambda o:o['algoId'])}
-        return json.dumps(stable,sort_keys=True,separators=(',',':'),allow_nan=False)
+        return json.dumps(stable,sort_keys=True,separators=(',',':'),allow_nan=False,default=str)
     except (KeyError,TypeError,ValueError):
         raise Unknown('missing native reconciliation identity fields') from None
 

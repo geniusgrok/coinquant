@@ -3,6 +3,7 @@
 December 2019 perpetual hours are the already verified warmup file. Vision's
 monthly futures archive begins 2020-01-01. Later months are not interpolated.
 """
+import bisect
 from datetime import datetime, timezone
 from decimal import Decimal as D
 import hashlib
@@ -20,8 +21,12 @@ WARMUP_FUNDING_SHA = '25a949a83bc5305727fb86f0d6e3e297235a03990d6404a3f160a2ce82
 HOUR = 3_600_000
 FOUR = 14_400_000
 MINUTE = 60_000
-# Vision has no 2026-09 funding object yet. Settlements in that gap stay unknown.
-FUNDING_GAP_FROM = int(datetime(2026, 9, 1, tzinfo=timezone.utc).timestamp() * 1000)
+FUNDING_INTERVAL = 8 * HOUR
+FUNDING_JITTER_MS = 1000
+# Monthly Vision funding objects the account needs. Vision has no 2026-09 object
+# yet; a held interval crossing an uncovered settlement time is an unknown path.
+FUNDING_MONTHS = tuple(f'{year:04d}-{month:02d}' for year in range(2020, 2027) for month in range(1, 13)
+                       if (year, month) <= (2026, 8))
 
 
 def _sha(path):
@@ -91,11 +96,16 @@ class Market:
 
     def __init__(self, h4, funding, root=None, identity=None):
         self.h4 = h4
-        self.funding = funding  # sorted (time_ms, rate)
+        self.funding = tuple(funding)  # sorted (time_ms, rate)
+        self._funding_times = [stamp for stamp, _ in self.funding]
+        # Settlement times covered by a published rate, stamped within FUNDING_JITTER_MS.
+        self.funding_grid = {stamp - stamp % FUNDING_INTERVAL for stamp in self._funding_times
+                             if stamp % FUNDING_INTERVAL < FUNDING_JITTER_MS}
         self.root = None if root is None else Path(root)
         self.identity = identity or {}
         self._months = {}
         self._order = []
+        self.loaded = {}
 
     def bar4(self, open_ms):
         return self.h4.get(int(open_ms))
@@ -122,7 +132,7 @@ class Market:
         path = self.root / folder / '1m' / name
         table = {}
         if path.exists():
-            _checksum(path)
+            self.loaded[f'{folder}/1m/{name}'] = _checksum(path)
             for row in _read_zip_rows(path):
                 open_time, close_time, values = _kline_row(row)
                 if close_time != open_time + MINUTE - 1 or open_time % MINUTE:
@@ -132,7 +142,7 @@ class Market:
         if daily.exists():
             prefix = f'BTCUSDT-1m-{year:04d}-{month:02d}-'
             for path in sorted(daily.glob(prefix + '*.zip')):
-                _checksum(path)
+                self.loaded[f'{folder}/1m/daily/{path.name}'] = _checksum(path)
                 for row in _read_zip_rows(path):
                     open_time, close_time, values = _kline_row(row)
                     if close_time != open_time + MINUTE - 1:
@@ -143,21 +153,21 @@ class Market:
         return table
 
     def funding_between(self, start_ms, end_ms):
-        """Settlements with start < time <= end. A missing official rate is a gap."""
+        """Settlements with start < time <= end. A held interval that crosses an
+        eight-hour settlement time without an official rate is a gap."""
+        index = bisect.bisect_right(self._funding_times, start_ms)
         events = []
-        gap = False
-        for stamp, rate in self.funding:
-            if stamp <= start_ms:
-                continue
+        for stamp, rate in self.funding[index:]:
             if stamp > end_ms:
                 break
             events.append((stamp, rate))
-        if end_ms > FUNDING_GAP_FROM and start_ms < end_ms:
-            # Any open position that crosses September 2026 lacks an official file.
-            if any(stamp >= FUNDING_GAP_FROM for stamp, _ in events) or end_ms >= FUNDING_GAP_FROM:
-                known = {stamp for stamp, _ in self.funding if start_ms < stamp <= end_ms}
-                # The archive simply has no September file. Callers decide.
-                gap = end_ms >= FUNDING_GAP_FROM and not any(stamp >= FUNDING_GAP_FROM for stamp in known)
+        grid = (start_ms // FUNDING_INTERVAL + 1) * FUNDING_INTERVAL
+        gap = False
+        while grid <= end_ms:
+            if grid not in self.funding_grid:
+                gap = True
+                break
+            grid += FUNDING_INTERVAL
         return events, gap
 
 
@@ -211,21 +221,33 @@ def load_base(root):
             raise ValueError('warmup funding symbol')
         funding[int(row['fundingTime'])] = D(row['fundingRate'])
     fund_dir = root / 'funding'
-    if fund_dir.exists():
-        for path in sorted(fund_dir.glob('BTCUSDT-fundingRate-*.zip')):
-            digest = _checksum(path)
-            digests['vision'].append({'path': str(path.relative_to(root)), 'sha256': digest, 'bytes': path.stat().st_size})
-            for row in _read_zip_rows(path):
-                stamp, rate = int(row[0]), D(row[-1])
-                if stamp in funding and funding[stamp] != rate:
-                    raise ValueError(f'funding conflict at {stamp}')
-                funding[stamp] = rate
+    missing = [month for month in FUNDING_MONTHS
+               if not (fund_dir / f'BTCUSDT-fundingRate-{month}.zip').exists()]
+    if missing:
+        raise ValueError('missing monthly funding files ' + ','.join(missing[:8]))
+    for path in sorted(fund_dir.glob('BTCUSDT-fundingRate-*.zip')):
+        digest = _checksum(path)
+        digests['vision'].append({'path': str(path.relative_to(root)), 'sha256': digest, 'bytes': path.stat().st_size})
+        for row in _read_zip_rows(path):
+            stamp, rate = int(row[0]), D(row[-1])
+            if stamp in funding and funding[stamp] != rate:
+                raise ValueError(f'funding conflict at {stamp}')
+            funding[stamp] = rate
     series = tuple(sorted(funding.items()))
+    off_grid = [stamp for stamp, _ in series if stamp % FUNDING_INTERVAL >= FUNDING_JITTER_MS]
+    if off_grid:
+        raise ValueError(f'funding stamps off the eight-hour grid: {off_grid[:4]}')
+    market = Market(bars, series, root, digests)
+    end = int(datetime(2026, 9, 20, tzinfo=timezone.utc).timestamp() * 1000)
+    grid = range(series[0][0] - series[0][0] % FUNDING_INTERVAL, end, FUNDING_INTERVAL)
+    uncovered = [stamp for stamp in grid if stamp not in market.funding_grid]
     digests['warmup_funding_sha256'] = WARMUP_FUNDING_SHA
     digests['four_hour_bars'] = len(bars)
     digests['funding_points'] = len(series)
-    digests['funding_gap_from'] = FUNDING_GAP_FROM
-    return Market(bars, series, root, digests)
+    digests['funding_covered_through'] = max(market.funding_grid)
+    digests['funding_uncovered'] = len(uncovered)
+    digests['funding_uncovered_first'] = uncovered[0] if uncovered else None
+    return market
 
 
 def _iter_zip_rows(path):
@@ -274,6 +296,7 @@ class TradePrints:
         self.root = Path(root)
         self._day_ms = None
         self._rows = None
+        self.loaded = {}
 
     def window(self, start_ms, end_ms):
         rows = self.timed(start_ms, end_ms)
@@ -330,6 +353,7 @@ class TradePrints:
             self._day_ms, self._rows = day_ms, None
             return None
         digest = _checksum(path)
+        self.loaded[name] = digest
         import array
         import os
         cache = self.root.parent / (self.root.name + '-cache') / f'{name}.{digest}.bin'
@@ -445,4 +469,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     fetch(args.root)
     market = load_base(args.root)
-    print(json.dumps({k: market.identity[k] for k in ('four_hour_bars', 'funding_points', 'funding_gap_from')}))
+    print(json.dumps({k: market.identity[k] for k in ('four_hour_bars', 'funding_points', 'funding_covered_through', 'funding_uncovered')}))

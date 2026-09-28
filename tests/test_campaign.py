@@ -117,4 +117,4 @@ class CampaignTests(unittest.TestCase):
                 return dict(interval_ms=interval,complete_through=start,candles=[])
             venue.completed_market.side_effect=resumed
             model,_,cold=advance(state,venue)
-            self.assertTrue(cold);self.assertFalse(state.get('market_bootstrap'))
+            self.assertTrue(cold);self.assertTrue(state.get('market_bootstrap'))
