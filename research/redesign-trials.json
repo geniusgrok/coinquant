@@ -187,6 +187,45 @@
           "stress": "seeded 21-day block"
         }
       ]
+    },
+    {
+      "round": "M2",
+      "registered": "2026-09-28",
+      "hypothesis": "Meter corrections from the PR review: cashflow audit before any add; MDD envelope peaks include the favorable intraminute extreme; writes take effect after 1000 ms latency and IOC responses return after the print window; book and mark observations are stamped with the last trade print at or before the request; a missing official mark minute with a position forfeits the whole isolated wallet. All earlier M1 results are superseded. Promotion rule unchanged.",
+      "model": "current code, PRIMARY_RISK varied",
+      "trials": [
+        {
+          "name": "M2-p6",
+          "args": [
+            "--primary-risk",
+            "6"
+          ]
+        },
+        {
+          "name": "M2-p7",
+          "args": [
+            "--primary-risk",
+            "7"
+          ]
+        },
+        {
+          "name": "M2-p7.5",
+          "args": [
+            "--primary-risk",
+            "7.5"
+          ]
+        },
+        {
+          "name": "M2-p7.5-bound",
+          "args": [
+            "--primary-risk",
+            "7.5",
+            "--mark-gap",
+            "bound"
+          ],
+          "stress": "hindsight mark-gap bound (sensitivity, path_complete false)"
+        }
+      ]
     }
   ]
 }

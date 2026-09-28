@@ -147,7 +147,7 @@ class SessionHistoryTests(TestCase):
         self.assertEqual(window, [(D('99.5'), D('0.003')), (D('101'), D('5')), (D('100'), D('0.004'))])
         exchange, _start, _price = self._exchange('trade_print')
         exchange.prints = prints
-        exchange.now_ms = base
+        exchange.now_ms = base + 1000  # arrival after the request latency
         filled = exchange._fill_from_prints('BUY', D('100'), D('0.01'))
         self.assertEqual(filled, D('0.007'))
         self.assertEqual(exchange.funnel['ioc_filled'], 1)
@@ -157,26 +157,39 @@ class SessionHistoryTests(TestCase):
         self.assertEqual(missed, 0)
         self.assertIsNone(TradePrints(directory).window(base + 86_400_000 + 1000, base + 86_400_000 + 2000))
 
-    def test_missing_print_reject_does_not_leave_an_unknown_intent(self):
+    def test_missing_prints_block_observation_before_any_order(self):
         exchange, _start, _price = self._exchange('trade_print')
         exchange.prints = TradePrints(Path(tempfile.mkdtemp()))
         directory = tempfile.mkdtemp()
         from coinquant.state import State
         with State(directory, 'binance:BTCUSDT:live:1') as state:
             state.set('enter_unconsumed_bootstrap', True)
-        run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
-        exchange.advance_unattended(exchange.now_ms + 86_400_000)
-        minute = exchange.now_ms // 60_000 * 60_000 - 60_000
-        _plant(exchange.market.identity['trade'], minute, _price)
-        _plant(exchange.market.identity['mark'], minute, _price)
-        run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
-        import sqlite3
-        rows = sqlite3.connect(str(Path(directory) / 'intents.sqlite')).execute(
-            "SELECT status FROM intents WHERE kind='binance_order'").fetchall()
-        self.assertGreaterEqual(len(rows), 2)
-        self.assertTrue(all(status == 'confirmed' for status, in rows))
-        self.assertFalse(exchange.known_path)
-        self.assertTrue(exchange.print_miss_days)
+        report = run(Config('1', directory, 10, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
+        self.assertEqual(report['status'], 'unknown')
+        self.assertTrue(any('trade print' in e['reason'] for e in report['errors']), report['errors'])
+        self.assertEqual(exchange.sent, [])
+        self.assertEqual(exchange.q, 0)
+
+    def test_ioc_fill_is_registered_at_arrival_and_answered_after_the_window(self):
+        directory = Path(tempfile.mkdtemp())
+        exchange, start, price = self._exchange('trade_print')
+        day = datetime.fromtimestamp(start / 1000, timezone.utc)
+        lines = [f'1,{price},5,1,1,{start - 500},false', f'2,{price},5,2,2,{start + 1500},false']
+        path = directory / f'BTCUSDT-aggTrades-{day:%Y-%m-%d}.zip'
+        with zipfile.ZipFile(path, 'w') as archive:
+            archive.writestr(path.stem + '.csv', ('\n'.join(lines) + '\n').encode())
+        Path(str(path) + '.CHECKSUM').write_text(hashlib.sha256(path.read_bytes()).hexdigest() + '  ' + path.name + '\n', encoding='utf-8')
+        exchange.prints = TradePrints(directory)
+        stamp, _mark = exchange._mark_state()
+        self.assertEqual(stamp, start - 500)
+        sent_at = exchange.now_ms
+        exchange._inflight = ('POST', '/fapi/v1/order', dict(
+            symbol='BTCUSDT', side='BUY', type='LIMIT', timeInForce='IOC',
+            quantity='0.01', price=str(price + 10), newClientOrderId='cq-t'))
+        order = exchange._transport(None, 1)
+        self.assertEqual(order['status'], 'FILLED')
+        self.assertEqual(exchange.trades[-1]['time'], sent_at + 1000)
+        self.assertEqual(exchange.now_ms, sent_at + 2000)
 
     def test_chase_bound_skips_an_extended_long_and_allows_the_signal_price(self):
         from coinquant.state import State
@@ -246,3 +259,21 @@ class EnvelopePeakTests(TestCase):
         exchange._on_minute(minute)
         self.assertEqual(exchange.mdd_envelope, 1 - D(2000) / D(2100))
         self.assertEqual(exchange.mdd_close, 0)
+
+    def test_missing_mark_minute_forfeits_the_isolated_wallet_or_flags_hindsight(self):
+        minute = ORIGIN + 30 * DAY
+        trade = {minute: (D(100), D(101), D(99), D(100), D(1))}
+        for policy in ('forfeit', 'bound'):
+            market = Market({}, (), identity={'trade': dict(trade), 'mark': {}})
+            exchange = SessionExchange(market, minute, D(2000))
+            exchange.mark_gap = policy
+            exchange.q, exchange.entry, exchange.margin = D(1), D(100), D(20)
+            exchange.algos['s'] = dict(algoStatus='NEW', orderType='STOP_MARKET', triggerPrice='90',
+                                       clientAlgoId='s', algoId=1)
+            exchange._on_minute(minute)
+            if policy == 'forfeit':
+                self.assertEqual(exchange.q, 0)
+                self.assertEqual(exchange.wallet, D(1980))
+                self.assertFalse(exchange.hindsight_bounded)
+            else:
+                self.assertTrue(exchange.hindsight_bounded)

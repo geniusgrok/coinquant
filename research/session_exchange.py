@@ -5,7 +5,7 @@ the session coordinator stay on the production path. This is not a live venue
 and it does not know the future session schedule.
 """
 from datetime import datetime, timezone
-from decimal import Decimal as D
+from decimal import Decimal as D, ROUND_CEILING
 import json
 from pathlib import Path
 
@@ -57,7 +57,9 @@ class SessionExchange(Binance):
         self._tran = 1
         self.sent = []
         self.funnel = {'ioc_submitted': 0, 'ioc_zero': 0, 'ioc_filled': 0,
-                       'protections': 0, 'triggers': 0, 'liquidations': 0, 'funding': 0}
+                       'protections': 0, 'triggers': 0, 'liquidations': 0, 'funding': 0,
+                       'gap_forfeits': 0}
+        self.hindsight_bounded = False
         self.print_miss_days = set()
         self.bounded_minutes = []
         self.unknown_from = None
@@ -88,6 +90,10 @@ class SessionExchange(Binance):
     def _cny(self):
         return self.fx(self.now_ms) * (1 - self.exit_conversion)
     print_window_ms = 1000
+    latency_ms = 1000
+    # 'forfeit': a missing official mark minute costs the whole isolated wallet.
+    # 'bound': trade range widened by the window's worst mark/trade gap (hindsight).
+    mark_gap = 'forfeit'
 
     def dfii10_snapshot(self):
         if SessionExchange._dfii10_history is None:
@@ -113,6 +119,9 @@ class SessionExchange(Binance):
         method, path, params = self._inflight
         if method != 'GET':
             self.sent.append((method, path, dict(params)))
+            # A write takes effect when it reaches the venue; resting protection,
+            # funding and liquidation keep running meanwhile.
+            self._advance(self.now_ms + self.latency_ms)
         return self._reply(method, path, params)
 
     def _id(self):
@@ -126,17 +135,31 @@ class SessionExchange(Binance):
                             'tradeId': str(trade_id)})
 
     def _mark_state(self):
-        open_ms, observed = self._completed_minute()
+        """(observation time, mark). With prints, the mark is the last print at
+        or before now scaled by the last completed minute's official
+        mark/trade ratio, stamped with that print's time. Without prints it is
+        the completed minute's official close, stamped at that minute's end."""
+        open_ms, _observed = self._completed_minute()
         if open_ms is None:
             raise Unknown('completed minute unavailable')
         row = self.market.minute('mark', open_ms)
         if row is None:
             raise Unknown('completed mark minute unavailable')
-        return observed, row[3]
+        if self.prints is None:
+            return open_ms + MINUTE, row[3]
+        stamp, price = self._last_print()
+        trade = self.market.minute('trade', open_ms)
+        if trade is None or trade[3] <= 0:
+            raise Unknown('completed trade minute unavailable for the mark basis')
+        return stamp, (price * row[3] / trade[3]).quantize(D('0.00000001'))
+
+    def _last_print(self):
+        last = self.prints.last(self.now_ms)
+        if last is None:
+            raise Unknown('no trade print at or before the request')
+        return int(last[0]), last[1]
 
     def _completed_minute(self):
-        # Values come from the last completed minute; the response is stamped at
-        # the request instant like the live venue. Sub-minute paths are unknown.
         boundary = self.now_ms // MINUTE * MINUTE
         open_ms = boundary - MINUTE
         if open_ms < 0:
@@ -144,7 +167,10 @@ class SessionExchange(Binance):
         return open_ms, self.now_ms
 
     def _book(self):
-        open_ms, observed = self._completed_minute()
+        """One-level proxy: ask at the last print rounded up to the tick, bid one
+        tick below, both stamped with the print time. The quantity proxy is
+        the last completed minute's volume."""
+        open_ms, _observed = self._completed_minute()
         if open_ms is None:
             raise Unknown('completed trade minute unavailable')
         row = self.market.minute('trade', open_ms)
@@ -152,10 +178,15 @@ class SessionExchange(Binance):
             raise Unknown('completed trade minute unavailable')
         close, volume = row[3], row[4]
         tick = D(self._price_filter()['tickSize'])
-        bid = close - tick
+        if self.prints is None:
+            observed, ask = open_ms + MINUTE, close
+        else:
+            observed, price = self._last_print()
+            ask = (price / tick).to_integral_value(rounding=ROUND_CEILING) * tick
+        bid = ask - tick
         if bid <= 0 or volume <= 0:
             raise Unknown('completed minute has no positive book proxy')
-        return observed, bid, close, volume
+        return observed, bid, ask, volume
 
     def _price_filter(self):
         rows = [item for item in self.rules['filters'] if item.get('filterType') == 'PRICE_FILTER']
@@ -258,12 +289,19 @@ class SessionExchange(Binance):
             return
         row = self.market.minute('mark', open_ms)
         bounded = row is None
+        if bounded and self.mark_gap == 'forfeit':
+            # No official mark exists. The isolated position can lose at most its
+            # isolated wallet; that bound is taken at the first missing minute.
+            self.bounded_minutes.append(open_ms)
+            self._forfeit_isolated()
+            return
         if bounded:
             trade = self.market.minute('trade', open_ms)
             if trade is None:
                 self.known_path = False
                 self.unknown_from = self.unknown_from or open_ms
                 return
+            self.hindsight_bounded = True
             # Missing mark minute: the trade range widened by the worst mark/trade
             # divergence observed in the window. The adverse bound is applied.
             row = (trade[0], trade[1] * (1 + MARK_ABOVE_TRADE), trade[2] * (1 + MARK_BELOW_TRADE),
@@ -309,6 +347,24 @@ class SessionExchange(Binance):
         elif hits == ['liq']:
             price = open_ if (open_ <= liq if long else open_ >= liq) else liq
             self._liquidate(price)
+
+    def _forfeit_isolated(self):
+        margin, wallet = self.margin, self.wallet
+        algo = next((item for item in self.algos.values()
+                     if item['algoStatus'] == 'NEW' and item['orderType'] == 'STOP_MARKET'), None)
+        if algo is None:
+            self._liquidate(self.entry)
+        else:
+            self._close_all(D(algo['triggerPrice']), algo)
+            self.funnel['triggers'] += 1
+        # Whatever the recorded close, the total loss is exactly the isolated wallet.
+        shortfall = margin - (wallet - self.wallet)
+        if shortfall > 0:
+            self.wallet -= shortfall
+            self.fees += shortfall
+            self._income('INSURANCE_CLEAR', self.now_ms, -shortfall)
+        self.funnel['gap_forfeits'] += 1
+        self._note_cash()
 
     def _triggers(self):
         stop = take = None
@@ -417,7 +473,7 @@ class SessionExchange(Binance):
             raise ValueError('unknown matcher')
         # Non-causal sensitivity: the minute that contains the latency instant.
         # A whole-bar print is still not a book. Callers must not treat it as a pass.
-        instant = self.now_ms + 1000
+        instant = self.now_ms
         open_ms = instant // MINUTE * MINUTE
         row = self.market.minute('trade', open_ms)
         if row is None:
@@ -439,7 +495,7 @@ class SessionExchange(Binance):
         """
         if self.prints is None:
             raise Unknown('trade prints were not loaded')
-        start = self.now_ms + 1000
+        start = self.now_ms
         end = start + self.print_window_ms
         rows = self.prints.window(start, end)
         if rows is None:
@@ -556,6 +612,8 @@ class SessionExchange(Binance):
                 raise Unknown('historical protection unknown')
             return dict(algo)
         if path.endswith('/positionMargin') and method == 'POST':
+            if not self.q:
+                raise Unknown('isolated margin change without a position')
             amount = D(params['amount'])
             self.margin += amount
             return dict(code=200, type=1, amount=_text(amount))
@@ -607,13 +665,22 @@ class SessionExchange(Binance):
                      origQty=_text(quantity), executedQty='0', price=params.get('price', '0'),
                      reduceOnly=reduce, status='NEW')
         if reduce or params.get('type') == 'MARKET':
-            _observed, mark = self._mark_state()
-            mark = self._slipped(mark, self.market_slippage)
-            self._apply_close(quantity, mark)
-            order['status'] = 'FILLED'
-            order['executedQty'] = _text(quantity)
-            order['price'] = _text(mark)
-            self._trade(params['side'], order_id, quantity, mark)
+            closing = 'SELL' if self.q > 0 else 'BUY'
+            if not self.q or params['side'] != closing:
+                # Protection may have closed the position while the order travelled.
+                order['status'] = 'EXPIRED'
+            else:
+                quantity = min(quantity, abs(self.q))
+                if self.prints is None:
+                    _observed, price = self._mark_state()
+                else:
+                    _observed, price = self._last_print()
+                price = self._slipped(price, self.market_slippage)
+                self._apply_close(quantity, price)
+                order['status'] = 'FILLED' if quantity == D(params['quantity']) else 'EXPIRED'
+                order['executedQty'] = _text(quantity)
+                order['price'] = _text(price)
+                self._trade(params['side'], order_id, quantity, price)
         elif quantity * D(params['price']) * (D(1) / 20 + self.fee) > self.wallet - self.margin:
             order['status'] = 'REJECTED'
             self.funnel['ioc_zero'] += 1
@@ -635,4 +702,7 @@ class SessionExchange(Binance):
                 self._trade(params['side'], order_id, filled, D(params['price']))
         self.orders[order['clientOrderId']] = order
         self.by_order_id[order_id] = order
+        if not reduce and params.get('timeInForce') == 'IOC':
+            # The response follows the print window the fill was measured on.
+            self._advance(self.now_ms + self.print_window_ms)
         return dict(order)

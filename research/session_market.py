@@ -295,6 +295,20 @@ class TradePrints:
             day += 86_400_000
         return matched
 
+    def last(self, at_ms):
+        """(time, price) of the last print at or before at_ms, or None if unavailable."""
+        import bisect
+        day = (at_ms // 86_400_000) * 86_400_000
+        for candidate in (day, day - 86_400_000):
+            rows = self._load(candidate)
+            if rows is None:
+                return None
+            times, _ids, prices, _qtys = rows
+            index = bisect.bisect_right(times, at_ms) - 1
+            if index >= 0:
+                return times[index], D(prices[index]) / D(10) ** 8
+        return None
+
     def _load(self, day_ms):
         if self._day_ms == day_ms:
             return self._rows
@@ -304,8 +318,19 @@ class TradePrints:
         if not path.exists():
             self._day_ms, self._rows = day_ms, None
             return None
-        _checksum(path)
+        digest = _checksum(path)
         import array
+        import os
+        cache = self.root.parent / (self.root.name + '-cache') / f'{name}.{digest}.bin'
+        if cache.exists():
+            with cache.open('rb') as handle:
+                count = array.array('q')
+                count.fromfile(handle, 1)
+                packed = tuple(array.array('q') for _ in range(4))
+                for column in packed:
+                    column.fromfile(handle, count[0])
+            self._day_ms, self._rows = day_ms, packed
+            return packed
         times, ids, prices, qtys = (array.array('q') for _ in range(4))
         ordered = True
         previous = None
@@ -328,6 +353,13 @@ class TradePrints:
             prices = array.array('q', (prices[index] for index in order))
             qtys = array.array('q', (qtys[index] for index in order))
         packed = (times, ids, prices, qtys)
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        temporary = cache.with_suffix(f'.{os.getpid()}.tmp')
+        with temporary.open('wb') as handle:
+            array.array('q', [len(times)]).tofile(handle)
+            for column in packed:
+                column.tofile(handle)
+        os.replace(temporary, cache)
         self._day_ms, self._rows = day_ms, packed
         return packed
 

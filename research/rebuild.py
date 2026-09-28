@@ -21,7 +21,7 @@ OUT = ROOT / 'evidence' / 'rebuild-20260927'
 
 def trial(name, *, sequence='primary', participation=None, print_window_ms=1000, side='both',
           trigger_slippage='0.001', market_slippage='0.0005', fee='0.00075',
-          primary_risk=None, market='/data/coinquant-market', prints='/data/coinquant-prints', state=None, limit=0):
+          primary_risk=None, mark_gap='forfeit', market='/data/coinquant-market', prints='/data/coinquant-prints', state=None, limit=0):
     schedule = session_schedule.load()
     starts = (schedule['primary'] if sequence == 'primary' else schedule['stress'][sequence])['starts_ms']
     starts = starts[:limit or None]
@@ -35,13 +35,14 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
     state.mkdir(parents=True)
     options = {'print_window_ms': int(print_window_ms), 'fx': DatedFX(), 'exit_conversion': D('0.001'),
                'trigger_slippage': D(trigger_slippage), 'market_slippage': D(market_slippage),
-               'fee': D(fee)}
+               'fee': D(fee), 'mark_gap': mark_gap}
     result = run_account(load_base(market), starts, state, matcher='trade_print', prints=prints, side=side,
                          exchange_options=options)
     result.update(trial=name, sequence=sequence, schedule_sha256=schedule['primary']['sha256'],
                   book_participation=str(native_preview.BOOK_PARTICIPATION), print_window_ms=int(print_window_ms),
                   trigger_slippage=str(trigger_slippage), market_slippage=str(market_slippage), fee=str(fee),
-                  fx='FRED DEXCHUS dated', primary_risk=campaign.PRIMARY_RISK, macro_risk=campaign.MACRO_RISK, conversion='0.001 each way')
+                  fx='FRED DEXCHUS dated', primary_risk=campaign.PRIMARY_RISK, macro_risk=campaign.MACRO_RISK, conversion='0.001 each way',
+                  latency_ms=1000, price_stamp='last trade print at or before the request')
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / f'{name}.json').write_text(json.dumps(result, default=str) + '\n', encoding='utf-8')
     return result
@@ -60,13 +61,15 @@ def main():
     parser.add_argument('--print-window-ms', type=int, default=1000)
     parser.add_argument('--side', default='both', choices=('long', 'short', 'both'))
     parser.add_argument('--limit', type=int, default=0)
+    parser.add_argument('--mark-gap', default='forfeit', choices=('forfeit', 'bound'),
+                        help='missing official mark minute: forfeit the isolated wallet, or hindsight trade-range bound')
     args = parser.parse_args()
     result = trial(args.name, sequence=args.sequence, participation=args.participation,
                    print_window_ms=args.print_window_ms, side=args.side, limit=args.limit,
                    trigger_slippage=args.trigger_slippage, market_slippage=args.market_slippage, fee=args.fee,
-                   primary_risk=args.primary_risk)
+                   primary_risk=args.primary_risk, mark_gap=args.mark_gap)
     print(json.dumps({k: result[k] for k in ('trial', 'final_cny', 'cagr', 'mdd_close', 'mdd_envelope',
-                                             'known_path', 'funnel')}, default=str))
+                                             'known_path', 'path_complete', 'mark_gap_minutes', 'funnel')}, default=str))
 
 
 if __name__ == '__main__':
