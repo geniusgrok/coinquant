@@ -96,7 +96,8 @@ class SessionExchange(Binance):
     print_window_ms = 1000
     latency_ms = 1000
     # 'forfeit': a missing official mark minute costs the whole isolated wallet.
-    # 'bound': trade range widened by the window's worst mark/trade gap (hindsight).
+    # 'bound': trade range widened by the window's worst mark/trade gap (hindsight;
+    # the owner-accepted basis that research.rebuild passes by default).
     mark_gap = 'forfeit'
 
     def dfii10_snapshot(self):

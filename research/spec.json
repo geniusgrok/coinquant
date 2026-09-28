@@ -60,7 +60,7 @@
       "cost_net_cagr_percent": "92.72",
       "continuous_mdd_envelope_percent": "75.78",
       "mark_gap": "2020-01-19 13:09-13:37 UTC, 29 official mark minutes absent; the open isolated position is charged its whole isolated wallet",
-      "note": "worst-case isolated-margin forfeit basis; retained for comparison"
+      "note": "worst-case isolated-margin forfeit basis, measured with meter M2 at risk 6 and not rerun under M5; retained for comparison"
     },
     "hindsight_sensitivity": {
       "trial": "M2-p7.5-bound",
@@ -68,7 +68,8 @@
       "cost_net_cagr_percent": "153.84",
       "continuous_mdd_envelope_percent": "44.72",
       "path_complete": false,
-      "scope": "missing mark minutes bounded by the window's measured mark/trade divergence; not a historical path"
+      "scope": "missing mark minutes bounded by the window's measured mark/trade divergence; not a historical path",
+      "note": "meter M2 result; superseded by accepted_basis (M5)"
     },
     "scope": "production session.run and Lifecycle on SessionExchange; not a historical order book; native execution not verified",
     "accepted_basis": {

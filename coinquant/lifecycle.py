@@ -385,8 +385,10 @@ class Lifecycle:
     def top_up(self, model, snapshot):
         """Within the entry's own session, IOC-add toward the committed campaign size.
 
+        A macro campaign's whole position stays inside its entry stop budget.
         Margin is added before the order so the enlarged isolated position still
-        liquidates beyond the unchanged close-all stop. IOC leaves no remainder.
+        liquidates beyond the unchanged close-all stop; the deadline, stop request
+        and quote are checked again after that transfer. IOC leaves no remainder.
         """
         fill = self.state.get('entry_fill')
         protection = self.state.get('position_protection')
