@@ -71,13 +71,34 @@ class MarginIntentTests(unittest.TestCase):
         self.native.history.append(dict(self.native.history[0],amount='3'))
         self.assertEqual(self.native.recover_pending(self.state)['pending'],1)
 
-    def test_absent_transfer_is_terminal_only_after_a_complete_late_window(self):
+    def test_absent_history_never_proves_the_transfer_failed(self):
         def send(*args):raise TimeoutError()
         with self.assertRaises(Unknown):self.add(send)
+        start=self.native.clock()
+        for later in (0,601,86400):
+            self.native.clock=lambda:start+later
+            self.assertEqual(self.native.recover_pending(self.state)['pending'],1)
+        self.assertEqual(self.intents()[0][0],'unknown')
+
+    def test_an_earlier_equal_add_is_never_attributed_to_a_lost_one(self):
+        self.add(target='40')
+        start=self.native.clock();self.native.clock=lambda:start+5
+        def lost(*args):raise TimeoutError()
+        with self.assertRaises(Unknown):
+            add_margin(self.native,self.state,lost,'123',200,'50',instrument=rules(),authorized=True)
+        self.assertEqual(len(self.native.history),1)
         self.assertEqual(self.native.recover_pending(self.state)['pending'],1)
-        start=self.native.clock();self.native.clock=lambda:start+601
-        self.assertEqual(self.native.recover_pending(self.state)['pending'],0)
-        self.assertEqual(self.intents()[0][0],'rejected')
+        with self.assertRaises(Unknown):
+            add_margin(self.native,self.state,self.native.send,'123',300,'60',instrument=rules(),authorized=True)
+        self.assertEqual(len(self.native.sent),1)
+
+    def test_a_distant_earlier_transfer_does_not_make_history_ambiguous(self):
+        self.add(target='40')
+        start=self.native.clock();self.native.clock=lambda:start+60
+        def lost(*args):self.native.send(*args);raise TimeoutError()
+        with self.assertRaises(Unknown):
+            add_margin(self.native,self.state,lost,'123',200,'50',instrument=rules(),authorized=True)
+        self.assertEqual(self.native.recover_pending(self.state),{'resolved':1,'pending':0})
 
 
 class HTTP:

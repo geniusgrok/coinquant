@@ -198,19 +198,21 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False)
     identity=client_id(state.identity,epoch,'margin_add')
     payload=dict(symbol='BTCUSDT',positionSide='BOTH',amount=format(amount.normalize(),'f'),type=1)
     if any(p['kind']=='binance_margin' for p in state.pending()):raise Unknown('previous margin outcome unresolved')
-    state.prepare(identity,'binance_margin',payload,result={'prepared_at_ms':int(reader.clock()*1000)})
+    prepared=int(reader.clock()*1000)
+    state.prepare(identity,'binance_margin',payload,result={'prepared_at_ms':prepared})
     try:answer=send('POST','/fapi/v1/positionMargin',payload)
     except (Blocked,NotSent) as exc:
-        state.finish(identity,'rejected',{'not_sent':str(exc)})
+        state.finish(identity,'rejected',{'prepared_at_ms':prepared,'not_sent':str(exc)})
         raise Blocked('margin transfer was not sent') from None
     except Rejected as exc:
-        state.finish(identity,'rejected',{'native_rejection':str(exc)})
+        state.finish(identity,'rejected',{'prepared_at_ms':prepared,'native_rejection':str(exc)})
         raise Blocked('margin transfer rejected by Binance') from None
     except Exception:raise Unknown('margin outcome unknown; no automatic retry') from None
     if (not isinstance(answer,dict) or answer.get('code')!=200 or str(answer.get('type'))!='1'
             or D(str(answer.get('amount',0)))!=amount):
         raise Unknown('margin response not definitive')
-    state.finish(identity,'confirmed',{'amount':str(amount),'acknowledged':True})
+    # Later history attribution needs this time to exclude this transfer's row.
+    state.finish(identity,'confirmed',{'prepared_at_ms':prepared,'amount':str(amount),'acknowledged':True})
     after=reader.snapshot(uid)
     if D(after['quantity_btc'])!=D(before['quantity_btc']) or D(after['isolated_wallet_usdt'])<D(target):
         raise Unknown('margin/position readback changed; reconcile without retry')

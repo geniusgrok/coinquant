@@ -439,9 +439,12 @@ class Binance:
         """Settle a transfer whose answer was lost from bounded native margin history.
 
         A margin write has no client identity. Exactly one matching user add in
-        the window after preparation confirms it; any other add there is
-        ambiguous and stays unknown. An empty complete window long after the
-        request shows the add was not applied. Balance changes never decide it.
+        the window after preparation confirms it, and only when no other margin
+        intent could have produced a row in that window; any other add there is
+        ambiguous and stays unknown. An empty window is not treated as final: a
+        history publication delay is not documented. Such an intent is only
+        retired by the verified flat account (Lifecycle.retire_stale).
+        Balance changes never decide it.
         """
         row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
         prepared=json.loads(row[0]).get('prepared_at_ms') if row else None
@@ -450,6 +453,10 @@ class Binance:
         now=int(self.clock()*1000);begin=prepared-15000
         if not begin<now<=begin+29*86400000:
             raise Unknown('margin history window unavailable; operator review required')
+        for (other,) in state.db.execute("SELECT result FROM intents WHERE kind='binance_margin' AND id!=? AND status!='rejected'",(intent['id'],)):
+            at=json.loads(other).get('prepared_at_ms')
+            if type(at) is not int or at>=begin-15000:
+                raise Unknown('another margin transfer may own a history row in this window')
         rows=self.get('/fapi/v1/positionMargin/history',
                       {'symbol':'BTCUSDT','startTime':begin,'endTime':now,'limit':500})
         if not isinstance(rows,list) or len(rows)>=500:
@@ -464,10 +471,7 @@ class Binance:
                 adds.append(r)
         amount=number(intent['payload']['amount'],positive=True)
         if len(adds)==1 and number(adds[0].get('amount'))==amount:
-            state.finish(intent['id'],'confirmed',{'amount':str(amount),'history_time':adds[0]['time']})
-            return True
-        if not adds and now-prepared>=600000:
-            state.finish(intent['id'],'rejected',{'history_absent':[begin,now]})
+            state.finish(intent['id'],'confirmed',{'prepared_at_ms':prepared,'amount':str(amount),'history_time':adds[0]['time']})
             return True
         return False
 
