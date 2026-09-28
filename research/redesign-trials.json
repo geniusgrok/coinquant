@@ -798,7 +798,14 @@
         {
           "name": "P7",
           "args": [],
-          "stress": "default reproduction"
+          "stress": "default reproduction",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/P7.json",
+            "final_cny": "5228630",
+            "cost_net_cagr_percent": "153.86",
+            "continuous_mdd_envelope_percent": "44.73",
+            "source_git_head": "a6892b3e1f96418983050ba21ffaff00bc114c67"
+          }
         },
         {
           "name": "M7-fee150",
@@ -806,7 +813,14 @@
             "--fee",
             "0.001125"
           ],
-          "stress": "cost +50%"
+          "stress": "cost +50%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M7-fee150.json",
+            "final_cny": "4563859",
+            "cost_net_cagr_percent": "148.77",
+            "continuous_mdd_envelope_percent": "45.00",
+            "source_git_head": "a6892b3e1f96418983050ba21ffaff00bc114c67"
+          }
         },
         {
           "name": "M7-slip2",
@@ -816,7 +830,14 @@
             "--market-slippage",
             "0.001"
           ],
-          "stress": "exit slippage x2"
+          "stress": "exit slippage x2",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M7-slip2.json",
+            "final_cny": "4629101",
+            "cost_net_cagr_percent": "149.30",
+            "continuous_mdd_envelope_percent": "45.09",
+            "source_git_head": "a6892b3e1f96418983050ba21ffaff00bc114c67"
+          }
         },
         {
           "name": "M7-part10",
@@ -824,7 +845,14 @@
             "--participation",
             "0.1"
           ],
-          "stress": "depth participation 10%"
+          "stress": "depth participation 10%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M7-part10.json",
+            "final_cny": "4475825",
+            "cost_net_cagr_percent": "148.05",
+            "continuous_mdd_envelope_percent": "44.73",
+            "source_git_head": "a6892b3e1f96418983050ba21ffaff00bc114c67"
+          }
         },
         {
           "name": "M7-skip",
@@ -832,7 +860,14 @@
             "--sequence",
             "random_skip"
           ],
-          "stress": "seeded 20% skip"
+          "stress": "seeded 20% skip",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M7-skip.json",
+            "final_cny": "1092311",
+            "cost_net_cagr_percent": "101.08",
+            "continuous_mdd_envelope_percent": "44.68",
+            "source_git_head": "a6892b3e1f96418983050ba21ffaff00bc114c67"
+          }
         },
         {
           "name": "M7-absence",
@@ -840,7 +875,14 @@
             "--sequence",
             "absence"
           ],
-          "stress": "legacy absence sequence"
+          "stress": "legacy absence sequence",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M7-absence.json",
+            "final_cny": "5228630",
+            "cost_net_cagr_percent": "153.86",
+            "continuous_mdd_envelope_percent": "44.73",
+            "source_git_head": "a6892b3e1f96418983050ba21ffaff00bc114c67"
+          }
         },
         {
           "name": "M7-block",
@@ -848,9 +890,17 @@
             "--sequence",
             "block_21d"
           ],
-          "stress": "seeded 21-day block"
+          "stress": "seeded 21-day block",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/M7-block.json",
+            "final_cny": "5228630",
+            "cost_net_cagr_percent": "153.86",
+            "continuous_mdd_envelope_percent": "44.73",
+            "source_git_head": "a6892b3e1f96418983050ba21ffaff00bc114c67"
+          }
         }
-      ]
+      ],
+      "outcome": "The expected identity did not hold. Fewer reads per entry leave more of the local 2200/min request-weight reserve, so top-up previews that M6 refused for capacity now run: 28 of 795 sessions differ, 23 only in preview counts and 5 in top-up fills (first: 2023-10-17, order 164 adds on an earlier poll with a larger print-bounded fill). P7 CNY 5228630, CAGR 153.86%, MDD envelope 44.73% (P6 5230718, 153.87%, 44.73%); both targets met on the base; fee, slippage and depth stresses stay below 150%. Not an out-of-sample proof; native execution not verified."
     }
   ]
 }
