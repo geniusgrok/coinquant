@@ -1,4 +1,9 @@
-# Native historical input contract
+# Native historical input contract (legacy Bybit research)
+
+Historical record. This contract describes the retired Bybit BTCUSD inverse research
+inputs used under `research/legacy/`. The current Binance BTCUSDT session replay reads
+official Binance files through `research/session_market.py`; its inputs and meter
+are documented in `research/redesign-PROTOCOL.md` and `evidence/rebuild-20260927/`.
 
 There is no bundled real historical dataset and no qualified economic result.
 All timestamps below are UTC milliseconds. Funding/fee/risk records must identify
