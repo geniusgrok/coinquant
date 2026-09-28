@@ -169,7 +169,7 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
 
 def main():
     parser = argparse.ArgumentParser(description='One rebuild trial on the production session runner',
-                                     epilog='Example: python3 -m research.rebuild P5 --limit 20')
+                                     epilog='Example: python3 -m research.rebuild P6 --limit 20')
     parser.add_argument('name')
     parser.add_argument('--sequence', default='primary', choices=('primary', 'absence', 'random_skip', 'block_21d'))
     parser.add_argument('--participation', default=None)

@@ -675,6 +675,77 @@
         }
       ],
       "outcome": "Every M5 account equals its M4 counterpart in every field except the trial name."
+    },
+    {
+      "round": "M6",
+      "registered": "2026-09-28",
+      "hypothesis": "Meter M6 after review F09-F15: boundary funding follows the minute's triggers; funding coverage is derived from the data (every 2020-01..2026-08 monthly file, stamps within 1 s of the 8-hour grid); flat cash is valued at each FX change; FX is labelled an ex-post valuation; results bind source, inputs, funding ledger and daily equity; partial runs never overwrite evidence; research knobs are restored. Production changes of the same review round are included. Parameters unchanged.",
+      "model": "PRIMARY_RISK 7.5, --mark-gap bound (default)",
+      "trials": [
+        {
+          "name": "P6",
+          "args": [],
+          "stress": "default reproduction",
+          "result": null
+        },
+        {
+          "name": "M6-fee150",
+          "args": [
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%",
+          "result": null
+        },
+        {
+          "name": "M6-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2",
+          "result": null
+        },
+        {
+          "name": "M6-part10",
+          "args": [
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%",
+          "result": null
+        },
+        {
+          "name": "M6-skip",
+          "args": [
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "seeded 20% skip",
+          "result": null
+        },
+        {
+          "name": "M6-absence",
+          "args": [
+            "--sequence",
+            "absence"
+          ],
+          "stress": "legacy absence sequence",
+          "result": null
+        },
+        {
+          "name": "M6-block",
+          "args": [
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "seeded 21-day block",
+          "result": null
+        }
+      ],
+      "outcome": null
     }
   ]
 }
