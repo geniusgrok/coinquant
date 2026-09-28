@@ -51,7 +51,7 @@
   "account_evidence": "one continuous account including unattended exposure; observation gaps cannot be interpolated into complete MDD",
   "economic_qualification": "NOT_MET",
   "current_session_replay": {
-    "meter": "M3 (research/redesign-PROTOCOL.md)",
+    "meter": "M4 (research/redesign-PROTOCOL.md)",
     "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
     "complete_path_result": {
       "trial": "M2-p6",
@@ -74,9 +74,9 @@
     "accepted_basis": {
       "decided_by": "account owner, 2026-09-28",
       "decision": "The 29 missing official mark minutes on 2020-01-19 are bounded by the measured mark/trade divergence; a protection trigger inside the gap is judged negligible. This is an owner acceptance of a hindsight bound, not a complete historical path.",
-      "default_trial": "P3 (PRIMARY_RISK 7.5, --mark-gap bound default)",
+      "default_trial": "P4 (PRIMARY_RISK 7.5, --mark-gap bound default); byte-identical account to M3 P3",
       "result": {
-        "evidence": "evidence/rebuild-20260927/P3.json",
+        "evidence": "evidence/rebuild-20260927/P4.json",
         "final_cny": "5230718",
         "cost_net_cagr_percent": "153.87",
         "continuous_mdd_envelope_percent": "44.73"
@@ -84,37 +84,37 @@
       "path_complete": false,
       "stresses": {
         "fee150": {
-          "evidence": "evidence/rebuild-20260927/M3-fee150.json",
+          "evidence": "evidence/rebuild-20260927/M4-fee150.json",
           "final_cny": "4564761",
           "cost_net_cagr_percent": "148.78",
           "continuous_mdd_envelope_percent": "45.00"
         },
         "slip2": {
-          "evidence": "evidence/rebuild-20260927/M3-slip2.json",
+          "evidence": "evidence/rebuild-20260927/M4-slip2.json",
           "final_cny": "4625195",
           "cost_net_cagr_percent": "149.27",
           "continuous_mdd_envelope_percent": "45.09"
         },
         "part10": {
-          "evidence": "evidence/rebuild-20260927/M3-part10.json",
+          "evidence": "evidence/rebuild-20260927/M4-part10.json",
           "final_cny": "4465655",
           "cost_net_cagr_percent": "147.97",
           "continuous_mdd_envelope_percent": "44.73"
         },
         "skip": {
-          "evidence": "evidence/rebuild-20260927/M3-skip.json",
+          "evidence": "evidence/rebuild-20260927/M4-skip.json",
           "final_cny": "1091282",
           "cost_net_cagr_percent": "101.06",
           "continuous_mdd_envelope_percent": "44.68"
         },
         "absence": {
-          "evidence": "evidence/rebuild-20260927/M3-absence.json",
+          "evidence": "evidence/rebuild-20260927/M4-absence.json",
           "final_cny": "5230718",
           "cost_net_cagr_percent": "153.87",
           "continuous_mdd_envelope_percent": "44.73"
         },
         "block": {
-          "evidence": "evidence/rebuild-20260927/M3-block.json",
+          "evidence": "evidence/rebuild-20260927/M4-block.json",
           "final_cny": "5230718",
           "cost_net_cagr_percent": "153.87",
           "continuous_mdd_envelope_percent": "44.73"
@@ -123,9 +123,9 @@
       "targets_met_base": true,
       "targets_met_all_stresses": false,
       "mark_gap_policy": "bound",
-      "meter": "M3 (research/redesign-PROTOCOL.md)"
+      "meter": "M4 (research/redesign-PROTOCOL.md)"
     },
-    "reproduce": "python -m research.rebuild P3  (defaults: frozen primary schedule, --mark-gap bound, fee 0.00075, trigger slippage 0.001, market slippage 0.0005, participation 0.25)"
+    "reproduce": "python -m research.rebuild P4  (defaults: frozen primary schedule, --mark-gap bound, fee 0.00075, trigger slippage 0.001, market slippage 0.0005, participation 0.25)"
   },
   "selected_historical_account": {
     "name": "SX60+DFII10",
