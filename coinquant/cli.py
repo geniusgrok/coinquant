@@ -11,7 +11,7 @@ from .types import Blocked, Unknown, serial
 
 
 def observe(config_path, *, execute=False):
-    # Reject before credential access or network I/O. No old venue fallback.
+    # Reject before credential access or network I/O.
     if execute:
         raise Blocked('Binance write lifecycle and economic model are not qualified; execution unavailable')
     from dataclasses import asdict

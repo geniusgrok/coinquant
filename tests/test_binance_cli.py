@@ -27,7 +27,7 @@ class BinanceCLI(unittest.TestCase):
                 self.assertEqual(json.loads((Path(tmp)/'state/latest.json').read_text()),result)
                 venue.return_value.snapshot.assert_called_with('123')
 
-    def test_legacy_configuration_never_selects_old_exchange(self):
+    def test_unknown_configuration_fields_are_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             config=Path(tmp)/'config.json';config.write_text('{"environment":"live","api_host":"api.bybit.com"}')
             with self.assertRaises(Blocked):observe(config)

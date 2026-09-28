@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest import TestCase
 
 from coinquant.config import Config,load
-from coinquant.session import run,cycle
+from coinquant.session import run
 from coinquant.lifecycle import Lifecycle
 from coinquant.state import State
 from coinquant.campaign import Campaign

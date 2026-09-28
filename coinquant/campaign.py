@@ -9,20 +9,19 @@ from decimal import Decimal as D
 import hashlib
 import json
 
-from .opportunities import Opportunities, Opportunity, FOUR_HOURS
+from .opportunities import Opportunities, Opportunity
 from .linear_sizing import target_fraction
-from .types import Blocked, ZERO
+from .types import Blocked
 
 PRIMARY_RISK = '7.5'
 MACRO_RISK = '3.6'
-ORIGIN = 1575158400000  # 2019-12-01T00:00Z, fixed research warmup identity
+ORIGIN = 1575158400000  # 2019-12-01T00:00Z, fixed model warmup origin
 DAY = 86400000
+VERSION = 4
 
 
-def disposition(opportunity, quantity, consumed, side='long'):
+def disposition(opportunity, quantity, consumed):
     direction = opportunity.direction if opportunity else 0
-    if side=='long' and direction<0 or side=='short' and direction>0:
-        direction=0
     if quantity:
         return 'hold' if quantity*direction>0 and opportunity.identity==consumed else 'exit'
     if not direction:return 'flat'
@@ -30,8 +29,8 @@ def disposition(opportunity, quantity, consumed, side='long'):
 
 
 class Campaign:
-    def __init__(self, mechanism='impulse_hold', interval=FOUR_HOURS):
-        self.model=Opportunities(mechanism,interval)
+    def __init__(self):
+        self.model=Opportunities()
         self.returns=deque(maxlen=20)
         self.previous_daily=None
         self.last=ORIGIN
@@ -108,13 +107,13 @@ class Campaign:
         return self.fraction(MACRO_RISK if self.macro_opportunity is not None and
                              self.active is self.macro_opportunity else PRIMARY_RISK,friction)
 
-    def action(self, quantity, side='long'):
+    def action(self, quantity):
         if quantity and self.position_campaign is None:
             raise Blocked('position campaign unknown; market replay cannot reconstruct fills')
         selected=self.active
         consumed=(self.position_campaign if quantity else
                   self.macro_consumed if selected is self.macro_opportunity else self.primary_consumed)
-        return disposition(selected,quantity,consumed,side)
+        return disposition(selected,quantity,consumed)
 
     def filled(self, identity):
         if self.active is None or identity!=self.active.identity:
@@ -126,17 +125,13 @@ class Campaign:
     def checkpoint(self):
         def encode(v):
             if isinstance(v,D):return {'decimal':str(v)}
-            if isinstance(v,Opportunity):
-                body=asdict(v)
-                if body['parent_identity'] is None:body.pop('parent_identity')
-                return {'opportunity':encode(body)}
+            if isinstance(v,Opportunity):return {'opportunity':encode(asdict(v))}
             if isinstance(v,Opportunities):return {'opportunities':encode(vars(v))}
             if isinstance(v,deque):return {'deque':[encode(x) for x in v],'maxlen':v.maxlen}
             if isinstance(v,(tuple,list)):return [encode(x) for x in v]
             if isinstance(v,dict):return {k:encode(x) for k,x in v.items()}
             return v
-        version=3
-        body={'version':version,'last':self.last,'model':encode(vars(self.model)),
+        body={'version':VERSION,'last':self.last,'model':encode(vars(self.model)),
               'returns':[str(x) for x in self.returns],
               'previous_daily':str(self.previous_daily) if self.previous_daily is not None else None,
               'consumed':self.consumed,'position_campaign':self.position_campaign,
@@ -152,7 +147,7 @@ class Campaign:
         try:
             body=saved['body']
             if (saved['sha256']!=hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()
-                    or body['version'] not in (1,2,3)):
+                    or body['version']!=VERSION):
                 raise ValueError('state identity')
             def decode(v):
                 if isinstance(v,list):return [decode(x) for x in v]
@@ -164,20 +159,19 @@ class Campaign:
                     if set(v)=={'opportunity'}:return Opportunity(**decode(v['opportunity']))
                     if set(v)=={'opportunities'}:
                         fields=decode(v['opportunities'])
-                        model=Opportunities(fields['mechanism'],fields['interval'])
+                        model=Opportunities()
                         if set(fields)!=set(vars(model)):raise ValueError('nested model fields')
                         model.__dict__.update(fields)
                         return model
                     if set(v)=={'deque','maxlen'}:return deque((decode(x) for x in v['deque']),maxlen=v['maxlen'])
                     return {k:decode(x) for k,x in v.items()}
                 return v
-            data=decode(body['model']);result=cls(data['mechanism'],data['interval'])
-            if body['version']!=3 and (body['version']==2) != (data['mechanism']=='post_impulse_restart'):
-                raise ValueError('campaign version')
+            data=decode(body['model']);result=cls()
             if set(data)!=set(vars(result.model)):raise ValueError('state fields')
             result.model.__dict__.update(data)
             result.last=body['last']
-            if type(result.last) is not int or result.last<ORIGIN or result.last%data['interval']:
+            interval=result.model.interval
+            if type(result.last) is not int or result.last<ORIGIN or result.last%interval:
                 raise ValueError('state clock')
             if data['last']!=(result.last if result.last>ORIGIN else None):raise ValueError('model clock')
             result.returns=deque((D(v) for v in body['returns']),maxlen=20)
@@ -186,39 +180,36 @@ class Campaign:
             if result.previous_daily is not None and (not result.previous_daily.is_finite() or result.previous_daily<=0):raise ValueError('daily close')
             for name in ('consumed','position_campaign'):
                 v=body[name]
-                if v is not None and (type(v) is not int or not (ORIGIN<v<=result.last or -(result.last+data['interval'])<v<0)):
+                if v is not None and (type(v) is not int or not (ORIGIN<v<=result.last or -(result.last+interval)<v<0)):
                     raise ValueError('campaign identity')
                 setattr(result,name,v)
             if result.position_campaign is not None and result.position_campaign!=result.consumed:raise ValueError('ownership')
-            if body['version']==3:
-                result.primary_consumed=body['primary_consumed']
-                result.macro_consumed=body['macro_consumed']
-                if (result.primary_consumed is not None and
-                    (type(result.primary_consumed) is not int or not ORIGIN<result.primary_consumed<=result.last)):
-                    raise ValueError('primary consumed')
-                if (result.macro_consumed is not None and
-                    (type(result.macro_consumed) is not int or not -(result.last+data['interval'])<result.macro_consumed<0)):
-                    raise ValueError('macro consumed')
-                result.day_low=D(body['day_low']) if body['day_low'] is not None else None
-                result.daily_lows=deque((D(v) for v in body['daily_lows']),maxlen=10)
-                if (result.day_low is not None and (not result.day_low.is_finite() or result.day_low<=0)
-                        or len(body['daily_lows'])>10 or
-                        any(not v.is_finite() or v<=0 for v in result.daily_lows)):
-                    raise ValueError('daily lows')
-                result.macro_epoch=body['macro_epoch']
-                result.macro_opportunity=decode(body['macro_opportunity'])
-                result.macro_observation=body['macro_observation']
-                if (result.macro_epoch is not None and
-                    (type(result.macro_epoch) is not int or not -(result.last+data['interval'])<result.macro_epoch<0)):
-                    raise ValueError('macro epoch')
-                if result.macro_opportunity is not None and (
-                    not isinstance(result.macro_opportunity,Opportunity) or result.macro_epoch is None or
-                    result.macro_opportunity.identity!=result.macro_epoch or result.macro_opportunity.direction!=1 or
-                    not 0<result.macro_opportunity.stop<result.macro_opportunity.take or
-                    not result.macro_opportunity.stop.is_finite() or not result.macro_opportunity.take.is_finite()):
-                    raise ValueError('macro geometry')
-            elif result.consumed is not None:
-                result.primary_consumed=result.consumed
+            result.primary_consumed=body['primary_consumed']
+            result.macro_consumed=body['macro_consumed']
+            if (result.primary_consumed is not None and
+                (type(result.primary_consumed) is not int or not ORIGIN<result.primary_consumed<=result.last)):
+                raise ValueError('primary consumed')
+            if (result.macro_consumed is not None and
+                (type(result.macro_consumed) is not int or not -(result.last+interval)<result.macro_consumed<0)):
+                raise ValueError('macro consumed')
+            result.day_low=D(body['day_low']) if body['day_low'] is not None else None
+            result.daily_lows=deque((D(v) for v in body['daily_lows']),maxlen=10)
+            if (result.day_low is not None and (not result.day_low.is_finite() or result.day_low<=0)
+                    or len(body['daily_lows'])>10 or
+                    any(not v.is_finite() or v<=0 for v in result.daily_lows)):
+                raise ValueError('daily lows')
+            result.macro_epoch=body['macro_epoch']
+            result.macro_opportunity=decode(body['macro_opportunity'])
+            result.macro_observation=body['macro_observation']
+            if (result.macro_epoch is not None and
+                (type(result.macro_epoch) is not int or not -(result.last+interval)<result.macro_epoch<0)):
+                raise ValueError('macro epoch')
+            if result.macro_opportunity is not None and (
+                not isinstance(result.macro_opportunity,Opportunity) or result.macro_epoch is None or
+                result.macro_opportunity.identity!=result.macro_epoch or result.macro_opportunity.direction!=1 or
+                not 0<result.macro_opportunity.stop<result.macro_opportunity.take or
+                not result.macro_opportunity.stop.is_finite() or not result.macro_opportunity.take.is_finite()):
+                raise ValueError('macro geometry')
             return result
         except (KeyError,TypeError,ValueError,ArithmeticError) as exc:
             raise Blocked('invalid model checkpoint; do not silently restart from short history') from exc

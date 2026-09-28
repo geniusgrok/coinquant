@@ -7,7 +7,6 @@ import json
 from decimal import Decimal as D
 
 from . import binance_safety as safety
-from .linear_preview import research_side
 from .native_preview import entry_preview, topup_preview
 from .ownership import owned_observation
 from .state import client_id
@@ -254,17 +253,9 @@ class Lifecycle:
         if self.state.pending() or snapshot['possible_entry_remainders'] or number(snapshot['quantity_btc']):
             raise Unknown('entry requires reconciled flat account')
         self.reader.ensure_capacity(ENTRY_RESERVE+PREVIEW_WEIGHT)
-        plan = entry_preview(self.reader,model,snapshot,side=research_side(self.state))
+        plan = entry_preview(self.reader,model,snapshot)
         self.entry_constraint = plan.get('constraint')
         if not number(plan['quantity_btc']):
-            return snapshot
-        if self.state.get('research_chase_bound') and not self._within_chase_bound(model, plan):
-            # The campaign stays unconsumed. A later fresh poll can enter inside the bound.
-            self.entry_constraint = 'chase_bound'
-            return snapshot
-        if self.state.get('research_funding_gate') and not self._funding_allows(plan):
-            # Crowded funding skips this poll only. The campaign stays open.
-            self.entry_constraint = 'funding_gate'
             return snapshot
         # Recheck after all sizing inputs. Never treat a preview as an order.
         fresh = self.snapshot()
@@ -297,56 +288,6 @@ class Lifecycle:
         snapshot = self.settle()
         return self.recover_exposure(snapshot)
 
-    def _funding_allows(self, plan):
-        """Skip a new entry when the last settled funding already charges that side.
-
-        0.0001 per eight hours is the exchange's ordinary quoted rate. A long is
-        skipped only above it, a short only below its negative. The campaign
-        is not consumed.
-        """
-        query = getattr(self.reader, 'last_settled_funding', None)
-        if query is None:
-            raise Blocked('funding gate requires settled funding on the reader')
-        rate = query(int(self.reader.clock() * 1000))
-        if rate is None:
-            return False
-        rate = number(rate)
-        neutral = number('0.0001')
-        side = plan.get('side')
-        if side == 'BUY':
-            return rate <= neutral
-        if side == 'SELL':
-            return rate >= -neutral
-        raise Blocked('funding gate requires a buy or sell plan')
-
-    def _within_chase_bound(self, model, plan):
-        """Entry may not extend more than one signal risk beyond that bar's close.
-
-        The risk distance is the signal close minus its own stop. No new multiple.
-        """
-        opportunity = model.model.active
-        if opportunity is None:
-            raise Unknown('chase bound requires the active opportunity')
-        interval = model.model.interval
-        if type(opportunity.identity) is not int or opportunity.identity % interval:
-            raise Unknown('opportunity identity is not a completed bar')
-        open_ms = opportunity.identity - interval
-        rows = self.reader.get('/fapi/v1/klines', {
-            'symbol': 'BTCUSDT', 'interval': '4h', 'startTime': open_ms,
-            'endTime': opportunity.identity - 1, 'limit': 1})
-        if len(rows) != 1 or int(rows[0][0]) != open_ms:
-            raise Unknown('signal bar unavailable for the chase bound')
-        close = number(rows[0][4], positive=True)
-        span = abs(close - opportunity.stop)
-        if span <= 0:
-            return False
-        price = number(plan['entry_estimate'], positive=True)
-        if opportunity.direction > 0:
-            return price <= close + span
-        if opportunity.direction < 0:
-            return price >= close - span
-        return False
-
     def maintain(self, model, snapshot):
         protection = self.state.get('position_protection')
         if not protection:
@@ -372,7 +313,7 @@ class Lifecycle:
 
     def decide(self, model, snapshot):
         """One shared decision path: existing exposure is settled before new risk."""
-        action=model.action(number(snapshot['quantity_btc']),research_side(self.state))
+        action=model.action(number(snapshot['quantity_btc']))
         if action=='enter':
             snapshot=self.enter(model,snapshot)
         elif action=='exit':

@@ -31,7 +31,7 @@ class RecoveryTests(unittest.TestCase):
             child['executedQty']='.01'
             self.assertEqual(reader.recover_pending(state),dict(resolved=1,pending=0))
 
-    def test_payload_mismatch_and_legacy_intent_stay_unknown(self):
+    def test_payload_mismatch_and_unknown_intent_kind_stay_unknown(self):
         with tempfile.TemporaryDirectory() as tmp, State(tmp,'binance:BTCUSDT:live:123') as state:
             payload=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='MARKET',quantity='.01')
             state.prepare('cq-mismatch','binance_order',payload);state.prepare('old','entry',{})

@@ -55,8 +55,8 @@ def fill_history(reader,start,end,after_id=None):
     """Complete time windows; dense windows continue by ID, never time+ID.
 
     An existing flat/campaign cursor includes even >1000 fills in one millisecond.
-    Older journals without that cursor split time windows until completeness is
-    provable; an unresolved saturated millisecond remains unknown.
+    Without that cursor, time windows split until completeness is provable;
+    an unresolved saturated millisecond remains unknown.
     """
     trades=[];cursor=after_id
     windows=[(b,min(end,b+7*86400000-1)) for b in range(start,end+1,7*86400000)][::-1]
@@ -65,7 +65,7 @@ def fill_history(reader,start,end,after_id=None):
         page=reader.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','startTime':begin,'endTime':finish,'limit':1000})
         if not isinstance(page,list) or len(page)>1000:raise Unknown('invalid fill history page')
         if len(page)==1000 and cursor is None:
-            if begin==finish:raise Unknown('dense legacy fill window lacks a verified ID boundary')
+            if begin==finish:raise Unknown('dense fill window lacks a verified ID boundary')
             middle=(begin+finish)//2
             windows.extend(((middle+1,finish),(begin,middle)));continue
         if len(page)==1000:

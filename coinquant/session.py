@@ -2,11 +2,11 @@
 import time
 
 from .lifecycle import Lifecycle
-from .linear_preview import advance, preview, research_side
+from .linear_preview import advance, preview
 from .native_preview import entry_preview
 from .ownership import reconcile
 from .state import State
-from .types import Blocked, Unknown, number
+from .types import Blocked, Unknown
 from .audit import income
 
 
@@ -29,8 +29,7 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
         ownership=reconcile(state,reader,model,snapshot)
     if state.pending():
         raise Unknown('unsettled intents block decisions')
-    side=research_side(state)
-    result=preview(model,snapshot,side=side)
+    result=preview(model,snapshot)
     result.update(ownership=ownership,reconstructed_market_only=reconstructed)
     audit=None
     if execute:
@@ -55,7 +54,7 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
         if engine.entry_constraint is not None:
             result['entry_constraint']=engine.entry_constraint
     elif result['action']=='enter':
-        result.update(entry_preview(reader,model,snapshot,side=side))
+        result.update(entry_preview(reader,model,snapshot))
     if audit is None:audit=income(reader,state)
     return dict(status='executed' if execute and engine.actions else 'no_action' if execute else 'read_only',
                 actual=snapshot,model_preview=result,market_through=market['complete_through'],

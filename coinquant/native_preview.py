@@ -83,8 +83,8 @@ def _venue(reader, model, snapshot, direction):
                 mark=number(fresh['mark_price'],positive=True))
 
 
-def entry_preview(reader, model, snapshot, *, side='long'):
-    if model.action(number(snapshot['quantity_btc']),side)!='enter':
+def entry_preview(reader, model, snapshot):
+    if model.action(number(snapshot['quantity_btc']))!='enter':
         raise Blocked('entry preview requires a fresh flat campaign')
     if snapshot['possible_entry_remainders']:
         raise Unknown('entry remainder must be reconciled before sizing')

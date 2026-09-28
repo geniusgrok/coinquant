@@ -57,7 +57,7 @@ class NativePreviewTests(TestCase):
                  latest_observation_date=datetime.fromtimestamp(m.last/1000,timezone.utc).date().isoformat(),
                  latest_value_available_ms=m.last-1,prior20_value_available_ms=m.last-1)
         m.select_macro(row,'100',now)
-        plan=entry_preview(r,m,s,side='long')
+        plan=entry_preview(r,m,s)
         self.assertLess(plan['campaign'],0)
         self.assertLessEqual(D(plan['quantity_btc'])*(D(plan['entry_estimate'])-D(plan['stop'])),D(30))
 
