@@ -788,6 +788,69 @@
         }
       ],
       "outcome": "Every M6 account has the same final value, fees, funding and MDD as its M5 counterpart. The only path difference: DFII10 is no longer read when it cannot change the decision, which shifts one IOC fill's time and quantity and one session's cycle count. No boundary funding followed a stop inside its minute, and no position was held across an uncovered funding time."
+    },
+    {
+      "round": "M7",
+      "registered": "2026-09-28",
+      "hypothesis": "Meter M7 after the 7c9b2b7 re-audit (R1-R5) and the additional findings of the same round. Measurement rules are unchanged; only the shared production decision chain changed: an owned IOC fill is protected on a short path with snapshot reuse, fill adoption needs trade-ID/flat-boundary proof, risk-reducing unknown intents block only new risk and are retired on a verified flat account, margin history is attributed one row to one transfer, documented 503 failures and never-accepted missing orders are terminal. Reads are zero-latency in this meter and the write order is unchanged, so identical accounts are expected. Parameters unchanged.",
+      "model": "PRIMARY_RISK 7.5, --mark-gap bound (default)",
+      "trials": [
+        {
+          "name": "P7",
+          "args": [],
+          "stress": "default reproduction"
+        },
+        {
+          "name": "M7-fee150",
+          "args": [
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%"
+        },
+        {
+          "name": "M7-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2"
+        },
+        {
+          "name": "M7-part10",
+          "args": [
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%"
+        },
+        {
+          "name": "M7-skip",
+          "args": [
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "seeded 20% skip"
+        },
+        {
+          "name": "M7-absence",
+          "args": [
+            "--sequence",
+            "absence"
+          ],
+          "stress": "legacy absence sequence"
+        },
+        {
+          "name": "M7-block",
+          "args": [
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "seeded 21-day block"
+        }
+      ]
     }
   ]
 }
