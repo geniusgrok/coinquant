@@ -12,6 +12,7 @@ import re
 import shutil
 import sqlite3
 import subprocess
+import uuid
 from collections import Counter
 from datetime import datetime, timezone
 from decimal import Decimal as D
@@ -112,7 +113,9 @@ def run_account(market, starts, state_dir, prints, options, start_text=START, en
         delta = {key: exchange.funnel[key] - before.get(key, 0) for key in exchange.funnel}
         sessions.append(dict(index=index, start=iso(start), report_status=report.get('status'),
                              cleanup=report.get('cleanup'), stop_reason=report.get('stop_reason'),
-                             cycles=report.get('cycles'), funnel=delta, **_harvest(state_dir)))
+                             cycles=report.get('cycles'), funnel=delta,
+                             execution_unresolved=bool(report.get('execution_unresolved')),
+                             observation_timeouts=report.get('observation_timeouts', 0), **_harvest(state_dir)))
         if index % 25 == 0:
             print(f'session {index} {iso(start)} status={report.get("status")} q={exchange.q} wallet={exchange.wallet}', flush=True)
     end = timestamp(end_text)
@@ -154,15 +157,19 @@ def source_identity():
                 python_sources_sha256=digest.hexdigest())
 
 
+OWNER_MARKER = '.coinquant-rebuild-owner'
 _NAME = re.compile(r'[A-Za-z0-9][A-Za-z0-9._-]{0,48}\Z')
 
 
-def scratch_dir(name):
-    """Trial state lives only under the machine scratch root, never an arbitrary path."""
+def scratch_dir(name, run_id=None):
+    """Trial state lives only under the machine scratch root, never an arbitrary path.
+
+    A run passes its unique id so concurrent or repeated runs never share a directory.
+    """
     if not _NAME.fullmatch(name):
         raise ValueError('trial name must be a short safe token')
     root = Path('/dev/shm') if Path('/dev/shm').is_dir() else Path('/tmp')
-    path = (root / f'cq-{name}').resolve()
+    path = (root / (f'cq-{name}-{run_id}' if run_id else f'cq-{name}')).resolve()
     if path.parent != root.resolve():
         raise ValueError('trial state path escaped the scratch directory')
     return path
@@ -179,6 +186,55 @@ def _under_scratch(path):
     return any(root in path.parents for root in roots)
 
 
+def _process_alive(pid):
+    if type(pid) is not int or pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def _check_state_path(state):
+    """Validate an explicit state path without touching it."""
+    given = Path(os.path.abspath(state))
+    if given.is_symlink() or given != given.resolve():
+        raise ValueError('trial state must not be or pass through a symbolic link')
+    if not _under_scratch(given):
+        raise ValueError('trial state must stay in the scratch directory')
+    return given
+
+
+def _claim_state(state, run_id):
+    """A fresh directory, or one this tool created that no live run uses.
+
+    Anything without the ownership marker (an account state, a foreign scratch
+    directory) is refused and left untouched.
+    """
+    if state.exists() or state.is_symlink():
+        marker = state / OWNER_MARKER
+        if not state.is_dir() or not marker.is_file():
+            raise ValueError('refusing to remove a directory this tool did not create')
+        try:
+            owner = json.loads(marker.read_text())
+        except ValueError:
+            raise ValueError('unreadable ownership marker; refusing to remove the directory') from None
+        if owner.get('pid') != os.getpid() and _process_alive(owner.get('pid')):
+            raise ValueError('another rebuild run still owns this state directory')
+        shutil.rmtree(state)
+    state.mkdir(parents=True)
+    (state / OWNER_MARKER).write_text(json.dumps(dict(run_id=run_id, pid=os.getpid())) + '\n')
+
+
+def _official(path):
+    path = Path(path).resolve()
+    root = OUT.resolve()
+    return path == root or root in path.parents
+
+
 def _allowed_output(path):
     path = Path(path).resolve()
     roots = [OUT.resolve(), PARTIAL.resolve()]
@@ -191,9 +247,12 @@ def _allowed_output(path):
 def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
           trigger_slippage='0.001', market_slippage='0.0005', fee='0.00075',
           primary_risk=None, mark_gap='bound', read_latency_ms=200, market='/data/coinquant-market', prints='/data/coinquant-prints',
-          state=None, limit=0, out=None, knobs=None, window_start=START, window_end=END, uid=1):
+          state=None, limit=0, out=None, knobs=None, window_start=START, window_end=END, uid=1, overwrite=False):
     """`knobs` and a sub-window are research inputs. A sub-window is a fresh CNY 10,000 account on the
     frozen sessions inside it; it is a robustness block, never the acceptance measurement."""
+    if not _NAME.fullmatch(name):
+        raise ValueError('trial name must be a short safe token')
+    run_id = uuid.uuid4().hex
     source = source_identity()
     schedule = session_schedule.load()
     frozen = (schedule['primary'] if sequence == 'primary' else schedule['stress'][sequence])['starts_ms']
@@ -214,6 +273,16 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
     unknown = set(knobs) - set(KNOBS)
     if unknown:
         raise ValueError(f'unknown knobs {sorted(unknown)}')
+    # Every target is validated before any file is created, removed or replaced.
+    destination = Path(out)
+    if not _allowed_output(destination):
+        raise ValueError('trial output must stay in the evidence or scratch directory')
+    if _official(destination):
+        if not (complete and whole):
+            raise ValueError('a partial or sub-window result never enters the evidence directory')
+        if (destination / f'{name}.json').exists() and not overwrite:
+            raise ValueError('an evidence result with this name exists; pass overwrite to supersede it')
+    state = scratch_dir(name, run_id) if state is None else _check_state_path(state)
     saved = native_preview.BOOK_PARTICIPATION, {key: getattr(module, attr) for key, (module, attr, _) in KNOBS.items()}
     try:
         if participation is not None:
@@ -224,15 +293,7 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
         effective = dict(book_participation=str(native_preview.BOOK_PARTICIPATION),
                          **{key: str(getattr(module, attr)) for key, (module, attr, _) in KNOBS.items()},
                          window_start=window_start, window_end=window_end)
-        if state is None:
-            state = scratch_dir(name)
-        else:
-            state = Path(state).resolve()
-            if not _under_scratch(state):
-                raise ValueError('trial state must stay in the scratch directory')
-        if state.exists():
-            shutil.rmtree(state)
-        state.mkdir(parents=True)
+        _claim_state(state, run_id)
         options = {'print_window_ms': int(print_window_ms), 'fx': DatedFX(), 'exit_conversion': CONVERSION,
                    'trigger_slippage': D(trigger_slippage), 'market_slippage': D(market_slippage),
                    'fee': D(fee), 'mark_gap': mark_gap, 'read_latency_ms': int(read_latency_ms)}
@@ -246,9 +307,10 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
     identity['loaded_minute_files'] = dict(sorted(base.loaded.items()))
     identity['loaded_print_files'] = dict(sorted(exchange.prints.loaded.items()))
     chosen = schedule['primary'] if sequence == 'primary' else schedule['stress'][sequence]
-    unresolved = sum(1 for row in result.get('session_rows') or []
-                     if row.get('cleanup') != 'verified' or row.get('report_status') not in ('no_action', 'executed'))
-    result.update(trial=name, sequence=sequence, schedule_sha256=chosen['sha256'],
+    rows = result.get('session_rows') or []
+    unresolved = sum(1 for row in rows if row.get('execution_unresolved'))
+    result.update(trial=name, run_id=run_id,
+                  observation_timeouts=sum(row.get('observation_timeouts') or 0 for row in rows), sequence=sequence, schedule_sha256=chosen['sha256'],
                   executed_starts_sha256=hashlib.sha256(
                       json.dumps(starts, separators=(',', ':')).encode()).hexdigest(),
                   sessions_requested=len(frozen), sessions_executed=len(starts), complete=complete,
@@ -260,16 +322,18 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
                   mark_gap=mark_gap, fx=FX_BASIS, conversion='0.001 each way',
                   latency_ms=1000, read_latency_ms=int(read_latency_ms), price_stamp='last trade print at or before the request',
                   source=source, market_identity=identity, **effective)
-    if not _NAME.fullmatch(name):
-        raise ValueError('trial name must be a short safe token')
-    destination = Path(out)
-    if not _allowed_output(destination):
-        raise ValueError('trial output must stay in the evidence or scratch directory')
     destination.mkdir(parents=True, exist_ok=True)
     payload = json.dumps(result, default=str) + '\n'
-    temporary = destination / f'.{name}.json.partial'
-    temporary.write_text(payload, encoding='utf-8')
-    os.replace(temporary, destination / f'{name}.json')
+    temporary = destination / f'.{name}.{run_id}.partial'
+    with open(temporary, 'w', encoding='utf-8') as stream:
+        stream.write(payload)
+        stream.flush()
+        os.fsync(stream.fileno())
+    target = destination / f'{name}.json'
+    if target.exists() and _official(destination):
+        # The superseded original is kept beside the new result, never deleted.
+        os.replace(target, destination / f'{name}.superseded-{run_id[:8]}.json')
+    os.replace(temporary, target)
     return result
 
 
@@ -294,6 +358,8 @@ def main():
     parser.add_argument('--print-window-ms', type=int, default=1000)
     parser.add_argument('--limit', type=int, default=0,
                         help='first N sessions only; a partial run is written under /tmp/coinquant-partial')
+    parser.add_argument('--overwrite', action='store_true',
+                        help='supersede an existing evidence result of the same name (the original is kept)')
     parser.add_argument('--out', default=None, help='result directory (default: evidence for complete runs)')
     parser.add_argument('--market', default='/data/coinquant-market')
     parser.add_argument('--prints', default='/data/coinquant-prints')
@@ -307,7 +373,7 @@ def main():
                    primary_risk=args.primary_risk, mark_gap=args.mark_gap, market=args.market, prints=args.prints,
                    knobs=dict(item.split('=', 1) for item in args.knob),
                    window_start=args.window_start, window_end=args.window_end, uid=args.uid,
-                   read_latency_ms=args.read_latency_ms)
+                   read_latency_ms=args.read_latency_ms, overwrite=args.overwrite)
     print(json.dumps({k: result[k] for k in ('trial', 'final_cny', 'cagr', 'mdd_close', 'mdd_envelope',
                                              'known_path', 'path_complete', 'mark_gap_minutes', 'complete',
                                              'funnel')}, default=str))
