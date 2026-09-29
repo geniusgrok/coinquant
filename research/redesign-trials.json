@@ -1600,6 +1600,15 @@
       "source_python_sha256": "ae7b3fd857e24156791b4c2412020c85993904c65ce74a64e546c0b5eaddc518",
       "source_git_head": "5f81a9ee8a19cf87a9f37cae9552bbee74f890a1",
       "outcome": "The R3 rule still selects 7.5 (test means 1.807/1.834/1.861/1.892). Base 1893613 CNY, CAGR 118.24%, MDD 44.51%. Stress MDD at most 45.39% (20% skip, CAGR 95.69%). Fee +50%, slippage x2 and 10% depth finish above the base (2406523/2118221/2583258). Absence and the 21-day block match the base. Risk-6 read latency 100/200/400 ms: 2543459/1703093/878313. Full-window value is not monotone in risk (7 is the peak). CAGR stays below 150%: economic_qualification stays NOT_MET. PRIMARY_RISK unchanged."
+    },
+    {
+      "round": "M10",
+      "registered": "2026-09-29",
+      "hypothesis": "Remeasure the M9 scenario set on the source after the protection-exit, income-boundary, backup and virtual-clock fixes. No parameter, window, schedule or target change, and no new risk selection.",
+      "model": "SX60+DFII10, meter M8, mark_gap bound, PRIMARY_RISK stays 7.5",
+      "evidence": "evidence/remeasure-20260929-m10/",
+      "prior": "evidence/remeasure-20260929/ source digest ae7b3fd8…",
+      "measured": false
     }
   ]
 }
