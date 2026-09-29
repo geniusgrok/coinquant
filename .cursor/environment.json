@@ -1,4 +1,4 @@
 {
   "name": "Coinquant",
-  "install": "bash .cursor/install.sh"
+  "install": "bash /agent/repos/coinquant/.cursor/install.sh"
 }
