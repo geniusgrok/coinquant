@@ -1,6 +1,6 @@
 # 过拟合审计结果（O0/O1，2026-09-29）
 
-> **身份说明（2026-09-29）**：`m8/` 的44份原件记录 `git_head=d1ca5c0`、`dirty=True`、源码摘要 `c5ef5b41…`（`d1ca5c0` 树加 `fbe3b31` 的 `research/session_exchange.py`；`PRIMARY_RISK` 当时为6，7.5 由旋钮传入），不是当前源码；其 `execution_unresolved` 是旧定义（观察超时即计入）。当前源码的同一组全窗口、日历年区块、六项压力和读延迟网格是 M9，见 `evidence/remeasure-20260929/RESULT.md`。下文数字只描述它们自己的原件。
+> **身份说明（2026-09-29）**：`m8/` 的44份原件记录 `git_head=d1ca5c0`、`dirty=True`、源码摘要 `c5ef5b41…`（`d1ca5c0` 树加 `fbe3b31` 的 `research/session_exchange.py`；`PRIMARY_RISK` 当时为6，7.5 由旋钮传入），不是当前源码；其 `execution_unresolved` 是旧定义（观察超时即计入）。当前源码的同一组场景是 M10，见 `evidence/remeasure-20260929-m10/RESULT.md`。M9 是更早源码的同口径测量。下文数字只描述它们自己的原件。
 >
 > **更新（M8／R3，2026-09-29）**：下文 O0／O1 的数字来自测量器 M7，已被 M8 取代（读请求占 200 ms 模拟时间）。M8 消除了本地请求权重对结果的影响（权重上限 2000／2200／2400／1,000,000 终值逐位相同，因权重被拒的会话数 0），并把主信号风险按登记规则重选为 **7.5**：全窗口 ¥2,794,265／CAGR 131.3%／MDD 44.51%，六项压力 MDD 44.5–44.9%，CAGR 仍未达 150%，`economic_qualification` 仍为 `NOT_MET`。全窗口终值对风险不单调、对手续费与读延迟敏感，选择依据是新账户日历年区块。详见 `research/redesign-PROTOCOL.md` 的“M8 结果与验收”和“R3 结果”；原件在 `m8/`，逐块汇总在 `r3.json`，复现 `python -m research.robustness run --only m8r6 m8r6.5 m8r7 m8r7.5 --extra '{"m8r6":{"primary_risk":"6"},"m8r6.5":{"primary_risk":"6.5"},"m8r7":{"primary_risk":"7"},"m8r7.5":{"primary_risk":"7.5"}}'`，再 `python -m research.risk_select`。以下 O0／O1 保留为历史记录。
 

@@ -1608,7 +1608,10 @@
       "model": "SX60+DFII10, meter M8, mark_gap bound, PRIMARY_RISK stays 7.5",
       "evidence": "evidence/remeasure-20260929-m10/",
       "prior": "evidence/remeasure-20260929/ source digest ae7b3fd8…",
-      "measured": false
+      "measured": "2026-09-29",
+      "source_python_sha256": "6504a24b18932e0d3dd3bfc5b73fc77dae89da546c069e4753e200bc3ec380f0",
+      "source_git_head": "07d78ecb58078f964bdd3989d902dc0f353bcc96",
+      "outcome": "Account outcomes match M9 exactly (trades, fees, funding, daily equity, CAGR, MDD). The R3 rule still selects 7.5. Base 1893613 CNY, CAGR 118.24%, MDD 44.51%, observation timeouts 688 (M9 had 708; the 20 were trailing empty deadline polls). execution_unresolved 0. economic_qualification stays NOT_MET. PRIMARY_RISK unchanged."
     }
   ]
 }
