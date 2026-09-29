@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from decimal import Decimal as D
 from pathlib import Path
 
-from coinquant import campaign, native_preview
+from coinquant import campaign, dfii10, native_preview, opportunities
 from coinquant.config import Config
 from coinquant.session import run
 from research import session_schedule
@@ -32,6 +32,18 @@ START = '2020-01-01T00:00:00Z'
 END = '2026-09-20T00:00:00Z'
 CONVERSION = D('0.001')
 YEAR_MS = 31_556_952_000
+
+
+KNOBS = {
+    'primary_risk': (campaign, 'PRIMARY_RISK', str),
+    'macro_risk': (campaign, 'MACRO_RISK', str),
+    'impulse_atr': (opportunities, 'IMPULSE_ATR', D),
+    'atr_bars': (opportunities, 'ATR_BARS', int),
+    'take_power': (opportunities, 'TAKE_POWER', int),
+    'life_bars': (opportunities, 'LIFE_BARS', int),
+    'retrace': (opportunities, 'RETRACE', D),
+    'dfii_drop': (dfii10, 'DROP', D),
+}
 
 
 def timestamp(text):
@@ -64,13 +76,13 @@ def _harvest(state_dir):
                 constraints=dict(constraints))
 
 
-def run_account(market, starts, state_dir, prints, options):
+def run_account(market, starts, state_dir, prints, options, start_text=START, end_text=END, uid=1):
     """One continuous CNY 10,000 account; exchange state persists between sessions."""
     wallet = (D(10000) / options['fx'](starts[0])) * (1 - CONVERSION)
-    exchange = SessionExchange(market, starts[0], wallet, matcher='trade_print', prints=TradePrints(prints))
+    exchange = SessionExchange(market, starts[0], wallet, matcher='trade_print', prints=TradePrints(prints), uid=uid)
     for key, value in options.items():
         setattr(exchange, key, value)
-    config = Config('1', str(state_dir), 300, 5)
+    config = Config(str(int(uid)), str(state_dir), 300, 5)
     sessions = []
     for index, start in enumerate(starts):
         if exchange.now_ms > start:
@@ -85,12 +97,12 @@ def run_account(market, starts, state_dir, prints, options):
                              cycles=report.get('cycles'), funnel=delta, **_harvest(state_dir)))
         if index % 25 == 0:
             print(f'session {index} {iso(start)} status={report.get("status")} q={exchange.q} wallet={exchange.wallet}', flush=True)
-    end = timestamp(END)
+    end = timestamp(end_text)
     if exchange.now_ms < end:
         exchange.advance_unattended(end)
     equity = exchange.wallet + (exchange.q * (exchange._mark_state()[1] - exchange.entry) if exchange.q else D(0))
     final_cny = equity * exchange._cny()
-    years = D(end - timestamp(START)) / D(YEAR_MS)
+    years = D(end - timestamp(start_text)) / D(YEAR_MS)
     growth = D(final_cny) / D(10000)
     cagr = (float(growth) ** (1 / float(years)) - 1) if growth > 0 else -1
     return dict(matcher='trade_print', qualification='NOT_QUALIFIED', execution_class='print_quantity_upper_bound',
@@ -161,22 +173,39 @@ def _allowed_output(path):
 def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
           trigger_slippage='0.001', market_slippage='0.0005', fee='0.00075',
           primary_risk=None, mark_gap='bound', market='/data/coinquant-market', prints='/data/coinquant-prints',
-          state=None, limit=0, out=None):
+          state=None, limit=0, out=None, knobs=None, window_start=START, window_end=END, uid=1):
+    """`knobs` and a sub-window are research inputs. A sub-window is a fresh CNY 10,000 account on the
+    frozen sessions inside it; it is a robustness block, never the acceptance measurement."""
     source = source_identity()
     schedule = session_schedule.load()
     frozen = (schedule['primary'] if sequence == 'primary' else schedule['stress'][sequence])['starts_ms']
+    whole = (window_start, window_end) == (START, END)
+    lo, hi = timestamp(window_start), timestamp(window_end)
+    if not (timestamp(START) <= lo < hi <= timestamp(END)):
+        raise ValueError('window must lie inside the frozen measurement window')
+    frozen = [item for item in frozen if lo <= item < hi]
+    if not frozen:
+        raise ValueError('no frozen sessions in the window')
     starts = frozen[:limit or None]
     complete = len(starts) == len(frozen)
     if out is None:
-        out = OUT if complete else PARTIAL
-    saved = native_preview.BOOK_PARTICIPATION, campaign.PRIMARY_RISK
+        out = OUT if complete and whole else PARTIAL
+    knobs = dict(knobs or {})
+    if primary_risk is not None:
+        knobs['primary_risk'] = primary_risk
+    unknown = set(knobs) - set(KNOBS)
+    if unknown:
+        raise ValueError(f'unknown knobs {sorted(unknown)}')
+    saved = native_preview.BOOK_PARTICIPATION, {key: getattr(module, attr) for key, (module, attr, _) in KNOBS.items()}
     try:
         if participation is not None:
             native_preview.BOOK_PARTICIPATION = D(participation)
-        if primary_risk is not None:
-            campaign.PRIMARY_RISK = str(primary_risk)
+        for key, value in knobs.items():
+            module, attr, cast = KNOBS[key]
+            setattr(module, attr, cast(value))
         effective = dict(book_participation=str(native_preview.BOOK_PARTICIPATION),
-                         primary_risk=campaign.PRIMARY_RISK, macro_risk=campaign.MACRO_RISK)
+                         **{key: str(getattr(module, attr)) for key, (module, attr, _) in KNOBS.items()},
+                         window_start=window_start, window_end=window_end)
         if state is None:
             state = scratch_dir(name)
         else:
@@ -190,9 +219,11 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
                    'trigger_slippage': D(trigger_slippage), 'market_slippage': D(market_slippage),
                    'fee': D(fee), 'mark_gap': mark_gap}
         base = load_base(market)
-        result, exchange = run_account(base, starts, state, prints, options)
+        result, exchange = run_account(base, starts, state, prints, options, window_start, window_end, uid)
     finally:
-        native_preview.BOOK_PARTICIPATION, campaign.PRIMARY_RISK = saved
+        native_preview.BOOK_PARTICIPATION = saved[0]
+        for key, (module, attr, _) in KNOBS.items():
+            setattr(module, attr, saved[1][key])
     identity = dict(base.identity)
     identity['loaded_minute_files'] = dict(sorted(base.loaded.items()))
     identity['loaded_print_files'] = dict(sorted(exchange.prints.loaded.items()))
@@ -234,6 +265,12 @@ def main():
     parser.add_argument('--market-slippage', default='0.0005')
     parser.add_argument('--fee', default='0.00075')
     parser.add_argument('--primary-risk', default=None)
+    parser.add_argument('--knob', action='append', default=[], metavar='NAME=VALUE',
+                        help='research knob (' + ', '.join(KNOBS) + '); repeatable')
+    parser.add_argument('--uid', type=int, default=1,
+                        help='simulated account UID; concurrent trials need distinct values (the account lock)')
+    parser.add_argument('--from', dest='window_start', default=START, help='block start (frozen sessions only)')
+    parser.add_argument('--until', dest='window_end', default=END, help='block end, exclusive')
     parser.add_argument('--print-window-ms', type=int, default=1000)
     parser.add_argument('--limit', type=int, default=0,
                         help='first N sessions only; a partial run is written under /tmp/coinquant-partial')
@@ -247,7 +284,9 @@ def main():
     result = trial(args.name, sequence=args.sequence, participation=args.participation,
                    print_window_ms=args.print_window_ms, limit=args.limit, out=args.out,
                    trigger_slippage=args.trigger_slippage, market_slippage=args.market_slippage, fee=args.fee,
-                   primary_risk=args.primary_risk, mark_gap=args.mark_gap, market=args.market, prints=args.prints)
+                   primary_risk=args.primary_risk, mark_gap=args.mark_gap, market=args.market, prints=args.prints,
+                   knobs=dict(item.split('=', 1) for item in args.knob),
+                   window_start=args.window_start, window_end=args.window_end, uid=args.uid)
     print(json.dumps({k: result[k] for k in ('trial', 'final_cny', 'cagr', 'mdd_close', 'mdd_envelope',
                                              'known_path', 'path_complete', 'mark_gap_minutes', 'complete',
                                              'funnel')}, default=str))

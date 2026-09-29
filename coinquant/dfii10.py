@@ -43,6 +43,8 @@ class _Dates(HTMLParser):
     def handle_endtag(self,tag):
         if tag=='select':self.inside=False
 
+DROP=D('.25')
+
 
 def available(vintage):
     # A dated vintage is not a proven intraday release time.
@@ -59,7 +61,7 @@ def eligible(row,call):
         raise Unknown('DFII10 vintage is not yet available')
     latest,prior=D(row['latest_value']),D(row['prior20_value'])
     if not latest.is_finite() or not prior.is_finite():raise Unknown('invalid DFII10 input')
-    return latest<=prior-D('.25')
+    return latest<=prior-DROP
 
 
 class Source:

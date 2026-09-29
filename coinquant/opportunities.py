@@ -8,6 +8,11 @@ from dataclasses import dataclass
 from decimal import Decimal as D
 
 FOUR_HOURS = 14400000
+IMPULSE_ATR = 3
+ATR_BARS = 14
+TAKE_POWER = 20
+LIFE_BARS = 42
+RETRACE = D('0.5')
 
 
 @dataclass(frozen=True)
@@ -27,7 +32,7 @@ class Opportunities:
     interval = FOUR_HOURS
 
     def __init__(self):
-        self.tr = deque(maxlen=14)
+        self.tr = deque(maxlen=ATR_BARS)
         self.close = None
         self.last = None
         self.active = None
@@ -38,17 +43,17 @@ class Opportunities:
         if not 0 < low <= close <= high:
             raise ValueError('invalid completed candle')
         prior = self.close if self.close is not None else close
-        prior_atr = sum(self.tr) / 14 if len(self.tr) == 14 else None
+        prior_atr = sum(self.tr) / self.tr.maxlen if len(self.tr) == self.tr.maxlen else None
         self.tr.append(max(high - low, abs(high - prior), abs(low - prior)))
         self.close, self.last = close, end
         a = self.active
         if a and ((a.expires is not None and end >= a.expires) or
                   (low <= a.stop or high >= a.take if a.direction > 0 else high >= a.stop or low <= a.take)):
             self.active = None
-        if not self.active and prior_atr and abs(close - prior) > 3 * prior_atr:
+        if not self.active and prior_atr and abs(close - prior) > IMPULSE_ATR * prior_atr:
             side = 1 if close > prior else -1
-            stop = (prior + close) / 2
-            take = close * (close / stop) ** 20
-            if take > 0:
-                self.active = Opportunity(end, side, stop, take, end + 42 * FOUR_HOURS)
+            stop = (prior + close) / 2 if RETRACE == D('0.5') else close - RETRACE * (close - prior)
+            take = close * (close / stop) ** TAKE_POWER
+            if take > 0 and stop > 0:
+                self.active = Opportunity(end, side, stop, take, end + LIFE_BARS * FOUR_HOURS)
         return self.active
