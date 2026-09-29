@@ -404,3 +404,38 @@ class SmallFundBoundaries(TestCase):
             self.assertEqual(result['exchange_leverage_setting'], 20)
             self.assertGreater(D(result['account_notional_leverage']), 0)
             self.assertLessEqual(D(result['account_notional_leverage']), 20)
+
+
+class MacroFailurePolicy(TestCase):
+    def broken(self, venue):
+        calls = []
+
+        def snapshot():
+            calls.append(True)
+            raise Unknown('fixture ALFRED outage')
+        venue.dfii10_snapshot = snapshot
+        return calls
+
+    def test_outage_does_not_touch_a_primary_position_or_its_protection(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(tmp)
+            run(Config('123', tmp, 1, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            calls = self.broken(venue)
+            before = len(venue.sent)
+            result = run(Config('123', tmp, 3, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            self.assertEqual(calls, [])
+            self.assertEqual(len(venue.sent), before)
+            self.assertTrue(result['actual']['native_full_position_protected'])
+            self.assertEqual(result['cleanup'], 'verified')
+
+    def test_outage_on_a_flat_account_stops_new_risk_without_hiding_the_reason(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue(-1)
+            venue.seed(tmp)
+            calls = self.broken(venue)
+            result = run(Config('123', tmp, 2, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            self.assertTrue(calls)
+            self.assertEqual(venue.sent, [])
+            self.assertEqual(result['status'], 'unknown')
+            self.assertIn('ALFRED', result['errors'][-1]['reason'])

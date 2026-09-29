@@ -20,6 +20,13 @@ from .campaign import ORIGIN
 from .config import ENVIRONMENTS, scope
 
 
+SCHEMA_VERSION = 1
+# Derived reports stay in SQLite up to this many rows; older ones move to an
+# append-only archive file first, so a long-running account keeps its diagnosis trail.
+OBSERVATION_KEEP = 2000
+OBSERVATION_BATCH = 500
+
+
 def _account_lock_path(identity: str) -> Path:
     """One lock file per account identity, shared by every state directory."""
     root = Path.home() / '.local' / 'state' / 'coinquant' / 'account-locks'
@@ -81,7 +88,12 @@ class State:
             saved = self.get('identity')
             if saved is not None and saved != self.identity:
                 raise Blocked('state directory belongs to another account or environment')
-            self.set('identity', self.identity)
+            version = self.get('schema_version')
+            if type(version) is int and version > SCHEMA_VERSION:
+                raise Blocked('state was written by newer code; manage the position manually or use that code')
+            if saved is not None and version != SCHEMA_VERSION:
+                self.backup('schema')
+            self.set_many({'identity': self.identity, 'schema_version': SCHEMA_VERSION})
             host = socket.gethostname()
             prior = self.get('writer_host')
             now = time()
@@ -96,6 +108,18 @@ class State:
         except Exception:
             self.__exit__(None, None, None)
             raise
+
+    def backup(self, reason: str) -> Path:
+        """Consistent copy of the database before a structural change; never overwritten."""
+        folder = self.directory / 'backups'
+        folder.mkdir(exist_ok=True, mode=0o700)
+        target = folder / f'intents-{reason}-{int(time()*1000)}.sqlite'
+        copy = sqlite3.connect(target)
+        try:
+            self.db.backup(copy)
+        finally:
+            copy.close()
+        return target
 
     def __exit__(self, *args):
         if self.db is not None:
@@ -209,6 +233,7 @@ class State:
         with self.db:
             self.db.execute('INSERT INTO observations(recorded_at,payload) VALUES (?,?)',
                             (time(),json.dumps(serial(value),sort_keys=True,allow_nan=False)))
+        self._archive_observations()
         output = self.directory / 'latest.json'
         temporary = output.with_suffix('.tmp')
         with open(temporary, 'w', encoding='utf-8') as stream:
@@ -221,3 +246,19 @@ class State:
                 os.fsync(fd)
             finally:
                 os.close(fd)
+
+    def _archive_observations(self) -> None:
+        count = self.db.execute('SELECT COUNT(*) FROM observations').fetchone()[0]
+        if count < OBSERVATION_KEEP + OBSERVATION_BATCH:
+            return
+        rows = self.db.execute('SELECT sequence,recorded_at,payload FROM observations ORDER BY sequence LIMIT ?',
+                               (count - OBSERVATION_KEEP,)).fetchall()
+        # Written and synced before deletion; a crash between the two only duplicates lines.
+        with open(self.directory / 'observations-archive.jsonl', 'a', encoding='utf-8') as stream:
+            for sequence, recorded, payload in rows:
+                stream.write(json.dumps({'sequence': sequence, 'recorded_at': recorded, 'report': json.loads(payload)},
+                                        sort_keys=True) + '\n')
+            stream.flush()
+            os.fsync(stream.fileno())
+        with self.db:
+            self.db.execute('DELETE FROM observations WHERE sequence<=?', (rows[-1][0],))

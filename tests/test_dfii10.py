@@ -36,3 +36,19 @@ class DFII10Tests(TestCase):
         self.assertEqual(row['prior20_observation_date'],'2026-03-06')
         self.assertTrue(eligible(row,now))
         with self.assertRaises(Unknown):eligible(row,row['latest_value_available_ms'])
+
+
+class RawStoreTests(TestCase):
+    def test_raw_response_is_stored_atomically_verified_and_repaired(self):
+        import tempfile
+        from hashlib import sha256
+        from pathlib import Path
+        from coinquant.dfii10 import store_raw
+        raw=b'zip-bytes';digest=sha256(raw).hexdigest()
+        with tempfile.TemporaryDirectory() as tmp:
+            cache=Path(tmp)
+            stored=store_raw(cache,digest,raw)
+            self.assertEqual(stored.read_bytes(),raw)
+            stored.write_bytes(b'trunc')
+            self.assertEqual(store_raw(cache,digest,raw).read_bytes(),raw)
+            self.assertEqual([p.name for p in cache.iterdir()],[f'{digest}.zip'])

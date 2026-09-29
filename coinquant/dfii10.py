@@ -2,6 +2,7 @@
 import csv
 from datetime import date, datetime, time, timedelta, timezone
 from decimal import Decimal as D
+import os
 from hashlib import sha256
 from pathlib import Path
 from html.parser import HTMLParser
@@ -62,6 +63,21 @@ def eligible(row,call):
     latest,prior=D(row['latest_value']),D(row['prior20_value'])
     if not latest.is_finite() or not prior.is_finite():raise Unknown('invalid DFII10 input')
     return latest<=prior-DROP
+
+
+def store_raw(cache,digest,raw):
+    """Keep the response under its own digest: verified if present, else temp+rename.
+
+    A truncated or damaged earlier file is replaced, never trusted by name alone.
+    """
+    stored=cache/f'{digest}.zip'
+    if stored.exists() and sha256(stored.read_bytes()).hexdigest()==digest:
+        return stored
+    temporary=cache/f'{digest}.{os.getpid()}.tmp'
+    with open(temporary,'wb') as stream:
+        stream.write(raw);stream.flush();os.fsync(stream.fileno())
+    os.replace(temporary,stored)
+    return stored
 
 
 class Source:
@@ -126,9 +142,7 @@ class Source:
             digest=sha256(raw).hexdigest()
             cache=Path.home()/'.local'/'state'/'coinquant'/'dfii10'
             cache.mkdir(parents=True, exist_ok=True, mode=0o700)
-            stored=cache/f'{digest}.zip'
-            if not stored.exists():
-                stored.write_bytes(raw)
+            store_raw(cache,digest,raw)
             row=dict(latest_value=str(updates[latest][0]) if latest else None,
                      prior20_value=str(updates[prior][0]) if prior else None,
                      latest_observation_date=str(latest) if latest else None,
