@@ -20,6 +20,7 @@ from pathlib import Path
 from coinquant import binance, campaign, dfii10, native_preview, opportunities
 from coinquant.config import Config
 from coinquant.session import run
+from coinquant.types import Unknown
 from research import session_schedule
 from research.fx import BASIS as FX_BASIS, DatedFX
 from research.session_exchange import SessionExchange
@@ -77,6 +78,22 @@ def _harvest(state_dir):
                 constraints=dict(constraints))
 
 
+def _final_mark(exchange):
+    """Closing mark of an open position: last trade-print basis, else the last completed official mark minute.
+
+    Some days have no aggTrades file (2023-12-30 to 2024-01-01), so a block that ends there is valued
+    on the official mark alone.
+    """
+    try:
+        return exchange._mark_state()[1]
+    except Unknown:
+        open_ms, _ = exchange._completed_minute()
+        row = exchange.market.minute('mark', open_ms)
+        if row is None:
+            raise
+        return row[3]
+
+
 def run_account(market, starts, state_dir, prints, options, start_text=START, end_text=END, uid=1):
     """One continuous CNY 10,000 account; exchange state persists between sessions."""
     wallet = (D(10000) / options['fx'](starts[0])) * (1 - CONVERSION)
@@ -101,7 +118,7 @@ def run_account(market, starts, state_dir, prints, options, start_text=START, en
     end = timestamp(end_text)
     if exchange.now_ms < end:
         exchange.advance_unattended(end)
-    equity = exchange.wallet + (exchange.q * (exchange._mark_state()[1] - exchange.entry) if exchange.q else D(0))
+    equity = exchange.wallet + (exchange.q * (_final_mark(exchange) - exchange.entry) if exchange.q else D(0))
     final_cny = equity * exchange._cny()
     years = D(end - timestamp(start_text)) / D(YEAR_MS)
     growth = D(final_cny) / D(10000)

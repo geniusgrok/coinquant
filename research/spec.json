@@ -15,7 +15,7 @@
   "model": {
     "mechanism": "impulse_hold",
     "interval_ms": 14400000,
-    "risk_scale": "7.5",
+    "risk_scale": "6",
     "sides": [
       "long"
     ],

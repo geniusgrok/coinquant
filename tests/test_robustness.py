@@ -102,3 +102,23 @@ class AnalysisTests(TestCase):
         table['life56'] = row(15000.0 * 1.05)
         verdict = robustness.analyse(table)
         self.assertEqual([item[1] for item in verdict['adopted_changes']], ['life28'])
+
+
+class FinalMarkTests(TestCase):
+    def test_missing_prints_fall_back_to_the_official_mark_minute(self):
+        from coinquant.types import Unknown
+
+        class Exchange:
+            market = SimpleNamespace(minute=lambda kind, open_ms: (0, 0, 0, D('123.5'), 0))
+
+            def _mark_state(self):
+                raise Unknown('no trade print at or before the request')
+
+            def _completed_minute(self):
+                return 60_000, 120_000
+        self.assertEqual(rebuild._final_mark(Exchange()), D('123.5'))
+
+        class Printed(Exchange):
+            def _mark_state(self):
+                return 1, D('99')
+        self.assertEqual(rebuild._final_mark(Printed()), D('99'))

@@ -65,8 +65,9 @@ RISKS = (('risk3.6', '3.6'), ('risk5', '5'), ('risk6', '6'), ('base', '7.5'))
 
 def jobs_for(candidates=None, blocks=None):
     names = candidates or list(CANDIDATES)
-    return [(name, block) for name in names
-            for block in (['full'] if name in EXECUTION else ['full'] + list(BLOCKS)) if blocks is None or block in blocks]
+    every = ['full'] + list(BLOCKS) + list(STRESS)
+    return [(name, block) for name in names for block in every
+            if (block in blocks if blocks else block in (['full'] if name in EXECUTION else ['full'] + list(BLOCKS)))]
 
 
 def job_command(candidate, block, knobs, uid):
@@ -149,6 +150,33 @@ def month_concentration(result):
     return {f'without_best_{k}': math.exp((total - sum(best[:k])) / years) - 1 for k in (1, 3, 5)}
 
 
+def rolling_windows(result):
+    """Weekly-start rolling windows: share below the 150% target and worst window, for 1 and 2 years."""
+    rows = _daily(result)
+    days = [day for day, _ in rows]
+    values = [value for _, value in rows]
+
+    def at(target):
+        low, high = 0, len(days)
+        while low < high:
+            middle = (low + high) // 2
+            if days[middle] <= target:
+                low = middle + 1
+            else:
+                high = middle
+        return values[low - 1] if low else 10000.0
+    out = {}
+    for years in (1, 2):
+        rates, day = [], date(2020, 1, 1) + timedelta(days=365 * years)
+        while day <= date(2026, 9, 19):
+            rates.append((at(day) / at(day - timedelta(days=365 * years))) ** (1 / years) - 1)
+            day += timedelta(days=7)
+        out[f'{years}y'] = dict(windows=len(rates), worst=min(rates), median=sorted(rates)[len(rates) // 2],
+                                share_below_150=sum(r < 1.5 for r in rates) / len(rates),
+                                share_negative=sum(r < 0 for r in rates) / len(rates))
+    return out
+
+
 def weekly_log_returns(result):
     rows = _daily(result)
     days = [day for day, _ in rows]
@@ -212,6 +240,7 @@ def summarize(path):
     if (result['window_start'], result['window_end']) == (rebuild.START, rebuild.END):
         summary['year_returns'] = year_returns(result)
         summary['concentration'] = month_concentration(result)
+        summary['rolling'] = rolling_windows(result)
         summary['weekly'] = weekly_log_returns(result)
     return summary
 
