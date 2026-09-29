@@ -56,6 +56,9 @@ class NoRedirect(HTTPRedirectHandler):
         raise Blocked('Binance API redirects are refused')
 
 
+# Local rolling-minute request-weight budget, below Binance's 2400 per IP.
+WEIGHT_LIMIT = 2200
+
 # Spot account identity host and USD-M futures host per environment. Demo is
 # Binance's virtual-balance environment; its UID and account semantics are not
 # natively verified here.
@@ -113,10 +116,18 @@ class Binance:
         if self.align_time:
             self.align_clock()
 
-    def refresh_safety_observation(self):
-        """Drop cached account mode and the all-symbol scan before new risk."""
-        self._cycle_config = None
-        self.check_all_orders = True
+    def refresh_safety_observation(self, max_age=60):
+        """Before new risk, re-read account mode and the all-symbol scan once they are `max_age` seconds old.
+
+        A weight-40 scan on every five-second top-up poll would exhaust the local request-weight
+        reserve and stop the session from completing the very orders it is protecting.
+        """
+        now = self.monotonic()
+        if getattr(self, '_cycle_config', None) is not None and now - getattr(self, '_config_at', -max_age) >= max_age:
+            self._cycle_config = None
+        last = self.all_orders_checked_at
+        if last is None or now - last >= max_age:
+            self.check_all_orders = True
 
     def align_clock(self):
         """Set the signing offset from Binance server time. Does not widen recvWindow."""
@@ -140,7 +151,7 @@ class Binance:
         server=self.server_weight
         if server is not None and server[0] > now-60:
             used=max(used, server[1])
-        if used+reserve>2200:
+        if used+reserve>WEIGHT_LIMIT:
             raise NotSent('local request-weight reserve unavailable; wait before new risk')
 
     def get(self, path, parameters=None):
@@ -584,6 +595,7 @@ class Binance:
             config=getattr(self,'_cycle_config',None)
             if config is None:
                 config=(self.get('/fapi/v1/accountConfig'),self.get('/fapi/v1/symbolConfig',{'symbol':'BTCUSDT'}))
+                self._config_at=self.monotonic()
             def observe():
                 return {'config':config[0],'symbol':config[1],
                         'account':self.get('/fapi/v3/account'),

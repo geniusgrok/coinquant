@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from decimal import Decimal as D
 from pathlib import Path
 
-from coinquant import campaign, dfii10, native_preview, opportunities
+from coinquant import binance, campaign, dfii10, native_preview, opportunities
 from coinquant.config import Config
 from coinquant.session import run
 from research import session_schedule
@@ -43,6 +43,7 @@ KNOBS = {
     'life_bars': (opportunities, 'LIFE_BARS', int),
     'retrace': (opportunities, 'RETRACE', D),
     'dfii_drop': (dfii10, 'DROP', D),
+    'weight_limit': (binance, 'WEIGHT_LIMIT', int),
 }
 
 
