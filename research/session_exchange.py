@@ -97,6 +97,9 @@ class SessionExchange(Binance):
         return self.fx(self.now_ms) * (1 - self.exit_conversion)
     print_window_ms = 1000
     latency_ms = 1000
+    # Zero reproduces the earlier meters, where a read took no simulated time and the local
+    # request-weight reserve, not the clock, decided how many top-ups fit in a session.
+    read_latency_ms = 0
     # 'forfeit': a missing official mark minute costs the whole isolated wallet.
     # 'bound': trade range widened by the window's worst mark/trade gap (hindsight;
     # the owner-accepted basis that research.rebuild passes by default).
@@ -118,6 +121,8 @@ class SessionExchange(Binance):
             # A write takes effect when it reaches the venue; resting protection,
             # funding and liquidation keep running meanwhile.
             self._advance(self.now_ms + self.latency_ms)
+        elif self.read_latency_ms:
+            self._advance(self.now_ms + self.read_latency_ms)
         return self._reply(method, path, params)
 
     def _id(self):

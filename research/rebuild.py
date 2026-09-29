@@ -190,7 +190,7 @@ def _allowed_output(path):
 
 def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
           trigger_slippage='0.001', market_slippage='0.0005', fee='0.00075',
-          primary_risk=None, mark_gap='bound', market='/data/coinquant-market', prints='/data/coinquant-prints',
+          primary_risk=None, mark_gap='bound', read_latency_ms=200, market='/data/coinquant-market', prints='/data/coinquant-prints',
           state=None, limit=0, out=None, knobs=None, window_start=START, window_end=END, uid=1):
     """`knobs` and a sub-window are research inputs. A sub-window is a fresh CNY 10,000 account on the
     frozen sessions inside it; it is a robustness block, never the acceptance measurement."""
@@ -235,7 +235,7 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
         state.mkdir(parents=True)
         options = {'print_window_ms': int(print_window_ms), 'fx': DatedFX(), 'exit_conversion': CONVERSION,
                    'trigger_slippage': D(trigger_slippage), 'market_slippage': D(market_slippage),
-                   'fee': D(fee), 'mark_gap': mark_gap}
+                   'fee': D(fee), 'mark_gap': mark_gap, 'read_latency_ms': int(read_latency_ms)}
         base = load_base(market)
         result, exchange = run_account(base, starts, state, prints, options, window_start, window_end, uid)
     finally:
@@ -258,7 +258,7 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
                   print_window_ms=int(print_window_ms),
                   trigger_slippage=str(trigger_slippage), market_slippage=str(market_slippage), fee=str(fee),
                   mark_gap=mark_gap, fx=FX_BASIS, conversion='0.001 each way',
-                  latency_ms=1000, price_stamp='last trade print at or before the request',
+                  latency_ms=1000, read_latency_ms=int(read_latency_ms), price_stamp='last trade print at or before the request',
                   source=source, market_identity=identity, **effective)
     if not _NAME.fullmatch(name):
         raise ValueError('trial name must be a short safe token')
@@ -285,6 +285,8 @@ def main():
     parser.add_argument('--primary-risk', default=None)
     parser.add_argument('--knob', action='append', default=[], metavar='NAME=VALUE',
                         help='research knob (' + ', '.join(KNOBS) + '); repeatable')
+    parser.add_argument('--read-latency-ms', type=int, default=200,
+                        help='simulated time each read request takes (M8 default 200; 0 reproduces M7)')
     parser.add_argument('--uid', type=int, default=1,
                         help='simulated account UID; concurrent trials need distinct values (the account lock)')
     parser.add_argument('--from', dest='window_start', default=START, help='block start (frozen sessions only)')
@@ -304,7 +306,8 @@ def main():
                    trigger_slippage=args.trigger_slippage, market_slippage=args.market_slippage, fee=args.fee,
                    primary_risk=args.primary_risk, mark_gap=args.mark_gap, market=args.market, prints=args.prints,
                    knobs=dict(item.split('=', 1) for item in args.knob),
-                   window_start=args.window_start, window_end=args.window_end, uid=args.uid)
+                   window_start=args.window_start, window_end=args.window_end, uid=args.uid,
+                   read_latency_ms=args.read_latency_ms)
     print(json.dumps({k: result[k] for k in ('trial', 'final_cny', 'cagr', 'mdd_close', 'mdd_envelope',
                                              'known_path', 'path_complete', 'mark_gap_minutes', 'complete',
                                              'funnel')}, default=str))
