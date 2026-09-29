@@ -21,11 +21,11 @@ Binance BTCUSDT U 本位永续，单账户、单向逐仓、交易所20×。手�
 
 工程就绪：可由所有者准备 Demo 凭据和账户后先只读核对，再明确启动 Demo。Demo 原生验证：未运行。小额主网：入口默认关闭，Demo 证据及专用资金尚未提供。经济资格：仍为 `NOT_MET`；下面的 O1 是当前代码的测量，历史 P7/M7 只对应源码 `a6892b3`。具体配置与命令见 README。
 
-当前执行源码摘要（`coinquant/*.py`，文件名与字节按序哈希）：`1f315fc88b1a01039d6416223c6391cf4c9ec736bbf0f3287ddbadd76208b6b7`；提交 SHA 以实际 Git 交付为准。验证：244 项离线测试通过，`git diff --check` 无误。真实账户接口、成交与时延均未运行。
+当前执行源码摘要（`coinquant/*.py`，文件名与字节按序哈希）：`8e26896bf47fef2ed538720200b7dcc616cab70e319e55ea22009e5bc53dccc3`；提交 SHA 以实际 Git 交付为准。验证：300 项离线测试通过，`git diff --check` 无误。真实账户接口、成交与时延均未运行。
 
 ## 经济测量（测量器 M8，R3 后）
 
-`python -m research.rebuild R3` 在 `research.session_exchange.SessionExchange` 上运行同一个 `session.run`/`Lifecycle`，冻结795个会话起点（`research/session_schedule.json`）；读请求占200 ms模拟时间（`--read-latency-ms`，0 复现旧 M7），写请求1000 ms。2020-01-01至2026-09-20（右端不含），人民币10,000元，主信号风险7.5：
+`python -m research.rebuild R3` 在 `research.session_exchange.SessionExchange` 上运行同一个 `session.run`/`Lifecycle`，冻结795个会话起点（`research/session_schedule.json`）；读请求占200 ms模拟时间（`--read-latency-ms`，0 复现旧 M7），写请求1000 ms。2020-01-01至2026-09-20（右端不含），人民币10,000元，主信号风险7.5。下表是源码 `fbe3b31`（审计修复前）的测量；审计修复（C01–C13，`evidence/audit-fixes-20260929/`）后同一输入上的基准回归 REG 为 ¥1,893,613／118.24%／MDD 收盘43.60%、包络44.51%（源码摘要 `7fbc0265…`，未登记为新基线），压力行未重测：
 
 | 场景 | 期末人民币 | 成本后 CAGR | 连续 MDD |
 |---|---|---|---|
@@ -44,6 +44,10 @@ MDD 达标，CAGR 未达150%目标；`economic_qualification` 为 `NOT_MET`。�
 - 收益集中（M7、风险6）：风险6去掉最好3个月后 CAGR 38%；2024–2026三年分别 +44%、+1%、−9%。滚动1年窗口65%低于150%。
 
 口径与各轮修正见 `research/redesign-PROTOCOL.md`，测量局限与旧 M7 结果见 `evidence/rebuild-20260927/RESULT.md`。
+
+## 审计修复状态（C01–C13）
+
+全部为离线代码与测试修复；真实账户行为未验证。范围限制：C08 没有外部归档/检查点导入入口（超期恢复仍返回未知）；C10 的部分场景沿用既有测试。详见 `evidence/audit-fixes-20260929/RESULT.md`。
 
 ## 未完成
 

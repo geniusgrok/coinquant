@@ -52,3 +52,50 @@ class RawStoreTests(TestCase):
             stored.write_bytes(b'trunc')
             self.assertEqual(store_raw(cache,digest,raw).read_bytes(),raw)
             self.assertEqual([p.name for p in cache.iterdir()],[f'{digest}.zip'])
+
+
+class SourceFailureTests(TestCase):
+    dates=[date(2026,3,1)+timedelta(days=i) for i in range(26)]
+    now=int(datetime(2026,3,31,tzinfo=timezone.utc).timestamp()*1000)
+
+    def opener(self,archive_bytes,requests):
+        html=('<select id="form_selected_vintage_dates">'+''.join(
+            f'<option value="{v}">{v}</option>' for v in self.dates)+'</select>').encode()
+        class Opener:
+            def open(self,request,timeout):
+                requests.append(request)
+                return BytesIO(html if request.data is None else archive_bytes)
+        return Opener()
+
+    def archive(self,header=None):
+        out=StringIO();writer=csv.writer(out)
+        writer.writerow(header or ['observation_date']+[f'DFII10_{v:%Y%m%d}' for v in self.dates])
+        for i,v in enumerate(self.dates):
+            values=['']*len(self.dates);values[i]='1.0'
+            writer.writerow([v,*values])
+        data=BytesIO()
+        with ZipFile(data,'w') as z:z.writestr('DFII10.csv',out.getvalue())
+        return data.getvalue()
+
+    def snapshot(self,archive_bytes,source=None,now=None):
+        import tempfile
+        requests=[]
+        with tempfile.TemporaryDirectory() as home,patch('pathlib.Path.home',return_value=__import__('pathlib').Path(home)),\
+                patch('coinquant.dfii10.build_opener',return_value=self.opener(archive_bytes,requests)):
+            source=source or Source()
+            return source,source.snapshot(now or self.now),requests
+
+    def test_changed_columns_or_non_zip_answers_are_unknown_not_a_stale_value(self):
+        bad=self.archive(header=['observation_date','DFII10_changed'])
+        with self.assertRaises(Unknown):self.snapshot(bad)
+        with self.assertRaises(Unknown):self.snapshot(b'<html>maintenance</html>')
+
+    def test_failure_defers_retries_and_success_is_reused_for_fifteen_minutes(self):
+        source=Source()
+        with self.assertRaises(Unknown):self.snapshot(b'not a zip',source)
+        with self.assertRaises(Unknown) as deferred:self.snapshot(self.archive(),source,self.now+30000)
+        self.assertIn('deferred',str(deferred.exception))
+        source,row,requests=self.snapshot(self.archive(),source,self.now+61000)
+        self.assertEqual(len(requests),2)
+        again,cached,more=self.snapshot(b'not a zip',source,self.now+61000+899000)
+        self.assertEqual(more,[]);self.assertEqual(cached,row)
