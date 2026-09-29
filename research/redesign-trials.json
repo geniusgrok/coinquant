@@ -1589,6 +1589,14 @@
         }
       ],
       "outcome": "All four candidates pass the gates and the plateau; 7.5 has the highest mean test growth (1.879 vs 1.854/1.834/1.785) and passes all stresses (MDD <= 44.87%). PRIMARY_RISK 6 -> 7.5. CAGR 131.26% < 150%: economic_qualification stays NOT_MET."
+    },
+    {
+      "round": "M9",
+      "registered": "2026-09-29",
+      "hypothesis": "Remeasure the registered R3 scenarios on the current source: full window and seven fresh-account years at risks 6, 6.5, 7 and 7.5; the six stresses at 7.5; read latency 100 ms and 400 ms at risk 6. No parameter, window, schedule or target change, and no new risk selection. PRIMARY_RISK stays 7.5.",
+      "model": "SX60+DFII10, meter M8, mark_gap bound",
+      "evidence": "evidence/remeasure-20260929/",
+      "measured": false
     }
   ]
 }
