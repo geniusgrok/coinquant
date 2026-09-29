@@ -14,7 +14,18 @@ class Blocked(RuntimeError):
 
 
 class Unknown(RuntimeError):
-    """An exchange write or account observation has an uncertain outcome."""
+    """An exchange write or account observation has an uncertain outcome.
+
+    `http_status` and `native_code` carry the exchange's own classification when
+    an HTTP answer was received; they are evidence for review, never a verdict.
+    """
+    http_status=None
+    native_code=None
+
+    def __init__(self, *args, http_status=None, native_code=None):
+        super().__init__(*args)
+        self.http_status=http_status
+        self.native_code=native_code
 
 
 class NotSent(Unknown):

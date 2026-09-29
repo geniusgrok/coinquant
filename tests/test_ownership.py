@@ -93,3 +93,29 @@ class OwnershipTests(TestCase):
             for result in ({'executed_quantity':'.002'},{}):
                 with self.assertRaises(Unknown):state.finish('cq-entry','confirmed',result)
             self.assertEqual(state.pending()[0]['status'],'partial')
+
+
+class AbsentEntryOwnership(TestCase):
+    def rejected(self,result):
+        flat=dict(account_uid='123',quantity_btc='0.00000000',possible_entry_remainders=0)
+        p=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='LIMIT',quantity='.01')
+        m=Campaign();reader=Mock();reader.snapshot.return_value=flat;reader.query_intent.side_effect=Unknown('missing')
+        return m,reader,flat,p,result
+
+    def test_definitive_absence_reconciles_flat_but_legacy_absence_does_not(self):
+        for marker,ok in ((True,True),(False,False)):
+            with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+                m,r,flat,p,_=self.rejected(None)
+                state.prepare('cq-entry','binance_order',p,campaign=int(time()*1000)//14400000*14400000,flat_snapshot=flat)
+                state.finish('cq-entry','rejected',{'prepared_at_ms':1,'absent_at_ms':400000,
+                                                    **({'query_absent_within_retention':True} if marker else {})})
+                if ok:self.assertEqual(reconcile(state,r,m,flat)['status'],'no_campaign_fill')
+                else:
+                    with self.assertRaises(Unknown):reconcile(state,r,m,flat)
+
+    def test_late_fill_after_definitive_absence_fails_closed(self):
+        with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+            m,r,flat,p,_=self.rejected(None)
+            state.prepare('cq-entry','binance_order',p,campaign=int(time()*1000)//14400000*14400000,flat_snapshot=flat)
+            state.finish('cq-entry','rejected',{'prepared_at_ms':1,'absent_at_ms':400000,'query_absent_within_retention':True})
+            with self.assertRaises(Unknown):reconcile(state,r,m,dict(flat,quantity_btc='.01'))

@@ -286,7 +286,8 @@ class Binance:
                 raise Rejected('Binance reported a failed operation with HTTP 503') from None
             if method == 'GET' and path == '/fapi/v1/order' and exc.code == 400 and code == -2013:
                 raise Missing('Binance reports that the order does not exist') from None
-            raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown') from None
+            raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown',
+                          http_status=exc.code,native_code=code) from None
         except (URLError, TimeoutError, OSError, ValueError, Blocked):
             # A refused redirect or broken response arrives after the request left.
             raise Unknown('Binance request unavailable; read by stable identity before any retry') from None

@@ -84,7 +84,9 @@ def send_once(state, identity, send, method, path, payload):
         # Keep the identity unknown and record only the exception type.
         row=state.db.execute('SELECT result FROM intents WHERE id=?',(identity,)).fetchone()
         current=json.loads(row[0]) if row else {}
-        current['unresolved']={'stage':'send','error_type':type(exc).__name__}
+        current['unresolved']={'stage':'send','error_type':type(exc).__name__,
+                               **{k:v for k,v in (('http_status',getattr(exc,'http_status',None)),
+                                                  ('native_code',getattr(exc,'native_code',None))) if v is not None}}
         state.finish(identity,'unknown',current)
 
 
@@ -268,11 +270,11 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     request=dict(old_ids=old_ids,new_ids=new_ids,stop=str(D(stop)),take=str(D(take)))
     journal=state.get(key)
     if journal and journal['request']!=request:
-        if journal.get('done'):
-            journal=None
-        elif request in journal.get('superseded',[]):
+        if request in journal.get('superseded',[]):
             # The same operation continues under the fresh generation it rotated to.
             request=journal['request'];old_ids=request['old_ids'];new_ids=request['new_ids'];epoch=journal['epoch']
+        elif journal.get('done'):
+            journal=None
         else:
             raise Unknown('another protection replacement is unresolved')
     # Missing ownership after local state loss never authorizes order cancellation.

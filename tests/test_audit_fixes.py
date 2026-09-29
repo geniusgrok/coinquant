@@ -1,0 +1,307 @@
+"""Call-chain checks for the 2026-09-29 review: funds gate, exits, clocks, REST errors."""
+import io
+import json
+import signal
+import tempfile
+from decimal import Decimal as D
+from pathlib import Path
+from unittest import TestCase
+from unittest.mock import patch
+from urllib.error import HTTPError, URLError
+
+from coinquant import cli
+from coinquant.audit import allows_new_risk, income
+from coinquant.binance import Binance
+from coinquant.binance_safety import send_once
+from coinquant.campaign import Campaign
+from coinquant.config import Config
+from coinquant.session import run
+from coinquant.state import State
+from coinquant.types import Blocked, NotSent, Unknown
+from tests.session_venue import Venue
+
+SCOPE = 'binance:BTCUSDT:live:123'
+
+
+class Clocked:
+    def __init__(self, now, pages=()):
+        self.now = now
+        self.pages = list(pages)
+
+    def clock(self):
+        return self.now / 1000
+
+    def get(self, path, params=None):
+        return [row for row in self.pages if params['startTime'] <= row['time'] <= params['endTime']]
+
+
+def row(tran, amount, at):
+    return dict(incomeType='COMMISSION', tranId=tran, time=at, asset='USDT', income=str(amount), symbol='BTCUSDT', tradeId='')
+
+
+class FundsAuditGate(TestCase):
+    def test_wallet_drop_without_income_never_opens_risk_and_late_income_clears_it(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp, SCOPE) as state:
+            reader = Clocked(1_000_000)
+            first = income(reader, state, wallet='100')
+            self.assertTrue(allows_new_risk(first, '100', flat=True))
+            self.assertFalse(allows_new_risk(first, '100', flat=False))
+            reader.now += 5000
+            pending = income(reader, state, wallet='90')
+            self.assertEqual(pending['wallet_closure'], 'pending_income')
+            self.assertFalse(allows_new_risk(pending, '90', flat=False))
+            reader.pages.append(row(1, '-10', reader.now - 1000))
+            reader.now += 5000
+            explained = income(reader, state, wallet='90')
+            self.assertEqual(explained['wallet_closure'], 'explained')
+            self.assertTrue(allows_new_risk(explained, '90', flat=False))
+
+    def test_gap_that_income_never_explains_becomes_unexplained(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp, SCOPE) as state:
+            reader = Clocked(1_000_000)
+            income(reader, state, wallet='100')
+            reader.now += 5000
+            income(reader, state, wallet='90')
+            reader.now += 61000
+            late = income(reader, state, wallet='90')
+            self.assertEqual(late['wallet_closure'], 'unexplained')
+            self.assertFalse(allows_new_risk(late, '90', flat=True))
+
+    def test_cache_is_bound_to_the_wallet_value_and_wallet_less_reads_do_not_settle(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp, SCOPE) as state:
+            reader = Clocked(1_000_000)
+            income(reader, state, wallet='100')
+            reader.now += 1000
+            self.assertTrue(allows_new_risk(income(reader, state, wallet='100'), '100', flat=True))
+            changed = income(reader, state, wallet='90')
+            self.assertFalse(allows_new_risk(changed, '90', flat=True))
+            collected = income(reader, state)
+            self.assertFalse(allows_new_risk(collected, '90', flat=True))
+            self.assertFalse(allows_new_risk(collected, None, flat=True))
+            self.assertFalse(allows_new_risk({}, '90', flat=True))
+            self.assertEqual(state.get('income_coverage')['closure']['wallet'], '90')
+
+    def test_unexplained_wallet_stops_top_up_but_keeps_protection(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(tmp)
+            venue.fraction = D('.5')
+
+            def wait(seconds):
+                venue.wallet -= D(10)
+                venue.wait(61)
+            result = run(Config('123', tmp, 120, 1), venue, execute=True, monotonic=venue.monotonic, wait=wait)
+            entries = [p for _, path, p in venue.sent if path.endswith('/order') and p.get('timeInForce') == 'IOC']
+            self.assertEqual(len(entries), 1)
+            self.assertGreater(venue.q, 0)
+            self.assertEqual(result['cleanup'], 'verified')
+            self.assertTrue(result['actual']['native_full_position_protected'])
+            self.assertFalse(result['execution_unresolved'])
+
+    def test_audit_failure_does_not_stop_signal_exit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(tmp)
+            run(Config('123', tmp, 1, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            with State(tmp, SCOPE) as state:
+                model = Campaign.restore(state.get('linear_campaign'))
+                model.model.active = None
+                state.set('linear_campaign', model.checkpoint())
+            original = venue.get
+
+            def get(path, parameters=None):
+                if path.endswith('/income'):
+                    raise Unknown('fixture income unavailable')
+                return original(path, parameters)
+            venue.get = get
+            result = run(Config('123', tmp, 3, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            self.assertEqual(venue.q, 0)
+            self.assertEqual(result['cleanup'], 'verified')
+
+    def test_final_income_audit_failure_is_reported_not_success(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue(-1)
+            venue.seed(tmp)
+            original = venue.get
+            broken = []
+
+            def get(path, parameters=None):
+                if path.endswith('/income') and broken:
+                    raise Unknown('fixture income unavailable')
+                return original(path, parameters)
+            venue.get = get
+
+            def wait(seconds):
+                broken.append(True)
+                venue.wait(seconds)
+            result = run(Config('123', tmp, 2, 1), venue, execute=True, monotonic=venue.monotonic, wait=wait)
+            self.assertEqual(result['income_audit'], {'status': 'unresolved'})
+            self.assertEqual(result['status'], 'unknown')
+
+
+class ExitPaths(TestCase):
+    def test_interrupt_and_clock_failure_are_reported_with_phase(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue(-1)
+            venue.seed(tmp)
+            calls = []
+            original = venue.begin_cycle
+
+            def begin(seconds=120):
+                calls.append(seconds)
+                if len(calls) == 1:
+                    raise Unknown('fixture clock alignment failed')
+                return original(seconds)
+            venue.begin_cycle = begin
+            result = run(Config('123', tmp, 3, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            self.assertEqual(result['errors'][0]['phase'], 'clock')
+            self.assertEqual(result['errors'][0]['error_type'], 'Unknown')
+            self.assertEqual(result['cleanup'], 'verified')
+            self.assertEqual(venue.sent, [])
+
+    def test_deadline_with_pending_intent_is_execution_unresolved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(tmp)
+            venue.timeout_after_entry = True
+            original = venue.get
+
+            def get(path, parameters=None):
+                if path.endswith('/order') and 'origClientOrderId' in (parameters or {}):
+                    raise Unknown('fixture order query unavailable')
+                return original(path, parameters)
+            venue.get = get
+            result = run(Config('123', tmp, 3, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            self.assertTrue(result['execution_unresolved'])
+            self.assertEqual(result['status'], 'unknown')
+
+    def test_verified_session_is_not_unresolved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(tmp)
+            result = run(Config('123', tmp, 3, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            self.assertFalse(result['execution_unresolved'])
+            self.assertEqual(result['observation_timeouts'], 0)
+
+    def test_cleanup_budget_never_passes_the_hard_deadline(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(tmp)
+            run(Config('123', tmp, 3, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            self.assertLessEqual(venue.deadline, venue.hard_deadline)
+            venue.set_deadline(10_000, extend_only=True)
+            self.assertEqual(venue.deadline, venue.hard_deadline)
+
+
+class StatusClock(TestCase):
+    def reader(self, *, time_ok, offset=5000):
+        seen = []
+
+        class Opener:
+            def open(self, request, timeout):
+                seen.append(request.full_url)
+                if request.full_url.endswith('/fapi/v1/time'):
+                    if not time_ok:
+                        raise URLError('offline')
+                    return io.BytesIO(json.dumps({'serverTime': 1_770_004_800_000 + offset}).encode())
+                raise URLError('stop after the first signed read')
+        reader = Binance(key='k', secret='s', opener=Opener(), clock=lambda: 1_770_004_800.0)
+        reader.align_time = True
+        return reader, seen
+
+    def config(self, tmp):
+        path = Path(tmp) / 'config.json'
+        path.write_text(json.dumps(dict(account_uid='123', state_dir=str(Path(tmp) / 'state'))))
+        return path
+
+    def test_status_aligns_the_clock_before_the_first_signed_read(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            reader, seen = self.reader(time_ok=True)
+            with patch('coinquant.cli.connect', return_value=reader):
+                with self.assertRaises(Unknown):
+                    cli.observe(self.config(tmp))
+            self.assertTrue(seen[0].endswith('/fapi/v1/time'))
+            signed = [u for u in seen if 'signature=' in u]
+            self.assertTrue(signed)
+            self.assertIn('timestamp=1770004805000', signed[0])
+
+    def test_failed_time_read_sends_no_signed_request(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            reader, seen = self.reader(time_ok=False)
+            with patch('coinquant.cli.connect', return_value=reader):
+                with self.assertRaises(Unknown):
+                    cli.observe(self.config(tmp))
+            self.assertEqual(len(seen), 1)
+            self.assertFalse(any('signature=' in u for u in seen))
+
+    def test_main_reports_the_failure_and_exits_nonzero(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            reader, seen = self.reader(time_ok=False)
+            with patch('coinquant.cli.connect', return_value=reader), patch('sys.stdout', new=io.StringIO()) as out:
+                code = cli.main(['status', '--config', str(self.config(tmp))])
+            self.assertEqual(code, 2)
+            self.assertEqual(json.loads(out.getvalue())['status'], 'unknown')
+
+
+class Signals(TestCase):
+    def test_first_signal_interrupts_later_ones_are_ignored_and_handlers_restore(self):
+        before = signal.getsignal(signal.SIGTERM)
+        with cli._FirstSignal() as guard:
+            with self.assertRaises(KeyboardInterrupt):
+                guard(signal.SIGTERM, None)
+            guard(signal.SIGTERM, None)
+            guard(signal.SIGINT, None)
+        self.assertEqual(signal.getsignal(signal.SIGTERM), before)
+
+    def test_interrupt_before_the_session_is_an_explicit_unknown_report(self):
+        with patch('coinquant.cli._dispatch', side_effect=KeyboardInterrupt), patch('sys.stdout', new=io.StringIO()) as out:
+            code = cli.main(['run'])
+        self.assertEqual(code, 2)
+        self.assertEqual(json.loads(out.getvalue())['status'], 'unknown')
+
+
+class RestErrors(TestCase):
+    def failing(self, status, body=b'{}', headers=None):
+        class Opener:
+            def open(self, request, timeout):
+                raise HTTPError(request.full_url, status, 'x', headers or {}, io.BytesIO(body))
+        return Binance(key='k', secret='s', opener=Opener(), clock=lambda: 1_770_004_800.0, authorize_writes=True)
+
+    def write(self, reader):
+        return reader._request('POST', '/fapi/v1/order', {'symbol': 'BTCUSDT'})
+
+    def test_rate_limits_and_server_errors_stay_unknown_with_native_evidence(self):
+        for status in (418, 429, 500, 502, 503):
+            reader = self.failing(status, b'{"code":-1003,"msg":"busy"}')
+            with self.assertRaises(Unknown) as caught:
+                self.write(reader)
+            self.assertNotIsInstance(caught.exception, NotSent)
+            self.assertEqual(caught.exception.http_status, status)
+            self.assertEqual(caught.exception.native_code, -1003)
+            if status in (418, 429):
+                with self.assertRaises(NotSent):
+                    self.write(reader)
+
+    def test_unknown_status_is_recorded_on_the_intent_and_never_terminal(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp, SCOPE) as state:
+            reader = self.failing(429, b'{"code":-1003,"msg":"busy"}')
+            state.prepare('cq-x', 'binance_order', {'symbol': 'BTCUSDT'})
+            send_once(state, 'cq-x', lambda *a: self.write(reader), 'POST', '/fapi/v1/order', {})
+            status, result = state.db.execute("SELECT status,result FROM intents WHERE id='cq-x'").fetchone()
+            self.assertEqual(status, 'unknown')
+            self.assertEqual(json.loads(result)['unresolved']['http_status'], 429)
+
+    def test_documented_rejection_is_terminal_and_transport_loss_is_not(self):
+        reader = self.failing(503, b'{"code":-1008,"msg":"overloaded"}')
+        with self.assertRaises(Unknown) as caught:
+            self.write(reader)
+        self.assertEqual(type(caught.exception).__name__, 'Rejected')
+
+        class Late:
+            def open(self, request, timeout):
+                raise TimeoutError()
+        late = Binance(key='k', secret='s', opener=Late(), clock=lambda: 1_770_004_800.0, authorize_writes=True)
+        with self.assertRaises(Unknown) as caught:
+            self.write(late)
+        self.assertEqual(type(caught.exception).__name__, 'Unknown')
+        self.assertIsNone(caught.exception.http_status)

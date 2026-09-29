@@ -115,7 +115,8 @@ def reconcile(state, reader, model, snapshot):
     for identity,link in links.items():
         status=state.db.execute('SELECT status,result FROM intents WHERE id=?',(identity,)).fetchone()
         if status and status[0]=='rejected':
-            if 'absent_at_ms' in json.loads(status[1]):
+            result=json.loads(status[1])
+            if 'absent_at_ms' in result and not result.get('query_absent_within_retention'):
                 raise Unknown('legacy time-based rejection requires native identity recovery')
             continue  # locally not sent or definitively refused by Binance
         observed=owned_observation(state,reader,identity)['parent']

@@ -452,7 +452,14 @@ class Lifecycle:
             return self.protect_entry(snapshot,plan)
         replacement=self.state.get('session_replacement')
         if replacement:
-            return self.complete_replacement(replacement,self.instrument())
+            try:
+                return self.complete_replacement(replacement,self.instrument())
+            except (Blocked,Unknown):
+                # Only a position with no native full protection at all is
+                # reduced; a healthy leg or unresolved order keeps the block.
+                if not snapshot['native_full_position_protected'] and not snapshot['possible_entry_remainders']:
+                    self.close(snapshot)
+                raise
         if not self.planned_protection(snapshot):
             protection = self.state.get('position_protection')
             if not protection:

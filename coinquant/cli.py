@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import os
+import signal
 import sys
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
@@ -95,6 +96,44 @@ def observe(config_path, *, execute=False):
         return report
 
 
+class _FirstSignal:
+    """The first SIGINT/SIGTERM interrupts observation; later ones during the
+    bounded cleanup are ignored so protection and reduction can finish."""
+    signals=(signal.SIGINT,signal.SIGTERM)
+
+    def __init__(self):
+        self.fired=False;self.previous={}
+
+    def __call__(self,signum,frame):
+        if not self.fired:
+            self.fired=True
+            raise KeyboardInterrupt
+
+    def __enter__(self):
+        for number in self.signals:self.previous[number]=signal.signal(number,self)
+        return self
+
+    def __exit__(self,*exc):
+        for number,handler in self.previous.items():signal.signal(number,handler)
+
+
+def _dispatch(args):
+    if args.command=='status':
+        return observe(args.config)
+    if args.execute and (not args.trial or not args.authorize_uid):
+        raise Blocked('write trial requires --trial and --authorize-uid')
+    if not args.execute and (args.trial or args.authorize_uid or args.demo_evidence):
+        raise Blocked('trial options require --execute')
+    from .dfii10 import eastern
+    from .session import run
+    eastern()  # fail before credentials when time zone data is missing
+    config=load(args.config)
+    if args.execute:
+        trial_gate(args.config,config,mode=args.trial,uid=args.authorize_uid,evidence=args.demo_evidence)
+    return run(config,connect(config,authorize_writes=args.execute),execute=args.execute,
+               trial_mode=args.trial if args.execute else None,source_digest=source_digest())
+
+
 def main(argv=None):
     parser=argparse.ArgumentParser(prog='coinquant', description='Coinquant BTCUSDT bounded observation and controlled trial.')
     commands=parser.add_subparsers(dest='command',required=True)
@@ -108,21 +147,10 @@ def main(argv=None):
             command.add_argument('--demo-evidence',help='Reviewed native Demo closure JSON, required for live')
     args=parser.parse_args(argv)
     try:
-        if args.command=='status':
-            report=observe(args.config)
-        else:
-            if args.execute and (not args.trial or not args.authorize_uid):
-                raise Blocked('write trial requires --trial and --authorize-uid')
-            if not args.execute and (args.trial or args.authorize_uid or args.demo_evidence):
-                raise Blocked('trial options require --execute')
-            from .dfii10 import eastern
-            from .session import run
-            eastern()  # fail before credentials when time zone data is missing
-            config=load(args.config)
-            if args.execute:
-                trial_gate(args.config,config,mode=args.trial,uid=args.authorize_uid,evidence=args.demo_evidence)
-            report=run(config,connect(config,authorize_writes=args.execute),execute=args.execute,
-                       trial_mode=args.trial if args.execute else None,source_digest=source_digest())
+        with _FirstSignal():
+            report=_dispatch(args)
+    except KeyboardInterrupt:
+        report=dict(status='unknown',reason='Interrupted before or outside the bounded session; reconcile before any new action')
     except (Blocked,Unknown) as exc:
         report=dict(status='unknown' if isinstance(exc,Unknown) else 'blocked',reason=str(exc))
     except (OSError,ValueError,KeyError,TypeError,ArithmeticError):
