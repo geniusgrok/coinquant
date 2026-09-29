@@ -17,7 +17,7 @@ from coinquant.campaign import Campaign
 from coinquant.config import Config
 from coinquant.session import run
 from coinquant.state import State
-from coinquant.types import Blocked, NotSent, Unknown
+from coinquant.types import NotSent, Unknown
 from tests.session_venue import Venue
 
 SCOPE = 'binance:BTCUSDT:live:123'
@@ -439,3 +439,85 @@ class MacroFailurePolicy(TestCase):
             self.assertEqual(venue.sent, [])
             self.assertEqual(result['status'], 'unknown')
             self.assertIn('ALFRED', result['errors'][-1]['reason'])
+
+
+class CliSmoke(TestCase):
+    def config(self, tmp, **extra):
+        path = Path(tmp) / 'config.json'
+        path.write_text(json.dumps(dict(account_uid='123', state_dir=str(Path(tmp) / 'state'),
+                                        session_seconds=1, poll_seconds=1, **extra)))
+        return path
+
+    def test_run_defaults_to_observation_and_sends_no_write(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(str(Path(tmp) / 'state'))
+            with patch('coinquant.cli.connect', return_value=venue), patch('sys.stdout', new=io.StringIO()) as out:
+                code = cli.main(['run', '--config', str(self.config(tmp))])
+            report = json.loads(out.getvalue())
+            self.assertEqual(code, 0)
+            self.assertEqual(report['status'], 'read_only')
+            self.assertFalse(report['write_attempted'])
+            self.assertEqual(venue.sent, [])
+
+    def test_execute_needs_trial_and_uid_before_credentials(self):
+        with tempfile.TemporaryDirectory() as tmp, patch('coinquant.cli.connect') as connect, \
+                patch('sys.stdout', new=io.StringIO()) as out:
+            code = cli.main(['run', '--config', str(self.config(tmp)), '--execute'])
+        self.assertEqual(code, 2)
+        self.assertEqual(json.loads(out.getvalue())['status'], 'blocked')
+        connect.assert_not_called()
+
+    def test_trial_options_without_execute_are_refused(self):
+        with tempfile.TemporaryDirectory() as tmp, patch('coinquant.cli.connect') as connect, \
+                patch('sys.stdout', new=io.StringIO()):
+            code = cli.main(['run', '--config', str(self.config(tmp)), '--trial', 'demo'])
+        self.assertEqual(code, 2)
+        connect.assert_not_called()
+
+
+class NativePrecision(TestCase):
+    def test_sub_unit_residue_is_arithmetic_but_one_native_unit_is_a_gap(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp, SCOPE) as state:
+            reader = Clocked(1_000_000)
+            income(reader, state, wallet='100')
+            reader.pages.append(row(1, '-10.0000000000000000000000001', reader.now + 500))
+            reader.now += 1000
+            self.assertEqual(income(reader, state, wallet='90')['wallet_closure'], 'explained')
+            reader.pages.append(row(2, '-1', reader.now + 500))
+            reader.now += 1000
+            self.assertEqual(income(reader, state, wallet='88.99999999')['wallet_closure'], 'pending_income')
+
+
+class ReplacementFallback(TestCase):
+    def test_unprotected_position_with_a_failing_replacement_is_reduced_not_left_open(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(tmp)
+            run(Config('123', tmp, 1, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            for algo in venue.algos.values():
+                algo['algoStatus'] = 'CANCELED'
+            with State(tmp, SCOPE) as state:
+                protection = state.get('position_protection')
+                state.set('session_replacement', dict(protection, old_epoch=1, epoch=2))
+                state.set('position_protection', None)
+            before = len(venue.sent)
+            result = run(Config('123', tmp, 2, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            reductions = [p for _, _, p in venue.sent[before:] if p.get('reduceOnly') == 'true']
+            self.assertTrue(reductions)
+            self.assertEqual(venue.q, 0)
+            self.assertTrue(any('ownership' in e['reason'] for e in result['errors']), result['errors'])
+            self.assertEqual(result['cleanup'], 'verified')
+
+    def test_a_healthy_native_leg_keeps_the_block_without_reducing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(tmp)
+            run(Config('123', tmp, 1, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            with State(tmp, SCOPE) as state:
+                protection = state.get('position_protection')
+                state.set('session_replacement', dict(protection, old_epoch=1, epoch=2))
+            before = len(venue.sent)
+            run(Config('123', tmp, 2, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            self.assertFalse([p for _, _, p in venue.sent[before:] if p.get('reduceOnly') == 'true'])
+            self.assertGreater(venue.q, 0)

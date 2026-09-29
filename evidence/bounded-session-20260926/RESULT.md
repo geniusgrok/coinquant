@@ -59,3 +59,8 @@ Demo 可以验证部分 API 语义，但不能替代生产撮合/流动性和资
 - https://developers.binance.com/docs/derivatives/usds-margined-futures/general-info （未知执行结果、429/418限制、Demo 端点）
 - 2026-09-28 复核引用：逐仓保证金调整响应与 `/fapi/v1/positionMargin/history`（交易接口文档），成交历史约3个月保留期（更新日志）
 - 2026-09-28 复审引用：general-info 的 HTTP 503 三类失败消息与 -1008；查询订单接口对已撤/过期无成交订单的 3 天保留；`userTrades` 不带时间/ID 时只返回最近七天
+
+## 2026-09-29 审查修复后的离线覆盖
+
+以下均为离线夹具下的调用链测试（`tests/test_audit_fixes.py`、`tests/test_binance_replace.py`、`tests/test_ownership.py`、`tests/test_state.py`、`tests/test_rebuild_safety.py`），不是原生验收：新入场/补单资金流水放行门（绑定当次钱包值）、局部成交下保护替换（旧腿成交保留健康新腿、新腿耗尽换代、无法解释保持未知、失败后授权减仓）、保证金划转回答丢失不重发、止盈拒绝后不留单腿仓、`status` 时钟对齐失败零签名请求、SIGINT/SIGTERM 首次中断后收尾不再被打断、观察预算耗尽与 `execution_unresolved`、429/418/503 与迟到响应的未知分类、状态库版本备份与观察归档。原生上仍未验证的项目与上表相同。
+

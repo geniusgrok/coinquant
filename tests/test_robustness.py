@@ -1,5 +1,4 @@
 """Research knobs and blocks for the overfitting audit; defaults must not change."""
-import json
 import math
 import tempfile
 from decimal import Decimal as D

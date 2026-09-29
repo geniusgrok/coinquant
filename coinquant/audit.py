@@ -3,6 +3,8 @@ import json
 
 from .types import Blocked, Unknown, number
 
+NATIVE_UNIT=number('0.00000001')
+
 
 def income(reader,state,*,force=False,wallet=None):
     now=int(reader.clock()*1000)
@@ -73,7 +75,8 @@ def _wallet_closure(state, wallet, now):
         state.set('wallet_anchor', {'wallet':str(wallet),'income':str(total),'through':now})
         return 'anchored'
     gap=(wallet-number(anchor['wallet']))-(total-number(anchor['income']))
-    if gap==0:
+    # Binance reports USDT to 1e-8; a smaller residue is arithmetic, not a cashflow.
+    if abs(gap)<NATIVE_UNIT:
         state.set('wallet_anchor', {'wallet':str(wallet),'income':str(total),'through':now})
         return 'explained'
     # Income can be published after the wallet already moved. One quiet minute
