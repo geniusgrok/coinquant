@@ -901,6 +901,449 @@
         }
       ],
       "outcome": "The expected identity did not hold. Fewer reads per entry leave more of the local 2200/min request-weight reserve, so top-up previews that M6 refused for capacity now run: 28 of 795 sessions differ, 23 only in preview counts and 5 in top-up fills (first: 2023-10-17, order 164 adds on an earlier poll with a larger print-bounded fill). P7 CNY 5228630, CAGR 153.86%, MDD envelope 44.73% (P6 5230718, 153.87%, 44.73%); both targets met on the base; fee, slippage and depth stresses stay below 150%. Not an out-of-sample proof; native execution not verified."
+    },
+    {
+      "round": "O0",
+      "registered": "2026-09-29",
+      "hypothesis": "A regression check found that the current code no longer reproduces P7. Vary only the local request-weight limit to size the noise this read-budget path adds to the headline number; used as the adoption noise floor for O1.",
+      "model": "PRIMARY_RISK 7.5, --mark-gap bound, current code",
+      "trials": [
+        {
+          "name": "O0-w2000",
+          "args": [
+            "--knob",
+            "weight_limit=2000"
+          ],
+          "stress": "read budget only",
+          "result": {
+            "final_cny": "1158668",
+            "cost_net_cagr_percent": "102.86",
+            "continuous_mdd_envelope_percent": "50.14",
+            "result_sha256": "625aeceef9dd328355eb105e60c1fefdf430400a9fef652b004fbd6ae29cac19"
+          }
+        },
+        {
+          "name": "O0-w2100",
+          "args": [
+            "--knob",
+            "weight_limit=2100"
+          ],
+          "stress": "read budget only",
+          "result": {
+            "final_cny": "3333279",
+            "cost_net_cagr_percent": "137.41",
+            "continuous_mdd_envelope_percent": "50.14",
+            "result_sha256": "bc72fd284b33bc3bb7f8924a630dd26473b21660edf9dc4af434845429f08b20"
+          }
+        },
+        {
+          "name": "O0-w2300",
+          "args": [
+            "--knob",
+            "weight_limit=2300"
+          ],
+          "stress": "read budget only",
+          "result": {
+            "final_cny": "3308245",
+            "cost_net_cagr_percent": "137.14",
+            "continuous_mdd_envelope_percent": "50.14",
+            "result_sha256": "aae94e5004af22d4f81803d9785a8233b071545b7933a6483641534cd83342ba"
+          }
+        },
+        {
+          "name": "O0-w2400",
+          "args": [
+            "--knob",
+            "weight_limit=2400"
+          ],
+          "stress": "read budget only",
+          "result": {
+            "final_cny": "1162156",
+            "cost_net_cagr_percent": "102.95",
+            "continuous_mdd_envelope_percent": "50.14",
+            "result_sha256": "1ff98fdb226248cafde076326a58b16374cf3abb03f6db0c993c08882d5bc62d"
+          }
+        }
+      ],
+      "outcome": "Final CNY 1.16M to 3.39M across weight limits 2000-2400 with identical MDD 50.14%; noise floor 1.173 per year."
+    },
+    {
+      "round": "O1",
+      "registered": "2026-09-29",
+      "hypothesis": "Single-parameter neighbours of the default model, blocks by calendar year, adoption and risk rules fixed in research/redesign-PROTOCOL.md before the measurement.",
+      "model": "base plus 17 neighbours; final configuration PRIMARY_RISK 6",
+      "trials": [
+        {
+          "name": "base",
+          "args": [],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "3391332",
+            "cost_net_cagr_percent": "138.02",
+            "continuous_mdd_envelope_percent": "50.14",
+            "result_sha256": "8b2d36b59eca0d98b8990ea270046be3ce117de03f25dbe6a3f4b4e1a378cf86"
+          }
+        },
+        {
+          "name": "imp2.5",
+          "args": [
+            "--knob",
+            "impulse_atr=2.5"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "234346",
+            "cost_net_cagr_percent": "59.91",
+            "continuous_mdd_envelope_percent": "87.04",
+            "result_sha256": "170e41d27d1a521917d98da5360869b20eb5ce6c1c19ef41b8e4a24a8c694fa5"
+          }
+        },
+        {
+          "name": "imp3.5",
+          "args": [
+            "--knob",
+            "impulse_atr=3.5"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "770008",
+            "cost_net_cagr_percent": "90.89",
+            "continuous_mdd_envelope_percent": "44.53",
+            "result_sha256": "6a4c3cabf6dae922d8ca1acab4375e9264086d3c2b11d3cee13c73729abca06e"
+          }
+        },
+        {
+          "name": "atr10",
+          "args": [
+            "--knob",
+            "atr_bars=10"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "773150",
+            "cost_net_cagr_percent": "91.00",
+            "continuous_mdd_envelope_percent": "53.69",
+            "result_sha256": "ddc2aa05967ec773e20f7d55cc19bbb90769e3e029aa67df81db13a26ef41de1"
+          }
+        },
+        {
+          "name": "atr20",
+          "args": [
+            "--knob",
+            "atr_bars=20"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "760189",
+            "cost_net_cagr_percent": "90.52",
+            "continuous_mdd_envelope_percent": "56.94",
+            "result_sha256": "4cfdf93ef80af95c27a1a42c664c401d3fdec7b81c9f8c38f82ffab1dcc06731"
+          }
+        },
+        {
+          "name": "life28",
+          "args": [
+            "--knob",
+            "life_bars=28"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "98143",
+            "cost_net_cagr_percent": "40.48",
+            "continuous_mdd_envelope_percent": "48.31",
+            "result_sha256": "13fa73634a16635a205dcda5f49d269ea45ea192989bec1a5a4afb37a0fe5e2d"
+          }
+        },
+        {
+          "name": "life56",
+          "args": [
+            "--knob",
+            "life_bars=56"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "1119157",
+            "cost_net_cagr_percent": "101.81",
+            "continuous_mdd_envelope_percent": "49.28",
+            "result_sha256": "44fd4ebd07dc1669203e944cb425e1b0c241a296f29a6e242f3bb9f944e62e80"
+          }
+        },
+        {
+          "name": "ret0.4",
+          "args": [
+            "--knob",
+            "retrace=0.4"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "948923",
+            "cost_net_cagr_percent": "96.92",
+            "continuous_mdd_envelope_percent": "54.08",
+            "result_sha256": "2f2f3ae3a81d8035d8cb855dc6223f873b2f75bfdc1c22814dd40153f3bb4c3c"
+          }
+        },
+        {
+          "name": "ret0.6",
+          "args": [
+            "--knob",
+            "retrace=0.6"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "4158307",
+            "cost_net_cagr_percent": "145.35",
+            "continuous_mdd_envelope_percent": "47.61",
+            "result_sha256": "274331a35446d58cb8a08c007998c21da255e08e93a37126d17b7a3f65770d8c"
+          }
+        },
+        {
+          "name": "take10",
+          "args": [
+            "--knob",
+            "take_power=10"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "276227",
+            "cost_net_cagr_percent": "63.87",
+            "continuous_mdd_envelope_percent": "44.86",
+            "result_sha256": "cc216c8464069bb0dffa974be2161c2464fb90389260c27e73696e42e9a64a5b"
+          }
+        },
+        {
+          "name": "take40",
+          "args": [
+            "--knob",
+            "take_power=40"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "5463296",
+            "cost_net_cagr_percent": "155.52",
+            "continuous_mdd_envelope_percent": "44.76",
+            "result_sha256": "53a78bfacb7cf24e7c0ea7c897bb726cc367c052eb43a98c902305355bb53898"
+          }
+        },
+        {
+          "name": "dfii0.15",
+          "args": [
+            "--knob",
+            "dfii_drop=0.15"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "6565610",
+            "cost_net_cagr_percent": "162.61",
+            "continuous_mdd_envelope_percent": "41.95",
+            "result_sha256": "ca84171a68d345be827be83201c66f944c40d363c0a3033c4ead0dcd014375b1"
+          }
+        },
+        {
+          "name": "dfii0.35",
+          "args": [
+            "--knob",
+            "dfii_drop=0.35"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "5580922",
+            "cost_net_cagr_percent": "156.33",
+            "continuous_mdd_envelope_percent": "44.97",
+            "result_sha256": "4408d84b41d42def5f52fa1bc78205d60f9dafe709c93e8e67b222c7d75a8bae"
+          }
+        },
+        {
+          "name": "macro0",
+          "args": [
+            "--knob",
+            "macro_risk=0.001"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "5221245",
+            "cost_net_cagr_percent": "153.81",
+            "continuous_mdd_envelope_percent": "44.98",
+            "result_sha256": "ac278923470975885aa3fe4c6b6e9936428e4a7db4ba70faef41d9d95763f81e"
+          }
+        },
+        {
+          "name": "macro1.8",
+          "args": [
+            "--knob",
+            "macro_risk=1.8"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "3391332",
+            "cost_net_cagr_percent": "138.02",
+            "continuous_mdd_envelope_percent": "50.14",
+            "result_sha256": "80ccf0a3dfe4d39ef32a64137ce2fe3a06fd627cc940cf2dc4f74ca32d0c1d10"
+          }
+        },
+        {
+          "name": "risk3.6",
+          "args": [
+            "--knob",
+            "primary_risk=3.6"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "215005",
+            "cost_net_cagr_percent": "57.88",
+            "continuous_mdd_envelope_percent": "32.02",
+            "result_sha256": "ae4dc12ae0c80135233cf3b8372fda294997fe654d3ab02209ef9cb28c1951e3"
+          }
+        },
+        {
+          "name": "risk5",
+          "args": [
+            "--knob",
+            "primary_risk=5"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "773169",
+            "cost_net_cagr_percent": "91.00",
+            "continuous_mdd_envelope_percent": "39.90",
+            "result_sha256": "cf1cd8d7e1442bdacf39b875e5797107db12b3fb1e462e2f6f4af89d14502bf7"
+          }
+        },
+        {
+          "name": "risk6",
+          "args": [
+            "--knob",
+            "primary_risk=6"
+          ],
+          "stress": "full window plus seven calendar-year blocks",
+          "result": {
+            "final_cny": "923954",
+            "cost_net_cagr_percent": "96.14",
+            "continuous_mdd_envelope_percent": "37.51",
+            "result_sha256": "a813f2181afe6db4e9a0907abc0d3a4e3868e49b0d0d7e409908f7749863a596"
+          }
+        }
+      ],
+      "outcome": "No single-parameter change passed the adoption rule; primary risk lowered 7.5 to 6 by the drawdown-buffer rule. Final O1: CNY 923,954, CAGR 96.14%, MDD 37.51%; CAGR target not met. See evidence/robustness-20260929/RESULT.md."
+    },
+    {
+      "round": "O1-final",
+      "registered": "2026-09-29",
+      "hypothesis": "Rule 6: stresses on the final configuration, originals kept in evidence.",
+      "model": "PRIMARY_RISK 6 (default)",
+      "trials": [
+        {
+          "name": "O1",
+          "args": [],
+          "stress": "default reproduction",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/O1.json",
+            "final_cny": "923954",
+            "cost_net_cagr_percent": "96.14",
+            "continuous_mdd_envelope_percent": "37.51"
+          }
+        },
+        {
+          "name": "O1-fee150",
+          "args": [
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/O1-fee150.json",
+            "final_cny": "893609",
+            "cost_net_cagr_percent": "95.16",
+            "continuous_mdd_envelope_percent": "41.89"
+          }
+        },
+        {
+          "name": "O1-slip2",
+          "args": [
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/O1-slip2.json",
+            "final_cny": "916568",
+            "cost_net_cagr_percent": "95.90",
+            "continuous_mdd_envelope_percent": "41.96"
+          }
+        },
+        {
+          "name": "O1-part10",
+          "args": [
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/O1-part10.json",
+            "final_cny": "923773",
+            "cost_net_cagr_percent": "96.13",
+            "continuous_mdd_envelope_percent": "37.51"
+          }
+        },
+        {
+          "name": "O1-skip",
+          "args": [
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "random 20% session skip",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/O1-skip.json",
+            "final_cny": "506470",
+            "cost_net_cagr_percent": "79.35",
+            "continuous_mdd_envelope_percent": "42.97"
+          }
+        },
+        {
+          "name": "O1-absence",
+          "args": [
+            "--sequence",
+            "absence"
+          ],
+          "stress": "absence sequence",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/O1-absence.json",
+            "final_cny": "923954",
+            "cost_net_cagr_percent": "96.14",
+            "continuous_mdd_envelope_percent": "37.51"
+          }
+        },
+        {
+          "name": "O1-block",
+          "args": [
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "21-day absence",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/O1-block.json",
+            "final_cny": "923954",
+            "cost_net_cagr_percent": "96.14",
+            "continuous_mdd_envelope_percent": "37.51"
+          }
+        },
+        {
+          "name": "O1-r75",
+          "args": [
+            "--primary-risk",
+            "7.5"
+          ],
+          "stress": "control at the previous default",
+          "result": {
+            "evidence": "evidence/rebuild-20260927/O1-r75.json",
+            "final_cny": "3391332",
+            "cost_net_cagr_percent": "138.02",
+            "continuous_mdd_envelope_percent": "50.14"
+          }
+        }
+      ],
+      "outcome": "Base MDD below 50% and CAGR below 150%; stresses within about one point of the base except the random skip."
     }
   ]
 }

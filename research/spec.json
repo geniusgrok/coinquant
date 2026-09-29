@@ -52,20 +52,74 @@
   "account_evidence": "one continuous account including unattended exposure; observation gaps cannot be interpolated into complete MDD",
   "economic_qualification": "NOT_MET",
   "current_session_replay": {
-    "meter": "M7 (research/redesign-PROTOCOL.md)",
+    "meter": "M7 (research/redesign-PROTOCOL.md), knobs and blocks from O1",
     "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
     "scope": "production session.run and Lifecycle on SessionExchange; not a historical order book; native execution not verified",
     "accepted_basis": {
       "decided_by": "account owner, 2026-09-28",
       "decision": "The 29 missing official mark minutes on 2020-01-19 are bounded by the measured mark/trade divergence; a protection trigger inside the gap is judged negligible. This is an owner acceptance of a hindsight bound, not a complete historical path.",
-      "default_trial": "P7 (PRIMARY_RISK 7.5, --mark-gap bound default); MDD identical to M6 P6, final value 0.04% lower because fewer reads free request weight for top-ups; source git a6892b3 recorded in the original",
+      "default_trial": "O1 (PRIMARY_RISK 6 by the O1 buffer rule, --mark-gap bound default); source recorded in each original",
+      "result": {
+        "evidence": "evidence/rebuild-20260927/O1.json",
+        "final_cny": "923954",
+        "cost_net_cagr_percent": "96.14",
+        "continuous_mdd_envelope_percent": "37.51"
+      },
+      "path_complete": false,
+      "stresses": {
+        "fee150": {
+          "evidence": "evidence/rebuild-20260927/O1-fee150.json",
+          "final_cny": "893609",
+          "cost_net_cagr_percent": "95.16",
+          "continuous_mdd_envelope_percent": "41.89"
+        },
+        "slip2": {
+          "evidence": "evidence/rebuild-20260927/O1-slip2.json",
+          "final_cny": "916568",
+          "cost_net_cagr_percent": "95.90",
+          "continuous_mdd_envelope_percent": "41.96"
+        },
+        "part10": {
+          "evidence": "evidence/rebuild-20260927/O1-part10.json",
+          "final_cny": "923773",
+          "cost_net_cagr_percent": "96.13",
+          "continuous_mdd_envelope_percent": "37.51"
+        },
+        "skip": {
+          "evidence": "evidence/rebuild-20260927/O1-skip.json",
+          "final_cny": "506470",
+          "cost_net_cagr_percent": "79.35",
+          "continuous_mdd_envelope_percent": "42.97"
+        },
+        "absence": {
+          "evidence": "evidence/rebuild-20260927/O1-absence.json",
+          "final_cny": "923954",
+          "cost_net_cagr_percent": "96.14",
+          "continuous_mdd_envelope_percent": "37.51"
+        },
+        "block": {
+          "evidence": "evidence/rebuild-20260927/O1-block.json",
+          "final_cny": "923954",
+          "cost_net_cagr_percent": "96.14",
+          "continuous_mdd_envelope_percent": "37.51"
+        }
+      },
+      "targets_met_base": false,
+      "targets_met_all_stresses": false,
+      "mark_gap_policy": "bound",
+      "meter": "M7 (research/redesign-PROTOCOL.md), knobs and blocks from O1"
+    },
+    "reproduce": "python -m research.rebuild O1  (defaults: frozen primary schedule, --mark-gap bound, fee 0.00075, trigger slippage 0.001, market slippage 0.0005, participation 0.25, primary risk 6)",
+    "valuation": "CNY value from FRED DEXCHUS applied from 17:00 UTC of each observation date: an ex-post valuation (H.10 is published weekly), never a decision input; USDT at USD par; 0.1% conversion each way",
+    "superseded_measurement": {
+      "trial": "P7",
+      "source_git": "a6892b3",
       "result": {
         "evidence": "evidence/rebuild-20260927/P7.json",
         "final_cny": "5228630",
         "cost_net_cagr_percent": "153.86",
         "continuous_mdd_envelope_percent": "44.73"
       },
-      "path_complete": false,
       "stresses": {
         "fee150": {
           "evidence": "evidence/rebuild-20260927/M7-fee150.json",
@@ -104,14 +158,9 @@
           "continuous_mdd_envelope_percent": "44.73"
         }
       },
-      "targets_met_base": true,
-      "targets_met_all_stresses": false,
-      "mark_gap_policy": "bound",
-      "meter": "M7 (research/redesign-PROTOCOL.md)"
-    },
-    "reproduce": "python -m research.rebuild P7  (defaults: frozen primary schedule, --mark-gap bound, fee 0.00075, trigger slippage 0.001, market slippage 0.0005, participation 0.25)",
-    "valuation": "CNY value from FRED DEXCHUS applied from 17:00 UTC of each observation date: an ex-post valuation (H.10 is published weekly), never a decision input; USDT at USD par; 0.1% conversion each way"
+      "why": "Production fixes after 883d16a change the local request-weight use; the same default trial then measures 0.9-3.4 million CNY instead of 5.23 million (research/redesign-PROTOCOL.md, O0). P7 no longer describes the current code."
+    }
   },
   "native_qualification": "NOT_QUALIFIED",
-  "economic_status": "base meets both targets under the owner-accepted mark-gap bound (path_complete=false); fee, slippage and depth stresses fall below 150% CAGR; economic_qualification stays NOT_MET"
+  "economic_status": "base MDD below 50% but CAGR 96.14% is below the 150% target under the owner-accepted mark-gap bound (path_complete=false); no risk multiple was found that meets both targets on the current code without a parameter peak (evidence/robustness-20260929/RESULT.md); economic_qualification stays NOT_MET"
 }

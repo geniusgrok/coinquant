@@ -66,7 +66,7 @@ python -m coinquant status --config live-trial.json
 
 `CLI → session → Campaign/资金预检 → Lifecycle → Binance → 持久化意图与原生回读`。
 
-- 默认模型为 **SX60＋DFII10**：4小时 impulse-hold 多头主信号使用7.5风险尺度（`coinquant.campaign.PRIMARY_RISK`）；账户空仓且主信号无可执行多头机会时，DFII10 最近值较此前第20个观测下降至少0.25个百分点，才允许3.6尺度的补充多头，母单止损风险另限账户权益3%。一份账户、一条执行路径，无候选开关。默认模型只取方向为正的主信号，不产生空头入场；账户与保护层的卖出方向有代码和单测，但默认模型下没有端到端开空路径，“多空都能新开仓”尚未满足。
+- 默认模型为 **SX60＋DFII10**：4小时 impulse-hold 多头主信号使用6风险尺度（`coinquant.campaign.PRIMARY_RISK`，O1 过拟合审计后由7.5下调）；账户空仓且主信号无可执行多头机会时，DFII10 最近值较此前第20个观测下降至少0.25个百分点，才允许3.6尺度的补充多头，母单止损风险另限账户权益3%。一份账户、一条执行路径，无候选开关。默认模型只取方向为正的主信号，不产生空头入场；账户与保护层的卖出方向有代码和单测，但默认模型下没有端到端开空路径，“多空都能新开仓”尚未满足。
 - DFII10 从公开 ALFRED 历史版本获取；只读美东版本日期日终再延迟48小时已可见的值。最近观测超过七个 UTC 日历日或不足21个观测时不触发宏观入场；只在能改变决定时读取（宏观仓，或空仓且没有未消费的主信号多头）；此时来源不可确认则本轮决策为未知、不增加风险，主信号出场与保护维护不依赖它。公共数据读取不需要交易凭据以外的新密钥。冷启动不把已经持续的宏观状态或已在进行的主信号当作新信号，也不从价格重建成交归属；检查点版本不符时停止，不用短历史重启。
 - 逐轮核对普通订单、条件订单、成交、持仓、钱包和实际保护。保护必须属于本账户持久化意图，并与当前计划一致；外部或被改动的保护不能充当安全证明。状态不明不增加风险，不把请求回执当成交。
 - 入场使用有价格上限/下限的限价IOC；未成交时下一轮按新状态重新定价。已有自有普通挂单先撤销并核对终态，随后才可能重新挂单；不会盲目修改未明订单。条件入场与外部订单不在可管理范围，发现后停止新风险并报告。
@@ -84,12 +84,12 @@ python -m coinquant status --config live-trial.json
 ```sh
 python -m unittest discover -s tests -v
 python -m research.session_replay TAPE.json --state-dir NEW_REPLAY_DIRECTORY
-python -m research.rebuild P7
+python -m research.rebuild O1
 ```
 
 接口事件回放使用**同一个生产会话、决策和执行器**，在每个请求精确匹配后才释放对应响应。它验证调用时序与状态恢复，不是CAGR/MDD账户或历史成交模拟。测试不访问交易账户；CI只有一个Python 3.13离线任务、10分钟上限。
 
-经济测量器 `research.rebuild` 也在 `research.session_exchange.SessionExchange` 上运行同一个 `session.run` 与 `Lifecycle`，按冻结的795个会话起点（`research/session_schedule.json`）从2020-01-01跑完整账户。输入为 Binance 官方 4h/1m 成交与标记价、逐笔成交（aggTrades）、资金费，FRED DEXCHUS 汇率与 ALFRED DFII10；成交量取请求到达后1秒内的逐笔成交上界，不是历史订单簿。口径、各轮修正与压力设置见 `research/redesign-PROTOCOL.md`，结果原件在 `evidence/rebuild-20260927/`。
+经济测量器 `research.rebuild` 也在 `research.session_exchange.SessionExchange` 上运行同一个 `session.run` 与 `Lifecycle`，按冻结的795个会话起点（`research/session_schedule.json`）从2020-01-01跑完整账户。输入为 Binance 官方 4h/1m 成交与标记价、逐笔成交（aggTrades）、资金费，FRED DEXCHUS 汇率与 ALFRED DFII10；成交量取请求到达后1秒内的逐笔成交上界，不是历史订单簿。口径、各轮修正与压力设置见 `research/redesign-PROTOCOL.md`，结果原件在 `evidence/rebuild-20260927/`；过拟合审计在 `research/robustness.py`（`python -m research.robustness run|report`），结果见 `evidence/robustness-20260929/RESULT.md`。
 
 Binance 月度/日度 vision 文件由 `python -m research.session_market --root /data/coinquant-market` 下载并按官方校验和核对；逐日 aggTrades 原件放在 `/data/coinquant-prints`（官方文件名与 `.CHECKSUM`），两者都不入库。DEXCHUS、ALFRED DFII10 原件、2019年12月预热行情与合约规则随仓库提交，加载时按记录的 SHA-256 校验。
 
@@ -101,22 +101,24 @@ Binance 月度/日度 vision 文件由 `python -m research.session_market --root
 
 经济目标：2020-01-01 00:00 UTC至2026-09-20 00:00 UTC，右端不含；人民币10,000元、不追加；成本后CAGR≥150%、完整连续账户MDD<50%，纳入会话时序、费用、滑点、资金费、保证金、强平及人民币/USDT估值。
 
-当前有限会话测量（测量器 M7，默认风险7.5；每份原件记录源码提交、输入文件摘要、资金费流水与每日权益）：
+当前有限会话测量（测量器 M7，默认风险6；每份原件记录源码提交、输入文件摘要、资金费流水与每日权益）：
 
 | 场景 | 期末人民币 | 成本后 CAGR | 连续 MDD |
 |---|---|---|---|
-| 基准 `python -m research.rebuild P7` | 5,228,630 | 153.86% | 44.73% |
-| 手续费 +50% | 4,563,859 | 148.77% | 45.00% |
-| 出场滑点 ×2 | 4,629,101 | 149.30% | 45.09% |
-| 深度取用 10% | 4,475,825 | 148.05% | 44.73% |
-| 随机跳过 20% 会话 | 1,092,311 | 101.08% | 44.68% |
-| 缺席序列 / 21 天空窗 | 5,228,630 | 153.86% | 44.73% |
+| 基准 `python -m research.rebuild O1` | 923,954 | 96.14% | 37.51% |
+| 手续费 +50% | 893,609 | 95.16% | 41.89% |
+| 出场滑点 ×2 | 916,568 | 95.90% | 41.96% |
+| 深度取用 10% | 923,773 | 96.13% | 37.51% |
+| 随机跳过 20% 会话 | 506,470 | 79.35% | 42.97% |
+| 缺席序列 / 21 天空窗 | 923,954 | 96.14% | 37.51% |
 
-- 2020-01-19 13:09–13:37 UTC 缺29分钟官方标记价而账户持仓。上表按账户所有者2026-09-28接受的实测偏离边界计算，不是完整历史路径（`path_complete=false`）；按逐仓保证金全部没收的上限，所有风险倍数 MDD 都超过50%（M2 测量，原件在 Git 历史）。
-- 基准两项达标；成本、滑点、深度三项压力 CAGR 略低于150%，随机跳过会话显著降低收益。参数在同一全历史窗口中选定，没有样本外或前向证据。
+- MDD 达标，CAGR 未达150%：`economic_qualification` 为 `NOT_MET`。
+- 历史 P7（¥5,228,630／153.86%／MDD 44.73%）只对应源码 `a6892b3`，不再描述当前代码：此后的生产修复改变了本地请求权重使用，同一默认参数在当前代码上测得¥0.9–3.4M（`evidence/robustness-20260929/RESULT.md` 的 O0）。当前代码风险7.5为¥3,391,332／138.0%／MDD 50.14%，因此默认风险按登记规则降到6。
+- 过拟合审计：脉冲倍数、ATR 窗口、持有根数、止损回撤、止盈次幂各向两侧挪一档，全窗口 CAGR 降到40–102%（中位约91%），模型常数在尖峰上；没有单参数改动通过采纳规则。收益集中于2020与2023年，风险6去掉最好3个月后 CAGR 为38%，2024–2026三年为 +44%、+1%、−9%，滚动一年窗口65%低于150%。没有样本外或前向证据。
+- 2020-01-19 13:09–13:37 UTC 缺29分钟官方标记价而账户持仓。上表按账户所有者2026-09-28接受的实测偏离边界计算，不是完整历史路径（`path_complete=false`）；按逐仓保证金全部没收的上限，旧参数下所有风险倍数 MDD 都超过50%（M2 测量，原件在 Git 历史）。
 - 人民币估值用 FRED DEXCHUS 的事后观测（H.10 每周发布），USDT 按美元等值，兑换成本0.1%为假设；汇率只用于估值，不进入决策。
 - 开空能力、经济结果与原生交易资格分别报告：默认模型不开空；真实账户上的成交、保护替换、断线和迟到成交核对未做；受控试验入口不表示常规生产资格，资格为 `NOT_QUALIFIED`。
 
-详见 [经济重建结果](evidence/rebuild-20260927/RESULT.md)。原生工程资格和经济资格分别取得后才能启用生产。
+详见 [过拟合审计](evidence/robustness-20260929/RESULT.md) 与 [经济重建结果](evidence/rebuild-20260927/RESULT.md)。原生工程资格和经济资格分别取得后才能启用生产。
 
 当前恢复入口：`AGENTS.md`、`PROJECT_STATE.md`、`HANDOFF_PROMPT.md`。
