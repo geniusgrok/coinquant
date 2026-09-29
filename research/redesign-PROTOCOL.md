@@ -2,6 +2,57 @@
 
 版本说明：本文按当时的登记顺序保存，正文中的“当前源码”只指各轮测量时记录的源码。最近已完成的 M10 对应经济源码摘要 `6504a24b18932e0d3dd3bfc5b73fc77dae89da546c069e4753e200bc3ec380f0`；M9 对应更早的 `ae7b3fd8…`。现行数字见文末 M10 与 `PROJECT_STATE.md`。
 
+## 行情输入恢复
+
+这些目录在云端机器的磁盘上，不在 Git 仓库里。容器换新、按旧快照重开，或只执行 `.cursor/install.sh`，都不会把它们带回来。`install.sh` 只安装 Python。下面是丢失后的恢复办法。缓存可以删掉再生成；原始压缩包要以官方校验和为准。
+
+仓库里已经有、加载时按 SHA-256 核对的输入不用再下载：2019 年 12 月预热行情 `evidence/binance-boundary-20260921/warmup-trade.json` 与 `warmup-funding.json`，FRED DEXCHUS `evidence/rebuild-20260927/inputs/DEXCHUS.csv`，ALFRED DFII10 `evidence/real-yield-20260924/alfred/`，合约规则 `evidence/bounded-session-20260926/public/rules.json`。
+
+### K 线、标记价和资金费
+
+`research.session_market.fetch` 从 `https://data.binance.vision/data/futures/um` 下载并写成下面的目录。月度文件覆盖 2020-01 至 2026-08：4 小时和 1 分钟成交 K 线、1 分钟标记价、资金费。2026-09-01 至 2026-09-19 另有日度 4 小时、1 分钟成交和 1 分钟标记价。每个压缩包旁边有官方 `.CHECKSUM`。已存在且校验通过的文件会跳过。缺文件时命令以非零状态退出，并在目标目录写 `FETCH.json`。
+
+```sh
+python -m research.session_market --root /data/coinquant-market
+```
+
+成功时打印四小时根数和资金费覆盖。`load_base` 会拒绝缺四小时柱或资金费月文件的目录。1 分钟文件在用到时才读；对应月份的压缩包不在，该分钟就是缺失。
+
+### 逐日成交
+
+测量器不下载 aggTrades。文件名是 `BTCUSDT-aggTrades-YYYY-MM-DD.zip`，放在打印目录的根上，旁边是官方 `.CHECKSUM`（第一段为 SHA-256）。官方地址是：
+
+`https://data.binance.vision/data/futures/um/daily/aggTrades/BTCUSDT/BTCUSDT-aggTrades-YYYY-MM-DD.zip`
+
+窗口是 2020-01-01 至 2026-09-20（右端不含），所以日期到 2026-09-19。某个自然日官方没有这个文件时，不要做空包冒充。缺文件和空文件不是一回事：成交窗口碰到缺文件时，该次限价单记为零成交，并把路径标成未知。2023-12-30、2023-12-31、2024-01-01 在已发布的测量里就没有这三天的官方文件。
+
+M10 使用的是当时磁盘上的 768 个压缩包，不是每一天都有。每个结果的 `market_identity.loaded_print_files` 记录了实际打开过的文件名和 SHA-256。要复现那一次测量，就恢复这份清单里的文件。把当时没有的日期补下载下来，会变成另一份输入，不能再叫 M10。
+
+一个日子可以这样取，并和官方校验和对照：
+
+```sh
+day=2020-01-01
+base=https://data.binance.vision/data/futures/um/daily/aggTrades/BTCUSDT
+dir=/data/coinquant-prints
+mkdir -p "$dir"
+curl -fsSL --retry 4 --retry-delay 2 -o "$dir/BTCUSDT-aggTrades-$day.zip" "$base/BTCUSDT-aggTrades-$day.zip"
+curl -fsSL --retry 4 --retry-delay 2 -o "$dir/BTCUSDT-aggTrades-$day.zip.CHECKSUM" "$base/BTCUSDT-aggTrades-$day.zip.CHECKSUM"
+```
+
+### 成交缓存
+
+`TradePrints` 把一天的压缩包展开成整数列，写到打印目录的同级目录：`/data/coinquant-prints` 的缓存是 `/data/coinquant-prints-cache/<原文件名>.<sha256>.bin`。第一次读到该日就生成。缓存可以整目录删除，下次读取会按压缩包和校验和重写。不要把缓存当成原始输入，也不要在压缩包更换后留着旧缓存；文件名里的 SHA-256 对不上就不会被读取。
+
+`/data/coinquant-cache` 里的 `.npy` 文件当前代码不读取，丢了不用恢复。
+
+### 恢复后先确认能加载
+
+```sh
+python -m research.rebuild SMOKE --limit 1 --market /data/coinquant-market --prints /data/coinquant-prints --out /tmp/coinquant-partial
+```
+
+`--limit 1` 只跑第一个冻结会话，用来确认文件和执行链。它不是完整账户结果。完整测量仍用 `research/redesign-PROTOCOL.md` 里已登记的试验名和 `--out`，不要覆盖旧原件。
+
 本文件在每一轮正式测量之前登记，按时间顺序追加，后节取代前节；现行口径为最后的测量器 M7 与 M2S 起的所有者缺口决定，下文“M1”“晋升规则”等早期条目保留登记时原文。机器可读试验清单在 `research/redesign-trials.json`。`evidence/rebuild-20260927/` 只保留当前 P7 与 M7 压力原件；M6 原件在 Git 历史 `7c9b2b7`，更早试验原件在 `3e9a696` 及以前。
 
 ## 固定不变

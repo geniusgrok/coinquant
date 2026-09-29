@@ -85,7 +85,7 @@ MDD 达标，CAGR 未达150%目标；`economic_qualification` 为 `NOT_MET`。�
 
 ## 数据
 
-行情 vision 文件在 `/data/coinquant-market`（`python -m research.session_market --root ...` 下载并校验），逐日 aggTrades 在 `/data/coinquant-prints`，缓存在 `/data/coinquant-prints-cache`；三者不入库。DEXCHUS、ALFRED DFII10、2019年12月预热行情、合约规则随仓库提交并按 SHA-256 校验。
+行情 vision 文件在 `/data/coinquant-market`（`python -m research.session_market --root ...` 下载并校验），逐日 aggTrades 在 `/data/coinquant-prints`，缓存在 `/data/coinquant-prints-cache`；三者不入库，只在当前机器磁盘上。丢失后的下载、校验和缓存重建写在 `research/redesign-PROTOCOL.md` 的「行情输入恢复」。DEXCHUS、ALFRED DFII10、2019年12月预热行情、合约规则随仓库提交并按 SHA-256 校验。
 
 ## 仓库
 

@@ -103,7 +103,7 @@ python -m research.rebuild MYTRIAL --out /tmp/mytrial   # 完整基准，约6分
 
 经济测量器 `research.rebuild` 也在 `research.session_exchange.SessionExchange` 上运行同一个 `session.run` 与 `Lifecycle`，按冻结的795个会话起点（`research/session_schedule.json`）从2020-01-01跑完整账户。输入为 Binance 官方 4h/1m 成交与标记价、逐笔成交（aggTrades）、资金费，FRED DEXCHUS 汇率与 ALFRED DFII10；成交量取请求到达后1秒内的逐笔成交上界，不是历史订单簿。口径、各轮修正与压力设置见 `research/redesign-PROTOCOL.md`，结果原件在 `evidence/rebuild-20260927/`；过拟合审计在 `research/robustness.py`（`python -m research.robustness run|report`），结果见 `evidence/robustness-20260929/RESULT.md`。
 
-Binance 月度/日度 vision 文件由 `python -m research.session_market --root /data/coinquant-market` 下载并按官方校验和核对；逐日 aggTrades 原件放在 `/data/coinquant-prints`（官方文件名与 `.CHECKSUM`），两者都不入库。DEXCHUS、ALFRED DFII10 原件、2019年12月预热行情与合约规则随仓库提交，加载时按记录的 SHA-256 校验。
+Binance 月度/日度 vision 文件由 `python -m research.session_market --root /data/coinquant-market` 下载并按官方校验和核对；逐日 aggTrades 从 `data.binance.vision` 放到 `/data/coinquant-prints`（官方文件名与 `.CHECKSUM`）。这两处和由它们生成的 `/data/coinquant-prints-cache` 都不入库，容器换新后需要按 [行情输入恢复](research/redesign-PROTOCOL.md) 重新下载。DEXCHUS、ALFRED DFII10 原件、2019年12月预热行情与合约规则随仓库提交，加载时按记录的 SHA-256 校验。
 
 当前验收契约是 `research/spec.json`。仓库只保留当前版本：旧 Bybit/反向合约实现、旧稀疏调用规格与抽签、历史候选研究脚本及其证据已于2026-09-28清理，需要时从 Git 历史（`3e9a696` 及以前）取回，它们不是当前结果。
 
