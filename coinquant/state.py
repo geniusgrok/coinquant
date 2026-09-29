@@ -233,6 +233,8 @@ class State:
         with self.db:
             self.db.execute('INSERT INTO observations(recorded_at,payload) VALUES (?,?)',
                             (time(),json.dumps(serial(value),sort_keys=True,allow_nan=False)))
+        # A session longer than the 10-minute window keeps its writer claim current.
+        self.set('writer_host', {'host': socket.gethostname(), 'pid': os.getpid(), 'at': time()})
         self._archive_observations()
         output = self.directory / 'latest.json'
         temporary = output.with_suffix('.tmp')

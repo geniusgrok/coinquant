@@ -61,7 +61,11 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
             result['entry_constraint']=engine.entry_constraint
     elif result['action']=='enter':
         result.update(entry_preview(reader,model,snapshot))
-    if audit is None:audit=income(reader,state)
+    if audit is None:
+        try:audit=income(reader,state)
+        except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError):
+            # Reporting must not discard this cycle's actions after a reduction or exit.
+            audit={'status':'unresolved'}
     return dict(status='executed' if execute and engine.actions else 'no_action' if execute else 'read_only',
                 actual=snapshot,model_preview=result,market_through=market['complete_through'],
                 actions=engine.actions,write_attempted=bool(engine.actions),income_audit=audit)
@@ -154,23 +158,35 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
             if execute:
                 # No new entry is permitted here. Native protection remains at process exit.
                 engine=Lifecycle(reader,state,config.account_uid,authorized=True)
-                try:
-                    reader.begin_cycle(FINISH_SECONDS)
-                    report['actual']=engine.finish()
-                    report['cleanup']='verified'
-                    report['observation_current']=True
-                except KeyboardInterrupt:
-                    report.update(status='unknown',cleanup='unresolved',reason='Interrupted again during cleanup; state is recoverable')
-                    report['observation_current']=False
-                    report.pop('actual',None)
-                    report.pop('model_preview',None)
-                except RECOVERABLE as exc:
-                    report.update(status='unknown',cleanup='unresolved',reason=_reason(exc,'Cleanup could not be verified'))
-                    report['errors']=(report['errors']+[dict(cycle=report['cycles'],phase='cleanup',
-                                                             error_type=type(exc).__name__,reason=report['reason'])])[-10:]
-                    report['observation_current']=False
-                    report.pop('actual',None)
-                    report.pop('model_preview',None)
+                for attempt in (1,2):
+                    try:
+                        try:
+                            reader.begin_cycle(FINISH_SECONDS)
+                        except RECOVERABLE as exc:
+                            # Signed reads align the clock again; a failed sample must not skip verification.
+                            report['errors']=(report['errors']+[dict(cycle=report['cycles'],phase='cleanup_clock',
+                                                                     error_type=type(exc).__name__,
+                                                                     reason=_reason(exc,'Clock alignment failed'))])[-10:]
+                        report['actual']=engine.finish()
+                        report['cleanup']='verified'
+                        report['observation_current']=True
+                        break
+                    except KeyboardInterrupt:
+                        # The first signal may have landed inside this cleanup; the handler ignores later ones.
+                        if attempt==1:
+                            continue
+                        report.update(status='unknown',cleanup='unresolved',reason='Interrupted again during cleanup; state is recoverable')
+                        report['observation_current']=False
+                        report.pop('actual',None)
+                        report.pop('model_preview',None)
+                    except RECOVERABLE as exc:
+                        report.update(status='unknown',cleanup='unresolved',reason=_reason(exc,'Cleanup could not be verified'))
+                        report['errors']=(report['errors']+[dict(cycle=report['cycles'],phase='cleanup',
+                                                                 error_type=type(exc).__name__,reason=report['reason'])])[-10:]
+                        report['observation_current']=False
+                        report.pop('actual',None)
+                        report.pop('model_preview',None)
+                        break
                 report['write_attempted'] |= bool(engine.actions)
                 if report['cleanup']=='verified':
                     try:report['income_audit']=income(reader,state,force=True)

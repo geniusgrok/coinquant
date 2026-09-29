@@ -1,5 +1,7 @@
 """Point-in-time ALFRED DFII10 input for the single promoted model."""
 import csv
+import zlib
+from http.client import HTTPException
 from datetime import date, datetime, time, timedelta, timezone
 from decimal import Decimal as D
 import os
@@ -153,6 +155,6 @@ class Source:
                      response_sha256=digest)
             self.cached=row;self.fetched_at=now;self.failed_at=None
             return row
-        except (OSError,ValueError,KeyError,IndexError,UnicodeError,BadZipFile) as exc:
+        except (OSError,ValueError,KeyError,IndexError,UnicodeError,BadZipFile,ArithmeticError,csv.Error,zlib.error,EOFError,HTTPException) as exc:
             self.failed_at=now
             raise Unknown('ALFRED point-in-time DFII10 unavailable') from exc

@@ -14,6 +14,8 @@ SEED = 'coinquant-session-stress-20260927'
 SKIP_RATIO = 0.2
 BLOCK_MS = 21 * 86_400_000
 PRIMARY_SHA256 = 'f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a'
+# The absence sequence is not derived from the primary one; its identity is pinned here.
+ABSENCE_SHA256 = '7e368f55152e59d5e42a1288201d318994bb9854ffcdb397188cc2df1c256f0c'
 
 
 def _unit(*parts):
@@ -40,6 +42,8 @@ def load():
         raise ValueError('primary session schedule changed')
     if (committed['session_seconds'], committed['poll_seconds'], committed['request_latency_ms']) != (300, 5, 1000):
         raise ValueError('session clock changed')
+    if _sha(committed['stress']['absence']['starts_ms']) != ABSENCE_SHA256:
+        raise ValueError('absence session schedule changed')
     stresses, first = derived(primary)
     if committed['stress']['block_21d']['first_ms'] != first:
         raise ValueError('block stress origin changed')

@@ -50,7 +50,7 @@ class SessionTests(TestCase):
         entries=[p for _,path,p in self.venue.sent if path.endswith('/order') and p.get('timeInForce')=='IOC']
         self.assertEqual(len(entries),1)
         self.assertGreater(self.venue.q,0)
-        self.assertTrue(any('income' in e['reason'].lower() or 'fixture income' in e['reason'] for e in r['errors']),r['errors'])
+        self.assertEqual(r['income_audit']['status'],'unresolved')
         with State(self.directory,'binance:BTCUSDT:live:123') as s:
             self.assertIsNotNone(s.get('position_protection'))
     def test_macro_entry_restart_and_false_state_reduce_same_owned_position(self):

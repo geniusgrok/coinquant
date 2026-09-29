@@ -126,14 +126,15 @@ class EvidenceProtection(Harness, TestCase):
 
             def failing(source, target):
                 calls.append(target)
-                if len(calls) == 2:
+                if len(calls) == 1:
                     raise OSError('interrupted')
                 return real(source, target)
             with patch('os.replace', failing):
                 with self.assertRaises(OSError):
                     self.call(tmp, overwrite=True)
-            survivors = [p.read_bytes() for p in official.iterdir() if p.suffix == '.json']
-            self.assertIn(original, survivors)
+            self.assertEqual((official / 'T.json').read_bytes(), original)
+            kept = [p for p in official.iterdir() if '.superseded-' in p.name]
+            self.assertTrue(all(p.read_bytes() == original for p in kept))
 
     def test_unresolved_count_uses_the_session_report_field(self):
         rows = [dict(execution_unresolved=False, observation_timeouts=2),

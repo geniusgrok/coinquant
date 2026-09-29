@@ -41,13 +41,16 @@ def evaluate(row):
 def select(table, grid=CANDIDATES, stress_ok=None):
     """Registered rule: hard MDD and buffer, plateau of neighbours, best mean test growth.
 
-    `stress_ok(risk)` is evaluated only for the finally chosen value; it returns None while
-    its stresses are still missing.
+    `stress_ok(risk)`, when given, must not return False for the chosen value: the first
+    ranked value whose stresses pass is taken. It returns None while stress runs are missing,
+    which does not veto (the stress rows are separate registered measurements).
     """
     entries = {risk: evaluate(table[name_of(risk)]) for risk in grid if name_of(risk) in table}
     plateau = {risk: entry['gate_ok'] and all(n in entries and entries[n]['gate_ok'] for n in neighbours(risk, grid))
                for risk, entry in entries.items()}
     ranked = sorted((risk for risk in entries if plateau[risk]), key=lambda risk: -entries[risk]['test_mean'])
+    if stress_ok is not None:
+        ranked = [risk for risk in ranked if stress_ok(risk) is not False]
     return dict(entries=entries, plateau=plateau, ranked=ranked, chosen=ranked[0] if ranked else '6')
 
 

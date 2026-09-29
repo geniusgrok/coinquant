@@ -140,6 +140,14 @@ class RiskSelectionTests(TestCase):
         self.assertEqual(result['ranked'], ['6.5', '6'])
         self.assertEqual(result['chosen'], '6.5')
 
+    def test_a_failing_stress_vetoes_the_chosen_value_but_missing_stress_does_not(self):
+        table = self.table({'6': (1.5, 0.30, 0.40), '6.5': (1.6, 0.40, 0.45),
+                            '7': (1.9, 0.44, 0.49), '7.5': (2.5, 0.46, 0.51)})
+        self.assertEqual(risk_select.select(table, stress_ok=lambda risk: None)['chosen'], '6.5')
+        self.assertEqual(risk_select.select(table, stress_ok=lambda risk: risk != '6.5')['chosen'], '6')
+        self.assertEqual(risk_select.select(table, stress_ok=lambda risk: False)['chosen'], '6')
+        self.assertEqual(risk_select.select(table, stress_ok=lambda risk: False)['ranked'], [])
+
     def test_isolated_point_is_a_spike_and_nothing_qualifying_keeps_six(self):
         table = self.table({'6': (1.5, 0.50, 0.40), '6.5': (1.6, 0.30, 0.40),
                             '7': (1.9, 0.50, 0.40), '7.5': (2.5, 0.30, 0.40)})

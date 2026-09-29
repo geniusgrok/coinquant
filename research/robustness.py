@@ -83,6 +83,15 @@ def job_command(candidate, block, knobs, uid):
     return name, command
 
 
+def _reusable(path):
+    """A scratch result is reused only when it was produced by the current sources."""
+    try:
+        recorded = json.loads(path.read_text(encoding='utf-8'))['source']['python_sources_sha256']
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
+    return recorded == rebuild.source_identity()['python_sources_sha256']
+
+
 def run_jobs(jobs, workers, knobs_of=CANDIDATES):
     SCRATCH.mkdir(parents=True, exist_ok=True)
     slots = Queue()
@@ -100,7 +109,7 @@ def run_jobs(jobs, workers, knobs_of=CANDIDATES):
             except Exception:
                 return
             name, command = job_command(candidate, block, knobs_of[candidate], 0)
-            if (SCRATCH / f'{name}.json').exists():
+            if _reusable(SCRATCH / f'{name}.json'):
                 continue
             uid = slots.get()
             try:

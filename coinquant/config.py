@@ -32,6 +32,9 @@ class Config:
                 or not self.account_uid.isdigit() or int(self.account_uid) <= 0
                 or not isinstance(self.state_dir, str) or not self.state_dir.strip()):
             raise Blocked('explicit Binance UID and persistent state_dir required')
+        if not Path(self.state_dir).expanduser().is_absolute():
+            # A relative directory would silently become a new empty state from another working directory.
+            raise Blocked('state_dir must be an absolute path (or start with ~)')
         if (type(self.session_seconds) is not int or not 1 <= self.session_seconds <= 86400
                 or type(self.poll_seconds) is not int or not 1 <= self.poll_seconds <= 60
                 or self.poll_seconds > self.session_seconds):

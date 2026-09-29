@@ -458,6 +458,7 @@ class Lifecycle:
                 # Only a position with no native full protection at all is
                 # reduced; a healthy leg or unresolved order keeps the block.
                 if not snapshot['native_full_position_protected'] and not snapshot['possible_entry_remainders']:
+                    self.reserve(REDUCE_SECONDS)
                     self.close(snapshot)
                 raise
         if not self.planned_protection(snapshot):
@@ -469,6 +470,7 @@ class Lifecycle:
                     protection['epoch'],protection['stop'],protection['take'],
                     instrument=self.instrument(),authorized=self.authorized)
             except (Blocked,Unknown):
+                self.reserve(REDUCE_SECONDS)
                 self.close(snapshot)
                 raise
         return snapshot
@@ -656,7 +658,8 @@ class Lifecycle:
                        timeInForce='IOC',quantity=plan['quantity_btc'],
                        price=plan['entry_estimate'],newClientOrderId=identity,newOrderRespType='RESULT')
         self.state.prepare(identity,'binance_order',payload,campaign=fill['campaign'],position_snapshot=fresh,
-                           result={'prepared_at_ms':int(self.reader.clock()*1000)})
+                           result={'prepared_at_ms':int(self.reader.clock()*1000),
+                                   'position_before_btc':str(fresh['quantity_btc'])})
         safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
         return self.recover_exposure(snapshot)

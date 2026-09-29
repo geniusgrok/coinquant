@@ -153,8 +153,10 @@ def main(argv=None):
         report=dict(status='unknown',reason='Interrupted before or outside the bounded session; reconcile before any new action')
     except (Blocked,Unknown) as exc:
         report=dict(status='unknown' if isinstance(exc,Unknown) else 'blocked',reason=str(exc))
-    except (OSError,ValueError,KeyError,TypeError,ArithmeticError):
-        report=dict(status='unknown',reason='Invalid input or unexpected schema; no success inferred')
+    except Exception as exc:
+        # An unexpected failure is never success and never a bare traceback.
+        report=dict(status='unknown',reason='Invalid input or unexpected schema; no success inferred',
+                    error_type=type(exc).__name__)
     print(json.dumps(serial(report),indent=2,allow_nan=False))
     print(report['status']+': '+report.get('reason',''),file=sys.stderr)
     return 2 if report['status'] in ('unknown','blocked','failed','partial') else 0

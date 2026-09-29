@@ -6,17 +6,27 @@ and it does not know the future session schedule.
 """
 from datetime import datetime, timezone
 from decimal import Decimal as D, ROUND_CEILING
+import hashlib
+import io
 import json
 from pathlib import Path
+from urllib.error import HTTPError
 
 from coinquant.binance import Binance
 from coinquant.types import Unknown
+
+
+def _refuse(code, message):
+    """A native HTTP 400 refusal, so the production classifier sees what it sees live."""
+    raise HTTPError('https://fapi.binance.com', 400, 'Bad Request', {},
+                    io.BytesIO(json.dumps({'code': code, 'msg': message}).encode()))
 
 
 FEE = D('0.00075')          # research proxy, not an account commission schedule
 MAINTENANCE = D('0.005')    # single 20x tier proxy, not dated brackets
 LIQUIDATION_FEE = D('0.0125')  # field on the 2026-09-26 public rules snapshot
 RULES_PATH = Path(__file__).resolve().parents[1] / 'evidence' / 'bounded-session-20260926' / 'public' / 'rules.json'
+RULES_SHA256 = 'a730dabf5b6710dafb1bc70db1ab579083ad0699e07b5f59e1f20a5617445c7f'
 MINUTE = 60_000
 DAY = 86_400_000
 # Worst 1m mark low/high relative to trade low/high, 2020-01-01..2026-09-20.
@@ -78,7 +88,11 @@ class SessionExchange(Binance):
         self.mdd_envelope_at = None
         self.daily_cny = {}
         self.known_path = True
-        self.rules = json.loads(RULES_PATH.read_text(encoding='utf-8'))['instrument']
+        raw = RULES_PATH.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != RULES_SHA256:
+            raise ValueError('contract rules snapshot changed')
+        self.rules_sha256 = RULES_SHA256
+        self.rules = json.loads(raw.decode('utf-8'))['instrument']
         super().__init__(key='historical-proxy', secret='historical-proxy',
                          opener=_Offline(), authorize_writes=True,
                          clock=lambda: self.now_ms / 1000,
@@ -413,7 +427,9 @@ class SessionExchange(Binance):
         events, gap = self.market.funding_between(start_ms, end_ms)
         for stamp, rate in events:
             mark_row = self.market.minute('mark', (stamp // MINUTE) * MINUTE - MINUTE)
-            mark = mark_row[3] if mark_row is not None else self.entry
+            if mark_row is None:
+                raise Unknown('official mark price missing at a funding settlement')
+            mark = mark_row[3]
             payment = -(self.q * mark * rate)
             self.wallet += payment
             self.funding_paid -= payment
@@ -493,12 +509,11 @@ class SessionExchange(Binance):
 
     def _forfeit_isolated(self):
         margin, wallet = self.margin, self.wallet
-        algo = next((item for item in self.algos.values()
-                     if item['algoStatus'] == 'NEW' and item['orderType'] == 'STOP_MARKET'), None)
-        if algo is None:
+        live = self._live('STOP_MARKET')
+        if live is None:
             self._liquidate(self.entry)
         else:
-            self._close_all(D(algo['triggerPrice']), algo)
+            self._close_all(live[0], live[1])
             self.funnel['triggers'] += 1
         # Whatever the recorded close, the total loss is exactly the isolated wallet.
         shortfall = margin - (wallet - self.wallet)
@@ -509,24 +524,26 @@ class SessionExchange(Binance):
         self.funnel['gap_forfeits'] += 1
         self._note_cash()
 
+    def _live(self, kind):
+        """The live conditional of `kind` that Binance would fire first: the highest
+        long stop or lowest long take (mirrored for a short). During a protection
+        replacement the old and new legs overlap."""
+        rows = [(D(item['triggerPrice']), item) for item in self.algos.values()
+                if item.get('algoStatus') == 'NEW' and item['orderType'] == kind]
+        if not rows:
+            return None
+        first_high = (kind == 'STOP_MARKET') == (self.q > 0)
+        return (max if first_high else min)(rows, key=lambda row: row[0])
+
     def _triggers(self):
-        stop = take = None
-        for algo in self.algos.values():
-            if algo.get('algoStatus') != 'NEW':
-                continue
-            price = D(algo['triggerPrice'])
-            if algo['orderType'] == 'STOP_MARKET':
-                stop = price
-            elif algo['orderType'] == 'TAKE_PROFIT_MARKET':
-                take = price
-        return stop, take
+        stop, take = self._live('STOP_MARKET'), self._live('TAKE_PROFIT_MARKET')
+        return (stop[0] if stop else None), (take[0] if take else None)
 
     def _trigger(self, kind, price):
-        algo = next((item for item in self.algos.values()
-                     if item['algoStatus'] == 'NEW' and item['orderType'] == kind), None)
-        if algo is None or not self.q:
+        live = self._live(kind)
+        if live is None or not self.q:
             return
-        self._close_all(self._slipped(price, self.trigger_slippage), algo)
+        self._close_all(self._slipped(price, self.trigger_slippage), live[1])
         self.funnel['triggers'] += 1
 
     def _liquidate(self, price):
@@ -691,6 +708,8 @@ class SessionExchange(Binance):
             rows = []
             cursor = start
             while cursor <= end:
+                if cursor + step - 1 > self.now_ms:
+                    break
                 values = self.market.bar4(cursor) if step != MINUTE else self.market.minute('trade', cursor)
                 if values is None:
                     break
@@ -771,6 +790,10 @@ class SessionExchange(Binance):
             if not self.q:
                 raise Unknown('isolated margin change without a position')
             amount = D(params['amount'])
+            if params.get('type') != 1 or amount <= 0:
+                _refuse(-4004, 'only adding isolated margin is modelled')
+            if amount > self.wallet - self.margin:
+                _refuse(-2019, 'Margin is insufficient.')
             self.margin += amount
             return dict(code=200, type=1, amount=_text(amount))
         if path.endswith('/algoOrder') and method == 'DELETE':
@@ -787,6 +810,11 @@ class SessionExchange(Binance):
                 order['status'] = 'CANCELED'
             return {}
         if path.endswith('/algoOrder') and method == 'POST':
+            _observed, mark = self._mark_state()
+            trigger = D(params['triggerPrice'])
+            through = (trigger >= mark) if (params['type'] == 'STOP_MARKET') == (params['side'] == 'SELL') else (trigger <= mark)
+            if through:
+                _refuse(-2021, 'Order would immediately trigger.')
             algo_id = self._id()
             algo = dict(symbol='BTCUSDT', algoId=algo_id, clientAlgoId=params['clientAlgoId'],
                         side=params['side'], positionSide='BOTH', orderType=params['type'],
@@ -822,8 +850,10 @@ class SessionExchange(Binance):
                      reduceOnly=reduce, status='NEW')
         if reduce or params.get('type') == 'MARKET':
             closing = 'SELL' if self.q > 0 else 'BUY'
-            if not self.q or params['side'] != closing:
+            if reduce and (not self.q or params['side'] != closing):
                 # Protection may have closed the position while the order travelled.
+                _refuse(-2022, 'ReduceOnly Order is rejected.')
+            if not self.q or params['side'] != closing:
                 order['status'] = 'EXPIRED'
             else:
                 quantity = min(quantity, abs(self.q))

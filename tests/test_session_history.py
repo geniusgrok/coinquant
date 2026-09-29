@@ -5,13 +5,16 @@ from datetime import datetime, timezone
 from decimal import Decimal as D
 from pathlib import Path
 from unittest import TestCase
+from unittest.mock import patch
 
 from coinquant.campaign import ORIGIN
 from coinquant.config import Config
 from coinquant.session import run
+from coinquant.types import Unknown
 from research.session_exchange import SessionExchange
 from research.session_market import FOUR, Market, TradePrints, four_hour_from_hours, WARMUP_TRADE, WARMUP_TRADE_SHA, _require
 import json
+from urllib.error import HTTPError
 
 
 FOUR_H = 14_400_000
@@ -274,11 +277,17 @@ class IntraminuteEventTests(TestCase):
             symbol='BTCUSDT', side='SELL', type='MARKET', quantity='1', reduceOnly='true', newClientOrderId='cq-x'))
         return exchange._transport(None, 1)
 
+    def _close_refused(self, exchange, arrival):
+        """The stop closed the position first: Binance refuses a reduce-only order with -2022."""
+        with self.assertRaises(HTTPError) as caught:
+            self._close_at(exchange, arrival)
+        self.assertEqual(caught.exception.code, 400)
+        self.assertEqual(json.loads(caught.exception.read())['code'], -2022)
+
     def test_stop_inside_the_minute_precedes_a_later_client_close(self):
         exchange = self._venue([(1000, 10000, 1), (10_000, 8500, 1), (20_000, 10000, 1)])
         self._hold(exchange)
-        order = self._close_at(exchange, self.m + 20_000)
-        self.assertEqual(order['status'], 'EXPIRED')
+        self._close_refused(exchange, self.m + 20_000)
         self.assertEqual(exchange.funnel['triggers'], 1)
         self.assertEqual(exchange.trades[-1]['time'], self.m + 10_000)
         self.assertEqual(D(exchange.trades[-1]['price']), 8500)  # the print gapped through the stop
@@ -288,10 +297,48 @@ class IntraminuteEventTests(TestCase):
     def test_unordered_official_minute_applies_the_adverse_stop_before_a_close(self):
         exchange = self._venue(None)
         self._hold(exchange)
-        order = self._close_at(exchange, self.m + 20_000)
-        self.assertEqual(order['status'], 'EXPIRED')
+        self._close_refused(exchange, self.m + 20_000)
         self.assertEqual(exchange.funnel['partial_adverse'], 1)
         self.assertEqual(D(exchange.trades[-1]['price']), 9000)
+
+    def test_overlapping_replacement_stops_fire_the_more_protective_leg(self):
+        exchange = self._venue([(1000, 10000, 1), (10_000, 9400, 1), (20_000, 10000, 1)])
+        self._hold(exchange)
+        exchange.algos['cq-old'] = dict(algoStatus='NEW', orderType='STOP_MARKET', triggerPrice='9500')
+        exchange.algos['cq-take'] = dict(algoStatus='NEW', orderType='TAKE_PROFIT_MARKET', triggerPrice='12000')
+        self.assertEqual(exchange._triggers(), (D(9500), D(12000)))
+        exchange.wait(30)
+        self.assertEqual(exchange.q, 0)
+        self.assertEqual(exchange.algos['cq-old']['algoStatus'], 'FINISHED')
+        self.assertEqual(exchange.algos['cq-stop']['algoStatus'], 'CANCELED')
+
+    def _write(self, exchange, path, params):
+        exchange._inflight = ('POST', path, params)
+        return exchange._transport(None, 1)
+
+    def test_protection_that_would_trigger_immediately_and_bad_margin_are_refused_natively(self):
+        exchange = self._venue([(1000, 10000, 1)])
+        self._hold(exchange)
+        exchange.algos.clear()
+        stop = dict(symbol='BTCUSDT', side='SELL', type='STOP_MARKET', closePosition='true',
+                    clientAlgoId='cq-late')
+        with self.assertRaises(HTTPError) as caught:
+            self._write(exchange, '/fapi/v1/algoOrder', {**stop, 'triggerPrice': '20000'})
+        self.assertEqual(json.loads(caught.exception.read())['code'], -2021)
+        self.assertNotIn('cq-late', exchange.algos)
+        ok = self._write(exchange, '/fapi/v1/algoOrder', {**stop, 'triggerPrice': '8000'})
+        self.assertEqual(ok['algoStatus'], 'NEW')
+        for params in (dict(symbol='BTCUSDT', type=1, amount='999999'), dict(symbol='BTCUSDT', type=2, amount='1')):
+            with self.assertRaises(HTTPError):
+                self._write(exchange, '/fapi/v1/positionMargin', params)
+        self.assertEqual(exchange.margin, D(2000))
+
+    def test_funding_without_its_official_mark_is_unknown_not_the_entry_price(self):
+        exchange = self._venue([(700, 10000, 5)], funding=[(500, D('0.001'))])
+        self._hold(exchange)
+        with patch.object(type(exchange.market), 'minute', return_value=None):
+            with self.assertRaises(Unknown):
+                exchange._pay_funding(self.m, self.m + 10_000)
 
     def test_fill_after_funding_settlement_pays_no_funding(self):
         exchange = self._venue([(700, 10000, 5)], funding=[(500, D('0.001'))])
@@ -308,7 +355,7 @@ class IntraminuteEventTests(TestCase):
     def test_print_path_peak_counts_before_the_stop(self):
         exchange = self._venue([(1000, 10000, 1), (5000, 12000, 1), (10_000, 8500, 1), (20_000, 10000, 1)])
         self._hold(exchange)
-        self._close_at(exchange, self.m + 20_000)
+        self._close_refused(exchange, self.m + 20_000)
         self.assertEqual(exchange.funnel['triggers'], 1)
         self.assertGreater(exchange.mdd_envelope, D('.29'))
 

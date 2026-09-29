@@ -8,6 +8,7 @@ import hmac
 import json
 import time
 from collections import deque
+from http.client import HTTPException
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import HTTPRedirectHandler, Request, build_opener
@@ -49,6 +50,19 @@ UNACCEPTED_AFTER_MS = 300000
 # days. Inside one day, "order does not exist" means this identity was not accepted.
 # A failed query is not this observation. After the retention window it stays unknown.
 QUERYABLE_MS = 86400000
+# A slower time sample cannot bound the offset well inside the 5 s recvWindow.
+MAX_CLOCK_ROUND_TRIP = 1.0
+# The all-symbol exchangeInfo read is required by every protection and exit.
+MAX_RESPONSE_BYTES = 8000000
+# A write is only sent with time to read its answer; otherwise it is never sent.
+MIN_WRITE_SECONDS = 2.0
+
+
+def _retry_after(exc):
+    try:
+        return max(60, min(86400, float(exc.headers.get('Retry-After', '60'))))
+    except (TypeError, ValueError, AttributeError):
+        return 60
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -160,12 +174,19 @@ class Binance:
         try:
             with self.opener.open(Request('https://' + host + '/fapi/v1/time'), timeout=min(5, remaining)) as response:
                 body = json.loads(response.read(10000))
-        except (URLError, TimeoutError, OSError, ValueError, Blocked):
+        except HTTPError as exc:
+            if exc.code in (418, 429):
+                self.cooldown_until = self.monotonic() + _retry_after(exc)
+            raise Unknown('Binance server time unavailable; clock not aligned') from None
+        except (URLError, TimeoutError, OSError, ValueError, HTTPException, Blocked):
             raise Unknown('Binance server time unavailable; clock not aligned') from None
         server = body.get('serverTime') if isinstance(body, dict) else None
         if type(server) is not int:
             raise Unknown('Binance time response is not usable')
-        halfway = int((self.monotonic() - started) * 500)
+        elapsed = self.monotonic() - started
+        if elapsed > MAX_CLOCK_ROUND_TRIP:
+            raise Unknown('Binance time sample was too slow to align the clock')
+        halfway = int(elapsed * 500)
         self.time_offset_ms = server - (local + halfway)
         self.time_aligned_at = self.monotonic()
 
@@ -199,12 +220,18 @@ class Binance:
                 raise Blocked('only identified owned protection may be canceled')
         elif p.get('symbol') != 'BTCUSDT':
             raise Blocked('only BTCUSDT writes are supported')
+        if path == '/fapi/v1/order' and method == 'DELETE':
+            if set(p) != {'symbol', 'origClientOrderId'} or not str(p['origClientOrderId']).startswith('cq-'):
+                raise Blocked('only identified owned orders may be canceled')
         if method == 'POST' and path.endswith('/order'):
             if (p.get('positionSide') != 'BOTH' or p.get('side') not in ('BUY', 'SELL')
                     or not str(p.get('newClientOrderId', '')).startswith('cq-')
                     or number(p.get('quantity'), positive=True) <= 0):
                 raise Blocked('invalid identified ordinary order')
-            if p.get('reduceOnly') != 'true' and (p.get('type') != 'LIMIT' or p.get('timeInForce') != 'IOC'):
+            if p.get('reduceOnly') == 'true':
+                if p.get('type') != 'MARKET':
+                    raise Blocked('reduction must be an immediate market order')
+            elif p.get('type') != 'LIMIT' or p.get('timeInForce') != 'IOC':
                 raise Blocked('new exposure requires bounded IOC limit execution')
         if method == 'POST' and path.endswith('/algoOrder'):
             if (p.get('type') not in ('STOP_MARKET', 'TAKE_PROFIT_MARKET')
@@ -270,15 +297,14 @@ class Binance:
         remaining = self.deadline-self.monotonic()
         if self.monotonic() < self.cooldown_until:
             raise NotSent('Binance rate limit cooldown; no request sent')
-        if remaining <= 0: raise ObservationDeadline('bounded Binance observation deadline exceeded; no request sent')
+        if remaining <= 0 or (method != 'GET' and remaining < MIN_WRITE_SECONDS):
+            raise ObservationDeadline('bounded Binance observation deadline exceeded; no request sent')
         try:
             self.request_weights.append((self.monotonic(),weight))
             result = self._transport(request, timeout=min(8,remaining))
         except HTTPError as exc:
             if exc.code in (418,429):
-                try:delay=max(60,min(86400,float(exc.headers.get('Retry-After','60'))))
-                except (TypeError,ValueError):delay=60
-                self.cooldown_until=self.monotonic()+delay
+                self.cooldown_until=self.monotonic()+_retry_after(exc)
             code,message=_error_body(exc)
             if method != 'GET' and exc.code in (400,401) and code in REJECT_CODES:
                 raise Rejected(f'Binance rejected the request with code {code}') from None
@@ -288,10 +314,10 @@ class Binance:
                 raise Missing('Binance reports that the order does not exist') from None
             raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown',
                           http_status=exc.code,native_code=code) from None
-        except (URLError, TimeoutError, OSError, ValueError, Blocked):
+        except (URLError, TimeoutError, OSError, ValueError, HTTPException, Blocked):
             # A refused redirect or broken response arrives after the request left.
             raise Unknown('Binance request unavailable; read by stable identity before any retry') from None
-        if not isinstance(result,(dict,list)) or (isinstance(result,dict) and 'code' in result and not (method != 'GET' and result['code'] == 200)):
+        if not isinstance(result,(dict,list)) or (isinstance(result,dict) and 'code' in result and not (method != 'GET' and str(result['code']) == '200')):
             raise Unknown('unexpected Binance read response')
         return result
 
@@ -305,8 +331,8 @@ class Binance:
                     self.server_weight = (self.monotonic(), int(used))
                 except (TypeError, ValueError):
                     pass
-            raw = response.read(2000001)
-        if len(raw)>2000000: raise Unknown('oversized Binance response')
+            raw = response.read(MAX_RESPONSE_BYTES+1)
+        if len(raw)>MAX_RESPONSE_BYTES: raise Unknown('oversized Binance response')
         # Numeric amounts, such as a margin response, stay exact decimals.
         return json.loads(raw, parse_float=Decimal)
 
@@ -557,21 +583,28 @@ class Binance:
         expired and while a zero-fill order would still be queryable, was not
         accepted. A failed query never reaches here. Without a preparation time,
         or once retention has passed, the intent stays unknown."""
-        row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
+        row=state.db.execute('SELECT result,payload FROM intents WHERE id=?',(intent['id'],)).fetchone()
         result=json.loads(row[0]) if row else {}
+        payload=json.loads(row[1]) if row else {}
         prepared=result.get('prepared_at_ms')
         now=int(self.clock()*1000)
         if (intent['status']!='unknown' or type(prepared) is not int
                 or not UNACCEPTED_AFTER_MS<=now-prepared<QUERYABLE_MS):
             return False
-        # A live position can be the fill this query failed to show. Only a flat
-        # account, with no entry remainder, can treat the identity as absent.
-        try:
-            snap=self.snapshot(state.identity.rsplit(':',1)[-1])
-        except Exception:
-            return False
-        if number(snap.get('quantity_btc')) or snap.get('possible_entry_remainders'):
-            return False
+        # Binance keeps every order that ever had a fill queryable, so "does not exist"
+        # inside the retention window is authoritative. A reduction can only reduce
+        # whatever is left. An entry or add is retired only when the position is
+        # still what it was at preparation (flat for an entry); anything else could
+        # be the fill this query failed to show.
+        if payload.get('reduceOnly')!='true':
+            try:
+                snap=self.snapshot(state.identity.rsplit(':',1)[-1])
+            except Exception:
+                return False
+            before=result.get('position_before_btc','0')
+            if (number(snap.get('quantity_btc'))!=number(before)
+                    or snap.get('possible_entry_remainders')):
+                return False
         state.finish(intent['id'],'rejected',{**result,'absent_at_ms':now,
                                                'query_absent_within_retention':True})
         return True

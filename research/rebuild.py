@@ -24,7 +24,7 @@ from coinquant.session import run
 from coinquant.types import Unknown
 from research import session_schedule
 from research.fx import BASIS as FX_BASIS, DatedFX
-from research.session_exchange import SessionExchange
+from research.session_exchange import RULES_SHA256, SessionExchange
 from research.session_market import TradePrints, load_base
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -305,6 +305,7 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
             setattr(module, attr, saved[1][key])
     identity = dict(base.identity)
     identity['loaded_minute_files'] = dict(sorted(base.loaded.items()))
+    identity['contract_rules_sha256'] = RULES_SHA256
     identity['loaded_print_files'] = dict(sorted(exchange.prints.loaded.items()))
     chosen = schedule['primary'] if sequence == 'primary' else schedule['stress'][sequence]
     rows = result.get('session_rows') or []
@@ -332,7 +333,12 @@ def trial(name, *, sequence='primary', participation=None, print_window_ms=1000,
     target = destination / f'{name}.json'
     if target.exists() and _official(destination):
         # The superseded original is kept beside the new result, never deleted.
-        os.replace(target, destination / f'{name}.superseded-{run_id[:8]}.json')
+        # The current name is never absent: the new file replaces it in one step.
+        kept = destination / f'{name}.superseded-{run_id[:8]}.json'
+        try:
+            os.link(target, kept)
+        except OSError:
+            shutil.copy2(target, kept)
     os.replace(temporary, target)
     return result
 
