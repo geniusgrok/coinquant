@@ -452,6 +452,12 @@ class Lifecycle:
             return self.protect_entry(snapshot,plan)
         replacement=self.state.get('session_replacement')
         if replacement:
+            # A complete owned old pair keeps this position safe while the
+            # model decides. Holding retries the amendment in maintain(); an
+            # exit can reduce the proven position even if the new leg is refused.
+            # Entry remainders and unproven ownership were rejected above.
+            if self.planned_protection(snapshot):
+                return snapshot
             try:
                 return self.complete_replacement(replacement,self.instrument())
             except (Blocked,Unknown):

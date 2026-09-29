@@ -26,9 +26,11 @@ class AcceptanceTests(unittest.TestCase):
         self.assertEqual(spec['economic_qualification'], 'NOT_MET')
         self.assertEqual(spec['native_qualification'], 'NOT_QUALIFIED')
 
-    def test_recorded_default_matches_code_and_reproduction_command(self):
-        replay = self.spec['current_session_replay']
+    def test_recorded_default_and_evidence_identity(self):
+        replay = self.spec['last_recorded_session_replay']
         self.assertEqual(D(self.spec['model']['risk_scale']), D(campaign.PRIMARY_RISK))
+        recorded = json.loads((ROOT / replay['accepted_basis']['result']['evidence']).read_text())
+        self.assertEqual(replay['python_sources_sha256'], recorded['source']['python_sources_sha256'])
         self.assertEqual(inspect.signature(rebuild.trial).parameters['mark_gap'].default,
                          replay['accepted_basis']['mark_gap_policy'])
         self.assertEqual(session_schedule.load()['primary']['sha256'], replay['schedule_sha256'])
@@ -36,7 +38,7 @@ class AcceptanceTests(unittest.TestCase):
             self.assertTrue((ROOT / entry['evidence']).exists(), entry['evidence'])
 
     def test_recorded_numbers_are_the_ones_in_their_evidence_files(self):
-        replay = self.spec['current_session_replay']
+        replay = self.spec['last_recorded_session_replay']
         entries = [replay['accepted_basis']['result'], *replay['accepted_basis']['stresses'].values()]
         if 'current_code_regression' in replay:
             entries.append(replay['current_code_regression'])

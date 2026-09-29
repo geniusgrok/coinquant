@@ -1,5 +1,6 @@
 """Manually started finite sessions; live and replay use this exact coordinator."""
 import time
+import sqlite3
 
 from .lifecycle import ABSOLUTE_GRACE, FINISH_SECONDS, Lifecycle, blocking
 from .linear_preview import advance, preview
@@ -40,12 +41,14 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
         # A missing or open cashflow audit blocks new risk (entry and add), never
         # a verified reduction or protection. The audit is bound to this wallet.
         wallet=snapshot.get('wallet_usdt')
+        wallet_window=dict(wallet_observed_from_ms=snapshot.get('wallet_observed_from_ms',snapshot.get('observed_at_ms')),
+                           wallet_observed_until_ms=snapshot.get('wallet_observed_until_ms',snapshot.get('observed_at_ms')))
         if result['action']=='enter':
-            audit=income(reader,state,wallet=wallet)
+            audit=income(reader,state,wallet=wallet,**wallet_window)
             engine.risk_audit_ok=allows_new_risk(audit,wallet,flat=True)
         elif result['action']=='hold':
             try:
-                audit=income(reader,state,wallet=wallet)
+                audit=income(reader,state,wallet=wallet,**wallet_window)
                 engine.risk_audit_ok=allows_new_risk(audit,wallet,flat=False)
             except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError):
                 engine.risk_audit_ok=False
@@ -197,6 +200,7 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                         report.update(status='unknown',income_audit={'status':'unresolved'},
                                       reason=_reason(exc,'Income audit unavailable'))
             report['pending_intents']=len(state.pending())
+            report['protection_replacement_pending']=bool(state.get('session_replacement'))
             if config.capital_limit is not None:
                 report['sizing_capital_usdt']=str(config.capital_limit)
                 report['sizing_capital_means']='model sizing capital, not a cumulative loss limit'
@@ -216,5 +220,12 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                 report.update(status='executed' if report['write_attempted'] else 'no_action',
                               reason='Last poll ended at the observation deadline; closing verification settled')
             report['elapsed_seconds']=max(0,monotonic()-started)
+            try:
+                state.backup('session')
+                report['state_backup']='saved'
+            except (OSError, ValueError, sqlite3.Error) as exc:
+                report['state_backup']='failed'
+                report['errors']=(report['errors']+[dict(phase='backup',error_type=type(exc).__name__,
+                                                       reason='Consistent state backup failed')])[-10:]
             state.report(report)
     return report

@@ -10,6 +10,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+from math import ceil
 from urllib.error import HTTPError
 
 from coinquant.binance import Binance
@@ -270,7 +271,10 @@ class SessionExchange(Binance):
             raise AssertionError('unattended time sent a client order')
 
     def wait(self, seconds):
-        self._advance(self.now_ms + int(D(seconds) * 1000))
+        # The coordinator may hand us a positive submillisecond deadline tail.
+        # Rounding it down to zero would repeat the same virtual poll forever.
+        if seconds > 0:
+            self._advance(self.now_ms + max(1, ceil(D(seconds) * 1000)))
 
     def _advance(self, until_ms):
         """Whole held minutes use the official mark OHLC. Attended or partly held

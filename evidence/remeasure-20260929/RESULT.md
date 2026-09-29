@@ -1,5 +1,7 @@
 # M9：当前源码上的已登记场景重测（2026-09-29）
 
+版本说明：标题中的“当前源码”是本次 M9 测量当时的源码；本报告是源码摘要 `ae7b3fd857e24156791b4c2412020c85993904c65ce74a64e546c0b5eaddc518` 的历史原件，不能作为本轮附件修复后 main 的收益。当前状态见 `PROJECT_STATE.md`。
+
 状态：`NOT_QUALIFIED`，`economic_qualification` 仍为 `NOT_MET`。没有下单、账户或资金操作。`PRIMARY_RISK` 保持 7.5。本轮在测量前登记于 `research/redesign-PROTOCOL.md` 的 M9 节，不改参数、窗口、时间表或目标，也不重选风险。
 
 ## 这份测量是什么

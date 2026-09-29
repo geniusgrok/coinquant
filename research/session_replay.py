@@ -7,6 +7,7 @@ the next recorded request must match before its response becomes visible.
 """
 import argparse
 import json
+from math import ceil
 from pathlib import Path
 
 from coinquant.binance import Binance
@@ -37,7 +38,8 @@ class Tape(Binance):
         return record['response']
 
     def wait(self,seconds):
-        self.now+=int(seconds*1000)
+        if seconds>0:
+            self.now+=max(1,ceil(seconds*1000))
 
     def dfii10_snapshot(self):
         return self._request('MACRO','/dfii10',{})

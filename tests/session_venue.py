@@ -5,6 +5,7 @@ these endpoint responses. Matching is deliberately a test fixture, not economics
 """
 from copy import deepcopy
 from decimal import Decimal as D
+from math import ceil
 from coinquant.binance import Binance
 from coinquant.campaign import Campaign
 from coinquant.opportunities import Opportunity
@@ -25,7 +26,7 @@ class Venue(Binance):
         self.mark=D(100000);self.updated=self.now
         self.rules=rules();self.rules.update(status='TRADING',contractType='PERPETUAL',marginAsset='USDT')
 
-    def wait(self,seconds):self.now+=int(seconds*1000)
+    def wait(self,seconds):self.now+=max(1,ceil(seconds*1000)) if seconds>0 else 0
     def monotonic(self):return self.now/1000
 
     def dfii10_snapshot(self):
@@ -112,6 +113,9 @@ class Venue(Binance):
         order['executedQty']=str(D(order['executedQty'])+amount)
 
     def send(self,method,path,p):
+        # Even the fake exchange accepts a request after the account observation,
+        # so its fills cannot share the initial wallet's millisecond boundary.
+        self.now += 1
         self.sent.append((method,path,deepcopy(p)));self.calls.append((method,path,deepcopy(p)))
         if path.endswith('/positionMargin'):
             self.margin+=D(p['amount']);self.updated=self.now

@@ -1,5 +1,5 @@
 {
-  "scope": "Binance bounded-session acceptance; economic result measured on the session timing (current_session_replay)",
+  "scope": "Binance bounded-session acceptance; most recent completed economic result belongs to the historical source (last_recorded_session_replay)",
   "start": "2020-01-01T00:00:00Z",
   "end": "2026-09-20T00:00:00Z",
   "end_exclusive": true,
@@ -33,7 +33,7 @@
   "execution": {
     "runner": "coinquant.session.run",
     "lifecycle": "coinquant.lifecycle.Lifecycle",
-    "session_start_schedule": "frozen: research/session_schedule.json (795 primary starts, sha256 in current_session_replay)",
+    "session_start_schedule": "frozen: research/session_schedule.json (795 primary starts, sha256 in last_recorded_session_replay)",
     "session_seconds_default": 300,
     "poll_seconds_default": 5,
     "entry": "price-bounded LIMIT IOC; terminal zero fills may be reconsidered on subsequent polls",
@@ -51,16 +51,17 @@
   ],
   "account_evidence": "one continuous account including unattended exposure; observation gaps cannot be interpolated into complete MDD",
   "economic_qualification": "NOT_MET",
-  "current_session_replay": {
-    "meter": "M9 (research/redesign-PROTOCOL.md): current source, meter M8 timing, R3 risk left at 7.5",
+  "last_recorded_session_replay": {
+    "meter": "M9 (research/redesign-PROTOCOL.md): historical source ae7b3fd8, meter M8 timing, R3 risk left at 7.5",
+    "python_sources_sha256": "ae7b3fd857e24156791b4c2412020c85993904c65ce74a64e546c0b5eaddc518",
     "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
     "scope": "production session.run and Lifecycle on SessionExchange; not a historical order book; native execution not verified",
     "accepted_basis": {
       "decided_by": "account owner, 2026-09-28",
       "decision": "The 29 missing official mark minutes on 2020-01-19 are bounded by the measured mark/trade divergence; a protection trigger inside the gap is judged negligible. This is an owner acceptance of a hindsight bound, not a complete historical path.",
-      "default_trial": "M9 on the current source (PRIMARY_RISK stays 7.5; the R3 rule applied to the M9 blocks still selects 7.5). Defaults: --mark-gap bound, --read-latency-ms 200, fee 0.00075.",
+      "default_trial": "M9 on historical source ae7b3fd8 (PRIMARY_RISK stays 7.5; the R3 rule applied to the M9 blocks selected 7.5). Defaults: --mark-gap bound, --read-latency-ms 200, fee 0.00075.",
       "result": {
-        "scope": "M9 base on the current source; evidence/remeasure-20260929/RESULT.md",
+        "scope": "M9 base on historical source ae7b3fd8; evidence/remeasure-20260929/RESULT.md",
         "evidence": "evidence/remeasure-20260929/M9-r75.json",
         "final_cny": "1893613",
         "cost_net_cagr_percent": "118.24",
@@ -108,10 +109,10 @@
       "targets_met_base": false,
       "targets_met_all_stresses": false,
       "mark_gap_policy": "bound",
-      "meter": "M9 (research/redesign-PROTOCOL.md): current source, meter M8 timing, R3 risk left at 7.5",
+      "meter": "M9 (research/redesign-PROTOCOL.md): historical source ae7b3fd8, meter M8 timing, R3 risk left at 7.5",
       "sensitivity": "On this source the full-window value is not monotone in risk (6: 1703093, 6.5: 2017471, 7: 2207635, 7.5: 1893613) and moves with read latency at risk 6 (100/200/400 ms: 2543459/1703093/878313). Fee +50%, exit slippage x2 and 10% depth finish above the base; a 20% session skip finishes below. Not an estimate of live returns."
     },
-    "reproduce": "python -m research.rebuild M9-r75 --out /tmp/m9  (defaults: frozen primary schedule, --mark-gap bound, --read-latency-ms 200, fee 0.00075, trigger slippage 0.001, market slippage 0.0005, participation 0.25, primary risk 7.5)",
+    "reproduce": "Historical invocation: python -m research.rebuild M9-r75 --out /tmp/m9 (defaults: frozen primary schedule, --mark-gap bound, --read-latency-ms 200, fee 0.00075, trigger slippage 0.001, market slippage 0.0005, participation 0.25, primary risk 7.5). Run on the historical source and exact inputs to reproduce M9; running updated code creates a different result identity.",
     "valuation": "CNY value from FRED DEXCHUS applied from 17:00 UTC of each observation date: an ex-post valuation (H.10 is published weekly), never a decision input; USDT at USD par; 0.1% conversion each way",
     "superseded_measurements": [
       {
@@ -161,7 +162,7 @@
             "continuous_mdd_envelope_percent": "44.73"
           }
         },
-        "why": "Production fixes after 883d16a change the local request-weight use; the same default trial then measures 0.9-3.4 million CNY instead of 5.23 million (research/redesign-PROTOCOL.md, O0). P7 no longer describes the current code."
+          "why": "Production fixes after 883d16a changed the local request-weight use; a subsequent historical source measured 0.9-3.4 million CNY instead of 5.23 million (research/redesign-PROTOCOL.md, O0). P7 describes only its own source."
       },
       {
         "trial": "O1",
@@ -177,17 +178,17 @@
       },
       {
         "trial": "R3",
-        "source_note": "evidence/robustness-20260929/m8 originals record git_head d1ca5c0, dirty, digest c5ef5b41; not the current source",
+        "source_note": "evidence/robustness-20260929/m8 originals record git_head d1ca5c0, dirty, digest c5ef5b41; older than M9",
         "result": {
           "evidence": "evidence/robustness-20260929/m8/m8r7.5-full.json",
           "final_cny": "2794265",
           "cost_net_cagr_percent": "131.26",
           "continuous_mdd_envelope_percent": "44.51"
         },
-        "why": "Pre-audit-fix source. Replaced for the current source by M9 (evidence/remeasure-20260929/)."
+        "why": "Pre-audit-fix source. Replaced for the historical ae7b3fd8 source by M9 (evidence/remeasure-20260929/)."
       }
     ]
   },
   "native_qualification": "NOT_QUALIFIED",
-  "economic_status": "M9 on the current source, default risk 7.5: base CAGR 118.24% is below 150% and MDD is 44.51% (< 50%). Stress MDD is at most 45.39%. Fee +50%, slippage x2 and 10% depth finish above the base; a 20% skip finishes at 95.69%. The full-window value is not monotone in risk or read latency. economic_qualification stays NOT_MET."
+  "economic_status": "Last recorded M9 belongs to historical source ae7b3fd8: default risk 7.5 base CAGR 118.24% is below 150% and MDD is 44.51%. Updated source has no completed historical remeasurement because external market and print inputs are unavailable. These values are not current-source results; economic_qualification stays NOT_MET."
 }

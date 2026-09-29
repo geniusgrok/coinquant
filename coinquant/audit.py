@@ -6,8 +6,15 @@ from .types import Blocked, Unknown, number
 NATIVE_UNIT=number('0.00000001')
 
 
-def income(reader,state,*,force=False,wallet=None):
+def income(reader,state,*,force=False,wallet=None,
+           wallet_observed_from_ms=None,wallet_observed_until_ms=None):
     now=int(reader.clock()*1000)
+    if wallet is not None:
+        start_wallet = now if wallet_observed_from_ms is None else wallet_observed_from_ms
+        end_wallet = now if wallet_observed_until_ms is None else wallet_observed_until_ms
+        if (type(start_wallet) is not int or type(end_wallet) is not int
+                or not 0 < start_wallet <= end_wallet <= now):
+            raise Unknown('wallet observation interval unavailable')
     coverage=state.get('income_coverage')
     if coverage and now<coverage['through']:
         raise Unknown('income observation clock regressed')
@@ -54,30 +61,49 @@ def income(reader,state,*,force=False,wallet=None):
             state.db.execute('INSERT OR IGNORE INTO native_income VALUES (?,?,?)',(kind,identity,json.dumps(event,sort_keys=True)))
         result['observed_transactions']=state.db.execute('SELECT COUNT(*) FROM native_income').fetchone()[0]
         if wallet is not None:
-            state_name=_wallet_closure(state, number(wallet), now)
+            state_name=_wallet_closure(state, number(wallet), now, start_wallet, end_wallet)
             result['wallet_closure']=state_name
             result['closure']=dict(state=state_name,wallet=wallet_text,at=now)
         state.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('income_coverage',json.dumps(result,sort_keys=True)))
     return result
 
 
-def _wallet_closure(state, wallet, now):
+def _wallet_closure(state, wallet, now, wallet_from=None, wallet_until=None):
     """Compare the wallet change since the previous anchor with income rows.
 
     The first observation only sets the anchor. A later difference that the
     saved cashflows do not explain stays unexplained and blocks new risk.
     Isolated margin moves are not income and are not treated as profit.
     """
-    total=sum((number(json.loads(payload).get('income'))
-               for payload, in state.db.execute('SELECT payload FROM native_income')), number(0))
+    wallet_from=now if wallet_from is None else wallet_from
+    wallet_until=now if wallet_until is None else wallet_until
+    rows=[json.loads(payload) for payload, in state.db.execute('SELECT payload FROM native_income')]
+    total=sum((number(row.get('income')) for row in rows), number(0))
     anchor=state.get('wallet_anchor')
     if anchor is None:
-        state.set('wallet_anchor', {'wallet':str(wallet),'income':str(total),'through':now})
+        # The two account reads straddle this interval. A cashflow during or
+        # after it cannot be assigned to that wallet, even when its row arrives
+        # before the audit query. Wait for a later consistent observation.
+        if any(row['time'] >= wallet_from for row in rows):
+            return 'pending_income'
+        state.set('wallet_anchor', {'wallet':str(wallet),'income':'0','through':now,
+                                    'baseline_from_ms':wallet_from,'baseline_until_ms':wallet_until})
         return 'anchored'
+    if 'baseline_from_ms' in anchor:
+        start,end=anchor['baseline_from_ms'],anchor['baseline_until_ms']
+        if (type(start) is not int or type(end) is not int or not 0<start<=end<=anchor['through']
+                or any(start <= row['time'] <= end for row in rows)):
+            raise Unknown('income at the initial wallet boundary cannot be classified')
+        # Late rows definitely preceding the first wallet observation were
+        # already in its balance; they cannot become new income on publication.
+        total=sum((number(row['income']) for row in rows if row['time']>end), number(0))
+    # Older state has no durable first-observation boundary. Preserve its
+    # conservative accounting instead of guessing which late rows are old.
     gap=(wallet-number(anchor['wallet']))-(total-number(anchor['income']))
     # Binance reports USDT to 1e-8; a smaller residue is arithmetic, not a cashflow.
     if abs(gap)<NATIVE_UNIT:
-        state.set('wallet_anchor', {'wallet':str(wallet),'income':str(total),'through':now})
+        state.set('wallet_anchor', {**{k:anchor[k] for k in ('baseline_from_ms','baseline_until_ms') if k in anchor},
+                                    'wallet':str(wallet),'income':str(total),'through':now})
         return 'explained'
     # Income can be published after the wallet already moved. One quiet minute
     # is waiting, not a reason to stop adds. A gap that is still there after

@@ -668,9 +668,11 @@ class Binance:
                         'positions':self.get('/fapi/v3/positionRisk',{'symbol':'BTCUSDT'}),
                         'orders':self.get('/fapi/v1/openOrders',{} if scan_all else {'symbol':'BTCUSDT'}),
                         'algos':self.get('/fapi/v1/openAlgoOrders',{} if scan_all else {'symbol':'BTCUSDT'})}
+            wallet_observed_from_ms=int(self.clock()*1000)
             first=observe()
             fills=self.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','limit':1000})
             second=observe()
+            wallet_observed_until_ms=int(self.clock()*1000)
             if not isinstance(fills,list) or len(fills)>1000:
                 raise Unknown('recent trade response is missing or oversized')
             if any(f.get('symbol')!='BTCUSDT' for f in fills):
@@ -692,7 +694,10 @@ class Binance:
             report.update(mark_time=ticker['time'],mark_price=ticker['markPrice'],
                           recent_fill_count=len(fills),last_fill_id=max((f['id'] for f in fills),default=-1),
                           recent_fill_window_complete=len(fills)<1000,
-                          observed_at_ms=int(self.clock()*1000),recovery_history_complete=False)
+                          observed_at_ms=int(self.clock()*1000),
+                          wallet_observed_from_ms=wallet_observed_from_ms,
+                          wallet_observed_until_ms=wallet_observed_until_ms,
+                          recovery_history_complete=False)
             if scan_all:self.all_orders_checked_at=self.monotonic()
             self._cycle_config=config
             self.check_all_orders=False

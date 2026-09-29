@@ -13,7 +13,7 @@ import os
 import socket
 from pathlib import Path
 import sqlite3
-from time import time
+from time import time, time_ns
 
 from .types import Blocked, Unknown, serial, number
 from .campaign import ORIGIN
@@ -91,15 +91,15 @@ class State:
             version = self.get('schema_version')
             if type(version) is int and version > SCHEMA_VERSION:
                 raise Blocked('state was written by newer code; manage the position manually or use that code')
-            if saved is not None and version != SCHEMA_VERSION:
-                self.backup('schema')
-            self.set_many({'identity': self.identity, 'schema_version': SCHEMA_VERSION})
             host = socket.gethostname()
             prior = self.get('writer_host')
             now = time()
             if (isinstance(prior, dict) and prior.get('host') not in (None, host)
                     and type(prior.get('at')) is float and now-prior['at'] < 600):
                 raise Blocked('this account state was written by another machine in the last 10 minutes')
+            if saved is not None and version != SCHEMA_VERSION:
+                self.backup('schema')
+            self.set_many({'identity': self.identity, 'schema_version': SCHEMA_VERSION})
             self.set('writer_host', {'host': host, 'pid': os.getpid(), 'at': now})
             return self
         except (OSError, sqlite3.Error) as exc:
@@ -110,15 +110,24 @@ class State:
             raise
 
     def backup(self, reason: str) -> Path:
-        """Consistent copy of the database before a structural change; never overwritten."""
+        """Consistent SQLite copy; keep three completed session copies."""
         folder = self.directory / 'backups'
         folder.mkdir(exist_ok=True, mode=0o700)
-        target = folder / f'intents-{reason}-{int(time()*1000)}.sqlite'
-        copy = sqlite3.connect(target)
+        target = folder / f'intents-{reason}-{time_ns()}.sqlite'
+        temporary = target.with_suffix('.tmp')
         try:
-            self.db.backup(copy)
-        finally:
-            copy.close()
+            copy = sqlite3.connect(temporary)
+            try:
+                self.db.backup(copy)
+            finally:
+                copy.close()
+            os.replace(temporary, target)
+            if reason == 'session':
+                for old in sorted(folder.glob('intents-session-*.sqlite'))[:-3]:
+                    old.unlink()
+        except Exception:
+            temporary.unlink(missing_ok=True)
+            raise
         return target
 
     def __exit__(self, *args):

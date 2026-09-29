@@ -10,9 +10,19 @@ from coinquant.config import Config
 from coinquant.session import run
 from coinquant.types import Unknown
 from tests.session_venue import Venue
+from research.session_exchange import SessionExchange
+from research.session_market import Market
+from research.session_replay import Tape
+from decimal import Decimal as D
 
 
 class VirtualClockTests(TestCase):
+    def test_positive_submillisecond_wait_advances_virtual_venues(self):
+        for venue in (Venue(), SessionExchange(Market({}, ()), 1000, D(100)), Tape([], 1000)):
+            before = venue.now if isinstance(venue, (Venue, Tape)) else venue.now_ms
+            venue.wait(0.0001)
+            self.assertEqual(venue.now if isinstance(venue, (Venue, Tape)) else venue.now_ms, before + 1)
+
     def test_injected_monotonic_is_not_the_wall_clock(self):
         wall = time.monotonic()
         venue = Binance(monotonic=lambda: 10**9, opener=Mock())
