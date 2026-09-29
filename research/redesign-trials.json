@@ -1344,6 +1344,251 @@
         }
       ],
       "outcome": "Base MDD below 50% and CAGR below 150%; stresses within about one point of the base except the random skip."
+    },
+    {
+      "round": "M8",
+      "registered": "2026-09-29",
+      "hypothesis": "Reads take 200 ms of simulated time; the local request weight then no longer decides the result (weight limits 2000/2200/2400/1,000,000 within ratio 1.069; at most 5 weight-blocked sessions).",
+      "model": "PRIMARY_RISK 6, default knobs",
+      "trials": [
+        {
+          "name": "M8-w2000",
+          "args": [
+            "--knob",
+            "weight_limit=2000"
+          ],
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/M8-w2000.json",
+            "final_cny": "880839",
+            "cost_net_cagr_percent": "94.75",
+            "continuous_mdd_envelope_percent": "41.96"
+          }
+        },
+        {
+          "name": "M8-w2200",
+          "args": [],
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/M8-w2200.json",
+            "final_cny": "880839",
+            "cost_net_cagr_percent": "94.75",
+            "continuous_mdd_envelope_percent": "41.96"
+          }
+        },
+        {
+          "name": "M8-w2400",
+          "args": [
+            "--knob",
+            "weight_limit=2400"
+          ],
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/M8-w2400.json",
+            "final_cny": "880839",
+            "cost_net_cagr_percent": "94.75",
+            "continuous_mdd_envelope_percent": "41.96"
+          }
+        },
+        {
+          "name": "M8-w1000000",
+          "args": [
+            "--knob",
+            "weight_limit=1000000"
+          ],
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/M8-w1000000.json",
+            "final_cny": "880839",
+            "cost_net_cagr_percent": "94.75",
+            "continuous_mdd_envelope_percent": "41.96"
+          }
+        },
+        {
+          "name": "M8-l100",
+          "args": [
+            "--read-latency-ms",
+            "100"
+          ],
+          "stress": "sensitivity, no pass line",
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/M8-l100.json",
+            "final_cny": "766794",
+            "cost_net_cagr_percent": "90.77",
+            "continuous_mdd_envelope_percent": "41.95"
+          }
+        },
+        {
+          "name": "M8-l400",
+          "args": [
+            "--read-latency-ms",
+            "400"
+          ],
+          "stress": "sensitivity, no pass line",
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/M8-l400.json",
+            "final_cny": "485893",
+            "cost_net_cagr_percent": "78.24",
+            "continuous_mdd_envelope_percent": "37.70"
+          }
+        }
+      ],
+      "outcome": "Acceptance met (ratio 1.000; 0 weight-blocked sessions). Read latency sensitivity is large (0.77M/0.88M/0.49M)."
+    },
+    {
+      "round": "R3",
+      "registered": "2026-09-29",
+      "hypothesis": "Reselect PRIMARY_RISK among 6, 6.5, 7, 7.5 on meter M8: full-window MDD < 50%, development-block worst MDD <= 45% in splits A and B, neighbours also pass, highest mean test growth; stresses on the chosen value.",
+      "model": "SX60+DFII10, primary risk varied",
+      "trials": [
+        {
+          "name": "m8r6",
+          "args": [
+            "--knob",
+            "primary_risk=6"
+          ],
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r6-full.json",
+            "final_cny": "880839",
+            "cost_net_cagr_percent": "94.75",
+            "continuous_mdd_envelope_percent": "41.96"
+          }
+        },
+        {
+          "name": "m8r6.5",
+          "args": [
+            "--knob",
+            "primary_risk=6.5"
+          ],
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r6.5-full.json",
+            "final_cny": "1095158",
+            "cost_net_cagr_percent": "101.2",
+            "continuous_mdd_envelope_percent": "41.95"
+          }
+        },
+        {
+          "name": "m8r7",
+          "args": [
+            "--knob",
+            "primary_risk=7"
+          ],
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r7-full.json",
+            "final_cny": "624277",
+            "cost_net_cagr_percent": "85.0",
+            "continuous_mdd_envelope_percent": "42.24"
+          }
+        },
+        {
+          "name": "m8r7.5",
+          "args": [
+            "--knob",
+            "primary_risk=7.5"
+          ],
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r7.5-full.json",
+            "final_cny": "2794265",
+            "cost_net_cagr_percent": "131.26",
+            "continuous_mdd_envelope_percent": "44.51"
+          }
+        },
+        {
+          "name": "m8r7.5-fee150",
+          "args": [
+            "--knob",
+            "primary_risk=7.5",
+            "--fee",
+            "0.001125"
+          ],
+          "stress": "cost +50%",
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r7.5-fee150.json",
+            "final_cny": "1292658",
+            "cost_net_cagr_percent": "106.19",
+            "continuous_mdd_envelope_percent": "44.79"
+          }
+        },
+        {
+          "name": "m8r7.5-slip2",
+          "args": [
+            "--knob",
+            "primary_risk=7.5",
+            "--trigger-slippage",
+            "0.002",
+            "--market-slippage",
+            "0.001"
+          ],
+          "stress": "exit slippage x2",
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r7.5-slip2.json",
+            "final_cny": "1304985",
+            "cost_net_cagr_percent": "106.48",
+            "continuous_mdd_envelope_percent": "44.87"
+          }
+        },
+        {
+          "name": "m8r7.5-part10",
+          "args": [
+            "--knob",
+            "primary_risk=7.5",
+            "--participation",
+            "0.1"
+          ],
+          "stress": "depth participation 10%",
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r7.5-part10.json",
+            "final_cny": "2093747",
+            "cost_net_cagr_percent": "121.53",
+            "continuous_mdd_envelope_percent": "44.52"
+          }
+        },
+        {
+          "name": "m8r7.5-skip",
+          "args": [
+            "--knob",
+            "primary_risk=7.5",
+            "--sequence",
+            "random_skip"
+          ],
+          "stress": "random 20% session skip",
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r7.5-skip.json",
+            "final_cny": "970157",
+            "cost_net_cagr_percent": "97.57",
+            "continuous_mdd_envelope_percent": "44.51"
+          }
+        },
+        {
+          "name": "m8r7.5-absence",
+          "args": [
+            "--knob",
+            "primary_risk=7.5",
+            "--sequence",
+            "absence"
+          ],
+          "stress": "absence sequence",
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r7.5-absence.json",
+            "final_cny": "2794265",
+            "cost_net_cagr_percent": "131.26",
+            "continuous_mdd_envelope_percent": "44.51"
+          }
+        },
+        {
+          "name": "m8r7.5-block",
+          "args": [
+            "--knob",
+            "primary_risk=7.5",
+            "--sequence",
+            "block_21d"
+          ],
+          "stress": "21-day absence",
+          "result": {
+            "evidence": "evidence/robustness-20260929/m8/m8r7.5-block.json",
+            "final_cny": "2794265",
+            "cost_net_cagr_percent": "131.26",
+            "continuous_mdd_envelope_percent": "44.51"
+          }
+        }
+      ],
+      "outcome": "All four candidates pass the gates and the plateau; 7.5 has the highest mean test growth (1.879 vs 1.854/1.834/1.785) and passes all stresses (MDD <= 44.87%). PRIMARY_RISK 6 -> 7.5. CAGR 131.26% < 150%: economic_qualification stays NOT_MET."
     }
   ]
 }

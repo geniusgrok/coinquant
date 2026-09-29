@@ -44,6 +44,8 @@ class SessionExchange(Binance):
         self.q = D(0)
         self.entry = D(0)
         self.margin = D(0)
+        self._changed = None
+        self._changed_ms = int(now_ms)
         self.fees = D(0)
         self.funding_paid = D(0)
         self.matcher = matcher
@@ -201,12 +203,20 @@ class SessionExchange(Binance):
         # Same shape as the linear proxy. Dated brackets are not claimed.
         return (self.q * self.entry - self.margin) / (self.q - abs(self.q) * (MAINTENANCE + self.fee))
 
+    def _update_time(self):
+        """Binance `updateTime` is the last account change, not the read time; it is
+        stamped when a read first sees a new wallet/position/margin state."""
+        state = (self.wallet, self.q, self.entry, self.margin)
+        if state != self._changed:
+            self._changed, self._changed_ms = state, self.now_ms
+        return self._changed_ms
+
     def _position(self, mark):
         pnl = self.q * (mark - self.entry) if self.q else D(0)
         liq = max(D(0), self._liquidation()) if self.q > 0 else self._liquidation()
         return dict(symbol='BTCUSDT', positionSide='BOTH', positionAmt=_text(self.q),
                     entryPrice=_text(self.entry if self.q else 0), isolatedWallet=_text(self.margin if self.q else 0),
-                    updateTime=self.now_ms, marginAsset='USDT', markPrice=_text(mark),
+                    updateTime=self._update_time(), marginAsset='USDT', markPrice=_text(mark),
                     unRealizedProfit=_text(pnl), liquidationPrice=_text(liq if self.q else 0))
 
     def _note(self, price, kind):
@@ -736,7 +746,7 @@ class SessionExchange(Binance):
             position = self._position(mark)
             pnl = D(position['unRealizedProfit'])
             available = self.wallet - (self.margin if self.q else D(0))
-            return dict(assets=[dict(asset='USDT', walletBalance=_text(self.wallet), updateTime=self.now_ms)],
+            return dict(assets=[dict(asset='USDT', walletBalance=_text(self.wallet), updateTime=self._update_time())],
                         positions=[position], totalWalletBalance=_text(self.wallet),
                         totalUnrealizedProfit=_text(pnl), totalMarginBalance=_text(self.wallet + pnl),
                         availableBalance=_text(available))

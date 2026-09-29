@@ -14,7 +14,7 @@ from .opportunities import Opportunities, Opportunity
 from .linear_sizing import target_fraction
 from .types import Blocked, Unknown
 
-PRIMARY_RISK = '6'
+PRIMARY_RISK = '7.5'
 MACRO_RISK = '3.6'
 ORIGIN = 1575158400000  # 2019-12-01T00:00Z, fixed model warmup origin
 DAY = 86400000

@@ -10,7 +10,8 @@ from unittest.mock import patch
 
 from coinquant import dfii10, opportunities
 from coinquant.opportunities import FOUR_HOURS, Opportunities
-from research import rebuild, robustness
+from research import rebuild, risk_select, robustness
+from research.session_exchange import SessionExchange
 
 FLAT = [(101, 99, 100)] * 20
 
@@ -122,3 +123,41 @@ class FinalMarkTests(TestCase):
             def _mark_state(self):
                 return 1, D('99')
         self.assertEqual(rebuild._final_mark(Printed()), D('99'))
+
+
+class RiskSelectionTests(TestCase):
+    @staticmethod
+    def table(spec):
+        def row(growth, mdd, full_mdd):
+            blocks = {b: {'final_cny': 10000 * growth, 'mdd_envelope': mdd} for b in robustness.BLOCKS}
+            blocks['full'] = {'final_cny': 1e6, 'cagr': 1.0, 'mdd_envelope': full_mdd}
+            return blocks
+        return {risk_select.name_of(risk): row(*values) for risk, values in spec.items()}
+
+    def test_plateau_and_buffer_decide(self):
+        table = self.table({'6': (1.5, 0.30, 0.40), '6.5': (1.6, 0.40, 0.45),
+                            '7': (1.9, 0.44, 0.49), '7.5': (2.5, 0.46, 0.51)})
+        result = risk_select.select(table)
+        self.assertEqual(result['ranked'], ['6.5', '6'])
+        self.assertEqual(result['chosen'], '6.5')
+
+    def test_isolated_point_is_a_spike_and_nothing_qualifying_keeps_six(self):
+        table = self.table({'6': (1.5, 0.50, 0.40), '6.5': (1.6, 0.30, 0.40),
+                            '7': (1.9, 0.50, 0.40), '7.5': (2.5, 0.30, 0.40)})
+        self.assertEqual(risk_select.select(table)['ranked'], [])
+        self.assertEqual(risk_select.select(table)['chosen'], '6')
+
+
+class UpdateTimeTests(TestCase):
+    def test_update_time_moves_only_when_the_account_changes(self):
+        account = SimpleNamespace(now_ms=1000, wallet=D(10), q=D(0), entry=D(0), margin=D(0),
+                                  _changed=None, _changed_ms=1000)
+        stamp = lambda: SessionExchange._update_time(account)
+        self.assertEqual(stamp(), 1000)
+        account.now_ms = 1200
+        self.assertEqual(stamp(), 1000)
+        account.wallet = D(11)
+        account.now_ms = 1400
+        self.assertEqual(stamp(), 1400)
+        account.now_ms = 1600
+        self.assertEqual(stamp(), 1400)

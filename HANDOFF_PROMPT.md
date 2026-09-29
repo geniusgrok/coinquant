@@ -1,8 +1,8 @@
-# Coinquant 接续入口（2026-09-28）
+# Coinquant 接续入口（2026-09-29）
 
-先核对实时 `geniusgrok/coinquant` main，再读 `AGENTS.md`、`PROJECT_STATE.md`、`evidence/robustness-20260929/RESULT.md`、`evidence/rebuild-20260927/RESULT.md` 与 `research/redesign-PROTOCOL.md` 的 M7、O0、O1 部分。
+先核对实时 `geniusgrok/coinquant` main，再读 `AGENTS.md`、`PROJECT_STATE.md`、`evidence/robustness-20260929/RESULT.md`、`evidence/rebuild-20260927/RESULT.md` 与 `research/redesign-PROTOCOL.md` 的 M8、R3、O0、O1 部分。
 
-当前默认：SX60＋DFII10，主信号风险6（O1 过拟合审计后由7.5下调），宏观3.6；O1 基准 96.14% CAGR／37.51% MDD，成本/滑点/深度压力 95.2–96.1%，随机跳过20%会话 79.35%，CAGR 未达150%目标；建立在所有者接受的2020-01-19标记价缺口边界上（`path_complete=false`）。历史 P7（153.86%）只对应源码 `a6892b3`，不再描述当前代码：同一默认参数在此后的生产修复上因请求权重路径依赖测得90万至340万元（协议 O0）。信号常数的单参数邻居只有40–102% CAGR，即位于尖峰上；详见 `evidence/robustness-20260929/RESULT.md`。审计工具：`python -m research.robustness run|report`。
+当前默认：SX60＋DFII10，主信号风险7.5（R3 在测量器 M8 上按登记规则选中；O1 曾降到6），宏观3.6；R3 基准 131.26% CAGR／44.51% MDD，压力 97.57–121.53%（手续费+50% 106.19%），MDD 最高44.87%，CAGR 未达150%目标；建立在所有者接受的2020-01-19标记价缺口边界上（`path_complete=false`）。M8 让读请求占200 ms模拟时间，消除了本地请求权重造成的路径依赖（O0）；历史 P7（153.86%）只对应源码 `a6892b3`。全窗口终值对风险不单调、对读延迟与手续费敏感，131.26%不是稳定估计；信号常数的单参数邻居只有40–102% CAGR（M7 上），即位于尖峰上。详见 `research/redesign-PROTOCOL.md` 与 `evidence/robustness-20260929/RESULT.md`。工具：`python -m research.robustness run|report`、`python -m research.risk_select`。
 
 规则：
 
