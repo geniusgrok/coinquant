@@ -1,45 +1,32 @@
 #!/usr/bin/env bash
 # Idempotent Cloud Agent bootstrap for Coinquant.
 #
-# The production observation path is Python 3.13 stdlib-only; offline research
-# and the test suite additionally need numpy (pinned in requirements-research.txt)
-# and pytest (imported by tests/test_active_core.py). CI uses Python 3.13, so we
-# pin the same interpreter here via uv and expose it through a project venv.
+# The package, offline research tools, and tests use the Python 3.13 standard
+# library only. CI pins CPython 3.13 (.github/workflows/check.yml). The default
+# Cloud Agent image provides Python 3.12, so this script installs 3.13 and
+# exposes it on the default PATH ahead of /usr/bin.
 set -euo pipefail
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$REPO_DIR"
+export PATH="${HOME}/.local/bin:${PATH}"
 
-# 1) Deterministic Python 3.13 toolchain via uv (installs to ~/.local/bin).
 if ! command -v uv >/dev/null 2>&1; then
-  curl -LsSf https://astral.sh/uv/install.sh | sh
+  curl -LsSf https://astral.sh/uv/0.12.20/install.sh | env UV_UNMANAGED_INSTALL="${HOME}/.local/bin" sh
 fi
-export PATH="$HOME/.local/bin:$PATH"
 
 uv python install 3.13
+python_bin="$(uv python find 3.13)"
 
-# 2) Project virtualenv with the pinned research dependency plus the pytest
-#    dev dependency the test suite requires. Re-running only reconciles state.
-uv venv --python 3.13 --allow-existing .venv
-uv pip install --python "$REPO_DIR/.venv/bin/python" -r requirements-research.txt pytest
+# A direct symlink keeps the interpreter's prefix. Non-interactive agent
+# shells do not source ~/.profile, and /usr/local/bin is already on PATH.
+sudo ln -sfn "${python_bin}" /usr/local/bin/python3.13
+sudo ln -sfn python3.13 /usr/local/bin/python3
+sudo ln -sfn python3.13 /usr/local/bin/python
 
-# 3) Make `python`/`python3` resolve to the 3.13 venv in future agent shells.
-#    Inserted before Ubuntu's non-interactive early-return so it also applies to
-#    non-interactive command shells. Guarded so re-runs do not duplicate it.
-BASHRC="$HOME/.bashrc"
-MARKER='# >>> coinquant venv >>>'
-if [ ! -f "$BASHRC" ] || ! grep -qF "$MARKER" "$BASHRC"; then
-  BLOCK="$(cat <<EOF
-$MARKER
-if [ -f "$REPO_DIR/.venv/bin/activate" ]; then
-  . "$REPO_DIR/.venv/bin/activate"
-fi
-# <<< coinquant venv <<<
-EOF
-)"
-  if [ -f "$BASHRC" ]; then
-    printf '%s\n%s\n' "$BLOCK" "$(cat "$BASHRC")" > "$BASHRC"
-  else
-    printf '%s\n' "$BLOCK" > "$BASHRC"
-  fi
-fi
+/usr/local/bin/python - <<'PY'
+import sys
+from zoneinfo import ZoneInfo
+
+if sys.version_info[:2] != (3, 13):
+    raise SystemExit(f"expected Python 3.13, found {sys.version}")
+ZoneInfo("America/New_York")
+PY

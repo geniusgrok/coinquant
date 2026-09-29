@@ -39,3 +39,10 @@ Keep one lightweight CI workflow, one Python environment and timeout-minutes: 10
 Keep current code, configuration, reports and the complete originals of the current economic results; superseded material lives in Git history, not the working tree. Prefer native Git and file-backed/programmatic transfers, then authorized connectors. Do not route full archives/Base64/huge JSON through model context. Use verified parts when needed, with fixed source versions and length/hash checks; verify remote bytes, Git objects, tree, commit and target ref. Inspect remote state before retrying an unknown write.
 
 Use PROJECT_STATE.md as the current recovery entry and HANDOFF_PROMPT.md for continuation; do not create duplicate progress systems. Historical source snapshots are not current code and must not overwrite main. A merge, PR or checkpoint does not complete the 150%/<50% objective.
+
+## Cursor Cloud specific instructions
+
+- `.cursor/install.sh` installs CPython 3.13 as `python`, `python3`, and `python3.13` on `/usr/local/bin`. The package and the test suite use the standard library only. No pip packages and no exchange credentials are required.
+- Offline check, same as CI: `python -m compileall -q coinquant research tests` then `python -m unittest discover -s tests -v`.
+- `python -m coinquant status --config config.example.json` and `run` stop before any exchange request when Binance credentials are absent. That blocked result is the expected development path. Do not set live or demo keys, and do not pass `--execute`.
+- Do not run `python -m research.rebuild` or `python -m research.robustness` for routine verification. Those meters need the frozen market archive, which is not in the repository.
