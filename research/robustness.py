@@ -50,7 +50,13 @@ NEIGHBOURS = {
     'macro0': {'macro_risk': '0.001'}, 'macro1.8': {'macro_risk': '1.8'},
     'risk3.6': {'primary_risk': '3.6'}, 'risk5': {'primary_risk': '5'}, 'risk6': {'primary_risk': '6'},
 }
+EXECUTION = {f'O0-w{limit}': {'weight_limit': str(limit)} for limit in (2000, 2100, 2300, 2400)}
 CANDIDATES = {'base': BASE, **NEIGHBOURS}
+STRESS = {'fee150': ['--fee', '0.001125'],
+          'slip2': ['--trigger-slippage', '0.002', '--market-slippage', '0.001'],
+          'part10': ['--participation', '0.1'], 'skip': ['--sequence', 'random_skip'],
+          'absence': ['--sequence', 'absence'], 'block': ['--sequence', 'block_21d']}
+YEARS = (date(2026, 9, 20) - date(2020, 1, 1)).days / 365.2425
 FAMILIES = {'impulse_atr': ('imp2.5', 'imp3.5'), 'atr_bars': ('atr10', 'atr20'), 'life_bars': ('life28', 'life56'),
             'retrace': ('ret0.4', 'ret0.6'), 'take_power': ('take10', 'take40'),
             'dfii_drop': ('dfii0.15', 'dfii0.35'), 'macro_risk': ('macro0', 'macro1.8')}
@@ -59,7 +65,8 @@ RISKS = (('risk3.6', '3.6'), ('risk5', '5'), ('risk6', '6'), ('base', '7.5'))
 
 def jobs_for(candidates=None, blocks=None):
     names = candidates or list(CANDIDATES)
-    return [(name, block) for name in names for block in (['full'] + list(BLOCKS) if blocks is None else blocks)]
+    return [(name, block) for name in names
+            for block in (['full'] if name in EXECUTION else ['full'] + list(BLOCKS)) if blocks is None or block in blocks]
 
 
 def job_command(candidate, block, knobs, uid):
@@ -67,7 +74,9 @@ def job_command(candidate, block, knobs, uid):
     command = [sys.executable, '-m', 'research.rebuild', name, '--out', str(SCRATCH), '--uid', str(uid)]
     for key, value in knobs.items():
         command += ['--knob', f'{key}={value}']
-    if block != 'full':
+    if block in STRESS:
+        command += STRESS[block]
+    elif block != 'full':
         start, end = BLOCKS[block]
         command += ['--from', start, '--until', end]
     return name, command
@@ -209,9 +218,9 @@ def summarize(path):
 
 def collect(candidates=None):
     table = {}
-    for name in candidates or CANDIDATES:
+    for name in candidates or list(CANDIDATES) + list(EXECUTION):
         row = {}
-        for block in ['full'] + list(BLOCKS):
+        for block in ['full'] + list(BLOCKS) + list(STRESS):
             path = SCRATCH / f'{name}-{block}.json'
             if path.exists():
                 row[block] = summarize(path)
@@ -225,9 +234,16 @@ def growth(row, blocks):
     return math.exp(sum(math.log(v) for v in values) / len(values))
 
 
+def noise_ratio(table):
+    """Per-year growth equivalent of the full-window spread caused by the read-budget knob alone."""
+    finals = [table[name]['full']['final_cny'] for name in ['base', *EXECUTION] if name in table and 'full' in table[name]]
+    return (max(finals) / min(finals)) ** (1 / YEARS) if len(finals) > 1 else 1.0
+
+
 def analyse(table):
     base = table['base']
-    verdict = dict(splits={}, families={}, risks={})
+    ratio = max(ADOPT_RATIO, noise_ratio(table))
+    verdict = dict(splits={}, families={}, risks={}, adopt_ratio=ratio, noise_ratio=noise_ratio(table))
     for label, (dev, test) in SPLITS.items():
         verdict['splits'][label] = dict(dev=list(dev), test=list(test))
     for name, row in table.items():
@@ -247,7 +263,7 @@ def analyse(table):
     for family, names in FAMILIES.items():
         for name in names:
             entry = verdict['families'].get(name)
-            if entry and all(entry[s]['dev_ratio_to_base'] >= ADOPT_RATIO and entry[s]['dev_worst_mdd'] < 0.5
+            if entry and all(entry[s]['dev_ratio_to_base'] >= ratio and entry[s]['dev_worst_mdd'] < 0.5
                              for s in SPLITS):
                 adopted.append((family, name, entry['A']['dev_ratio_to_base']))
     verdict['adopted_changes'] = adopted
@@ -280,9 +296,13 @@ def main():
     parser.add_argument('command', choices=('run', 'report'))
     parser.add_argument('--jobs', type=int, default=4)
     parser.add_argument('--only', nargs='*', default=None)
-    parser.add_argument('--blocks', nargs='*', default=None, help="subset of 'full' and block names")
+    parser.add_argument('--blocks', nargs='*', default=None, help="subset of 'full', block and stress names")
+    parser.add_argument('--extra', default='{}', help='JSON object of additional candidates {name: {knob: value}}')
     args = parser.parse_args()
+    extra = json.loads(args.extra)
+    CANDIDATES.update(extra)
     if args.command == 'run':
+        CANDIDATES.update(EXECUTION)
         failures = run_jobs(jobs_for(args.only, args.blocks), args.jobs)
         for name, message in failures:
             print('FAILED', name, message)
@@ -294,7 +314,7 @@ def main():
     for row in table.values():
         for block in row.values():
             block.pop('weekly', None)
-    payload = dict(analysis=analysis, deflated_sharpe=deflated, trials_counted=trials, table=table)
+    payload = dict(analysis=analysis, deflated_sharpe=deflated, trials_counted=trials, extra=extra, table=table)
     (EVIDENCE / 'analysis.json').write_text(json.dumps(payload, indent=1, default=str) + '\n')
     print(json.dumps(analysis, indent=1, default=str))
 
