@@ -268,8 +268,13 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     request=dict(old_ids=old_ids,new_ids=new_ids,stop=str(D(stop)),take=str(D(take)))
     journal=state.get(key)
     if journal and journal['request']!=request:
-        if not journal.get('done'):raise Unknown('another protection replacement is unresolved')
-        journal=None
+        if journal.get('done'):
+            journal=None
+        elif request in journal.get('superseded',[]):
+            # The same operation continues under the fresh generation it rotated to.
+            request=journal['request'];old_ids=request['old_ids'];new_ids=request['new_ids'];epoch=journal['epoch']
+        else:
+            raise Unknown('another protection replacement is unresolved')
     # Missing ownership after local state loss never authorizes order cancellation.
     for identity in old_ids:
         row=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(identity,)).fetchone()
@@ -288,7 +293,7 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     if before['possible_entry_remainders']:raise Unknown('entry remainder blocks replacement')
     if journal is None:
         if not q:raise Blocked('no exposure to replace protection for')
-        journal=dict(request=request,quantity=str(q),done=False)
+        journal=dict(request=request,quantity=str(q),done=False,epoch=epoch)
         state.set(key,journal)
     if journal.get('done'):return before  # same operation must never protect a later position
     if 'original_quantity' not in journal:
@@ -296,24 +301,41 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
         state.set(key,journal)
     original=D(journal['original_quantity'])
     if q and q!=D(journal['quantity']):
-        # A smaller same-direction position can continue only after every
-        # prepared protection leg is terminal and one of them actually filled.
-        # An external change, or a child that is still working, stays unknown.
+        # A smaller same-direction position continues only when confirmed terminal
+        # fills of this operation's own protection legs explain exactly the missing
+        # size. A leg still healthy (NEW, no child) stays as protection; a leg that
+        # is spent cannot be reused, so the new pair moves to a fresh generation.
+        # An external change or a child that is still working stays unknown.
         if q*original<=0 or abs(q)>abs(original):
             raise Unknown('exposure grew or reversed during protection replacement')
-        explained=False
+        executed=D(0);live=[];spent_new=False
         for identity in old_ids+new_ids:
-            row=state.db.execute('SELECT 1 FROM intents WHERE id=?',(identity,)).fetchone()
-            if not row:
+            if not state.db.execute('SELECT 1 FROM intents WHERE id=?',(identity,)).fetchone():
                 continue
-            if not settled_protection(reader,state,identity):
+            if settled_protection(reader,state,identity):
+                child=(state.get('settled_protection') or {}).get(identity,{}).get('child')
+                if child is not None:executed+=D(child.get('executedQty') or 0)
+                spent_new|=identity in new_ids
+                continue
+            observed=reader.query_intent(identity,conditional=True)
+            parent=observed['parent']
+            if parent.get('algoStatus')!='NEW' or observed['child'] is not None or parent.get('closePosition') is not True:
                 raise Unknown('partial fill or exposure change; retain protection and reconcile')
-            child=(state.get('settled_protection') or {}).get(identity,{}).get('child')
-            if child is not None and D(child.get('executedQty') or 0)>0:
-                explained=True
-        if not explained:
+            live.append(identity)
+        if executed<=0:
             raise Unknown('position changed without a terminal owned protection fill')
+        if abs(original)-abs(q)!=executed:
+            raise Unknown('position change is not explained by confirmed owned protection fills')
         journal={**journal,'quantity':str(q)}
+        if spent_new:
+            fresh=max(int(reader.clock()*1000),(state.get('operation_sequence') or 0)+1)
+            state.set('operation_sequence',fresh)
+            epoch=fresh
+            old_ids=live
+            new_ids=[client_id(state.identity,epoch,k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')]
+            journal=dict(request=dict(old_ids=old_ids,new_ids=new_ids,stop=request['stop'],take=request['take']),
+                         quantity=str(q),original_quantity=str(q),done=False,epoch=epoch,
+                         superseded=journal.get('superseded',[])+[journal['request']])
         state.set(key,journal)
         q=D(q)
 
@@ -358,3 +380,11 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
             raise Unknown('flat cleanup exposure changed')
     journal['done']=True;state.set(key,journal)
     return after
+
+
+def replacement_epoch(state, default):
+    """Epoch under which a finished replacement left its live protection."""
+    journal=state.get('binance_protection_replacement')
+    if journal and journal.get('done') and type(journal.get('epoch')) is int:
+        return journal['epoch']
+    return default

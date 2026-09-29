@@ -1,7 +1,7 @@
 """Retain observed native cashflows; never synthesize unattended account equity."""
 import json
 
-from .types import Unknown, number
+from .types import Blocked, Unknown, number
 
 
 def income(reader,state,*,force=False,wallet=None):
@@ -9,10 +9,16 @@ def income(reader,state,*,force=False,wallet=None):
     coverage=state.get('income_coverage')
     if coverage and now<coverage['through']:
         raise Unknown('income observation clock regressed')
-    # A wallet gap is re-read immediately. A settled closure can wait a minute.
-    if (coverage and not force and now-coverage['through']<60000
-            and coverage.get('wallet_closure') not in ('pending_income', 'unexplained')):
-        return coverage
+    wallet_text=None if wallet is None else str(number(wallet))
+    # A closure binds one wallet value. A cached answer is reused for a minute only
+    # for that same value and only when it was settled; anything else is re-read.
+    if coverage and not force and now-coverage['through']<60000:
+        closure=coverage.get('closure')
+        if wallet_text is None:
+            return {**coverage,'wallet_closure':'collected'}
+        if (isinstance(closure,dict) and closure.get('wallet')==wallet_text
+                and closure.get('state') in ('explained','anchored')):
+            return {**coverage,'wallet_closure':closure['state']}
     # Re-read an overlap for late publication and deduplicate by native identity.
     # First use only establishes a recent audit origin, never past qualification.
     start=max(0,(coverage['through'] if coverage else now)-86400000)
@@ -37,7 +43,7 @@ def income(reader,state,*,force=False,wallet=None):
         page_number+=1
     result=dict(origin=coverage['origin'] if coverage else start,through=now,
                 observed_transactions=0,continuous_equity_verified=False,
-                wallet_closure='collected',
+                wallet_closure='collected',closure=coverage.get('closure') if coverage else None,
                 scope='native cashflows only; observation gaps are not interpolated')
     with state.db:
         for (kind,identity),event in observed.items():
@@ -46,7 +52,9 @@ def income(reader,state,*,force=False,wallet=None):
             state.db.execute('INSERT OR IGNORE INTO native_income VALUES (?,?,?)',(kind,identity,json.dumps(event,sort_keys=True)))
         result['observed_transactions']=state.db.execute('SELECT COUNT(*) FROM native_income').fetchone()[0]
         if wallet is not None:
-            result['wallet_closure']=_wallet_closure(state, number(wallet), now)
+            state_name=_wallet_closure(state, number(wallet), now)
+            result['wallet_closure']=state_name
+            result['closure']=dict(state=state_name,wallet=wallet_text,at=now)
         state.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('income_coverage',json.dumps(result,sort_keys=True)))
     return result
 
@@ -76,3 +84,20 @@ def _wallet_closure(state, wallet, now):
         state.set('wallet_anchor', {**anchor, 'gap_since': now if type(seen) is not int else seen, 'gap': str(gap)})
         return 'pending_income'
     return 'unexplained'
+
+
+def allows_new_risk(audit, wallet, *, flat):
+    """Whether a completed cashflow audit permits opening or adding exposure.
+
+    Only a closure bound to this exact wallet value counts. `pending_income`,
+    `unexplained`, `collected`, a stale or missing audit never open risk. The
+    first-ever baseline is accepted only on a flat account; with a position
+    it says nothing about the earlier wallet history.
+    """
+    closure=audit.get('closure') if isinstance(audit,dict) else None
+    try:
+        if wallet is None or not isinstance(closure,dict) or closure.get('wallet')!=str(number(wallet)):
+            return False
+    except Blocked:
+        return False
+    return closure.get('state')=='explained' or (closure.get('state')=='anchored' and flat)

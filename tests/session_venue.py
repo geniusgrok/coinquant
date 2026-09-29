@@ -19,7 +19,7 @@ class Venue(Binance):
         self.now=self.now//14400000*14400000+1000
         super().__init__(clock=lambda:self.now/1000,authorize_writes=True)
         self.direction=direction;self.q=D(0);self.entry=D(0);self.wallet=D(1000);self.margin=D(0)
-        self.orders={};self.algos={};self.trades=[];self.calls=[];self.sent=[]
+        self.orders={};self.algos={};self.trades=[];self.calls=[];self.sent=[];self.income=[]
         self.fraction=D(1);self.timeout_after_entry=False;self.timeout_before_entry=False
         self.reject_protection=False;self.partial_exit=False;self.fail_reads=False
         self.mark=D(100000);self.updated=self.now
@@ -64,7 +64,8 @@ class Venue(Binance):
             default=0 if 'fromId' in p else self.now-7*86400000
             rows=[deepcopy(t) for t in self.trades if p.get('startTime',default)<=t['time']<=p.get('endTime',self.now) and t['id']>=p.get('fromId',0)]
             return rows[:p.get('limit',1000)] if 'fromId' in p or 'startTime' in p else rows[-p.get('limit',1000):]
-        if path.endswith('/income'):return []
+        if path.endswith('/income'):
+            return [deepcopy(r) for r in self.income if p.get('startTime',0)<=r['time']<=p.get('endTime',self.now)]
         if path.endswith('/premiumIndex'):return dict(symbol='BTCUSDT',time=self.now,markPrice=str(self.mark))
         if path.endswith('/exchangeInfo'):return {'symbols':[deepcopy(self.rules)]}
         if path.endswith('/commissionRate'):return dict(symbol='BTCUSDT',takerCommissionRate='.0005')
@@ -85,8 +86,13 @@ class Venue(Binance):
     def liquidation(self):
         return (self.q*self.entry-self.margin)/(self.q-abs(self.q)*D('.0055'))
 
+    def pay(self,kind,amount):
+        self.income.append(dict(incomeType=kind,tranId=len(self.income)+1,time=self.now,asset='USDT',
+                                income=str(amount),symbol='BTCUSDT',tradeId=''))
+
     def fill(self,order,amount):
         self.updated=self.now
+        wallet=self.wallet
         signed=amount if order['side']=='BUY' else -amount
         if order['reduceOnly']:
             self.wallet+=-signed*(self.mark-self.entry)-amount*self.mark*D('.0005')
@@ -98,6 +104,7 @@ class Venue(Binance):
             if amount:self.entry=(abs(self.q)*self.entry+amount*price)/(abs(self.q)+amount)
             self.q+=signed;self.margin+=amount*price/20
             self.wallet-=amount*self.entry*D('.0005')
+        if self.wallet!=wallet:self.pay('COMMISSION',self.wallet-wallet)
         if amount:
             self.trades.append(dict(symbol='BTCUSDT',positionSide='BOTH',side=order['side'],orderId=order['orderId'],id=len(self.trades)+1,time=self.now,qty=str(amount)))
         order['executedQty']=str(D(order['executedQty'])+amount)

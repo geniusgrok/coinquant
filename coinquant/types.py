@@ -21,6 +21,10 @@ class NotSent(Unknown):
     """The request was refused locally and never reached the exchange."""
 
 
+class ObservationDeadline(NotSent):
+    """The bounded observation/cleanup budget ran out before a request left; no write was made."""
+
+
 class Rejected(Unknown):
     """The exchange definitively refused a write; nothing was executed."""
 

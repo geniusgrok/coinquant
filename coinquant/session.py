@@ -1,13 +1,15 @@
 """Manually started finite sessions; live and replay use this exact coordinator."""
 import time
 
-from .lifecycle import Lifecycle, blocking
+from .lifecycle import ABSOLUTE_GRACE, FINISH_SECONDS, Lifecycle, blocking
 from .linear_preview import advance, preview
 from .native_preview import entry_preview
 from .ownership import reconcile
 from .state import State
-from .types import Blocked, Unknown
-from .audit import income
+from decimal import Decimal as D
+
+from .types import Blocked, ObservationDeadline, Unknown
+from .audit import allows_new_risk, income
 
 
 def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None):
@@ -35,17 +37,18 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
     result.update(ownership=ownership,reconstructed_market_only=reconstructed)
     audit=None
     if execute:
-        # Missing cashflow audit blocks new risk, never a verified reduction.
-        if result['action']=='enter':audit=income(reader,state,wallet=snapshot.get('wallet_usdt'))
+        # A missing or open cashflow audit blocks new risk (entry and add), never
+        # a verified reduction or protection. The audit is bound to this wallet.
+        wallet=snapshot.get('wallet_usdt')
+        if result['action']=='enter':
+            audit=income(reader,state,wallet=wallet)
+            engine.risk_audit_ok=allows_new_risk(audit,wallet,flat=True)
         elif result['action']=='hold':
-            # A hold may add to the position; the add needs the same prior audit.
-            # Maintaining existing protection does not. An unexplained wallet
-            # change blocks the add and still allows protection.
             try:
-                audit=income(reader,state,wallet=snapshot.get('wallet_usdt'))
-                engine.may_add=audit.get('wallet_closure')!='unexplained'
+                audit=income(reader,state,wallet=wallet)
+                engine.risk_audit_ok=allows_new_risk(audit,wallet,flat=False)
             except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError):
-                engine.may_add=False
+                engine.risk_audit_ok=False
         writes=len(engine.actions)
         action,snapshot=engine.decide(model,snapshot)
         # A fill may occur in any write/read race. Reconcile again before deciding
@@ -64,6 +67,27 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
                 actions=engine.actions,write_attempted=bool(engine.actions),income_audit=audit)
 
 
+RECOVERABLE=(Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError)
+
+
+def _reason(exc,generic):
+    return str(exc) if isinstance(exc,(Blocked,Unknown)) else generic
+
+
+def _execution_unresolved(report,execute):
+    """True when durable intents or exposure are not settled. A session that only
+    ran out of observation time before any request left is not unresolved."""
+    if not execute:
+        return False
+    if report.get('pending_intents') or report.get('cleanup')=='unresolved':
+        return True
+    actual=report.get('actual')
+    if actual is None:
+        return report.get('cleanup')!='verified'
+    return bool(D(actual['quantity_btc'])) and not (
+        actual.get('native_full_position_protected') and actual.get('stop_before_liquidation'))
+
+
 def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sleep, stopping=lambda:False,
         trial_mode=None, source_digest=None):
     """Finite deadline plus bounded cleanup. No timers survive this function.
@@ -71,9 +95,15 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
     `execute` is an explicit operation authorization, not a qualification claim.
     The public CLI requires an explicit bounded trial gate before credentials.
     Offline replay injects a non-network venue and virtual clock here.
+
+    Budgets: trading ends at `deadline`; protection, bounded reduction and the final
+    verification each keep their own budget, but none may renew the adapter past
+    `hard_deadline`. Every failure, including clock alignment, is recorded in the
+    final report; a first interrupt starts the same cleanup and later ones do not
+    abort it.
     """
     started=monotonic();deadline=started+config.session_seconds
-    report=dict(status='read_only',cycles=0,write_attempted=False,errors=[],
+    report=dict(status='read_only',cycles=0,write_attempted=False,errors=[],observation_timeouts=0,
                 qualification='NOT_QUALIFIED',stop_reason='deadline',cleanup='not_required',
                 session_started_at_ms=int(reader.clock()*1000))
     if trial_mode is not None:report['trial_mode']=trial_mode
@@ -81,28 +111,37 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
     if (getattr(reader,'environment','live')!=config.environment
             or getattr(reader,'capital_limit',None)!=config.capital_limit):
         raise Blocked('exchange adapter and configuration differ in environment or capital limit')
+    if hasattr(reader,'hard_deadline'):reader.hard_deadline=deadline+ABSOLUTE_GRACE
     with State(config.state_dir,config.scope) as state:
         prior_writes=state.get('write_attempt_count') or 0
+        last_failure=None
         try:
             while monotonic()<deadline and not stopping():
-                reader.begin_cycle(min(120,max(1,deadline-monotonic())))
                 report['cycles']+=1
                 report['observation_current']=False
                 report.pop('actual',None)
                 report.pop('model_preview',None)
                 report['actions']=[]
+                phase='clock'
                 try:
+                    reader.begin_cycle(min(120,max(1,deadline-monotonic())))
+                    phase='cycle'
                     current=cycle(reader,state,config.account_uid,execute=execute,
                                   may_enter=lambda:monotonic()<deadline and not stopping(),
                                   session=report['session_started_at_ms'])
                     report.update(current,write_attempted=report['write_attempted'] or current['write_attempted'])
                     report['observation_current']=True
                     report.pop('reason',None)
-                except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError) as exc:
+                    last_failure=None
+                except RECOVERABLE as exc:
                     # No same-identity writes are retried; subsequent rounds may
                     # only proceed after durable recovery and a fresh observation.
-                    report.update(status='unknown',reason=str(exc) if isinstance(exc,(Blocked,Unknown)) else 'Invalid observation or state')
-                    report['errors']=(report['errors']+[dict(cycle=report['cycles'],reason=report['reason'])])[-10:]
+                    timeout=isinstance(exc,ObservationDeadline)
+                    last_failure='deadline' if timeout else 'other'
+                    report['observation_timeouts']+=timeout
+                    report.update(status='unknown',reason=_reason(exc,'Invalid observation or state'))
+                    report['errors']=(report['errors']+[dict(cycle=report['cycles'],phase=phase,
+                                                             error_type=type(exc).__name__,reason=report['reason'])])[-10:]
                 report['write_attempted']=(state.get('write_attempt_count') or 0)>prior_writes
                 state.report(report)
                 remaining=deadline-monotonic()
@@ -113,25 +152,34 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
             report['stop_reason']='interrupted'
         finally:
             if execute:
-                # A cleanup budget is separate from the deadline; no new entry is
-                # permitted here. Native protection remains at process exit.
-                reader.begin_cycle(120)
+                # No new entry is permitted here. Native protection remains at process exit.
                 engine=Lifecycle(reader,state,config.account_uid,authorized=True)
                 try:
+                    reader.begin_cycle(FINISH_SECONDS)
                     report['actual']=engine.finish()
                     report['cleanup']='verified'
                     report['observation_current']=True
-                except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError) as exc:
-                    report.update(status='unknown',cleanup='unresolved',reason=str(exc) if isinstance(exc,(Blocked,Unknown)) else 'Cleanup could not be verified')
+                except KeyboardInterrupt:
+                    report.update(status='unknown',cleanup='unresolved',reason='Interrupted again during cleanup; state is recoverable')
+                    report['observation_current']=False
+                    report.pop('actual',None)
+                    report.pop('model_preview',None)
+                except RECOVERABLE as exc:
+                    report.update(status='unknown',cleanup='unresolved',reason=_reason(exc,'Cleanup could not be verified'))
+                    report['errors']=(report['errors']+[dict(cycle=report['cycles'],phase='cleanup',
+                                                             error_type=type(exc).__name__,reason=report['reason'])])[-10:]
                     report['observation_current']=False
                     report.pop('actual',None)
                     report.pop('model_preview',None)
                 report['write_attempted'] |= bool(engine.actions)
                 if report['cleanup']=='verified':
                     try:report['income_audit']=income(reader,state,force=True)
-                    except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError) as exc:
+                    except KeyboardInterrupt:
                         report.update(status='unknown',income_audit={'status':'unresolved'},
-                                      reason=str(exc) if isinstance(exc,(Blocked,Unknown)) else 'Income audit unavailable')
+                                      reason='Interrupted during the final income audit')
+                    except RECOVERABLE as exc:
+                        report.update(status='unknown',income_audit={'status':'unresolved'},
+                                      reason=_reason(exc,'Income audit unavailable'))
             report['pending_intents']=len(state.pending())
             if config.capital_limit is not None:
                 report['sizing_capital_usdt']=str(config.capital_limit)
@@ -140,6 +188,13 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
             report['write_attempted']=(state.get('write_attempt_count') or 0)>prior_writes
             if report['pending_intents']:
                 report.update(status='unknown',reason='Durable intents require recovery')
+            report['execution_unresolved']=_execution_unresolved(report,execute)
+            if (execute and last_failure=='deadline' and report['status']=='unknown' and report['cleanup']=='verified'
+                    and not report['execution_unresolved'] and report.get('income_audit',{}).get('status')!='unresolved'):
+                # The last poll ran out of observation time before any request left, and the
+                # closing verification found the account settled: report that, not a failure.
+                report.update(status='executed' if report['write_attempted'] else 'no_action',
+                              reason='Last poll ended at the observation deadline; closing verification settled')
             report['elapsed_seconds']=max(0,monotonic()-started)
             state.report(report)
     return report

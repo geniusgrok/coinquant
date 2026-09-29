@@ -25,6 +25,10 @@ PREVIEW_WEIGHT = 100
 # request timeout.
 PROTECT_SECONDS = 120
 REDUCE_SECONDS = 120
+# Final verification after the trading deadline. Together the three budgets are the
+# most any renewal may extend the session's absolute end (Binance.hard_deadline).
+FINISH_SECONDS = 120
+ABSOLUTE_GRACE = PROTECT_SECONDS + REDUCE_SECONDS + FINISH_SECONDS
 # Contract rules from the entry preflight are reused only within one session.
 RULES_FRESH_MS = 300000
 
@@ -101,8 +105,9 @@ class Lifecycle:
         self.actions = []
         self.entry_constraint = None
         self.reconciled = None
-        # Set only by a cashflow audit that completed before this decision.
-        self.may_add = False
+        # Set only by a cashflow audit closed against the wallet observed for this
+        # decision (audit.allows_new_risk). Entry and top-up both require it.
+        self.risk_audit_ok = False
 
     def send(self, method, path, payload):
         if not self.authorized:
@@ -134,7 +139,7 @@ class Lifecycle:
 
     def reserve(self, seconds):
         # Use the adapter clock; a wall monotonic would outlive a virtual session.
-        self.reader.deadline = max(self.reader.deadline, self.reader.monotonic()+seconds)
+        self.reader.set_deadline(seconds, extend_only=True)
 
     def instrument(self):
         rows = [r for r in self.reader.get('/fapi/v1/exchangeInfo')['symbols'] if r.get('symbol') == 'BTCUSDT']
@@ -340,8 +345,8 @@ class Lifecycle:
             except (Blocked, Unknown):
                 pass
             raise
-        self.state.set('position_protection', dict(epoch=plan['epoch'],stop=plan['stop'],
-                       take=plan['take'],campaign=plan['campaign']))
+        self.state.set('position_protection', dict(epoch=safety.replacement_epoch(self.state,plan['epoch']) if guard_epoch is not None else plan['epoch'],
+                       stop=plan['stop'],take=plan['take'],campaign=plan['campaign']))
         self.state.set('entry_plan', None)
         return snapshot
 
@@ -477,13 +482,16 @@ class Lifecycle:
         result=safety.replace_protection(self.reader,self.state,self.send,self.uid,
             replacement['old_epoch'],replacement['epoch'],replacement['stop'],replacement['take'],
             instrument=rules,authorized=self.authorized)
-        self.state.set('position_protection',{k:v for k,v in replacement.items() if k!='old_epoch'})
+        self.state.set('position_protection',{**{k:v for k,v in replacement.items() if k!='old_epoch'},
+                       'epoch':safety.replacement_epoch(self.state,replacement['epoch'])})
         self.state.set('session_replacement',None)
         return result
 
     def enter(self, model, snapshot):
         if self.state.pending() or snapshot['possible_entry_remainders'] or number(snapshot['quantity_btc']):
             raise Unknown('entry requires reconciled flat account')
+        if not self.risk_audit_ok:
+            raise Blocked('cashflow audit does not close the current wallet; no new exposure')
         self.reader.refresh_safety_observation()
         self.reader.ensure_capacity(ENTRY_RESERVE+PREVIEW_WEIGHT)
         plan = entry_preview(self.reader,model,snapshot)
@@ -503,7 +511,7 @@ class Lifecycle:
         # the trading deadline must not cut network access immediately after fill.
         # Use the adapter clock. A wall monotonic here would outlive a virtual session
         # or expire a historical one immediately.
-        self.reader.deadline=self.reader.monotonic()+120
+        self.reader.set_deadline(120, extend_only=True)
         epoch = self.epoch()
         identity = client_id(self.state.identity,epoch,'entry')
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
@@ -578,7 +586,7 @@ class Lifecycle:
         """
         fill = self.state.get('entry_fill')
         protection = self.state.get('position_protection')
-        if (not self.may_add or not fill or self.session is None or fill.get('session') != self.session or not protection
+        if (not self.risk_audit_ok or not fill or self.session is None or fill.get('session') != self.session or not protection
                 or fill.get('campaign') != protection.get('campaign') or model.active is None
                 or model.active.identity != fill['campaign'] or not self.may_enter()):
             return snapshot
@@ -611,7 +619,7 @@ class Lifecycle:
         self.reader.ensure_capacity(TOPUP_RESERVE)
         if not self.may_enter():
             raise Blocked('session deadline or stop request prohibits a new entry')
-        self.reader.deadline=self.reader.monotonic()+120
+        self.reader.set_deadline(120, extend_only=True)
         epoch = self.epoch()
         # The venue moves the add's initial margin into the isolated wallet on fill.
         target = (number(plan['allocated_margin_usdt'])

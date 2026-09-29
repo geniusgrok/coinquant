@@ -68,6 +68,9 @@ def observe(config_path, *, execute=False):
         raise Blocked('use run --execute with explicit trial environment and UID')
     config=load(config_path)
     venue=connect(config)
+    # The signing clock is aligned once under the request budget before any private
+    # read. A failed time read is an explicit unknown; nothing is signed or written.
+    venue.begin_cycle(60)
     with State(config.state_dir,config.scope) as state:
         had_pending=bool(state.pending())
         recovery=venue.recover_pending(state)  # also reopens legacy false rejections

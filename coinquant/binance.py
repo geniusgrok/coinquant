@@ -14,7 +14,7 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 from decimal import Decimal
 
-from coinquant.types import Blocked, Missing, NotSent, Rejected, Unknown, number
+from coinquant.types import Blocked, Missing, NotSent, ObservationDeadline, Rejected, Unknown, number
 
 PUBLIC = {'/fapi/v1/time', '/fapi/v1/exchangeInfo', '/fapi/v1/klines',
           '/fapi/v1/premiumIndex', '/fapi/v1/depth'}
@@ -83,6 +83,8 @@ class Binance:
         self.check_all_orders = True
         self.all_orders_checked_at = None
         self.deadline = self.monotonic() + 120
+        # Absolute end of every budget renewal; set by the session coordinator.
+        self.hard_deadline = None
         self._dfii10 = None
         self.align_time = False
         self.time_offset_ms = 0
@@ -106,8 +108,17 @@ class Binance:
             return self._monotonic()
         return time.monotonic()
 
+    def set_deadline(self, seconds, *, extend_only=False):
+        """Bound the current observation. A renewal never passes `hard_deadline`."""
+        target = self.monotonic() + seconds
+        if extend_only:
+            target = max(target, self.deadline)
+        if self.hard_deadline is not None:
+            target = min(target, self.hard_deadline)
+        self.deadline = target
+
     def begin_cycle(self, seconds=120):
-        self.deadline = self.monotonic() + min(120, max(1, seconds))
+        self.set_deadline(min(120, max(1, seconds)))
         # Weight-40 all-symbol scans run at most once per rolling minute.
         last = self.all_orders_checked_at
         if last is None or self.monotonic() - last >= 60:
@@ -130,12 +141,27 @@ class Binance:
             self.check_all_orders = True
 
     def align_clock(self):
-        """Set the signing offset from Binance server time. Does not widen recvWindow."""
+        """Set the signing offset from Binance server time. Does not widen recvWindow.
+
+        The time read spends the same request-weight and deadline budget as any
+        other request. A failure is an explicit Unknown: the clock is then not
+        trusted and no signed request follows.
+        """
         host = HOSTS[self.environment][1]
+        if self.monotonic() < self.cooldown_until:
+            raise NotSent('Binance rate limit cooldown; no request sent')
+        self.ensure_capacity(1)
+        remaining = self.deadline - self.monotonic()
+        if remaining <= 0:
+            raise ObservationDeadline('bounded Binance observation deadline exceeded; no request sent')
         local = int(self.clock() * 1000)
         started = self.monotonic()
-        with self.opener.open(Request('https://' + host + '/fapi/v1/time'), timeout=5) as response:
-            body = json.loads(response.read(10000))
+        self.request_weights.append((started, 1))
+        try:
+            with self.opener.open(Request('https://' + host + '/fapi/v1/time'), timeout=min(5, remaining)) as response:
+                body = json.loads(response.read(10000))
+        except (URLError, TimeoutError, OSError, ValueError, Blocked):
+            raise Unknown('Binance server time unavailable; clock not aligned') from None
         server = body.get('serverTime') if isinstance(body, dict) else None
         if type(server) is not int:
             raise Unknown('Binance time response is not usable')
@@ -221,7 +247,13 @@ class Binance:
             if not self.key or not self.secret:
                 raise Blocked('explicit Binance credentials required for private reads')
             if self.align_time and (self.time_aligned_at is None or self.monotonic()-self.time_aligned_at > 60):
-                raise NotSent('exchange clock is not aligned; no signed request')
+                # A long cycle re-aligns instead of signing with a stale offset.
+                try:
+                    self.align_clock()
+                except NotSent:
+                    raise
+                except Unknown:
+                    raise NotSent('exchange clock is not aligned; no signed request') from None
             params.update(timestamp=int(self.clock()*1000)+self.time_offset_ms, recvWindow=5000)
             headers['X-MBX-APIKEY'] = self.key
         query = urlencode(sorted(params.items()))
@@ -238,7 +270,7 @@ class Binance:
         remaining = self.deadline-self.monotonic()
         if self.monotonic() < self.cooldown_until:
             raise NotSent('Binance rate limit cooldown; no request sent')
-        if remaining <= 0: raise NotSent('bounded Binance observation deadline exceeded; no request sent')
+        if remaining <= 0: raise ObservationDeadline('bounded Binance observation deadline exceeded; no request sent')
         try:
             self.request_weights.append((self.monotonic(),weight))
             result = self._transport(request, timeout=min(8,remaining))
