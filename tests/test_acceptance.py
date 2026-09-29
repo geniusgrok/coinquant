@@ -35,6 +35,18 @@ class AcceptanceTests(unittest.TestCase):
         for entry in [replay['accepted_basis']['result'], *replay['accepted_basis']['stresses'].values()]:
             self.assertTrue((ROOT / entry['evidence']).exists(), entry['evidence'])
 
+    def test_recorded_numbers_are_the_ones_in_their_evidence_files(self):
+        replay = self.spec['current_session_replay']
+        entries = [replay['accepted_basis']['result'], *replay['accepted_basis']['stresses'].values()]
+        if 'current_code_regression' in replay:
+            entries.append(replay['current_code_regression'])
+        for entry in entries:
+            measured = json.loads((ROOT / entry['evidence']).read_text())
+            self.assertEqual(str(round(D(measured['final_cny']))), entry['final_cny'], entry['evidence'])
+            self.assertEqual(f"{D(measured['cagr']) * 100:.2f}", entry['cost_net_cagr_percent'], entry['evidence'])
+            self.assertEqual(f"{D(measured['mdd_envelope']) * 100:.2f}", entry['continuous_mdd_envelope_percent'],
+                             entry['evidence'])
+
     def test_exact_target_boundaries(self):
         self.assertTrue(targets_met(self.spec, '1.5', '0.499999999999999999'))
         self.assertFalse(targets_met(self.spec, '1.499999999999999999', '0.1'))

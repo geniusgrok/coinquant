@@ -52,6 +52,14 @@
   "account_evidence": "one continuous account including unattended exposure; observation gaps cannot be interpolated into complete MDD",
   "economic_qualification": "NOT_MET",
   "current_session_replay": {
+    "current_code_regression": {
+      "scope": "base run of the current code on the identical frozen inputs; unregistered, stress rows not re-measured",
+      "evidence": "evidence/full-review-20260929/REG2.json",
+      "source_python_sha256": "ae7b3fd857e24156791b4c2412020c85993904c65ce74a64e546c0b5eaddc518",
+      "final_cny": "1893613",
+      "cost_net_cagr_percent": "118.24",
+      "continuous_mdd_envelope_percent": "44.51"
+    },
     "meter": "M8 (research/redesign-PROTOCOL.md): reads take 200 ms of simulated time; knobs and blocks from O1; risk from R3",
     "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
     "scope": "production session.run and Lifecycle on SessionExchange; not a historical order book; native execution not verified",
@@ -60,6 +68,7 @@
       "decision": "The 29 missing official mark minutes on 2020-01-19 are bounded by the measured mark/trade divergence; a protection trigger inside the gap is judged negligible. This is an owner acceptance of a hindsight bound, not a complete historical path.",
       "default_trial": "R3 (PRIMARY_RISK 7.5 by the R3 rule on meter M8, --mark-gap bound, --read-latency-ms 200 default); source recorded in each original",
       "result": {
+        "scope": "R3 measurement on the pre-audit-fix source recorded in the original; not the current code",
         "evidence": "evidence/robustness-20260929/m8/m8r7.5-full.json",
         "final_cny": "2794265",
         "cost_net_cagr_percent": "131.26",

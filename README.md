@@ -94,7 +94,7 @@ python -m coinquant status --config live-trial.json
 ```sh
 python -m unittest discover -s tests -v
 python -m research.session_replay TAPE.json --state-dir NEW_REPLAY_DIRECTORY
-python -m research.rebuild O1
+python -m research.rebuild MYTRIAL --out /tmp/mytrial   # 完整基准，约6分钟；同名证据需要 --overwrite
 ```
 
 `research.rebuild` 只写自己创建并带所有权标记的临时状态目录（默认每次唯一目录，拒绝无标记目录、符号链接、仍在运行的所有者），先校验全部参数与输出位置再动文件；部分或子窗口结果不能写入证据目录，同名证据结果需要 `--overwrite` 且原件以 `.superseded-<运行ID>` 保留；每份结果带 `run_id`。
@@ -113,7 +113,7 @@ Binance 月度/日度 vision 文件由 `python -m research.session_market --root
 
 经济目标：2020-01-01 00:00 UTC至2026-09-20 00:00 UTC，右端不含；人民币10,000元、不追加；成本后CAGR≥150%、完整连续账户MDD<50%，纳入会话时序、费用、滑点、资金费、保证金、强平及人民币/USDT估值。
 
-当前有限会话测量（测量器 M8：读请求占200 ms模拟时间；默认风险7.5；每份原件记录源码提交、输入文件摘要、资金费流水与每日权益）。下表是源码 `fbe3b31`（审计修复前）的 R3 测量；审计修复后在相同冻结输入上只重跑了基准（回归 REG：¥1,893,613／118.24%／MDD 44.51%，差异来自新增风险前的资金流水核对占用读时间，见 [审计修复结果](evidence/audit-fixes-20260929/RESULT.md)），压力行未重测：
+当前有限会话测量（测量器 M8：读请求占200 ms模拟时间；默认风险7.5；每份原件记录源码提交、输入文件摘要、资金费流水与每日权益）。下表是源码 `fbe3b31`（审计修复前）的 R3 测量；审计修复后在相同冻结输入上只重跑了基准（回归 REG／REG2：¥1,893,613／118.24%／MDD 44.51%，差异来自新增风险前的资金流水核对占用读时间，见 [审计修复结果](evidence/audit-fixes-20260929/RESULT.md) 与 [第二轮审查](evidence/full-review-20260929/RESULT.md)），压力行未重测：
 
 | 场景 | 期末人民币 | 成本后 CAGR | 连续 MDD |
 |---|---|---|---|

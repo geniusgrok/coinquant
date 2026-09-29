@@ -5,8 +5,7 @@ on:
     paths:
       - 'coinquant/**'
       - 'tests/**'
-      - 'main.py'
-      - 'config.example.json'
+      - 'config*.json'
       - 'research/**'
       - 'evidence/**'
       - '.github/workflows/check.yml'
@@ -15,8 +14,7 @@ on:
     paths:
       - 'coinquant/**'
       - 'tests/**'
-      - 'main.py'
-      - 'config.example.json'
+      - 'config*.json'
       - 'research/**'
       - 'evidence/**'
       - '.github/workflows/check.yml'
@@ -25,7 +23,7 @@ permissions:
   contents: read
 concurrency:
   group: coinquant-check-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   check:
     runs-on: ubuntu-24.04

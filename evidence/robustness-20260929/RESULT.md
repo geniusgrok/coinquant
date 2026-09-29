@@ -1,5 +1,7 @@
 # 过拟合审计结果（O0/O1，2026-09-29）
 
+> **身份说明（2026-09-29 复查）**：`m8/` 的44份原件记录 `git_head=d1ca5c0`、`dirty=True`、源码摘要 `c5ef5b41…`（`d1ca5c0` 树加 `fbe3b31` 的 `research/session_exchange.py`；`PRIMARY_RISK` 当时为6，7.5 由旋钮传入），不是干净的 `fbe3b31`；其 `execution_unresolved` 是旧定义（观察超时即计入）。当前代码同输入基准见 `evidence/full-review-20260929/`。
+>
 > **更新（M8／R3，2026-09-29）**：下文 O0／O1 的数字来自测量器 M7，已被 M8 取代（读请求占 200 ms 模拟时间）。M8 消除了本地请求权重对结果的影响（权重上限 2000／2200／2400／1,000,000 终值逐位相同，因权重被拒的会话数 0），并把主信号风险按登记规则重选为 **7.5**：全窗口 ¥2,794,265／CAGR 131.3%／MDD 44.51%，六项压力 MDD 44.5–44.9%，CAGR 仍未达 150%，`economic_qualification` 仍为 `NOT_MET`。全窗口终值对风险不单调、对手续费与读延迟敏感，选择依据是新账户日历年区块。详见 `research/redesign-PROTOCOL.md` 的“M8 结果与验收”和“R3 结果”；原件在 `m8/`，逐块汇总在 `r3.json`，复现 `python -m research.robustness run --only m8r6 m8r6.5 m8r7 m8r7.5 --extra '{"m8r6":{"primary_risk":"6"},"m8r6.5":{"primary_risk":"6.5"},"m8r7":{"primary_risk":"7"},"m8r7.5":{"primary_risk":"7.5"}}'`，再 `python -m research.risk_select`。以下 O0／O1 保留为历史记录。
 
 协议与判定规则在结果之前登记于 `research/redesign-PROTOCOL.md` 的 O0、O1 两节；机器可读汇总在 `analysis.json`（每个试验的窗口、旋钮、源码身份、原件 SHA-256、分年收益、集中度、滚动窗口和去通胀夏普）。邻域试验原件太大不入库，只保留汇总与哈希；最终配置 O1 的全窗口与六项压力原件、风险 7.5 对照原件在 `evidence/rebuild-20260927/O1*.json`。复现：`python -m research.robustness run`，再 `python -m research.robustness report`。所有数字都在冻结的795个会话、测量器 M7 规则、所有者接受的2020-01-19标记价缺口边界（`path_complete=false`）上，是研究测量，不是生产资格。
