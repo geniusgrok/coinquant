@@ -19,7 +19,7 @@ class Venue(Binance):
         self.now=self.now//14400000*14400000+1000
         super().__init__(clock=lambda:self.now/1000,authorize_writes=True)
         self.direction=direction;self.q=D(0);self.entry=D(0);self.wallet=D(1000);self.margin=D(0)
-        self.orders={};self.algos={};self.trades=[];self.calls=[];self.sent=[];self.income=[]
+        self.orders={};self.algos={};self.trades=[];self.calls=[];self.sent=[];self.income=[];self.margin_history=[]
         self.fraction=D(1);self.timeout_after_entry=False;self.timeout_before_entry=False
         self.reject_protection=False;self.partial_exit=False;self.fail_reads=False
         self.mark=D(100000);self.updated=self.now
@@ -66,6 +66,8 @@ class Venue(Binance):
             return rows[:p.get('limit',1000)] if 'fromId' in p or 'startTime' in p else rows[-p.get('limit',1000):]
         if path.endswith('/income'):
             return [deepcopy(r) for r in self.income if p.get('startTime',0)<=r['time']<=p.get('endTime',self.now)]
+        if path.endswith('/positionMargin/history'):
+            return [deepcopy(r) for r in self.margin_history if p.get('startTime',0)<=r['time']<=p.get('endTime',self.now)]
         if path.endswith('/premiumIndex'):return dict(symbol='BTCUSDT',time=self.now,markPrice=str(self.mark))
         if path.endswith('/exchangeInfo'):return {'symbols':[deepcopy(self.rules)]}
         if path.endswith('/commissionRate'):return dict(symbol='BTCUSDT',takerCommissionRate='.0005')
@@ -112,7 +114,9 @@ class Venue(Binance):
     def send(self,method,path,p):
         self.sent.append((method,path,deepcopy(p)));self.calls.append((method,path,deepcopy(p)))
         if path.endswith('/positionMargin'):
-            self.margin+=D(p['amount']);self.updated=self.now;return dict(code=200,type=1,amount=p['amount'])
+            self.margin+=D(p['amount']);self.updated=self.now
+            self.margin_history.append(dict(symbol='BTCUSDT',asset='USDT',positionSide='BOTH',amount=p['amount'],type=1,time=self.now))
+            return dict(code=200,type=1,amount=p['amount'])
         if path.endswith('/algoOrder'):
             if method=='DELETE':self.algos[p['clientAlgoId']]['algoStatus']='CANCELED';return {}
             if self.reject_protection:raise Unknown('fixture protection rejection')

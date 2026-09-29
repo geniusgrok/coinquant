@@ -189,6 +189,10 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
             if report['pending_intents']:
                 report.update(status='unknown',reason='Durable intents require recovery')
             report['execution_unresolved']=_execution_unresolved(report,execute)
+            actual=report.get('actual')
+            if actual and D(actual.get('wallet_usdt') or 0)>0 and actual.get('mark_price'):
+                report['exchange_leverage_setting']=20
+                report['account_notional_leverage']=str(abs(D(actual['quantity_btc']))*D(actual['mark_price'])/D(actual['wallet_usdt']))
             if (execute and last_failure=='deadline' and report['status']=='unknown' and report['cleanup']=='verified'
                     and not report['execution_unresolved'] and report.get('income_audit',{}).get('status')!='unresolved'):
                 # The last poll ran out of observation time before any request left, and the

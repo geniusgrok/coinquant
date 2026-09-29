@@ -527,7 +527,8 @@ class Lifecycle:
         plan.update(epoch=epoch,id=identity)
         self.state.set('entry_plan',plan)
         self.state.set('entry_fill',dict(campaign=plan['campaign'],requested=plan['requested_btc'],
-                                         session=self.session,stop_budget=plan.get('stop_budget_usdt')))
+                                         session=self.session,stop_budget=plan.get('stop_budget_usdt'),
+                                         sizing_capital=plan.get('sizing_capital_usdt')))
         self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh,
                            result={'prepared_at_ms':int(self.reader.clock()*1000)})
         self.state.set('entry_timing',{'entry_id':identity})
@@ -611,7 +612,8 @@ class Lifecycle:
             return snapshot  # a later poll of this session may add
         try:
             plan = topup_preview(self.reader, model, snapshot, fill['requested'],
-                                 protection['stop'], protection['take'], fill.get('stop_budget'))
+                                 protection['stop'], protection['take'], fill.get('stop_budget'),
+                                 fill.get('sizing_capital'))
         except ValueError:
             return snapshot
         self.entry_constraint = plan['constraint']
@@ -632,6 +634,8 @@ class Lifecycle:
         target = (number(plan['allocated_margin_usdt'])
                   - number(plan['quantity_btc'])*number(plan['entry_estimate'])/20)
         if number(fresh['isolated_wallet_usdt']) < target:
+            if target > number(plan['sizing_capital_usdt']):
+                raise Blocked('margin addition would exceed the sizing capital')
             fresh = safety.add_margin(self.reader,self.state,self.send,self.uid,epoch,
                                       target,instrument=self.instrument(),authorized=self.authorized)
             # The transfer takes time. The deadline, a stop request and the quote

@@ -305,3 +305,102 @@ class RestErrors(TestCase):
             self.write(late)
         self.assertEqual(type(caught.exception).__name__, 'Unknown')
         self.assertIsNone(caught.exception.http_status)
+
+
+class FirstFillToProtection(TestCase):
+    def session(self, venue, tmp, seconds=3):
+        venue.seed(tmp)
+        return run(Config('123', tmp, seconds, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+
+    def test_stop_accepted_take_rejected_never_leaves_a_one_leg_position(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            original = venue.send
+
+            def send(method, path, p):
+                if path.endswith('/algoOrder') and method == 'POST' and p['type'] == 'TAKE_PROFIT_MARKET':
+                    raise Unknown('fixture take-profit rejection')
+                return original(method, path, p)
+            venue.send = send
+            result = self.session(venue, tmp)
+            kinds = [(m, p.get('type')) for m, path, p in venue.sent if path.endswith('/algoOrder')]
+            self.assertEqual(kinds[0], ('POST', 'STOP_MARKET'))
+            self.assertEqual(kinds.count(('POST', 'TAKE_PROFIT_MARKET')), 0)
+            self.assertEqual(venue.q, 0)
+            self.assertTrue(any(p.get('reduceOnly') == 'true' for _, _, p in venue.sent))
+            self.assertEqual(result['status'], 'unknown')
+
+    def test_unknown_margin_transfer_is_not_resent_and_position_stays_protected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.fraction = D('.5')
+            original = venue.send
+
+            def send(method, path, p):
+                answer = original(method, path, p)
+                if path.endswith('/positionMargin'):
+                    raise TimeoutError()
+                return answer
+            venue.send = send
+            result = self.session(venue, tmp, seconds=5)
+            self.assertEqual(len([1 for _, path, _ in venue.sent if path.endswith('/positionMargin')]), 1)
+            entries = [p for _, path, p in venue.sent if path.endswith('/order') and p.get('timeInForce') == 'IOC']
+            self.assertEqual(len(entries), 1)
+            self.assertEqual(result['status'], 'unknown')
+            self.assertEqual(result['errors'][0]['reason'], 'margin outcome unknown; no automatic retry')
+            live = [a for a in venue.algos.values() if a['algoStatus'] == 'NEW']
+            self.assertEqual({a['orderType'] for a in live}, {'STOP_MARKET', 'TAKE_PROFIT_MARKET'})
+            reduce = [p for _, _, p in venue.sent if p.get('reduceOnly') == 'true']
+            self.assertTrue(all(D(p['quantity']) <= D(entries[0]['quantity']) / 2 for p in reduce))
+
+    def test_entry_reply_lost_after_fill_is_found_by_identity_and_protected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.timeout_after_entry = True
+            result = self.session(venue, tmp)
+            entries = [p for _, path, p in venue.sent if path.endswith('/order') and p.get('timeInForce') == 'IOC']
+            self.assertEqual(len(entries), 1)
+            self.assertTrue(result['actual']['native_full_position_protected'])
+            self.assertEqual(result['pending_intents'], 0)
+
+
+class SmallFundBoundaries(TestCase):
+    def partial(self, tmp):
+        venue = Venue()
+        venue.fraction = D('.5')
+        venue.seed(tmp)
+        result = run(Config('123', tmp, 1, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+        return venue, result
+
+    def preview(self, venue, tmp, **kwargs):
+        from coinquant.native_preview import topup_preview
+        with State(tmp, SCOPE) as state:
+            model = Campaign.restore(state.get('linear_campaign'))
+            fill, protection = state.get('entry_fill'), state.get('position_protection')
+        venue.begin_cycle(60)
+        snapshot = venue.snapshot('123')
+        return topup_preview(venue, model, snapshot, fill['requested'], protection['stop'], protection['take'], None, **kwargs)
+
+    def test_lowered_capital_never_grows_the_position_back_to_the_old_target(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue, _ = self.partial(tmp)
+            self.assertGreater(D(self.preview(venue, tmp)['quantity_btc']), 0)
+            venue.capital_limit = D(100)
+            self.assertEqual(D(self.preview(venue, tmp, entry_capital='1000')['quantity_btc']), 0)
+
+    def test_entry_records_its_sizing_capital_and_top_up_reports_current_capital(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue, _ = self.partial(tmp)
+            with State(tmp, SCOPE) as state:
+                self.assertLessEqual(D(state.get('entry_fill')['sizing_capital']), D(1000))
+                self.assertGreater(D(state.get('entry_fill')['sizing_capital']), D(990))
+            self.assertEqual(D(self.preview(venue, tmp)['sizing_capital_usdt']), venue.wallet)
+
+    def test_session_reports_exchange_leverage_apart_from_account_notional(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue()
+            venue.seed(tmp)
+            result = run(Config('123', tmp, 2, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+            self.assertEqual(result['exchange_leverage_setting'], 20)
+            self.assertGreater(D(result['account_notional_leverage']), 0)
+            self.assertLessEqual(D(result['account_notional_leverage']), 20)

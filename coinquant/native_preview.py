@@ -125,7 +125,7 @@ def entry_preview(reader, model, snapshot):
                 sizing_capital_means='model sizing capital, not a cumulative loss limit')
 
 
-def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=None):
+def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=None, entry_capital=None):
     """Size an IOC add toward the committed campaign quantity under owned protection.
 
     The existing close-all stop and take stay in force; the add is funded so the
@@ -150,11 +150,15 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
             target=abs(q)
         else:
             target=min(target,abs(q)+room/per_unit)
+    if entry_capital is not None and v['capital']<number(entry_capital):
+        # A lowered budget never grows the position back toward the earlier, larger plan.
+        target=min(target,number(requested)*v['capital']/number(entry_capital))
     account=Account(v['capital'],q=q,entry=entry,margin=number(snapshot['isolated_wallet_usdt']))
     if target<=abs(q):
         return dict(quantity_btc='0',entry_estimate=str(price),stop=str(stop),take=str(take),
                     allocated_margin_usdt=str(account.margin),constraint='stop_budget',
-                    side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],tick=str(tick))
+                    side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],tick=str(tick),
+                    sizing_capital_usdt=str(v['capital']))
     result=funded_target(account,direction,D(0),price,mark,stop,take,v['capacity'],
                          v['instrument'],fee=v['fee'],maintenance=v['mmr'],notional_limit=v['cap'],
                          target_quantity=target,intended_add=True)
@@ -162,4 +166,4 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
     return dict(quantity_btc=str(added),entry_estimate=str(price),stop=str(stop),take=str(take),
                 allocated_margin_usdt=str(account.margin),constraint=result['reason'],
                 side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],
-                tick=str(tick))
+                tick=str(tick),sizing_capital_usdt=str(v['capital']))
