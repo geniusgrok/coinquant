@@ -1,8 +1,8 @@
 # Coinquant 接续入口（2026-09-29）
 
-先核对实时 `geniusgrok/coinquant` main，再读 `AGENTS.md`、`PROJECT_STATE.md`、`evidence/full-review-20260929/RESULT.md`（含范围限制与未验证项）、`evidence/robustness-20260929/RESULT.md`、`evidence/rebuild-20260927/RESULT.md` 与 `research/redesign-PROTOCOL.md` 的 M8、R3、O0、O1 部分。
+先核对实时 `geniusgrok/coinquant` main，再读 `AGENTS.md`、`PROJECT_STATE.md`、`evidence/remeasure-20260929/RESULT.md`（当前源码的 M9 数字）、`evidence/full-review-20260929/RESULT.md`（含范围限制与未验证项）、`evidence/robustness-20260929/RESULT.md`、`evidence/rebuild-20260927/RESULT.md` 与 `research/redesign-PROTOCOL.md` 的 M9、M8、R3、O0、O1 部分。
 
-当前默认：SX60＋DFII10，主信号风险7.5（R3 在测量器 M8 上按登记规则选中；O1 曾降到6），宏观3.6；R3 基准（修复前源码）131.26% CAGR／44.51% MDD，当前代码同输入基准回归 REG2 为118.24%／44.51%（`evidence/full-review-20260929/`，未登记，压力未重测），R3 压力 97.57–121.53%（手续费+50% 106.19%），MDD 最高44.87%，CAGR 未达150%目标；建立在所有者接受的2020-01-19标记价缺口边界上（`path_complete=false`）。M8 让读请求占200 ms模拟时间，消除了本地请求权重造成的路径依赖（O0）；历史 P7（153.86%）只对应源码 `a6892b3`。全窗口终值对风险不单调、对读延迟与手续费敏感，131.26%不是稳定估计；信号常数的单参数邻居只有40–102% CAGR（M7 上），即位于尖峰上。详见 `research/redesign-PROTOCOL.md` 与 `evidence/robustness-20260929/RESULT.md`。工具：`python -m research.robustness run|report`、`python -m research.risk_select`。
+当前默认：SX60＋DFII10，主信号风险7.5（R3 规则选出；M9 在当前源码上重测后同一规则仍然选中 7.5，没有改默认值；O1 曾降到6），宏观3.6。M9 基准 ¥1,893,613／118.24% CAGR／44.51% MDD；手续费 +50%、出场滑点 ×2、深度 10% 的终值高于基准（126.17%／121.92%／128.57%），随机跳过 20% 为 95.69%／MDD 45.39%，缺席序列与 21 天空窗与基准相同。CAGR 未达150%，`economic_qualification` 为 `NOT_MET`。全窗口对风险不单调（6／6.5／7／7.5：¥1.70M／2.02M／2.21M／1.89M），风险 6 的读延迟 100／200／400 ms 为 ¥2.54M／1.70M／0.88M。这些是路径结果，不是稳定估计。修复前 R3 的 131.26% 只对应 `evidence/robustness-20260929/m8/`。历史 P7（153.86%）只对应源码 `a6892b3`。信号常数的单参数邻居在 M7 上只有40–102% CAGR，位于尖峰上，M9 没有重测邻域。详见 `evidence/remeasure-20260929/RESULT.md` 与 `research/redesign-PROTOCOL.md`。
 
 规则：
 

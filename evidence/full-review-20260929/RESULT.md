@@ -50,4 +50,4 @@
 
 R3（¥2,794,265／131.26%）只对应修复前的源码；`evidence/robustness-20260929/m8/` 的 44 份原件记录 `git_head=d1ca5c0`、`dirty=True`、源码摘要 `c5ef5b41…`（即 `d1ca5c0` 树加 `fbe3b31` 的 `research/session_exchange.py`，`PRIMARY_RISK` 当时为 6、7.5 由 `--knob`/`--primary-risk` 传入），并非干净的 `fbe3b31`。这些原件的 `execution_unresolved` 是旧定义（观察超时即计入，主序列721/795），当前定义只计未解决的意图、未验证的清理或无保护敞口，REG2 为 0，观察超时另计 `observation_timeouts=708`。
 
-压力行、风险网格和读延迟网格仍未在当前代码上重测，它们对应上面记录的原件源码。
+压力、风险网格（含七个日历年区块）和读延迟网格已在随后的 M9 里用当前源码重测，见 `evidence/remeasure-20260929/RESULT.md`。上文 REG2 的基准与 M9 基准逐字段相同。
