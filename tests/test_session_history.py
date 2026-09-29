@@ -91,6 +91,7 @@ class SessionHistoryTests(TestCase):
 
     def test_exchange_stop_between_sessions_is_not_a_client_order(self):
         exchange, start, _price = self._exchange('bar_through')
+        initial = exchange.wallet
         directory = tempfile.mkdtemp()
         run(Config('1', directory, 5, 5), exchange, execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
         second = start + 10 * DAY
@@ -123,6 +124,12 @@ class SessionHistoryTests(TestCase):
         self.assertEqual(len(exchange.sent), sent)
         self.assertGreaterEqual(exchange.funnel['triggers'], 1)
         self.assertTrue(exchange.known_path)
+        # Funds identity on a flat account: the wallet moved only by native income rows.
+        self.assertEqual(exchange.wallet - initial, sum(D(row['income']) for row in exchange.income))
+        commissions = [D(row['income']) for row in exchange.income if row['incomeType'] == 'COMMISSION']
+        self.assertTrue(commissions and all(value < 0 for value in commissions))
+        self.assertEqual(-sum(commissions), exchange.fees)
+        self.assertEqual(exchange.margin, 0)
 
     def test_trade_print_window_fills_at_the_limit(self):
         directory = Path(tempfile.mkdtemp())
