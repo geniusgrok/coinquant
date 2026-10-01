@@ -1,4 +1,9 @@
-# Coinquant 当前状态（2026-09-29）
+# Coinquant 当前状态（2026-10-01）
+
+2026-10-01 第二轮：`evidence/second-round-20261001/RESULT.md`。三个合约
+固定候选有九项口径待对齐，因此不排名。五组逐请求/周期诊断精确复现 M10
+成交前缀，费用造成的钱包与请求数量分歧已有事件证据；六项本机执行案例
+通过。生产逻辑不改，没有新的完整六年测量，经济 NOT_MET、原生 NOT_QUALIFIED。
 
 2026-10-01 首轮交付：`research.path_analysis` 与
 `evidence/path-analysis-20261001/RESULT.md`。已归因 M10 费用、滑点、深度与

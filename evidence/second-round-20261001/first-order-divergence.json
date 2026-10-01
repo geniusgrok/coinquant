@@ -1,0 +1,54 @@
+{
+  "scope": "first IOC request divergence; not attribution of the full-window residual",
+  "ioc_index": 1,
+  "baseline": {
+    "event": "request",
+    "start_ms": 1579028432600,
+    "method": "POST",
+    "path": "/fapi/v1/order",
+    "parameters": {
+      "symbol": "BTCUSDT",
+      "positionSide": "BOTH",
+      "side": "BUY",
+      "type": "LIMIT",
+      "timeInForce": "IOC",
+      "quantity": "1.675",
+      "price": "8782.80",
+      "newClientOrderId": "cq-f79e32ae7cc845576b338a5a085602",
+      "newOrderRespType": "RESULT"
+    },
+    "wallet_before": "2764.150082037618323040081186",
+    "position_before": "0.000",
+    "entry_before": "0",
+    "end_ms": 1579028434600,
+    "wallet_after": "2760.184647837618323040081186",
+    "position_after": "0.602"
+  },
+  "changed": {
+    "event": "request",
+    "start_ms": 1579028432600,
+    "method": "POST",
+    "path": "/fapi/v1/order",
+    "parameters": {
+      "symbol": "BTCUSDT",
+      "positionSide": "BOTH",
+      "side": "BUY",
+      "type": "LIMIT",
+      "timeInForce": "IOC",
+      "quantity": "1.671",
+      "price": "8782.80",
+      "newClientOrderId": "cq-f79e32ae7cc845576b338a5a085602",
+      "newOrderRespType": "RESULT"
+    },
+    "wallet_before": "2758.304888485807073040081186",
+    "position_before": "0.000",
+    "entry_before": "0",
+    "end_ms": 1579028434600,
+    "wallet_after": "2752.356737185807073040081186",
+    "position_after": "0.602"
+  },
+  "trace_sha256": [
+    "390a02b0e2761d8a7b1b8f679db8ffffc35095de82c515ba9943f05eaeca1981",
+    "cdac829c3155a2602458a9fc067b8d948a8bb208347da2bc7364b6c7f4f1e3a1"
+  ]
+}

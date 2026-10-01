@@ -1,0 +1,157 @@
+{
+  "candidates": {
+    "Coinquant-default": {
+      "cagr": 1.1824382462997827,
+      "mdd": "0.4451002543302856200947196906",
+      "config": {
+        "primary_risk": "7.5",
+        "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a"
+      }
+    },
+    "Starquant-baseline": {
+      "cagr": 1.173104242333221,
+      "mdd": 0.4718879323292394,
+      "config": {
+        "symbol": "BTCUSDT",
+        "margin_mode": "isolated",
+        "position_mode": "one_way",
+        "leverage": 20,
+        "start_cny": 10000.0,
+        "session_seconds": 300,
+        "poll_seconds": 5,
+        "entry_hours": 1008,
+        "exit_hours": 192,
+        "stop": 0.032,
+        "trail": 0.16,
+        "add_step": 0.05,
+        "max_units": 3,
+        "risk": 0.048,
+        "dd_flat": 0.47,
+        "flatten_ratio": 0.5,
+        "entry_scale_below": 0.82,
+        "entry_scale": 0.5,
+        "iso_frac": 0.28,
+        "cooldown_hours": 6,
+        "ratchet_gain": 0.35,
+        "ratchet_trail": 0.07,
+        "heat": 0.6,
+        "take_profit_multiple": 10.0,
+        "taker": 0.0004,
+        "slip_base": 0.0001,
+        "impact_y": 0.5,
+        "fx_fee": 0.0035,
+        "long_only": false
+      }
+    },
+    "Starquant-half-risk": {
+      "cagr": 0.5796628625336184,
+      "mdd": 0.3365247417989221,
+      "config": {
+        "symbol": "BTCUSDT",
+        "margin_mode": "isolated",
+        "position_mode": "one_way",
+        "leverage": 20,
+        "start_cny": 10000.0,
+        "session_seconds": 300,
+        "poll_seconds": 5,
+        "entry_hours": 1008,
+        "exit_hours": 192,
+        "stop": 0.032,
+        "trail": 0.16,
+        "add_step": 0.05,
+        "max_units": 3,
+        "risk": 0.024,
+        "dd_flat": 0.47,
+        "flatten_ratio": 0.5,
+        "entry_scale_below": 0.82,
+        "entry_scale": 0.5,
+        "iso_frac": 0.28,
+        "cooldown_hours": 6,
+        "ratchet_gain": 0.35,
+        "ratchet_trail": 0.07,
+        "heat": 0.6,
+        "take_profit_multiple": 10.0,
+        "taker": 0.0004,
+        "slip_base": 0.0001,
+        "impact_y": 0.5,
+        "fx_fee": 0.0035,
+        "long_only": false
+      }
+    }
+  },
+  "dimensions": {
+    "operation_schedule": [
+      "795 frozen finite manual sessions",
+      "continuous minute replay"
+    ],
+    "valuation": [
+      "official mark with owner-accepted 29-minute bound",
+      "trade OHLC mark proxy"
+    ],
+    "fills": [
+      "IOC print-quantity upper bound",
+      "next-minute OHLC causal kernel"
+    ],
+    "fees": [
+      "0.00075",
+      "0.0004"
+    ],
+    "slippage": [
+      "entry 0.0005, stop 0.001",
+      "base 0.0001 plus impact 0.5"
+    ],
+    "latency": [
+      "read 200ms/write 1000ms",
+      "next-minute fills; no REST latency"
+    ],
+    "funding": [
+      "official recorded calendar",
+      "7305 official / 56 proxy / 1 zero"
+    ],
+    "fx_conversion": [
+      "FRED DEXCHUS, ex-post: each observation applies from 17:00 UTC of its date; USDT at USD par; conversion charged separately; 0.001 each way",
+      "prior published Frankfurter; 0.0035 each way"
+    ],
+    "missing_input_policy": [
+      "owner-accepted bounded mark gap",
+      "funding proxy/zero and OHLC mark proxy"
+    ]
+  },
+  "blockers": [
+    "operation_schedule",
+    "valuation",
+    "fills",
+    "fees",
+    "slippage",
+    "latency",
+    "funding",
+    "fx_conversion",
+    "missing_input_policy"
+  ],
+  "comparable": false,
+  "selected": null,
+  "ranking_permitted": false,
+  "target": {
+    "cagr": 1.5,
+    "mdd_strictly_less_than": 0.5
+  },
+  "reference_schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
+  "native_execution_verified": false,
+  "out_of_sample": false,
+  "next_action": "align each blocker, rerun full comparable accounts, then evaluate execution/maintenance",
+  "originals": [
+    {
+      "name": "M10-r75.json",
+      "sha256": "5367f32c27c87d0e93dbb03a73ba301371d7a105362440e9f99533bb1c4a10e2"
+    },
+    {
+      "name": "btc_account_first_round.json",
+      "sha256": "05fda13fd63526a4a793518f19ba5e596ccfe735bfb1145345bc0878ae461f5c"
+    }
+  ],
+  "source": {
+    "git_head": "5f38bc909e3876523bcf1531dd1ec107ec7f991e",
+    "dirty": false,
+    "python_sources_sha256": "c50aaa82d5cbd542c3ddbd8c92f4c78ef2a49d8f24130767637d286a8ebdbe6c"
+  }
+}

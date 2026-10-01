@@ -1,5 +1,9 @@
 # Coinquant
 
+第二轮：[合约比较协议、逐事件复现与本机验收](evidence/second-round-20261001/RESULT.md)。
+五组诊断精确复现原成交前缀，六项故障案例通过；与 Starquant 仍有九项口径
+待对齐，因此没有选出唯一合约项目。默认配置、经济目标和原生资格门槛保留。
+
 2026-10-01 首轮：新增 `python -m research.path_analysis --help`，用于校验
 并归因不同执行条件下的账户路径。结论与当前源码的小窗口复现见
 [F1](evidence/path-analysis-20261001/RESULT.md)。默认风险与执行逻辑保留。
