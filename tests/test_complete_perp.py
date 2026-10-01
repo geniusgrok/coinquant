@@ -27,7 +27,9 @@ class CompletePerpTests(unittest.TestCase):
             self.assertEqual(c.value('funding', 2*EIGHT_HOURS), D('.0004'))
             self.assertIsNone(c.value('funding', 3*EIGHT_HOURS))
             self.assertIsNone(c.value('basis', 59999))
-            self.assertEqual(c.value('basis', DAY+59999), D('.001'))
+            self.assertEqual(c.value('basis', DAY-1), D('.001'))
+            self.assertIsNone(c.value('basis', DAY))
+            self.assertIsNone(c.value('basis', DAY+59999))
             self.assertEqual(c.value('basis', DAY+60000), D('.02'))
             self.assertIsNone(c.value('basis', 2*DAY+60000))
 

@@ -61,7 +61,8 @@ class Crowding:
         known = now - EIGHT_HOURS if feature == 'funding' else now
         age_limit = EIGHT_HOURS if feature == 'funding' else DAY
         index = bisect.bisect_right(self.times[feature], known) - 1
-        if index < 0 or known - self.rows[feature][index][0] >= age_limit:
+        if (index < 0 or known - self.rows[feature][index][0] >= age_limit or
+                (feature == 'basis' and self.rows[feature][index][0] < now//DAY*DAY)):
             self.coverage[feature + '_missing_or_stale'] += 1
             return None
         self.coverage[feature + '_known'] += 1
@@ -357,7 +358,8 @@ def measure(args):
                 'conversion_each_way': '.001', 'read_latency_ms': 200, 'write_latency_ms': 1000,
                 'default_fee': '.00075', 'scenarios': SCENARIOS,
                 'funding_filter_lag_ms': EIGHT_HOURS, 'funding_stale_age_ms': EIGHT_HOURS,
-                'basis_stale_age_ms': DAY, 'daily_metrics': 'daily snapshots; not continuous MDD',
+                'basis_stale_age_ms': DAY, 'basis_required_publication_date': 'current UTC calendar date',
+                'daily_metrics': 'daily snapshots; not continuous MDD',
                 'venue': 'historical proxy, not native fills or prospective alpha',
                 'qualification': 'NOT_QUALIFIED'}}
 
