@@ -1,0 +1,95 @@
+{
+  "varying": [
+    "book_participation"
+  ],
+  "first_trade_divergence": {
+    "index": 76,
+    "baseline": {
+      "time": 1603170009132,
+      "side": "BUY",
+      "qty": "4.418",
+      "price": "11729.6"
+    },
+    "changed": {
+      "time": 1603170009132,
+      "side": "BUY",
+      "qty": "3.708",
+      "price": "11729.6"
+    },
+    "fields": [
+      "qty"
+    ]
+  },
+  "first_session_divergence": {
+    "index": 101,
+    "start": "2020-10-20T05:00:00Z",
+    "baseline": {
+      "cycles": 22,
+      "actions": {
+        "enter": 1,
+        "hold": 22
+      },
+      "constraints": {
+        "target": 1,
+        "stop_budget": 22
+      },
+      "funnel": {
+        "ioc_submitted": 1,
+        "ioc_zero": 0,
+        "ioc_filled": 1,
+        "protections": 2,
+        "triggers": 0,
+        "liquidations": 0,
+        "funding": 0,
+        "gap_forfeits": 0,
+        "print_triggers": 0,
+        "partial_adverse": 0
+      }
+    },
+    "changed": {
+      "cycles": 18,
+      "actions": {
+        "enter": 1,
+        "hold": 16
+      },
+      "constraints": {
+        "liquidity_cap": 1,
+        "target": 5,
+        "stop_budget": 11
+      },
+      "funnel": {
+        "ioc_submitted": 6,
+        "ioc_zero": 0,
+        "ioc_filled": 6,
+        "protections": 2,
+        "triggers": 0,
+        "liquidations": 0,
+        "funding": 0,
+        "gap_forfeits": 0,
+        "print_triggers": 0,
+        "partial_adverse": 0
+      }
+    }
+  },
+  "trade_counts": [
+    1531,
+    1758
+  ],
+  "final_usdt_change": "103073.5198385113278681344987",
+  "new_economic_measurement": false,
+  "original_path_complete": [
+    false,
+    false
+  ],
+  "artifacts": [
+    {
+      "path": "evidence/remeasure-20260929-m10/M10-r75.json",
+      "sha256": "5367f32c27c87d0e93dbb03a73ba301371d7a105362440e9f99533bb1c4a10e2"
+    },
+    {
+      "path": "evidence/remeasure-20260929-m10/M10-part10.json",
+      "sha256": "64bccb53856b64a2711e5437c45f4b75def0982e1b791e36066fe2e3abb86774"
+    }
+  ],
+  "analysis_source_sha256": "1dd6e65f42719e354d0ab671b3aa5bdf0e8085b5a9a136a78133a13e4d7ea97d"
+}

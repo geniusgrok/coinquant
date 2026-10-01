@@ -1,5 +1,11 @@
 # Coinquant 当前状态（2026-09-29）
 
+2026-10-01 首轮交付：`research.path_analysis` 与
+`evidence/path-analysis-20261001/RESULT.md`。已归因 M10 费用、滑点、深度与
+读取时延差异，并用当前源码复现两个三会话成交前缀。未发现可证明的生产
+缺陷，默认风险和执行逻辑保留；没有新的完整六年经济测量。长期目标为
+一个 BTC 合约项目与 Spotquant；Starquant 继续作为合约研究候选。
+
 ## 系统
 
 Binance BTCUSDT U 本位永续，单账户、单向逐仓、交易所20×。手动启动一个有限会话（默认300秒、每5秒轮询），会话内反复“核对→决策→执行”，超时或中断后在120秒预算内收尾；没有后台进程。生产路径：`CLI → session.run → Campaign → Lifecycle → Binance`，持久化意图、成交、资金流水与每轮观察都在状态目录的 `intents.sqlite`。

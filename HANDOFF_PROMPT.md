@@ -1,5 +1,9 @@
 # Coinquant 接续入口（2026-09-29）
 
+先读 `evidence/path-analysis-20261001/RESULT.md` 的 F1 首轮结论：执行路径
+归因已可复现，没有证实应修改生产实现的缺陷。长期收敛到一个 BTC 合约
+项目与一个 BTC 现货项目，研究阶段允许 Coinquant/Starquant 继续竞争。
+
 先核对实时 `geniusgrok/coinquant` main，再读 `AGENTS.md`、`PROJECT_STATE.md`、`evidence/remeasure-20260929-m10/RESULT.md`（当前源码的 M10 数字）、`evidence/full-review-20260929/RESULT.md`（含范围限制与未验证项）与 `research/redesign-PROTOCOL.md` 的 M10、M9、R3 部分。
 
 当前默认：SX60＋DFII10，主信号风险7.5（R3 规则选出；M10 在当前源码上仍然选中 7.5），宏观3.6。M10 基准 ¥1,893,613／118.24% CAGR／44.51% MDD，经济源码摘要 `6504a24b…`。手续费 +50%、出场滑点 ×2、深度 10% 的终值高于基准（126.17%／121.92%／128.57%），随机跳过 20% 为 95.69%／MDD 45.39%，缺席序列与 21 天空窗与基准相同。这些账户数字与旧 M9 相同；当前源码只少了 20 次会话末尾的空观察超时（基准 688 次，未决执行 0）。CAGR 未达150%，`economic_qualification` 为 `NOT_MET`。全窗口对风险不单调（6／6.5／7／7.5：¥1.70M／2.02M／2.21M／1.89M），风险 6 的读延迟 100／200／400 ms 为 ¥2.54M／1.70M／0.88M。旧 R3 的 131.26% 只对应 `evidence/robustness-20260929/m8/`；P7（153.86%）只对应 `a6892b3`。没有自动重锚、累计亏损保险、跨项目锁或原生账户验收。

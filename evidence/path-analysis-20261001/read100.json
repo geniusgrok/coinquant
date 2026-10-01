@@ -1,0 +1,87 @@
+{
+  "varying": [
+    "read_latency_ms"
+  ],
+  "first_trade_divergence": {
+    "index": 0,
+    "baseline": {
+      "time": 1578074408923,
+      "side": "BUY",
+      "qty": "0.002",
+      "price": "7360.2"
+    },
+    "changed": {
+      "time": 1578074405165,
+      "side": "BUY",
+      "qty": "0.193",
+      "price": "7360.2"
+    },
+    "fields": [
+      "time",
+      "qty"
+    ]
+  },
+  "first_session_divergence": {
+    "index": 0,
+    "start": "2020-01-01T00:00:00Z",
+    "baseline": {
+      "cycles": 43,
+      "actions": {
+        "flat": 31
+      },
+      "constraints": {},
+      "funnel": {
+        "ioc_submitted": 0,
+        "ioc_zero": 0,
+        "ioc_filled": 0,
+        "protections": 0,
+        "triggers": 0,
+        "liquidations": 0,
+        "funding": 0,
+        "gap_forfeits": 0,
+        "print_triggers": 0,
+        "partial_adverse": 0
+      }
+    },
+    "changed": {
+      "cycles": 50,
+      "actions": {
+        "flat": 39
+      },
+      "constraints": {},
+      "funnel": {
+        "ioc_submitted": 0,
+        "ioc_zero": 0,
+        "ioc_filled": 0,
+        "protections": 0,
+        "triggers": 0,
+        "liquidations": 0,
+        "funding": 0,
+        "gap_forfeits": 0,
+        "print_triggers": 0,
+        "partial_adverse": 0
+      }
+    }
+  },
+  "trade_counts": [
+    1329,
+    1441
+  ],
+  "final_usdt_change": "125600.1691490301631628536992",
+  "new_economic_measurement": false,
+  "original_path_complete": [
+    false,
+    false
+  ],
+  "artifacts": [
+    {
+      "path": "evidence/remeasure-20260929-m10/M10-r6.json",
+      "sha256": "d276faecb0f7de92c6b711982928bb368971e43fa0c1e2c815fecf49d3ae7c83"
+    },
+    {
+      "path": "evidence/remeasure-20260929-m10/M10-r6-l100.json",
+      "sha256": "738a5c72701406d20d661fa3ad2f7b8b71f055af081ad0df08a6a557f5e72d0f"
+    }
+  ],
+  "analysis_source_sha256": "1dd6e65f42719e354d0ab671b3aa5bdf0e8085b5a9a136a78133a13e4d7ea97d"
+}
