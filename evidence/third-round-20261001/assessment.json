@@ -1,0 +1,137 @@
+{
+  "measurement_sources": {
+    "coinquant": {
+      "git_head": "00a6849f72cd6785d17f71db804564e9b82e998a",
+      "dirty": false,
+      "python_sha256": "f2b451da2f6a452cb8a00c2b921a882d7ec6bd29003948f46f440b812768859a"
+    },
+    "starquant": {
+      "git_head": "882b5212ed09a1c075e61399d30b50996691e24c",
+      "dirty": false,
+      "python_sha256": "6331e9d2f36b8cba8406de5bf6863511626b12f6091ac174661fa3c5f1b0fcce"
+    }
+  },
+  "baseline_comparable": true,
+  "candidates": {
+    "Coinquant-default": {
+      "complete_account_audited": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "trade_quantity_matches_position": true,
+          "realized_pnl_matches_cash_ledger": true,
+          "fees_match_cash_ledger": true,
+          "funding_matches_cash_ledger": true,
+          "no_external_cash_flows": true,
+          "flat_equity_matches_wallet": true
+        },
+        "wallet_from_ledger_usdt": "291702.6271814703536298592187",
+        "position_from_fills_btc": "0.000",
+        "entry_from_fills_usdt": "0",
+        "income_totals": {
+          "COMMISSION": "-15290.5449985125",
+          "FUNDING_FEE": "-21733.1561226997578762817",
+          "REALIZED_PNL": "327291.2927500000000000000008"
+        }
+      },
+      "final_cny": "1951753.808294805224630873758",
+      "cagr": 1.1922835553585416,
+      "continuous_mdd": "0.4410507881955692423535878539",
+      "economic_targets_met": false,
+      "cagr_shortfall_percentage_points": 30.771644464145837,
+      "risk_constraint_met": true,
+      "trade_fills": 1561,
+      "sessions": 795,
+      "execution_unresolved_sessions": 0,
+      "peer_cycles": 0,
+      "peer_frozen_cycles": 0,
+      "peer_freeze_reasons": {},
+      "peer_history_coverage_alerts": {},
+      "native_verified": false
+    },
+    "Starquant-baseline": {
+      "complete_account_audited": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "trade_quantity_matches_position": true,
+          "realized_pnl_matches_cash_ledger": true,
+          "fees_match_cash_ledger": true,
+          "funding_matches_cash_ledger": true,
+          "no_external_cash_flows": true,
+          "flat_equity_matches_wallet": true
+        },
+        "wallet_from_ledger_usdt": "1161.631287074555387815217905",
+        "position_from_fills_btc": "0.000",
+        "entry_from_fills_usdt": "0",
+        "income_totals": {
+          "COMMISSION": "-36.2765650125",
+          "FUNDING_FEE": "-80.7649505955561183257",
+          "REALIZED_PNL": "-156.3627499999999999999999999"
+        }
+      },
+      "final_cny": "7772.361566602231623265772237",
+      "cagr": -0.03681348821010311,
+      "continuous_mdd": "0.5174540764559786546483387616",
+      "economic_targets_met": false,
+      "cagr_shortfall_percentage_points": 153.68134882101032,
+      "risk_constraint_met": false,
+      "trade_fills": 49,
+      "sessions": 795,
+      "execution_unresolved_sessions": 0,
+      "peer_cycles": 39734,
+      "peer_frozen_cycles": 12,
+      "peer_freeze_reasons": {
+        "completed mark minute unavailable": 12
+      },
+      "peer_history_coverage_alerts": {},
+      "native_verified": false
+    },
+    "Starquant-half-risk": {
+      "complete_account_audited": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "trade_quantity_matches_position": true,
+          "realized_pnl_matches_cash_ledger": true,
+          "fees_match_cash_ledger": true,
+          "funding_matches_cash_ledger": true,
+          "no_external_cash_flows": true,
+          "flat_equity_matches_wallet": true
+        },
+        "wallet_from_ledger_usdt": "1371.247299648612778784617905",
+        "position_from_fills_btc": "0.000",
+        "entry_from_fills_usdt": "0",
+        "income_totals": {
+          "COMMISSION": "-23.2719464475",
+          "FUNDING_FEE": "-57.9873765864987273563",
+          "REALIZED_PNL": "17.47107000000000000000000022"
+        }
+      },
+      "final_cny": "9174.881848212422398240669024",
+      "cagr": -0.01273527261262497,
+      "continuous_mdd": "0.3820819728737739899257745111",
+      "economic_targets_met": false,
+      "cagr_shortfall_percentage_points": 151.2735272612625,
+      "risk_constraint_met": true,
+      "trade_fills": 41,
+      "sessions": 795,
+      "execution_unresolved_sessions": 0,
+      "peer_cycles": 39734,
+      "peer_frozen_cycles": 12,
+      "peer_freeze_reasons": {
+        "completed mark minute unavailable": 12
+      },
+      "peer_history_coverage_alerts": {},
+      "native_verified": false
+    }
+  },
+  "baseline_leader": "Coinquant-default",
+  "retained_runtime": "Coinquant",
+  "strategy_promoted": false,
+  "runtime_retired": false,
+  "decision": "Retain the existing Coinquant executor. Shared baseline is evidence for product fit; promotion requires pressure evidence and native closure. Starquant remains research only.",
+  "native_execution_verified": false,
+  "out_of_sample": false,
+  "accounts_sha256": "b1a4f74ca6c2c4b6e098bdfc3746379fee8289f5f4995fa07ae58a0740b915db"
+}

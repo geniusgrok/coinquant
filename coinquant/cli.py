@@ -118,6 +118,17 @@ class _FirstSignal:
 
 
 def _dispatch(args):
+    if args.command=='snapshot':
+        from .snapshot import export
+        config=load(args.config)
+        report=observe(args.config)
+        if report['status']!='read_only':
+            raise Unknown(report.get('reason','account unresolved'))
+        result=dict(export(report['actual'],config),status='read_only')
+        with args.out.open('x') as stream:
+            json.dump(result,stream,indent=2)
+            stream.write('\n')
+        return result
     if args.command=='status':
         return observe(args.config)
     if args.execute and (not args.trial or not args.authorize_uid):
@@ -145,6 +156,9 @@ def main(argv=None):
             command.add_argument('--trial',choices=('demo','live'))
             command.add_argument('--authorize-uid',help='Repeat the dedicated account UID for this run')
             command.add_argument('--demo-evidence',help='Reviewed native Demo closure JSON, required for live')
+    snapshot=commands.add_parser('snapshot',help='Fresh read-only export for the two-account report')
+    snapshot.add_argument('--config',required=True)
+    snapshot.add_argument('--out',type=Path,required=True)
     args=parser.parse_args(argv)
     try:
         with _FirstSignal():

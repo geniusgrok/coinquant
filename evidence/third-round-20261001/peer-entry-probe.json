@@ -1,0 +1,84 @@
+{
+  "report": {
+    "mode": "run",
+    "frozen": false,
+    "reason": "",
+    "sent": [
+      "en9088d3485d8f457c8f19",
+      "st17872c183fcc486d90f2",
+      "tpa6c13b4e065340538090"
+    ],
+    "position_qty": 0.057,
+    "covered": true,
+    "alerts": [
+      "\u901a\u9053\u7a81\u7834"
+    ],
+    "dry_run": false,
+    "would_send": [],
+    "settled": false,
+    "locked": false,
+    "remaining": []
+  },
+  "position": "0.057",
+  "orders": {
+    "en9088d3485d8f457c8f19": {
+      "symbol": "BTCUSDT",
+      "orderId": 2,
+      "clientOrderId": "en9088d3485d8f457c8f19",
+      "side": "BUY",
+      "type": "MARKET",
+      "positionSide": "BOTH",
+      "origQty": "0.057",
+      "executedQty": "0.057",
+      "reduceOnly": false,
+      "price": "36823.68",
+      "status": "FILLED"
+    }
+  },
+  "algos": {
+    "st17872c183fcc486d90f2": {
+      "symbol": "BTCUSDT",
+      "algoId": 3,
+      "clientAlgoId": "st17872c183fcc486d90f2",
+      "side": "SELL",
+      "positionSide": "BOTH",
+      "orderType": "STOP_MARKET",
+      "algoStatus": "NEW",
+      "closePosition": true,
+      "workingType": "CONTRACT_PRICE",
+      "priceProtect": false,
+      "triggerPrice": "35645.30000000",
+      "actualOrderId": "0"
+    },
+    "tpa6c13b4e065340538090": {
+      "symbol": "BTCUSDT",
+      "algoId": 4,
+      "clientAlgoId": "tpa6c13b4e065340538090",
+      "side": "SELL",
+      "positionSide": "BOTH",
+      "orderType": "TAKE_PROFIT_MARKET",
+      "algoStatus": "NEW",
+      "closePosition": true,
+      "workingType": "CONTRACT_PRICE",
+      "priceProtect": false,
+      "triggerPrice": "368236.80000000",
+      "actualOrderId": "0"
+    }
+  },
+  "sent": 3,
+  "synthetic_prints": true,
+  "native_verified": false,
+  "sources": {
+    "coinquant": {
+      "git_head": "b5c43e087aea1839d700a7b2395105060faf460b",
+      "dirty": false,
+      "python_sha256": "bf7d1c4d186cea87cf5e8c703c43647e1e127c57066138dd1285a1a58ea74305"
+    },
+    "starquant": {
+      "git_head": "882b5212ed09a1c075e61399d30b50996691e24c",
+      "dirty": false,
+      "python_sha256": "6331e9d2f36b8cba8406de5bf6863511626b12f6091ac174661fa3c5f1b0fcce"
+    }
+  },
+  "probe_script_sha256": "d0f14a83f4bf93882461136978f7bded7af79fcbf37fc28682d832b169cb82e9"
+}

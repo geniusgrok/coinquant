@@ -12,6 +12,20 @@ Economic targets remain cost-net CAGR >= 150% and continuous full-account MDD < 
 
 Strategy, risk, dependencies and architecture may be replaced when evidence supports the change. The repository keeps only the current version: the retired Bybit/inverse code, the sparse-invocation specification and draws, and historical candidate research were removed on 2026-09-28 and remain in Git history (`3e9a696` and earlier).
 
+## Shared comparison (2026-10-01)
+
+Third-round fixed candidates completed the 795 shared historical sessions.
+At Coin source 00a6849 and Star source 882b521: Coin default 119.23% CAGR /
+44.11% MDD; Star default -3.68% / 51.75%; half-risk -1.27% / 38.21%.
+Full cash-ledger audit passed. This is a proxy venue with a simplified peer
+snapshot and a legacy initial metric FX point, not native adapter timing or
+execution proof. See evidence/third-round-20261001/RESULT.md and assessment.json.
+Retain Coinquant as the perpetual development runtime and Spotquant as spot;
+Starquant stays research. No strategy promotion, retirement or native enablement.
+Economic NOT_MET, native NOT_QUALIFIED. Historical M10 keeps its own recorded
+source identity; do not label its old digest as the current tree. snapshot
+exports and concurrent reports are read-only; actual account days remain zero.
+
 ## Development baseline
 
 Main is the canonical development/integration baseline, not certification of production safety or profitability. Read the real remote HEAD before writes. Use normal fast-forward or PR merge operations and respect GitHub protection. Do not force push, overwrite parallel work, or delete historical research branches. New work starts from current main; short-lived branches may isolate changes and then normally merge back.

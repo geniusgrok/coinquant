@@ -1,5 +1,18 @@
 # 经济重建研究协议（2026-09-27 起）
 
+## F1：执行路径归因与有界修订（2026-10-01 登记）
+
+所有者授权首轮改造，长期收敛到一个 BTC 合约系统与一个 BTC 现货系统。
+本轮先复核 M10 原件，逐笔定位费用、滑点和取用深度场景的首处分歧；
+固定基准成交数量与时点重新计算手续费，只作为直接成本归因，不能冒充
+可执行账户或完整验收。再比较同口径的读取时延原件和会话报告。
+工具必须拒绝混合源码、日程、估值窗口或输入身份的比较，并记录原件 SHA。
+
+仅在证据证明实现缺陷时修改生产决策或执行。路径依赖本身不是缺陷。
+若没有发现可证明的实现缺陷，交付可运行的归因工具和淘汰结论，不猜改
+风险或执行时序。维持冻结验收日程、150%/50%目标和原生资格门槛。
+任何生产修订均需相关离线测试与当前源码回放；数据不足时明确证据边界。
+
 版本说明：本文按当时的登记顺序保存，正文中的“当前源码”只指各轮测量时记录的源码。最近已完成的 M10 对应经济源码摘要 `6504a24b18932e0d3dd3bfc5b73fc77dae89da546c069e4753e200bc3ec380f0`；M9 对应更早的 `ae7b3fd8…`。现行数字见文末 M10 与 `PROJECT_STATE.md`。
 
 ## 行情输入恢复
@@ -390,4 +403,21 @@ P5 及六项压力与 M4 对应账户除试验名外逐字段相同（P5：¥5,2
 - 规则仍选中 7.5。`PRIMARY_RISK` 不改。CAGR 未达 150%，`economic_qualification` 仍为 `NOT_MET`。
 - 压力与 M9 相同：手续费 +50% ¥2,406,523／126.17%／44.79%；出场滑点 ×2 ¥2,118,221／121.92%／44.87%；深度 10% ¥2,583,258／128.57%／44.51%；随机跳过 20% ¥909,932／95.69%／45.39%；缺席序列与 21 天空窗与基准相同。
 - 风险 6 的读延迟 100／200／400 ms：¥2,543,459／128.04%、¥1,703,093／114.83%、¥878,313／94.66%。
+# F2: comparable perpetual protocol and offline evidence — 2026-10-01
 
+Freeze three candidates: Coinquant default, Starquant default and Starquant
+half-risk. The economic goal remains 150% CAGR / MDD <50%, initial CNY 10,000,
+no additions, the existing BTC window. The reference operation is the frozen
+795 finite manual sessions, not implicit continuous operation. Before ranking,
+align operation schedule, mark/valuation, FX/conversion, fees, funding, fills,
+latency, stops and missing-input policy. Keep old results unchanged and mark
+the comparison blocked until every dimension is verified. No new parameter
+search and no automatic runtime selection. Half-risk remains a research
+control, not a retroactive promotion.
+
+Record request timing, account equity, signal, rounded order, durable ID and
+fill events from the existing session replay. Start with restored three-session
+prefixes; label them diagnostic, not economic qualification. Run named local
+fault cases for partial fill protection, lost ACK without duplicate entry,
+unknown order after restart, protection replacement and disconnect. Native
+Demo proof remains separate and requires owner-run authorized account trials.

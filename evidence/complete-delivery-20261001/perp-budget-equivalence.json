@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "sessions_per_case": 3,
+  "cases": 28,
+  "incumbent_base_fills": 2,
+  "equal_leaf_fields": 5086,
+  "expected_differences": [
+    "inputs.source",
+    "row.initial_cny: new explicit10000 metadata"
+  ],
+  "old_source": {
+    "git_head": "995d0530889d8b609f41218b6904ff55499fd578",
+    "dirty": false,
+    "python_sources_sha256": "5a1497a18004fce43827c68d80673300004b0cbb505d5106c4ee29cc63c995b3"
+  },
+  "new_source": {
+    "git_head": "3213cddb904b745193c5a27c06c42ec3a3ae2f93",
+    "dirty": false,
+    "python_sources_sha256": "782333a4bea85ac7f1a86050a28072eef2dda77b53ea8dd1b5a00cf42a69331a"
+  },
+  "old_complete_module_sha256": "6550629c30fa0bb1c6b34dc61b4008991101cc0035c8c218a87101525db8cc9b",
+  "old_market_module_sha256": "63b537b9d19fe20a171fd2e9c6c3b24a05606e4daf00ad4d31663f803e7a0d15",
+  "equal_default_conditions": true,
+  "equal_market_inputs": true,
+  "limitations": "three-session deterministic equivalence with actual fills; complete995 matrix remains its own original source"
+}

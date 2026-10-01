@@ -1,0 +1,30 @@
+import sys,tempfile,json
+from decimal import Decimal as D
+from pathlib import Path
+from dataclasses import asdict
+sys.path.insert(0,'/workspace/starquant')
+from btc_perp.config import load_config
+from btc_perp.store import Store
+from research.session_market import load_base
+from research.star_session import StarExchange
+from research.unified_perp import star_cycle,PriorFX,HOUR,MINUTE
+start=1609977600000
+market=load_base(Path('/tmp/coinquant-market'))
+class Prints:
+    loaded={}
+    def last(self,now):return now,D('36823.68')
+    def timed(self,start,end):return [(start+10,D('36823.68'),D(1))] if end>start+10 else []
+def minutes(begin,end):
+    for stamp in range(begin,end,MINUTE):
+        yield stamp,market.minute('trade',stamp)
+hours=[]
+for stamp in range(start-1400*HOUR,start,HOUR):
+    rows=[market.minute('trade',m) for m in range(stamp,stamp+HOUR,MINUTE)]
+    hours.append((stamp,float(max(r[1] for r in rows)),float(min(r[2] for r in rows))))
+e=StarExchange(market,start,D(1400),matcher='trade_print',prints=Prints())
+e.fx=PriorFX(Path('/workspace/starquant/data/usdcny_frankfurter.json'))
+e.read_latency_ms=200
+with tempfile.TemporaryDirectory() as directory,Store(Path(directory),'demo') as store:
+    report=star_cycle(e,store,load_config(),minutes,hours)
+    print(json.dumps({'report':asdict(report),'position':str(e.q),'orders':e.orders,'algos':e.algos,'sent':len(e.sent)},default=str,indent=2))
+    assert e.q>0 and len(e.sent)>=3 and len(e._working_algos())==2
