@@ -69,7 +69,7 @@ def star_cycle(exchange, store, cfg, minute_rows, hours, mode='run'):
         clock=lambda: exchange.now_ms)
 
 
-def measure(star_repo, market_root, prints_root, *, limit=None):
+def measure(star_repo, market_root, prints_root, *, limit=None, restore_prints=False):
     sys.path.insert(0, str(star_repo))
     from btc_perp.config import load_config
     from btc_perp.store import Store
@@ -105,7 +105,12 @@ def measure(star_repo, market_root, prints_root, *, limit=None):
         for index, (name, config) in enumerate((('Coinquant-default', None), ('Starquant-baseline', cfg),
                                                ('Starquant-half-risk', replace(cfg, risk=.024)))):
             cls = SessionExchange if config is None else StarExchange
-            exchange = cls(market, starts[0], wallet, matcher='trade_print', prints=TradePrints(prints_root), uid=9100 + index)
+            if restore_prints:
+                from research.rolling_prints import RollingPrints
+                print_tape = RollingPrints(prints_root)
+            else:
+                print_tape = TradePrints(prints_root)
+            exchange = cls(market, starts[0], wallet, matcher='trade_print', prints=print_tape, uid=9100 + index)
             exchange.fx, exchange.exit_conversion = fx, D('.001')
             exchange.read_latency_ms, exchange.latency_ms, exchange.mark_gap = 200, 1000, 'bound'
             directory = Path(scratch) / name
@@ -174,11 +179,12 @@ def main(argv=None):
     parser.add_argument('--prints', type=Path, default=Path('/tmp/coinquant-prints'))
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--limit', type=int)
+    parser.add_argument('--restore-prints', action='store_true', help='Official on-demand task-owned rolling cache')
     args = parser.parse_args(argv)
     if args.out.exists() or (args.limit is not None and (not 1 <= args.limit <= 795 or
             not str(args.out.resolve()).startswith('/tmp/'))):
         parser.error('partial diagnostics stay in /tmp; never overwrite evidence')
-    result = measure(args.star_repo, args.market, args.prints, limit=args.limit)
+    result = measure(args.star_repo, args.market, args.prints, limit=args.limit, restore_prints=args.restore_prints)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with args.out.open('x') as stream:
         json.dump(result, stream, default=str)
