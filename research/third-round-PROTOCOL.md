@@ -21,6 +21,13 @@ Production session.run/Lifecycle and peer runner.run_cycle remain the execution
 paths. Unattended time sends no client commands. The peer uses its actual stop
 cleanup between sessions; no background decisions are introduced.
 
+The peer Demo gate receives its published research notional ceiling of
+USDT 5,000,000 (`MAX_NOTIONAL_20X`). Its own MARKET/CONTRACT_PRICE request shapes
+are validated at the offline boundary; Coinquant's IOC/MARK_PRICE restrictions
+are not weakened. Restore missing minute archives against the original M10
+file hashes. A progress checkpoint and any interrupted account are explicitly
+incomplete and cannot be used for selection.
+
 First run small integration probes. Cover short, add, partial fills, lost ACK,
 restart and process-stop protection through existing cases and adapter boundary
 checks. Only then run full accounts. Partial outputs stay in /tmp and cannot

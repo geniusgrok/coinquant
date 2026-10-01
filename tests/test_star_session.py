@@ -2,7 +2,7 @@ from decimal import Decimal as D
 from unittest import TestCase
 
 from research.session_market import Market
-from research.star_session import StarExchange
+from research.star_session import StarExchange, StarVenue
 
 
 class Prints:
@@ -21,6 +21,20 @@ class SharedPeerTests(TestCase):
         market = Market({}, (), identity={'trade': dict(rows), 'mark': dict(rows)})
         exchange = StarExchange(market, start, D(1000), matcher='trade_print', prints=Prints())
         return exchange
+
+    def test_peer_transport_preserves_market_and_contract_price_shapes(self):
+        e = self.venue()
+        venue = StarVenue(e)
+        order = venue.place_market(client_id='en-test', side='BUY', qty='1', reduce_only=False)
+        self.assertEqual(D(order['executedQty']), D('.5'))
+        self.assertEqual(e.q, D('.5'))
+        stop = venue.place_algo(client_id='sl-test', side='SELL', order_type='STOP_MARKET',
+                                trigger_price='72', close_position=True, reduce_only=False,
+                                qty='', working_type='CONTRACT_PRICE')
+        self.assertEqual(stop['algoStatus'], 'NEW')
+        self.assertEqual(stop['workingType'], 'CONTRACT_PRICE')
+        self.assertEqual(venue.cancel_algo('sl-test')['algoStatus'], 'CANCELED')
+        self.assertEqual(len(e.sent), 3)
 
     def test_short_partial_market_fill_and_add_keep_cash_identity(self):
         e = self.venue()

@@ -6,10 +6,36 @@ from decimal import Decimal as D
 from urllib.error import HTTPError
 
 from coinquant.types import Unknown
-from research.session_exchange import SessionExchange, _text, MINUTE
+from research.session_exchange import SessionExchange, _text, MINUTE, MARK_ABOVE_TRADE, MARK_BELOW_TRADE
 
 
 class StarExchange(SessionExchange):
+    def send(self, method, path, params):
+        # The peer has MARKET entries and CONTRACT_PRICE protection. The
+        # production Coinquant adapter deliberately rejects both shapes.
+        # Keep that production guard intact and validate this research boundary.
+        if (method, path) not in {('POST', '/fapi/v1/order'), ('DELETE', '/fapi/v1/order'),
+                                  ('POST', '/fapi/v1/algoOrder'), ('DELETE', '/fapi/v1/algoOrder')}:
+            raise Unknown('unsupported peer historical write')
+        if params.get('symbol') != 'BTCUSDT':
+            raise Unknown('peer historical write must name BTCUSDT')
+        if method == 'POST':
+            if params.get('side') not in ('BUY', 'SELL'):
+                raise Unknown('peer historical write needs a valid side')
+            if path.endswith('/order'):
+                if (params.get('type') != 'MARKET' or not params.get('newClientOrderId')
+                        or D(params.get('quantity', '0')) <= 0
+                        or params.get('reduceOnly') not in ('true', 'false')):
+                    raise Unknown('invalid peer historical market order')
+            elif (not params.get('clientAlgoId') or params.get('closePosition') != 'true'
+                  or params.get('workingType') != 'CONTRACT_PRICE'
+                  or params.get('type') not in ('STOP_MARKET', 'TAKE_PROFIT_MARKET')
+                  or D(params.get('triggerPrice', '0')) <= 0):
+                raise Unknown('invalid peer historical protection')
+        elif not params.get('origClientOrderId' if path.endswith('/order') else 'clientAlgoId'):
+            raise Unknown('peer cancellation needs its original identity')
+        return self._request(method, path, params)
+
     def _accept_order(self, params):
         if params.get('type') != 'MARKET' or params.get('reduceOnly') == 'true':
             return super()._accept_order(params)
@@ -94,14 +120,23 @@ class StarExchange(SessionExchange):
                 return stamp, 'take', price
         return None
 
-    def _on_minute(self, open_ms):
+    def _on_minute(self, open_ms, partial=False):
         if not self.q:
             return
         mark, trade = self.market.minute('mark', open_ms), self.market.minute('trade', open_ms)
-        if mark is None or trade is None:
-            # Preserve the accepted missing-mark policy; native peer protection is not
-            # asserted to have fired when its required input is absent.
-            return super()._on_minute(open_ms)
+        if trade is None:
+            self.known_path = False
+            self.unknown_from = self.unknown_from or open_ms
+            return
+        bounded = mark is None
+        if bounded:
+            if self.mark_gap != 'bound':
+                self._forfeit_isolated()
+                return
+            self.hindsight_bounded = True
+            self.bounded_minutes.append(open_ms)
+            mark = (trade[0], trade[1] * (1 + MARK_ABOVE_TRADE),
+                    trade[2] * (1 + MARK_BELOW_TRADE), trade[3], trade[4])
         long = self.q > 0
         stop, take = self._triggers()
         liq = self._liquidation()
@@ -111,11 +146,18 @@ class StarExchange(SessionExchange):
         hits = []
         if stop is not None and ((trade[2] <= stop) if long else (trade[1] >= stop)):
             hits.append('stop')
-        if take is not None and ((trade[1] >= take) if long else (trade[2] <= take)):
+        if not partial and not bounded and take is not None and ((trade[1] >= take) if long else (trade[2] <= take)):
             hits.append('take')
         if (mark[2] <= liq) if long else (mark[1] >= liq):
             hits.append('liq')
-        if len(hits) > 1:
+        if (partial or bounded) and hits:
+            if partial:
+                self.funnel['partial_adverse'] += 1
+            if 'liq' in hits:
+                self._liquidate(liq)
+            else:
+                self._trigger('STOP_MARKET', min(trade[0], stop) if long else max(trade[0], stop))
+        elif len(hits) > 1:
             self.known_path = False
             self.unknown_from = self.unknown_from or open_ms
         elif hits == ['liq']:
@@ -126,7 +168,7 @@ class StarExchange(SessionExchange):
             self._trigger(kind, price)
 
     def _partial(self, open_ms, at_boundary):
-        self._on_minute(open_ms)
+        self._on_minute(open_ms, partial=True)
 
 
 class StarVenue:
@@ -188,14 +230,15 @@ class StarVenue:
             side=side, quantity=qty, type='MARKET', reduceOnly='true' if reduce_only else 'false'))
 
     def place_algo(self, *, client_id, side, order_type, trigger_price, close_position,
-                   reduce_only, qty, working_type):
+                   reduce_only=False, qty='', working_type='CONTRACT_PRICE'):
         if not close_position or reduce_only or qty:
             raise Unknown('peer protection must be the actual full-position shape')
         return self._send('POST', '/fapi/v1/algoOrder', dict(symbol='BTCUSDT', clientAlgoId=client_id,
             side=side, type=order_type, triggerPrice=trigger_price, closePosition='true', workingType=working_type))
 
     def cancel_order(self, client_id):
-        return self._send('DELETE', '/fapi/v1/order', {'symbol': 'BTCUSDT', 'origClientOrderId': client_id})
+        self._send('DELETE', '/fapi/v1/order', {'symbol': 'BTCUSDT', 'origClientOrderId': client_id})
+        return self.query_order(client_id)
 
     def cancel_algo(self, client_id):
         self._send('DELETE', '/fapi/v1/algoOrder', {'symbol': 'BTCUSDT', 'clientAlgoId': client_id})

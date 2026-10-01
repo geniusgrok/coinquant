@@ -18,6 +18,7 @@ from research import rebuild, session_schedule
 from research.session_exchange import SessionExchange
 from research.session_market import load_base, TradePrints, WARMUP_TRADE
 from research.star_session import StarExchange, StarVenue
+from coinquant.types import Unknown
 
 DAY, HOUR, MINUTE = 86400000, 3600000, 60000
 
@@ -70,7 +71,7 @@ def star_cycle(exchange, store, cfg, minute_rows, hours, mode='run'):
         clock=lambda: exchange.now_ms)
 
 
-def measure(star_repo, market_root, prints_root, *, limit=None, restore_prints=False):
+def measure(star_repo, market_root, prints_root, *, limit=None, restore_prints=False, checkpoint=None):
     sys.path.insert(0, str(star_repo))
     from btc_perp.config import load_config
     from btc_perp.store import Store
@@ -117,45 +118,63 @@ def measure(star_repo, market_root, prints_root, *, limit=None, restore_prints=F
             directory = Path(scratch) / name
             store = None if config is None else stack.enter_context(Store(directory, 'demo'))
             candidates[name] = {'exchange': exchange, 'cfg': config, 'store': store, 'state': directory, 'sessions': []}
-        for index, start in enumerate(starts):
-            extend_hours(start + 420000)
-            for name, candidate in candidates.items():
-                exchange, config = candidate['exchange'], candidate['cfg']
-                if exchange.now_ms < start:
-                    exchange.advance_unattended(start)
-                if config is None:
-                    report = run(Config(str(exchange.uid), str(candidate['state']), 300, 5), exchange,
-                                 execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
-                    row = {'index': index, 'start_ms': start, 'status': report['status'],
-                           'unresolved': report.get('execution_unresolved', False),
-                           'actions': rebuild._harvest(candidate['state'])}
-                else:
-                    deadline = start + 300000
-                    cycles = []
-                    while exchange.now_ms < deadline:
-                        report = star_cycle(exchange, candidate['store'], config, minutes, hours)
-                        cycles.append(asdict(report))
-                        exchange.wait(min(5, max(0, (deadline - exchange.now_ms) / 1000)))
-                    report = star_cycle(exchange, candidate['store'], config, minutes, hours, 'stop')
-                    row = {'index': index, 'start_ms': start, 'cycles': cycles, 'cleanup': asdict(report),
-                           'unresolved': bool(report.remaining)}
-                candidate['sessions'].append(row)
-            if index % 10 == 0:
-                print(json.dumps({'session': index, 'date': rebuild.iso(start), 'positions': {
-                    name: str(candidate['exchange'].q) for name, candidate in candidates.items()}}), flush=True)
+        failure = None
+        try:
+            for index, start in enumerate(starts):
+                extend_hours(start + 420000)
+                for name, candidate in candidates.items():
+                    exchange, config = candidate['exchange'], candidate['cfg']
+                    if exchange.now_ms < start:
+                        exchange.advance_unattended(start)
+                    if config is None:
+                        report = run(Config(str(exchange.uid), str(candidate['state']), 300, 5), exchange,
+                                     execute=True, monotonic=exchange.monotonic, wait=exchange.wait)
+                        row = {'index': index, 'start_ms': start, 'status': report['status'],
+                               'unresolved': report.get('execution_unresolved', False),
+                               'actions': rebuild._harvest(candidate['state'])}
+                    else:
+                        deadline = start + 300000
+                        cycles = []
+                        while exchange.now_ms < deadline:
+                            report = star_cycle(exchange, candidate['store'], config, minutes, hours)
+                            cycles.append(asdict(report))
+                            exchange.wait(min(5, max(0, (deadline - exchange.now_ms) / 1000)))
+                        report = star_cycle(exchange, candidate['store'], config, minutes, hours, 'stop')
+                        row = {'index': index, 'start_ms': start, 'cycles': cycles, 'cleanup': asdict(report),
+                               'unresolved': bool(report.remaining)}
+                    candidate['sessions'].append(row)
+                if checkpoint is not None:
+                    checkpoint.write_text(json.dumps({'sources': identities, 'last_complete_session': index,
+                        'date': rebuild.iso(start), 'complete': False, 'comparable': False,
+                        'accounts': {name: {'wallet': str(c['exchange'].wallet),
+                            'position': str(c['exchange'].q), 'trades': len(c['exchange'].trades)}
+                            for name, c in candidates.items()}}, indent=2) + '\n')
+                if index % 10 == 0:
+                    print(json.dumps({'session': index, 'date': rebuild.iso(start), 'positions': {
+                        name: str(candidate['exchange'].q) for name, candidate in candidates.items()}}), flush=True)
+        except (Unknown, OSError, ValueError, KeyError, TypeError) as exc:
+            failure = {'type': type(exc).__name__, 'reason': str(exc), 'session': index}
         end = rebuild.timestamp(rebuild.END) if limit is None else starts[-1] + 420000
         results = {}
         for name, candidate in candidates.items():
             e = candidate['exchange']
-            e.advance_unattended(max(end, e.now_ms))
-            equity = e.wallet + (e.q * (rebuild._final_mark(e) - e.entry) if e.q else D(0))
-            cny = equity * e._cny()
+            if failure is None:
+                try:
+                    e.advance_unattended(max(end, e.now_ms))
+                except (Unknown, OSError, ValueError) as exc:
+                    failure = {'type': type(exc).__name__, 'reason': str(exc), 'phase': 'finalization'}
+            try:
+                equity = e.wallet + (e.q * (rebuild._final_mark(e) - e.entry) if e.q else D(0))
+            except (Unknown, ValueError):
+                equity = None
+            cny = equity * e._cny() if equity is not None else None
             years = (end - rebuild.timestamp(rebuild.START)) / rebuild.YEAR_MS
             results[name] = {'final_usdt': str(equity), 'final_cny': str(cny),
-                'cagr': float(cny / 10000) ** (1 / years) - 1 if cny > 0 else -1,
+                'cagr': (float(cny / 10000) ** (1 / years) - 1 if cny > 0 else -1)
+                    if cny is not None and failure is None and limit is None else None,
                 'mdd': str(e.mdd_envelope), 'fees': str(e.fees), 'funding': str(e.funding_paid),
                 'position': str(e.q), 'known_path': e.known_path, 'hindsight_bounded': e.hindsight_bounded,
-                'unknown_from': e.unknown_from, 'complete': limit is None,
+                'unknown_from': e.unknown_from, 'complete': limit is None and failure is None,
                 'execution_unresolved': sum(row['unresolved'] for row in candidate['sessions']),
                 'trades': e.trades, 'sessions': candidate['sessions'],
                 'loaded_print_files': e.prints.loaded, 'funding_ledger': e.income,
@@ -163,14 +182,15 @@ def measure(star_repo, market_root, prints_root, *, limit=None, restore_prints=F
                 'candidate_config': asdict(candidate['cfg']) if candidate['cfg'] else {'primary_risk': '7.5'}}
         return {'sources': identities, 'schedule_sha256': schedule['sha256'], 'results': results,
             'market_identity': market.identity, 'loaded_minute_files': market.loaded,
-            'fx_sha256': fx.sha256, 'comparable': limit is None and all(row['known_path']
+            'failure': failure, 'fx_sha256': fx.sha256, 'comparable': failure is None and limit is None and all(row['known_path']
                 and not row['execution_unresolved'] for row in results.values()),
             'selected': None, 'native_execution_verified': False, 'out_of_sample': False,
             'conditions': {'fee': '.00075', 'read_latency_ms': 200, 'write_latency_ms': 1000,
                 'conversion': '.001 each way', 'funding': 'same official calendar; missing means unknown',
                 'fx': 'prior-date Frankfurter fixing; same for valuation and peer decision',
                 'mark_gap': 'accepted 29-minute bound', 'fills': 'same print quantity upper bound',
-                'operation': '795 frozen finite manual sessions; actual peer stop cleanup'}}
+                'operation': '795 frozen finite manual sessions; actual peer stop cleanup',
+                'peer_demo_notional_ceiling_usdt': 5000000}}
 
 
 def main(argv=None):
@@ -185,13 +205,17 @@ def main(argv=None):
     if args.out.exists() or (args.limit is not None and (not 1 <= args.limit <= 795 or
             not str(args.out.resolve()).startswith('/tmp/'))):
         parser.error('partial diagnostics stay in /tmp; never overwrite evidence')
-    result = measure(args.star_repo, args.market, args.prints, limit=args.limit, restore_prints=args.restore_prints)
+    checkpoint = Path('/tmp') / ('btc-unified-' + hashlib.sha256(str(args.out.resolve()).encode()).hexdigest()[:12] + '.json')
+    result = measure(args.star_repo, args.market, args.prints, limit=args.limit,
+                     restore_prints=args.restore_prints, checkpoint=checkpoint)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with args.out.open('x') as stream:
         json.dump(result, stream, default=str)
         stream.write('\n')
-    print(json.dumps({'comparable': result['comparable'], 'candidates': list(result['results'])}))
+    print(json.dumps({'comparable': result['comparable'], 'failure': result['failure'],
+                      'candidates': list(result['results'])}))
+    return 2 if result['failure'] else 0
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())
