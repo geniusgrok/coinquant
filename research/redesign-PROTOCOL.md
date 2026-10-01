@@ -403,3 +403,21 @@ P5 及六项压力与 M4 对应账户除试验名外逐字段相同（P5：¥5,2
 - 规则仍选中 7.5。`PRIMARY_RISK` 不改。CAGR 未达 150%，`economic_qualification` 仍为 `NOT_MET`。
 - 压力与 M9 相同：手续费 +50% ¥2,406,523／126.17%／44.79%；出场滑点 ×2 ¥2,118,221／121.92%／44.87%；深度 10% ¥2,583,258／128.57%／44.51%；随机跳过 20% ¥909,932／95.69%／45.39%；缺席序列与 21 天空窗与基准相同。
 - 风险 6 的读延迟 100／200／400 ms：¥2,543,459／128.04%、¥1,703,093／114.83%、¥878,313／94.66%。
+# F2: comparable perpetual protocol and offline evidence — 2026-10-01
+
+Freeze three candidates: Coinquant default, Starquant default and Starquant
+half-risk. The economic goal remains 150% CAGR / MDD <50%, initial CNY 10,000,
+no additions, the existing BTC window. The reference operation is the frozen
+795 finite manual sessions, not implicit continuous operation. Before ranking,
+align operation schedule, mark/valuation, FX/conversion, fees, funding, fills,
+latency, stops and missing-input policy. Keep old results unchanged and mark
+the comparison blocked until every dimension is verified. No new parameter
+search and no automatic runtime selection. Half-risk remains a research
+control, not a retroactive promotion.
+
+Record request timing, account equity, signal, rounded order, durable ID and
+fill events from the existing session replay. Start with restored three-session
+prefixes; label them diagnostic, not economic qualification. Run named local
+fault cases for partial fill protection, lost ACK without duplicate entry,
+unknown order after restart, protection replacement and disconnect. Native
+Demo proof remains separate and requires owner-run authorized account trials.
