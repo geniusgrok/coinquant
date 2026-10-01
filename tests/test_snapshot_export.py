@@ -37,3 +37,13 @@ class SnapshotExportTests(TestCase):
         self.assertEqual(row['equity_usdt'], '1000')
         self.assertEqual(row['environment'], 'demo')
         self.assertIsNone(row['liquidation_buffer_fraction'])
+
+    def test_reversed_collection_clock_is_unknown(self):
+        actual = self.fixture()
+        actual['wallet_observed_from_ms'] = actual['wallet_observed_until_ms'] + 1
+        with self.assertRaises(Unknown):
+            export(actual, Config('1', '/tmp/unused'))
+
+    def test_crossed_long_liquidation_price_is_not_a_positive_buffer(self):
+        row = export(dict(self.fixture(), quantity_btc='2'), Config('1', '/tmp/unused'))
+        self.assertLess(float(row['liquidation_buffer_fraction']), 0)
