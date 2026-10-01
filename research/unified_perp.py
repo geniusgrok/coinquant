@@ -55,6 +55,7 @@ def star_cycle(exchange, store, cfg, minute_rows, hours, mode='run'):
     from btc_perp.bars import MinuteBar
     from btc_perp.model import Limits
     from btc_perp.runner import run_cycle
+    from btc_perp.costs import MAX_NOTIONAL_20X
     now = exchange.now_ms
     cursor = store.load_book().cursor_ms
     begin = cursor if cursor else max(rebuild.timestamp(rebuild.START), now // MINUTE * MINUTE - 1000 * MINUTE)
@@ -64,7 +65,7 @@ def star_cycle(exchange, store, cfg, minute_rows, hours, mode='run'):
     known_hours = tuple(row for row in hours if row[0] + HOUR <= now)[-1400:]
     exchange.begin_cycle(120)
     return run_cycle(store, StarVenue(exchange), environment='demo', limits=Limits(None, None, None, 20),
-        max_notional=None, cfg=cfg, now_ms=now, bars=bars, channels=None,
+        max_notional=MAX_NOTIONAL_20X, cfg=cfg, now_ms=now, bars=bars, channels=None,
         fx=float(exchange.fx(now)), mode=mode, prod_enabled=False, hour_rows=known_hours,
         clock=lambda: exchange.now_ms)
 
