@@ -1,0 +1,18 @@
+{
+  "restored": [
+    "mark/1m/daily/BTCUSDT-1m-2020-01-19.zip",
+    "mark/1m/daily/BTCUSDT-1m-2020-12-17.zip",
+    "mark/1m/daily/BTCUSDT-1m-2021-07-01.zip",
+    "mark/1m/daily/BTCUSDT-1m-2021-07-24.zip",
+    "mark/1m/daily/BTCUSDT-1m-2021-07-25.zip",
+    "mark/1m/daily/BTCUSDT-1m-2021-07-26.zip",
+    "mark/1m/daily/BTCUSDT-1m-2021-07-27.zip",
+    "mark/1m/daily/BTCUSDT-1m-2022-07-31.zip",
+    "mark/1m/daily/BTCUSDT-1m-2022-10-02.zip",
+    "mark/1m/daily/BTCUSDT-1m-2023-02-24.zip",
+    "mark/1m/daily/BTCUSDT-1m-2024-08-12.zip",
+    "mark/1m/daily/BTCUSDT-1m-2026-06-29.zip"
+  ],
+  "frozen_files_verified": 210,
+  "manifest_sha256": "7306364fe6e2579b1a0b0f13cde965ada02de78245a10865e66a1a0107f6c00b"
+}

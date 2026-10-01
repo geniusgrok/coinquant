@@ -1,5 +1,13 @@
 # Coinquant
 
+第三轮完成三个实际 runner 的 795 次共享历史会话，并核对完整现金流水。
+Coinquant 默认为 119.23% CAGR / 44.11% MDD；Star 默认与半风险分别为
+−3.68% / 51.75%、−1.27% / 38.21%。这是共同代理模型的有限启停结果，
+保留 Coinquant 合约 + Spotquant 现货作为日常开发方向，Star 留作研究。
+原件、源码/输入身份、简化原生 snapshot 的限制与命令见
+[第三轮结果](evidence/third-round-20261001/RESULT.md)。150% 目标未达，
+原生资格未升级。新增 `snapshot --config ... --out ...` 只读账户导出。
+
 第二轮：[合约比较协议、逐事件复现与本机验收](evidence/second-round-20261001/RESULT.md)。
 五组诊断精确复现原成交前缀，六项故障案例通过；与 Starquant 仍有九项口径
 待对齐，因此没有选出唯一合约项目。默认配置、经济目标和原生资格门槛保留。
