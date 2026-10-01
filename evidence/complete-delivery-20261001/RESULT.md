@@ -53,4 +53,17 @@ python -m research.complete_perp --crowding evidence/complete-delivery-20261001/
 
 Keep original inputs/schedule/FX and use new exclusive output paths. `--initial-cny` defaults to 10,000 and initializes wallet, initial metric peak, CAGR and audit from that capital. Budget results are directly indexed by capital, with explicit incumbent/base labels. No selected-budget replay is needed because all substitutes are rejected. Optional selected-budget support keeps separate `selected_results` and candidate metadata when future registered selection requires it.
 
-Actual-budget final audit will be appended after all three795 accounts finish. Unified cross-account attribution, daily controls and independent fixed-capital combinations are published in [Spotquant ALPHA_BETA.md](https://github.com/geniusgrok/spotquant/blob/main/evidence/complete-delivery-20261001/ALPHA_BETA.md), with source/candidate-matched endpoint and budget checks. CAGR alone does not establish prospective alpha.
+All three actual-budget accounts completed795 sessions. Their independent own-capital cash audits, exactfrozen starts, matching market/FX/crowding/protocol/schedule inputs, complete2454 daily records and302 actually marked held closing days passed. Each is flat at END with all execution/cashflow times strictly before END; unresolved count is zero. See [portfolio-perp-summary.json](portfolio-perp-summary.json). Unified cross-account attribution, daily controls and independent fixed-capital combinations are published in [Spotquant ALPHA_BETA.md](https://github.com/geniusgrok/spotquant/blob/main/evidence/complete-delivery-20261001/ALPHA_BETA.md), with source/candidate-matched endpoint and budget checks. CAGR alone does not establish prospective alpha.
+
+
+## Actual independent budget results
+
+Budget source3213 remained frozen throughout command93244, which exited0. Fullraw is5,872,835 bytes, SHA-256 `eddf564178aad45efd9a3aac20e02fc757a0196008f4c083963621ac43a1bd8a`. No money transferred across accounts and no curve rescaling occurred.
+
+| Initial CNY | Final CNY | Net CAGR | Continuous MDD | Fills |
+|---:|---:|---:|---:|---:|
+| 2500 | 1,013,388.5291 | 144.42114% | 44.09001% | 932 |
+| 5000 | 1,642,401.4744 | 136.88966% | 44.10825% | 1367 |
+| 7500 | 2,154,872.1447 | 132.21564% | 44.10493% | 1751 |
+
+The smaller-capital paths are not proportional to the10,000CNY path. Minimum quantities, finite fill/sizing cycles and quantity limits make actual account outcomes depend on capital; even the7,500CNY terminal wealth exceeds the10,000CNY terminal wealth. These are fixed registered capital-allocation controls. They neither replace the10,000CNY selection criterion nor establish alpha. Matching candidate names and actual capital amounts are mandatory when constructing joint curves.

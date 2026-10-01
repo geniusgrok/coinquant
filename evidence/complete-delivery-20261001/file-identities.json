@@ -1,4 +1,12 @@
 {
+  "portfolio-perp-summary.json": {
+    "bytes": 185679,
+    "sha256": "023b697a3ce0a006d39b123e50facd7f98c3c0e668374268171101240098748d"
+  },
+  "portfolio-perp-accounts.json": {
+    "bytes": 5872835,
+    "sha256": "eddf564178aad45efd9a3aac20e02fc757a0196008f4c083963621ac43a1bd8a"
+  },
   "perp-accounts.json": {
     "bytes": 55218104,
     "sha256": "55aa8ba0d8e54d572907a5d57cc557face20a0ce6666692d526df37387585423"
