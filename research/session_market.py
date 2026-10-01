@@ -23,10 +23,10 @@ FOUR = 14_400_000
 MINUTE = 60_000
 FUNDING_INTERVAL = 8 * HOUR
 FUNDING_JITTER_MS = 1000
-# Monthly Vision funding objects the account needs. Vision has no 2026-09 object
-# yet; a held interval crossing an uncovered settlement time is an unknown path.
+# Monthly official funding objects cover the frozen window through September
+# 2026. A held interval crossing an unpublished settlement remains unknown.
 FUNDING_MONTHS = tuple(f'{year:04d}-{month:02d}' for year in range(2020, 2027) for month in range(1, 13)
-                       if (year, month) <= (2026, 8))
+                       if (year, month) <= (2026, 9))
 
 
 def _sha(path):
@@ -423,6 +423,7 @@ def fetch(root, workers=8):
         add(f'{base}/monthly/klines/BTCUSDT/4h/BTCUSDT-4h-{stamp}.zip', root / 'klines' / '4h' / f'BTCUSDT-4h-{stamp}.zip')
         add(f'{base}/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-{stamp}.zip', root / 'klines' / '1m' / f'BTCUSDT-1m-{stamp}.zip')
         add(f'{base}/monthly/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-{stamp}.zip', root / 'mark' / '1m' / f'BTCUSDT-1m-{stamp}.zip')
+    for stamp in FUNDING_MONTHS:
         add(f'{base}/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-{stamp}.zip', root / 'funding' / f'BTCUSDT-fundingRate-{stamp}.zip')
     for day in range(1, 20):
         stamp = f'2026-09-{day:02d}'

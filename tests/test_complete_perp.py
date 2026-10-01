@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from coinquant.campaign import Campaign, ORIGIN
 from coinquant.linear_sizing import funded_target
@@ -126,6 +126,80 @@ class CompletePerpTests(unittest.TestCase):
         e.capture(2*DAY)
         self.assertEqual(e.daily[1]['equity_cny'], str(e.wallet*8*D('.999')))
         self.assertEqual(e.daily[1]['stamp_ms'], 2*DAY)
+
+    def test_budget_initial_peak_includes_only_conversion_cost(self):
+        fx = lambda _: D(7)
+        for amount in (D(2500), D(5000), D(7500), D(10000)):
+            e = ResearchExchange(Mock(), DAY, amount/7*D('.999'), fx=fx, initial_cny=amount)
+            self.assertEqual(e.peak_cny, amount)
+            self.assertEqual(e.peak_envelope_cny, amount)
+            self.assertLess(abs(e.mdd_envelope-D('.001999')), D('1e-25'))
+            self.assertLess(abs(e.mdd_close-D('.001999')), D('1e-25'))
+        for amount in (D(0), D(-1), D('NaN'), D('Infinity')):
+            with self.assertRaises(ValueError):
+                ResearchExchange(Mock(), DAY, D(1), fx=fx, initial_cny=amount)
+
+    def test_public_restore_includes_september_funding_without_price_extension(self):
+        from research.session_market import fetch
+        urls = []
+        def offline(args, **kwargs):
+            urls.append(args[-1])
+            return Mock(returncode=1, stderr='offline request verification')
+        with tempfile.TemporaryDirectory() as tmp, patch('subprocess.run', side_effect=offline):
+            with self.assertRaises(SystemExit):
+                fetch(tmp, workers=1)
+        prefix = 'https://data.binance.vision/data/futures/um/'
+        funding = prefix+'monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2026-09.zip'
+        self.assertIn(funding, urls)
+        self.assertIn(funding+'.CHECKSUM', urls)
+        self.assertFalse(any('/monthly/' in u and 'klines' in u.lower() and '2026-09' in u for u in urls))
+        self.assertTrue(any('/daily/' in u and '2026-09-19' in u for u in urls))
+        self.assertFalse(any('/daily/' in u and '2026-09-20' in u for u in urls))
+
+    def test_research_terminal_excludes_only_end_funding_and_never_executes(self):
+        market = Mock()
+        market.funding_between.side_effect = lambda a,b: ([(2*DAY,D('.0001'))] if a < 2*DAY <= b else [],False)
+        market.minute.return_value = (D(100),D(100),D(100),D(100),D(0))
+        original = ResearchExchange(market,2*DAY-1,D(100),fx=lambda _:D(7))
+        exclusive = ResearchExchange(market,2*DAY-1,D(100),fx=lambda _:D(7),terminal_ms=2*DAY)
+        for e in (original,exclusive):
+            e.q,e.entry,e.margin = D(1),D(100),D(5)
+            e._pay_funding(2*DAY-1,2*DAY)
+        self.assertEqual(original.wallet,D('99.9900'))
+        self.assertEqual(exclusive.wallet,D(100))
+        self.assertEqual(exclusive.income,[])
+        self.assertEqual(exclusive.trades,original.trades)
+        self.assertEqual(exclusive.sent,original.sent)
+        self.assertEqual(exclusive.q,original.q)
+        self.assertEqual(exclusive.daily[1]['wallet_usdt'],'100')
+
+    def test_terminal_derivation_preserves_history_and_reconstructs_cash(self):
+        import copy
+        from research.exclusive_terminal import exclude_row
+        from research import rebuild
+        end = rebuild.timestamp(rebuild.END)
+        cny = str(D('99.99')*7*D('.999'))
+        row = {'trades':[{'time':end-1000,'side':'BUY','qty':'1','price':'100'}],
+            'funding_ledger':[{'time':end,'incomeType':'FUNDING_FEE','income':'-.01'}],
+            'position':'1','fees':'0','funding':'.01','final_mark':'100',
+            'final_usdt':'99.99','final_cny':cny,'cagr':1,
+            'mdd_envelope_at':end-1000,'mdd_close_at':end-1000,
+            'mdd':'.1','mdd_close':'.1','funnel':{'funding':1},
+            'daily':[{'stamp_ms':end,'equity_usdt':'99.99','equity_cny':cny,
+                      'wallet_usdt':'99.99','funding_paid_usdt':'.01'}],
+            'daily_cny':[[end//DAY,cny]]}
+        before = copy.deepcopy(row)
+        proof = exclude_row(row,lambda _:D(7),end,D(100))
+        self.assertTrue(proof['audit']['passed'])
+        self.assertEqual(row['final_usdt'],'100.00')
+        self.assertEqual(row['funding'],'0.00')
+        self.assertEqual(row['trades'],before['trades'])
+        self.assertEqual(row['mdd'],before['mdd'])
+        self.assertEqual(row['mdd_close'],before['mdd_close'])
+        bad = copy.deepcopy(before);bad['funding_ledger'][0]['income']='.01'
+        with self.assertRaises(ValueError): exclude_row(bad,lambda _:D(7),end,D(100))
+        bad = copy.deepcopy(before);bad['trades'][0]['time']=end
+        with self.assertRaises(ValueError): exclude_row(bad,lambda _:D(7),end,D(100))
 
 
 if __name__ == '__main__':

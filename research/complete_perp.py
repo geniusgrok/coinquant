@@ -198,11 +198,22 @@ def variant(name, crowding):
 
 
 class ResearchExchange(SessionExchange):
-    def __init__(self, *args, fx, **kwargs):
+    def __init__(self, *args, fx, initial_cny=D(10000), terminal_ms=None, **kwargs):
+        self.terminal_ms = terminal_ms
+        self.initial_cny = D(initial_cny)
+        if not self.initial_cny.is_finite() or self.initial_cny <= 0:
+            raise ValueError("initial CNY must be positive and finite")
+        self._initial_peak_pending = True
         # Initial metric point must use the same prior FX and exit conversion.
         self.fx, self.exit_conversion = fx, D('.001')
         self.daily = {}
         super().__init__(*args, **kwargs)
+
+    def _record(self, cny, kind):
+        if self._initial_peak_pending:
+            self.peak_cny = self.peak_envelope_cny = self.initial_cny
+            self._initial_peak_pending = False
+        super()._record(cny, kind)
 
     def capture(self, stamp, price=None):
         if self.q and price is None:
@@ -237,7 +248,15 @@ class ResearchExchange(SessionExchange):
                 self.capture(open_ms+60000, row[3])
 
     def _pay_funding(self, start_ms, end_ms):
-        super()._pay_funding(start_ms, end_ms)
+        terminal = self.terminal_ms is not None and end_ms == self.terminal_ms
+        super()._pay_funding(start_ms, end_ms-1 if terminal else end_ms)
+        if terminal and self.q:
+            # Value the closing boundary without the next day's settlement.
+            row = self.market.minute('mark', end_ms-60000)
+            if row is None:
+                raise Unknown('official terminal mark missing')
+            self.now_ms = end_ms
+            self._note(row[3], 'close')
         if self.q and end_ms % DAY == 0 and self.now_ms == end_ms:
             row = self.market.minute('mark', end_ms-60000)
             if row is not None:
@@ -283,24 +302,33 @@ def measure(args):
                   crowding_sha256=crowding.sha256, crowding_source=crowding.source)
     market = load_base(args.market)
     tape = RollingPrints(args.prints) if args.restore_prints else TradePrints(args.prints)
-    initial = D(10000)/fx(rebuild.timestamp(rebuild.START))*D('.999')
+    budgets = (D(2500), D(5000), D(7500)) if args.portfolio_budgets else (args.initial_cny,)
+    cases = ([(str(b), 'base', 'incumbent', b, 12000+i, {}) for i,b in enumerate(budgets)]
+        if args.portfolio_budgets else [(name, scenario, name, args.initial_cny, 12000+i*4+j, options)
+            for i,name in enumerate(CANDIDATES) for j,(scenario,options) in enumerate(SCENARIOS.items())])
+    if args.portfolio_selected:
+        cases += [('selected-'+str(b), 'base', args.portfolio_selected, b, 12003+i, {})
+                  for i,b in enumerate(budgets)]
     with tempfile.TemporaryDirectory(prefix='complete-perp-') as scratch:
         accounts = {}
-        for i, name in enumerate(CANDIDATES):
-            for j, (scenario, options) in enumerate(SCENARIOS.items()):
-                e = ResearchExchange(market, starts[0], initial, fx=fx, matcher='trade_print', prints=tape, uid=12000+i*4+j)
-                e.read_latency_ms, e.latency_ms, e.mark_gap = 200, 1000, 'bound'
-                for k, v in options.items():
-                    setattr(e, k, v)
-                accounts[name, scenario] = {'exchange': e, 'state': Path(scratch)/name/scenario,
-                                            'sessions': [], 'failure': None, 'coverage': Counter()}
+        for name, scenario, candidate, initial_cny, uid, options in cases:
+            initial = initial_cny/fx(rebuild.timestamp(rebuild.START))*D('.999')
+            e = ResearchExchange(market, starts[0], initial, fx=fx, initial_cny=initial_cny,
+                                 matcher='trade_print', prints=tape, uid=uid,
+                                 terminal_ms=rebuild.timestamp(rebuild.END) if args.limit is None else None)
+            e.read_latency_ms, e.latency_ms, e.mark_gap = 200, 1000, 'bound'
+            for k, v in options.items():
+                setattr(e, k, v)
+            accounts[name, scenario] = {'exchange': e, 'state': Path(scratch)/name/scenario,
+                'candidate': candidate, 'initial_usdt': initial, 'initial_cny': initial_cny,
+                'sessions': [], 'failure': None, 'coverage': Counter()}
         for index, start in enumerate(starts):
             for (name, scenario), c in accounts.items():
                 if c['failure']:
                     continue
                 e = c['exchange']
                 try:
-                    with variant(name, crowding):
+                    with variant(c['candidate'], crowding):
                         if e.now_ms < start:
                             e.advance_unattended(start)
                         before = crowding.coverage.copy()
@@ -320,7 +348,7 @@ def measure(args):
             checkpoint.write_text(json.dumps({'source': identity, 'complete': False, 'last_session': index,
                 'accounts': {'/'.join(k): {'sessions': len(c['sessions']), 'wallet': str(c['exchange'].wallet),
                   'position': str(c['exchange'].q), 'failure': c['failure']} for k,c in accounts.items()}}, indent=2)+'\n')
-        results = {name: {} for name in CANDIDATES}
+        results = {name: {} for name, _, _, _, _, _ in cases}
         end = rebuild.timestamp(rebuild.END) if args.limit is None else starts[-1]+420000
         for (name, scenario), c in accounts.items():
             e, mark, equity = c['exchange'], None, None
@@ -334,8 +362,8 @@ def measure(args):
                 c['failure'] = {'type': type(exc).__name__, 'reason': str(exc), 'phase': 'finalization'}
             complete = args.limit is None and not c['failure'] and len(c['sessions']) == 795
             cny = equity*e._cny() if equity is not None else None
-            row = {'complete': bool(complete), 'final_usdt': str(equity), 'final_cny': str(cny),
-                'cagr': (float(cny/10000)**(rebuild.YEAR_MS/(end-rebuild.timestamp(rebuild.START)))-1
+            row = {'initial_cny': str(c['initial_cny']), 'complete': bool(complete), 'final_usdt': str(equity), 'final_cny': str(cny),
+                'cagr': (float(cny/c['initial_cny'])**(rebuild.YEAR_MS/(end-rebuild.timestamp(rebuild.START)))-1
                          if cny > 0 else -1) if complete and cny is not None else None,
                 'mdd': str(e.mdd_envelope), 'mdd_close': str(e.mdd_close),
                 'mdd_envelope_at': e.mdd_envelope_at, 'mdd_close_at': e.mdd_close_at,
@@ -347,21 +375,38 @@ def measure(args):
                 'execution_unresolved': sum(r['execution_unresolved'] for r in c['sessions']),
                 'daily': [v for k,v in sorted(e.daily.items()) if k*DAY >= rebuild.timestamp(rebuild.START)],
                 'daily_cny': sorted(e.daily_cny.items())}
-            row['audit'] = audit(row, initial, mark) if equity is not None else {'passed': False}
+            if args.portfolio_budgets:
+                row.update(candidate=c['candidate'], scenario=scenario)
+            row['audit'] = audit(row, c['initial_usdt'], mark) if equity is not None else {'passed': False}
             results[name][scenario] = row
             print(json.dumps({'finished': name+'/'+scenario, 'complete': complete, 'audit': row['audit']['passed'],
                               'cagr': row['cagr'], 'mdd': row['mdd']}), flush=True)
         inputs.update(market_identity=market.identity, loaded_minute_files=market.loaded,
                       loaded_print_files=tape.loaded)
-        return {'inputs': inputs, 'results': results, 'selection': select(results),
-            'conditions': {'initial_fx_corrected_before_first_metric': True, 'start_cny': 10000,
+        if args.portfolio_budgets:
+            portfolio_rows = {name: rows['base'] for name, rows in results.items()}
+            results = {str(b): portfolio_rows[str(b)] for b in budgets}
+        output = {'inputs': inputs, 'results': results,
+            'selection': ({'fixed_candidate': 'incumbent', 'scenario': 'base',
+                           'production_promoted': False, 'native_execution_verified': False}
+                          if args.portfolio_budgets else select(results)),
+            'conditions': {'initial_fx_corrected_before_first_metric': True, 'start_cny': list(map(str,budgets)) if args.portfolio_budgets else (10000 if args.initial_cny == 10000 else str(args.initial_cny)),
                 'conversion_each_way': '.001', 'read_latency_ms': 200, 'write_latency_ms': 1000,
-                'default_fee': '.00075', 'scenarios': SCENARIOS,
+                'default_fee': '.00075', 'scenarios': {'base': {}} if args.portfolio_budgets else SCENARIOS,
                 'funding_filter_lag_ms': EIGHT_HOURS, 'funding_stale_age_ms': EIGHT_HOURS,
                 'basis_stale_age_ms': DAY, 'basis_required_publication_date': 'current UTC calendar date',
                 'daily_metrics': 'daily snapshots; not continuous MDD',
                 'venue': 'historical proxy, not native fills or prospective alpha',
                 'qualification': 'NOT_QUALIFIED'}}
+        if args.limit is None:
+            output['conditions']['terminal_funding_exclusive_ms'] = rebuild.timestamp(rebuild.END)
+        if args.portfolio_budgets:
+            output['candidate'] = 'incumbent'
+        if args.portfolio_selected:
+            output['selected_candidate'] = args.portfolio_selected
+            output['selection']['selected_candidate'] = args.portfolio_selected
+            output['selected_results'] = {str(b): portfolio_rows['selected-'+str(b)] for b in budgets}
+        return output
 
 
 def main(argv=None):
@@ -373,7 +418,18 @@ def main(argv=None):
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--restore-prints', action='store_true')
     parser.add_argument('--limit', type=int)
+    parser.add_argument('--initial-cny', type=D, default=D(10000))
+    parser.add_argument('--portfolio-budgets', action='store_true',
+                        help='Replay independent incumbent/base accounts at CNY 2500/5000/7500')
+    parser.add_argument('--portfolio-selected', choices=[n for n in CANDIDATES if n not in ('incumbent','no-macro')],
+                        help='Also replay selected candidate at the same three independent budgets')
     args = parser.parse_args(argv)
+    if args.portfolio_selected and not args.portfolio_budgets:
+        parser.error('selected budgets require --portfolio-budgets')
+    if not args.initial_cny.is_finite() or args.initial_cny <= 0:
+        parser.error('initial CNY must be positive and finite')
+    if args.portfolio_budgets and args.initial_cny != 10000:
+        parser.error('portfolio budgets are fixed; do not combine with custom initial CNY')
     if args.out.exists() or (args.limit is not None and (not 1 <= args.limit <= 795 or
             not str(args.out.resolve()).startswith('/tmp/'))):
         parser.error('never overwrite results; partial smoke output must stay under /tmp')
@@ -382,7 +438,10 @@ def main(argv=None):
     with args.out.open('x') as stream:
         json.dump(result, stream, default=str, allow_nan=False)
         stream.write('\n')
-    return 2 if any(r['failure'] or not r['audit']['passed'] for rows in result['results'].values() for r in rows.values()) else 0
+    rows = (list(result['results'].values()) + list(result.get('selected_results', {}).values())
+            if args.portfolio_budgets else
+            [r for scenarios in result['results'].values() for r in scenarios.values()])
+    return 2 if any(r['failure'] or not r['audit']['passed'] for r in rows) else 0
 
 
 if __name__ == '__main__':
