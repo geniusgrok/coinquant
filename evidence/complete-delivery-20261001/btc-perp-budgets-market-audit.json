@@ -1,0 +1,7 @@
+{
+  "funding_events_verified": 2763,
+  "held_daily_mark_closes_verified": 906,
+  "mark_input_hashes_match": true,
+  "formula": "cash=-position_from_fills_before_settlement*official_previous_completed_mark*settled_rate",
+  "cagr_recomputed": true
+}
