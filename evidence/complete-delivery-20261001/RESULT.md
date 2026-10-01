@@ -67,3 +67,5 @@ Budget source3213 remained frozen throughout command93244, which exited0. Fullra
 | 7500 | 2,154,872.1447 | 132.21564% | 44.10493% | 1751 |
 
 The smaller-capital paths are not proportional to the10,000CNY path. Minimum quantities, finite fill/sizing cycles and quantity limits make actual account outcomes depend on capital; even the7,500CNY terminal wealth exceeds the10,000CNY terminal wealth. These are fixed registered capital-allocation controls. They neither replace the10,000CNY selection criterion nor establish alpha. Matching candidate names and actual capital amounts are mandatory when constructing joint curves.
+
+No smaller-capital CAGR is a pass of the original10,000CNY target. The7,500CNY result is not an optimum or a guarantee of improvement; the different paths show capital, rounding and execution sensitivity. The registered five fixed capital splits all start from totalCNY10,000 and were measured as base-scenario controls. Combined continuous drawdown and the four combined pressure scenarios remain unverified; daily joint drawdown cannot substitute for them.
