@@ -143,7 +143,10 @@ class StarVenue:
             orders = e.get('/fapi/v1/openOrders', {'symbol': 'BTCUSDT'})
             algos = e.get('/fapi/v1/openAlgoOrders', {'symbol': 'BTCUSDT'})
             second = e.get('/fapi/v3/account')
-            if first != second:
+            def stable(account):
+                return account['totalWalletBalance'], [(p['positionAmt'], p['entryPrice'], p['isolatedWallet'])
+                                                       for p in account['positions']]
+            if stable(first) != stable(second):
                 raise Unknown('account changed during bounded snapshot')
             observed, last = e._last_print()
             p = positions[0]

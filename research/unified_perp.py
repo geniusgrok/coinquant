@@ -57,7 +57,7 @@ def star_cycle(exchange, store, cfg, minute_rows, hours, mode='run'):
     from btc_perp.runner import run_cycle
     now = exchange.now_ms
     cursor = store.load_book().cursor_ms
-    begin = cursor + MINUTE if cursor else max(rebuild.timestamp(rebuild.START), now // MINUTE * MINUTE - 1000 * MINUTE)
+    begin = cursor if cursor else max(rebuild.timestamp(rebuild.START), now // MINUTE * MINUTE - 1000 * MINUTE)
     end = now // MINUTE * MINUTE
     bars = tuple(MinuteBar(stamp, *map(float, row[:4]), float(row[4] * row[3]), True)
                  for stamp, row in minute_rows(begin, end))
