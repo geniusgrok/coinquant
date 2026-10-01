@@ -1,0 +1,34 @@
+{
+  "perp-accounts.json": {
+    "bytes": 55218104,
+    "sha256": "55aa8ba0d8e54d572907a5d57cc557face20a0ce6666692d526df37387585423"
+  },
+  "perp-summary.json": {
+    "bytes": 235044,
+    "sha256": "3b6aedae52a91cae0eed47ffbe3b0e79a73df61d413a8f10d18443dccf69d0d1"
+  },
+  "crowding-complete.json": {
+    "bytes": 387544,
+    "sha256": "1d87be0b4c8cd8a7eacd4970a1a194e5f1ed0b2f3aa3710a43417aa9ab066ef2"
+  },
+  "perp-default-equivalence-new.json": {
+    "bytes": 172975,
+    "sha256": "df945e07a4dde2d670601b38e89c781df15412a87326ba064d45a70cce076adb"
+  },
+  "perp-budget-equivalence.json": {
+    "bytes": 1017,
+    "sha256": "6112a04a3cc87a6285d4aab7384be8b9c93ee870303cdea932df096569dd1f1c"
+  },
+  "perp-exclusive-summary.json": {
+    "bytes": 235269,
+    "sha256": "215e5573c5cd0db552dcbd339ab82abebb38bd7894fd58c060012169860fa67b"
+  },
+  "perp-exclusive-accounts.json": {
+    "bytes": 55230558,
+    "sha256": "15dd7bfc242d52bf692663179cd1e3867418f8b55a4cad0894d253a8b296f00a"
+  },
+  "perp-default-equivalence-old.json": {
+    "bytes": 172303,
+    "sha256": "81c21f9f60808fbcd89f8a6575324be4d09c3dd29a13b43773a58a6ca5e60dbe"
+  }
+}
