@@ -1,0 +1,145 @@
+{
+  "format": 1,
+  "registered_date": "2026-10-02",
+  "authorization": "User approved the entire eight-direction alpha/beta design and implementation; no exchange account actions.",
+  "window": [
+    "2020-01-01T00:00:00Z",
+    "2026-09-20T00:00:00Z exclusive"
+  ],
+  "initial_cny": "10000",
+  "symbol": "BTCUSDT",
+  "session_seconds": 300,
+  "poll_seconds": 5,
+  "primary_starts": 795,
+  "spot_baseline_git": "4f25316ad253546ca566173f6cff09703c1bffd8",
+  "perp_baseline_git": "58074c1e4f1b374ce5a4bdccccf474a51647be47",
+  "spot_baseline_candidate": "consensus",
+  "perp_baseline_candidate": "incumbent",
+  "spot_targets": {
+    "cagr_min": 1,
+    "continuous_mdd_max": 0.3
+  },
+  "perp_targets": {
+    "cagr_min": 1.5,
+    "continuous_mdd_lt": 0.5
+  },
+  "spot_candidates": [
+    "consensus",
+    "trend-reentry",
+    "target-participation",
+    "atr-close",
+    "atr-stop",
+    "core-permanent",
+    "core-slow"
+  ],
+  "perp_candidates": [
+    "incumbent",
+    "fresh-entry",
+    "atr-trail",
+    "compression-breakout",
+    "single-topup"
+  ],
+  "spot_scenarios": [
+    "base",
+    "fee150",
+    "slip2",
+    "outage"
+  ],
+  "perp_scenarios": [
+    "base",
+    "fees-x1.5",
+    "read-400ms",
+    "trigger-slip"
+  ],
+  "spot_rules": {
+    "reentry_max_per_bull_episode": 1,
+    "reentry_confirm_closes_after_exit": 2,
+    "reentry_reclaim_actual_exit_price": true,
+    "reentry_only_exit_kinds": [
+      "stop",
+      "extended"
+    ],
+    "reentry_min_bull_votes": 2,
+    "participation_target": ".90",
+    "participation_trigger_weight_lt": ".85",
+    "participation_max_filled_adds_per_completed_day": 1,
+    "atr_bars": 14,
+    "adverse_atr_multiple": "2",
+    "adverse_distance_bounds": [
+      ".02",
+      ".10"
+    ],
+    "stop_atr_multiple": "4",
+    "stop_distance_bounds": [
+      ".10",
+      ".30"
+    ],
+    "protective_stop_never_loosen": true,
+    "core_initial_fraction": ".20",
+    "core_window": 200,
+    "core_stop_distance": ".28",
+    "core_subpools_no_transfers_or_rebalancing": true,
+    "core_reentry_requires_new_completed_day": true
+  },
+  "perp_rules": {
+    "fresh_entry_primary_max_age_ms": 86400000,
+    "fresh_entry_primary_max_chase_prior_atr": "1",
+    "atr_trail_multiple": "3",
+    "atr_trail_bars": 14,
+    "atr_trail_primary_only": true,
+    "atr_trail_stop_never_loosen": true,
+    "compression_prior_atr_ratio_max": ".75",
+    "compression_atr_median_history": 20,
+    "breakout_prior_high_bars": 20,
+    "breakout_stop_atr_multiple": "2",
+    "breakout_life_four_hour_bars": 42,
+    "breakout_take_power": 20,
+    "topup_max_confirmed_adds_per_four_hour_bar": 1,
+    "topup_entry_session_only": true
+  },
+  "risk_matching": {
+    "calibration_end_exclusive_ms": 1640995200000,
+    "calibration_period": "2020-2021",
+    "validation_start_ms": 1640995200000,
+    "scale_formula": "min(1, baseline_training_USDT_vol/candidate_training_USDT_vol, baseline_training_positive_beta/candidate_training_positive_beta if candidate beta exceeds baseline beta; positive beta floor .01)",
+    "pre_cutoff_scale": "1",
+    "after_cutoff_scale_fixed": true,
+    "real_accounts_required": true,
+    "validation_achieved_limits": "candidate USDT vol <= baseline*1.05 and beta <= baseline+.02; otherwise report risk_match_achieved=false, never claim matched alpha"
+  },
+  "selection": {
+    "all_complete_known_audited_required": true,
+    "all_matched_cagr_loss_max": ".01",
+    "spot_all_matched_mdd_not_higher": true,
+    "perp_all_mdd_lt": ".50",
+    "base_cagr_improve_min": ".01",
+    "alternative_base_mdd_improve_min": ".01",
+    "alternative_base_cagr_loss_max": ".01",
+    "rank": "highest worst stress CAGR, then earliest registered candidate",
+    "combo": "combine all individually eligible compatible mechanisms; core modes exclusive, choose highest worst CAGR, tie core-slow; no subset search",
+    "native_qualification": "NOT_QUALIFIED"
+  },
+  "sensitivity": {
+    "project": "perp",
+    "budgets": [
+      "9900",
+      "10100"
+    ],
+    "start_offsets_ms": [
+      -60000,
+      60000
+    ],
+    "scenarios": "base only",
+    "accounts": "incumbent and final selected or combined candidate, each independently replayed",
+    "purpose": "registered robustness diagnostics, original goal and primary schedule unchanged"
+  },
+  "reporting": {
+    "daily_returns": "USDT/BTCUSDT and CNY/FX-converted BTC separately",
+    "interval": "HAC7 normal95 descriptive; no selection adjustment or prospective proof",
+    "missed_opportunity_returns": "post-run diagnostics only, not realizable fills or decision inputs",
+    "public_only": true,
+    "native_cases": 0,
+    "actual_account_days": 0,
+    "forward": "freeze identity and all-cash shadow initialization; later observed public completed bars only, no backfill or account credentials"
+  }
+}

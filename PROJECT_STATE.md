@@ -1,3 +1,26 @@
+# Active alpha/beta mechanism round —2026-10-02
+
+User approved all eight directions; spec/protocol/plan in research/alpha-beta-*. BTC-only, current consensus/incumbent baselines and original economics/native gates unchanged. Worktree pair /workspace/btc-alpha-beta-next/{spotquant,coinquant}; original mains remain unchanged. Progress ledger is this existing file; task briefs/reports/diffs are external /workspace/btc-alpha-beta-next/review.
+
+Ruling: use mirrored external worktrees to preserve existing ../coinquant/../starquant paths without modifying market/FX inputs — cost if wrong: path repair, not economic changes.
+Ruling: use existing PROJECT_STATE/HANDOFF rather than an additional SDD progress file to honor repository continuity rules — cost if wrong: manual reconstruction of task status; commits/reports remain retained.
+
+| Preflight | Producer / consumer or constraint | Result |
+|---|---|---|
+| Task1 self | Coin four fixed mechanisms plus incumbent; real runner/audit, no default change | consistent |
+| Task2 self | Spot six fixed variants plus consensus;20/80 core subpools and real ownership | consistent |
+| Task3 self | actual raw curves/calibration, timestamp validation, no scaling | consistent |
+| Task4 self | all48+10risk, conditional combos, Coin robustness, reviewed adoption | consistent |
+| Task1/3 | Coin nested results + opportunity_ledger consumed by evaluator | fixed schema, preserve source/input hashes |
+| Task2/3 | Spot flat results + opportunity_ledger consumed by evaluator | fixed schema, keep consensus baseline |
+| Task1/4 | frozen Coin engine, later selected bridge equivalence | no core edits while financial worker active |
+| Task2/4 | frozen Spot engine/core ledger, later selected bridge equivalence | no core edits while financial worker active |
+| Task3/4 | deterministic calibration/combo output, completed inputs | false complete/native never promote |
+
+Task1: pending; Task2: pending; Task3: pending; Task4: pending.
+
+--- Previous completed delivery ---
+
 # Coinquant 当前状态（2026-10-01）
 
 2026-10-01 第三轮入口：`evidence/third-round-20261001/RESULT.md`。
