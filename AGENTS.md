@@ -53,3 +53,16 @@ Keep one lightweight CI workflow, one Python environment and timeout-minutes: 10
 Keep current code, configuration, reports and the complete originals of the current economic results; superseded material lives in Git history, not the working tree. Prefer native Git and file-backed/programmatic transfers, then authorized connectors. Do not route full archives/Base64/huge JSON through model context. Use verified parts when needed, with fixed source versions and length/hash checks; verify remote bytes, Git objects, tree, commit and target ref. Inspect remote state before retrying an unknown write.
 
 Use PROJECT_STATE.md as the current recovery entry and HANDOFF_PROMPT.md for continuation; do not create duplicate progress systems. Historical source snapshots are not current code and must not overwrite main. A merge, PR or checkpoint does not complete the 150%/<50% objective.
+
+## Cursor Cloud specific instructions
+
+`.cursor/install.sh` installs Python 3.13 with uv and links `python`, `python3`, and `python3.13` into `/usr/local/bin`. The package and the offline suite use the standard library only. There is no requirements file and no long-running service to start.
+
+The CI check is:
+
+```sh
+python -m compileall -q coinquant research tests
+python -m unittest discover -s tests
+```
+
+`python -m coinquant status --config <file>` is the read-only observation entry. With `COINQUANT_BINANCE_KEY` and `COINQUANT_BINANCE_SECRET` unset it stops before any exchange call. Do not set trading credentials or pass `--execute`.
