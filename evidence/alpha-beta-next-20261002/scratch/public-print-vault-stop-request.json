@@ -1,0 +1,7 @@
+{
+  "requested_utc": "2026-10-02T16:46:39.618306+00:00",
+  "watch_pid": 52118,
+  "stop_marker": "/workspace/scratch/alpha-beta-next/public-print-vault/.stop",
+  "all_coin_producers_stopped": true,
+  "scope": "Approved regular stop marker only; no cache/source/account-lock mutation."
+}

@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/btc-alpha-beta-next/review/independent_financial_audit.py",
+    "--bundle",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/atr-close.json.gz",
+    "--sha256",
+    "f84e6e6ad188996b1ab7f640f30aeb7c736034823c068a61ae850da336bb974a",
+    "--kind",
+    "spot",
+    "--out",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-close.json"
+  ],
+  "checker_sha256": "492d46ff9bbff72f1291ad77988fbf8478b35fd880c818e1d3979a6215f1897c",
+  "elapsed_seconds": 3.223651220003376,
+  "exit_code": 0,
+  "log_sha256": "48fc8ae9e4d06737e7464839b4e38eb412c7120969217d2ec6fe8de1f8ac57c2",
+  "output_sha256": "91902699ca113eee21a71aecde04ad57846b11a8827e2ad044ec7e71a139b73a"
+}

@@ -1,0 +1,29 @@
+{
+  "format": "active-producer-kernel-observation-v1",
+  "observed_at_utc": "2026-10-02T09:59:21.161433+00:00",
+  "pid": 32321,
+  "tool_session_id": 4592,
+  "command_from_proc_cmdline": [
+    "python",
+    "-u",
+    "-m",
+    "research.alpha_perp",
+    "--restore-prints",
+    "--out",
+    "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+  ],
+  "cwd_from_proc": "/workspace/btc-alpha-beta-next/coinquant",
+  "source_head_verified": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+  "kernel_boot_epoch_seconds": 1790850828,
+  "process_start_clock_ticks": 6884958,
+  "kernel_clock_ticks_per_second": 100,
+  "started_utc_from_kernel": "2026-10-02T05:41:17.580000+00:00",
+  "start_timestamp_precision_note": "Reconstructed from actual Linux boot epoch and process start ticks while producer is active; boot epoch has one-second precision. This is not a contemporaneous launch receipt.",
+  "earlier_contemporaneous_registration_sha256": "b89859bac6e04a857743047628500c273fde949ee7c27b7309300b1a038fe557",
+  "caller_reported_tmpdir": "/workspace/scratch/alpha-beta-next/tmp",
+  "environment_not_read": true,
+  "process_stat_sha256_at_observation": "f2f922ac58eb2551b58adea6eda5198c0af565b70917613d8dd8f4728a27a842",
+  "output_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz",
+  "log_path": "/workspace/scratch/alpha-beta-next/perp-full-retry1.run.log",
+  "completed": false
+}

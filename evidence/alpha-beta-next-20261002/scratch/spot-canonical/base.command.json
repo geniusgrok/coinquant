@@ -1,0 +1,34 @@
+{
+  "label": "base",
+  "scenario": "base",
+  "calibrated": false,
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-u",
+    "-m",
+    "research.adoption_spot",
+    "--scenario",
+    "base",
+    "--out",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/base.json"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-adoption/spotquant",
+  "source_head": "0c52c812301de3712f3637a1ce1b1241de0c40f1",
+  "started_utc": "2026-10-02T08:03:47.973608+00:00",
+  "elapsed_seconds": 610.6615301350103,
+  "exit_code": 0,
+  "log_sha256": "75ded06237a4e473ae2810bfaf01285863db0e6496c30a35116860bbeaad9f97",
+  "review_bindings": {
+    "/workspace/btc-alpha-beta-next/review/spot-adoption-spec-fix1-review.md": "b128dd1ea4f58a3022882c4183c2cd96f555565aa67d67487beb003916690e29",
+    "/workspace/btc-alpha-beta-next/review/spot-adoption-financial-boundary-fix1-review.md": "dd2aade0417a3c0e6f58c90196d3d4d0819cea203de650246b5d201dd298a203"
+  },
+  "launch_bindings": {
+    "/workspace/btc-alpha-beta-next/review/spot-adoption-spec-fix1-review.md": "b128dd1ea4f58a3022882c4183c2cd96f555565aa67d67487beb003916690e29",
+    "/workspace/btc-alpha-beta-next/review/spot-adoption-financial-boundary-fix1-review.md": "dd2aade0417a3c0e6f58c90196d3d4d0819cea203de650246b5d201dd298a203",
+    "/workspace/scratch/alpha-beta-next/spot-early-risk-completed.json": "25e1e4bc310c541ef0cba161bb250e591a3098502d3dddf373f179e936f2af76",
+    "/workspace/scratch/alpha-beta-next/spot-project-calibration.json": "d574693fe94480c598dc1698b008147267227385ada31df82eab9498d38e7b2b",
+    "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+    "/workspace/btc-alpha-beta-next/review/run_spot_canonical_accounts.py": "89697d4d22904f5d93db40e19acf89781c1fd7653a4b7115536a749d98266915"
+  },
+  "output_sha256": "edd7c3bdb76f289ed8a3492c36ae5e4b684e8710bb56466e96fdcbcd5bd1fc2c"
+}

@@ -1,0 +1,11 @@
+{
+  "started_at_utc": "2026-10-02T05:42:13.615165+00:00",
+  "full_retry_producer_pid": 32321,
+  "full_retry_output": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz",
+  "full_retry_source": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+  "serial_controller_sha256": "30ac30a3045311aebe73263f67b4fc9ea43e84aab889c3efb76996c32ea17692",
+  "old_independent_audit_waiter_stopped_pid": 29491,
+  "prior_logs_progress_and_raws_preserved": true,
+  "all_coin_processes_serialized": true,
+  "safety_locks_changed": false
+}

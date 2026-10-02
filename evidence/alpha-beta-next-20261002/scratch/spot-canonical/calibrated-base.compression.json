@@ -1,0 +1,7 @@
+{
+  "original_sha256": "1d42905cb8a370de5d95642429f9dda70226a143a00cb173cc8925f7d6c74c05",
+  "original_bytes": 1604205,
+  "retained_sha256": "14b531c6be40e51fb3570744afc3a7131ee8a9e88556e2c4f41ca64064884b65",
+  "retained_bytes": 274624,
+  "lossless_roundtrip_verified": true
+}

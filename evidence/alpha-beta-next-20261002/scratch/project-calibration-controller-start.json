@@ -1,0 +1,10 @@
+{
+  "recorded_utc": "2026-10-02T06:16:01.438389+00:00",
+  "analysis_head": "99fcf005d2cb15c13bb37322b65ab2863b19d65e",
+  "followthrough_tool_session": 3924,
+  "early_spot_tool_session": 38137,
+  "prior_waiter_stop_receipt": "followthrough-serial-retry1-stop-receipt.json",
+  "source_producers_unchanged": true,
+  "spec_review": "project-calibration-spec-review.md",
+  "financial_review": "project-calibration-financial-review.md"
+}

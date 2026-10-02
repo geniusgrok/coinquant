@@ -1,0 +1,9 @@
+{
+  "exit_code": 0,
+  "ended_observed_utc": "2026-10-02T16:47:43.158105+00:00",
+  "timestamp_scope": "Observed tool completion, not exact process-exit timestamp.",
+  "watch_pid": 52118,
+  "tool_session_id": 21512,
+  "watch_log_sha256": "0764d5683ec2e89e2925a26596eb5de7f66988636cabc4fd8610af6aa39252a3",
+  "stop_request_sha256": "21d7abb942749a24d45a8b5aa724e43660bfd6b8e4c1515cfdfcfb257b2604fb"
+}

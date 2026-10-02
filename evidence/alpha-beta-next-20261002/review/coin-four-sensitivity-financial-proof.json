@@ -1,0 +1,801 @@
+{
+  "scope": "Independent review of completed four fixed sensitivity originals and existing independent audits only",
+  "identities": {
+    "/workspace/btc-alpha-beta-next/review/independent_financial_audit.py": "492d46ff9bbff72f1291ad77988fbf8478b35fd880c818e1d3979a6215f1897c",
+    "/workspace/scratch/alpha-beta-next/registered-final.json": "538b7a3614d07088b6ac5db1bee25392dd08a45e543d714d5ad5702fa02db05b",
+    "/workspace/scratch/alpha-beta-next/registered-final.command.json": "a32d5392106c77939d1716081da45169e193efa924fe339c8cb6332a06ca6353",
+    "/workspace/scratch/alpha-beta-next/registered-final.run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-remaining-index.json": "350d71db37536ec482e8f039e6697046095b770e689749c5adbc07a7caab79e5",
+    "/workspace/scratch/alpha-beta-next/registered-unscaled.json": "1784600db17f99b09a7dfedb74d3376c33379b8ad804a127f63259a88a10820c",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-9900-0.json.gz": "b3e894e94eab8d2d2376339d63739b7e39719675328aabba3f799f4e793c84f1",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-9900-0.command.json": "b7859f5cb7e5d3b42abe22a78d9045f84894891a25c16526ff443d1cb68827c9",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-9900-0.run.log": "c79ae075e099d344ca67016e269fd600cbb1651e862f815c3e0cf0d311e7ecf1",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-0.json": "5cd5b713f5afbadadcb1aa0a634f41e19784a5fcc2f0e7d98cee5afc0616771c",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-0.command.json": "fee4dfc1e1f1bb7bda4b7b431249598697e79c6ae135838e41c02000f70f9829",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-0.run.log": "b3b03abf458086eaa0edabddb7dec0d053211e848fb38fffe266c03a1c907973",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10100-0.json.gz": "163ca98cbeaa485adc4fff15d54719d4e12c24511cf735b430e0d57bfca6d970",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10100-0.command.json": "89414759c8bc8bf9d39c3aa572f19d9631ee161872ae18ddbf72da39c0a07019",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10100-0.run.log": "0ff2fbca1b2d022963945e3a4049ac3320aeed3dbf11770ba99dfae4cb27845c",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-1.json": "fe2473c0aa3f6727241d4490d7dd9dbcf8f530be7b9671306b0da840202cc7d2",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-1.command.json": "0d874f812be2b872a13610750804474d1d1812791e754cf9731081143e21e568",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-1.run.log": "f63cb15f94816ecb58dd793a3d3bab5f4dd847db958a019a9242662dffc5e74a",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000--60000.json.gz": "cd916dbad8055b18e982db20bcecfce838f3d6af398e7e09a60b362d74e805af",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000--60000.command.json": "d74fce26ac7bbe7eb9a096259d76dddabded3c5ff34946d7b43e20e2d7878f4d",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000--60000.run.log": "367e1873ca52ca965552f8667ead076dfd828e05edc93243747e5661ad1e5a04",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-2.json": "9d60ffbd5c2aabbf4790faef4976af93f3de0f9c42046af9fc1972d91f18d7c3",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-2.command.json": "6ccb75c4ae111da6dc7d997082879f7c8dd13ce41699788259841cbfbc6cb76b",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-2.run.log": "15f72ec63382ca23f862c7188f2ab4d9ba493d68c0733fa989ea0c35b3acac41",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000-60000.json.gz": "38912a76ca423785de39d1a63aa1bcbcde4c28830c0f5e25819c91f6710c3ae6",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000-60000.command.json": "ddc63bb545cdd84ba785fc761a147d88cb9635823e0e672ee2ee503b6f5a8a19",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000-60000.run.log": "06353f57b5206d3648ea4e5fd7834cde3eb9d19fdc1fdfa726c7a2afd1035f5d",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-3.json": "52b58f34620f1d1b63c7852d72ac6557ec0047cb7b1f492c2b42b683c395b3c5",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-3.command.json": "4d1cf7b893a5818be959062fa41346ecf55209b435fb337e8aecdeb1e6425350",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-3.run.log": "e42d7b1ffc97c2623db62269bea9db87f4198449b08ce601a073fd52fc4689da"
+  },
+  "cases": {
+    "9900/0": {
+      "source": {
+        "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+        "dirty": false,
+        "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+      },
+      "initial_cny": "9900",
+      "offset_ms": 0,
+      "raw_sha256": "b3e894e94eab8d2d2376339d63739b7e39719675328aabba3f799f4e793c84f1",
+      "receipt_sha256": "b7859f5cb7e5d3b42abe22a78d9045f84894891a25c16526ff443d1cb68827c9",
+      "audit_sha256": "5cd5b713f5afbadadcb1aa0a634f41e19784a5fcc2f0e7d98cee5afc0616771c",
+      "audit_command_sha256": "fee4dfc1e1f1bb7bda4b7b431249598697e79c6ae135838e41c02000f70f9829",
+      "registered_cagr": 1.1975256422085967,
+      "continuous_proxy_mdd": "0.4410845332008486084740653375",
+      "final_cny": "1963492.124815638797499782788",
+      "final_usdt": "293456.9968941168230909754098",
+      "ledger": {
+        "trades": 1600,
+        "funding_events": 921,
+        "realized_wac_pnl": "330046.9875399999999999999999999999999984",
+        "commission": "15675.5466340050",
+        "funding_paid": "22335.1292090339623001041",
+        "realized_vs_income_delta": "-1.0726300000016E-21",
+        "fees_vs_income_delta": "0E-10",
+        "funding_public_max_delta": "0",
+        "position_delta": "0.000",
+        "terminal_usdt_delta": "-1.0734324499046E-21",
+        "terminal_cny_delta": "-7.410428235305E-21",
+        "max_daily_wallet_delta": "4.46024499030E-23",
+        "max_daily_quantity_delta": "0",
+        "max_daily_equity_delta": "9.708024499031E-22"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.27612427033246895,
+          "alpha_daily": 0.0022540092513491637,
+          "hac7_se_daily": 0.0006384824534915363,
+          "alpha_annual_arithmetic": 0.823276879055282,
+          "alpha_annual_normal95": [
+            0.3661936754252261,
+            1.280360082685338
+          ],
+          "annual_vol": 0.644386392428068,
+          "es5_loss": 0.03666321694565426,
+          "mdd_daily": 0.30906733941208875,
+          "cagr": 1.2108962761943847,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.3833727835177529,
+              "beta": 0.5105949507586495
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.1694495020042151,
+              "beta": 0.02318790570225561
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.27312558686991284,
+          "alpha_daily": 0.002247169691415666,
+          "hac7_se_daily": 0.0006385036436234038,
+          "alpha_annual_arithmetic": 0.820778729789572,
+          "alpha_annual_normal95": [
+            0.3636803563560134,
+            1.2778771032231304
+          ],
+          "annual_vol": 0.643609379572331,
+          "es5_loss": 0.03785785919247508,
+          "mdd_daily": 0.2790444959167623,
+          "cagr": 1.1975611705826426,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.38064672713699976,
+              "beta": 0.5060620698554985
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.16685450780618732,
+              "beta": 0.02068753711139114
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.26891573337296726,
+          "alpha_daily": 0.0014723381281026603,
+          "hac7_se_daily": 0.0006317025009732252,
+          "alpha_annual_arithmetic": 0.5377715012894967,
+          "alpha_annual_normal95": [
+            0.08554199786777456,
+            0.9900010047112188
+          ],
+          "annual_vol": 0.5166087124571316,
+          "es5_loss": 0.02887745330349841,
+          "mdd_daily": 0.30906733941208875,
+          "cagr": 0.6289108933981997,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.32305523974079237,
+              "beta": 0.5001750609736964
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.15882997989571612,
+              "beta": 0.0541407698170035
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.26978638531373234,
+          "alpha_daily": 0.0014964984839272962,
+          "hac7_se_daily": 0.0006291068769814245,
+          "alpha_annual_arithmetic": 0.546596071254445,
+          "alpha_annual_normal95": [
+            0.09622474909221296,
+            0.9969673934166768
+          ],
+          "annual_vol": 0.517497439339444,
+          "es5_loss": 0.0304573756505729,
+          "mdd_daily": 0.2674430606506081,
+          "cagr": 0.6472860902084807,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.3218557445616114,
+              "beta": 0.5028190827158684
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.15397146545145696,
+              "beta": 0.0612344923248889
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 2.6176121738540887,
+          "2021": 0.4113458767711775,
+          "2022": -0.2745269813695911,
+          "2023": 1.6756792843206756,
+          "2024": 0.45079763005249857,
+          "2025": 0.1969460485511662,
+          "2026": 0.2527377896652069
+        },
+        "training_usdt": {
+          "days": 731,
+          "beta": 0.2802221741975236,
+          "alpha_daily": 0.004093969500631876,
+          "hac7_se_daily": 0.0015255945879202098,
+          "alpha_annual_arithmetic": 1.4953223601057926,
+          "alpha_annual_normal95": [
+            0.40316445055959366,
+            2.587480269651991
+          ],
+          "annual_vol": 0.8733727528163212,
+          "es5_loss": 0.053806052406598956,
+          "mdd_daily": 0.2778480284652399,
+          "cagr": 3.5423437800166173,
+          "capture": {
+            "up": {
+              "days": 395,
+              "arithmetic_capture": 0.468841908629348,
+              "beta": 0.5019032441292031
+            },
+            "down": {
+              "days": 336,
+              "arithmetic_capture": 0.1873112092168479,
+              "beta": -0.017568846017629286
+            }
+          }
+        },
+        "reported_continuous_proxy_mdd": "0.4410845332008486084740653375",
+        "final_cny_delta": "1.02500217212E-10"
+      },
+      "cagr_change_percentage_points": 0.5242086850055117,
+      "continuous_mdd_change_percentage_points": 0.0033745005279361973,
+      "all_source_receipt_audit_final_bindings_match": true,
+      "hindsight_bounded": true,
+      "bounded_minutes": 29,
+      "target_status": "NOT_MET"
+    },
+    "10100/0": {
+      "source": {
+        "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+        "dirty": false,
+        "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+      },
+      "initial_cny": "10100",
+      "offset_ms": 0,
+      "raw_sha256": "163ca98cbeaa485adc4fff15d54719d4e12c24511cf735b430e0d57bfca6d970",
+      "receipt_sha256": "89414759c8bc8bf9d39c3aa572f19d9631ee161872ae18ddbf72da39c0a07019",
+      "audit_sha256": "fe2473c0aa3f6727241d4490d7dd9dbcf8f530be7b9671306b0da840202cc7d2",
+      "audit_command_sha256": "0d874f812be2b872a13610750804474d1d1812791e754cf9731081143e21e568",
+      "registered_cagr": 1.1925216177624796,
+      "continuous_proxy_mdd": "0.4410608234817691004439078328",
+      "final_cny": "1972710.040942345382481207362",
+      "final_usdt": "294834.6759537764864842756280",
+      "ledger": {
+        "trades": 1611,
+        "funding_events": 921,
+        "realized_wac_pnl": "331411.6856399999999999999999999999999992",
+        "commission": "15676.6830696300",
+        "funding_paid": "22349.7125248029511369267",
+        "realized_vs_income_delta": "-7.536400000008E-22",
+        "fees_vs_income_delta": "0E-10",
+        "funding_public_max_delta": "0",
+        "position_delta": "0.000",
+        "terminal_usdt_delta": "-9.153199741443E-22",
+        "terminal_cny_delta": "-6.477609411770E-21",
+        "max_daily_wallet_delta": "1.616799741435E-22",
+        "max_daily_quantity_delta": "0",
+        "max_daily_equity_delta": "1.1116799741434E-21"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.27525717163390206,
+          "alpha_daily": 0.002247441523099854,
+          "hac7_se_daily": 0.0006378007973251788,
+          "alpha_annual_arithmetic": 0.8208780163122217,
+          "alpha_annual_normal95": [
+            0.36428280351509945,
+            1.2774732291093438
+          ],
+          "annual_vol": 0.6432863813449279,
+          "es5_loss": 0.036319364578452945,
+          "mdd_daily": 0.3090622739567581,
+          "cagr": 1.2058617019799511,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.3812392439381621,
+              "beta": 0.510182028429671
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.16779345242729768,
+              "beta": 0.02354778812069204
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.272354817459477,
+          "alpha_daily": 0.0022405455785494506,
+          "hac7_se_daily": 0.0006378098799204372,
+          "alpha_annual_arithmetic": 0.8183592725651868,
+          "alpha_annual_normal95": [
+            0.361757557628945,
+            1.2749609875014287
+          ],
+          "annual_vol": 0.6425655933840818,
+          "es5_loss": 0.03762228330567304,
+          "mdd_daily": 0.2790394629714219,
+          "cagr": 1.1925569625955088,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.37881493092671026,
+              "beta": 0.5055021850881448
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.16554049978506524,
+              "beta": 0.02103609903914887
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.2671764878759506,
+          "alpha_daily": 0.0014634599428538782,
+          "hac7_se_daily": 0.0006302506313050984,
+          "alpha_annual_arithmetic": 0.534528744127379,
+          "alpha_annual_normal95": [
+            0.08333861968237206,
+            0.9857188685723859
+          ],
+          "annual_vol": 0.5146874584162064,
+          "es5_loss": 0.028384675253644024,
+          "mdd_daily": 0.3090622739567581,
+          "cagr": 0.6242686086609066,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.31956898422797747,
+              "beta": 0.49871400770550195
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.15622357591448788,
+              "beta": 0.05457900040717656
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.26824023037342176,
+          "alpha_daily": 0.0014876770362511327,
+          "hac7_se_daily": 0.0006276195316024457,
+          "alpha_annual_arithmetic": 0.5433740374907262,
+          "alpha_annual_normal95": [
+            0.09406749101185138,
+            0.9926805839696011
+          ],
+          "annual_vol": 0.5156793667899712,
+          "es5_loss": 0.030120840606464656,
+          "mdd_daily": 0.2674376900339547,
+          "cagr": 0.6425914374159165,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.3188421629383221,
+              "beta": 0.501174074687617
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.15185299358377866,
+              "beta": 0.06174086537852807
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 2.6157003206058285,
+          "2021": 0.41140395637103455,
+          "2022": -0.27465998453471335,
+          "2023": 1.6629492161783448,
+          "2024": 0.4500105889989148,
+          "2025": 0.1969275428809749,
+          "2026": 0.25294318310307207
+        },
+        "training_usdt": {
+          "days": 731,
+          "beta": 0.28020616016897115,
+          "alpha_daily": 0.0040913328543923985,
+          "hac7_se_daily": 0.001525478975272124,
+          "alpha_annual_arithmetic": 1.4943593250668235,
+          "alpha_annual_normal95": [
+            0.40228418145926276,
+            2.5864344686743843
+          ],
+          "annual_vol": 0.8733162707385809,
+          "es5_loss": 0.05378644785637631,
+          "mdd_daily": 0.27784298716743505,
+          "cagr": 3.5381383691336454,
+          "capture": {
+            "up": {
+              "days": 395,
+              "arithmetic_capture": 0.4686251488139449,
+              "beta": 0.5020613315636847
+            },
+            "down": {
+              "days": 336,
+              "arithmetic_capture": 0.1872536263076961,
+              "beta": -0.017544333628770916
+            }
+          }
+        },
+        "reported_continuous_proxy_mdd": "0.4410608234817691004439078328",
+        "final_cny_delta": "-8.2481207362E-11"
+      },
+      "cagr_change_percentage_points": 0.02380624039379775,
+      "continuous_mdd_change_percentage_points": 0.0010035286199860938,
+      "all_source_receipt_audit_final_bindings_match": true,
+      "hindsight_bounded": true,
+      "bounded_minutes": 29,
+      "target_status": "NOT_MET"
+    },
+    "10000/-60000": {
+      "source": {
+        "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+        "dirty": false,
+        "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+      },
+      "initial_cny": "10000",
+      "offset_ms": -60000,
+      "raw_sha256": "cd916dbad8055b18e982db20bcecfce838f3d6af398e7e09a60b362d74e805af",
+      "receipt_sha256": "d74fce26ac7bbe7eb9a096259d76dddabded3c5ff34946d7b43e20e2d7878f4d",
+      "audit_sha256": "9d60ffbd5c2aabbf4790faef4976af93f3de0f9c42046af9fc1972d91f18d7c3",
+      "audit_command_sha256": "6ccb75c4ae111da6dc7d997082879f7c8dd13ce41699788259841cbfbc6cb76b",
+      "registered_cagr": 1.3601863984624747,
+      "continuous_proxy_mdd": "0.4426094536286016046215101016",
+      "final_cny": "3204501.627532077998267203097",
+      "final_usdt": "478934.1460924729672139894160",
+      "ledger": {
+        "trades": 1831,
+        "funding_events": 925,
+        "realized_wac_pnl": "522920.7356499999999999999999999999999999",
+        "commission": "18029.9459430375",
+        "funding_paid": "27391.6791671721442921515",
+        "realized_vs_income_delta": "1.9043699999999E-21",
+        "fees_vs_income_delta": "0E-10",
+        "funding_public_max_delta": "0",
+        "position_delta": "0.000",
+        "terminal_usdt_delta": "1.9056237879766E-21",
+        "terminal_cny_delta": "1.2839341176470E-20",
+        "max_daily_wallet_delta": "7.37462120233E-23",
+        "max_daily_quantity_delta": "0",
+        "max_daily_equity_delta": "1.7262537879772E-21"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.286958981856097,
+          "alpha_daily": 0.0024546422693635583,
+          "hac7_se_daily": 0.0006559223784854728,
+          "alpha_annual_arithmetic": 0.8965580888850396,
+          "alpha_annual_normal95": [
+            0.4269898173510746,
+            1.3661263604190048
+          ],
+          "annual_vol": 0.6585172324999584,
+          "es5_loss": 0.03579202792218242,
+          "mdd_daily": 0.3128514397548008,
+          "cagr": 1.3745502080780998,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.39782962557760737,
+              "beta": 0.5390097892403276
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.16395898362435626,
+              "beta": 0.025296268096993396
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.28401798384722354,
+          "alpha_daily": 0.002447842514639927,
+          "hac7_se_daily": 0.0006562644294047117,
+          "alpha_annual_arithmetic": 0.8940744784722333,
+          "alpha_annual_normal95": [
+            0.42426133610569433,
+            1.3638876208387722
+          ],
+          "annual_vol": 0.6577599179851675,
+          "es5_loss": 0.03706072586390017,
+          "mdd_daily": 0.28673515696710417,
+          "cagr": 1.3602280175049581,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.39306977931692116,
+              "beta": 0.5369483928516198
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.15896645013559157,
+              "beta": 0.024089053898985715
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.2886678153283458,
+          "alpha_daily": 0.0016897745867861455,
+          "hac7_se_daily": 0.0006593932023837477,
+          "alpha_annual_arithmetic": 0.6171901678236397,
+          "alpha_annual_normal95": [
+            0.14513716816913858,
+            1.0892431674781407
+          ],
+          "annual_vol": 0.5348793655031708,
+          "es5_loss": 0.027103488003756754,
+          "mdd_daily": 0.3128514397548008,
+          "cagr": 0.7589292427784011,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.33778961087120757,
+              "beta": 0.5621624942232881
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.14829982803761652,
+              "beta": 0.058408845969147034
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.2899192804583736,
+          "alpha_daily": 0.0017132011376462108,
+          "hac7_se_daily": 0.0006576808913497126,
+          "alpha_annual_arithmetic": 0.6257467155252785,
+          "alpha_annual_normal95": [
+            0.15491954221693272,
+            1.0965738888336243
+          ],
+          "annual_vol": 0.5359124017502913,
+          "es5_loss": 0.02883140779864878,
+          "mdd_daily": 0.271455128864158,
+          "cagr": 0.7787711329286875,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.33629180389381774,
+              "beta": 0.56738307692022
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.14301865857374466,
+              "beta": 0.06486914073579123
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 2.7484621030095795,
+          "2021": 0.39801780703966294,
+          "2022": -0.2750776209715916,
+          "2023": 1.706563910012533,
+          "2024": 0.7661953947968344,
+          "2025": 0.17350119352957058,
+          "2026": 0.2927106941878997
+        },
+        "training_usdt": {
+          "days": 731,
+          "beta": 0.28232860446526076,
+          "alpha_daily": 0.0042705738415056245,
+          "hac7_se_daily": 0.001549807620536192,
+          "alpha_annual_arithmetic": 1.5598270956099294,
+          "alpha_annual_normal95": [
+            0.45033531814427497,
+            2.6693188730755835
+          ],
+          "annual_vol": 0.8828420708661618,
+          "es5_loss": 0.05496438608863447,
+          "mdd_daily": 0.28555145261340853,
+          "cagr": 3.8170604048650913,
+          "capture": {
+            "up": {
+              "days": 395,
+              "arithmetic_capture": 0.4829054958354974,
+              "beta": 0.4961355826865986
+            },
+            "down": {
+              "days": 336,
+              "arithmetic_capture": 0.19029719822852956,
+              "beta": -0.018974705007796473
+            }
+          }
+        },
+        "reported_continuous_proxy_mdd": "0.4426094536286016046215101016",
+        "final_cny_delta": "1.732796903E-12"
+      },
+      "cagr_change_percentage_points": 16.79028431039331,
+      "continuous_mdd_change_percentage_points": 0.15586654330323468,
+      "all_source_receipt_audit_final_bindings_match": true,
+      "hindsight_bounded": true,
+      "bounded_minutes": 29,
+      "target_status": "NOT_MET"
+    },
+    "10000/60000": {
+      "source": {
+        "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+        "dirty": false,
+        "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+      },
+      "initial_cny": "10000",
+      "offset_ms": 60000,
+      "raw_sha256": "38912a76ca423785de39d1a63aa1bcbcde4c28830c0f5e25819c91f6710c3ae6",
+      "receipt_sha256": "ddc63bb545cdd84ba785fc761a147d88cb9635823e0e672ee2ee503b6f5a8a19",
+      "audit_sha256": "52b58f34620f1d1b63c7852d72ac6557ec0047cb7b1f492c2b42b683c395b3c5",
+      "audit_command_sha256": "4d1cf7b893a5818be959062fa41346ecf55209b435fb337e8aecdeb1e6425350",
+      "registered_cagr": 1.271145238074522,
+      "continuous_proxy_mdd": "0.4434601798101249874335899883",
+      "final_cny": "2474837.934209381497113709479",
+      "final_usdt": "369881.0393960284784775383181",
+      "ledger": {
+        "trades": 1440,
+        "funding_events": 921,
+        "realized_wac_pnl": "407105.0875800000000000000000000000000002",
+        "commission": "16160.0512870350",
+        "funding_paid": "22499.0324496191330286026",
+        "realized_vs_income_delta": "-1.796399999998E-22",
+        "fees_vs_income_delta": "0E-10",
+        "funding_public_max_delta": "0",
+        "position_delta": "0.000",
+        "terminal_usdt_delta": "-1.943762120231E-22",
+        "terminal_cny_delta": "-1.633298823528E-21",
+        "max_daily_wallet_delta": "1.321362120233E-22",
+        "max_daily_quantity_delta": "0",
+        "max_daily_equity_delta": "3.797362120236E-22"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.2782668326952563,
+          "alpha_daily": 0.0023400711088361857,
+          "hac7_se_daily": 0.0006415094288565493,
+          "alpha_annual_arithmetic": 0.8547109725024168,
+          "alpha_annual_normal95": [
+            0.39546078747830177,
+            1.313961157526532
+          ],
+          "annual_vol": 0.6447673941308296,
+          "es5_loss": 0.03440827127630835,
+          "mdd_daily": 0.3070586631729836,
+          "cagr": 1.2849653495519133,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.3808099843551404,
+              "beta": 0.5274780332114024
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.15737335633750504,
+              "beta": 0.02507526304754722
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.2754719052851828,
+          "alpha_daily": 0.0023331283237317214,
+          "hac7_se_daily": 0.0006417561381349097,
+          "alpha_annual_arithmetic": 0.8521751202430112,
+          "alpha_annual_normal95": [
+            0.39274831851361075,
+            1.3116019219724118
+          ],
+          "annual_vol": 0.6440943393867088,
+          "es5_loss": 0.03582983723205465,
+          "mdd_daily": 0.2840388759585907,
+          "cagr": 1.2711834934858772,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.37801244939636947,
+              "beta": 0.5235476823391876
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.1546683677711869,
+              "beta": 0.022900256264995478
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.27393713607652864,
+          "alpha_daily": 0.0015692666330791758,
+          "hac7_se_daily": 0.000637632650240292,
+          "alpha_annual_arithmetic": 0.5731746377321689,
+          "alpha_annual_normal95": [
+            0.11669979975164631,
+            1.0296494757126917
+          ],
+          "annual_vol": 0.5170755777702145,
+          "es5_loss": 0.0254856501652523,
+          "mdd_daily": 0.3070586631729836,
+          "cagr": 0.6914231026381992,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.3157774188299424,
+              "beta": 0.5373124112626801
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.13950758167044675,
+              "beta": 0.05688901729440294
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.2753026504491669,
+          "alpha_daily": 0.0015932198251570353,
+          "hac7_se_daily": 0.0006355204789860455,
+          "alpha_annual_arithmetic": 0.5819235411386071,
+          "alpha_annual_normal95": [
+            0.12696078543728703,
+            1.0368862968399273
+          ],
+          "annual_vol": 0.5181861648118389,
+          "es5_loss": 0.027372252647093837,
+          "mdd_daily": 0.26531337450057046,
+          "cagr": 0.7105034786897058,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.31560786742754643,
+              "beta": 0.5404799059551646
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.13564063622173614,
+              "beta": 0.06348504645051267
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 2.6643733626183574,
+          "2021": 0.40833703955561984,
+          "2022": -0.26657420240895063,
+          "2023": 1.7346361334779392,
+          "2024": 0.5965627561151409,
+          "2025": 0.1599853130821985,
+          "2026": 0.25467141206176264
+        },
+        "training_usdt": {
+          "days": 731,
+          "beta": 0.2795678967305792,
+          "alpha_daily": 0.00415937554606577,
+          "hac7_se_daily": 0.0015300513332300346,
+          "alpha_annual_arithmetic": 1.5192119182005224,
+          "alpha_annual_normal95": [
+            0.42386346925447294,
+            2.614560367146572
+          ],
+          "annual_vol": 0.8737027841597452,
+          "es5_loss": 0.05416367158824027,
+          "mdd_daily": 0.28285069697026277,
+          "cagr": 3.642738297709359,
+          "capture": {
+            "up": {
+              "days": 395,
+              "arithmetic_capture": 0.47296023005735754,
+              "beta": 0.4966298772198156
+            },
+            "down": {
+              "days": 336,
+              "arithmetic_capture": 0.18742303587764897,
+              "beta": -0.018558483469994825
+            }
+          }
+        },
+        "reported_continuous_proxy_mdd": "0.4434601798101249874335899883",
+        "final_cny_delta": "2.02886290521E-10"
+      },
+      "cagr_change_percentage_points": 7.886168271598049,
+      "continuous_mdd_change_percentage_points": 0.24093916145557226,
+      "all_source_receipt_audit_final_bindings_match": true,
+      "hindsight_bounded": true,
+      "bounded_minutes": 29,
+      "target_status": "NOT_MET"
+    }
+  },
+  "original_final_invalid_accounts": {
+    "perp/risk/incumbent/base": [
+      "unity_control_evidence_mismatch"
+    ]
+  },
+  "old16_financial_coverage_passed": true,
+  "original_final_rules_freeze_ready": false,
+  "max_audit_vs_assessor_regression_difference": 1.27675647831893e-15,
+  "max_absolute_monetary_rounding_delta": "1.2839341176470E-20",
+  "source_receipt_and_money_audit_review_passed_four_sensitivities": true,
+  "new_checker_or_producer_executed": false,
+  "adoption_approval": false,
+  "native_cases": 0,
+  "actual_account_days": 0,
+  "continuous_proxy_independently_replayed": false,
+  "previous_three_case_brief_sha256": "6fb161c5688fbb97816a50f319bc8dc4c885da2771517a73fa64a3d3ddc77e09"
+}

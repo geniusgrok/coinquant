@@ -1,0 +1,53 @@
+{
+  "derivation": {
+    "kind": "lossless-account-projection",
+    "original_bundle_path": "/workspace/scratch/alpha-beta-next/risk-perp.json.gz",
+    "original_bundle_sha256": "3b958b2e92d8aefcf7b9f073a3916c325420a546cf7652203ce6692be5ee2446",
+    "original_receipt_path": "/workspace/scratch/alpha-beta-next/risk-perp.command.json",
+    "original_receipt_sha256": "6177756a15cc19007ea7c14db7acdf84a02967512555c71d4272e26d495196d9",
+    "retained_row_sha256": {
+      "fresh-entry/base": "f1655c48a3b0224f8b12fa7a557b5ab57a86100f5b8ae15894a0e63cfdac42f0",
+      "atr-trail/base": "7e352ab30eb84cb4c18bedaded959c375aba1d70bdb595966eca92c78c05da0f",
+      "compression-breakout/base": "7444a1bc52b549cdf6201cd6974e90892de0f6e97be61b19a2342e9de5890792",
+      "single-topup/base": "a3f16316e2ac10bc6b451137a1c8b5456e40d7435ac324903688354d37fecea8"
+    }
+  },
+  "projected_path": "/workspace/scratch/alpha-beta-next/risk-perp-retained4-projection.json.gz",
+  "projected_sha256": "6c786872a3b469fb61714c3465bf0690e96a72442d88f88e6f123b95ae14989c",
+  "actual_incumbent_path": "/workspace/scratch/alpha-beta-next/risk-perp-incumbent-retry1.json.gz",
+  "actual_incumbent_sha256": "5344465a2980c03f20bfdf3a60cb2fbc4424caa61bd798c4da6485630f9623bb",
+  "actual_incumbent_receipt_sha256": "17f4d5c3d25c931d499340deef6da0aeb91c25b1ca6f253a6817659c708d69a2",
+  "actual_incumbent_row_sha256": "9a1bf450f7f50ab4b2ed544b53470ef756f2e4ed0778028da576f1cbeeb9d996",
+  "immutable99_actual_consume_valid": true,
+  "original_run_log_sha256": "a1158f99c490444bd113224c4e2205deb72c79a3822e8ec9dea1a0dafae3f3f8",
+  "six_groups": {
+    "financial": "a263f6206173df300e9537e43e5df2d9750b2817543a4e8399320c3f7eb2a4ec",
+    "fills": "595b6096557786e932baaa7abfee0602a1822aee57ebac74b1af8edaa6d513f4",
+    "daily": "07898bd921f29a9bffbfd9af84aba585f60984618add7f2e849a807587fc064f",
+    "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+    "operating": "3628c041d33b67da9e38cbeeefc39c8f16b6c529f368600c73f9e19f0643e36e",
+    "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+  },
+  "unscaled_incumbent_six_groups": {
+    "financial": "a263f6206173df300e9537e43e5df2d9750b2817543a4e8399320c3f7eb2a4ec",
+    "fills": "595b6096557786e932baaa7abfee0602a1822aee57ebac74b1af8edaa6d513f4",
+    "daily": "07898bd921f29a9bffbfd9af84aba585f60984618add7f2e849a807587fc064f",
+    "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+    "operating": "3628c041d33b67da9e38cbeeefc39c8f16b6c529f368600c73f9e19f0643e36e",
+    "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+  },
+  "all_six_exact": true,
+  "all_retained_rows_exact": true,
+  "full_original_profiles_retained": true,
+  "original_input_except_candidates_sha256": "deceac185987e2b45099c886f12acd92bf62ecea967b7ac439806feb870eb3ab",
+  "original_top_except_inputs_results_sha256": "bd05e4420bacef3d1664e98b7a0744edf04e312d955683136ac86c5be67fadb1",
+  "calibration_sha256": "ed8c99295e71386a7cef300f7d101ea941e5a7a0147bc9038012d6cc58e23821",
+  "measured_source": {
+    "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+    "dirty": false,
+    "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+  },
+  "gzip_crc_reread_passed": true,
+  "source_relabelled": false,
+  "helper_sha256": "957d4b0171469351c38b1a27bdc579a368dc0408fa37c348686d24aeb1c6c5d8"
+}

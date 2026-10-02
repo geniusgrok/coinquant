@@ -1,0 +1,13 @@
+{
+  "completed_observed_utc": "2026-10-02T17:08:50.912156+00:00",
+  "timestamp_scope": "Observed completed exit0 and exact-value verification; not an invented command start time.",
+  "export_exit_code": 0,
+  "csv_sha256": "dd546263d927ab3d069ef67d0726d692e07b64fe2ec547573fb6db074162b507",
+  "export_provenance_sha256": "f4fae54639cb97a349bc74695f9e524576effcf77e434288d9827e1192232abf",
+  "assessment_sha256": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+  "actual64_unique_identities": true,
+  "all_reported_columns_and_training_scale_strings_exactly_compared": true,
+  "baseline_controls_have_blank_match_gain_fields": 2,
+  "units": "Return, drawdown, volatility and cumulative difference are fractions, not percentages.",
+  "scope": "Reporting evidence only; no new account, recalculation, adoption or native approval."
+}

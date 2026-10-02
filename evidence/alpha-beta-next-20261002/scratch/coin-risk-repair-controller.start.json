@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-u",
+    "/workspace/btc-alpha-beta-next/review/repair_coin_risk_incumbent.py",
+    "--execute"
+  ],
+  "cwd": "/workspace",
+  "controller_pid": 72755,
+  "wrapper_pid": 72754,
+  "started_utc": "2026-10-02T13:06:27.760391+00:00",
+  "helper_sha256": "957d4b0171469351c38b1a27bdc579a368dc0408fa37c348686d24aeb1c6c5d8",
+  "operational_review_sha256": "21a51ddb816a4610d3a28d944406fd3256029d12d6c7006d483ba4200647678f",
+  "wait_predecessor_pids": [
+    52503,
+    38554
+  ],
+  "one_actual_attempt_only": true,
+  "source_freeze_continues": true
+}

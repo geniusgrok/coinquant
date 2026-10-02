@@ -1,0 +1,84 @@
+--- repair_coin_risk_fixture_pre_provenance_fix.py
++++ repair_coin_risk_fixture.py
+@@ -1,5 +1,9 @@
+ """Temporary-only repair checks; no real controller launch, account/cache or State."""
++import ast
+ import copy
++from decimal import Decimal as D
++import hashlib
++import math
+ import gzip
+ import importlib.util
+ import json
+@@ -12,8 +16,18 @@
+ REVIEW = Path('/workspace/btc-alpha-beta-next/review')
+ spec = importlib.util.spec_from_file_location('repair', REVIEW/'repair_coin_risk_incumbent.py')
+ h = importlib.util.module_from_spec(spec);spec.loader.exec_module(h)
+-sys.path.insert(0, '/workspace/btc-alpha-beta-analysis/spotquant')
+-from research import alpha_assessment as a
++# Read only the pure function definitions; never import frozen research modules.
++assessment = Path('/workspace/btc-alpha-beta-analysis/spotquant/research/alpha_assessment.py')
++pure_names = {'checksum', 'require', 'number', 'hash_value', 'metadata',
++              'equivalent_inputs', 'row_validity', 'evidence_fingerprints'}
++functions = [node for node in ast.parse(assessment.read_text()).body
++             if isinstance(node, ast.FunctionDef) and node.name in pure_names]
++assert {node.name for node in functions} == pure_names
++# Synthetic fixtures bypass only external Git source proof, as before.
++env = {'json': json, 'hashlib': hashlib, 'math': math, 'D': D,
++       'END_MS': 1789862400000, 'verify_source': lambda *_: None}
++exec(compile(ast.Module(body=functions, type_ignores=[]), str(assessment), 'exec'), env)
++a = SimpleNamespace(**{name: env[name] for name in pure_names | {'END_MS', 'verify_source'}})
+ passed = []
+ 
+ 
+@@ -119,6 +133,10 @@
+ 
+ with tempfile.TemporaryDirectory(prefix='coin-risk-repair-fixture-') as tmp:
+     root=Path(tmp);calls=[]
++    name='BTCUSDT-aggTrades-2020-03-29.zip'
++    gz(root/'risk-perp.json.gz',{'inputs':{'loaded_print_files':{name:'a'*64}}})
++    folder=root/'public-print-vault/records';folder.mkdir(parents=True)
++    h.write(folder/(name+'.json'),{'name':name,'sha256':'a'*64})
+     finalcmd=['python','-u','-m','research.alpha_assessment','--risk-perp',str(root/'risk-perp.json.gz'),
+               '--out',str(root/'registered-final.json'),'--csv',str(root/'registered-final.csv'),
+               '--markdown',str(root/'registered-final.md'),'--calibration',str(root/'registered-calibration.json'),
+@@ -128,11 +146,14 @@
+     def blocked_restore(_):
+         calls.append('restore')
+         assert h.INTENT.exists() and h.read(h.INTENT)['automatic_second_attempt'] is False
++        catalog=h.read(h.INTENT)['public_catalog']
++        assert catalog['zip_bytes_must_be_verified_by_approved_restore'] is True
++        assert 'zip_bytes_verified_by_approved_restore' not in catalog
+         raise ValueError('fixture stop before cache or producer')
+     fake_spec=SimpleNamespace(loader=SimpleNamespace(exec_module=lambda _:None))
+     with paths(root),patch.object(h,'PINNED',{}),patch.object(h,'WAIT_PIDS',()),patch.object(h,'sources',lambda:None),\
+          patch.object(h,'no_producer',lambda:None),patch.object(h,'closed_inventory',return_value=(oldcmd,{})),\
+-         patch.object(h,'receipt',return_value=(riskcmd,None)),patch.object(h,'public_catalog',return_value={'fixture':True}),patch.object(h.importlib.util,'spec_from_file_location',return_value=fake_spec),\
++         patch.object(h,'receipt',return_value=(riskcmd,None)),patch.object(h.importlib.util,'spec_from_file_location',return_value=fake_spec),\
+          patch.object(h.importlib.util,'module_from_spec',return_value=SimpleNamespace(restore=blocked_restore)),\
+          patch.object(h,'run',side_effect=AssertionError('producer forbidden in fixture')):
+         expect_error(h.main,'fixture stop')
+@@ -141,10 +162,14 @@
+         expect_error(h.main,'One registered attempt')
+         assert calls==['restore'] and h.sha(h.INTENT)==intent_sha
+         intent=h.read(h.INTENT)
++        assert intent['public_catalog']['zip_bytes_must_be_verified_by_approved_restore'] is True
++        assert 'zip_bytes_verified_by_approved_restore' not in intent['public_catalog']
++        assert not (root/'risk-perp-incumbent-retry1-public-archive-restore.json').exists()
+         assert '--candidate' in intent['retry_command'] and intent['retry_command'][intent['retry_command'].index('--candidate')+1]=='incumbent'
+         assert intent['retry_command'].count('--out')==1 and '--initial-cny' not in intent['retry_command']
+         assert intent['TMPDIR']==str(root/'tmp')
+-    passed += ['intent_before_restore_or_producer','one_attempt_refuses_relaunch','exact_incumbent_argv_and_tmpdir']
++    passed += ['intent_before_restore_or_producer','one_attempt_refuses_relaunch','exact_incumbent_argv_and_tmpdir',
++               'intent_claims_required_verification_before_restore','failed_restore_never_claims_verification_success']
+ 
+ with patch.object(h.subprocess,'check_output',return_value='999998 bash -lc python '+h.__file__+' --execute\n'):
+     h.no_producer()
+@@ -161,5 +186,6 @@
+         expect_error(h.public_catalog,'Vault catalog')
+     passed += ['catalog_matches_original_consumed_hash','catalog_conflict_blocks_before_restore']
+ 
+-print(json.dumps({'temporary_only':True,'real_controller_launches':0,'real_account_cache_state_operations':0,
++assert not any(name == 'research' or name.startswith('research.') for name in sys.modules)
++print(json.dumps({'frozen_module_imports':0,'temporary_only':True,'real_controller_launches':0,'real_account_cache_state_operations':0,
+                   'immutable99_evidence_fingerprints_used':True,'passed':passed,'count':len(passed)},indent=2))

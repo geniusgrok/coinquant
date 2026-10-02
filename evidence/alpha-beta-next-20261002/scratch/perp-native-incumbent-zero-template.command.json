@@ -1,0 +1,24 @@
+{
+  "label": "perp-native-incumbent-zero-template",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-m",
+    "research.native_acceptance",
+    "/workspace/scratch/alpha-beta-next/perp-native-incumbent-zero-template.json",
+    "--package",
+    "/workspace/btc-alpha-beta-next/coinquant/coinquant",
+    "--template"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-adoption/spotquant",
+  "source_head": "0c52c812301de3712f3637a1ce1b1241de0c40f1",
+  "started_utc": "2026-10-02T12:32:32.397293+00:00",
+  "elapsed_seconds": 0.03047645000333432,
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "log_sha256": "5d27c16cc8783479893348007e2c1f29f4ba8c06619de23626cc01835edce58c",
+  "artifact_path": "/workspace/scratch/alpha-beta-next/perp-native-incumbent-zero-template.json",
+  "artifact_sha256": "a77b99074f2725569212d913b9e418a26141ce6d1b381aed708b360c261ad17c",
+  "scope": "Source-bound blank native template or explicit zero-case check; no network/account/State/orders."
+}

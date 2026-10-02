@@ -1,0 +1,28 @@
+{
+  "label": "risk-perp-incumbent-retry1",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-u",
+    "-m",
+    "research.alpha_perp",
+    "--candidate",
+    "incumbent",
+    "--scenario",
+    "base",
+    "--risk-calibration",
+    "/workspace/scratch/alpha-beta-next/registered-calibration.json",
+    "--restore-prints",
+    "--out",
+    "/workspace/scratch/alpha-beta-next/risk-perp-incumbent-retry1.json.gz"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-next/coinquant",
+  "source_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+  "started_utc": "2026-10-02T15:49:52.012077+00:00",
+  "elapsed_seconds": 3156.643541799989,
+  "exit_code": 0,
+  "log_sha256": "86525a92c2d164d54fc23372b1f42415fe8acffcddd71e96e37f121c81bb0863",
+  "TMPDIR": "/workspace/scratch/alpha-beta-next/tmp",
+  "helper_sha256": "957d4b0171469351c38b1a27bdc579a368dc0408fa37c348686d24aeb1c6c5d8",
+  "output_sha256": "5344465a2980c03f20bfdf3a60cb2fbc4424caa61bd798c4da6485630f9623bb",
+  "attempt_intent_sha256": "bcfdb76314a424c25622293aef3db1bd1f74b28fba12c0fbaa563bbf4736e1b7"
+}

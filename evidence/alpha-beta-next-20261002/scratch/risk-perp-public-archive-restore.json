@@ -1,0 +1,1515 @@
+{
+  "format": "official-public-cache-restore-v1",
+  "label": "risk-perp",
+  "vault_tool_sha256": "65ad132f5bf48559d455d4fa8a76966da76f661b1dda1540068f81c5f422e506",
+  "records": [
+    {
+      "name": "BTCUSDT-aggTrades-2024-08-23.zip",
+      "sha256": "25a4295afa1704bc9983430b58ec0759a39ef443785d2e76daeb550bf5166f4c",
+      "linked": true,
+      "vault_record_sha256": "513208024c5b0b9db305028f892448d8967d7bfe38a1c45ffc20c48e31e339f4"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-08-30.zip",
+      "sha256": "3084642bb252485b5d5344b48cd33ed7b54650700a2eb2b370d1c9294e16e5bb",
+      "linked": true,
+      "vault_record_sha256": "54e97703cfabe89267968f3647c5faa402f1145a15ff7c841b6d75da4f4fd804"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-09-02.zip",
+      "sha256": "447036a0163181c26a1a352dee8a7b8948ac49074e083828fe556a7e31d55eb2",
+      "linked": true,
+      "vault_record_sha256": "bb50d541a71e22788a05dc7c59ea122df91d672bf1f044c96b84d73e38d051dd"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-09-03.zip",
+      "sha256": "436babfe04f91c6aa168f0d9736ce3e5d9027038a4e3bed610761ea8febd493e",
+      "linked": true,
+      "vault_record_sha256": "7c19c90a8bc6a52288f361322eac7e0becff01857a339402038569fbb933c4d9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-09-04.zip",
+      "sha256": "53f276366d20548c994ae7c3347c3c47f2ad8f979b18d937c98124f9c0925fab",
+      "linked": true,
+      "vault_record_sha256": "724f6fe24d30c5820d2bd1376503bbfd6ad369075159af30b081271fc7f60e59"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-09-11.zip",
+      "sha256": "0a6a556be33b4d8817c929a542fd701be460bf25397cb51fc72edb92015bcd23",
+      "linked": true,
+      "vault_record_sha256": "480c7305e6c41e4c12de4d04bb6aa5b301e36d99bda91f7929cf4cf747f2de7c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-09-17.zip",
+      "sha256": "239d4ba1fb2d91fc3c165441a2afa13112089d349d5ff999d8f15f6087eadc42",
+      "linked": true,
+      "vault_record_sha256": "446e51d2ae4d63a2f5166e6a8dc10e9004458bce4740064d4b4bd1e60bdae0db"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-09-20.zip",
+      "sha256": "42c77d2ef5b185fba34db9402a977a5c14d09bfc1249426086b8e609d26955e7",
+      "linked": true,
+      "vault_record_sha256": "ba285f209b3c26bae6c1dfb1d3dd24452fa0586dba2b89315e6ddaaeb1599fdb"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-09-23.zip",
+      "sha256": "7b42203ddb7c7469a943b52695afa176cc68058f252d7c9fc4a3315c532f6368",
+      "linked": true,
+      "vault_record_sha256": "13b36c57e63c7d3602186a52b4bb399cf234715d61fd503f980ef7a99428135d"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-09-29.zip",
+      "sha256": "e80375527d1014cd552ceb71498713f83624166042c563b80421930d9c3c31c2",
+      "linked": true,
+      "vault_record_sha256": "2ac42e5a6fe18853eac384eb49ca31160665ec2f11221cf014dd70835d57b179"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-10-04.zip",
+      "sha256": "03fb00ffdd1649edc2098826b00ce4e7ea7e399c282535095b4e4576d5597535",
+      "linked": true,
+      "vault_record_sha256": "e49f76abe622977c9d1df28bb32c43140c82b29ba81b9e9a544777fb54cfd9ef"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-10-05.zip",
+      "sha256": "fbcbdeacd36b07bfaa469b01eda7e5cbd21cf91db10fdfacc561e85feead8612",
+      "linked": true,
+      "vault_record_sha256": "c894abdf9483f8e7c9ac415f9492a246752bb105e1030dc7ae893c1144974974"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-10-11.zip",
+      "sha256": "4e13b104130715d971defc1098eaa91b6a506108cd221b1bde40a1842e7fe91a",
+      "linked": true,
+      "vault_record_sha256": "20a433f4ab1be53cd2c43c51fab6300d870a8768ae9d3a660a7eda5de3c70764"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-10-15.zip",
+      "sha256": "de657134ee86b85baf16e20d7e7d391e867026640f36360da856cb05c44b43fe",
+      "linked": true,
+      "vault_record_sha256": "56b9aaf090bb8e9087c42c0d453302e2f3802ee471e4d92efc620f43fd270451"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-10-22.zip",
+      "sha256": "bc8845ac91b57466b2cf14ec68d82e4378d3630b41d510cc5138c6bb36dd0b52",
+      "linked": true,
+      "vault_record_sha256": "f04f2828d3b2c1a022299a331a434206e07589b58e3a647d726eaf99005cc837"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-10-24.zip",
+      "sha256": "34a1227cf7978073b38592efb01ee635690848f917375e3040b67452bda993fc",
+      "linked": true,
+      "vault_record_sha256": "78dad30f43cf8408ed53b6d73f6d87ba4f474afa8ef564bfce7f259bd1b2e356"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-10-26.zip",
+      "sha256": "34af4366bec3b43e6f01959d9f4c372ef60885ef7a2050aa30a075aea1af3176",
+      "linked": true,
+      "vault_record_sha256": "c238ddd474a09ce897b90a5c82eeb0b0d4c1a2ca8bfca528ef2a1b17714f3100"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-10-29.zip",
+      "sha256": "d2091b1a75ff2c2d7ad66c28e835535bbbc125b539f027fcca3fcdd46c24b9ba",
+      "linked": true,
+      "vault_record_sha256": "e875289377298e1ffaf29eb065850a05c90179e7b4ced035215ee4f5bb5a5e93"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-01.zip",
+      "sha256": "778e6eb0375edbf5c019a69e221992385a6051b06ecd52354a8c1e83a57e541d",
+      "linked": true,
+      "vault_record_sha256": "6ac65bbb36e6dd67ff7ac381564f5dc66b25d59989f59d0af3542056e6346272"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-03.zip",
+      "sha256": "5ee33dd02c50d5c5f2c9a4d025279a6f743c5d360a5fcbe87d33db9aaec85fb8",
+      "linked": true,
+      "vault_record_sha256": "00bc08ec13e886bf6223501e5fb067c8ada508cf9872f588da13bb6f499b46fb"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-05.zip",
+      "sha256": "869e2c653ba51067ef99d82c5e0609f0c8270086157c59e3ac11d01e284b7028",
+      "linked": true,
+      "vault_record_sha256": "001a4d50acf6ed47adb283d34f6ae22dc3f12d1eab9967a7dd8e0bc62e299bc2"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-09.zip",
+      "sha256": "30f2becf120c1cc302d17ab0259bc89755f5bad28592e30f06fbf1c87a3b0522",
+      "linked": true,
+      "vault_record_sha256": "be3b1961d8004b2479c54362d0ac9378c47021fd1e7a7b102495f7fa8d340423"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-11.zip",
+      "sha256": "39c9a5efb2ee39694e87ec37a4d3f9615780630d7ebf661eafdc1b8b46d1dadc",
+      "linked": true,
+      "vault_record_sha256": "2b6446c065c550b96dbe00a9e21086a5ccc46469204688da53d0681f38e6b6e6"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-16.zip",
+      "sha256": "ca01b9798951154328fae871630d080ca0928635281e64ebf6111ade49bae554",
+      "linked": true,
+      "vault_record_sha256": "a6179d643569b2caa4cb7a864703456aa75deaf8d9b073cdc5f74c54c8b1f630"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-18.zip",
+      "sha256": "6de5d7f840deea9d88ff10088ce3d38c5b4cade09e3d18ec24750c449c25a30c",
+      "linked": true,
+      "vault_record_sha256": "fe1e659046b462f695d2c7b8625a44433317eeda927a32ce797d885f2d3b88b9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-19.zip",
+      "sha256": "43169a10ecb424fde0d198260f81eeccb83f444422dcfde0ee495fbddc60b324",
+      "linked": true,
+      "vault_record_sha256": "b0557ac78419bcd1ce702b1083c939dfa75cb1bd9e2ff7c5a9618287d23b9a72"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-20.zip",
+      "sha256": "11f48850e082743597c3db391cecb397b343a6b925eea4ff9688061ca79aefb8",
+      "linked": true,
+      "vault_record_sha256": "fc3fa1ccfee80818bfee4d80d5b3583029f3e775a1528f82eaf0dabbfe5a1769"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-21.zip",
+      "sha256": "1ee6304e8f4c4bfbfaceba556f1f010ccdb4d934815a7e46879ae5f7b9d8ea75",
+      "linked": true,
+      "vault_record_sha256": "b5d41c5571d6bb0994dc076d4835e1608ce2116048486c4ce55e41cb26b8cef8"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-26.zip",
+      "sha256": "218779e7974497b0b3168e40204e209b630629824c981af59f343655a999d153",
+      "linked": true,
+      "vault_record_sha256": "04092b934b5ef298dd64a8cbfc49bbfd305c790e4753fa3fba4951ab713a7549"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-29.zip",
+      "sha256": "b1ada215d2237ba3c15ba33d13630f4d6317dc846a3029c96762de15e28d161a",
+      "linked": true,
+      "vault_record_sha256": "6c6885c4cffc0db0262c062ffa3af46e1007181847e45b121ce4530a011119bb"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-11-30.zip",
+      "sha256": "d31ccf4240010186a13e51f8d0501d9562995ed62281df68f3f96dc28657849b",
+      "linked": true,
+      "vault_record_sha256": "9500274131bc5bc2c82845f0f015b1516229fc3efd27ba071280448692286389"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-06.zip",
+      "sha256": "563ab9cd0a59710ff66f4e2d89fe492af2316283989059eb52250ea719d257c7",
+      "linked": true,
+      "vault_record_sha256": "480782536aa12795ecf9cf5fb26d2d27e26f0c9f650d7210c247c3e02f4f99ab"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-09.zip",
+      "sha256": "eaee0484250c8c97d03d35f791604f1f29d47f88bbf43657e5e93559b5d9d183",
+      "linked": true,
+      "vault_record_sha256": "42da2dcc8ea9bb12275db52033b707e6ccfcff83d1c647132d2d88570fe5d607"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-11.zip",
+      "sha256": "abee405c8766ada530b901961ff02140be5b9a7f64a43d55a49b052596d42a8d",
+      "linked": true,
+      "vault_record_sha256": "1cffc5f9a4581296bdb21f3b9dc8ae7c8242646e21a13d6c1a34582a03ff489b"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-12.zip",
+      "sha256": "0b57114165fdc0892812ccbdb6534318896aea1897bfc6b2b8329260cd82e82f",
+      "linked": true,
+      "vault_record_sha256": "6f2b56f6c317d508bf4f999c385a14cd7df652b24a6f866d0be6983365b610db"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-14.zip",
+      "sha256": "897694779f21fb74c175529c8df19b56ccc60f23f0a3b1a34fe2a1b2f8a3551e",
+      "linked": true,
+      "vault_record_sha256": "0e02addb14a401224694c7d2f41f0522363687821aa84eaaf9bc267a85d03f88"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-17.zip",
+      "sha256": "c35e22515ce95e39f9c0040b9c69d8bd85869c38d6521803884dc6e0b490f913",
+      "linked": true,
+      "vault_record_sha256": "7eff9488b84fcea83ac862c470e90db98bdd18f85cdbc4661740336717b457d1"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-18.zip",
+      "sha256": "9249bafc8bcda818ea3ed83780bd3256bcdaf83ad777cc84033a8f1a33af490a",
+      "linked": true,
+      "vault_record_sha256": "2821e2ed809fd6edf9804e77928e17677fdc557dd8dff8d3f15c3aa31ee96569"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-19.zip",
+      "sha256": "c923cd1f702435d1c11d06d900dda1ff8e1e3985f36f68a6db1c909a966274b6",
+      "linked": true,
+      "vault_record_sha256": "83ea4e2c702fc494404e1a836fccd6ad7498e4b8baf736ba12fb8f887a82423b"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-20.zip",
+      "sha256": "2d9b3ab17969f5365d29585d7b70d19d55f1b26677d04c17aa242b623fcd29e2",
+      "linked": true,
+      "vault_record_sha256": "8f62d2cb0cf0e5e8fdc3dca044081d771271dbc44bb4944128f7430191a0d130"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-26.zip",
+      "sha256": "b1bfca8c6a03611d4e41361104047de16e834f0cb2a843858d9d33b10a17d2e6",
+      "linked": true,
+      "vault_record_sha256": "68ef8ddcd901e24dce3d2c619dc4e4caf4fece8730b478ddec389ba153d51c4e"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-27.zip",
+      "sha256": "e6f8e083bb195202baae2da2380adb407f9489ab4a385f72217acf2bce55a2ea",
+      "linked": true,
+      "vault_record_sha256": "52bf2c449b82da01cb9b8cb97e1f7c174c535988c067385089a25ff856014de5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-28.zip",
+      "sha256": "9f80c7ae853994a7244d80dc94b3ef36370d6682fc133d84a25b084187bc25a6",
+      "linked": true,
+      "vault_record_sha256": "31af7303c9c8ee06ee3ecdddc88c0efed239961d4637e4ff6f3a00f70cf291b9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2024-12-31.zip",
+      "sha256": "8433f4337e4b0ef7e11ef862d4137fb9c6de5a93351ff68753d835e68db19a28",
+      "linked": true,
+      "vault_record_sha256": "a0b43b3373cbbf48a7be728b2169c04d03a1216d2e85c49b0821630cc5970726"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-01.zip",
+      "sha256": "b0e75563f195609cc12369dca095f3dcb26ed84fc4e1234c9b91a807a5d51202",
+      "linked": true,
+      "vault_record_sha256": "8f7c9fa0eb7f24bd8a3e377bd706574262ba4045400617c92b9c79019f28b17a"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-02.zip",
+      "sha256": "7714f1084931a01b1474db471e9cebd747575dbccc6c94dbb1b289b317128f55",
+      "linked": true,
+      "vault_record_sha256": "97c3b23fcc1509661b54d13ab9e37c34a566349764db97dfe54e0f8d420c76a2"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-04.zip",
+      "sha256": "fef9326757858562befb1f9db9a1675b3a355dbb6d9e3026863b9c5c5a3a34e4",
+      "linked": true,
+      "vault_record_sha256": "e35715de182b4ae943608e198a70efe160329c2971553e1f8440bbc12dd07327"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-10.zip",
+      "sha256": "d93070bd67138daa8a0b783e54b24e7aec669e4b9862c7abf59c430e2a59eff9",
+      "linked": true,
+      "vault_record_sha256": "f42b4396050aade50bd132b1fc889781accfed11510bccadd44ff0cd85924aa2"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-12.zip",
+      "sha256": "dad2d8221ec7cce3e3f0899e0af37fcb87f28e951fb88ed6942fae9829170dfc",
+      "linked": true,
+      "vault_record_sha256": "78dabfff715017c0356e94739a026f92e6475dbf2cf47d00f373352b1408004f"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-13.zip",
+      "sha256": "6dbe3db1469d06e96abca6793f58e00039018a0acba299d50eb3e3e9a0d966e2",
+      "linked": true,
+      "vault_record_sha256": "40e30370054dceec44c9cb11be1020a3de08dc475ac49c4a39d753856e2a3c7f"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-19.zip",
+      "sha256": "add35d27a8f30fc49c001a06741bec473bd56b381bf73e95c1fb518867727bb7",
+      "linked": true,
+      "vault_record_sha256": "6eea68d52d4ae8a61b35d685043c600563cc9e12e4b262d896aad568ce25ccd4"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-20.zip",
+      "sha256": "777b277c0171d00f075e045609d7569f9f577cf2516616a207bbba73674bd0f7",
+      "linked": true,
+      "vault_record_sha256": "9c9136aa08ec3992e7c86283925da8b142fd63162d41e6d0a9fdeaaedddb225b"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-21.zip",
+      "sha256": "9951710a082e7e12082232d20dcb320a2b718a10b5b4f2ef59df1d05c237fbfe",
+      "linked": true,
+      "vault_record_sha256": "ab69aa551e043076c9ff31a20aad574d36f52be61fd9ba7e39edda39b1a8fb81"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-22.zip",
+      "sha256": "e947e535a68e8cf055a15f63843afc363507c09a32b911ee74ce94d01ec2de91",
+      "linked": true,
+      "vault_record_sha256": "2d900703632eb82c0b263a8f9ad33d6c87d45531452f111f3b789cebe70dd810"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-01-28.zip",
+      "sha256": "b408157c3d6764a70a774d3ab3da15a5563f78f46de4544e8de9cf568b0ebb95",
+      "linked": true,
+      "vault_record_sha256": "577a0e4c6563ad4739a3ae7cfd2800c390791511827d02d249107b40acfc6daf"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-02.zip",
+      "sha256": "65bc8fc9bac0ea50b16ea1bb6268791cc6f481bd0106491d06ed5958e4756478",
+      "linked": true,
+      "vault_record_sha256": "9c316f7d5cadeccb4788d7b24ab80d50eda526dd814d8cc8ffa6307523f1d47d"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-03.zip",
+      "sha256": "0ae4c4d826aa6f540fbafcf62071f5921c2c4f317b0e35a5a60dd9a377c8ba15",
+      "linked": true,
+      "vault_record_sha256": "b9a75a30fdece4bc16b60ac7cad4709b2b927b00423d9e3350cad55c30223926"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-09.zip",
+      "sha256": "483658183b855069b28d69e3b436eadf4911c748549658018c8a07d9aed383bd",
+      "linked": true,
+      "vault_record_sha256": "8e722773f4d78cbddaeee3233344beecd1e878dc3165040a719a64fa0382d524"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-10.zip",
+      "sha256": "97a757795518fcf326bcbd6d25c493fb859da10fcfe8c1496f26f08f592ab485",
+      "linked": true,
+      "vault_record_sha256": "25d4eb5e47c973d6c398b5abd1da2c3fe8f1bc132b78ef11de3938d04937a2be"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-11.zip",
+      "sha256": "dd7c5ec8ad74f3a7a9d351b3a9c2e54e0d36ad11584d7baa4d1456b9fc027e64",
+      "linked": true,
+      "vault_record_sha256": "89c8004eaeb092617c804105c8fe05f5e8465a776d82d61f1bbdb6541a22e61a"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-12.zip",
+      "sha256": "73294e04a243e2b514d491e03d5fc51c746b6e1942a790ee8e4f601457bc7cc3",
+      "linked": true,
+      "vault_record_sha256": "49fdbe54c822871a63cfeac4344e7d2a6faddf6d47bc24e4eaa1da8a6da95a22"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-13.zip",
+      "sha256": "c0c279499e875c0fee32fc020376eb063061e440a6521008e510d88d9e5ef933",
+      "linked": true,
+      "vault_record_sha256": "7e7be7272909323ee014c13946e2e7a28932db9026bc24193356c44a618ebe14"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-16.zip",
+      "sha256": "036a851eb9c95f7b496e695cf90f56b809bc8366fca695f9b6f59ba2fef4a269",
+      "linked": true,
+      "vault_record_sha256": "b71ffa7c9dd7f3ee77041a5889f25fdff8e85f5e0b9fa687f7ab9f5f86d51525"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-18.zip",
+      "sha256": "90fbd50f1528b9d8485a9516faf3de5e3b1aabcd9112864729eec12fd902e35a",
+      "linked": true,
+      "vault_record_sha256": "9c098d82d886a75176a3e91a4231d5d164cd932c45a4683a12c2c2a8e9359aeb"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-20.zip",
+      "sha256": "5459ccc7f7ca53d91b462604597bfd091e0153c7643fcfa6efd7d55c3e9f25df",
+      "linked": true,
+      "vault_record_sha256": "c58eb75e3c6cfd20355ae6cb35953028ba4678d87b6a5e6f7dff4e62f5c9afea"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-02-24.zip",
+      "sha256": "ddc78a3aea45dcae410ade12b1e9aa7a0a366d78e4c6bfa6ee4359806908858f",
+      "linked": true,
+      "vault_record_sha256": "c6abc73a64fe92604c712c35198ada116f964611c14b723186f75b228a21ee75"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-01.zip",
+      "sha256": "78faa971b39fbdd2f537c8e22f2fc2938e7ce45e0bbd9a191ba9f551ba23a4da",
+      "linked": true,
+      "vault_record_sha256": "1189fb1480d9359a049ca4cca3ef2b2164ad67de4b613d0d26b2725faf1d4acc"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-06.zip",
+      "sha256": "df3ce1b87cc6cb50ab314a21d09d34c0d004dd5e511a1e5be2f07852ba3a155b",
+      "linked": true,
+      "vault_record_sha256": "08e18ef97a8da698ca70d1fdc38710dd9d3a1ddf779927cc3c290d48e61e9171"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-07.zip",
+      "sha256": "7837256f8dca01a9f2a9f0cf0ee8d435956294c462bdedd6a77c36dd15255a5b",
+      "linked": true,
+      "vault_record_sha256": "7f0baa829ae80f7df543fae6880efe72c0380ce75c5c54dac65203dfcc4a6e94"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-10.zip",
+      "sha256": "cb588696efe09506653939427450a2edf87b5d3ec8e7c8367d7b283e972ca555",
+      "linked": true,
+      "vault_record_sha256": "2dfcd310350efd35265f93758a66c62b2a399b8d45c75c6676aa4acf77bfe94b"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-12.zip",
+      "sha256": "0d655f98903f56358fa0d340135b281fad669b77cb973974228aebaab1892082",
+      "linked": true,
+      "vault_record_sha256": "a13b757e48a7be1d7cc270366997554b18e94a3e27be0df366da219219702cf9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-16.zip",
+      "sha256": "bde1b0b250beb7ad7c422f6b9b6dc2cf49df4250e8d3476eeeab70160fbbc4b6",
+      "linked": true,
+      "vault_record_sha256": "6f7269c567bd616bb1b4dea4684522e04b83e890ea371c660103277364d09ba5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-18.zip",
+      "sha256": "abf17b255cf8c9fd1f78fe7e60f1d90f1932d15810d7fad39e2a47e79eb1ef68",
+      "linked": true,
+      "vault_record_sha256": "48f766392cb3b1329b4ad3c37aa5bf39c22a320c0bc97b664ef2df9914b4ce8d"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-23.zip",
+      "sha256": "3754fc390e9d54546c7f12aa21b1055e262e839937b00de1d55568325c6657d9",
+      "linked": true,
+      "vault_record_sha256": "8f431993a7f94bb0d7a425cbe88b81f0ef13a6818b1e8588b27d5b6e5cce8ef4"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-24.zip",
+      "sha256": "4cea4d56ff9e4451dabca507ad7e188cf6f911291cb8415394726c78d2a0e900",
+      "linked": true,
+      "vault_record_sha256": "a8b0f84292027a6f8a1438e7fe6e0c728a6a820d3d6636ac1bb172577a15cfc5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-27.zip",
+      "sha256": "ae8f4b0c5d809adaff4beaefcf1b40e9da68d0e02a0c3741ac3b1e73dccb06e6",
+      "linked": true,
+      "vault_record_sha256": "f50e0062d03d4c1b4c56ec4ad316b803d1170ce84746f4eae16cbe0f716894a3"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-03-30.zip",
+      "sha256": "82150c00cac6f3f34a67c28ca60c36cc20979f203250495937ee3ab120d416a4",
+      "linked": true,
+      "vault_record_sha256": "480749300fadb06f98f301966b73198a5ac21c5125cd21f1d1fb210f75ef955c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-04-05.zip",
+      "sha256": "d10b714c33010edf99682fba95f87c3c2796904cfa1b5c8c538409343eb84874",
+      "linked": true,
+      "vault_record_sha256": "eddd09db6493fcb1c3fa6e13fcb905a43dd6d513a7480aeb43fe6ef6dc0db4fd"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-04-11.zip",
+      "sha256": "ca254451b646c4771d4f839bb7f4a4b7186e3d8525177d5abcad10e02af691eb",
+      "linked": true,
+      "vault_record_sha256": "852296dc1c891e82402242797be70dcee8dbe79aa321bacaa62b18ef5cd3270b"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-04-16.zip",
+      "sha256": "9e6bbd0005646cbb91085e56db582a5ab9670163aab9e707ebb6b98e53b272a6",
+      "linked": true,
+      "vault_record_sha256": "81d7e9c441d7405d04ae5d69083063f3b443a36f6ceefcf601fddf01015a2bf3"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-04-20.zip",
+      "sha256": "6df3d4857edc2fe77184d13e02dde6e5e07784d0ac8b28c6f50ffc889af4124b",
+      "linked": true,
+      "vault_record_sha256": "81ba93b46d6cb9f827322351de0f2edd72cbe857ccdabc8f3df8fc4867479b86"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-04-27.zip",
+      "sha256": "6d736d9e96c45032bcaaffcef10e45e150e52eb39726fd0d72f03e66b72f1828",
+      "linked": true,
+      "vault_record_sha256": "981d107db1bf6de45e5ccaaf2567b70dabee1c1170c7e46cb8a41d8e0ad1fc2a"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-04-28.zip",
+      "sha256": "9d09128c943859721e604d089b6b85a2b0e6db53c125411860af19a8b47e5568",
+      "linked": true,
+      "vault_record_sha256": "0186fff85bce09aead5dc445107070c2d6d069061f552f0e796dece43a8f4eb3"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-04-30.zip",
+      "sha256": "b5af06930e8ed47519d7b41bfd8346f79a656961f70eb9953756321e238bd957",
+      "linked": true,
+      "vault_record_sha256": "5f476f6715f2e0148a13fef052f1dca844df8605787fe8d98bb633a702f38841"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-03.zip",
+      "sha256": "beaa36f14dcb7cb0535d09ad56413002ed3fda615d975eb21a359fc9346a4364",
+      "linked": true,
+      "vault_record_sha256": "4bd9abedaf7a9e8a7d840a3b9afb6460adf580316c698d1d4d94a52a2ead8d90"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-04.zip",
+      "sha256": "f212bd35f761a7bd61a2b9bc920dcfae5900bbb6c7e3c34489ad90afe8b2e7cd",
+      "linked": true,
+      "vault_record_sha256": "1adf06fd905da83ec910e626d8b16d61e8d9ee6d329bf5cce3a37c2e981e28cd"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-05.zip",
+      "sha256": "9a8b7853c28b2af54c17b34f4752e0b5c53f154eb2733a6ffeb66dbb49f52b97",
+      "linked": true,
+      "vault_record_sha256": "de81615ef59dd8c5c9ac208f2eca0e3ed7723727a661a6331b72b6859433fbed"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-08.zip",
+      "sha256": "3417c9b0abce55b42b807951b6614865fdc0d8071297489e50acfd4529815dc2",
+      "linked": true,
+      "vault_record_sha256": "ef2a7d51268b8db8da38df0976435bd3e8e4c114c057dc8c82364a6f5049306c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-09.zip",
+      "sha256": "8dfef313d4b64498f077624c581ca8c17ed4ed4f12c1be9f38a9cba2b9986e37",
+      "linked": true,
+      "vault_record_sha256": "750649f72332c41b894713df239e9ee1f7df82819054976c5665bae0ecb585e6"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-10.zip",
+      "sha256": "25c089097c381e8d545937328c68b22e80555e4de10ec2d4f268288027a0bb36",
+      "linked": true,
+      "vault_record_sha256": "71380693da4a56638f90c1759d37c7dca8a075b40d3ae101b5237249e252b7c8"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-12.zip",
+      "sha256": "a4133e323be015c0f6eac19152fbb56ce047c83639a2d4b9d56ca1ca0475423a",
+      "linked": true,
+      "vault_record_sha256": "faeb6a58c3377044d973d24046a1216cc0f87837cd51e534bcc5e84ea2142bb8"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-18.zip",
+      "sha256": "3092a25ce2147615bd1777124a2aa608ffda9256703d44a87d3d61219dab26f7",
+      "linked": true,
+      "vault_record_sha256": "f6a80f60641f2f3f0ceb4812cc35fdc2a1bc381be256edb6b201522a25d92c00"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-20.zip",
+      "sha256": "2a3a229824aed3e46244dc31c43ffba522a6ef079115891153602399c8d386cc",
+      "linked": true,
+      "vault_record_sha256": "3ac1e59f64e51bd2c0038dd93cb0bd49310a0c213591dbb49ab25e2d85c3e31e"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-25.zip",
+      "sha256": "074b6af6fcdc9c1c13e928a59cc182398c10046a0a50135f71329939f4dcd7b0",
+      "linked": true,
+      "vault_record_sha256": "4e4e56e8eb8d1e2318aba64f240dfb3e9cd23ef0754e1a6a15a692705cd5dec7"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-26.zip",
+      "sha256": "cbd1e9031d6e3cb2590e44cbf69a420e4d748fe671ac966bd4618cb32e072d00",
+      "linked": true,
+      "vault_record_sha256": "1d3ef80e369bcbfc2b1eb5978f4536405c9eb14fc015a1f9ccda9f166dc67e97"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-28.zip",
+      "sha256": "6544e8689d0aeab713eabc0cfed53fdecd40b57e1c2b970fc3f43409205d7267",
+      "linked": true,
+      "vault_record_sha256": "efbe46591dc050a273d541005672d0741a08d5ce3e3b0a2d943ddd0f67e3b0ba"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-05-31.zip",
+      "sha256": "fcd598988e6607808b9f1109f34a6b89f0f4dc2c7e01390432605c76548169b2",
+      "linked": true,
+      "vault_record_sha256": "82f3d94c850b30b15838072cf3e96a170c2d3c9f70631c6c1de8862e18c5f577"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-06-05.zip",
+      "sha256": "2db2c71f293d11d5975d2e6c390fa92e9bf8a703019115b5d51d01d73e86fcc6",
+      "linked": true,
+      "vault_record_sha256": "dec81c73eb76dfa6ce75d01c55bd0188c32da8b1d951a39e3cb5aeff4d3dd8c9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-06-08.zip",
+      "sha256": "0e41d042665fc51e914c8077f2dacab1a1d5cb49894bb34b1be2d1e524e66a82",
+      "linked": true,
+      "vault_record_sha256": "42cddb1a5dda2813db081467befcfd4e06e3e1ac626cc94f35dce63ab9e36e55"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-06-12.zip",
+      "sha256": "11b9c59140ba7cb07d881f2d9d42bb503e7c1b2ee17eaa5f046ec1383d642543",
+      "linked": true,
+      "vault_record_sha256": "fbea07fd2b5f62b9f63462d394e131363ea886e14d5d6a67ba872d6667f06df7"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-06-14.zip",
+      "sha256": "bbc8f34620269d7a55b0f8ac5a445cc9a9c4b3515f7f78b5be884338188c66f3",
+      "linked": true,
+      "vault_record_sha256": "28d0e77b29dae7fd892e9735a35bd2a02a33f19491663e87311d5f93aa520510"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-06-16.zip",
+      "sha256": "befa74a22c038297e6d646c487a745bf8ede09f1cef0ac15a126203bd022ff5c",
+      "linked": true,
+      "vault_record_sha256": "eb7f09da9a413a4960d17994dc89680f393e62e532d7ebe5a755240240609745"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-06-22.zip",
+      "sha256": "b62538a362ca3f8de1caf0132aa7952e9536ab4a201526e20ffbd66486058907",
+      "linked": true,
+      "vault_record_sha256": "9b4b0df63a55fced339c0dc74a382205d09cf73e1235fbc5c4cf7c0f4f75850c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-06-28.zip",
+      "sha256": "83f50b7ed1c94420795a109e4c562e63b3cb06b28a44a3fa61af2660c7023e47",
+      "linked": true,
+      "vault_record_sha256": "7ed715f0b9e4aedc0596180a7412d5933b36545b71a6cd5b15c328bbd7698f74"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-07-01.zip",
+      "sha256": "72146acd2aa13a1da52c398f560e73f765b7a9d4659bfbae1219801f4b86265f",
+      "linked": true,
+      "vault_record_sha256": "4d071864e701cae3a5a094dc316ecba40ebd515ce3996477eeb8872fd9553f5c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-07-02.zip",
+      "sha256": "b5bb4feea080dff1b102b1763c019b9065a802fdb097fdc5f75eff3d9571901d",
+      "linked": true,
+      "vault_record_sha256": "12faf431ced6fc1d292d614bb5dab673d6e424b8c71e5ad7794e273399a65c02"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-07-08.zip",
+      "sha256": "499420f09759badcdb2822d200d6cfd95e643849bce296f4e3089ed655234089",
+      "linked": true,
+      "vault_record_sha256": "fcbd4a2b977b0b1c6b1873ada513e237b759ac50d55a4e7e157e2a20729e6047"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-07-13.zip",
+      "sha256": "e8af7d7eea68d619cfe86229a91de9161dc100672f96191d0958335c2f0c03b4",
+      "linked": true,
+      "vault_record_sha256": "bd16d0d940ba1563d88468bcbf6c10a2868e4af42f6a59d648325b225c4f2d5f"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-07-16.zip",
+      "sha256": "925abec317fd3e65ee332e66c22384823f0f96340ee2b1c5c4f6223fc4ac2045",
+      "linked": true,
+      "vault_record_sha256": "3d5d535095f01327d5e53e4b3761bdbaedf18fddab04fb3618b08a8283cd98bd"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-07-22.zip",
+      "sha256": "ceadd00eda748df25684d7f1ac66a9df2bd1c0c114c5b7860df4ff035d96a6d3",
+      "linked": true,
+      "vault_record_sha256": "4dab7a44ca66dc5b660d1f9485c859b0790ccb25764f6ce37443b9085958be53"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-07-25.zip",
+      "sha256": "342f3fcc595e2c78956a5bf45d3f1f50e74601428bb98d60d9dae4d650fca6a6",
+      "linked": true,
+      "vault_record_sha256": "31fcc48f3b026463cfb38330c79e1c512ce0bd29ec1a6205f060e357bc9d1eae"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-07-26.zip",
+      "sha256": "24f90aab90380e53df6450ca9efe40442f6cac52e6c9ff1ec1369a67667a067e",
+      "linked": true,
+      "vault_record_sha256": "8b7daa5d9bc5d214a4bdeb064936ebc41612f0d9d88f6bc79261ea97f36156a9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-01.zip",
+      "sha256": "bc0e11929344ec6fe208f4347672bdd0d9a5bbe7ac129cd661d30a6c9442ffb4",
+      "linked": true,
+      "vault_record_sha256": "dd34f8014479e38b1d7125c397c922d46ac7bf7f04db0d8907706953325594b5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-03.zip",
+      "sha256": "02ea81063c57022aeffc20ccb871cca5f91e99382d687db5ce2e33c05a38e7eb",
+      "linked": true,
+      "vault_record_sha256": "86bd1c756c5e193b5afbe4266b59214d23675bbacb5a05a077f3359e2add5896"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-05.zip",
+      "sha256": "b377fce427b20f27cd23d5b84d585ce96feab0412bff0e0c16d0909002d3ef19",
+      "linked": true,
+      "vault_record_sha256": "081c3ff8e5841e1e352b8c15d1bb0cfcd8a7ab0c522160736dd292a7d06de8cc"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-11.zip",
+      "sha256": "26bff2e15fa779364b8c0f64d710a4dcdd0fa6e4381022729e70f0bd440ce078",
+      "linked": true,
+      "vault_record_sha256": "9d3c974ccad3d3185584e2a543ab6dd4b0c3c476e0c31846f4f3067160b6097a"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-12.zip",
+      "sha256": "b39ccd536768ceac74527857290ccf610f3625a61640e17e86caf19b02bcaa36",
+      "linked": true,
+      "vault_record_sha256": "5fdf5122822214938463977b0f9a1f21952488c134535d35a6ddc983137bb9a6"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-14.zip",
+      "sha256": "733f0703383dc66de079a5c53dd928c38ed352760482f15fcd6e7765bf053771",
+      "linked": true,
+      "vault_record_sha256": "3ef69dba3e7bc9fc64f4071524117c0e1cc981f06f52c183276868b635b041f4"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-20.zip",
+      "sha256": "2a0dc0eeae0700af8bebf571403fe5a5cdf68d0e30ba4fbd96f2145ed50d74b3",
+      "linked": true,
+      "vault_record_sha256": "d06a2795b2d6b940d86d4df57de177938113dfa3e365208d0dfa7fae384b3b09"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-24.zip",
+      "sha256": "ec84d34300ad98fc14d39052607172a8f5f4a41548f29c30d314c245d66e4164",
+      "linked": true,
+      "vault_record_sha256": "07f98311f57e19845e5dd526493e85a0affeed7b24bfdad9fc9aa2daa1e98099"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-25.zip",
+      "sha256": "ef9c0939fdc17dcbb638e2bffacd97a3e29705f664478bdc5d974c8b56adaf35",
+      "linked": true,
+      "vault_record_sha256": "271dce6fed37eca5a571a24055145fddd994ebafac3261ee56fb74f3bf4c6db7"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-26.zip",
+      "sha256": "16d21a15fc941d6cf3f55724177703ae61c0a8c001fb20b6a8561dbb959bb029",
+      "linked": true,
+      "vault_record_sha256": "76bbc632671848e8b802957ac7eb6c2d1bd002fc33224ea234223bdc7ae0751d"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-08-31.zip",
+      "sha256": "2523a7265bc0c8f331af6c1736c25fddced8a28121f5a1478b2466dcb0e3a9fa",
+      "linked": true,
+      "vault_record_sha256": "62a6e19b5f9f77170631ed5deec4bd543a0bd2a76a7c4932dd5a271553e6feab"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-01.zip",
+      "sha256": "5f8420b0fed7b4981aca1d2ba7069be1525e6814e1813253d73e5f463564cd0d",
+      "linked": true,
+      "vault_record_sha256": "a9e93efa71003ed851760e7062702866a90938840372f39aa047e0e4fe3889a2"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-06.zip",
+      "sha256": "6209a6e3427e051d16574f78ad103a0ff6845532b9926d546d64ddae8c099b3c",
+      "linked": true,
+      "vault_record_sha256": "88c877fb4a2805e2dbff27c0b55aeb9fa311960c8dd2091ce0755ac2d5ccf4fa"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-08.zip",
+      "sha256": "f79bd01fe9623445afaf3ccbdb18fe1b15620aeccf0a874f5225da60e511e1fe",
+      "linked": true,
+      "vault_record_sha256": "f0c41f6c690e23f69540e75f8f3cbf155403dd36350591f5cedf894972ada5f4"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-13.zip",
+      "sha256": "4f25d285edc9a34f340d7cc2c63493d670aff3302b628f532e2b74bb4dd23462",
+      "linked": true,
+      "vault_record_sha256": "640539b8f2178feff689cbf123354e80c58b4a1bfa765a53d080c524042df28c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-15.zip",
+      "sha256": "cf255e127e5f9dac68c2a9621f8bd38effe2af7bd584a75a81831a58206b0364",
+      "linked": true,
+      "vault_record_sha256": "ed07946f8f73119ce88c3b9cbe5f868176954aea12ac6177d142a14c9473eb2e"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-18.zip",
+      "sha256": "96c77483343808eb9063cb9314914422121171165dad783dffcaca651837b07a",
+      "linked": true,
+      "vault_record_sha256": "a3ac070523aca68b2b75131ac59879b3f15a4ef32a792b2bdffd0f40af4ed857"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-23.zip",
+      "sha256": "4817f365110b800635b5970e0caf57d6da904b531162395ea2e386514b5cd9a5",
+      "linked": true,
+      "vault_record_sha256": "80bdf7b6136592d6ca17144f4493ce3e8999adc94015f6eff7a8a82640b9b70b"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-24.zip",
+      "sha256": "3aa0f2fe07300013281cfc96e9a11a114ec5e1ad08d742178b34e04ec02bea97",
+      "linked": true,
+      "vault_record_sha256": "2c3f466ce1008bf2a91c60cbf4432321e60aebef6128ec978d14a3574a3d719c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-27.zip",
+      "sha256": "f0a41224270caa1c8f63badc545e94f56516fd40ec6dfbd35a6e25b956027d06",
+      "linked": true,
+      "vault_record_sha256": "75eff6d5de68726cb3aec2dcc0656b04b7189a9a4ce54175d34bc6d77aee604a"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-09-28.zip",
+      "sha256": "f954fa16951e06faea40f3b5d28872fcafdb5a51201cc68fcb191621fd6ede55",
+      "linked": true,
+      "vault_record_sha256": "3cc20bdb41a7add71e9e92b7b17340337f6daaed04dcb15490ac205c5b0e98ba"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-02.zip",
+      "sha256": "2e3c0cb737d8d8c7fa3ba40ec1856699231236ebf2c96bcd73407a1174d13780",
+      "linked": true,
+      "vault_record_sha256": "c9130c0bec598c3e2beb2b2a4d33f1898eb176cb46952a2a3e6b5e15de49376f"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-05.zip",
+      "sha256": "2ffcd51a6014dc176a1ae4b7aeb87ddbd98c2ea177d82a0ec32dc2c94137b01c",
+      "linked": true,
+      "vault_record_sha256": "3aae7e074dcfa8a83756a35b19e0bd6c252adc626b3cb10750b2f235122654cf"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-06.zip",
+      "sha256": "7a516de260d670cae2e6a0f84ae42054612485b9976e9c5bd97338244d8e6432",
+      "linked": true,
+      "vault_record_sha256": "99f6b2437a031c81de4446fe380fdcef569264f4c1039b095db5255348d09406"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-09.zip",
+      "sha256": "f00ae6bebe408d6715d757c6f551d27f8cbdbbf0293013740e667f68a526b4a8",
+      "linked": true,
+      "vault_record_sha256": "5c5446d418e2ef8872728636fa9bc97fbb2560efaf77edb5f27457eb5b934589"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-15.zip",
+      "sha256": "f4e9156abf5cfa27f95da2dcecdf09a2c81fd9ad9d8790061f0b4cacfd5ff46d",
+      "linked": true,
+      "vault_record_sha256": "509be4bf4835ebc5811d5d124321f08bbd0df07e43dccd8abc0c410e6ea62cab"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-16.zip",
+      "sha256": "dd7902fbb7eadf68b719498ab9ba80834dffc142bbd70b91d5038001ec8d1559",
+      "linked": true,
+      "vault_record_sha256": "dbd6b133531d969bcc8318d3642ccf0ae3b546c9d6ef04df93c1b204e64cc099"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-17.zip",
+      "sha256": "8d47dc5bb1df8663eae31b63636c98e9532ffeaa242fa45254c4b9a528efdd85",
+      "linked": true,
+      "vault_record_sha256": "bc1d71c8d3b4608ce558ee73bafcd82566e906fb5307e2ff262a265c59c4b8e0"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-19.zip",
+      "sha256": "44194dc72d31999ca5b55392ca35f95b92730eacf19ae9fdb58ea242742e0b85",
+      "linked": true,
+      "vault_record_sha256": "fbf9d55343645c509163fd34f1c683842882dd5a762bcded9392b3652abafa01"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-22.zip",
+      "sha256": "cf8bcbb94219bb12941cda308f6bdafd9a2324b8d995be2e0e0b27cf3ba62cd6",
+      "linked": true,
+      "vault_record_sha256": "2fcd964e034d4e449a03d2c76a3151714b2c32c39534ea0c9f3e2673a93ec849"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-27.zip",
+      "sha256": "e753a8d910029870866a6456bb63af4d8673d844cfce653fb9d808ac3477510d",
+      "linked": true,
+      "vault_record_sha256": "be260d400dd3bb3042480e7d481f9cc5851a564f49ece9671b0599713333a5e4"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-10-30.zip",
+      "sha256": "ac7a760ba4bc71744bf0e6176e6769f29e0fd9723f361e39a9f0a41c0d23bfb2",
+      "linked": true,
+      "vault_record_sha256": "24857938035101701466ad9c186633cf3ee4de9bbfc8971f6df65d7abfca9f0c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-04.zip",
+      "sha256": "7d06f5813e77dd9313989d19b7c453973893efb4b9e8f47f39e8902e088713d6",
+      "linked": true,
+      "vault_record_sha256": "8e581fedfc674ff4808ac6d26ed11413ee9e14410d5fe96247e21e9ec5af6f87"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-10.zip",
+      "sha256": "5216639b3a6c0ddee4214760c60a773dee623b251eabdbb599f1888873065d20",
+      "linked": true,
+      "vault_record_sha256": "120d3a712559d717a956e64cb8e6187a91560017c2adb559eab08179aebb2a39"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-11.zip",
+      "sha256": "74dc9f173e94028eaf2d610ef485fafd447547d0c3c1465d4529eef4559ea5c7",
+      "linked": true,
+      "vault_record_sha256": "5d06133c7578bce8f7e05cc9d5086d5a2a93812997be9b66715d69732dece184"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-12.zip",
+      "sha256": "313f22ff8640e7118a69121e99202c72c8a2462a28c56402756b619d887b12e6",
+      "linked": true,
+      "vault_record_sha256": "e921555984a98f88a2fad224319f39c69063b824fcf2c693b2a9a57d7826438d"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-13.zip",
+      "sha256": "4e5f2e55502bf5cf671cf6ea79f98e9f94da05a1c9f92634faf6c64ab789f61d",
+      "linked": true,
+      "vault_record_sha256": "8b6bf001307f83aa296e2dae971e7d32cbd1fd5cfc4b22ce8229cfb39d8a573a"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-14.zip",
+      "sha256": "fd1e7e07833ac3f1fd759d61880f1219115e9e333a467912c0272c039f6458b2",
+      "linked": true,
+      "vault_record_sha256": "d9e3f298d40680518fd69ebbdc9586401a4768a9d080260c9d6b06e2d3f62b91"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-20.zip",
+      "sha256": "9add514f6a087bc3ff9bac5d8b4ac707ddac865b2da3a40b864b45c9b58601eb",
+      "linked": true,
+      "vault_record_sha256": "90946127e16c99050e3a6c6e33113ca5a47fcc0475f98bfed66f99fec63ff778"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-22.zip",
+      "sha256": "2eb2caeb571b965994638a9c00c337282fd876d1bbc7569e56de635cc826d2fa",
+      "linked": true,
+      "vault_record_sha256": "9c5d9d716223c71f17226323be4244db5e50bf348cbba10ce28c59ff820eec1f"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-24.zip",
+      "sha256": "cbec2c02a51e892563a38f7974520333e5354b57931e4e6b952c3e4669cba0ef",
+      "linked": true,
+      "vault_record_sha256": "262eb4274d1975852278f45f8f5d40eac4282a77fcc1f9b04538f8dff1f7f535"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-25.zip",
+      "sha256": "db1364d698f1e6f8da0593c410c43355fd09c1fd439f823290d89f2e63fa71d6",
+      "linked": true,
+      "vault_record_sha256": "83a66b6d39bfa70b3d85c6361e461d2a772dba2dba36a6734cb83722352e4292"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-11-26.zip",
+      "sha256": "7e64221c3d1c30a9b077692c0521c63e7e3b9414985a3be3d56155006d471c30",
+      "linked": true,
+      "vault_record_sha256": "8364cb5b65c654672197ec56258b1dd6c2247127c0a01a177484a68d91891ff8"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-02.zip",
+      "sha256": "d5362b57780779ce5e1b3d77c9107e0d0682188b0fe6203c478228c8a813cdb9",
+      "linked": true,
+      "vault_record_sha256": "2f3c2b69c0377b4d8080e37bf2ca6aa8f288585f61402be8a0837b7009404290"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-03.zip",
+      "sha256": "dcff9afde8173db3a25bff6704a5e0c0627dff8ea8e78a085f9252142b7542aa",
+      "linked": true,
+      "vault_record_sha256": "4b81f00facf6817983978c6379fbc9b8cd003b48ce74613ec81a68c14f11fd7c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-10.zip",
+      "sha256": "6352413b4d920a28717bb187326e124f44cc078bbe25998fa541148ef0688cfa",
+      "linked": true,
+      "vault_record_sha256": "13e2bf8425fc0279620882fb67f34517b6d1edabbb3b9e908b03f91073517a62"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-11.zip",
+      "sha256": "f1b5ec2abf5f2074981eeb1eed4ca4b025513505ca8e8e4382935cbd8e2e4856",
+      "linked": true,
+      "vault_record_sha256": "6982176fa75224fb9a9a1a19186537c450dd08fdef0856e078aee07fd3578553"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-17.zip",
+      "sha256": "96172baa910429299089b6f3b9967e97033345968e3f10a88a93b3e0741dc789",
+      "linked": true,
+      "vault_record_sha256": "2a56c3167321fc0e517652abda39943fcd5d31a361ba5cc01de5b97719e827df"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-19.zip",
+      "sha256": "645fc7cbd95ad44cd368aa686ec68ec11c83cc461aa2a566653635aa2e329047",
+      "linked": true,
+      "vault_record_sha256": "db97b3f7bd2e30b71e2d3ba0ed6ebf0f8a94d30519dae51edf80658c837096a6"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-20.zip",
+      "sha256": "ebc3fbac655d86a81b68566bd8bd7da07793d85091015c675f0ed95b2bfb2a22",
+      "linked": true,
+      "vault_record_sha256": "5052642900090c6d468adb48685495152e80b734008965a8371b6e4b6a2f34f7"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-23.zip",
+      "sha256": "980ac36902d96340111fdb60ff4b02596422bf36b31db70ff9760649f4e9893a",
+      "linked": true,
+      "vault_record_sha256": "dae546be69d0d40337f244362d1857f36c9406ef6af319545a7f5109fdb8a624"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-25.zip",
+      "sha256": "af90a99988a7d998910bcbdab077231f04b5a7cd7e1a6535f01b795caf08dbde",
+      "linked": true,
+      "vault_record_sha256": "77506fb00ff5a7a890b35410d0b39e34efaccf05c1a1242e9abf59c7a5fc6efe"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2025-12-28.zip",
+      "sha256": "3f5783d225abca7f06654e5613b86536857e749c73f3030618e121d4e1674cc6",
+      "linked": true,
+      "vault_record_sha256": "91dd32153d24a83d3b482ff22fda789229c7f04a899789547c71170312a26b64"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-03.zip",
+      "sha256": "1ad0589b7e286d337527890ffc4200cc914f7f66bbb58db140a0b112da5bf7bf",
+      "linked": true,
+      "vault_record_sha256": "b3e3377577e7c889d35e1b79212d675a22c2b92eaa36b061c10dd93fc6c77f83"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-08.zip",
+      "sha256": "5def9524eabd735dff5baf8ee2d9b12366363ca83c578e37590bce57fcb9fa87",
+      "linked": true,
+      "vault_record_sha256": "685d774fb688637abe0312e7cbe0b562318a1d1361106a3caad05944684d64e5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-09.zip",
+      "sha256": "4fbafdea4b02ec4960f17f3298238a1000f168a41b3e02f4f94e6f9321d80c49",
+      "linked": true,
+      "vault_record_sha256": "6be92643eb82a084823cd2a517310d48d0a1df45942d8c84628fb0c3e315cc33"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-15.zip",
+      "sha256": "04b1759dc32f8e623e65b449fd79fd109d273b97a4a51c1824cfa25386aae192",
+      "linked": true,
+      "vault_record_sha256": "a51d11ec94f3160c6c08b86ef408244418c0aaaad843d627b0dbbd5482f2de6b"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-16.zip",
+      "sha256": "4bd7a0bbdecfecef1b1744090fe04357ca22a28855ac407b6737165cc50232f6",
+      "linked": true,
+      "vault_record_sha256": "8e84d752fcbb0f07868b2a66972e14efaa975765bbb984fa53aae3693cd9d31f"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-19.zip",
+      "sha256": "b87758de308a50df1b6f836fa55256f406b1b273e77d3e01b3142298eb6ff1ef",
+      "linked": true,
+      "vault_record_sha256": "78500dab64718ac4bc2da85f61a7a564393e961d8123712b875044ffcef6c072"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-21.zip",
+      "sha256": "55f8749bca5b3acc4d21bbd9ca07eef1c6fd01bd00d731e63afab2f80e7b6468",
+      "linked": true,
+      "vault_record_sha256": "18d96214e382c3b44068e9405f5a04b576dbabf000ad19e385df42b36a9dd14a"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-26.zip",
+      "sha256": "d394757f6ce4edecdab3019b674b82b85f1124973c964c6579b62dc4aff1d5f4",
+      "linked": true,
+      "vault_record_sha256": "8c3dc7d128006cfc10db875d2cedb3f37dd22f9c9b89c1b30264b1626ec1e3aa"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-27.zip",
+      "sha256": "a316faefd2ab51b0d88e43741e807c3e6482a419b54b15877dbd86a06857affb",
+      "linked": true,
+      "vault_record_sha256": "d1093fa9d8cdab5efab1fbb5f800d1b3900d246c9d911574d5ba86a771cfd13f"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-28.zip",
+      "sha256": "365080a7c794ca732d8c3fa80790618ed72b141bc5146a001fed96319ccebe1c",
+      "linked": true,
+      "vault_record_sha256": "83d4ec62a57175a7e38a43477f1dd3473b2f39ef01909482ab715f3f291fd963"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-01-29.zip",
+      "sha256": "ff6d3b8e02b2459da88ddf9d85eb6ae7e05c993bcece249f3f3fc55567a17e68",
+      "linked": true,
+      "vault_record_sha256": "ba1974b90b95ace3519a5cc39505399a252200715e2e1549917e11662f3b94a9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-02-04.zip",
+      "sha256": "37c0e639c13a1d14a757ddcc00e69de05b86732323f9130d7869f1bbdeec0e90",
+      "linked": true,
+      "vault_record_sha256": "fc26622c235c565532b72e60ed3283a3d1b42b0fa9747a28c4e24c4ac650bc61"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-02-05.zip",
+      "sha256": "b21d10ebecef8723c735e6fc1d992a7948437156a41c9db46e3a05540c4e2cb6",
+      "linked": true,
+      "vault_record_sha256": "c33187e89d3d0a2185979fe3ec6d6496a4fb6f868b984273ba3380e23ad20da8"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-02-06.zip",
+      "sha256": "f5c23447f8120f1a762506d8a7c8355ecf95ff132ffa837c3ef2c2e87054a3f1",
+      "linked": true,
+      "vault_record_sha256": "084bbe6c27cab3427d299e5cb1b05af370bce63709807fce0fd4d5a55b331fd9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-02-07.zip",
+      "sha256": "5b7c5b8bd16d52005ac39a60a8fb514aca12c782687883d5dd1899048d70d8e9",
+      "linked": true,
+      "vault_record_sha256": "7a828db3e6383a49fef9d38aa3648498ef86e1e946ec839ee12675484d8b64fa"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-02-13.zip",
+      "sha256": "9b4bf0d870d4e4c06d0cef53eff9741ea72087b8d7b3c81b350e8cfcc01eba73",
+      "linked": true,
+      "vault_record_sha256": "aec9133bfefcfc7e0ba1e9a6b8c847860fa4b8d32d9e142a9fd85e213f87eba5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-02-18.zip",
+      "sha256": "84552f5722f94f85894663643194cba0cacea02682b27a5c9a1a0fab9b1dc882",
+      "linked": true,
+      "vault_record_sha256": "7240ddea19d7496f1684fc8d30f768845ccc81098fffe2fd9108cdd11059e404"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-02-22.zip",
+      "sha256": "670bdff9026b9f812eb259810d75f0a69bdfea41c4519268abe4a6719ef31312",
+      "linked": true,
+      "vault_record_sha256": "8bbff60d8760b1327bdc20e11aac08d5823975ce90ce6dbd3458f0583f00ed76"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-02-27.zip",
+      "sha256": "6ff64d6c0b6cd3951a6123d05c8cde73530a5b3445778c5f46a5d7a7416c268f",
+      "linked": true,
+      "vault_record_sha256": "6335ef07f15beab7c8351b73acd551c3390aca126c6cbc214323df8e0966f8b0"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-03-01.zip",
+      "sha256": "3df7840484fa63765f729f89316aa70518332f6a244085d1931afd61c1cc53e5",
+      "linked": true,
+      "vault_record_sha256": "8735d8feefa9940f476fe835671b9e11ddca6e61bb922e6c3ea996d5d4d24fdf"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-03-02.zip",
+      "sha256": "bcd9c07bb9f05da58306155900cbea63020c3cefefba564ad306b4aa1238711d",
+      "linked": true,
+      "vault_record_sha256": "a93b6628b4df3dcadfca2630f78b4f8ceae569782b3f4041600f74e048629312"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-03-06.zip",
+      "sha256": "4a03623b0fe920cd656b4d310c44ceb4f10b62b6f13ff5b2927a4065555f653a",
+      "linked": true,
+      "vault_record_sha256": "cae897a93bc5dba86749c1480668d872f1b355dd5034dcf71b89af18eecd5c04"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-03-11.zip",
+      "sha256": "e1f843e973a447e6e815af2d1d648854d81eb43dca77cff1b8ddb3cd2979d0a2",
+      "linked": true,
+      "vault_record_sha256": "8167408f90774fa520c8adbc78b76acb3b82f24ed8679a431cdedee4dc84d11c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-03-17.zip",
+      "sha256": "a178b212be66ad65baec3418117b35bfecb3c2c1da3ff2795cff2f561602195a",
+      "linked": true,
+      "vault_record_sha256": "b62ef7592cd018ef28558f6a230ae7879009c7b2ffd506de437b6881effbdc96"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-03-22.zip",
+      "sha256": "d91e22af6967c07d771051f45c7a91994725fdcc74c956d80e39d71fc09b2422",
+      "linked": true,
+      "vault_record_sha256": "ed4b0e998e89989a0b461b18a0fd205804d038b84a1aee4a7b77079772cd2fa3"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-03-26.zip",
+      "sha256": "18ad453b863f434068b26a256c68f1bff0ca7a265147ed76762c3d8ceacdc161",
+      "linked": true,
+      "vault_record_sha256": "b31f77adc957fa52c4fd7b442e1859a662866b016ca684f527e7efca64febf2a"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-03-28.zip",
+      "sha256": "4eb0854994980e35c04e93ce603e2467cd166e47d08a422ca230a14e6dee84f8",
+      "linked": true,
+      "vault_record_sha256": "825b2b04e9253f93b2709f5a873f5da26df7875ce7c6578cfd0f8f9c88a2a70e"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-03-29.zip",
+      "sha256": "cf3e9fe3491ad379dfe1a643193cf58b612bf327a486372ec6632091ffc9f8d4",
+      "linked": true,
+      "vault_record_sha256": "fe374e3f3189216342138114692b6f135df9265e07cf9bcdee4f7b1da8d39e83"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-04.zip",
+      "sha256": "e5298c2cd8f9acec38ab58da262f35de37d207295a82edac145a10b777a172f5",
+      "linked": true,
+      "vault_record_sha256": "440b3ec369166cf2b6b91c39213916337d78c0897fa62da9b7d717240989a4e1"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-06.zip",
+      "sha256": "c7421b314d913e02b931aea5921b6d9fe54a8d41d9728c3af784a781f8b970af",
+      "linked": true,
+      "vault_record_sha256": "b85bdbea0481a1964fdefb7b769dbfe1000f26560d9a7b60e110bb5521e1e76e"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-10.zip",
+      "sha256": "247ccf0ccfcaba05630e36afd1a913db5a86d27219cad9d8a2eb9653717f8b17",
+      "linked": true,
+      "vault_record_sha256": "958fcab92a6c043d4e42306e0f8d7135fd34bb129a3f4e307ce859045b1adfc5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-11.zip",
+      "sha256": "cbf9a13799ae300069d7fc8d9a3cae98d98233515eb75f1f8e8b961c0c54ad84",
+      "linked": true,
+      "vault_record_sha256": "bb042898666b216ac78837dec83f67bbfb5b6c3e5311e421c176021e2f6626d5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-14.zip",
+      "sha256": "acd7d6aea8f74e0b7a3714a4921ba1054aabbf85edc821ad274419bf70ec47fd",
+      "linked": true,
+      "vault_record_sha256": "f7c6de237f8a9c207d4feef5770830112bdc1d0068bf38c8d3d618131738276a"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-17.zip",
+      "sha256": "b5f8f3f5b84c92aedc15ed4c3c891973391ff1df8b7dd2a59c796d794960df8e",
+      "linked": true,
+      "vault_record_sha256": "3ad7cfa8c08fac12ef863145d2e86ba36895e63f006ae144174b1341535039ac"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-19.zip",
+      "sha256": "95e4cdfd7f062ba106ea5a774d81862f081e6dc158faf2c16a66c5b47f1d46a4",
+      "linked": true,
+      "vault_record_sha256": "efc0a2efffa419cd2f454d5291459b7f56c58b8038e378c36f11af05fcb0a486"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-22.zip",
+      "sha256": "9da584cadb99272e7235c60067becd376896ab16ce160bbf98fb208d7da80db0",
+      "linked": true,
+      "vault_record_sha256": "77947f868e48e1a40d31c6d34cadc279f8f297a7ec4016bbd7260673a3624835"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-25.zip",
+      "sha256": "f3b3b7173b6994e7988b73b6de78cde54a9833b8a84af5e0645614fadfe7fe00",
+      "linked": true,
+      "vault_record_sha256": "f3a5b53f26ee93e18f3b5da9403c628d541bc9a64024cdb7a8b76adfcaff3d0b"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-28.zip",
+      "sha256": "f3ad39cbb9cfe5bdc6c6cb064598cf984c633d1dcb59d1fd2f1a2a7654f83a5f",
+      "linked": true,
+      "vault_record_sha256": "25e04c80435d9d740066efdfe083fe5808e63347f37de4fc7b472e09f9eea926"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-29.zip",
+      "sha256": "810575e7a823cb73226e24e32919eeac30d6feaaae5fb76d1ca677ebd86682c0",
+      "linked": true,
+      "vault_record_sha256": "2ad6aaa4786b6286cb9def727616ddd71cecb6d848082ca164a731c0b8fc4580"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-04-30.zip",
+      "sha256": "4da8672fd984e4657e70245fd8c634df28e33a8eae3390caedf33ba678ca7eb2",
+      "linked": true,
+      "vault_record_sha256": "20f3f682f8f0716e6e9041a8a4ac7f6c2a2d6c26b1ad7310c12fc1e2d079ce5b"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-01.zip",
+      "sha256": "5b9028a2e4d385c336daef31de5cd8ba01412c3cd50c6722e7d5b988de70a801",
+      "linked": true,
+      "vault_record_sha256": "439871ee3eec5f32ffd2ca2fa3c1552b037b7b20b56b9f3220957ee962d1317e"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-04.zip",
+      "sha256": "6c8831803bdca0d84aa5b8d25895ff8650053e89cdf835ed1e0d185ee162c937",
+      "linked": true,
+      "vault_record_sha256": "098f89056c275750c150e42cf7746ae2087ca9c34c90b4bd7fc3fa0193516139"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-05.zip",
+      "sha256": "fa9ed5c34a769b6c2c9b9a472f522be38931c98319e231ba8b22bb94fc1b1a23",
+      "linked": true,
+      "vault_record_sha256": "81115a22f0479a53f7a1dd1b84611cacc7fed45974b90a7e663417a91f623465"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-08.zip",
+      "sha256": "5ebff7113a498b1b1c1bca937c98fc1df5af2966fdf5603030f9339a9b315c7d",
+      "linked": true,
+      "vault_record_sha256": "016599744b68cecebcb82e1000b57e73f9e4395d3858d6a1ac59f1d9509c53ce"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-10.zip",
+      "sha256": "9767e71e3fb6e7c8513bbe74954937fdb935f8bb94cb7d82d825a4c154eabdc7",
+      "linked": true,
+      "vault_record_sha256": "31374e03dad5e8ad2af850fb8bb42733b6c41295c07eaa1c2e19b79e557f0007"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-11.zip",
+      "sha256": "358c96e049c91d67a93a241e8ac37ad9a46ca37084d6be3117b3d102d860386b",
+      "linked": true,
+      "vault_record_sha256": "b3e558a3fa47c9784e305afce3bcb7269e3273ade53b5ed42e887a9533055ffc"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-13.zip",
+      "sha256": "9ad911a2e106070fe21cfccff34dbe53fc09531171f2354c45946c25e5ca2820",
+      "linked": true,
+      "vault_record_sha256": "5b54449b3469d2524f68ff7602c9b6826bf2e060a0834865171bcc6465259e4f"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-16.zip",
+      "sha256": "cd0ee95140f81c07a0a0c099b8921de0ea3890f9f149b5f8f125c606c4d9da94",
+      "linked": true,
+      "vault_record_sha256": "aa748456718c0c03f9ceaec372419ea8d63e28aa0c4b21dd124b8e47e8733986"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-18.zip",
+      "sha256": "454456a3bbd12a697e972905b8e6b5ac34ada7e221207185f42945c7baec427b",
+      "linked": true,
+      "vault_record_sha256": "ed0ef7e7326150cc7be73d0e7b51d4f1278086e11ae1d21c2d6957fe6045b1c9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-19.zip",
+      "sha256": "e705aaf76d556b6e894ebbe35fdb7fc901a23fd9beabe765b3dbbe15b2f003e1",
+      "linked": true,
+      "vault_record_sha256": "5a341645ba2e52fd55823be0a958d038fd2d4d90426f9b03444e58833e61bf02"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-25.zip",
+      "sha256": "91a0327720817d36677ca6badc7a15d6b6b67a121b0b6cad375cc3d534647b74",
+      "linked": true,
+      "vault_record_sha256": "b80820fbf8507f2c233519befdaf93e55c889b7368dfbe4fa4b344f38d65457d"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-28.zip",
+      "sha256": "faa3665451ec191015ed67cffcb33a778cf661759498f683d91d886f84777b24",
+      "linked": true,
+      "vault_record_sha256": "038190988085f9097d24346d80ffb71a6aa2ef94e338e98e8b0d2fea63654cad"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-30.zip",
+      "sha256": "c045b18ab62e9dca42453a0d8de3f36fda4f157a380e8cdc20a6799d1c6af7db",
+      "linked": true,
+      "vault_record_sha256": "09e1d5f49320d6b18562775ef9fa741cb372a07be2097546b5f8c072dc0bd6e9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-05-31.zip",
+      "sha256": "0e414fdab2848ce233b957701321dbbde54f03efaafaea1fd2ee66f2f710e48a",
+      "linked": true,
+      "vault_record_sha256": "336884c32942538ace1f942d6fd6e9a1642e293810d1f3aa12f48f176c7287a9"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-06-06.zip",
+      "sha256": "189628946c278e2a906b403851b34a7df4bf7dae49103747fe835aaf10d143ac",
+      "linked": true,
+      "vault_record_sha256": "627760e986e6f233d8e055599ef1a2dd75e1ef629d61e6e70372fb09536d3039"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-06-07.zip",
+      "sha256": "03c9d486e9d501a6e3eceb8bc9a0685e3fba5f8107c173d7c61cc245ddebae0d",
+      "linked": true,
+      "vault_record_sha256": "1f225907249ee8e5927ef4edcd89438fefdbfabe40805c880634f2a100adc75e"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-06-13.zip",
+      "sha256": "6c9a1f766518116f54aa476fbd7e1581169d1b4cb2bdbdbc09b146fb9dbbe88a",
+      "linked": true,
+      "vault_record_sha256": "265187c2b12cecd56d128840debe0373ee9f55d5445a849e92fe630d96525e5c"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-06-16.zip",
+      "sha256": "37f5349d10c74af64369dbf6d1be6eff739c264ffda8f32c5cc8578af3d7a2dd",
+      "linked": true,
+      "vault_record_sha256": "8ab711b834c984b569452651b367524ceedb3fcefbb81c7e8fc94a5987dd20d5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-06-17.zip",
+      "sha256": "87d763cc6d4d3055b73fa74c801975a562fab0a143430fd405a5a90bcefc4ac6",
+      "linked": true,
+      "vault_record_sha256": "1e9a8772c4388feefd1b45730c1ffab39ea9091d49353c984d612315ceb03964"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-06-19.zip",
+      "sha256": "78734252d1a307f9d6156d0e36a2d2532fff7db0ac8d9d78e6db1dbbf161ff2f",
+      "linked": true,
+      "vault_record_sha256": "25758ba4888627c342ded085b6c43a620aa5200d794e010a7785e382f75827ca"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-06-26.zip",
+      "sha256": "97d95d22b4ded81537176da5dd11d708a677bb75293a39db5919ab35ea732362",
+      "linked": true,
+      "vault_record_sha256": "cad4d9fde3de26a71ea92203c9db9312f2e79c1450faada166c89ebc63692349"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-07-03.zip",
+      "sha256": "80a9596397e3cbbe9444a4a2bd6433e442319b92d18a8d64233467a70dd0d197",
+      "linked": true,
+      "vault_record_sha256": "67e3fdd2a7b93b74f5c94df1a8b30cd954e968808bcc69dd304f6de9f3a685b3"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-07-09.zip",
+      "sha256": "fbff222fc43dc225ec0f057c4359afa629af2626339ff8b37f24c15aa6ce59ef",
+      "linked": true,
+      "vault_record_sha256": "52f4b5602ca9ad4cb94e8b63d21f253d350fc358fbd2525815bf446827532f88"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-07-11.zip",
+      "sha256": "59d7a2728d694b660a24b6cde181f3cc935a0f1bb322627bec6a9c900ae5d4a9",
+      "linked": true,
+      "vault_record_sha256": "f5f16310c827c077a48075f36de7ab376b64c6b909fed5ec8e99867ba9eb00d7"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-07-17.zip",
+      "sha256": "331894a2b54a30fbbfffcb904a8ba3443c888b029a79a1266c7bfc428a647a0e",
+      "linked": true,
+      "vault_record_sha256": "7a3ab577670800c470101b963db7d0c0a79239193b0f38c2afd98338a31898d1"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-07-22.zip",
+      "sha256": "2ef5e5b8a3eb9d24ce74d5ddb27dd3488a5a01e712f5e62bbdd461ec69c79b04",
+      "linked": true,
+      "vault_record_sha256": "fe760b7e36679539c2505cc379a6885f0409fc0197f92c6176809d56ab2d1ab0"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-07-26.zip",
+      "sha256": "9c50301692676b1fa5a1b958a3d675ea1b23adec07be83b99fd21feb3023a027",
+      "linked": true,
+      "vault_record_sha256": "2d064f26c7ea7527fa68a6d1091ddae6c12e44fff421f69b50eece1a2c9c8241"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-02.zip",
+      "sha256": "9bf5abca0cacfd40ba6f7d0c168c0ec4825d6457fec6da12f791c42b85b3cf1a",
+      "linked": true,
+      "vault_record_sha256": "ea0338d59e1246d724770e03a31206cab3170d3df9bd06d7a23dfaf5dc8c83df"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-08.zip",
+      "sha256": "871227e8a176ccdac307f87a68715a9e82effd42e05fdf632c80be5af56de67e",
+      "linked": true,
+      "vault_record_sha256": "b26638b8830de11475b25e9f7751a481fa4658dee2d6109fe66cc68c4c404c31"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-09.zip",
+      "sha256": "b39fafe875d94812e494b11941cdd0e4f7c743803bd2a94027af8072d4e62b3e",
+      "linked": true,
+      "vault_record_sha256": "c7f9dfcc2d11af3149f644df5e5f270cfed0debd64ab9fe18d6e109fb3568eb2"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-10.zip",
+      "sha256": "e7d163bf0c33671cd0bcd6df9f91c2f1423a0e57c76883d05bb14090d487578c",
+      "linked": true,
+      "vault_record_sha256": "9ecd3f2b343003467d881add71c760b2ba3726954df2e8323d95b2eea9be426f"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-11.zip",
+      "sha256": "4b6d3140e6e8573f7338529b465b70e5a9b59a0dddd757ed01c808a72010301c",
+      "linked": true,
+      "vault_record_sha256": "98933379f0fbb72416a690e236bf0f9b43e477cb24af59dc2e168a0383c27d06"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-17.zip",
+      "sha256": "db07e29d4fa15688ca0b1a3d225b9dd2b967eefbb513c3afde0bbce313f2c201",
+      "linked": true,
+      "vault_record_sha256": "d8e259a3676d8ee1bb51c8b1722ced138f4ceeb5a75b06b0fe5ca1127c42fff8"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-20.zip",
+      "sha256": "3adc3940d63ba5210c09d70938a470bb170e6ec717a1f3310376b058d038c1ab",
+      "linked": true,
+      "vault_record_sha256": "873260c982f5d3a253f048e6e4ebccdf05427b5851be51a3694a94db9fc70f99"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-21.zip",
+      "sha256": "2c63e6dd7e7148f5188191c1de9dcffca8dd9f53fb797830cf98f6cc4d0e8698",
+      "linked": true,
+      "vault_record_sha256": "f6fa1a7ae31b27bcc7b257fcd1e0e02bfa8b090768ac9f89c71bae68762fb14d"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-24.zip",
+      "sha256": "acd9dcc99fb8a2c1b0e6d162bfba3bd57e5fb87b62d8ddd59e84df0f76b6a098",
+      "linked": true,
+      "vault_record_sha256": "8ad01733ea47ee690f276e10f44aba6123e0674fc501a60a9526d6bf96dffff5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-08-30.zip",
+      "sha256": "c342e2f94b9a17b8a48205dd35e297d346bf067c2c1c0a9d90b2b38dfcd9b99e",
+      "linked": true,
+      "vault_record_sha256": "52ef4a16ffd4c7cff97887914664524f20381d51906c86a76e5018d33c88fa56"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-09-01.zip",
+      "sha256": "8ee2432189e091f8df2181a7bf894f6458cf4c24ffcb0de904e7bbb80f0245ba",
+      "linked": true,
+      "vault_record_sha256": "c6cb4d8ba5513f2b5414cb816d904a480c27d1ab51000480be6f166cd77d8541"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-09-04.zip",
+      "sha256": "9ec137c60c6bfce0473dac8a183e96ffae1db90b8c3fe829cf8ca2f8b2e5ee42",
+      "linked": true,
+      "vault_record_sha256": "804872738d9a164da9140283ca118976ca0c9edcb4d922ba417ae76e24448775"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-09-05.zip",
+      "sha256": "6e7c50c4f291c8658af962176c55901e820b082875cc786dddfd3cff451bb9f1",
+      "linked": true,
+      "vault_record_sha256": "dfd815b751d6360bbac91ffe9dca895a9ad2a9ee506fde18eb43e5bb4a021369"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-09-08.zip",
+      "sha256": "b0cca50f65f5d7ad33e5ef02d0896395208e71330c030b90258aa9abefcbcdf5",
+      "linked": true,
+      "vault_record_sha256": "25fb75c66d058c5ffdb04dbb2ad4574a5072d963138075f1df3587d9584f9262"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-09-09.zip",
+      "sha256": "2f2cf57a5d30c3baa422444b2351ad8dfb9ca3ee01418a432ecc15df387a508a",
+      "linked": false,
+      "vault_record_sha256": "c9822482196cf6b86be8e58e655d60156919b199e9853f05c849da5ea28382df"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-09-16.zip",
+      "sha256": "7913ca54ac75492ba4e812d0ff02ac74f1d44b8fbdcd557efb314504ddbac25c",
+      "linked": false,
+      "vault_record_sha256": "d05d02ececb278e664bee4f2f1a7074ade8dea6aee76627dd4ef2eb9267527c5"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-09-18.zip",
+      "sha256": "d760ae7728a8964c94f2e0d7f30e97949ffc4330fc52744f44d59015ba17ef6d",
+      "linked": false,
+      "vault_record_sha256": "597d25eec8a767cbb4ead9bd292cc451004b1b67f042bc36bf946b81ac9b393e"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-09-19.zip",
+      "sha256": "8cd7826e31b222c6254ca2ae6d5d901374328848a657aa4032c0af3506455405",
+      "linked": false,
+      "vault_record_sha256": "e28fc54345aa2a373ad25ec7d888ffe2c10f64072b3d3118e655f4c1c15fb131"
+    },
+    {
+      "name": "BTCUSDT-aggTrades-2026-09-20.zip",
+      "sha256": "ccd0f7487712a653cba2ee54b970016817e06a12f1d05b675f0093df914b1be8",
+      "linked": false,
+      "vault_record_sha256": "32fe64f96182ce9a3031e0ab7f7c3d8a145a00ec7963e42235a87aed4be6b28a"
+    }
+  ],
+  "scope": "Original ZIP bytes only; no derived bins, runtime/model/source/clock/UID change.",
+  "producer_concurrency": "No Coin producer at restore; next economic process remains serial."
+}

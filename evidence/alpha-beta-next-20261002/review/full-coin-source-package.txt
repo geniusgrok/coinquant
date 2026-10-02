@@ -1,0 +1,1222 @@
+diff --git a/HANDOFF_PROMPT.md b/HANDOFF_PROMPT.md
+index 1fc25f7..8349573 100644
+--- a/HANDOFF_PROMPT.md
++++ b/HANDOFF_PROMPT.md
+@@ -1,36 +1 @@
+-# Coinquant 接续入口（2026-10-01）
+-
+-2026-10-01 第三轮入口：`evidence/third-round-20261001/RESULT.md`。
+-三个固定候选完成795次共同历史模型会话，完整现金核账通过。Coin默认
+-119.23%/44.11%，Star默认−3.68%/51.75%，半风险−1.27%/38.21%。
+-使用实际session/runner，snapshot桥接仍是简化代理，原生请求图、撮合和
+-30日证据未通过。共同模型下保留Coin合约、Spot现货，Star仅研究；不迁移
+-亏损候选、不晋升或退休运行器。Coin距150%目标差30.77个百分点，NOT_MET。
+-经济原件对应Coin源码00a6849、Star882b521，后续只读导出/核账工具不是
+-这个历史记录的源码身份。335项Coin离线检查通过。默认参数不改，新增
+-原生只读snapshot及Spot双账户并行采集；本轮无账户请求或交易，原生
+-NOT_QUALIFIED。以下前两轮及M10是其各自明确源码身份的历史记录。
+-
+-第二轮入口 `evidence/second-round-20261001/RESULT.md`：五组逐事件诊断
+-复现旧成交前缀，费用钱包与请求数量分歧已有证据；六类本机故障通过。
+-三个合约固定候选有九项口径待对齐，不作排名。没有生产逻辑修改、完整新
+-经济测量或原生账户验证；继续使用旧证据的明确源码身份。
+-
+-先读 `evidence/path-analysis-20261001/RESULT.md` 的 F1 首轮结论：执行路径
+-归因已可复现，没有证实应修改生产实现的缺陷。长期收敛到一个 BTC 合约
+-项目与一个 BTC 现货项目，研究阶段允许 Coinquant/Starquant 继续竞争。
+-
+-先核对实时 `geniusgrok/coinquant` main，再读 `AGENTS.md`、`PROJECT_STATE.md`、`evidence/remeasure-20260929-m10/RESULT.md`（记录源码的 M10 数字）、`evidence/full-review-20260929/RESULT.md`（含范围限制与未验证项）与 `research/redesign-PROTOCOL.md` 的 M10、M9、R3 部分。
+-
+-当前默认：SX60＋DFII10，主信号风险7.5（R3 规则选出；M10 在其记录源码上选中 7.5），宏观3.6。M10 基准 ¥1,893,613／118.24% CAGR／44.51% MDD，经济源码摘要 `6504a24b…`。手续费 +50%、出场滑点 ×2、深度 10% 的终值高于基准（126.17%／121.92%／128.57%），随机跳过 20% 为 95.69%／MDD 45.39%，缺席序列与 21 天空窗与基准相同。这些账户数字与旧 M9 相同；当前源码只少了 20 次会话末尾的空观察超时（基准 688 次，未决执行 0）。CAGR 未达150%，`economic_qualification` 为 `NOT_MET`。全窗口对风险不单调（6／6.5／7／7.5：¥1.70M／2.02M／2.21M／1.89M），风险 6 的读延迟 100／200／400 ms 为 ¥2.54M／1.70M／0.88M。旧 R3 的 131.26% 只对应 `evidence/robustness-20260929/m8/`；P7（153.86%）只对应 `a6892b3`。没有自动重锚、累计亏损保险、跨项目锁或原生账户验收。
+-
+-规则：
+-
+-- 默认只读；仓库所有者可按 README 显式启动受控 Demo，主网小额试验另需真实 Demo 闭环证据、专用小额资金和当次确认。代理未获授权代替所有者下单或修改账户设置。源码摘要不符则主网试验门拒绝。
+-- 不按压力结果或已知数据缺口调参；新的经济测量前先冻结会话时间表与试验登记（`research/redesign-trials.json`）。
+-- 完整试验：`python -m research.rebuild <名> [--primary-risk ...] [--fee ...] [--sequence ...] [--knob 名=值] [--from ... --until ...] [--uid N]`（`--knob` 是研究旋钮，默认值与生产一致；区块只是新账户稳健性测试，不写正式结果名；并行试验需要不同的 `--uid`，因为账户锁按 UID 加锁），结果写入 `evidence/rebuild-20260927/<名>.json` 并记录源码提交与输入摘要；`--limit` 部分运行写入 `/tmp/coinquant-partial`；部分或子窗口结果不能写入证据目录，同名证据需 `--overwrite`（原件以 `.superseded-<运行ID>` 保留），状态目录默认唯一且带所有权标记（无标记目录、符号链接、仍在运行的所有者一律拒绝）。
+-- 离线检查：`python -m unittest discover -s tests`。
+-
+-当前工程阶段已实现未知订单恢复、受控入口、保护时序记录及试验配置。离线验证与剩余限制见 `PROJECT_STATE.md`；原生 Demo、专用小额主网与经济资格尚未完成。恢复时核对实时 main、仓库最新提交、`PROJECT_STATE.md` 和 README，再以同一账户状态目录从只读 `status` 开始；不得删除旧 SQLite 或把试验入口称为常规生产资格。
+-
+-2026-09-29 早先审查（`COINQUANT` 修复清单 C01–C13）已进入 main；本轮附件 C1/C2 和状态备份、同类虚拟时钟问题的状态见 `PROJECT_STATE.md`。`收尾预算/execution_unresolved/资金流水放行门/保护替换`都是安全行为；恢复时必须先核对真实账户身份和持仓归属。历史收益原件按源码摘要阅读，不得归于新 main。
++Continue the active2026-10-02 alpha/beta round from PROJECT_STATE.md in /workspace/btc-alpha-beta-next. User approved ALL eight directions and normal engineering integration. Read research/alpha-beta-PROTOCOL.md and alpha-beta-PLAN.md; resume first incomplete task, never redo completed work. No trading credentials/account/orders/transfers/settings. Financial sources must be clean/frozen and full evidence retains source provenance. Native0/actualdays0; targets unchanged.
+diff --git a/PROJECT_STATE.md b/PROJECT_STATE.md
+index 0601367..4f211c2 100644
+--- a/PROJECT_STATE.md
++++ b/PROJECT_STATE.md
+@@ -1,3 +1,45 @@
++# Active alpha/beta mechanism round —2026-10-02
++
++User approved all eight directions; spec/protocol/plan in research/alpha-beta-*. BTC-only, current consensus/incumbent baselines and original economics/native gates unchanged. Worktree pair /workspace/btc-alpha-beta-next/{spotquant,coinquant}; original mains remain unchanged. Progress ledger is this existing file; task briefs/reports/diffs are external /workspace/btc-alpha-beta-next/review.
++
++Ruling: use mirrored external worktrees to preserve existing ../coinquant/../starquant paths without modifying market/FX inputs — cost if wrong: path repair, not economic changes.
++Ruling: use existing PROJECT_STATE/HANDOFF rather than an additional SDD progress file to honor repository continuity rules — cost if wrong: manual reconstruction of task status; commits/reports remain retained.
++
++| Preflight | Producer / consumer or constraint | Result |
++|---|---|---|
++| Task1 self | Coin four fixed mechanisms plus incumbent; real runner/audit, no default change | consistent |
++| Task2 self | Spot six fixed variants plus consensus;20/80 core subpools and real ownership | consistent |
++| Task3 self | actual raw curves/calibration, timestamp validation, no scaling | consistent |
++| Task4 self | all48+10risk, conditional combos, Coin robustness, reviewed adoption | consistent |
++| Task1/3 | Coin nested results + opportunity_ledger consumed by evaluator | fixed schema, preserve source/input hashes |
++| Task2/3 | Spot flat results + opportunity_ledger consumed by evaluator | fixed schema, keep consensus baseline |
++| Task1/4 | frozen Coin engine, later selected bridge equivalence | no core edits while financial worker active |
++| Task2/4 | frozen Spot engine/core ledger, later selected bridge equivalence | no core edits while financial worker active |
++| Task3/4 | deterministic calibration/combo output, completed inputs | false complete/native never promote |
++
++Ruling: matched economic selection constraints compare identical stress scenes on unscaled actual accounts; separately rerun training-calibrated base accounts for achieved risk/alpha diagnosis — because the spec separates selection from risk-match claims; cost if wrong: add a risk-based adoption constraint before promotion.
++Ruling: test the exact all-compatible eligible combination, never subsets; if that combination is rejected keep the best eligible singleton, ranking any accepted combo by the same worst-stress CAGR with singleton priority on ties — because an unevaluated or inferior combination cannot justify default replacement; cost if wrong: combination remains research-only.
++
++Ruling: Coin trailing high excludes the 4h bar that overlaps actual entry; only bars opening at/after confirmed entry contribute high, with initial anchor at the actual fill — avoids a pre-entry wick becoming a stop under the completed-bar spec; cost if wrong: conservatively later tightening, fully disclosed before outcomes.
++
++Ruling: trend reentry counts only completed close timestamps strictly later than actual exit fill; an intraday exit day's later close may be first, next day's close second; independent original exit_through/new-day guards remain — avoids an unregistered third-close delay; cost if wrong: later explicitly registered comparison, never outcome-driven switching.
++
++Ruling: calibrate both baselines against self at scale1 and batch all registered base candidates; ten new risk accounts plus two actual no-op control replicas — avoids repeating official tape downloads per candidate and strengthens metadata no-op proof; cost if wrong: two extra control replays, no new strategy search.
++
++Ruling: baseline verification uses actual corrected Spot raw cf075b86/1fca802, or assembled verified439edad with account_sources; earlier spot-accounts-final65cc08 contains known failed consensus and is excluded — file names alone are not provenance; old measured Git/Python SHA remain truthful despite later approved default adoption, while exact full baseline-money reproduction is required before promotion. Cost if wrong: promotion blocked, originals untouched.
++
++Task1: complete — source c2a01d1 + attribution fix31e8b1e; 359 offline checks,13focused and exact real three-session no-op monetary equality. Independent spec PASS/quality APPROVE at ../review/task1-fix1-review.md. Full-window/economic evidence remains Task4; production unchanged.
++Task2: complete — source4568a7f; 171 offline/21focused, all7 audited real smoke, baseline/core0 equality and pre/post-fix money/execution unchanged. Independent spec PASS/quality APPROVE ../review/task2-fix1-review.md. Full economics remain Task4; production unchanged.
++Task3: implemented ad0102c plus review fix b5f7dbf (Spot),192 exact-head full offline checks and21 isolated single-repository checks pass. Original eight-case self-baseline gates and retained old/new prefixes pass all six financial/ownership/operating evidence groups; this does not establish unrun full-history equality. Five findings plus invalid-base inventory were fixed; independent scoped re-review /root/alpha_assessment_task_review is pending. Task4: pending; no full financial workers started.
++Ruling: measure Spot in candidate-sized four-stress bundles with at most two isolated workers, then retain lossless deterministic gzip and one-level SHA-bound manifest; avoids retaining all28 bulky journals in one process while measuring identical registered accounts. Coin uses one20-account original chronological batch with official tape restoration to avoid repeated downloads. Cost if wrong: separate source-equivalent account files, not economic changes.
++Public archive preflight: 390 locally retained Coin ZIPs,111 Spot daily ZIPs and5 retained Coin print ZIPs all independently match adjacent official checksum bytes. This snapshot does not cover deleted/not-yet-restored rolling prints; full measured consumed hashes remain required.
++Ruling: core cold-start retains saved-checkpoint/entries_after/new-day and original execution gates, without a tactical SMA200 fresh-cross latch; original three tactical signals unchanged — permanent core otherwise gains an unregistered initial timing rule; cost if wrong: conservative comparison requires a separately registered variant, never post-outcome switching. Protocol clarified before any full new outcome.
++
++Ruling: all ten new risk obligations remain inventoried. A failed unscaled base has no legal training profile and its risk account is explicitly not_applicable_due_to_invalid_unscaled_base, never fabricated or called risk-matched; valid complete bases require actual reruns. Any invalid measured account still blocks all_measured_accounts_valid/rules_freeze_ready; final reporting can close the inventory with honest rejected/inapplicable cases. This resolves the pre-outcome complete-candidate contract without changing the candidate grid. Cost if wrong: source/evidence repair or later separately registered study, no automatic promotion.
++
++
++--- Previous completed delivery ---
++
+ # Coinquant 当前状态（2026-10-01）
+ 
+ 2026-10-01 第三轮入口：`evidence/third-round-20261001/RESULT.md`。
+diff --git a/research/alpha-beta-PLAN.md b/research/alpha-beta-PLAN.md
+new file mode 100644
+index 0000000..eb9278a
+--- /dev/null
++++ b/research/alpha-beta-PLAN.md
+@@ -0,0 +1,70 @@
++# BTC alpha/beta mechanism implementation plan
++
++> **For agentic workers:** REQUIRED SUB-SKILL: use superpowers:subagent-driven-development task by task. User approved the full preceding design and execution; continue without repeated approvals.
++
++**Goal:** implement and validate all eight mechanism directions, identify actual cost-net alpha/beta improvement and integrate only eligible defaults.
++**Architecture:** reuse current real session/Lifecycle, ownership, causal history and money audits; small isolated research modules and bounded hooks, immutable source-bound outputs. Evaluation/calibration in Spot consumes exact same Coin/Spot inputs; two runtime repositories remain separate.
++**Tech Stack:** Python standard library; optional existing matplotlib for charts.
++**Spec:** research/alpha-beta-PROTOCOL.md and research/alpha_beta_spec.json (byte-identical in both worktrees).
++
++## Global Constraints
++
++- BTCUSDT only, initial CNY10000, no deposits;2020-01-01..2026-09-20 UTC exclusive.
++- Original795 primary starts,300s sessions/5s polls; no client decisions while stopped.
++- Spot long/cash/no leverage; Coin one-way isolated, original funded/protected ownership and macro budget.
++- Spot target CAGR>=100%/continuous MDD<=30%; Coin>=150%/MDD<50%; qualification remains NOT_QUALIFIED.
++- All48 single-candidate/stress accounts: Spot7x4, Coin5x4, plus10 new-candidate real risk-calibrated base accounts, eligible combinations and frozen Coin sensitivity accounts.
++- Clean measured Git source, full input/protocol/spec hashes, complete known execution, ledger audit and measured backup checks; no overwrite or source relabeling.
++- Calibration cutoff2022-01-01, future observations excluded; actual accounts rerun, no curve scaling/splicing.
++- No credentials/account/order/transfer/setting requests; public inputs and synthetic actual-session exchange only.
++- No new runtime dependencies, daemons, force push or destructive history; progress only existing PROJECT_STATE/HANDOFF.
++
++## Review Focus
++
++- A protection exit and same-day late fill must not permit re-entry or double allocation.
++- Core/tactical simultaneous intents and fees must conserve real pool without loan or ownership mixing.
++- Checkpoint replay, failed observation or unknown order must not advance allowance/stop/cash.
++- Unpublished/future calibration, rolling trigger inputs or offline protection amendments fail closed.
++- Instrumentation/no-op baseline must preserve clock, fill path and immutable financial inputs.
++
++### Task1: Coin mechanisms, causal event journal and reuse of real measurement engine
++
++**Files:** create research/alpha_perp.py and tests/test_alpha_perp.py; modify shared pure code only if required for a reviewed seam, preserve existing default.
++**Consumes:** complete_perp.ResearchExchange/variant/session runner, original market/prints/FX, frozen JSON spec.
++**Produces:** CLI python -m research.alpha_perp --out FILE [--limit N] [--candidate NAME] [--scenario NAME] [--risk-calibration FILE] [--combo COMPONENTS] [--initial-cny VALUE] [--start-offset-ms VALUE] [--restore-prints]; source-bound JSON or lossless .json.gz with nested results candidate/scenario compatible monetary rows and causal opportunity_ledger. Inputs explicitly bind spec/protocol, component/risk/capital/starts and measured source. Full primary matrix default includes all5x4.
++- [ ] Read actual call paths and add meaningful tests for rolling prior-only trigger, stale/chase entry, primary-only monotone stop and through-mark exit, confirmed top-up allowance/unknown recovery, checkpoint identity and no-op baseline.
++- [ ] Implement exactly four variants and instrumentation with scoped hooks restored finally, no extra adapter calls. Reuse old measurement/audit; do not copy an exchange or change old candidate list permanently.
++- [ ] Ensure unchanged incumbent actual three-session monetary/fill/daily prefix versus old complete_perp; include generated incomplete smoke only in /tmp.
++- [ ] Run focused tests/compile, commit clean source. Write report with commits, exact tests, smoke evidence and limitations, no subagents.
++- [ ] Independent spec+quality review from BASE..HEAD diff and report; address material findings before completion.
++
++### Task2: Spot mechanisms, independent core subpools and causal journal
++
++**Files:** create research/alpha_spot.py and tests/test_alpha_spot.py; only smallest shared seam if necessary, preserve default consensus.
++**Consumes:** complete_spot.measure/Policy, HistoricalVenue, session/Lifecycle, Model/follow, actual cached allocated fills and anchor.
++**Produces:** CLI python -m research.alpha_spot --out FILE [--limit N] [--candidate NAME] [--scenario NAME] [--risk-calibration FILE] [--combo COMPONENTS] [--workers1|2]; source-bound results candidate-scenario and opportunity_ledger. Default full7x4 and same monetary/audit schema.
++- [ ] Pin re-entry confirm/count/actual-exit/new-day gates and partial/unknown behavior; target participation existing material bulls only, one confirmed daily add, exits first.
++- [ ] Pin causal ATR close vs ATR stop separate, monotone native stop, current fill peak and no unattended actions.
++- [ ] Implement research-only sleeve200 and independent20/80 initial cash subpools, fee/dust conservation, separate tactical consensus and core intents, new-day restart, core0 no-op and mode-bound checkpoint rejection.
++- [ ] Prove current consensus three-session no-op equality and exception hook restoration. Run focused tests/compile; commit/report and independent spec+quality review.
++
++### Task3: Shared diagnosis, risk calibration, full-matrix selection, combination and forward tools
++
++**Files:** create Spot research/alpha_assessment.py, tests/test_alpha_assessment.py and research/alpha-forward-GUIDE.md; use original complete_assessment canonical/attribution helpers. Small mirrored reader/calibration interface if needed in Coin.
++**Consumes:** raw complete matrices and SHA-bound risk/sensitivity/combo outputs fromTasks1/2.
++**Produces:** python -m research.alpha_assessment --spot FILE --perp FILE --out FILE [--calibration-out FILE] [--risk-spot FILE] [--risk-perp FILE] [--combo-spot FILE] [--combo-perp FILE]; all-candidate metrics, causal reason/exit event diagnosis, training-only fixed scales, conditional alpha/beta classification, mechanical choice and compatible combo list. Strict schemas/input identities; standalone export CSV/MD/plots and hash-bound all-cash forward initialization/append observed public bar interface.
++- [ ] Test exact missing/incomplete matrix rejection, mismatched source/input/candidate/starts/capital, calibration independence from postcutoff mutations and bad validation-risk match labeling.
++- [ ] Implement past-only calibration and achieved match checks from actual rerun; no curve scaling. Diagnose post-event5/20-day outcomes with explicit nonrealizable labels. Separate full and2022+statements, fees/funding, year/concentration, continuous/daily DD and source identity.
++- [ ] Pin all-match comparison against consensus/incumbent and deterministic compatible combination (core exclusion/tie slow), no hidden grid or strategy search.
++- [ ] Add forward artifact source/spec/baseline SHA and observed timestamp checks, initial all-cash/no fake elapsed days. Run relevant tests, commit/report; independent review.
++
++### Task4: Freeze, measure all accounts, inspect completed evidence and adopt eligible code
++
++**Files:** immutable evidence/alpha-beta-next-20261002/*, selected minimal runtime changes if any, current README/AGENTS/PROJECT_STATE/HANDOFF and reproduction guide.
++- [ ] Freeze all implementation/evaluation source before full runs. Run every48 single case on exact original public inputs; preserve failed cases, repair proven implementation defects and rerun affected complete accounts with source provenance.
++- [ ] Verify baselines against originals, complete real session/archive gates and independent funds. Prepare training-only calibration and run all10 complete new-candidate base risk-account replays.
++- [ ] Run prescribed eligible compatible combos in all4stresses and incumbent/finalCoin9900/10100/start+/-60s sensitivity accounts. Do not skip registered single directions or turn diagnostics into optimal-capital search.
++- [ ] Independently review cash/fills/funding/daily/continuous proxy risks, causal gates, risk-calibration chronology, selected choices and all descriptive claims.
++- [ ] If eligible, move selected minimal logic into shared default path with complete executable equivalence, state migration rejection and mandatory safety tests; otherwise preserve default and document all rejection reasons.
++- [ ] Retain complete public raws/review/SHA manifests (exclude self/progress/cache), final attribution/CSV/chart, initialization only forward ledger and full reproduction commands. Preserve original targets, original measurement identities and native0/actualdays0.
++- [ ] Run appropriate final local checks, normal branch push and independent whole-branch review; exact-head CI then normal PR integration, mainCI, clean worktrees. No additional permission for already-authorized normal integration.
+diff --git a/research/alpha-beta-PROTOCOL.md b/research/alpha-beta-PROTOCOL.md
+new file mode 100644
+index 0000000..68e20d2
+--- /dev/null
++++ b/research/alpha-beta-PROTOCOL.md
+@@ -0,0 +1,49 @@
++# BTC alpha/beta mechanism round — registered 2026-10-02
++
++The user approved all eight directions described in the preceding design. This document and alpha_beta_spec.json make the approved design executable; routine parameter choices are fixed before new outcomes. Long-term runtimes remain Coinquant perpetual and Spotquant spot; Starquant supplies historical research/FX only. Neither engineering nor research authorizes credentials, account requests, orders, transfers or account settings.
++
++## Frozen economics and source
++
++BTCUSDT; initial CNY10000 without additions; 2020-01-01 through 2026-09-20 UTC exclusive. Use the original 795 primary starts, 300-second manual sessions and 5-second polls. Preserve prior-date FX and .001 conversion each way. Spot is long/cash, no borrowing/leverage. Perp retains one-way isolated funded protection. Only previously installed venue protection may act while the client is stopped. Preserve the disclosed Spot OHLC and Coin historical minute/volume proxies, known mark gap bound and complete money/execution/archive gates. Targets remain Spot CAGR>=100%/continuous MDD<=30%, Perp CAGR>=150%/continuous MDD<50%.
++
++Baseline is the actually adopted Spot consensus (51.8503%/41.2073%) and Coin incumbent (119.2284%/44.1051%). Baseline commits and exact finite candidates are in the JSON spec. Baseline full monetary/trade/daily outputs must agree with previous originals under normalized synthetic identities; discrepancies block candidate promotion. Do not rewrite older raw files or their measured source identities. Full measurements require clean committed source and hashes of protocol/spec, market, FX, schedule and optional calibration inputs.
++
++## Four Spot directions (six concrete variants)
++
++trend-reentry: only an actual protective-stop or overextension exit may permit one recovery in the same bullish episode. Require two new completed closes after exit, close reclaiming the actual exit price, at least two original bullish sleeves and all ordinary fresh/capital/execution gates other than the explicitly bypassed fresh-cross latch. SMA/adverse exits keep original fresh-cross requirements. A close below the sleeve SMA resets the episode. Same-day stops never lead to same-day re-entry; consume allowance only after confirmed fill.
++
++target-participation: with at least two actual bullish original sleeves and an already owned material tactical position, consider at most one confirmed add per completed day. If tactical BTC weight is below85%, buy toward90% using only free unreserved cash, original capital ceiling and protective ownership. Add only to already-held bullish sleeves; do not arm previously forbidden empty sleeves. Ordinary exits take priority. Preserve the existing new-BUY consensus path; no repeated within-bar churn.
++
++atr-close: replace only ordinary adverse-close distance by clip(2*ATR14/actual entry, .02,.10), using completed daily true ranges only. Repair exceptions and all other rules stay. atr-stop: replace only protective distance by clip(4*ATR14/completed close,.10,.30); confirmed old protection can only tighten, never loosen. A stop through current price creates an ordinary next legal reduction, not a fictitious fill. Entry peak starts at actual fill, no pre-entry high. Do not revise protection while stopped. Evaluate the two variants separately before any combination.
++
++core-permanent/core-slow: initial20% USDT subpool is a separate durable sleeve200, remaining80% continues all original SMA30/40/50 consensus sleeves. Subpools independently compound, never borrow cash/BTC, transfer, or maintain a 20/80 equity ratio. Reconstruct both cash ledgers from actual cached allocated fills and execution anchor; they must sum to the real account, including fees and dust. Tactical consensus sees only tactical quantities/free cash and its original three votes. Core orders/protection never merge with tactical groups. Permanent core is long whenever legally actionable and includes the original28% prior-peak protective stop; after stop it resumes only on a later new completed day. It is explicitly not pure buy-and-hold. Slow core uses completed close>SMA200, with the same protection and new-day restriction. Both keep cold-start/entries-enabled gates. Research checkpoint candidate/core mode and ratios are hash-bound and fail closed on mismatch.
++
++## Four Coin directions
++
++fresh-entry: original primary new longs require signal age<=24h and decision mark<=trigger completed close+one ATR14 computed before the trigger. No retroactive filtering of owned positions; macro rules remain unchanged. Preserve immutable trigger provenance through checkpoints.
++
++atr-trail: only primary owned longs, only at actual session decision, raise stop to max(old proven stop, highest completed high since confirmed entry-3*completed ATR14). Never loosen; if through current mark, request normal owned reduction. Macro stop budget and all protection/replacement gates remain. Completed historical bars update causal state, never issue unattended modifications.
++
++compression-breakout: add one primary long opportunity when no existing primary opportunity is active. Completed close must exceed the highest high of20 prior completed4h bars and prior ATR14 be<=.75*median of20 prior ATR14 observations. Stop=close-2*prior ATR; original funded sizing, seven-day life42bars, take=close*(close/stop)**20, priority/consumed identity and ordinary account gates. All rolling inputs precede trigger; no expanded grid or negative entries.
++
++single-topup: preserve initial entry and all safety checks; allow at most one confirmed top-up per completed4h bar and only in the original entry's actual session. Count only proven increased position linked to the owned campaign; pending/unknown identities are recovered through the original Lifecycle and never resent. No weakening of fresh sizing/protection reads.
++
++## Attribution, risk controls and selection
++
++Instrument without extra adapter requests or clock changes. Retain distinct causal events for actual opportunity identity/age, trigger and decision price, reason for nonparticipation, desired/accepted/fill size, exit type, idle cash and capital/liquidity constraints. Post-run5/20-day prices are diagnosis only; they are never decision inputs or assumed missed profit. Preserve actual client/write bounds, positions, fees, funding, daily curves and original independent audits.
++
++Run all registered single variants in all four existing project stresses, even if a base variant loses. Then independently rerun every complete new candidate with a fixed risk scale calibrated ONLY from2020-2021 USDT daily returns and the contemporaneous baseline. Scale is1 before2022, then min(1, training volatility ratio, positive beta ratio when necessary); beta floor .01. Calibration file binds input hashes/candidate/cutoff. No equity-curve rescaling/splicing. Existing positions keep their owned committed size; new sizing/allocation follows the fixed scale. Report2022-2026 validation achieved risk match separately; if realized vol>baseline*1.05 or beta>baseline+.02, no matched-alpha claim. This is historical stability testing, not clean OOS.
++
++Mechanical selection requires all complete/known/audited matching stresses. Every matched CAGR must be>=baseline-.01; Spot matched continuous proxy MDD cannot increase, Perp matched MDD<.50. Base CAGR gain>=.01 OR continuous MDD reduction>=.01 with CAGR loss<=.01. Rank by worst stressed CAGR, then registered order. Report alpha-vs-beta evidence separately; neither a regression intercept nor increased exposure alone proves repeatable alpha. Original target qualification is separately unchanged.
++
++Combine all independently eligible compatible directions without a subset search; two core modes are mutually exclusive, choose higher worst-stress CAGR (tie slow). If no mechanism eligible, report combination not applicable; if one, its tested account is the same final candidate. A new multi-mechanism combination requires all four complete stresses before selecting it. Finally replay incumbent and final selected Coin at initial9900/10100CNY and original-start offsets -/+60000ms in base as predeclared robustness diagnostics; original schedule/goal results remain separate. Do not choose an optimal capital or shifted schedule from these outcomes.
++
++Candidate/default code may be integrated only after review and economic gates, preserving measured source and proving executable equivalence to the selected research path. Default replacement does not enable native trading. Initialize a source-bound all-cash shadow ledger after rules freeze; append only future observed completed public bars. Actual accounts/native cases/days remain zero. Full reports include every rejection, capital path sensitivity, costs, downside capture, ES, continuous vs daily MDD, partial2026, and prior research contamination.
++
++## Implementation workflow
++
++User already authorized implementation and normal integration. Use two mirrored isolated worktrees so existing sibling schedule/FX paths resolve; no account operations. Standard library runtime, no new dependencies or daemons. Use the existing PROJECT_STATE.md/HANDOFF_PROMPT.md as the single progress/recovery source. Briefs/reports/diff packages live in external task scratch, not a second progress system. Independently review source and completed financial evidence, run risk-relevant tests and exact-head CI, then integrate normal PRs without force or history loss.
++
++### Pre-measurement clarification: core initialization
++
++Core keeps the original session bootstrap gate: a saved checkpoint and entries_after must exist, the current completed daily bar must be newer than entries_after, and entries_enabled must be true. It also enforces its own exit_through/new-completed-day guard and all existing cash/capital/execution gates. After these gates, permanent core may enter whenever legally actionable; slow core additionally requires completed close>SMA200. Core policy does not inherit tactical need_reset/fresh-cross as an extra SMA200 signal, and never forges Model checkpoint flags. The original three tactical sleeves retain their complete fresh-cross rules. This resolves the phrase cold-start before any new full-window outcome; it does not change the frozen ratios or candidate grid.
+diff --git a/research/alpha_beta_spec.json b/research/alpha_beta_spec.json
+new file mode 100644
+index 0000000..0650300
+--- /dev/null
++++ b/research/alpha_beta_spec.json
+@@ -0,0 +1,145 @@
++{
++  "format": 1,
++  "registered_date": "2026-10-02",
++  "authorization": "User approved the entire eight-direction alpha/beta design and implementation; no exchange account actions.",
++  "window": [
++    "2020-01-01T00:00:00Z",
++    "2026-09-20T00:00:00Z exclusive"
++  ],
++  "initial_cny": "10000",
++  "symbol": "BTCUSDT",
++  "session_seconds": 300,
++  "poll_seconds": 5,
++  "primary_starts": 795,
++  "spot_baseline_git": "4f25316ad253546ca566173f6cff09703c1bffd8",
++  "perp_baseline_git": "58074c1e4f1b374ce5a4bdccccf474a51647be47",
++  "spot_baseline_candidate": "consensus",
++  "perp_baseline_candidate": "incumbent",
++  "spot_targets": {
++    "cagr_min": 1,
++    "continuous_mdd_max": 0.3
++  },
++  "perp_targets": {
++    "cagr_min": 1.5,
++    "continuous_mdd_lt": 0.5
++  },
++  "spot_candidates": [
++    "consensus",
++    "trend-reentry",
++    "target-participation",
++    "atr-close",
++    "atr-stop",
++    "core-permanent",
++    "core-slow"
++  ],
++  "perp_candidates": [
++    "incumbent",
++    "fresh-entry",
++    "atr-trail",
++    "compression-breakout",
++    "single-topup"
++  ],
++  "spot_scenarios": [
++    "base",
++    "fee150",
++    "slip2",
++    "outage"
++  ],
++  "perp_scenarios": [
++    "base",
++    "fees-x1.5",
++    "read-400ms",
++    "trigger-slip"
++  ],
++  "spot_rules": {
++    "reentry_max_per_bull_episode": 1,
++    "reentry_confirm_closes_after_exit": 2,
++    "reentry_reclaim_actual_exit_price": true,
++    "reentry_only_exit_kinds": [
++      "stop",
++      "extended"
++    ],
++    "reentry_min_bull_votes": 2,
++    "participation_target": ".90",
++    "participation_trigger_weight_lt": ".85",
++    "participation_max_filled_adds_per_completed_day": 1,
++    "atr_bars": 14,
++    "adverse_atr_multiple": "2",
++    "adverse_distance_bounds": [
++      ".02",
++      ".10"
++    ],
++    "stop_atr_multiple": "4",
++    "stop_distance_bounds": [
++      ".10",
++      ".30"
++    ],
++    "protective_stop_never_loosen": true,
++    "core_initial_fraction": ".20",
++    "core_window": 200,
++    "core_stop_distance": ".28",
++    "core_subpools_no_transfers_or_rebalancing": true,
++    "core_reentry_requires_new_completed_day": true
++  },
++  "perp_rules": {
++    "fresh_entry_primary_max_age_ms": 86400000,
++    "fresh_entry_primary_max_chase_prior_atr": "1",
++    "atr_trail_multiple": "3",
++    "atr_trail_bars": 14,
++    "atr_trail_primary_only": true,
++    "atr_trail_stop_never_loosen": true,
++    "compression_prior_atr_ratio_max": ".75",
++    "compression_atr_median_history": 20,
++    "breakout_prior_high_bars": 20,
++    "breakout_stop_atr_multiple": "2",
++    "breakout_life_four_hour_bars": 42,
++    "breakout_take_power": 20,
++    "topup_max_confirmed_adds_per_four_hour_bar": 1,
++    "topup_entry_session_only": true
++  },
++  "risk_matching": {
++    "calibration_end_exclusive_ms": 1640995200000,
++    "calibration_period": "2020-2021",
++    "validation_start_ms": 1640995200000,
++    "scale_formula": "min(1, baseline_training_USDT_vol/candidate_training_USDT_vol, baseline_training_positive_beta/candidate_training_positive_beta if candidate beta exceeds baseline beta; positive beta floor .01)",
++    "pre_cutoff_scale": "1",
++    "after_cutoff_scale_fixed": true,
++    "real_accounts_required": true,
++    "validation_achieved_limits": "candidate USDT vol <= baseline*1.05 and beta <= baseline+.02; otherwise report risk_match_achieved=false, never claim matched alpha"
++  },
++  "selection": {
++    "all_complete_known_audited_required": true,
++    "all_matched_cagr_loss_max": ".01",
++    "spot_all_matched_mdd_not_higher": true,
++    "perp_all_mdd_lt": ".50",
++    "base_cagr_improve_min": ".01",
++    "alternative_base_mdd_improve_min": ".01",
++    "alternative_base_cagr_loss_max": ".01",
++    "rank": "highest worst stress CAGR, then earliest registered candidate",
++    "combo": "combine all individually eligible compatible mechanisms; core modes exclusive, choose highest worst CAGR, tie core-slow; no subset search",
++    "native_qualification": "NOT_QUALIFIED"
++  },
++  "sensitivity": {
++    "project": "perp",
++    "budgets": [
++      "9900",
++      "10100"
++    ],
++    "start_offsets_ms": [
++      -60000,
++      60000
++    ],
++    "scenarios": "base only",
++    "accounts": "incumbent and final selected or combined candidate, each independently replayed",
++    "purpose": "registered robustness diagnostics, original goal and primary schedule unchanged"
++  },
++  "reporting": {
++    "daily_returns": "USDT/BTCUSDT and CNY/FX-converted BTC separately",
++    "interval": "HAC7 normal95 descriptive; no selection adjustment or prospective proof",
++    "missed_opportunity_returns": "post-run diagnostics only, not realizable fills or decision inputs",
++    "public_only": true,
++    "native_cases": 0,
++    "actual_account_days": 0,
++    "forward": "freeze identity and all-cash shadow initialization; later observed public completed bars only, no backfill or account credentials"
++  }
++}
+diff --git a/research/alpha_perp.py b/research/alpha_perp.py
+new file mode 100644
+index 0000000..7febb4e
+--- /dev/null
++++ b/research/alpha_perp.py
+@@ -0,0 +1,486 @@
++"""Frozen alpha/beta mechanisms, using the existing finite-session economic meter.
++
++Hooks are process-local, restored on every exit, and read only observations that
++Lifecycle already obtained. This module never enables native account access.
++"""
++import argparse
++from collections import Counter, deque
++from contextlib import ExitStack, contextmanager
++from copy import deepcopy
++from dataclasses import replace
++from decimal import Decimal as D
++import gzip
++import hashlib
++import json
++from pathlib import Path
++from statistics import median
++from types import SimpleNamespace
++from unittest.mock import patch
++
++from coinquant import campaign, lifecycle, linear_preview, ownership, session
++from coinquant.opportunities import Opportunity, FOUR_HOURS
++from coinquant.types import Blocked
++from research import complete_perp as meter, rebuild, session_schedule
++
++CANDIDATES = ('incumbent', 'fresh-entry', 'atr-trail', 'compression-breakout', 'single-topup')
++CUTOFF = 1640995200000
++SPEC = Path(__file__).with_name('alpha_beta_spec.json')
++PROTOCOL = Path(__file__).with_name('alpha-beta-PROTOCOL.md')
++BaseCampaign = campaign.Campaign
++
++
++def file_hash(path):
++    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
++
++
++def components(name):
++    values = name.split('+') if name != 'incumbent' else []
++    if any(v not in CANDIDATES[1:] for v in values) or len(set(values)) != len(values):
++        raise ValueError('unknown or duplicate registered component')
++    return tuple(v for v in CANDIDATES[1:] if v in values)
++
++
++def calibration(path, names):
++    if path is None:
++        return {}, None
++    body = json.loads(Path(path).read_bytes())
++    if (body.get('format') != 1 or body.get('cutoff_ms') != CUTOFF or
++            body.get('spec_sha256') != file_hash(SPEC)):
++        raise ValueError('risk calibration format, cutoff or spec mismatch')
++    profiles = {}
++    for name in names:
++        p = body['profiles'][name]
++        scale = D(p['scale'])
++        digest = p.get('base_bundle_sha256', '')
++        if (not scale.is_finite() or not 0 <= scale <= 1 or
++                p.get('effective_from_ms') != CUTOFF or p.get('calibration_end_ms') != CUTOFF or
++                p.get('training_end_day_exclusive') != '2022-01-01' or
++                p.get('baseline_candidate') != 'incumbent' or len(digest) != 64 or
++                any(c not in '0123456789abcdef' for c in digest)):
++            raise ValueError('invalid candidate risk calibration')
++        profiles[name] = p
++    return profiles, file_hash(path)
++
++
++class AlphaCampaign(BaseCampaign):
++    components = ()
++    binding = None
++    scale = D(1)
++    journal = None
++
++    def __init__(self):
++        super().__init__()
++        self.highs = deque(maxlen=20)
++        self.atrs = deque(maxlen=20)
++        self.trigger = None
++        self.macro_trigger = None
++        self.trail = None
++        self.decision_ms = None
++        self.decision_mark = None
++        self.decision_stop = None
++        self.reason = None
++
++    def update(self, end, high, low, close):
++        high, low, close = map(D, (high, low, close))
++        prior_atr = sum(self.model.tr)/14 if len(self.model.tr) == 14 else None
++        old = self.model.active
++        breakout = ('compression-breakout' in self.components and len(self.highs) == 20 and
++                    len(self.atrs) == 20 and prior_atr is not None and prior_atr > 0 and
++                    close > max(self.highs) and prior_atr <= D('.75')*median(self.atrs))
++        super().update(end, high, low, close)
++        created_breakout = self.model.active is None and breakout
++        if created_breakout:
++            stop = close-2*prior_atr
++            if stop > 0:
++                self.model.active = Opportunity(end, 1, stop, close*(close/stop)**20,
++                                                end+42*FOUR_HOURS)
++        active = self.model.active
++        if active is not None and (old is None or old.identity != active.identity):
++            self.trigger = {'identity': active.identity, 'close': str(close),
++                            'prior_atr': str(prior_atr) if prior_atr is not None else None,
++                            'direction': active.direction,
++                            'kind': 'compression-breakout' if created_breakout else 'impulse'}
++            if self.journal is not None:
++                self.journal.append({'event': 'opportunity', 'at_ms': end, **self.trigger})
++        if active is None:
++            self.trigger = None
++        self.highs.append(high)
++        # Each observation is ATR at that completed bar, so every median input
++        # precedes the next trigger (including its immediately prior ATR).
++        if len(self.model.tr) == 14:
++            self.atrs.append(sum(self.model.tr)/14)
++        if self.trail and end-FOUR_HOURS >= self.trail['confirmed_at_ms']:
++            self.trail['high'] = str(max(D(self.trail['high']), high))
++        return active
++
++    @property
++    def active(self):
++        selected = super().active
++        if (selected is not None and selected.identity > 0 and self.decision_stop is not None and
++                selected.identity == self.position_campaign):
++            return replace(selected, stop=max(selected.stop, self.decision_stop))
++        return selected
++
++    def select_macro(self, row, mark, call, *, bootstrap=False):
++        previous = self.macro_opportunity
++        super().select_macro(row, mark, call, bootstrap=bootstrap)
++        self.decision_ms, self.decision_mark = call, D(mark)
++        active = self.macro_opportunity
++        if active is None:
++            self.macro_trigger = None
++        elif previous is None or previous.identity != active.identity:
++            self.macro_trigger = {'identity': active.identity, 'created_at_ms': call,
++                'decision_mark': str(D(mark)), 'dfii10': deepcopy(row), 'kind': 'macro', 'direction': 1}
++            if self.journal is not None:
++                self.journal.append({'event': 'opportunity', 'at_ms': call, **deepcopy(self.macro_trigger)})
++
++    def action(self, quantity):
++        self.reason = None
++        action = super().action(quantity)
++        if action == 'hold' and self.decision_stop is not None and self.decision_stop >= self.decision_mark:
++            self.reason = 'atr_trail_through_mark'
++            return 'exit'
++        if action == 'enter' and self.active.identity > 0 and 'fresh-entry' in self.components:
++            trigger = self.trigger
++            if not trigger or trigger['identity'] != self.active.identity or trigger['prior_atr'] is None:
++                raise Blocked('immutable primary trigger provenance unavailable')
++            if self.decision_ms-self.active.identity > 86400000:
++                self.reason = 'stale_primary'
++            elif self.decision_mark > D(trigger['close'])+D(trigger['prior_atr']):
++                self.reason = 'chased_primary'
++            if self.reason:
++                return 'flat'
++        return action
++
++    def entry_fraction(self, friction):
++        scale = self.scale if self.decision_ms is not None and self.decision_ms >= CUTOFF else D(1)
++        return super().entry_fraction(friction)*scale
++
++    def checkpoint(self):
++        saved = super().checkpoint()
++        saved['body']['alpha'] = {'binding': self.binding, 'highs': list(map(str, self.highs)),
++            'atrs': list(map(str, self.atrs)), 'trigger': self.trigger,
++            'macro_trigger': self.macro_trigger, 'trail': self.trail}
++        saved['sha256'] = meter.checksum(saved['body'])
++        return saved
++
++    @classmethod
++    def restore(cls, saved):
++        try:
++            body = dict(saved['body'])
++            if saved['sha256'] != meter.checksum(body):
++                raise ValueError('digest')
++            extra = body.pop('alpha')
++            if extra['binding'] != cls.binding:
++                raise ValueError('candidate/input binding')
++            model = BaseCampaign.restore.__func__(cls, {'body': body, 'sha256': meter.checksum(body)})
++            for key in ('highs', 'atrs'):
++                values = [D(v) for v in extra[key]]
++                if len(values) > 20 or any(not v.is_finite() or v < 0 or (key == 'highs' and not v) for v in values):
++                    raise ValueError('rolling history')
++                setattr(model, key, deque(values, maxlen=20))
++            model.trigger, model.trail = extra['trigger'], extra['trail']
++            if model.trigger:
++                t = model.trigger
++                if (model.model.active is None or t['identity'] != model.model.active.identity or
++                        t['kind'] not in ('impulse', 'compression-breakout') or
++                        not D(t['close']).is_finite() or D(t['close']) <= 0 or
++                        (t['prior_atr'] is not None and (not D(t['prior_atr']).is_finite() or D(t['prior_atr']) <= 0))):
++                    raise ValueError('trigger provenance')
++            elif model.model.active is not None:
++                raise ValueError('missing trigger provenance')
++            model.macro_trigger = extra['macro_trigger']
++            if model.macro_trigger:
++                t = model.macro_trigger
++                if (model.macro_opportunity is None or t['identity'] != model.macro_opportunity.identity or
++                        type(t['created_at_ms']) is not int or
++                        not -t['identity'] <= t['created_at_ms'] < model.last+FOUR_HOURS or
++                        t['kind'] != 'macro' or t['direction'] != 1 or not isinstance(t['dfii10'], dict) or
++                        not D(t['decision_mark']).is_finite() or D(t['decision_mark']) <= 0):
++                    raise ValueError('macro trigger provenance')
++            elif model.macro_opportunity is not None:
++                raise ValueError('missing macro trigger provenance')
++            if model.trail:
++                t = model.trail
++                if (type(t['campaign']) is not int or t['campaign'] <= 0 or
++                        type(t['confirmed_at_ms']) is not int or t['confirmed_at_ms'] < t['campaign'] or
++                        not D(t['high']).is_finite() or D(t['high']) <= 0):
++                    raise ValueError('entry trail')
++            return model
++        except (KeyError, TypeError, ValueError, ArithmeticError) as exc:
++            raise Blocked('invalid alpha checkpoint') from exc
++
++
++def confirmed_topup(state, campaign_id, bar):
++    """Only cached terminal fills linked to a reconciled owned add consume it."""
++    archived = state.get('terminal_native_orders') or {}
++    fills = [json.loads(row[0]) for row in state.db.execute('SELECT payload FROM native_fills')]
++    for identity, link in (state.get('entry_campaigns') or {}).items():
++        if link.get('campaign') != campaign_id or not link.get('add'):
++            continue
++        order = archived.get(identity, {}).get('parent', {})
++        result = (state.get('alpha_topup_attempts') or {}).get(identity, {})
++        if (D(order.get('executedQty', '0')) > 0 and D(result.get('position_before_btc', '0')) != 0 and
++                any(str(fill['orderId']) == str(order.get('orderId')) and D(fill['qty']) > 0 and
++                    fill['time']//FOUR_HOURS*FOUR_HOURS == bar for fill in fills)):
++            return True
++    return False
++
++
++@contextmanager
++def variant(name, *, binding=None, profile=None, journal=None):
++    """Wrap the existing coordinator without extra reads, waits, or safety gates."""
++    selected = components(name)
++    profile = profile or {}
++    binding = meter.checksum({'name': name, 'components': selected, 'inputs': binding,
++                              'profile': profile, 'spec': file_hash(SPEC)})
++    journal = journal if journal is not None else []
++    original_reconcile = ownership.reconcile
++    original_decide, original_topup = lifecycle.Lifecycle.decide, lifecycle.Lifecycle.top_up
++    original_send = lifecycle.Lifecycle.send
++    original_cycle = session.cycle
++    cycle_sequence = 0
++
++    def reconcile(state, reader, model, snapshot):
++        result = original_reconcile(state, reader, model, snapshot)
++        if 'atr-trail' in selected:
++            owner = model.position_campaign
++            if owner is not None and owner > 0 and D(snapshot['quantity_btc']) > 0:
++                if model.trail is None or model.trail['campaign'] != owner:
++                    # Start at the confirmed actual entry, never a pre-entry bar high.
++                    model.trail = {'campaign': owner, 'confirmed_at_ms': int(reader.clock()*1000),
++                                   'high': snapshot['entry']}
++            else:
++                model.trail = None
++            state.set('linear_campaign', model.checkpoint())
++        return result
++
++    def decide(engine, model, snapshot):
++        protection = engine.state.get('position_protection')
++        if ('atr-trail' in selected and model.position_campaign is not None and model.position_campaign > 0
++                and D(snapshot['quantity_btc']) > 0 and protection and model.trail and
++                protection['campaign'] == model.position_campaign and
++                model.trail['campaign'] == model.position_campaign and len(model.model.tr) == 14):
++            model.decision_stop = max(D(protection['stop']), D(model.trail['high'])-3*sum(model.model.tr)/14)
++        active = model.active
++        trigger = (model.trigger if active.identity > 0 else model.macro_trigger) if active else None
++        created_at = (active.identity if active.identity > 0 else trigger['created_at_ms']) if active else None
++        decision_at = int(engine.reader.clock()*1000)
++        event = {'event': 'decision', 'at_ms': decision_at, 'bar_ms': model.last,
++                 'opportunity': active.identity if active else None,
++                 'age_ms': decision_at-created_at if active else None,
++                 'trigger': deepcopy(trigger),
++                 'decision_mark': snapshot['mark_price'], 'quantity_before': snapshot['quantity_btc'],
++                 'idle_cash_usdt': snapshot.get('available_usdt'), 'wallet_usdt': snapshot.get('wallet_usdt'),
++                 'desired_stop': str(model.decision_stop) if model.decision_stop is not None else None,
++                 'risk_scale': str(model.scale if model.decision_ms >= CUTOFF else D(1))}
++        journal.append(event)
++        try:
++            action, after = original_decide(engine, model, snapshot)
++            event.update(action=action, reason=model.reason or action, quantity_after=after['quantity_btc'],
++                         constraint=engine.entry_constraint)
++            return action, after
++        except session.RECOVERABLE as exc:
++            event.update(reason=str(exc), error=type(exc).__name__)
++            raise
++
++    def top_up(engine, model, snapshot):
++        if 'single-topup' in selected and model.active and confirmed_topup(engine.state, model.active.identity, model.last):
++            journal.append({'event': 'topup_blocked', 'at_ms': int(engine.reader.clock()*1000),
++                            'opportunity': model.active.identity, 'reason': 'one_confirmed_add_per_bar'})
++            return snapshot
++        return original_topup(engine, model, snapshot)
++
++    def send(engine, method, path, payload):
++        identity = payload.get('newClientOrderId', payload.get('clientAlgoId', payload.get('origClientOrderId')))
++        link = (engine.state.get('entry_campaigns') or {}).get(identity, {})
++        if 'single-topup' in selected and link.get('add') and method == 'POST':
++            row = engine.state.db.execute('SELECT result FROM intents WHERE id=?', (identity,)).fetchone()
++            attempted = engine.state.get('alpha_topup_attempts') or {}
++            # Lifecycle settles over its transient result; preserve this original
++            # causal bar/position anchor before sending, including unknown replies.
++            attempted.setdefault(identity, json.loads(row[0]))
++            engine.state.set('alpha_topup_attempts', attempted)
++        journal.append({'event': 'write_attempt', 'at_ms': int(engine.reader.clock()*1000),
++                        'method': method, 'path': path, 'identity': identity,
++                        'opportunity': link.get('campaign'), 'payload': dict(payload)})
++        return original_send(engine, method, path, payload)
++
++    def cycle(reader, state, uid, **kwargs):
++        nonlocal cycle_sequence
++        cycle_sequence += 1
++        try:
++            return original_cycle(reader, state, uid, **kwargs)
++        except session.RECOVERABLE as exc:
++            journal.append({'event': 'cycle_blocked', 'at_ms': int(reader.clock()*1000),
++                            'session_ms': kwargs.get('session'), 'cycle_sequence': cycle_sequence, 'phase': 'cycle',
++                            'reason': str(exc), 'error': type(exc).__name__})
++            raise
++
++    def observe_plan(original, kind):
++        def wrapped(reader, model, snapshot, *args, **kwargs):
++            plan = original(reader, model, snapshot, *args, **kwargs)
++            journal.append({'event': kind, 'at_ms': int(reader.clock()*1000),
++                'opportunity': model.active.identity, 'desired_btc': plan.get('requested_btc', args[0] if args else None),
++                'accepted_btc': plan['quantity_btc'], 'constraint': plan['constraint'],
++                'entry_estimate': plan['entry_estimate'], 'sizing_capital_usdt': plan.get('sizing_capital_usdt'),
++                'allocated_margin_usdt': plan.get('allocated_margin_usdt')})
++            return plan
++        return wrapped
++
++    with ExitStack() as stack:
++        for obj, key, value in (
++            (campaign, 'Campaign', AlphaCampaign), (linear_preview, 'Campaign', AlphaCampaign),
++            (AlphaCampaign, 'components', selected), (AlphaCampaign, 'binding', binding),
++            (AlphaCampaign, 'scale', D(profile.get('scale', '1'))), (AlphaCampaign, 'journal', journal),
++            (ownership, 'reconcile', reconcile), (session, 'reconcile', reconcile), (session, 'cycle', cycle),
++            (lifecycle.Lifecycle, 'decide', decide), (lifecycle.Lifecycle, 'top_up', top_up),
++            (lifecycle.Lifecycle, 'send', send),
++            (lifecycle, 'entry_preview', observe_plan(lifecycle.entry_preview, 'entry_sizing')),
++            (lifecycle, 'topup_preview', observe_plan(lifecycle.topup_preview, 'topup_sizing'))):
++            stack.enter_context(patch.object(obj, key, value))
++        yield
++
++
++def record_session_phases(journal, report, reported_at_ms):
++    # Cycle failures were recorded once at their actual failure time. Other
++    # bounded report phases have no event clock; label their report-time summary.
++    for error in report.get('errors', []):
++        if error['phase'] != 'cycle':
++            journal.append({'event': 'session_phase_summary', 'at_ms': reported_at_ms,
++                'timestamp_basis': 'session_report_completed',
++                'session_ms': report['session_started_at_ms'], **error})
++
++
++class NoCrowding:
++    """The four registered mechanisms consume no funding/basis feature file."""
++    def __init__(self, _path):
++        self.sha256 = meter.checksum(None)
++        self.source = 'not used by alpha/beta mechanisms'
++        self.coverage = Counter()
++
++
++def measure(args):
++    names = [args.candidate] if args.candidate else list(CANDIDATES)
++    if args.combo:
++        names = ['+'.join(components(args.combo.replace(',', '+')))]
++        if len(components(names[0])) < 2:
++            raise ValueError('a combination requires at least two registered mechanisms')
++    profiles, risk_hash = calibration(args.risk_calibration, names)
++    scenarios = {k: v for k, v in meter.SCENARIOS.items() if args.scenario is None or k == args.scenario}
++    original_schedule = session_schedule.load()
++    import copy
++    schedule = copy.deepcopy(original_schedule)
++    schedule['primary']['starts_ms'] = [v+args.start_offset_ms for v in schedule['primary']['starts_ms']]
++    binding = {'measured_source': rebuild.source_identity(), 'spec_sha256': file_hash(SPEC), 'protocol_sha256': file_hash(PROTOCOL),
++               'risk_calibration_sha256': risk_hash, 'initial_cny': str(args.initial_cny),
++               'start_offset_ms': args.start_offset_ms,
++               'original_schedule_sha256': original_schedule['primary']['sha256'],
++               'actual_starts_sha256': meter.checksum(schedule['primary']['starts_ms'])}
++    ledgers, exchanges = {}, {}
++    current = {}
++    original_run = meter.run
++
++    @contextmanager
++    def scoped(name, _crowding):
++        current['name'] = name
++        yield  # run below binds the per-account journal before creating a model
++
++    def run(config, exchange, **kwargs):
++        uid = exchange.uid
++        ledger = ledgers.setdefault(uid, [])
++        exchanges[uid] = exchange
++        name = current['name']
++        with variant(name, binding=binding, profile=profiles.get(name), journal=ledger):
++            report = original_run(config, exchange, **kwargs)
++        record_session_phases(ledger, report, int(exchange.clock()*1000))
++        return report
++
++    shared = SimpleNamespace(**vars(args), crowding=None, portfolio_budgets=False, portfolio_selected=None)
++    with ExitStack() as stack:
++        for obj, key, value in ((meter, 'CANDIDATES', names), (meter, 'SCENARIOS', scenarios),
++                (meter, 'Crowding', NoCrowding), (meter, 'variant', scoped), (meter, 'run', run),
++                (session_schedule, 'load', lambda: schedule),
++                (meter, 'select', lambda _: {'production_promoted': False, 'native_execution_verified': False,
++                                           'selection_pending': 'independent complete matched-risk analysis'})):
++            stack.enter_context(patch.object(obj, key, value))
++        output = meter.measure(shared)
++    for i, name in enumerate(names):
++        for j, scenario in enumerate(scenarios):
++            uid = 12000+i*4+j
++            ledger, exchange = ledgers.get(uid, []), exchanges.get(uid)
++            if exchange is not None:
++                # Diagnosis is attached only after every session/final audit has run.
++                # These future completed closes are not attainable missed fills.
++                for event in ledger:
++                    if event['event'] == 'opportunity':
++                        event['post_run_diagnostic_closes'] = {}
++                        for days in (5, 20):
++                            end = event['at_ms']+days*86400000
++                            # Macro creation is intrabar: use the last completed
++                            # 4h close at the diagnostic horizon, without lookahead.
++                            completed = end//FOUR_HOURS*FOUR_HOURS
++                            bar = exchange.market.bar4(completed-FOUR_HOURS)
++                            event['post_run_diagnostic_closes'][str(days)] = {
++                                'at_ms': completed, 'horizon_ms': end, 'close': str(bar[3]) if bar else None}
++                orders = {str(v['orderId']): v for v in exchange.orders.values()}
++                triggers = {str(v.get('actualOrderId')): v for v in exchange.algos.values()
++                            if v.get('actualOrderId') not in (None, '0')}
++                for trade in exchange.trades:
++                    order = orders.get(str(trade['orderId']), {})
++                    ledger.append({'event': 'fill', 'at_ms': trade['time'], 'trade': trade,
++                                   'exit_type': (triggers.get(str(trade['orderId']), {}).get('orderType') or
++                                                 order.get('type', 'liquidation_or_unclassified'))
++                                                if trade['side'] == 'SELL' else None,
++                                   'client_order_id': order.get('clientOrderId')})
++            ledger.sort(key=lambda v: v.get('at_ms', v.get('session_ms', 0)))
++            output['results'][name][scenario]['opportunity_ledger'] = ledger
++    output['inputs'].update(binding, candidates={n: list(components(n)) for n in names},
++                            risk_profiles=profiles, original_meter_protocol_sha256=output['inputs']['protocol_sha256'])
++    output['inputs']['protocol_sha256'] = binding['protocol_sha256']
++    output['conditions'].update(qualification='NOT_QUALIFIED', alpha_beta_research=True,
++                                post_run_diagnostic_prices_used_for_decisions=False)
++    return output
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--market', type=Path, default=Path('/tmp/coinquant-market'))
++    parser.add_argument('--prints', type=Path, default=Path('/workspace/.btc-third-round-prints'))
++    parser.add_argument('--fx', type=Path, default=Path('/workspace/starquant/data/usdcny_frankfurter.json'))
++    parser.add_argument('--out', type=Path, required=True)
++    parser.add_argument('--limit', type=int)
++    parser.add_argument('--candidate', choices=CANDIDATES)
++    parser.add_argument('--scenario', choices=tuple(meter.SCENARIOS))
++    parser.add_argument('--combo', help='Comma-separated registered compatible components; no subset search')
++    parser.add_argument('--risk-calibration', type=Path)
++    parser.add_argument('--initial-cny', type=D, default=D(10000))
++    parser.add_argument('--start-offset-ms', type=int, choices=(-60000, 0, 60000), default=0)
++    parser.add_argument('--restore-prints', action='store_true')
++    args = parser.parse_args(argv)
++    if args.combo and args.candidate:
++        parser.error('choose candidate or combo')
++    if not args.initial_cny.is_finite() or args.initial_cny not in (D(9900), D(10000), D(10100)):
++        parser.error('initial CNY must be registered 9900, 10000, or 10100')
++    if (args.start_offset_ms or args.initial_cny != 10000) and (args.scenario != 'base' or not (args.candidate or args.combo)):
++        parser.error('capital/start diagnostics require one fixed candidate and --scenario base')
++    if args.out.suffix not in ('.json', '.gz'):
++        parser.error('output must be JSON or lossless .json.gz')
++    if args.out.suffix == '.gz' and not args.out.name.endswith('.json.gz'):
++        parser.error('compressed output must end in .json.gz')
++    if args.out.exists() or args.out.with_suffix('.progress.json').exists():
++        parser.error('never overwrite results or progress')
++    if args.limit is not None and (not 1 <= args.limit <= 795 or not args.out.resolve().is_relative_to('/tmp')):
++        parser.error('incomplete smoke limit must be 1..795 and output under /tmp')
++    args.out.parent.mkdir(parents=True, exist_ok=True)
++    output = measure(args)
++    opener = gzip.open if args.out.suffix == '.gz' else open
++    with opener(args.out, 'xt', encoding='utf-8') as stream:
++        json.dump(output, stream, default=str, allow_nan=False)
++        stream.write('\n')
++    rows = [row for scenarios in output['results'].values() for row in scenarios.values()]
++    return 2 if any(r['failure'] or not r['audit']['passed'] for r in rows) else 0
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/tests/test_alpha_perp.py b/tests/test_alpha_perp.py
+new file mode 100644
+index 0000000..153ad7b
+--- /dev/null
++++ b/tests/test_alpha_perp.py
+@@ -0,0 +1,350 @@
++from collections import deque
++from copy import deepcopy
++from decimal import Decimal as D
++from datetime import datetime, timezone
++import json
++from pathlib import Path
++from types import SimpleNamespace
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from coinquant import campaign, lifecycle, session
++from coinquant.campaign import Campaign, ORIGIN
++from coinquant.config import Config
++from coinquant.opportunities import Opportunity, FOUR_HOURS as BAR
++from coinquant.state import State
++from coinquant.types import Blocked, ObservationDeadline
++from research import alpha_perp as alpha
++from research import complete_perp as meter
++from tests.session_venue import Venue
++
++
++class AlphaTests(unittest.TestCase):
++    def warm(self):
++        model = alpha.AlphaCampaign()
++        for i in range(40):
++            model.update(ORIGIN+(i+1)*BAR, '101', '99', '100')
++        return model
++
++    def signal(self, model):
++        model.update(model.last+BAR, '110', '100', '108')
++        model.select_macro(None, '108', model.last+1000)
++        return model
++
++    def test_fresh_entry_age_chase_boundaries_owned_and_macro_unchanged(self):
++        with alpha.variant('fresh-entry'):
++            m = self.signal(self.warm())
++            trigger = deepcopy(m.trigger)
++            m.decision_ms = m.active.identity+86400000
++            m.decision_mark = D(110)
++            self.assertEqual(m.action(D(0)), 'enter')
++            m.decision_ms += 1
++            self.assertEqual(m.action(D(0)), 'flat')
++            self.assertEqual(m.reason, 'stale_primary')
++            m.decision_ms -= 1
++            m.decision_mark += D('.01')
++            self.assertEqual(m.action(D(0)), 'flat')
++            self.assertEqual(m.reason, 'chased_primary')
++            m.filled(m.active.identity)
++            self.assertEqual(m.action(D(1)), 'hold')
++            self.assertEqual(m.trigger, trigger)
++            m.position_campaign = -m.last
++            m.macro_opportunity = Opportunity(-m.last, 1, D(90), D(200), None)
++            self.assertEqual(m.action(D(1)), 'hold')
++            m.position_campaign = None
++            m.model.active = None
++            self.assertEqual(m.action(D(0)), 'enter')
++
++    def test_compression_uses_prior_high_atr_and_median_with_original_priority(self):
++        with alpha.variant('compression-breakout'):
++            m = self.warm()
++            m.atrs = deque([D(4)]*20, maxlen=20)
++            # Trigger range is huge, but neither it nor its ATR enters rolling inputs.
++            m.update(m.last+BAR, '140', '80', '102')
++            self.assertEqual(m.active.stop, D(98))
++            self.assertEqual(m.active.take, D(102)*(D(102)/98)**20)
++            self.assertEqual(m.active.expires, m.last+42*BAR)
++            self.assertEqual(m.trigger['prior_atr'], '2')
++            self.assertEqual(m.trigger['kind'], 'compression-breakout')
++            self.assertEqual(m.trigger['close'], '102')
++            m = self.warm();m.atrs = deque([D(4)]*20, maxlen=20)
++            m.update(m.last+BAR, '110', '100', '108')
++            self.assertEqual(m.active.stop, D(104))  # original impulse takes priority
++            self.assertEqual(m.trigger['kind'], 'impulse')
++            m = self.warm();m.atrs = deque([D(2)]*20, maxlen=20)
++            m.update(m.last+BAR, '103', '100', '102')
++            self.assertIsNone(m.active)
++            m = self.warm();m.atrs = deque([D(4)]*20, maxlen=20)
++            m.model.active = Opportunity(m.last, -1, D(120), D(50), m.last+10*BAR)
++            m.update(m.last+BAR, '103', '100', '102')
++            self.assertEqual(m.model.active.direction, -1)  # no second opportunity
++
++    def test_checkpoint_roundtrip_identity_digest_and_provenance(self):
++        with alpha.variant('fresh-entry', binding={'capital': '10000'}):
++            m = self.signal(self.warm())
++            saved = m.checkpoint()
++            restored = alpha.AlphaCampaign.restore(json.loads(json.dumps(saved)))
++            self.assertEqual(restored.checkpoint(), saved)
++            damaged = deepcopy(saved);damaged['body']['alpha']['trigger']['close'] = '1'
++            with self.assertRaises(Blocked): alpha.AlphaCampaign.restore(damaged)
++            damaged['sha256'] = meter.checksum(damaged['body'])
++            damaged['body']['alpha']['trigger']['identity'] += BAR
++            damaged['sha256'] = meter.checksum(damaged['body'])
++            with self.assertRaises(Blocked): alpha.AlphaCampaign.restore(damaged)
++        for name, binding in [('atr-trail', {'capital': '10000'}), ('fresh-entry', {'capital': '9900'})]:
++            with alpha.variant(name, binding=binding):
++                with self.assertRaises(Blocked): alpha.AlphaCampaign.restore(saved)
++
++    def test_trail_bar_state_excludes_entry_bar_and_makes_no_unattended_stop_change(self):
++        with alpha.variant('atr-trail'):
++            m = self.signal(self.warm())
++            m.filled(m.active.identity)
++            old_stop = m.active.stop
++            m.trail = {'campaign': m.position_campaign, 'confirmed_at_ms': m.last+1000, 'high': '108'}
++            m.update(m.last+BAR, '150', '106', '108')
++            self.assertEqual(m.trail['high'], '108')
++            m.update(m.last+BAR, '120', '106', '108')
++            self.assertEqual(m.trail['high'], '120')
++            self.assertEqual(m.active.stop, old_stop)
++            m.decision_mark = D(110)
++            m.decision_stop = D(111)
++            self.assertEqual(m.action(D(1)), 'exit')
++            self.assertEqual(m.reason, 'atr_trail_through_mark')
++            self.assertEqual(m.model.active.stop, old_stop)
++
++    def seed(self, venue, directory):
++        venue.seed(directory)
++        with State(directory, 'binance:BTCUSDT:live:123') as state:
++            base = Campaign.restore(state.get('linear_campaign'))
++            m = alpha.AlphaCampaign();m.__dict__.update(base.__dict__)
++            m.model.tr = deque([D(1000)]*14, maxlen=14)
++            m.trigger = {'identity': m.last, 'close': '100000', 'prior_atr': '1000', 'kind': 'impulse', 'direction': 1}
++            state.set('linear_campaign', m.checkpoint())
++
++    def run_session(self, venue, directory, seconds=8):
++        return session.run(Config('123', directory, seconds, 1), venue, execute=True,
++                           monotonic=venue.monotonic, wait=venue.wait)
++
++    def test_single_topup_partial_and_unknown_fills_recover_once_and_keep_protection(self):
++        for timeout in (False, True):
++            with self.subTest(timeout=timeout), tempfile.TemporaryDirectory() as tmp, alpha.variant('single-topup'):
++                venue = Venue();venue.fraction = D('.5');venue.timeout_after_entry = timeout
++                self.seed(venue, tmp)
++                r = self.run_session(venue, tmp)
++                entries = [p for _, path, p in venue.sent if path.endswith('/order') and p.get('timeInForce') == 'IOC']
++                self.assertEqual(r['cleanup'], 'verified', r)
++                self.assertEqual(len(entries), 2)
++                self.assertTrue(r['actual']['native_full_position_protected'])
++                self.assertTrue(r['actual']['stop_before_liquidation'])
++                self.assertEqual(r['pending_intents'], 0)
++                self.run_session(venue, tmp)
++                self.assertEqual(len(venue.orders), 2)  # another session cannot add
++
++    def test_unknown_unaccepted_topup_is_not_resent(self):
++        with tempfile.TemporaryDirectory() as tmp, alpha.variant('single-topup'):
++            venue = Venue();venue.fraction = D('.5');self.seed(venue, tmp)
++            original = venue.send
++            def send(method, path, payload):
++                if path.endswith('/order') and venue.orders:
++                    venue.timeout_before_entry = True
++                return original(method, path, payload)
++            venue.send = send
++            report = self.run_session(venue, tmp)
++            self.assertTrue(report['execution_unresolved'])
++            entries = [p for _, path, p in venue.sent if path.endswith('/order')]
++            self.assertEqual(len(entries), 2)
++            self.run_session(venue, tmp)
++            self.assertEqual(len([p for _, path, p in venue.sent if path.endswith('/order')]), 2)
++
++    def test_real_lifecycle_trail_tightens_and_through_mark_reduces_without_macro_change(self):
++        for through, macro in ((False, False), (True, False), (False, True)):
++            with self.subTest(through=through, macro=macro), tempfile.TemporaryDirectory() as tmp, alpha.variant('atr-trail'):
++                venue = Venue();self.seed(venue, tmp)
++                self.assertEqual(self.run_session(venue, tmp, 1)['cleanup'], 'verified')
++                with State(tmp, 'binance:BTCUSDT:live:123') as state:
++                    m = alpha.AlphaCampaign.restore(state.get('linear_campaign'))
++                    self.assertIsNotNone(m.trail)
++                    m.trail['high'] = '104000' if through else '101000'
++                    state.set('linear_campaign', m.checkpoint())
++                if macro:
++                    # Pure decision seam: owned macro never gets the primary trail.
++                    m.position_campaign = -m.last
++                    m.macro_opportunity = Opportunity(-m.last, 1, D(90000), D(200000), None)
++                    m.decision_stop = None
++                    self.assertEqual(m.active.stop, D(90000))
++                    continue
++                report = self.run_session(venue, tmp, 2)
++                self.assertEqual(report['cleanup'], 'verified', report)
++                if through:
++                    self.assertEqual(venue.q, 0)
++                else:
++                    live = [a for a in venue.algos.values() if a['algoStatus'] == 'NEW' and a['orderType'] == 'STOP_MARKET']
++                    self.assertEqual(D(live[0]['triggerPrice']), D(98000))
++                    with State(tmp, 'binance:BTCUSDT:live:123') as state:
++                        m = alpha.AlphaCampaign.restore(state.get('linear_campaign'))
++                        m.trail['high'] = '100000';state.set('linear_campaign', m.checkpoint())
++                    self.run_session(venue, tmp, 2)
++                    live = [a for a in venue.algos.values() if a['algoStatus'] == 'NEW' and a['orderType'] == 'STOP_MARKET']
++                    self.assertEqual(D(live[0]['triggerPrice']), D(98000))
++
++    def test_incumbent_noop_preserves_calls_clock_cash_fills_and_requests(self):
++        outputs = []
++        for research in (False, True):
++            with tempfile.TemporaryDirectory() as tmp:
++                venue = Venue();venue.fraction = D('.5')
++                if research:
++                    with alpha.variant('incumbent'):
++                        self.seed(venue, tmp);report = self.run_session(venue, tmp)
++                else:
++                    venue.seed(tmp);report = self.run_session(venue, tmp)
++                outputs.append((venue.calls, venue.sent, venue.now, venue.wallet, venue.q, venue.trades,
++                                report['cleanup'], report['cycles']))
++        self.assertEqual(outputs[0], outputs[1])
++
++    def test_cycle_failures_are_distinct_once_and_keep_actual_chronology(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            venue = Venue();venue.seed(tmp)
++            journal = []
++            original_cycle = session.cycle
++            attempted = 0
++            def intermittent(reader, state, uid, **kwargs):
++                nonlocal attempted
++                attempted += 1
++                if attempted in (1, 3):
++                    reader.wait(.1)
++                    raise ObservationDeadline('same deadline on different cycles')
++                return original_cycle(reader, state, uid, **kwargs)
++            with patch.object(session, 'cycle', intermittent), alpha.variant('incumbent', journal=journal):
++                self.seed(venue, tmp)
++                report = self.run_session(venue, tmp, 5)
++            alpha.record_session_phases(journal, report, venue.now)
++            failures = [e for e in journal if e['event'] == 'cycle_blocked']
++            self.assertEqual(len(failures), 2)
++            self.assertEqual([e['cycle_sequence'] for e in failures], [1, 3])
++            self.assertTrue(all(e['session_ms'] == report['session_started_at_ms'] for e in failures))
++            self.assertLess(report['session_started_at_ms'], failures[0]['at_ms'])
++            self.assertLess(failures[0]['at_ms'], failures[1]['at_ms'])
++            self.assertTrue(any(e['event'] == 'decision' and failures[0]['at_ms'] < e['at_ms'] < failures[1]['at_ms'] for e in journal))
++            self.assertFalse(any(e['event'] in ('session_error', 'session_phase_summary') for e in journal))
++            self.assertEqual([e['at_ms'] for e in journal], sorted(e['at_ms'] for e in journal))
++            self.assertEqual(report['cleanup'], 'verified')
++            # A non-cycle report summary is retained at report time, never backdated.
++            alpha.record_session_phases(journal, {**report, 'errors': report['errors']+[
++                {'phase': 'backup', 'reason': 'fixture backup failure', 'error_type': 'OSError'}]}, venue.now)
++            self.assertEqual(journal[-1]['event'], 'session_phase_summary')
++            self.assertEqual(journal[-1]['at_ms'], venue.now)
++            self.assertEqual(journal[-1]['timestamp_basis'], 'session_report_completed')
++            self.assertEqual(len([e for e in journal if e['event'] == 'cycle_blocked']), 2)
++
++    def test_macro_creation_provenance_survives_polls_checkpoint_and_owned_decisions(self):
++        with tempfile.TemporaryDirectory() as tmp, alpha.variant('incumbent', journal=(journal := [])):
++            venue = Venue();self.seed(venue, tmp)
++            with State(tmp, 'binance:BTCUSDT:live:123') as state:
++                model = alpha.AlphaCampaign.restore(state.get('linear_campaign'))
++                model.model.active = model.trigger = None
++                model.daily_lows.extend([D(90000)]*10)
++                state.set('linear_campaign', model.checkpoint())
++            row = dict(missing_reason=None, latest_value='1', prior20_value='1.3',
++                       latest_observation_date=datetime.fromtimestamp(venue.now/1000, timezone.utc).date().isoformat(),
++                       latest_value_available_ms=venue.now-1000, prior20_value_available_ms=venue.now-1000)
++            venue.dfii10_snapshot = lambda: row
++            original_row, original_mark = deepcopy(row), str(venue.mark)
++            report = self.run_session(venue, tmp, 3)
++            self.assertEqual(report['cleanup'], 'verified', report)
++            created = [e for e in journal if e['event'] == 'opportunity' and e['kind'] == 'macro']
++            self.assertEqual(len(created), 1)
++            creation = created[0]
++            self.assertEqual(creation['at_ms'], -creation['identity'])
++            self.assertEqual(creation['created_at_ms'], creation['at_ms'])
++            self.assertEqual(creation['decision_mark'], original_mark)
++            self.assertEqual(creation['dfii10'], original_row)
++            with State(tmp, 'binance:BTCUSDT:live:123') as state:
++                saved = state.get('linear_campaign')
++                restored = alpha.AlphaCampaign.restore(saved)
++                provenance = deepcopy(restored.macro_trigger)
++                self.assertEqual(restored.checkpoint(), saved)
++                broken = deepcopy(saved)
++                broken['body']['alpha']['macro_trigger']['identity'] -= 1
++                broken['sha256'] = meter.checksum(broken['body'])
++                with self.assertRaises(Blocked): alpha.AlphaCampaign.restore(broken)
++            row['latest_value'] = '.9';venue.mark += 10
++            self.assertEqual(self.run_session(venue, tmp, 3)['cleanup'], 'verified')
++            self.assertEqual(len([e for e in journal if e['event'] == 'opportunity' and e['kind'] == 'macro']), 1)
++            decisions = [e for e in journal if e['event'] == 'decision' and e['opportunity'] == creation['identity']]
++            self.assertGreater(len(decisions), 2)
++            self.assertGreater(decisions[-1]['age_ms'], decisions[0]['age_ms'])
++            self.assertTrue(all(e['trigger'] == provenance for e in decisions))
++            self.assertEqual(creation['dfii10'], original_row)
++            self.assertEqual(decisions[-1]['trigger']['decision_mark'], original_mark)
++            self.assertEqual(decisions[-1]['decision_mark'], str(venue.mark))
++            self.assertTrue(all(e['age_ms'] == e['at_ms']-creation['created_at_ms'] for e in decisions))
++
++    def test_macro_diagnostic_closes_are_attached_only_after_execution(self):
++        finished = False
++        created_at = ORIGIN+41*BAR+1000
++        def bar4(opened):
++            self.assertTrue(finished)
++            self.assertEqual(opened % BAR, 0)
++            return (D(100), D(101), D(99), D(100), D(1))
++        exchange = SimpleNamespace(uid=12000, clock=lambda: created_at/1000, orders={}, algos={}, trades=[],
++                                   market=SimpleNamespace(bar4=bar4))
++        def run(config, reader):
++            model = self.warm()
++            model.update(model.last+BAR, '101', '99', '100')
++            model.daily_lows.extend([D(90)]*10)
++            row = dict(missing_reason=None, latest_value='1', prior20_value='1.3',
++                       latest_observation_date=datetime.fromtimestamp(created_at/1000, timezone.utc).date().isoformat(),
++                       latest_value_available_ms=created_at-1000, prior20_value_available_ms=created_at-1000)
++            model.select_macro(row, '100', created_at)
++            return {'session_started_at_ms': created_at, 'errors': []}
++        def measure(args):
++            nonlocal finished
++            with meter.variant('incumbent', None):
++                meter.run(None, exchange)
++            finished = True
++            return {'inputs': {'protocol_sha256': 'original'}, 'conditions': {},
++                    'results': {'incumbent': {'base': {}}}}
++        args = SimpleNamespace(candidate='incumbent', combo=None, risk_calibration=None,
++                               scenario='base', start_offset_ms=0, initial_cny=D(10000))
++        with patch.object(meter, 'run', run), patch.object(meter, 'measure', measure):
++            result = alpha.measure(args)
++        event, = result['results']['incumbent']['base']['opportunity_ledger']
++        self.assertEqual(event['kind'], 'macro')
++        for days in (5, 20):
++            diagnostic = event['post_run_diagnostic_closes'][str(days)]
++            self.assertEqual(diagnostic['horizon_ms'], created_at+days*86400000)
++            self.assertEqual(diagnostic['at_ms'], (created_at+days*86400000)//BAR*BAR)
++            self.assertEqual(diagnostic['close'], '100')
++
++    def test_hooks_restore_on_exception(self):
++        prior = (campaign.Campaign, lifecycle.Lifecycle.decide, lifecycle.Lifecycle.top_up, session.reconcile)
++        with self.assertRaises(RuntimeError):
++            with alpha.variant('fresh-entry+single-topup'):
++                raise RuntimeError('fixture')
++        self.assertEqual(prior, (campaign.Campaign, lifecycle.Lifecycle.decide, lifecycle.Lifecycle.top_up, session.reconcile))
++
++    def test_calibration_binding_rejects_future_mismatch_nonfinite_and_scales_only_new_sizing(self):
++        profile = {'scale': '.5', 'effective_from_ms': alpha.CUTOFF, 'calibration_end_ms': alpha.CUTOFF,
++                   'training_end_day_exclusive': '2022-01-01', 'base_bundle_sha256': 'a'*64,
++                   'baseline_candidate': 'incumbent'}
++        body = {'format': 1, 'cutoff_ms': alpha.CUTOFF, 'spec_sha256': alpha.file_hash(alpha.SPEC),
++                'profiles': {'fresh-entry': profile}}
++        with tempfile.TemporaryDirectory() as tmp:
++            path = Path(tmp)/'risk.json';path.write_text(json.dumps(body))
++            self.assertEqual(alpha.calibration(path, ['fresh-entry'])[0]['fresh-entry']['scale'], '.5')
++            for key, value in [('scale', 'NaN'), ('scale', '1.1'), ('calibration_end_ms', alpha.CUTOFF+1),
++                               ('base_bundle_sha256', 'bad'), ('training_end_day_exclusive', '2023-01-01')]:
++                bad = deepcopy(body);bad['profiles']['fresh-entry'][key] = value
++                path.write_text(json.dumps(bad))
++                with self.assertRaises(ValueError): alpha.calibration(path, ['fresh-entry'])
++        with alpha.variant('fresh-entry', profile=profile):
++            m = self.signal(self.warm());m.returns = deque([D('.02')]*20, maxlen=20)
++            m.decision_ms = alpha.CUTOFF-1
++            before = m.entry_fraction('.0011')
++            m.decision_ms += 1
++            self.assertEqual(m.entry_fraction('.0011'), before/2)
++
++
++if __name__ == '__main__':
++    unittest.main()

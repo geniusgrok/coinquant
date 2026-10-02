@@ -1,0 +1,33 @@
+{
+  "format": "actual-producer-completion-receipt-v1",
+  "label": "perp-full-retry1",
+  "command": [
+    "python",
+    "-u",
+    "-m",
+    "research.alpha_perp",
+    "--restore-prints",
+    "--out",
+    "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-next/coinquant",
+  "source_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+  "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227",
+  "started_utc_from_kernel": "2026-10-02T05:41:17.580000+00:00",
+  "started_timestamp_precision_note": "Reconstructed from actual Linux boot epoch and process start ticks while producer is active; boot epoch has one-second precision. This is not a contemporaneous launch receipt.",
+  "completed_observed_utc": "2026-10-02T10:17:33.007190+00:00",
+  "elapsed_seconds_to_completion_observation_from_kernel_start": 16575.427190065384,
+  "exit_code": 0,
+  "exit_code_provenance": "Completed tools.write_stdin session4592 returned exit_code0; original producer PID32321 is absent",
+  "active_process_observation_sha256": "5144a4c3b66e4848b2b96e289f5ba88f3bb627ba1824a601add5d480bb6e5f2f",
+  "earlier_registration_sha256": "b89859bac6e04a857743047628500c273fde949ee7c27b7309300b1a038fe557",
+  "output_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz",
+  "output_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+  "output_bytes": 12869574,
+  "log_path": "/workspace/scratch/alpha-beta-next/perp-full-retry1.run.log",
+  "log_sha256": "a88596d9f215f694aeeb0177bfd3479cf3b3ab258ff269e82c65bbe603b3c4be",
+  "gzip_crc_stream_verified": true,
+  "decompressed_json_sha256": "a401d2b1bc0c1067aecf26f7c3e1afe726c9e678fa7f565d3916c42276565b35",
+  "decompressed_json_bytes": 289863983,
+  "scope": "Full measured output published; final financial validity/baseline equality/selection are independently assessed, not inferred from progress."
+}

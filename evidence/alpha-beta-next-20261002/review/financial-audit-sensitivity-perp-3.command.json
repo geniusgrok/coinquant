@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/btc-alpha-beta-next/review/independent_financial_audit.py",
+    "--bundle",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000-60000.json.gz",
+    "--sha256",
+    "38912a76ca423785de39d1a63aa1bcbcde4c28830c0f5e25819c91f6710c3ae6",
+    "--kind",
+    "perp",
+    "--out",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-3.json"
+  ],
+  "checker_sha256": "492d46ff9bbff72f1291ad77988fbf8478b35fd880c818e1d3979a6215f1897c",
+  "elapsed_seconds": 2.9276438459928613,
+  "exit_code": 0,
+  "log_sha256": "e42d7b1ffc97c2623db62269bea9db87f4198449b08ce601a073fd52fc4689da",
+  "output_sha256": "52b58f34620f1d1b63c7852d72ac6557ec0047cb7b1f492c2b42b683c395b3c5",
+  "verification_context": {}
+}

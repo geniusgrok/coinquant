@@ -1,0 +1,233 @@
+# Task2 fix round1 scoped package
+BASE 17a21516045795b6d29280f5b3a47dbf2f17c588
+HEAD 4568a7f82a867a81b580a28c759eabebb72e1702
+WORKTREE /workspace/btc-alpha-beta-next/spotquant
+commit 4568a7f82a867a81b580a28c759eabebb72e1702
+Author:     york <ychenracing@gmail.com>
+AuthorDate: Fri Oct 2 03:09:57 2026 +0000
+Commit:     york <ychenracing@gmail.com>
+CommitDate: Fri Oct 2 03:09:57 2026 +0000
+
+    Renew core exit provenance and bind registered alpha beta protocol
+
+ research/alpha_spot.py   | 28 +++++++++++++----
+ tests/test_alpha_spot.py | 78 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 100 insertions(+), 6 deletions(-)
+
+diff --git a/research/alpha_spot.py b/research/alpha_spot.py
+index ff61abc..97c44b9 100644
+--- a/research/alpha_spot.py
++++ b/research/alpha_spot.py
+@@ -142,24 +142,26 @@ class Policy:
+         return self.atr_cache[last]
+ 
+     def records(self, fills, owners, signals):
+         records = {}
+         for row in fills:
+             owner = owners.get(str(row['order_id']))
+             if owner is None:
+                 raise Unknown('unattributed research fill')
+             key = str(row['order_id'])
+             meta = signals.get(signal_key(owner['order']['side'], owner['signal_ms'], owner['sleeves']), {})
+-            event = records.setdefault(key, {'owner': owner, 'qty': D(0), 'quote': D(0),
++            event = records.setdefault(key, {'owner': owner, 'order_id': key, 'qty': D(0), 'quote': D(0),
++                'net_btc': D(0),
+                 'first_ms': row['time'], 'last_ms': row['time'], 'meta': meta})
+             event['qty'] += row['qty']
+             event['quote'] += row['quote']
++            event['net_btc'] += follow._base_delta(row)
+             event['last_ms'] = max(event['last_ms'], row['time'])
+         return list(records.values())
+ 
+     def recovery(self, view, window, records, bulls, exit_through):
+         if not (view.bull and view.streak >= 2 and view.crash_ok and not view.extended and bulls >= 2):
+             return False
+         episode = view.last - (view.streak - 1) * DAY
+         relevant = [r for r in records if window in r['owner']['sleeves'] and r['last_ms'] >= episode]
+         if any(window in r['meta'].get('reentry_sleeves', []) and r['owner']['order']['side'] == 'BUY'
+                for r in relevant):
+@@ -181,40 +183,54 @@ class Policy:
+                   if position and view.sma_window in o['sleeves'] and o['order']['type'] == 'STOP_LOSS'
+                   and o.get('native_status') in (execution.TERMINAL - {'REJECTED'}) | {'NEW', 'PARTIALLY_FILLED'}
+                   and o['signal_ms'] >= int(position['first_ms']) // DAY * DAY - DAY]
+         floor = max(proven, default=D(0))
+         view.stop_price = lambda peak: max(floor, D(peak) * (1 - view.trail))
+         # Catch-up bars update peaks, not fictitious uninstalled ATR stops.
+         view.protection = 'resting'
+ 
+     def opportunity(self, window, view, mechanism, records):
+         trigger = None
++        exit_link = {}
+         if window == 200:
++            # Actual allocated net fills reconstruct the campaign, including BTC
++            # fees and retained dust. A partial sale does not create a new entry.
++            balance = D(0)
++            exit_boundary = 0
++            for record in sorted(records, key=lambda r: (r['last_ms'], int(r['order_id']))):
++                if record['owner']['sleeves'] != [200]:
++                    continue
++                prior = balance
++                balance += record['net_btc']
++                if record['owner']['order']['side'] == 'SELL' and prior >= BASE_STEP and balance < BASE_STEP:
++                    exit_boundary = record['last_ms'] // DAY * DAY
++                    exit_link = {'exit_order_id': record['order_id'], 'exit_fill_ms': record['last_ms']}
+             if self.core_mode == 'core-permanent' or view.bull:
+-                trigger = max(int(self.state.get('entries_after') or view.last) + DAY,
+-                              view.last - max(0, view.streak - 1) * DAY) if self.core_mode == 'core-slow' else int(self.state.get('entries_after') or view.last) + DAY
++                trigger = max(int(self.state.get('entries_after') or view.last) + DAY, exit_boundary)
++                if self.core_mode == 'core-slow':
++                    trigger = max(trigger, view.last - max(0, view.streak - 1) * DAY)
+         elif mechanism == 'target-participation':
+             trigger = view.last
+         elif view.cap_enter:
+             trigger = view.last
+         elif mechanism == 'trend-reentry':
+             exits = [r for r in records if window in r['owner']['sleeves'] and r['owner']['order']['side'] == 'SELL']
+             if exits:
+                 trigger = max(r['last_ms'] for r in exits) // DAY * DAY + DAY
+         elif view.enter:
+             trigger = view.last - max(0, view.streak - view.confirm) * DAY
+         if trigger is None or trigger > view.last:
+-            return {'id': None, 'trigger_bar_ms': None, 'trigger_close': None, 'age_ms': None}
++            return {'id': None, 'trigger_bar_ms': None, 'trigger_close': None, 'age_ms': None, **exit_link}
+         index = bisect.bisect_left(self.bar_times, trigger)
+         close = self.venue.all_bars[index][4] if index < len(self.bar_times) and self.bar_times[index] == trigger else None
+         return {'id': f'{self.candidate}:{window}:{trigger}', 'trigger_bar_ms': trigger,
+-                'trigger_close': close, 'age_ms': self.venue.now_ms - trigger - DAY}
++                'trigger_close': close, 'age_ms': self.venue.now_ms - trigger - DAY, **exit_link}
+ 
+     def __call__(self, views, owned, snapshot, **kwargs):
+         original_views = views
+         views = {w: copy.copy(v) for w, v in views.items()}
+         last = views[30].last
+         signals = dict(self.state.get('alpha_signals') or {}) if self.bound else dict(getattr(self, 'last_signals', {}))
+         fills = cached_fills(self.state)
+         owners = getattr(self.state, '_execution_owners', {}) or {}
+         records = self.records(fills, owners, signals)
+         positions, _, _, exit_through, _ = session._stored(self.state)
+@@ -522,21 +538,21 @@ def main(argv=None):
+         for c, s in jobs:
+             record(c, s, measure(c, s, bars, starts, complete.PriorFX(fx_path), limit=args.limit, risk=risks[c], combo=parts))
+     else:
+         # ponytail: process-local scoped hooks; isolated processes only, never threads.
+         with ProcessPoolExecutor(max_workers=args.workers) as pool:
+             pending = {pool.submit(measure, c, s, bars, starts, complete.PriorFX(fx_path),
+                                    limit=args.limit, risk=risks[c], combo=parts): (c, s) for c, s in jobs}
+             for future in as_completed(pending):
+                 record(*pending[future], future.result())
+     report = {'format': 1, 'source': source, 'spec_sha256': digest(SPEC.read_bytes()),
+-              'protocol_sha256': digest(Path('research/PROTOCOL.md').read_bytes()),
++              'protocol_sha256': digest(SPEC.with_name('alpha-beta-PROTOCOL.md').read_bytes()),
+               'market_sha256': file_digest(market_root),
+               'schedule_sha256': digest(schedule_path.read_bytes()), 'fx_sha256': digest(fx_path.read_bytes()),
+               'risk_calibration_sha256': digest(args.risk_calibration.read_bytes()) if args.risk_calibration else None,
+               'results': {c + '-' + s: results[c + '-' + s] for c, s in jobs},
+               'native_execution_verified': False,
+               'limitations': ['daily OHLC linear high-before-low proxy; no observed intraday tape or queue',
+                               'actual bounded session/Lifecycle, fixed published research cap USDT5m',
+                               'first protection and cancel-replace are non-atomic',
+                               'previously studied history; no prospective alpha proof']}
+     args.out.parent.mkdir(parents=True, exist_ok=True)
+diff --git a/tests/test_alpha_spot.py b/tests/test_alpha_spot.py
+index 718e9ab..57a5968 100644
+--- a/tests/test_alpha_spot.py
++++ b/tests/test_alpha_spot.py
+@@ -252,20 +252,98 @@ class AlphaSpotTests(unittest.TestCase):
+             venue.advance(ORIGIN + 402 * DAY)
+             run()
+             venue.trigger('70')
+             fills = len(venue.fills)
+             run()
+             self.assertEqual(len(venue.fills), fills)
+             venue.advance(ORIGIN + 403 * DAY)
+             run()
+             self.assertGreater(len(venue.fills), fills)
+ 
++    def test_core_stop_renews_opportunity_and_restore_keeps_its_identity(self):
++        for candidate in ('core-permanent', 'core-slow'):
++            with self.subTest(candidate=candidate), tempfile.TemporaryDirectory() as directory:
++                venue = HistoricalVenue(bars([D(100)] * 400 + [D(101)] * 8),
++                                        ORIGIN + 401 * DAY, D(1000), lambda t: D(7))
++                config = Config('1', directory, 30, 5, 'demo', '5000000')
++                p = alpha.Policy(candidate, venue)
++                def run(policy):
++                    with alpha.configured(policy):
++                        report = session.run(config, venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
++                    self.assertTrue(all('session deadline' in e['reason'] for e in report['errors']), report['errors'])
++                    return [row['sleeves']['200']['opportunity'] for row in policy.journal if row['event'] == 'decision'][-1]
++                run(p)
++                venue.advance(ORIGIN + 402 * DAY)
++                initial = run(p)
++                self.assertIsNotNone(initial['id'])
++                venue.trigger('70')
++                stopped = venue.fills[-1]
++                self.assertFalse(stopped['buyer'])
++                self.assertIsNone(run(p)['id'])
++                count = len(venue.fills)
++                self.assertIsNone(run(p)['id'])
++                self.assertEqual(len(venue.fills), count)
++                venue.advance(ORIGIN + 403 * DAY)
++                # New Policy instance reconstructs the confirmed exit from persisted fills.
++                restored = alpha.Policy(candidate, venue)
++                renewed = run(restored)
++                self.assertGreater(len(venue.fills), count)
++                self.assertNotEqual(renewed['id'], initial['id'])
++                self.assertEqual(renewed['trigger_bar_ms'], stopped['time'] // DAY * DAY)
++                self.assertEqual(renewed['exit_order_id'], str(stopped['order_id']))
++                self.assertEqual(renewed['exit_fill_ms'], stopped['time'])
++                self.assertEqual(D(renewed['trigger_close']), D(101))
++                self.assertLess(renewed['age_ms'], 60000)
++                count = len(venue.fills)
++                repeat = run(restored)
++                checkpoint = run(alpha.Policy(candidate, venue))
++                for later in (repeat, checkpoint):
++                    self.assertEqual(later['id'], renewed['id'])
++                    self.assertEqual(later['trigger_bar_ms'], renewed['trigger_bar_ms'])
++                    self.assertEqual(later['exit_order_id'], renewed['exit_order_id'])
++                    self.assertGreaterEqual(later['age_ms'], renewed['age_ms'])
++                self.assertEqual(len(venue.fills), count)
++
++    def test_core_provenance_ignores_partial_exit_and_slow_waits_for_bull_signal(self):
++        venue = HistoricalVenue(bars(), ORIGIN + 402 * DAY, D(1000), lambda t: D(7))
++        view = SimpleNamespace(last=ORIGIN + 404 * DAY, bull=True, streak=2)
++        buy = {'owner': {'sleeves': [200], 'order': {'side': 'BUY'}}, 'order_id': '1',
++               'last_ms': ORIGIN + 401 * DAY, 'net_btc': D(2)}
++        partial = {'owner': {'sleeves': [200], 'order': {'side': 'SELL'}}, 'order_id': '2',
++                   'last_ms': ORIGIN + 402 * DAY, 'net_btc': D(-1)}
++        closed = dict(partial, net_btc=D('-1.999999'))
++        for candidate in ('core-permanent', 'core-slow'):
++            p = alpha.Policy(candidate, venue)
++            p.state = SimpleNamespace(get=lambda key: ORIGIN + 400 * DAY)
++            unchanged = p.opportunity(200, view, 'consensus', [buy, partial])
++            self.assertNotIn('exit_order_id', unchanged)
++            renewed = p.opportunity(200, view, 'consensus', [buy, closed])
++            expected = 403 if candidate == 'core-slow' else 402
++            self.assertEqual(renewed['trigger_bar_ms'], ORIGIN + expected * DAY)
++            self.assertEqual(renewed['exit_order_id'], '2')
++
++    def test_bundle_hashes_exact_registered_protocol_path(self):
++        registered = alpha.SPEC.with_name('alpha-beta-PROTOCOL.md')
++        legacy = alpha.SPEC.with_name('PROTOCOL.md')
++        self.assertNotEqual(alpha.digest(registered.read_bytes()), alpha.digest(legacy.read_bytes()))
++        with tempfile.TemporaryDirectory() as directory:
++            output = Path(directory) / 'result.json'
++            with patch.object(alpha, 'source_identity', return_value={'dirty': False}), \
++                    patch.object(alpha, 'load_daily', return_value=[]), \
++                    patch.object(alpha, 'file_digest', return_value='market'), \
++                    patch.object(alpha, 'measure', return_value={'complete': False}), \
++                    patch.object(alpha.complete, 'PriorFX', return_value=None), \
++                    patch.object(Path, 'read_text', return_value='{"primary":{"starts_ms":[]}}'), \
++                    patch.object(Path, 'read_bytes', autospec=True, side_effect=lambda path: b'registered' if path == registered else b'other'):
++                alpha.main(['--out', str(output), '--candidate', 'consensus', '--scenario', 'base'])
++            self.assertEqual(json.loads(output.read_text())['protocol_sha256'], alpha.digest(b'registered'))
++
+     def test_core_checkpoint_identity_rejects_even_flat_account_mismatch(self):
+         venue = HistoricalVenue(bars(), ORIGIN + 401 * DAY, D(1000), lambda t: D(7))
+         with tempfile.TemporaryDirectory() as directory:
+             config = Config('1', directory, 10, 5, 'demo', '5000000')
+             with alpha.configured(alpha.Policy('core-permanent', venue)):
+                 session.run(config, venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+             with alpha.configured(alpha.Policy('core-slow', venue)):
+                 with self.assertRaises(Blocked):
+                     session.run(config, venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+ 

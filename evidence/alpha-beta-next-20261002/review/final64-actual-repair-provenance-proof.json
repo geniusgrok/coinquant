@@ -1,0 +1,93 @@
+{
+  "scope": "Actual repair provenance/control verification only; final64 approval requires new16 audit index",
+  "identities": {
+    "/workspace/scratch/alpha-beta-next/risk-perp.json.gz": "3b958b2e92d8aefcf7b9f073a3916c325420a546cf7652203ce6692be5ee2446",
+    "/workspace/scratch/alpha-beta-next/risk-perp-retained4-projection.json.gz": "6c786872a3b469fb61714c3465bf0690e96a72442d88f88e6f123b95ae14989c",
+    "/workspace/scratch/alpha-beta-next/risk-perp-incumbent-retry1.json.gz": "5344465a2980c03f20bfdf3a60cb2fbc4424caa61bd798c4da6485630f9623bb",
+    "/workspace/scratch/alpha-beta-next/risk-perp.command.json": "6177756a15cc19007ea7c14db7acdf84a02967512555c71d4272e26d495196d9",
+    "/workspace/btc-alpha-beta-next/review/coin-unscaled20-financial-proof.json": "979cf8d362f7d9a7c4557827e753fd292d2cf17c2bac9c9eccd2ceb195453a4f",
+    "/workspace/scratch/alpha-beta-next/risk-perp-repair-projection-proof.json": "81b442a9aa311684f225decc7d6a2ff2197d56e59a712d69398a37ce17b0bd0c",
+    "/workspace/scratch/alpha-beta-next/risk-perp-incumbent-retry1.command.json": "17f4d5c3d25c931d499340deef6da0aeb91c25b1ca6f253a6817659c708d69a2",
+    "/workspace/scratch/alpha-beta-next/risk-perp-incumbent-retry1.run.log": "86525a92c2d164d54fc23372b1f42415fe8acffcddd71e96e37f121c81bb0863",
+    "/workspace/scratch/alpha-beta-next/risk-perp-repaired-manifest.json": "ae15eb9f6bfe32bce91f5afef431d5dfa0c1bf595d96c0774f25195f724cd1b4"
+  },
+  "four_retained_rows_exact": {
+    "compression-breakout/base": "7444a1bc52b549cdf6201cd6974e90892de0f6e97be61b19a2342e9de5890792",
+    "atr-trail/base": "7e352ab30eb84cb4c18bedaded959c375aba1d70bdb595966eca92c78c05da0f",
+    "fresh-entry/base": "f1655c48a3b0224f8b12fa7a557b5ab57a86100f5b8ae15894a0e63cfdac42f0",
+    "single-topup/base": "a3f16316e2ac10bc6b451137a1c8b5456e40d7435ac324903688354d37fecea8"
+  },
+  "projection_only_declared_changes": true,
+  "original_full5_profiles_preserved": true,
+  "all_four_unity_six_groups_exact": true,
+  "actual_five_evidence_groups": {
+    "compression-breakout/base": {
+      "financial": "ab35fb08cf35daea1ceda125a37993353cc2a5be6eb90795534ce710898ceefd",
+      "fills": "b2909133fa7ec33f48f835f30913e4e33a092aeb7dce7408e9a432187be75806",
+      "daily": "7fbaef53ec6a533d2dfc356970c7806268f06816f60229958cc21be572262381",
+      "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+      "operating": "f5ec27c96a26a0178ab76c8fbaffd668d4d7f1a3f995d7aa5e10511f125c1655",
+      "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+    },
+    "atr-trail/base": {
+      "financial": "8ca0ff66f7dbe0584d48ed704dee97cd24dee15b1f8267724a6a0ff0c7cf26f7",
+      "fills": "fb9779fda8b8928101be1ce7a8eac59bd6cee19c7f296f4f5daf5d4c1f108bcf",
+      "daily": "4ab408ea9d68a804a7e81223c73c3c78b9365aabd9a90429c5937d7d1a7f5558",
+      "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+      "operating": "a64e621d95d835e3a7b6df6f077fa9474856f94229ee5ad7e980eff381e33701",
+      "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+    },
+    "fresh-entry/base": {
+      "financial": "a3c880a822c498c72cdab993fc8d483ba4ac1214c33b865d7b723e60d80ad612",
+      "fills": "05a75499649702bab6f821b5e3d596b4c6c79b00303a509875df80b7ebc5e485",
+      "daily": "eb54d25ff64f6fff0b7e2943a4123319be78999851a806526fadae5d6367189c",
+      "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+      "operating": "35872360e001fd2d11223e7697843b55b524c502ecce4fa5a74ec3e2272d8629",
+      "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+    },
+    "single-topup/base": {
+      "financial": "e935ff7e9b5913e0581ce2b38be6ec006d33e3df7a843af14dc3cc0799988481",
+      "fills": "e4f5581da8ce0ebc33af7d47f23082ff410f209dda3f186b12333834e76af85e",
+      "daily": "ae8433aa9fdb429437c1334d6ec37a54f30b49fd13fe42987273b447a96b3320",
+      "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+      "operating": "55a36f5e6311092349015ec4b183a23a6bddbac8a6909f47dce586e10039f48f",
+      "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+    },
+    "incumbent/base": {
+      "financial": "a263f6206173df300e9537e43e5df2d9750b2817543a4e8399320c3f7eb2a4ec",
+      "fills": "595b6096557786e932baaa7abfee0602a1822aee57ebac74b1af8edaa6d513f4",
+      "daily": "07898bd921f29a9bffbfd9af84aba585f60984618add7f2e849a807587fc064f",
+      "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+      "operating": "3628c041d33b67da9e38cbeeefc39c8f16b6c529f368600c73f9e19f0643e36e",
+      "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+    }
+  },
+  "actual_retry_row_sha256": "9a1bf450f7f50ab4b2ed544b53470ef756f2e4ed0778028da576f1cbeeb9d996",
+  "new_incumbent_causal_quantity_check": {
+    "decisions_checked": 29254,
+    "post_cutoff_decisions": 20672,
+    "fixed_scale_always_one": true,
+    "owned_quantities_equal_actual_cumulative_fills": true,
+    "actual_terminal_quantity": "0.000"
+  },
+  "new_incumbent_source": {
+    "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+    "dirty": false,
+    "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+  },
+  "derivation": {
+    "kind": "lossless-account-projection",
+    "original_bundle_path": "/workspace/scratch/alpha-beta-next/risk-perp.json.gz",
+    "original_bundle_sha256": "3b958b2e92d8aefcf7b9f073a3916c325420a546cf7652203ce6692be5ee2446",
+    "original_receipt_path": "/workspace/scratch/alpha-beta-next/risk-perp.command.json",
+    "original_receipt_sha256": "6177756a15cc19007ea7c14db7acdf84a02967512555c71d4272e26d495196d9",
+    "retained_row_sha256": {
+      "compression-breakout/base": "7444a1bc52b549cdf6201cd6974e90892de0f6e97be61b19a2342e9de5890792",
+      "atr-trail/base": "7e352ab30eb84cb4c18bedaded959c375aba1d70bdb595966eca92c78c05da0f",
+      "fresh-entry/base": "f1655c48a3b0224f8b12fa7a557b5ab57a86100f5b8ae15894a0e63cfdac42f0",
+      "single-topup/base": "a3f16316e2ac10bc6b451137a1c8b5456e40d7435ac324903688354d37fecea8"
+    }
+  },
+  "source_relabelled": false,
+  "global64_approved": false
+}

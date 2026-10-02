@@ -1,0 +1,12 @@
+{
+  "stopped_at_utc": "2026-10-02T05:39:06.597831+00:00",
+  "stopped_pids": [
+    31869,
+    31865
+  ],
+  "reason": "Distinct caches do not isolate identical synthetic UID12000 global home account lock; full Coin matrix exited1 at session289 before final output.",
+  "financial_evidence_accepted": false,
+  "native_account_operations": 0,
+  "runtime_safety_lock_weakened": false,
+  "next": "Preserve failed logs/progress and rerun full Coin20 serially using unchanged frozen source; Spot unaffected."
+}

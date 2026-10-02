@@ -1,0 +1,758 @@
+{
+  "format": "independent-financial-single-bundle-v2.1",
+  "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/atr-stop.json.gz",
+  "raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+  "kind": "spot",
+  "row_label_origin": "raw row fields",
+  "source": {
+    "git_head": "8ca002522fbdce531dcfbbb783ff4d152a7fd66c",
+    "dirty": false,
+    "python_sources_sha256": "0df8c537ee8d47db6e841778e8e37eac847e1a0c1151e379440081b9473ae026"
+  },
+  "spec_sha256": "8228013f4ac41affb65162c1cabad8f51b5ef32b9607f62231a4776168a337d0",
+  "protocol_sha256": "4ae09ae0bc9224f8028ddcc1373dc1bbc7251a70be2945e5655f5e5fa12eb27e",
+  "fx_sha256": "67606315ea34c0301e0129ac8fc27056099986d9fbd58a552a07f140cdd05bb5",
+  "accounts": {
+    "atr-stop/base": {
+      "reported_complete": true,
+      "producer_audit_passed": true,
+      "initial_cny": "10000",
+      "sessions": 795,
+      "independent_checks_passed": true,
+      "errors": [],
+      "ledger": {
+        "fills": 147,
+        "cash": "9105.48241251845243972529294511888797673",
+        "btc": "0.24076816995365370989687531159",
+        "fees_usdt": "1521.505057096932773707291650557249406238",
+        "fees_vs_audit_delta": "-2.442750593762E-24",
+        "max_daily_cash_delta": "1.511888797673E-23",
+        "max_daily_btc_delta": "9E-29",
+        "max_daily_usdt_equity_delta": "2.603394797673E-23",
+        "max_daily_cny_delta": "2.304837332437E-22",
+        "terminal_cash_delta": "1.511888797673E-23",
+        "terminal_btc_delta": "9E-29"
+      },
+      "core_pools": {
+        "applicable": false
+      },
+      "risk_journal": {
+        "calibration_sha256": null,
+        "fixed_scale": "1",
+        "risk_scale_observations": 38292,
+        "pre_cutoff_observations": 11236,
+        "post_cutoff_observations": 27056,
+        "limit": "Journal scale chronology checked; actual sizing/owned-position causality still requires comparison of unscaled and rerun account evidence."
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.387100612865897,
+          "alpha_daily": 0.0008244470914867406,
+          "hac7_se_daily": 0.00028944955295373884,
+          "alpha_annual_arithmetic": 0.30112930016553197,
+          "alpha_annual_normal95": [
+            0.09391525970147989,
+            0.5083433406295841
+          ],
+          "annual_vol": 0.367241575207918,
+          "es5_loss": 0.0431426731828797,
+          "mdd_daily": 0.3326951051370738,
+          "cagr": 0.5615991713018478,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.4715874355306783,
+              "beta": 0.4590146267913629
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.40026007477313436,
+              "beta": 0.22970920221752006
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.3866868450832813,
+          "alpha_daily": 0.0008175361714740726,
+          "hac7_se_daily": 0.0002928242443456753,
+          "alpha_annual_arithmetic": 0.298605086630905,
+          "alpha_annual_normal95": [
+            0.08897513834627949,
+            0.5082350349155306
+          ],
+          "annual_vol": 0.36838105731025966,
+          "es5_loss": 0.04323348076174458,
+          "mdd_daily": 0.34058380725617265,
+          "cagr": 0.5521803260594271,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.4723856647364936,
+              "beta": 0.4578299475088629
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.4016443816762352,
+              "beta": 0.22699737175437953
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.3376689286429582,
+          "alpha_daily": 0.00040171423582352093,
+          "hac7_se_daily": 0.00029230575414525495,
+          "alpha_annual_arithmetic": 0.14672612463454102,
+          "alpha_annual_normal95": [
+            -0.06253264170050553,
+            0.3559848909695876
+          ],
+          "annual_vol": 0.29068114067881307,
+          "es5_loss": 0.03561316757407429,
+          "mdd_daily": 0.2961930695937923,
+          "cagr": 0.20755231231792726,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.40153824762675266,
+              "beta": 0.3657250812439787
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.3605474416347845,
+              "beta": 0.2229355465100379
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.34066100165851737,
+          "alpha_daily": 0.00042331634988004374,
+          "hac7_se_daily": 0.0002976778464237584,
+          "alpha_annual_arithmetic": 0.15461629679368596,
+          "alpha_annual_normal95": [
+            -0.0584882966826184,
+            0.36772089026999033
+          ],
+          "annual_vol": 0.2940858365365023,
+          "es5_loss": 0.03563277125715768,
+          "mdd_daily": 0.3132099242177898,
+          "cagr": 0.2211743044646317,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.40412179705159007,
+              "beta": 0.3717950333372785
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.3606013729066319,
+              "beta": 0.22612545406464327
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 1.3990896722899995,
+          "2021": 0.7058341145339008,
+          "2022": -0.20433403764243696,
+          "2023": 0.505277804334312,
+          "2024": 0.5184324472738798,
+          "2025": 0.07630712874789532,
+          "2026": -0.006018939711466877
+        },
+        "training_usdt": {
+          "days": 731,
+          "beta": 0.43421493611267037,
+          "alpha_daily": 0.0017388370560034844,
+          "hac7_se_daily": 0.0007109390572698496,
+          "alpha_annual_arithmetic": 0.6351102347052727,
+          "alpha_annual_normal95": [
+            0.12615607299636009,
+            1.1440643964141852
+          ],
+          "annual_vol": 0.5021397092622772,
+          "es5_loss": 0.0553298667115747,
+          "mdd_daily": 0.2100728448303394,
+          "cagr": 1.8626335283069655,
+          "capture": {
+            "up": {
+              "days": 395,
+              "arithmetic_capture": 0.5708461657446418,
+              "beta": 0.5212887184701082
+            },
+            "down": {
+              "days": 336,
+              "arithmetic_capture": 0.467055493485264,
+              "beta": 0.20898679116908037
+            }
+          }
+        },
+        "reported_continuous_proxy_mdd": "0.3641224868625986569325860059",
+        "final_cny_delta": "-8.1839787800E-12"
+      },
+      "training_ledger_sha256": "980bd9d197cc4858da32c28d5712f48fc3a279db8c6684bd92bd7a0ea2601030",
+      "registered_cagr": 0.5521803260594271,
+      "account_year_days": 365.25
+    },
+    "atr-stop/fee150": {
+      "reported_complete": true,
+      "producer_audit_passed": true,
+      "initial_cny": "10000",
+      "sessions": 795,
+      "independent_checks_passed": true,
+      "errors": [],
+      "ledger": {
+        "fills": 147,
+        "cash": "8714.56462902636008976574431812778797673",
+        "btc": "0.23052496438693281110414242888",
+        "fees_usdt": "2219.249265445183397972395855138373332257",
+        "fees_vs_audit_delta": "1.138373332257E-24",
+        "max_daily_cash_delta": "1.112778797673E-23",
+        "max_daily_btc_delta": "5E-29",
+        "max_daily_usdt_equity_delta": "1.408951037673E-23",
+        "max_daily_cny_delta": "1.721691193133E-22",
+        "terminal_cash_delta": "1.112778797673E-23",
+        "terminal_btc_delta": "-2E-29"
+      },
+      "core_pools": {
+        "applicable": false
+      },
+      "risk_journal": {
+        "calibration_sha256": null,
+        "fixed_scale": "1",
+        "risk_scale_observations": 38292,
+        "pre_cutoff_observations": 11236,
+        "post_cutoff_observations": 27056,
+        "limit": "Journal scale chronology checked; actual sizing/owned-position causality still requires comparison of unscaled and rerun account evidence."
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.387147088815068,
+          "alpha_daily": 0.0008066910621501363,
+          "hac7_se_daily": 0.00028999297126625084,
+          "alpha_annual_arithmetic": 0.2946439104503373,
+          "alpha_annual_normal95": [
+            0.08704084225054097,
+            0.5022469786501336
+          ],
+          "annual_vol": 0.36733375963776427,
+          "es5_loss": 0.04317530022816103,
+          "mdd_daily": 0.3342360629309973,
+          "cagr": 0.551497231926062,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.47073611395422577,
+              "beta": 0.4590882680904129
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.40108584650675166,
+              "beta": 0.22989587932052855
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.38673545634868073,
+          "alpha_daily": 0.0007997798433247375,
+          "hac7_se_daily": 0.0002933671376323894,
+          "alpha_annual_arithmetic": 0.29211958777436037,
+          "alpha_annual_normal95": [
+            0.08210098761470912,
+            0.5021381879340117
+          ],
+          "annual_vol": 0.36847456716108395,
+          "es5_loss": 0.04326790011411081,
+          "mdd_daily": 0.34210654825428377,
+          "cagr": 0.5421393169180941,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.471537677340655,
+              "beta": 0.4579040451136428
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.40247860185074646,
+              "beta": 0.22717960048400893
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.33769553964138527,
+          "alpha_daily": 0.0003834362609137404,
+          "hac7_se_daily": 0.00029305353882941196,
+          "alpha_annual_arithmetic": 0.14005009429874368,
+          "alpha_annual_normal95": [
+            -0.06974400361384406,
+            0.3498441922113314
+          ],
+          "annual_vol": 0.290757603096374,
+          "es5_loss": 0.03565349865384968,
+          "mdd_daily": 0.2987584603811624,
+          "cagr": 0.1995006335529088,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.4004741074597127,
+              "beta": 0.3658341418437142
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.36148949164218735,
+              "beta": 0.22311850397459282
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.34069463558993657,
+          "alpha_daily": 0.000405036729489702,
+          "hac7_se_daily": 0.0002984235807748481,
+          "alpha_annual_arithmetic": 0.14793966544611364,
+          "alpha_annual_normal95": [
+            -0.06569879179479236,
+            0.36157812268701967
+          ],
+          "annual_vol": 0.29416710815852254,
+          "es5_loss": 0.035676157570680635,
+          "mdd_daily": 0.3157132882188405,
+          "cagr": 0.21303179741516876,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.4030559080307524,
+              "beta": 0.37191922913330344
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.36154842618096983,
+              "beta": 0.2263190229508826
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 1.394157092848488,
+          "2021": 0.6987218296702014,
+          "2022": -0.20731722712754788,
+          "2023": 0.49903225472134977,
+          "2024": 0.511654624361048,
+          "2025": 0.06773880792868793,
+          "2026": -0.013003364367808325
+        },
+        "training_usdt": {
+          "days": 731,
+          "beta": 0.4342789900046225,
+          "alpha_daily": 0.0017222829567308394,
+          "hac7_se_daily": 0.0007116918147429083,
+          "alpha_annual_arithmetic": 0.6290638499459391,
+          "alpha_annual_normal95": [
+            0.1195707966896385,
+            1.1385569032022396
+          ],
+          "annual_vol": 0.5022592915917395,
+          "es5_loss": 0.05537140326172565,
+          "mdd_daily": 0.21108424495422196,
+          "cagr": 1.8454570427579453,
+          "capture": {
+            "up": {
+              "days": 395,
+              "arithmetic_capture": 0.5702964051669636,
+              "beta": 0.5212953740066275
+            },
+            "down": {
+              "days": 336,
+              "arithmetic_capture": 0.46768568876446753,
+              "beta": 0.2091852488178482
+            }
+          }
+        },
+        "reported_continuous_proxy_mdd": "0.3655908490036028677083839603",
+        "final_cny_delta": "-2.36729506643E-11"
+      },
+      "training_ledger_sha256": "ad9fd29bb86076813e5c4d9f57aedb9618a09d1d2b73d67bacd0f473605c3ef6",
+      "registered_cagr": 0.5421393169180941,
+      "account_year_days": 365.25
+    },
+    "atr-stop/slip2": {
+      "reported_complete": true,
+      "producer_audit_passed": true,
+      "initial_cny": "10000",
+      "sessions": 795,
+      "independent_checks_passed": true,
+      "errors": [],
+      "ledger": {
+        "fills": 147,
+        "cash": "8671.47506211293947198466787852378797673",
+        "btc": "0.22941284350697396881740660249",
+        "fees_usdt": "1474.248792682112440406250002470063473379",
+        "fees_vs_audit_delta": "4.70063473379E-25",
+        "max_daily_cash_delta": "2.147621202327E-23",
+        "max_daily_btc_delta": "2E-29",
+        "max_daily_usdt_equity_delta": "2.728126292327E-23",
+        "max_daily_cny_delta": "2.419656739737E-22",
+        "terminal_cash_delta": "-2.147621202327E-23",
+        "terminal_btc_delta": "-1E-29"
+      },
+      "core_pools": {
+        "applicable": false
+      },
+      "risk_journal": {
+        "calibration_sha256": null,
+        "fixed_scale": "1",
+        "risk_scale_observations": 38292,
+        "pre_cutoff_observations": 11236,
+        "post_cutoff_observations": 27056,
+        "limit": "Journal scale chronology checked; actual sizing/owned-position causality still requires comparison of unscaled and rerun account evidence."
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.3872554125707355,
+          "alpha_daily": 0.0008046524828071464,
+          "hac7_se_daily": 0.0002901521804323436,
+          "alpha_annual_arithmetic": 0.2938993193453102,
+          "alpha_annual_normal95": [
+            0.08618227489559975,
+            0.5016163637950206
+          ],
+          "annual_vol": 0.3674356307123911,
+          "es5_loss": 0.04319588166380671,
+          "mdd_daily": 0.3343439729815719,
+          "cagr": 0.5503720442213254,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.4707309699516975,
+              "beta": 0.4590830718760499
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.4012716618884741,
+              "beta": 0.23015953918854176
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.386843830552928,
+          "alpha_daily": 0.0007977425386579163,
+          "hac7_se_daily": 0.0002935270210464469,
+          "alpha_annual_arithmetic": 0.29137546224480393,
+          "alpha_annual_normal95": [
+            0.08124240314786305,
+            0.5015085213417447
+          ],
+          "annual_vol": 0.36857534345373244,
+          "es5_loss": 0.043288481117015866,
+          "mdd_daily": 0.3422131826207577,
+          "cagr": 0.5410209158261161,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.4715324029916249,
+              "beta": 0.45789798218657973
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.4026647106077315,
+              "beta": 0.2274445301226198
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.337825658846004,
+          "alpha_daily": 0.00038152926141543956,
+          "hac7_se_daily": 0.00029323607663382103,
+          "alpha_annual_arithmetic": 0.1393535627319893,
+          "alpha_annual_normal95": [
+            -0.07057121216939682,
+            0.3492783376333754
+          ],
+          "annual_vol": 0.2908470516139626,
+          "es5_loss": 0.035674846724739764,
+          "mdd_daily": 0.2995482580600718,
+          "cagr": 0.1986715868984834,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.40047770576178754,
+              "beta": 0.36584901468026204
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.3617014134440392,
+              "beta": 0.22342912848744045
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.3408251806407942,
+          "alpha_daily": 0.00040312540017740554,
+          "hac7_se_daily": 0.0002986053525346616,
+          "alpha_annual_arithmetic": 0.14724155241479736,
+          "alpha_annual_normal95": [
+            -0.06652703341124153,
+            0.3610101382408363
+          ],
+          "annual_vol": 0.2942552061893307,
+          "es5_loss": 0.035700536286312215,
+          "mdd_daily": 0.31648398993307025,
+          "cagr": 0.21219339856382358,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.40305932222415164,
+              "beta": 0.371933780599956
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.3617613242077257,
+              "beta": 0.22663023507221486
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 1.393766599391987,
+          "2021": 0.6974995301555793,
+          "2022": -0.20755191509130452,
+          "2023": 0.4985476066100992,
+          "2024": 0.5105315383092452,
+          "2025": 0.06698177950679815,
+          "2026": -0.01366546102694838
+        },
+        "training_usdt": {
+          "days": 731,
+          "beta": 0.43436632901243,
+          "alpha_daily": 0.0017199711199445665,
+          "hac7_se_daily": 0.0007120411300176333,
+          "alpha_annual_arithmetic": 0.6282194515597529,
+          "alpha_annual_normal95": [
+            0.11847632699142935,
+            1.1379625761280765
+          ],
+          "annual_vol": 0.5023877572998316,
+          "es5_loss": 0.055402794022785674,
+          "mdd_daily": 0.2114785286902453,
+          "cagr": 1.8431649693217165,
+          "capture": {
+            "up": {
+              "days": 395,
+              "arithmetic_capture": 0.5702788734397519,
+              "beta": 0.5212733608153581
+            },
+            "down": {
+              "days": 336,
+              "arithmetic_capture": 0.4678275939562625,
+              "beta": 0.209422742814473
+            }
+          }
+        },
+        "reported_continuous_proxy_mdd": "0.3656936987401100299420172968",
+        "final_cny_delta": "-2.9244967689E-12"
+      },
+      "training_ledger_sha256": "5fb9803156bfee75ee4deafabec3b60f925b6edfec59340d766bca220dc85db1",
+      "registered_cagr": 0.5410209158261161,
+      "account_year_days": 365.25
+    },
+    "atr-stop/outage": {
+      "reported_complete": true,
+      "producer_audit_passed": true,
+      "initial_cny": "10000",
+      "sessions": 789,
+      "independent_checks_passed": true,
+      "errors": [],
+      "ledger": {
+        "fills": 147,
+        "cash": "9105.48241251845243972529294511888797673",
+        "btc": "0.24076816995365370989687531159",
+        "fees_usdt": "1521.505057096932773707291650557249406238",
+        "fees_vs_audit_delta": "-2.442750593762E-24",
+        "max_daily_cash_delta": "1.511888797673E-23",
+        "max_daily_btc_delta": "9E-29",
+        "max_daily_usdt_equity_delta": "2.603394797673E-23",
+        "max_daily_cny_delta": "2.304837332437E-22",
+        "terminal_cash_delta": "1.511888797673E-23",
+        "terminal_btc_delta": "9E-29"
+      },
+      "core_pools": {
+        "applicable": false
+      },
+      "risk_journal": {
+        "calibration_sha256": null,
+        "fixed_scale": "1",
+        "risk_scale_observations": 37997,
+        "pre_cutoff_observations": 10941,
+        "post_cutoff_observations": 27056,
+        "limit": "Journal scale chronology checked; actual sizing/owned-position causality still requires comparison of unscaled and rerun account evidence."
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.387100612865897,
+          "alpha_daily": 0.0008244470914867406,
+          "hac7_se_daily": 0.00028944955295373884,
+          "alpha_annual_arithmetic": 0.30112930016553197,
+          "alpha_annual_normal95": [
+            0.09391525970147989,
+            0.5083433406295841
+          ],
+          "annual_vol": 0.367241575207918,
+          "es5_loss": 0.0431426731828797,
+          "mdd_daily": 0.3326951051370738,
+          "cagr": 0.5615991713018478,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.4715874355306783,
+              "beta": 0.4590146267913629
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.40026007477313436,
+              "beta": 0.22970920221752006
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.3866868450832813,
+          "alpha_daily": 0.0008175361714740726,
+          "hac7_se_daily": 0.0002928242443456753,
+          "alpha_annual_arithmetic": 0.298605086630905,
+          "alpha_annual_normal95": [
+            0.08897513834627949,
+            0.5082350349155306
+          ],
+          "annual_vol": 0.36838105731025966,
+          "es5_loss": 0.04323348076174458,
+          "mdd_daily": 0.34058380725617265,
+          "cagr": 0.5521803260594271,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.4723856647364936,
+              "beta": 0.4578299475088629
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.4016443816762352,
+              "beta": 0.22699737175437953
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.3376689286429582,
+          "alpha_daily": 0.00040171423582352093,
+          "hac7_se_daily": 0.00029230575414525495,
+          "alpha_annual_arithmetic": 0.14672612463454102,
+          "alpha_annual_normal95": [
+            -0.06253264170050553,
+            0.3559848909695876
+          ],
+          "annual_vol": 0.29068114067881307,
+          "es5_loss": 0.03561316757407429,
+          "mdd_daily": 0.2961930695937923,
+          "cagr": 0.20755231231792726,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.40153824762675266,
+              "beta": 0.3657250812439787
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.3605474416347845,
+              "beta": 0.2229355465100379
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.34066100165851737,
+          "alpha_daily": 0.00042331634988004374,
+          "hac7_se_daily": 0.0002976778464237584,
+          "alpha_annual_arithmetic": 0.15461629679368596,
+          "alpha_annual_normal95": [
+            -0.0584882966826184,
+            0.36772089026999033
+          ],
+          "annual_vol": 0.2940858365365023,
+          "es5_loss": 0.03563277125715768,
+          "mdd_daily": 0.3132099242177898,
+          "cagr": 0.2211743044646317,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.40412179705159007,
+              "beta": 0.3717950333372785
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.3606013729066319,
+              "beta": 0.22612545406464327
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 1.3990896722899995,
+          "2021": 0.7058341145339008,
+          "2022": -0.20433403764243696,
+          "2023": 0.505277804334312,
+          "2024": 0.5184324472738798,
+          "2025": 0.07630712874789532,
+          "2026": -0.006018939711466877
+        },
+        "training_usdt": {
+          "days": 731,
+          "beta": 0.43421493611267037,
+          "alpha_daily": 0.0017388370560034844,
+          "hac7_se_daily": 0.0007109390572698496,
+          "alpha_annual_arithmetic": 0.6351102347052727,
+          "alpha_annual_normal95": [
+            0.12615607299636009,
+            1.1440643964141852
+          ],
+          "annual_vol": 0.5021397092622772,
+          "es5_loss": 0.0553298667115747,
+          "mdd_daily": 0.2100728448303394,
+          "cagr": 1.8626335283069655,
+          "capture": {
+            "up": {
+              "days": 395,
+              "arithmetic_capture": 0.5708461657446418,
+              "beta": 0.5212887184701082
+            },
+            "down": {
+              "days": 336,
+              "arithmetic_capture": 0.467055493485264,
+              "beta": 0.20898679116908037
+            }
+          }
+        },
+        "reported_continuous_proxy_mdd": "0.3641224868625986569325860059",
+        "final_cny_delta": "-8.1839787800E-12"
+      },
+      "training_ledger_sha256": "980bd9d197cc4858da32c28d5712f48fc3a279db8c6684bd92bd7a0ea2601030",
+      "registered_cagr": 0.5521803260594271,
+      "account_year_days": 365.25
+    }
+  },
+  "public_funding_mark_inputs": {},
+  "limitations": [
+    "No adoption approval; financial identities and descriptive statistics only.",
+    "Continuous historical proxy path is reported, not independently replayed here.",
+    "Archive flags are inspected; underlying backups are not reopened.",
+    "All studied history is research-contaminated; native cases/actual account-days remain zero."
+  ],
+  "all_examined_checks_passed": true,
+  "all_reported_complete": true
+}

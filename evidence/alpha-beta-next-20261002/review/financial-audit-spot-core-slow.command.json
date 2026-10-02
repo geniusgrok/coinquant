@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/btc-alpha-beta-next/review/independent_financial_audit.py",
+    "--bundle",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/core-slow.json.gz",
+    "--sha256",
+    "02a9ba480bc48c0952df3ac949ef0b3f98db6c1fb7c61c89f3cecd99a49d921b",
+    "--kind",
+    "spot",
+    "--out",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-slow.json"
+  ],
+  "checker_sha256": "492d46ff9bbff72f1291ad77988fbf8478b35fd880c818e1d3979a6215f1897c",
+  "elapsed_seconds": 4.096237721998477,
+  "exit_code": 0,
+  "log_sha256": "6300e962a2fff09e63c17812a44e5fc069e0922b333d3ce484b59ed72f872b8b",
+  "output_sha256": "69fd3563edf1a421d1ece1377beaba0e0bef36e950bd3530af7699cb374b1b4d"
+}

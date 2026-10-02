@@ -1,0 +1,39 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/btc-alpha-beta-next/review/independent_financial_audit.py",
+    "--bundle",
+    "/workspace/scratch/alpha-beta-next/risk-perp.json.gz",
+    "--sha256",
+    "3b958b2e92d8aefcf7b9f073a3916c325420a546cf7652203ce6692be5ee2446",
+    "--kind",
+    "perp",
+    "--out",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp.json",
+    "--calibration",
+    "/workspace/scratch/alpha-beta-next/registered-calibration.json",
+    "--baseline-audit",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+    "--unscaled-audit",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json"
+  ],
+  "checker_sha256": "492d46ff9bbff72f1291ad77988fbf8478b35fd880c818e1d3979a6215f1897c",
+  "elapsed_seconds": 4.060794503995567,
+  "exit_code": 0,
+  "log_sha256": "858932f1caf61d19624511c8b1d89690ebc522e265c312d161667e4f4de4472b",
+  "output_sha256": "e857608457e91996d07d40863eab71e2220c4bad6accd1158c668995cd6fdc47",
+  "verification_context": {
+    "calibration": {
+      "path": "/workspace/scratch/alpha-beta-next/registered-calibration.json",
+      "sha256": "ed8c99295e71386a7cef300f7d101ea941e5a7a0147bc9038012d6cc58e23821"
+    },
+    "baseline_audit": {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555"
+    },
+    "unscaled_audit": {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555"
+    }
+  }
+}

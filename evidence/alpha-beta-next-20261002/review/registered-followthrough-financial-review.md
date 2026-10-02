@@ -1,0 +1,15 @@
+# Registered follow-through command queue — PASS for this launch
+
+Reviewed `run_registered_followthrough.py`, SHA256 `07e85b50e4f95a179ac8aaadd038baea4354affde70c121c7f10bddb1922027d`, against the frozen spec/protocol and approved assessor32ab. No material command/case mismatch found. The queue was not executed by the auditor.
+
+- Initial assessment requires the full 28 Spot + 20 Coin singleton matrix through the assessor's exact expected case set. It receives the approved immutable original Spot/Coin baselines and explicitly stops if either original-baseline gate fails.
+- Training calibration comes only from the approved deterministic assessor. All legal candidate profiles and baseline unity controls run as actual base-scene producer accounts with that exact file. If every unscaled base is valid this is 7 Spot + 5 Coin accounts (ten new candidates and two controls). Invalid bases retain their explicit inapplicable/rejected risk obligations; the queue does not fabricate profiles.
+- At least two independently eligible compatible components trigger exactly the proposed full combination, all four project stresses, with no subset search. Zero/one component uses the registered not-applicable/existing-singleton treatment. There is no alternative parameter grid.
+- Sensitivity uses incumbent and final selected Coin identity; if identical, that identity is evaluated once. Each receives exactly CNY9,900, CNY10,100, and CNY10,000 with starts −60,000/+60,000ms, all in base. It passes actual combination components when the selected Coin identity is a combination. Results do not feed another selection search.
+- Final assessment receives singles, the fixed calibration, actual risk accounts, applicable combination accounts and every sensitivity output, with `--final`. No adoption, forward initialization, credentials, live account or native-trading command exists.
+- Producer/assessor HEAD and runtime/research cleanliness are checked before and after each command. Protected heads remain aced/8ca; assessor32ab is fixed. Exclusive outputs/logs and lossless gzip round-trip receipts preserve retained raw identities. The queue does not change product source.
+- Within this queue, Coin risk finishes before Coin combination, and every Coin sensitivity is sequential. Concurrent Spot work uses a different public market path and has no Coin print-cache writer. Read-only process inspection verified PID21612 is currently the single existing Coin singleton producer named in the initial wait. No second Coin-cache runner was present.
+
+Operational scope: the fixed `/proc/21612` wait is specific to the current session and known producer; it is not a reusable global concurrency lock. The queue should be launched once, with no separately launched Coin replay alongside it. A producer failure or incomplete output is not treated as success by the strict assessment/read/return-code gates. No new permission is required for the already-authorized queue.
+
+This is orchestration approval, not acceptance of the pending financial results or selection. Independent full-evidence review remains required.

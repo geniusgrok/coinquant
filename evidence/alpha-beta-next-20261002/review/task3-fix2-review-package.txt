@@ -1,0 +1,394 @@
+diff --git a/research/alpha-forward-GUIDE.md b/research/alpha-forward-GUIDE.md
+index 5a49bb1..c69ada0 100644
+--- a/research/alpha-forward-GUIDE.md
++++ b/research/alpha-forward-GUIDE.md
+@@ -13,7 +13,7 @@ python -m research.alpha_assessment \
+   --csv /path/provisional.csv --markdown /path/provisional.md
+ ```
+ 
+-Spot must contain exactly seven candidates × four stresses; Coin must contain exactly five × four. Missing/extra accounts fail. Explicit `complete:false` cases remain rejected accounts, with no valid-performance or calibration claim. Spot outage uses the producer's exact 789 starts; other original accounts use 795. Every Spot archive proof is checked. Original timing is preserved: reads dispatched before the deadline may finish within their fixed 200ms latency; writes require actual trace evidence of dispatch before deadline and receipt exactly 1000ms later. Elapsed time must exactly match the recorded millisecond clock; no epsilon is used. Source digests are independently reconstructed from recorded Git trees. Spot full-schedule file hashes and Coin primary-list hashes are checked in their respective native formats. Source history must remain available locally.
++Spot must contain exactly seven candidates × four stresses; Coin must contain exactly five × four. Missing/extra accounts fail. Explicit `complete:false` cases remain rejected accounts, with no valid-performance or calibration claim. Spot outage uses the producer's exact 789 starts; other original accounts use 795. Every Spot archive proof is checked. Original timing is preserved: reads dispatched before the deadline may finish within their fixed 200ms latency; writes require actual trace evidence of dispatch before deadline and receipt exactly 1000ms later. Elapsed time must exactly match the recorded millisecond clock; no epsilon is used. Source digests are independently reconstructed from recorded Git trees. Spot full-schedule file hashes and Coin primary-list hashes are checked in their respective native formats. Source history must remain available locally. Before emitting an analysis, the assessor proves the narrow execution-source equivalence described below against the measured Spot source and records `analysis_execution_equivalence_sha256`; original measured identities stay unchanged.
+ 
+ The default public daily archive is `/tmp/spotquant-market/klines`; `--market`, `--fx`, and `--schedule` can override paths, never their bound input identities. Existing canonical, attribution, regression, daily metrics and passive-control helpers are reused. The Spot archive and FX bytes are rehashed locally. Coin retains its original market identity and consumed minute/print file hashes; matching accounts require equal market identity and equal hashes for every overlapping consumed file. The assessor does not download or recreate Coin archives.
+ 
+@@ -41,7 +41,7 @@ For independently measured case files, supply an explicit one-level manifest in
+ 
+ Paths resolve relative to the manifest. Every file's original raw hash/source is retained in `account_source_manifests`; overlapping accounts, nested manifests, source changes and input mismatches fail. The manifest's raw SHA binds the calibration input; each contributing original account SHA remains in the report. Never assemble a file by relabeling its measured source.
+ 
+-The JSON report contains all-candidate financial metrics, separate full/2022+ returns, daily versus continuous MDD, costs/funding, descriptive HAC7 regression, ES, calendar log-return concentration, passive cash controls, causal event/reason/exit counts, actual desired/accepted/fill size summaries (counts/min/max/sums with semantic opportunity/reason links) and Coin trigger/decision-price gaps, post-event five/twenty-day close diagnostics, rejection explanations, source manifests, risk controls and sensitivity inventory. Year 2026 is partial through September19. Warm-up opportunities are counted separately and excluded from post-event in-window summaries. Opportunity creation does not establish actionability; actual recorded gate reasons remain explicit. Future endpoints unavailable within the window are counted, not invented. CSV and Markdown are standalone concise exports; full diagnosis remains in JSON. No plotting dependency is required.
++The JSON report contains all-candidate financial metrics, separate full/2022+ returns, daily versus continuous MDD, costs/funding, descriptive HAC7 regression, ES, calendar log-return concentration, passive cash controls, causal event/reason/exit counts, actual desired/accepted/fill size summaries (counts/min/max/sums with semantic opportunity/reason links) and Coin trigger/decision-price gaps. Coin fill records retain client and order IDs and join only the recorded write-attempt client-to-opportunity relation; partial fills can share that relation, repeated/unknown writes do not invent fills, and conflicting links or unattributed exits stay explicitly unknown. No timestamp-nearest campaign inference is used. The report also retains compact client/write relation counts, post-event five/twenty-day close diagnostics, rejection explanations, source manifests, risk controls and sensitivity inventory. Year 2026 is partial through September19. Warm-up opportunities are counted separately and excluded from post-event in-window summaries. Opportunity creation does not establish actionability; actual recorded gate reasons remain explicit. Future endpoints unavailable within the window are counted, not invented. CSV and Markdown are standalone concise exports; full diagnosis remains in JSON. No plotting dependency is required.
+ 
+ Memory is bounded by one parsed input bundle plus compact summaries/base curves. Rows release bulky journals, fills and allocations immediately after summarization; bundles are consumed sequentially. For especially large outputs, use one-account files with a manifest. No generic streaming framework, new dependency or strategy grid is added.
+ 
+@@ -54,7 +54,7 @@ python -m research.alpha_assessment --forward-init /path/spot-forward.json \
+   --analysis /path/final.json --kind spot
+ ```
+ 
+-Initialization starts at actual current UTC with CNY10000 cash, BTC0, no observations, no simulated account-days. It binds the analysis raw SHA, immutable measured source, exact spec/protocol, selected rule and original baseline raw SHA. Current execution head is recorded separately. Documentation commits or ordinary merges are accepted only when current tracked Python bytes, spec and protocol prove source equivalence. Frozen measured identities never change.
++Initialization starts at actual current UTC with CNY10000 cash, BTC0, no observations, no simulated account-days. It binds the analysis raw SHA, immutable measured source, exact spec/protocol, selected rule and original baseline raw SHA. Current execution head is recorded separately. The controller's pre-outcome assessment-only correction permits exactly one Spot execution-source difference: `research/alpha_assessment.py`. Both frozen and current **full** Python-source digests must first match their committed Git trees; every other tracked runtime/research Python path and byte (including added/deleted helpers), plus exact committed spec/protocol bytes, must then agree. Coin has no excluded file; Coin forward also checks the Spot analysis helpers against their measured source. There is no ignore-path option or source override. The final analysis executable separately must match `report.analysis_source` in full, including the assessor itself: a later assessor change cannot append against an older analysis report. Documentation commits and ordinary merges may change HEAD only when these byte proofs pass. Frozen measured identities never change.
+ 
+ Manually obtain a completed public bar, preserve the downloaded payload's SHA256, and create a receipt record:
+ 
+diff --git a/research/alpha_assessment.py b/research/alpha_assessment.py
+index 8f22951..31a9933 100644
+--- a/research/alpha_assessment.py
++++ b/research/alpha_assessment.py
+@@ -98,11 +98,38 @@ def verify_source(source, kind):
+     archive = subprocess.run(['git', 'archive', head, 'research', kind.replace('perp', 'coin') + 'quant'],
+                              cwd=repo, check=True, capture_output=True).stdout
+     digest = hashlib.sha256()
++    files = {}
+     with tarfile.open(fileobj=io.BytesIO(archive)) as tree:
+         for member in sorted(tree.getmembers(), key=lambda m: m.name):
+-            if member.isfile() and member.name.endswith('.py'):
+-                digest.update(member.name.encode() + b'\0' + tree.extractfile(member).read() + b'\0')
++            if member.isfile() and (member.name.endswith('.py') or member.name in
++                    ('research/alpha_beta_spec.json', 'research/alpha-beta-PROTOCOL.md')):
++                content = tree.extractfile(member).read()
++                files[member.name] = hashlib.sha256(content).hexdigest()
++                if member.name.endswith('.py'):
++                    digest.update(member.name.encode() + b'\0' + content + b'\0')
+     require(digest.hexdigest() == source.get('python_sources_sha256'), 'source digest differs from committed tree')
++    return files
++
++
++def verify_execution_equivalence(frozen, current, kind, spec_sha256, protocol_sha256):
++    """Only the Spot assessor may evolve independently of measured execution.
++
++    Both *full* historical source digests are proved first. Comparison of all
++    other tracked runtime/research Python paths is exact, including additions
++    and deletions. There is no caller-configurable exclusion or source override.
++    """
++    measured, executing = verify_source(frozen, kind), verify_source(current, kind)
++    for path, expected in (('research/alpha_beta_spec.json', spec_sha256),
++                           ('research/alpha-beta-PROTOCOL.md', protocol_sha256)):
++        require(measured.get(path) == executing.get(path) == expected,
++                'forward committed spec/protocol mismatch')
++    if kind == 'spot':
++        assessor = 'research/alpha_assessment.py'
++        require(assessor in measured and assessor in executing, 'tracked assessor missing from source proof')
++        measured = {k: v for k, v in measured.items() if k != assessor}
++        executing = {k: v for k, v in executing.items() if k != assessor}
++    require(measured == executing, 'forward execution source not equivalent outside the Spot assessor')
++    return checksum(measured)
+ 
+ 
+ def environment(schedule_path, fx_path, market_root):
+@@ -341,10 +368,68 @@ def monetary_fingerprint(row, kind):
+     return checksum({k: evidence[k] for k in ('financial', 'fills', 'daily')})
+ 
+ 
++def coin_fill_relations(events):
++    """Resolve only recorded client/write and order/fill identity relations.
++
++    Repeated or unknown write attempts do not prove fills. An actual fill may
++    use their unique campaign relation; conflicting relations remain unknown.
++    Timestamps, proximity, active signals and trade side never assign campaigns.
++    """
++    writes, order_clients = {}, {}
++    for event in events:
++        client = event.get('identity') if event['event'] == 'write_attempt' else event.get('client_order_id')
++        if not client:
++            continue
++        require(isinstance(client, str), 'Coin client identity must be a string')
++        if event['event'] == 'write_attempt':
++            record = writes.setdefault(client, {'opportunities': set(), 'observations': 0})
++            record['observations'] += 1
++            opportunity = event.get('opportunity')
++            if opportunity is not None:
++                require(type(opportunity) is int, 'Coin opportunity identity must be an integer')
++                record['opportunities'].add(opportunity)
++        elif event['event'] == 'fill':
++            order = event.get('trade', event).get('orderId')
++            if order is not None:
++                order_clients.setdefault(str(order), set()).add(client)
++    relations = {}
++    for client, record in writes.items():
++        candidates = sorted(record['opportunities'])
++        relations[client] = {'client_order_id': client, 'opportunity_candidates': candidates,
++                             'write_observations': record['observations']}
++
++    def fill_link(event):
++        client = event.get('client_order_id')
++        order = event.get('trade', event).get('orderId')
++        clients = order_clients.get(str(order), set()) if order is not None else set()
++        origin = 'recorded_fill' if client else 'same_order_fill' if len(clients) == 1 else 'unknown'
++        if not client and len(clients) == 1:
++            client = next(iter(clients))
++        candidates = set(writes.get(client, {}).get('opportunities', ()))
++        direct = event.get('opportunity')
++        if direct is not None:
++            require(type(direct) is int, 'Coin fill opportunity identity must be an integer')
++            candidates.add(direct)
++        if len(clients) > 1:
++            status = 'unknown_conflicting_order_clients'
++        elif len(candidates) > 1:
++            status = 'unknown_conflicting_opportunities'
++        elif len(candidates) == 1:
++            status = 'recorded_fill_opportunity' if direct is not None else 'recorded_client_write_opportunity'
++        else:
++            status = 'unknown_no_recorded_opportunity'
++        return {'client_order_id': client, 'client_id_source': origin,
++                'opportunity': next(iter(candidates)) if not status.startswith('unknown_') else None,
++                'opportunity_link': status, 'opportunity_candidates': sorted(candidates),
++                'order_client_candidates': sorted(clients)}
++    return fill_link, list(relations.values())
++
++
+ def diagnose(events, bars, kind):
+     counts, reasons, exits, opportunities = Counter(), Counter(), Counter(), {}
+     sizing, idle, ages, price_gaps = {}, [], [], []
+     fills_by_opportunity, price_gap_links = {}, {}
++    fill_link, client_relations = coin_fill_relations(events) if kind == 'perp' else (None, [])
+ 
+     def quantities(into, identity, values):
+         key = json.dumps(identity, sort_keys=True)
+@@ -367,9 +452,9 @@ def diagnose(events, bars, kind):
+             fill = event.get('trade', event)
+             filled['count'] += 1
+             filled['quantity_btc'] += number(fill.get('qty', '0'))
++            provenance = fill_link(event) if fill_link else {'opportunity': event.get('opportunity', event.get('signal_ms'))}
+             quantities(fills_by_opportunity,
+-                       {'opportunity': event.get('opportunity', event.get('signal_ms')),
+-                        'order_id': fill.get('order_id', fill.get('orderId')),
++                       {**provenance, 'order_id': fill.get('order_id', fill.get('orderId')),
+                         'side': fill.get('side', 'BUY' if fill.get('buyer') else 'SELL'),
+                         'exit_type': event.get('exit_type')},
+                        {k: fill.get(k) for k in ('qty', 'quote', 'price', 'commission')})
+@@ -447,6 +532,7 @@ def diagnose(events, bars, kind):
+             'opportunity_age_ms': summary(ages), 'decision_vs_trigger_return': summary(price_gaps),
+             'idle_cash_usdt': summary(idle), 'sizing_observations': list(sizing.values()), 'filled': dict(filled),
+             'fill_size_observations': list(fills_by_opportunity.values()),
++            'client_write_opportunity_relations': client_relations,
+             'decision_price_gap_observations': list(price_gap_links.values()),
+             'size_summary_note': 'Counts/min/max/sums of actual recorded observations; repeated desired/accepted observations are not fills.',
+             'opportunity_gate_observations': dict(actionability),
+@@ -709,6 +795,8 @@ def assess(args):
+     for kind in ('spot', 'perp'):
+         expected = {n + '/' + s for n in SPEC[kind + '_candidates'] for s in SPEC[kind + '_scenarios']}
+         bundles[kind] = consume(getattr(args, kind), kind, env, bars, fx, usd_returns, cny_returns, expected=expected)
++    execution_equivalence = verify_execution_equivalence(bundles['spot']['metadata']['source'], analysis_source,
++                                                       'spot', env['spec_sha256'], env['protocol_sha256'])
+     calibrated, training = calibration_document(bundles, usd_returns, fx)
+     if args.calibration_out:
+         write_new(args.calibration_out, calibrated)
+@@ -717,6 +805,7 @@ def assess(args):
+         require(calibration == calibrated, 'calibration differs from deterministic training or bound raw inputs')
+     report = {'format': 1, 'spec_sha256': env['spec_sha256'], 'protocol_sha256': env['protocol_sha256'],
+               'analysis_source': analysis_source, 'input_environment': env,
++              'analysis_execution_equivalence_sha256': execution_equivalence,
+               'training': training, 'calibration_sha256': calibration_hash,
+               'baseline_verification': {}, 'selection': {}, 'risk': {}, 'risk_baseline_controls': {},
+               'sensitivity': [], 'inputs': {}, 'accounts': {}, 'pending': [],
+@@ -873,8 +962,15 @@ def forward_binding(analysis, kind):
+     require(report['spec_sha256'] == sha(SPEC_PATH) and report['protocol_sha256'] == sha(PROTOCOL_PATH), 'forward spec/protocol mismatch')
+     current = current_source(kind)
+     frozen = report['inputs'][kind]['metadata']['source']
+-    require(current['python_sources_sha256'] == frozen['python_sources_sha256'], 'forward source not equivalent to frozen rules')
+-    require(current_source('spot')['python_sources_sha256'] == report['analysis_source']['python_sources_sha256'], 'analysis executable source mismatch')
++    verify_execution_equivalence(frozen, current, kind, report['spec_sha256'], report['protocol_sha256'])
++    analysis_current = current if kind == 'spot' else current_source('spot')
++    if kind == 'perp':
++        verify_execution_equivalence(report['inputs']['spot']['metadata']['source'], analysis_current,
++                                     'spot', report['spec_sha256'], report['protocol_sha256'])
++    verify_source(report['analysis_source'], 'spot')
++    verify_source(analysis_current, 'spot')
++    require(analysis_current['python_sources_sha256'] == report['analysis_source']['python_sources_sha256'],
++            'analysis executable source mismatch (including assessor)')
+     selected = report['selection'][kind]['selected_research_candidate']
+     return {'analysis_sha256': digest, 'source': frozen, 'spec_sha256': report['spec_sha256'],
+             'protocol_sha256': report['protocol_sha256'], 'kind': kind, 'rule': selected,
+diff --git a/tests/test_alpha_assessment.py b/tests/test_alpha_assessment.py
+index 38899f8..a287532 100644
+--- a/tests/test_alpha_assessment.py
++++ b/tests/test_alpha_assessment.py
+@@ -142,22 +142,108 @@ class AssessmentTests(unittest.TestCase):
+         with self.assertRaisesRegex(ValueError, 'row calibration'):
+             consume()
+ 
+-    def test_forward_binding_accepts_proved_doc_commit_and_rejects_python_change(self):
+-        report = {'rules_freeze_ready': True, 'registered_work_pending': False,
+-                  'spec_sha256': a.sha(a.SPEC_PATH), 'protocol_sha256': a.sha(a.PROTOCOL_PATH),
+-                  'inputs': {'spot': {'metadata': {'source': self.source}}}, 'analysis_source': self.source,
+-                  'selection': {'spot': {'selected_research_candidate': 'consensus'}},
+-                  'baseline_verification': {'spot': {'raw_sha256': 'b' * 64}}}
+-        path = self.root / 'report.json'
+-        path.write_text(json.dumps(report))
+-        current = dict(self.source, git_head='2' * 40)
+-        with patch.object(a, 'current_source', return_value=current):
+-            binding, source = a.forward_binding(path, 'spot')
+-            self.assertEqual(binding['source'], self.source)
+-            self.assertEqual(source, current)
+-        with patch.object(a, 'current_source', return_value=dict(current, python_sources_sha256='c' * 64)):
+-            with self.assertRaisesRegex(ValueError, 'not equivalent'):
++    def test_forward_assessor_only_equivalence_uses_committed_trees_and_full_analysis_identity(self):
++        import subprocess
++        repo = self.root / 'source-repo'
++        repo.mkdir()
++        def git(*args):
++            return subprocess.run(['git', *args], cwd=repo, check=True, capture_output=True).stdout
++        def commit():
++            git('add', '-A')
++            git('-c', 'user.name=Assessment test', '-c', 'user.email=assessment@example.invalid',
++                'commit', '-qm', 'synthetic source proof')
++        git('init', '-q')
++        files = {'spotquant/engine.py': b'engine = 1\n',
++                 'research/helper.py': b'helper = 1\n',
++                 'research/alpha_assessment.py': b'assessment = 1\n',
++                 'research/alpha_beta_spec.json': a.SPEC_PATH.read_bytes(),
++                 'research/alpha-beta-PROTOCOL.md': a.PROTOCOL_PATH.read_bytes()}
++        for name, content in files.items():
++            path = repo / name
++            path.parent.mkdir(parents=True, exist_ok=True)
++            path.write_bytes(content)
++        commit()
++        spec, protocol = a.sha(a.SPEC_PATH), a.sha(a.PROTOCOL_PATH)
++        with patch.object(a, 'ROOT', repo):
++            frozen = a.current_source('spot')
++            original = copy.deepcopy(frozen)
++            files['research/alpha_assessment.py'] = b'assessment = 2\n'
++            (repo / 'research/alpha_assessment.py').write_bytes(files['research/alpha_assessment.py'])
++            commit()
++            analysis = a.current_source('spot')
++            self.assertNotEqual(frozen['python_sources_sha256'], analysis['python_sources_sha256'])
++            a.verify_execution_equivalence(frozen, analysis, 'spot', spec, protocol)
++            (repo / 'README.md').write_text('A documentation-only commit.\n')
++            commit()
++            current = a.current_source('spot')
++            self.assertNotEqual(current['git_head'], analysis['git_head'])
++            coin = repo.parent / 'coinquant'
++            coin.mkdir()
++            subprocess.run(['git', 'init', '-q'], cwd=coin, check=True, capture_output=True)
++            for name, content in {'coinquant/engine.py': b'engine = 1\n',
++                                  'research/helper.py': b'helper = 1\n',
++                                  'research/alpha_beta_spec.json': files['research/alpha_beta_spec.json'],
++                                  'research/alpha-beta-PROTOCOL.md': files['research/alpha-beta-PROTOCOL.md']}.items():
++                target = coin / name
++                target.parent.mkdir(parents=True, exist_ok=True)
++                target.write_bytes(content)
++            subprocess.run(['git', 'add', '-A'], cwd=coin, check=True, capture_output=True)
++            subprocess.run(['git', '-c', 'user.name=Assessment test', '-c', 'user.email=assessment@example.invalid',
++                            'commit', '-qm', 'synthetic Coin proof'], cwd=coin, check=True, capture_output=True)
++            coin_source = a.current_source('perp')
++            report = {'rules_freeze_ready': True, 'registered_work_pending': False,
++                      'spec_sha256': spec, 'protocol_sha256': protocol,
++                      'inputs': {'spot': {'metadata': {'source': frozen}}, 'perp': {'metadata': {'source': coin_source}}}, 'analysis_source': analysis,
++                      'selection': {'spot': {'selected_research_candidate': 'consensus'}, 'perp': {'selected_research_candidate': 'incumbent'}},
++                      'baseline_verification': {'spot': {'raw_sha256': 'b' * 64}, 'perp': {'raw_sha256': 'c' * 64}}}
++            path = self.root / 'report.json'
++            path.write_text(json.dumps(report))
++            binding, execution = a.forward_binding(path, 'spot')
++            self.assertEqual(binding['source'], original)
++            self.assertEqual(execution, current)
++            self.assertEqual(frozen, original)
++            coin_binding, coin_execution = a.forward_binding(path, 'perp')
++            self.assertEqual(coin_binding['source'], coin_source)
++            self.assertEqual(coin_execution, coin_source)
++            with self.assertRaisesRegex(ValueError, 'source digest differs'):
++                a.verify_execution_equivalence(dict(frozen, python_sources_sha256='0' * 64), current, 'spot', spec, protocol)
++            # Another assessor change is execution-equivalent, but cannot run an
++            # analysis report that binds the previous full assessor executable.
++            (repo / 'research/alpha_assessment.py').write_text('assessment = 3\n')
++            commit()
++            a.verify_execution_equivalence(frozen, a.current_source('spot'), 'spot', spec, protocol)
++            with self.assertRaisesRegex(ValueError, 'analysis executable source mismatch'):
+                 a.forward_binding(path, 'spot')
++            (repo / 'research/alpha_assessment.py').write_bytes(files['research/alpha_assessment.py'])
++            commit()
++            for name, content in [('spotquant/engine.py', b'engine = 2\n'),
++                                  ('research/helper.py', b'helper = 2\n'),
++                                  ('research/new_helper.py', b'new = 1\n'),
++                                  ('research/helper.py', None),
++                                  ('research/alpha_beta_spec.json', b'{}\n'),
++                                  ('research/alpha-beta-PROTOCOL.md', b'changed\n')]:
++                changed = repo / name
++                if content is None:
++                    changed.unlink()
++                else:
++                    changed.write_bytes(content)
++                commit()
++                with self.subTest(path=name, content=content), self.assertRaisesRegex(ValueError, 'not equivalent|spec/protocol mismatch'):
++                    a.forward_binding(path, 'spot')
++                if name == 'research/helper.py' and content is not None:
++                    # Even an updated analysis hash cannot hide changed Spot
++                    # helpers merely by initializing the Coin forward diary.
++                    changed_report = dict(report, analysis_source=a.current_source('spot'))
++                    path.write_text(json.dumps(changed_report))
++                    with self.assertRaisesRegex(ValueError, 'not equivalent'):
++                        a.forward_binding(path, 'perp')
++                    path.write_text(json.dumps(report))
++                if name in files:
++                    changed.write_bytes(files[name])
++                else:
++                    changed.unlink()
++                commit()
++            a.forward_binding(path, 'spot')
+ 
+     def test_lossless_gzip_hashes_original_bytes_and_rejects_duplicate_keys(self):
+         plain, zipped = self.root / 'a.json', self.root / 'a.json.gz'
+@@ -379,7 +465,8 @@ class AssessmentTests(unittest.TestCase):
+         with ExitStack() as stack:
+             for name, value in [('source_identity', self.source), ('environment', self.env), ('load_daily', []),
+                                 ('PriorFX', lambda timestamp: D(7)), ('market_returns_for', ([], [])),
+-                                ('passive_controls', {}), ('original_baseline', {'passed': False})]:
++                                ('passive_controls', {}), ('original_baseline', {'passed': False}),
++                                ('verify_execution_equivalence', 'e' * 64)]:
+                 stack.enter_context(patch.object(a, name, return_value=value))
+             stack.enter_context(patch.object(a, 'consume', side_effect=consume))
+             report = a.assess(args)
+@@ -440,6 +527,55 @@ class AssessmentTests(unittest.TestCase):
+         with self.assertRaisesRegex(ValueError, 'raw bytes'):
+             self.consume(manifest)
+ 
++    def test_coin_fill_links_preserve_partial_fills_repeated_unknown_writes_and_unknown_exits(self):
++        opportunity = 1578038400000
++        client = 'cq-2e9ee5b4d01a21dca7b7a725719665'
++        write = {'event': 'write_attempt', 'identity': client, 'opportunity': opportunity,
++                 'method': 'POST', 'path': '/fapi/v1/order', 'payload': {'newClientOrderId': client}}
++        events = [{'event': 'entry_sizing', 'opportunity': opportunity,
++                   'desired_btc': '0.9661394791732414710641954977', 'accepted_btc': '0.966', 'constraint': 'target'},
++                  write, dict(write, error='response_unknown'), dict(write, opportunity=None),
++                  {'event': 'fill', 'client_order_id': client, 'trade': {'orderId': 2, 'id': 1, 'side': 'BUY', 'qty': '0.002', 'price': '7360.2'}},
++                  {'event': 'fill', 'client_order_id': client, 'trade': {'orderId': 2, 'id': 2, 'side': 'BUY', 'qty': '0.964', 'price': '7360.2'}},
++                  {'event': 'fill', 'client_order_id': 'cq-unlinked-exit', 'exit_type': 'STOP_MARKET',
++                   'trade': {'orderId': 3, 'id': 3, 'side': 'SELL', 'qty': '0.966', 'price': '7000'}}]
++        result = a.diagnose(events, [], 'perp')
++        entry, exit_ = result['fill_size_observations']
++        self.assertEqual(entry['identity']['opportunity'], opportunity)
++        self.assertEqual(entry['identity']['client_order_id'], client)
++        self.assertEqual(entry['identity']['order_id'], 2)
++        self.assertEqual(entry['identity']['opportunity_link'], 'recorded_client_write_opportunity')
++        self.assertEqual(entry['observations'], 2)
++        self.assertEqual(entry['values']['qty']['sum'], '0.966')
++        self.assertEqual(result['sizing_observations'][0]['identity']['opportunity'], entry['identity']['opportunity'])
++        self.assertEqual(result['client_write_opportunity_relations'][0]['write_observations'], 3)
++        self.assertIsNone(exit_['identity']['opportunity'])
++        self.assertEqual(exit_['identity']['opportunity_link'], 'unknown_no_recorded_opportunity')
++        # Client identity can be recovered through an exact order-ID relation;
++        # event order/time do not guess the relation or imply a new fill.
++        events[4]['client_order_id'] = None
++        linked = a.diagnose(list(reversed(events)), [], 'perp')['fill_size_observations']
++        partial = next(r for r in linked if r['identity']['client_id_source'] == 'same_order_fill')
++        self.assertEqual(partial['identity']['opportunity'], opportunity)
++        self.assertEqual(partial['identity']['client_order_id'], client)
++
++    def test_coin_fill_conflicting_client_or_campaign_relations_stay_unknown(self):
++        events = [{'event': 'write_attempt', 'identity': 'cq-one', 'opportunity': 1},
++                  {'event': 'write_attempt', 'identity': 'cq-one', 'opportunity': 2},
++                  {'event': 'fill', 'client_order_id': 'cq-one',
++                   'trade': {'orderId': 5, 'side': 'BUY', 'qty': '1', 'price': '100'}}]
++        fill = a.diagnose(events, [], 'perp')['fill_size_observations'][0]
++        self.assertIsNone(fill['identity']['opportunity'])
++        self.assertEqual(fill['identity']['opportunity_link'], 'unknown_conflicting_opportunities')
++        self.assertEqual(fill['identity']['opportunity_candidates'], [1, 2])
++        events[1] = {'event': 'write_attempt', 'identity': 'cq-two', 'opportunity': 2}
++        events.append({'event': 'fill', 'client_order_id': 'cq-two',
++                       'trade': {'orderId': 5, 'side': 'BUY', 'qty': '.1', 'price': '100'}})
++        for fill in a.diagnose(events, [], 'perp')['fill_size_observations']:
++            self.assertIsNone(fill['identity']['opportunity'])
++            self.assertEqual(fill['identity']['opportunity_link'], 'unknown_conflicting_order_clients')
++            self.assertEqual(fill['identity']['order_client_candidates'], ['cq-one', 'cq-two'])
++
+     def test_canonical_financial_cash_path_is_retained_with_real_helpers(self):
+         from decimal import Decimal as D
+         bars = []

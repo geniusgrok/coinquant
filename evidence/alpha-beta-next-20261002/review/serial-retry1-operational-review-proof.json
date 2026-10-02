@@ -1,0 +1,21 @@
+{
+  "checked_at_utc": "2026-10-02T05:43:28.690069+00:00",
+  "retry_queue_sha256": "30ac30a3045311aebe73263f67b4fc9ea43e84aab889c3efb76996c32ea17692",
+  "exactly_three_registered_replacements": true,
+  "active_coin_producers": [
+    {
+      "pid": 32321,
+      "args": [
+        "python",
+        "-u",
+        "-m",
+        "research.alpha_perp",
+        "--restore-prints",
+        "--out",
+        "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+      ]
+    }
+  ],
+  "auditor_replays": 0,
+  "audit_waiter_sha256": "a06b2341a993249607fb108dc0a707c56754a5201e642d6578b1750e1c6dde47"
+}

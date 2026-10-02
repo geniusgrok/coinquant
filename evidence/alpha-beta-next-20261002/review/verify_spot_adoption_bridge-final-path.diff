@@ -1,0 +1,163 @@
+--- verify_spot_adoption_bridge_pre_final_path.py
++++ verify_spot_adoption_bridge.py
+@@ -6,6 +6,7 @@
+ from pathlib import Path
+ import subprocess
+ import sys
++import stat
+ 
+ ANALYSIS = Path('/workspace/btc-alpha-beta-analysis/spotquant')
+ CANONICAL = Path('/workspace/btc-alpha-beta-adoption/spotquant')
+@@ -22,50 +23,42 @@
+         return hashlib.file_digest(stream, 'sha256').hexdigest()
+ 
+ 
+-def main():
+-    parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('--inventory', type=Path, required=True)
+-    parser.add_argument('--expected-head', required=True)
+-    parser.add_argument('--expected-python-sha256', required=True)
+-    parser.add_argument('--final-report', type=Path, required=True)
+-    parser.add_argument('--out', type=Path, required=True)
+-    args = parser.parse_args()
+-    tool_sha = sha(Path(__file__))
+-    sys.path.insert(0, str(ANALYSIS))
+-    from research import alpha_assessment as a
+-    current = a.source_identity()
+-    a.require(current == dict(git_head=ANALYSIS_HEAD, dirty=False,
+-                              python_sources_sha256=ANALYSIS_PYTHON), 'Immutable assessor source changed')
+-    a.verify_source(current, 'spot')
+-    final, final_sha = a.read_json(args.final_report)
+-    a.require(args.final_report.resolve() == OUT/'registered-final.json', 'Registered final path differs')
+-    final_receipt, final_receipt_sha = a.read_json(OUT/'registered-final.command.json')
++def checked_json(path, root, direct=False):
++    path = Path(path)
++    if not path.is_absolute() or '..' in path.parts or path.suffix != '.json' or not path.is_relative_to(root):
++        raise ValueError('Evidence JSON path outside registered root')
++    if direct and path.parent != root:
++        raise ValueError('Final report must be a direct scratch child')
++    if any(parent.is_symlink() for parent in (path, *path.parents)) or not stat.S_ISREG(path.stat().st_mode):
++        raise ValueError('Evidence must be ordinary non-symlink file')
++    return path
++
++
++def read_final(a, path, current):
++    path = checked_json(path, OUT, direct=True)
++    final, final_sha = a.read_json(path)
++    final_receipt, final_receipt_sha = a.read_json(checked_json(path.with_suffix('.command.json'), OUT, direct=True))
+     command = final_receipt['command']
+-    a.require(command.count('--out') == 1 and Path(command[command.index('--out')+1]).resolve()
+-              == args.final_report.resolve() and final_receipt['exit_code'] == 0
++    a.require(command.count('--out') == 1 and command[command.index('--out')+1] == str(path)
++              and '--final' in command and type(final_receipt['exit_code']) is int and final_receipt['exit_code'] == 0
+               and final_receipt['source_head'] == ANALYSIS_HEAD
+               and final_receipt['output_sha256'] == final_sha, 'Registered final receipt differs')
++    log_path = path.with_suffix('.run.log')
++    a.require(not any(p.is_symlink() for p in (log_path, *log_path.parents))
++              and stat.S_ISREG(log_path.stat().st_mode) and sha(log_path) == final_receipt['log_sha256'],
++              'Registered final log differs')
+     a.require(final['analysis_source'] == current and final['rules_freeze_ready'] is True
+               and final['all_measured_accounts_valid'] is True and not final['pending']
+               and not final['registered_work_pending'], 'Final registered study not valid/ready')
+-    a.require(final['native_cases'] == final['actual_account_days'] == 0
++    a.require(all(type(final[key]) is int and final[key] == 0 for key in ('native_cases', 'actual_account_days'))
+               and final['prospective_alpha_proven'] is False, 'Unexpected qualification claim')
++    a.require(len(final['accounts']) == 60 and len(final['sensitivity']) == 4, 'Expected 60 accounts and four sensitivities')
+     a.require(final['selection']['spot']['selected_research_candidate'] == 'atr-stop',
+               'Exact selected candidate differs')
+-    inventory, inventory_sha = a.read_json(args.inventory)
+-    a.require(inventory['format'] == 'canonical-spot-five-v1'
+-              and inventory['source_head'] == args.expected_head, 'Canonical inventory/source differs')
+-    expected = {'base': ('base', False), 'fee150': ('fee150', False), 'slip2': ('slip2', False),
+-                'outage': ('outage', False), 'calibrated-base': ('base', True)}
+-    entries = inventory['files']
+-    a.require(len(entries) == 5 and {e['label'] for e in entries} == set(expected),
+-              'Exactly five canonical accounts required')
+-    for path, digest in inventory['review_bindings'].items():
+-        a.require(sha(Path(path)) == digest and args.expected_head in Path(path).read_text(),
+-                  'Canonical reviewed source evidence changed')
+-    a.require(len(inventory['review_bindings']) == 2, 'Two independent source reviews required')
+-    for path, digest in inventory['launch_bindings'].items():
+-        a.require(sha(Path(path)) == digest, 'Canonical launch evidence changed')
++    return final, final_sha, final_receipt_sha
++
++
++def verify_audits(a, final, final_sha, remaining_index):
+     audit_bindings = {}
+     expected_audits = set()
+     for key, account in final['accounts'].items():
+@@ -81,13 +74,14 @@
+         a.require(identity not in expected_audits, 'Duplicate registered sensitivity identity')
+         expected_audits.add(identity)
+     actual_audits = set()
+-    for name in ('financial-audit-unscaled-index.json', 'financial-audit-remaining-index.json'):
+-        path = ROOT/'review'/name
++    for unscaled, path in ((True, ROOT/'review/financial-audit-unscaled-index.json'),
++                           (False, remaining_index)):
++        path = checked_json(path, ROOT/'review')
+         audit, audit_sha = a.read_json(path)
+-        if name.endswith('unscaled-index.json'):
++        if unscaled:
+             a.require(audit['account_count'] == 48, 'Independent unscaled inventory incomplete')
+         else:
+-            a.require(audit['final_assessment_sha256'] == final_sha
++            a.require(audit['account_count'] == 16 and audit['final_assessment_sha256'] == final_sha
+                       and audit['final_inventory_exactly_reconciled'] is True
+                       and audit['all_examined_checks_passed'] is True
+                       and audit['all_reported_complete'] is True, 'Independent remaining audit incomplete')
+@@ -100,9 +94,9 @@
+                       and report['all_reported_complete'] is True
+                       and report['raw_sha256'] == entry['raw_sha256'], 'Independent audit evidence changed')
+             kind = report['kind']
+-            stage = 'unscaled' if name.endswith('unscaled-index.json') else entry['stage']
++            stage = 'unscaled' if unscaled else entry['stage']
+             a.require(kind in ('spot', 'perp') and stage in ('unscaled', 'risk', 'combo', 'sensitivity')
+-                      and (name.endswith('unscaled-index.json') or entry['kind'] == kind),
++                      and (unscaled or entry['kind'] == kind),
+                       'Independent audit kind/stage differs')
+             a.require(report['source'] == final['inputs'][kind]['metadata']['source']
+                       and sha(Path(report['raw_path'])) == report['raw_sha256'], 'Audited source/raw differs')
+@@ -116,7 +110,42 @@
+                 index_count += 1
+         a.require(index_count == audit['account_count'], 'Independent audit count differs from actual coverage')
+         audit_bindings[str(path)] = audit_sha
+-    a.require(actual_audits == expected_audits, 'Independent audit identities do not cover final study exactly')
++    a.require(len(expected_audits) == 64 and actual_audits == expected_audits, 'Independent audit identities do not cover final study exactly')
++    return audit_bindings
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--inventory', type=Path, required=True)
++    parser.add_argument('--expected-head', required=True)
++    parser.add_argument('--expected-python-sha256', required=True)
++    parser.add_argument('--final-report', type=Path, required=True)
++    parser.add_argument('--remaining-index', type=Path, default=ROOT/'review/financial-audit-remaining-index.json')
++    parser.add_argument('--out', type=Path, required=True)
++    args = parser.parse_args()
++    tool_sha = sha(Path(__file__))
++    sys.path.insert(0, str(ANALYSIS))
++    from research import alpha_assessment as a
++    current = a.source_identity()
++    a.require(current == dict(git_head=ANALYSIS_HEAD, dirty=False,
++                              python_sources_sha256=ANALYSIS_PYTHON), 'Immutable assessor source changed')
++    a.verify_source(current, 'spot')
++    final, final_sha, final_receipt_sha = read_final(a, args.final_report, current)
++    inventory, inventory_sha = a.read_json(args.inventory)
++    a.require(inventory['format'] == 'canonical-spot-five-v1'
++              and inventory['source_head'] == args.expected_head, 'Canonical inventory/source differs')
++    expected = {'base': ('base', False), 'fee150': ('fee150', False), 'slip2': ('slip2', False),
++                'outage': ('outage', False), 'calibrated-base': ('base', True)}
++    entries = inventory['files']
++    a.require(len(entries) == 5 and {e['label'] for e in entries} == set(expected),
++              'Exactly five canonical accounts required')
++    for path, digest in inventory['review_bindings'].items():
++        a.require(sha(Path(path)) == digest and args.expected_head in Path(path).read_text(),
++                  'Canonical reviewed source evidence changed')
++    a.require(len(inventory['review_bindings']) == 2, 'Two independent source reviews required')
++    for path, digest in inventory['launch_bindings'].items():
++        a.require(sha(Path(path)) == digest, 'Canonical launch evidence changed')
++    audit_bindings = verify_audits(a, final, final_sha, args.remaining_index)
+     calibration_path = Path(inventory['calibration_path'])
+     calibration, calibration_sha = a.read_json(calibration_path)
+     a.require(calibration_sha == inventory['calibration_sha256']

@@ -1,0 +1,9 @@
+{
+  "registered_at_utc": "2026-10-02T04:55:21.932196+00:00",
+  "controller_path": "/workspace/btc-alpha-beta-next/review/run_registered_followthrough.py",
+  "controller_sha256": "07e85b50e4f95a179ac8aaadd038baea4354affde70c121c7f10bddb1922027d",
+  "economic_rules_changed": false,
+  "runtime_sources_changed": false,
+  "independent_queue_review": "financial auditor found no material command/case mismatch; scoped verdict pending file",
+  "purpose": "Session-specific one-shot exact registered replay queue; no adoption or forward/account action."
+}

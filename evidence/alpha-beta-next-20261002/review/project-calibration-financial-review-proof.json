@@ -1,0 +1,32 @@
+{
+  "scope": "Financial boundary review; pure document/status fixtures are not measured cases. No early calibration file for production was emitted.",
+  "head": {
+    "git_head": "99fcf005d2cb15c13bb37322b65ab2863b19d65e",
+    "dirty": false,
+    "python_sources_sha256": "427f34ca3640cfa78f51173583af1d9c82f007baae155f3a992dcffb8171ad7b"
+  },
+  "unchanged_function_count": 37,
+  "source_execution_equivalence_sha256": "c2dd29733ec5bb96137a8ab27cc0e8dd604d74bf6d1e108d45a554b8923e6cf8",
+  "actual_curve_raw_sha256": {
+    "consensus": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a",
+    "trend-reentry": "b72181ba8f7c3b8e925ccdf2bf2757ed4b67a1821c2b2a656ca74207034535a8"
+  },
+  "training_days": 731,
+  "validation_days_excluded": 1723,
+  "independent_actual_training": {
+    "baseline_vol": 0.5007698764175386,
+    "baseline_beta": 0.43731788190389737,
+    "candidate_vol": 0.5098268772324465,
+    "candidate_beta": 0.44949810253302946,
+    "independent_scale": 0.9729026205883993,
+    "assessor_scale": "0.9729026205884008"
+  },
+  "actual_baseline_unity": true,
+  "postcutoff_non_numeric_values_not_read": true,
+  "invalid_candidate_profiles_absent_but_obligations_retained": true,
+  "invalid_baseline_has_no_legal_rerun_profile": true,
+  "project_actual_gzip_sha_preserved": true,
+  "missing_extra_input_and_root_mutations_rejected": true,
+  "account_replays": 0,
+  "State_invocations": 0
+}
