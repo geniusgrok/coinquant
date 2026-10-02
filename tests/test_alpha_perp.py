@@ -1,8 +1,10 @@
 from collections import deque
 from copy import deepcopy
 from decimal import Decimal as D
+from datetime import datetime, timezone
 import json
 from pathlib import Path
+from types import SimpleNamespace
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -12,7 +14,7 @@ from coinquant.campaign import Campaign, ORIGIN
 from coinquant.config import Config
 from coinquant.opportunities import Opportunity, FOUR_HOURS as BAR
 from coinquant.state import State
-from coinquant.types import Blocked
+from coinquant.types import Blocked, ObservationDeadline
 from research import alpha_perp as alpha
 from research import complete_perp as meter
 from tests.session_venue import Venue
@@ -199,6 +201,121 @@ class AlphaTests(unittest.TestCase):
                 outputs.append((venue.calls, venue.sent, venue.now, venue.wallet, venue.q, venue.trades,
                                 report['cleanup'], report['cycles']))
         self.assertEqual(outputs[0], outputs[1])
+
+    def test_cycle_failures_are_distinct_once_and_keep_actual_chronology(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue = Venue();venue.seed(tmp)
+            journal = []
+            original_cycle = session.cycle
+            attempted = 0
+            def intermittent(reader, state, uid, **kwargs):
+                nonlocal attempted
+                attempted += 1
+                if attempted in (1, 3):
+                    reader.wait(.1)
+                    raise ObservationDeadline('same deadline on different cycles')
+                return original_cycle(reader, state, uid, **kwargs)
+            with patch.object(session, 'cycle', intermittent), alpha.variant('incumbent', journal=journal):
+                self.seed(venue, tmp)
+                report = self.run_session(venue, tmp, 5)
+            alpha.record_session_phases(journal, report, venue.now)
+            failures = [e for e in journal if e['event'] == 'cycle_blocked']
+            self.assertEqual(len(failures), 2)
+            self.assertEqual([e['cycle_sequence'] for e in failures], [1, 3])
+            self.assertTrue(all(e['session_ms'] == report['session_started_at_ms'] for e in failures))
+            self.assertLess(report['session_started_at_ms'], failures[0]['at_ms'])
+            self.assertLess(failures[0]['at_ms'], failures[1]['at_ms'])
+            self.assertTrue(any(e['event'] == 'decision' and failures[0]['at_ms'] < e['at_ms'] < failures[1]['at_ms'] for e in journal))
+            self.assertFalse(any(e['event'] in ('session_error', 'session_phase_summary') for e in journal))
+            self.assertEqual([e['at_ms'] for e in journal], sorted(e['at_ms'] for e in journal))
+            self.assertEqual(report['cleanup'], 'verified')
+            # A non-cycle report summary is retained at report time, never backdated.
+            alpha.record_session_phases(journal, {**report, 'errors': report['errors']+[
+                {'phase': 'backup', 'reason': 'fixture backup failure', 'error_type': 'OSError'}]}, venue.now)
+            self.assertEqual(journal[-1]['event'], 'session_phase_summary')
+            self.assertEqual(journal[-1]['at_ms'], venue.now)
+            self.assertEqual(journal[-1]['timestamp_basis'], 'session_report_completed')
+            self.assertEqual(len([e for e in journal if e['event'] == 'cycle_blocked']), 2)
+
+    def test_macro_creation_provenance_survives_polls_checkpoint_and_owned_decisions(self):
+        with tempfile.TemporaryDirectory() as tmp, alpha.variant('incumbent', journal=(journal := [])):
+            venue = Venue();self.seed(venue, tmp)
+            with State(tmp, 'binance:BTCUSDT:live:123') as state:
+                model = alpha.AlphaCampaign.restore(state.get('linear_campaign'))
+                model.model.active = model.trigger = None
+                model.daily_lows.extend([D(90000)]*10)
+                state.set('linear_campaign', model.checkpoint())
+            row = dict(missing_reason=None, latest_value='1', prior20_value='1.3',
+                       latest_observation_date=datetime.fromtimestamp(venue.now/1000, timezone.utc).date().isoformat(),
+                       latest_value_available_ms=venue.now-1000, prior20_value_available_ms=venue.now-1000)
+            venue.dfii10_snapshot = lambda: row
+            original_row, original_mark = deepcopy(row), str(venue.mark)
+            report = self.run_session(venue, tmp, 3)
+            self.assertEqual(report['cleanup'], 'verified', report)
+            created = [e for e in journal if e['event'] == 'opportunity' and e['kind'] == 'macro']
+            self.assertEqual(len(created), 1)
+            creation = created[0]
+            self.assertEqual(creation['at_ms'], -creation['identity'])
+            self.assertEqual(creation['created_at_ms'], creation['at_ms'])
+            self.assertEqual(creation['decision_mark'], original_mark)
+            self.assertEqual(creation['dfii10'], original_row)
+            with State(tmp, 'binance:BTCUSDT:live:123') as state:
+                saved = state.get('linear_campaign')
+                restored = alpha.AlphaCampaign.restore(saved)
+                provenance = deepcopy(restored.macro_trigger)
+                self.assertEqual(restored.checkpoint(), saved)
+                broken = deepcopy(saved)
+                broken['body']['alpha']['macro_trigger']['identity'] -= 1
+                broken['sha256'] = meter.checksum(broken['body'])
+                with self.assertRaises(Blocked): alpha.AlphaCampaign.restore(broken)
+            row['latest_value'] = '.9';venue.mark += 10
+            self.assertEqual(self.run_session(venue, tmp, 3)['cleanup'], 'verified')
+            self.assertEqual(len([e for e in journal if e['event'] == 'opportunity' and e['kind'] == 'macro']), 1)
+            decisions = [e for e in journal if e['event'] == 'decision' and e['opportunity'] == creation['identity']]
+            self.assertGreater(len(decisions), 2)
+            self.assertGreater(decisions[-1]['age_ms'], decisions[0]['age_ms'])
+            self.assertTrue(all(e['trigger'] == provenance for e in decisions))
+            self.assertEqual(creation['dfii10'], original_row)
+            self.assertEqual(decisions[-1]['trigger']['decision_mark'], original_mark)
+            self.assertEqual(decisions[-1]['decision_mark'], str(venue.mark))
+            self.assertTrue(all(e['age_ms'] == e['at_ms']-creation['created_at_ms'] for e in decisions))
+
+    def test_macro_diagnostic_closes_are_attached_only_after_execution(self):
+        finished = False
+        created_at = ORIGIN+41*BAR+1000
+        def bar4(opened):
+            self.assertTrue(finished)
+            self.assertEqual(opened % BAR, 0)
+            return (D(100), D(101), D(99), D(100), D(1))
+        exchange = SimpleNamespace(uid=12000, clock=lambda: created_at/1000, orders={}, algos={}, trades=[],
+                                   market=SimpleNamespace(bar4=bar4))
+        def run(config, reader):
+            model = self.warm()
+            model.update(model.last+BAR, '101', '99', '100')
+            model.daily_lows.extend([D(90)]*10)
+            row = dict(missing_reason=None, latest_value='1', prior20_value='1.3',
+                       latest_observation_date=datetime.fromtimestamp(created_at/1000, timezone.utc).date().isoformat(),
+                       latest_value_available_ms=created_at-1000, prior20_value_available_ms=created_at-1000)
+            model.select_macro(row, '100', created_at)
+            return {'session_started_at_ms': created_at, 'errors': []}
+        def measure(args):
+            nonlocal finished
+            with meter.variant('incumbent', None):
+                meter.run(None, exchange)
+            finished = True
+            return {'inputs': {'protocol_sha256': 'original'}, 'conditions': {},
+                    'results': {'incumbent': {'base': {}}}}
+        args = SimpleNamespace(candidate='incumbent', combo=None, risk_calibration=None,
+                               scenario='base', start_offset_ms=0, initial_cny=D(10000))
+        with patch.object(meter, 'run', run), patch.object(meter, 'measure', measure):
+            result = alpha.measure(args)
+        event, = result['results']['incumbent']['base']['opportunity_ledger']
+        self.assertEqual(event['kind'], 'macro')
+        for days in (5, 20):
+            diagnostic = event['post_run_diagnostic_closes'][str(days)]
+            self.assertEqual(diagnostic['horizon_ms'], created_at+days*86400000)
+            self.assertEqual(diagnostic['at_ms'], (created_at+days*86400000)//BAR*BAR)
+            self.assertEqual(diagnostic['close'], '100')
 
     def test_hooks_restore_on_exception(self):
         prior = (campaign.Campaign, lifecycle.Lifecycle.decide, lifecycle.Lifecycle.top_up, session.reconcile)

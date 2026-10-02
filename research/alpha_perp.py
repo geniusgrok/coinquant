@@ -6,6 +6,7 @@ Lifecycle already obtained. This module never enables native account access.
 import argparse
 from collections import Counter, deque
 from contextlib import ExitStack, contextmanager
+from copy import deepcopy
 from dataclasses import replace
 from decimal import Decimal as D
 import gzip
@@ -72,6 +73,7 @@ class AlphaCampaign(BaseCampaign):
         self.highs = deque(maxlen=20)
         self.atrs = deque(maxlen=20)
         self.trigger = None
+        self.macro_trigger = None
         self.trail = None
         self.decision_ms = None
         self.decision_mark = None
@@ -120,8 +122,17 @@ class AlphaCampaign(BaseCampaign):
         return selected
 
     def select_macro(self, row, mark, call, *, bootstrap=False):
+        previous = self.macro_opportunity
         super().select_macro(row, mark, call, bootstrap=bootstrap)
         self.decision_ms, self.decision_mark = call, D(mark)
+        active = self.macro_opportunity
+        if active is None:
+            self.macro_trigger = None
+        elif previous is None or previous.identity != active.identity:
+            self.macro_trigger = {'identity': active.identity, 'created_at_ms': call,
+                'decision_mark': str(D(mark)), 'dfii10': deepcopy(row), 'kind': 'macro', 'direction': 1}
+            if self.journal is not None:
+                self.journal.append({'event': 'opportunity', 'at_ms': call, **deepcopy(self.macro_trigger)})
 
     def action(self, quantity):
         self.reason = None
@@ -148,7 +159,8 @@ class AlphaCampaign(BaseCampaign):
     def checkpoint(self):
         saved = super().checkpoint()
         saved['body']['alpha'] = {'binding': self.binding, 'highs': list(map(str, self.highs)),
-            'atrs': list(map(str, self.atrs)), 'trigger': self.trigger, 'trail': self.trail}
+            'atrs': list(map(str, self.atrs)), 'trigger': self.trigger,
+            'macro_trigger': self.macro_trigger, 'trail': self.trail}
         saved['sha256'] = meter.checksum(saved['body'])
         return saved
 
@@ -177,6 +189,17 @@ class AlphaCampaign(BaseCampaign):
                     raise ValueError('trigger provenance')
             elif model.model.active is not None:
                 raise ValueError('missing trigger provenance')
+            model.macro_trigger = extra['macro_trigger']
+            if model.macro_trigger:
+                t = model.macro_trigger
+                if (model.macro_opportunity is None or t['identity'] != model.macro_opportunity.identity or
+                        type(t['created_at_ms']) is not int or
+                        not -t['identity'] <= t['created_at_ms'] < model.last+FOUR_HOURS or
+                        t['kind'] != 'macro' or t['direction'] != 1 or not isinstance(t['dfii10'], dict) or
+                        not D(t['decision_mark']).is_finite() or D(t['decision_mark']) <= 0):
+                    raise ValueError('macro trigger provenance')
+            elif model.macro_opportunity is not None:
+                raise ValueError('missing macro trigger provenance')
             if model.trail:
                 t = model.trail
                 if (type(t['campaign']) is not int or t['campaign'] <= 0 or
@@ -216,6 +239,7 @@ def variant(name, *, binding=None, profile=None, journal=None):
     original_decide, original_topup = lifecycle.Lifecycle.decide, lifecycle.Lifecycle.top_up
     original_send = lifecycle.Lifecycle.send
     original_cycle = session.cycle
+    cycle_sequence = 0
 
     def reconcile(state, reader, model, snapshot):
         result = original_reconcile(state, reader, model, snapshot)
@@ -239,10 +263,13 @@ def variant(name, *, binding=None, profile=None, journal=None):
                 model.trail['campaign'] == model.position_campaign and len(model.model.tr) == 14):
             model.decision_stop = max(D(protection['stop']), D(model.trail['high'])-3*sum(model.model.tr)/14)
         active = model.active
-        event = {'event': 'decision', 'at_ms': int(engine.reader.clock()*1000), 'bar_ms': model.last,
+        trigger = (model.trigger if active.identity > 0 else model.macro_trigger) if active else None
+        created_at = (active.identity if active.identity > 0 else trigger['created_at_ms']) if active else None
+        decision_at = int(engine.reader.clock()*1000)
+        event = {'event': 'decision', 'at_ms': decision_at, 'bar_ms': model.last,
                  'opportunity': active.identity if active else None,
-                 'age_ms': model.decision_ms-active.identity if active and active.identity > 0 else None,
-                 'trigger': model.trigger if active and active.identity > 0 else None,
+                 'age_ms': decision_at-created_at if active else None,
+                 'trigger': deepcopy(trigger),
                  'decision_mark': snapshot['mark_price'], 'quantity_before': snapshot['quantity_btc'],
                  'idle_cash_usdt': snapshot.get('available_usdt'), 'wallet_usdt': snapshot.get('wallet_usdt'),
                  'desired_stop': str(model.decision_stop) if model.decision_stop is not None else None,
@@ -280,10 +307,13 @@ def variant(name, *, binding=None, profile=None, journal=None):
         return original_send(engine, method, path, payload)
 
     def cycle(reader, state, uid, **kwargs):
+        nonlocal cycle_sequence
+        cycle_sequence += 1
         try:
             return original_cycle(reader, state, uid, **kwargs)
         except session.RECOVERABLE as exc:
             journal.append({'event': 'cycle_blocked', 'at_ms': int(reader.clock()*1000),
+                            'session_ms': kwargs.get('session'), 'cycle_sequence': cycle_sequence, 'phase': 'cycle',
                             'reason': str(exc), 'error': type(exc).__name__})
             raise
 
@@ -310,6 +340,16 @@ def variant(name, *, binding=None, profile=None, journal=None):
             (lifecycle, 'topup_preview', observe_plan(lifecycle.topup_preview, 'topup_sizing'))):
             stack.enter_context(patch.object(obj, key, value))
         yield
+
+
+def record_session_phases(journal, report, reported_at_ms):
+    # Cycle failures were recorded once at their actual failure time. Other
+    # bounded report phases have no event clock; label their report-time summary.
+    for error in report.get('errors', []):
+        if error['phase'] != 'cycle':
+            journal.append({'event': 'session_phase_summary', 'at_ms': reported_at_ms,
+                'timestamp_basis': 'session_report_completed',
+                'session_ms': report['session_started_at_ms'], **error})
 
 
 class NoCrowding:
@@ -353,8 +393,7 @@ def measure(args):
         name = current['name']
         with variant(name, binding=binding, profile=profiles.get(name), journal=ledger):
             report = original_run(config, exchange, **kwargs)
-        for error in report.get('errors', []):
-            ledger.append({'event': 'session_error', 'session_ms': report['session_started_at_ms'], **error})
+        record_session_phases(ledger, report, int(exchange.clock()*1000))
         return report
 
     shared = SimpleNamespace(**vars(args), crowding=None, portfolio_budgets=False, portfolio_selected=None)
@@ -378,9 +417,12 @@ def measure(args):
                         event['post_run_diagnostic_closes'] = {}
                         for days in (5, 20):
                             end = event['at_ms']+days*86400000
-                            bar = exchange.market.bar4(end-FOUR_HOURS)
+                            # Macro creation is intrabar: use the last completed
+                            # 4h close at the diagnostic horizon, without lookahead.
+                            completed = end//FOUR_HOURS*FOUR_HOURS
+                            bar = exchange.market.bar4(completed-FOUR_HOURS)
                             event['post_run_diagnostic_closes'][str(days)] = {
-                                'at_ms': end, 'close': str(bar[3]) if bar else None}
+                                'at_ms': completed, 'horizon_ms': end, 'close': str(bar[3]) if bar else None}
                 orders = {str(v['orderId']): v for v in exchange.orders.values()}
                 triggers = {str(v.get('actualOrderId')): v for v in exchange.algos.values()
                             if v.get('actualOrderId') not in (None, '0')}
