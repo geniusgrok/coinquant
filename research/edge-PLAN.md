@@ -28,10 +28,10 @@ Missing causal feature data must not become zero; future bars/rates cannot influ
 
 ### Task 1: Existing-evidence attribution
 
-- [ ] Add research/edge_attribution.py and meaningful synthetic tests in Spotquant; read immutable accepted raw accounts without invoking producers.
-- [ ] Classify actual Spot exits and subsequent flat periods by stop/SMA/extended/other/never-entered, retaining unresolved ownership as unknown. Separate price opportunity diagnostics from realizable profit.
-- [ ] Compare incumbent Coin original/-60s/+60s by actual opportunity identity and first causal operational divergence; distinguish prior-equity propagation, different observations, rounding, sizing, top-up, exit and timeout without declaring every timing difference a bug.
-- [ ] Produce source/hash-bound attribution and prior funding/basis evidence summaries; test, commit and independently review.
+- [x] Add research/edge_attribution.py and meaningful synthetic tests in Spotquant; read immutable accepted raw accounts without invoking producers.
+- [x] Classify actual Spot exits and subsequent flat periods by stop/SMA/extended/other/never-entered, retaining unresolved ownership as unknown. Separate price opportunity diagnostics from realizable profit.
+- [x] Compare incumbent Coin original/-60s/+60s by actual opportunity identity and first causal operational divergence; distinguish prior-equity propagation, different observations, rounding, sizing, top-up, exit and timeout without declaring every timing difference a bug.
+- [x] Produce source/hash-bound attribution and prior funding/basis evidence summaries; test, commit and independently review.
 
 ### Task 2: Registered protocol and point-in-time features
 
