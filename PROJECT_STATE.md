@@ -6,7 +6,7 @@ Updated: 2026-10-02T23:05:38.392404+00:00
 
 The user approved the full next-phase design and direct implementation. Worktrees are /workspace/btc-alpha-beta-improve/{spotquant,coinquant}, branch codex/btc-alpha-beta-improve-20261003; bases Spot ffd14d3aa53b191d15bd8377f0809a8846c53232 and Coin c363a582a064bd36d633f6439803f4c570d52333 match actual remote main. Prior delivery remains complete and immutable. See research/edge-PLAN.md for scope; no old producer queue is restarted.
 
-Task 1: implemented — Spot commit efae517e877de0c08fdacef807513805a49db914, attribution/tests; Python3.13 Spot222 passed (13 new). Independent task review and real diagnostic report pending; no financial producers.
+Task 1: implemented — Spot commit efae517e877de0c08fdacef807513805a49db914, attribution/tests; Python3.13 Spot222 passed (13 new). Final diagnostic head5e69b0c,14targeted tests passed, realv2 outputs bind11immutable inputs. Independent review REQUEST_CHANGES: later decision.constraint was backdated before actual sizing; fix round1 active with original implementer, including write-quantity categorization. No financial producers.
 Baseline validation: Python3.12 and3.13 both pass Coin359/Spot209. Existing causal funding/basis input independently reconstructed with original official checksums: SHA1d87be0b4c8cd8a7eacd4970a1a194e5f1ed0b2f3aa3710a43417aa9ab066ef2; 7488funding/2485basis points.
 
 Tasks 2–6: pending — frozen protocol/features; Spot mechanisms; Coin mechanisms; assessment/actual split capital; measurement/adoption/forward/integration.
