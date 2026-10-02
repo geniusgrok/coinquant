@@ -1,15 +1,17 @@
 # PROJECT_STATE
 
-Updated: 2026-10-02T23:05:38.392404+00:00
+Updated: 2026-10-02T23:36:31.633780+00:00
 
 ## Active BTC alpha/beta improvement round
 
 The user approved the full next-phase design and direct implementation. Worktrees are /workspace/btc-alpha-beta-improve/{spotquant,coinquant}, branch codex/btc-alpha-beta-improve-20261003; bases Spot ffd14d3aa53b191d15bd8377f0809a8846c53232 and Coin c363a582a064bd36d633f6439803f4c570d52333 match actual remote main. Prior delivery remains complete and immutable. See research/edge-PLAN.md for scope; no old producer queue is restarted.
 
-Task 1: implemented — Spot commit efae517e877de0c08fdacef807513805a49db914, attribution/tests; Python3.13 Spot222 passed (13 new). Final diagnostic head5e69b0c,14targeted tests passed, realv2 outputs bind11immutable inputs. Independent review REQUEST_CHANGES: later decision.constraint was backdated before actual sizing; fix round1 active with original implementer, including write-quantity categorization. No financial producers.
+Task 1: complete (Spot commits0ca979e..fa81bf5, final independent scoped review APPROVE). Final17targeted tests pass; prior full222pass. Original I1/M1 fixed in round1/5, no remaining Critical/Important. Finalv3 diagnostic JSON SHA02948e9026ed77bb43af02da9cbe04bbfbce564b826a7ffbe8187c5008f81b96; all11immutable source inputs rechecked. Brief/report/diffs/reviews/v1/v2/v3 retained in external task-artifacts.
+Spot66SMA/30stop/2extended/26other sleeve exits; flat sleeve-days2054SMA/1306stop/136extended/620other/17never-entered. Initial valuation excluded; dust/ownership limits explicit. Coin121contexts; first price observations differ with initial wallet equal, no unnecessary same-observation dependency established,50fills/run remain unowned. Therefore no automatic timing fix; shifted schedules remain diagnostics.
+Task 2: active — exact frozen protocol/features from task-2-brief.md before new financial outcomes. No financial producers active.
 Baseline validation: Python3.12 and3.13 both pass Coin359/Spot209. Existing causal funding/basis input independently reconstructed with original official checksums: SHA1d87be0b4c8cd8a7eacd4970a1a194e5f1ed0b2f3aa3710a43417aa9ab066ef2; 7488funding/2485basis points.
 
-Tasks 2–6: pending — frozen protocol/features; Spot mechanisms; Coin mechanisms; assessment/actual split capital; measurement/adoption/forward/integration.
+Tasks3–6: pending — Spot mechanisms; Coin mechanisms; assessment/actual split capital; measurement/adoption/forward/integration.
 External briefs/reports/diff packages: /workspace/btc-alpha-beta-improve/task-artifacts. This file is the only progress ledger.
 
 Preflight: every task agrees with BTC-only, unchanged economics, no account access and immutable prior sources. Interface review:
