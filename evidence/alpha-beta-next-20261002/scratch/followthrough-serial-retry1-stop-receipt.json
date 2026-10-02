@@ -1,0 +1,8 @@
+{
+  "stopped_utc": "2026-10-02T06:13:51.103907+00:00",
+  "pid": 32493,
+  "command": "python -u /workspace/btc-alpha-beta-next/review/run_registered_followthrough_serial_retry1.py ",
+  "script_sha256": "30ac30a3045311aebe73263f67b4fc9ea43e84aab889c3efb76996c32ea17692",
+  "direct_children": [],
+  "reason": "Replace waiting-only queue with independently reviewed project calibration queue; no economic output existed, original producers retained."
+}

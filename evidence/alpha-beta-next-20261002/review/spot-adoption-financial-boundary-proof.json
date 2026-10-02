@@ -1,0 +1,23 @@
+{
+  "head": "7ac94e12b41b9958072c9ff080983eea1a3cbd83",
+  "python_sha256": "7d4985f9176cd1d6a995be6c4fbcff17ffc5dad832218fae594eeb1b8b76a380",
+  "unchanged": {
+    "research/alpha_assessment.py": true,
+    "research/alpha_beta_spec.json": true,
+    "research/alpha-beta-PROTOCOL.md": true,
+    "spotquant/follow.py": true
+  },
+  "independent_atr_prefixes": 80,
+  "frozen_adjust_stop_comparisons": 72,
+  "actual_profile_scale": "0.9972720085277638",
+  "actual_calibration_sha256": "d574693fe94480c598dc1698b008147267227385ada31df82eab9498d38e7b2b",
+  "immutable_consume_schema_failure": "'components'",
+  "missing_identity_fields": [
+    "components",
+    "spec_sha256",
+    "risk_scale",
+    "core_mode",
+    "core_fraction"
+  ],
+  "scope": "pure functions and source checks; no full replay or source-gate bypass in production"
+}

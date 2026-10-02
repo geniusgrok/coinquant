@@ -1,0 +1,245 @@
+{
+  "raw_sha256": "3b958b2e92d8aefcf7b9f073a3916c325420a546cf7652203ce6692be5ee2446",
+  "sessions": {
+    "31": {
+      "index": 31,
+      "start_ms": 1585486800000,
+      "status": "no_action",
+      "execution_unresolved": false,
+      "cleanup": "verified",
+      "cycles": 40,
+      "observations": {
+        "fresh_observations": 40,
+        "actions": {
+          "flat": 40
+        },
+        "reasons": {
+          "Binance HTTP outcome unresolved; query stable identity after cooldown": 1
+        },
+        "constraints": {}
+      }
+    },
+    "38": {
+      "index": 38,
+      "start_ms": 1587355200000,
+      "status": "no_action",
+      "execution_unresolved": false,
+      "cleanup": "verified",
+      "cycles": 40,
+      "observations": {
+        "fresh_observations": 39,
+        "actions": {
+          "consumed": 38
+        },
+        "reasons": {
+          "Binance HTTP outcome unresolved; query stable identity after cooldown": 1,
+          "bounded Binance observation deadline exceeded; no request sent": 1,
+          "Last poll ended at the observation deadline; closing verification settled": 1
+        },
+        "constraints": {}
+      }
+    }
+  },
+  "http_cycle_blocks": [
+    {
+      "event": "cycle_blocked",
+      "at_ms": 1585486800600,
+      "session_ms": 1585486800000,
+      "cycle_sequence": 1,
+      "phase": "cycle",
+      "reason": "Binance HTTP outcome unresolved; query stable identity after cooldown",
+      "error": "Unknown"
+    },
+    {
+      "event": "cycle_blocked",
+      "at_ms": 1587355200600,
+      "session_ms": 1587355200000,
+      "cycle_sequence": 1,
+      "phase": "cycle",
+      "reason": "Binance HTTP outcome unresolved; query stable identity after cooldown",
+      "error": "Unknown"
+    }
+  ],
+  "related_journal": [
+    [
+      {
+        "event": "decision",
+        "at_ms": 1585375492600,
+        "bar_ms": 1585368000000,
+        "opportunity": null,
+        "age_ms": null,
+        "trigger": null,
+        "decision_mark": "6169.5853724",
+        "quantity_before": "0",
+        "idle_cash_usdt": "2378.488838298614039965317905",
+        "wallet_usdt": "2378.488838298614039965317905",
+        "desired_stop": null,
+        "risk_scale": "1",
+        "action": "flat",
+        "reason": "flat",
+        "quantity_after": "0",
+        "constraint": null
+      },
+      {
+        "event": "cycle_blocked",
+        "at_ms": 1585375500000,
+        "session_ms": 1585375200000,
+        "cycle_sequence": 40,
+        "phase": "cycle",
+        "reason": "bounded Binance observation deadline exceeded; no request sent",
+        "error": "ObservationDeadline"
+      },
+      {
+        "event": "cycle_blocked",
+        "at_ms": 1585486800600,
+        "session_ms": 1585486800000,
+        "cycle_sequence": 1,
+        "phase": "cycle",
+        "reason": "Binance HTTP outcome unresolved; query stable identity after cooldown",
+        "error": "Unknown"
+      },
+      {
+        "event": "decision",
+        "at_ms": 1585486808400,
+        "bar_ms": 1585483200000,
+        "opportunity": null,
+        "age_ms": null,
+        "trigger": null,
+        "decision_mark": "6124.28376349",
+        "quantity_before": "0",
+        "idle_cash_usdt": "2378.488838298614039965317905",
+        "wallet_usdt": "2378.488838298614039965317905",
+        "desired_stop": null,
+        "risk_scale": "1",
+        "action": "flat",
+        "reason": "flat",
+        "quantity_after": "0",
+        "constraint": null
+      },
+      {
+        "event": "decision",
+        "at_ms": 1585486816200,
+        "bar_ms": 1585483200000,
+        "opportunity": null,
+        "age_ms": null,
+        "trigger": null,
+        "decision_mark": "6124.99465191",
+        "quantity_before": "0",
+        "idle_cash_usdt": "2378.488838298614039965317905",
+        "wallet_usdt": "2378.488838298614039965317905",
+        "desired_stop": null,
+        "risk_scale": "1",
+        "action": "flat",
+        "reason": "flat",
+        "quantity_after": "0",
+        "constraint": null
+      }
+    ],
+    [
+      {
+        "event": "cycle_blocked",
+        "at_ms": 1586811900000,
+        "session_ms": 1586811600000,
+        "cycle_sequence": 22,
+        "phase": "cycle",
+        "reason": "bounded Binance observation deadline exceeded; no request sent",
+        "error": "ObservationDeadline"
+      },
+      {
+        "event": "fill",
+        "at_ms": 1586995200000,
+        "trade": {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "SELL",
+          "orderId": 30,
+          "id": 37,
+          "time": 1586995200000,
+          "qty": "0.319",
+          "price": "6600"
+        },
+        "exit_type": "STOP_MARKET",
+        "client_order_id": "ex-30"
+      },
+      {
+        "event": "cycle_blocked",
+        "at_ms": 1587355200600,
+        "session_ms": 1587355200000,
+        "cycle_sequence": 1,
+        "phase": "cycle",
+        "reason": "Binance HTTP outcome unresolved; query stable identity after cooldown",
+        "error": "Unknown"
+      },
+      {
+        "event": "decision",
+        "at_ms": 1587355211200,
+        "bar_ms": 1587355200000,
+        "opportunity": -1586811602800,
+        "age_ms": 543608400,
+        "trigger": {
+          "created_at_ms": 1586811602800,
+          "decision_mark": "6811.17819781",
+          "dfii10": {
+            "asof_vintage_date": "2020-04-10",
+            "latest_observation_date": "2020-04-09",
+            "latest_value": "-0.50",
+            "latest_value_available_ms": 1586750399999,
+            "missing_reason": null,
+            "prior20_observation_date": "2020-03-12",
+            "prior20_value": "-0.04",
+            "prior20_value_available_ms": 1584331199999,
+            "response_sha256": "historical-alfred-originals"
+          },
+          "direction": 1,
+          "identity": -1586811602800,
+          "kind": "macro"
+        },
+        "decision_mark": "7161.59276411",
+        "quantity_before": "0",
+        "idle_cash_usdt": "2362.277668466459591891217905",
+        "wallet_usdt": "2362.277668466459591891217905",
+        "desired_stop": null,
+        "risk_scale": "1",
+        "action": "consumed",
+        "reason": "consumed",
+        "quantity_after": "0",
+        "constraint": null
+      },
+      {
+        "event": "decision",
+        "at_ms": 1587355219000,
+        "bar_ms": 1587355200000,
+        "opportunity": -1586811602800,
+        "age_ms": 543616200,
+        "trigger": {
+          "created_at_ms": 1586811602800,
+          "decision_mark": "6811.17819781",
+          "dfii10": {
+            "asof_vintage_date": "2020-04-10",
+            "latest_observation_date": "2020-04-09",
+            "latest_value": "-0.50",
+            "latest_value_available_ms": 1586750399999,
+            "missing_reason": null,
+            "prior20_observation_date": "2020-03-12",
+            "prior20_value": "-0.04",
+            "prior20_value_available_ms": 1584331199999,
+            "response_sha256": "historical-alfred-originals"
+          },
+          "direction": 1,
+          "identity": -1586811602800,
+          "kind": "macro"
+        },
+        "decision_mark": "7169.12817532",
+        "quantity_before": "0",
+        "idle_cash_usdt": "2362.277668466459591891217905",
+        "wallet_usdt": "2362.277668466459591891217905",
+        "desired_stop": null,
+        "risk_scale": "1",
+        "action": "consumed",
+        "reason": "consumed",
+        "quantity_after": "0",
+        "constraint": null
+      }
+    ]
+  ]
+}

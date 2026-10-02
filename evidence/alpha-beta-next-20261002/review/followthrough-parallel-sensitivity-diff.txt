@@ -1,0 +1,43 @@
+--- /workspace/btc-alpha-beta-next/review/run_registered_followthrough.py	2026-10-02 04:53:34.968789494 +0000
++++ /workspace/btc-alpha-beta-next/review/run_registered_followthrough_parallel_sensitivity.py	2026-10-02 05:32:28.820410254 +0000
+@@ -115,7 +115,21 @@
+         'research.alpha_spot' if is_spot else 'research.alpha_perp', args, path)
+     return pack(path) if is_spot else path
+ 
+-def main():
++def incumbent_probes():
++    # Only cache isolation changes. The four economic probes were preregistered.
++    paths = []
++    prints = OUT/'incumbent-sensitivity-prints'
++    for budget, offset in [('9900',0),('10100',0),('10000',-60000),('10000',60000)]:
++        label = 'sensitivity-incumbent-'+budget+'-'+str(offset)
++        path = OUT/(label+'.json.gz')
++        args = ['--candidate','incumbent','--scenario','base','--initial-cny',budget,
++                '--start-offset-ms',str(offset),'--restore-prints','--prints',str(prints)]
++        run(label, ROOT/'coinquant','research.alpha_perp',args,path)
++        paths.append(path)
++    return paths
++
++
++def main(incumbent_future):
+     # Existing producer processes finish first; Coin public print cache is serial.
+     while not all(p.exists() for p in SINGLES.values()) or Path('/proc/21612').exists():
+         time.sleep(10)
+@@ -136,6 +150,9 @@
+     final_name = combined['selection']['perp']['selected_research_candidate']
+     names = ['incumbent'] + ([] if final_name == 'incumbent' else [final_name])
+     for name in names:
++        if name == 'incumbent':
++            for path in incumbent_future.result(): extra += ['--sensitivity-perp',path]
++            continue
+         for budget, offset in [('9900',0),('10100',0),('10000',-60000),('10000',60000)]:
+             label = 'sensitivity-'+name+'-'+budget+'-'+str(offset)
+             path = OUT/(label+'.json.gz')
+@@ -147,4 +164,6 @@
+     print(json.dumps({'finished_registered_measurements': True, 'rules_freeze_ready': final['rules_freeze_ready'],
+           'independent_final_review_and_adoption_pending': True}), flush=True)
+ 
+-if __name__ == '__main__': main()
++if __name__ == '__main__':
++    with ThreadPoolExecutor(max_workers=1) as independent_cache:
++        main(independent_cache.submit(incumbent_probes))

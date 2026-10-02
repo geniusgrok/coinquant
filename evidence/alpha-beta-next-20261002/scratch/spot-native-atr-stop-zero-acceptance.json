@@ -1,0 +1,42 @@
+{
+  "execution_code_sha256": "a1505e1d1b2be0afefda692a3490c085925c9ba7ed17b84e93bb174c5dc1d4c2",
+  "manifest_sha256": "56cff84241727ff279063951a33b5e0a71bd7585f105f628f179682836797ba6",
+  "account_uid": "",
+  "project": "spotquant",
+  "failures": [
+    "explicit matching Demo account UID required",
+    "positive Demo capital ceiling required"
+  ],
+  "cases": {
+    "entry": {
+      "structural_evidence_present": false,
+      "reason": "native artifact missing or symlinked"
+    },
+    "partial_protection": {
+      "structural_evidence_present": false,
+      "reason": "native artifact missing or symlinked"
+    },
+    "reduction": {
+      "structural_evidence_present": false,
+      "reason": "native artifact missing or symlinked"
+    },
+    "restart": {
+      "structural_evidence_present": false,
+      "reason": "native artifact missing or symlinked"
+    },
+    "stopped_trigger": {
+      "structural_evidence_present": false,
+      "reason": "native artifact missing or symlinked"
+    },
+    "cancel_replace": {
+      "structural_evidence_present": false,
+      "reason": "native artifact missing or symlinked"
+    }
+  },
+  "ready_for_owner_native_review": false,
+  "native_execution_verified": false,
+  "qualification": "NOT_QUALIFIED",
+  "writes_authorized": false,
+  "origin_authenticated": false,
+  "limitations": "Structural checks of owner supplied files. Hashes cannot authenticate Binance or establish 30 natural days."
+}

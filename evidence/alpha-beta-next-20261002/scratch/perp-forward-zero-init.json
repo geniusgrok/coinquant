@@ -1,0 +1,32 @@
+{
+  "body": {
+    "format": 1,
+    "binding": {
+      "analysis_sha256": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+      "source": {
+        "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+        "dirty": false,
+        "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+      },
+      "spec_sha256": "8228013f4ac41affb65162c1cabad8f51b5ef32b9607f62231a4776168a337d0",
+      "protocol_sha256": "4ae09ae0bc9224f8028ddcc1373dc1bbc7251a70be2945e5655f5e5fa12eb27e",
+      "kind": "perp",
+      "rule": "incumbent",
+      "baseline_sha256": "15dd7bfc242d52bf692663179cd1e3867418f8b55a4cad0894d253a8b296f00a"
+    },
+    "initialized_ms": 1790961479131,
+    "initial_execution_source": {
+      "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+      "dirty": false,
+      "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+    },
+    "cash_cny": "10000",
+    "btc": "0",
+    "observations": [],
+    "native_cases": 0,
+    "actual_account_days": 0,
+    "elapsed_account_days": 0,
+    "purpose": "All-cash public observation diary; no simulated or native fills."
+  },
+  "sha256": "8bdaba510521aef67d6f4f89a1c168a8ace50e329bb293298b2aac72cdec7aa3"
+}

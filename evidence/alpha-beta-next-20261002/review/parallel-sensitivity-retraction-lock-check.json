@@ -1,0 +1,22 @@
+{
+  "checked_at_utc": "2026-10-02T05:40:47.464375+00:00",
+  "scope": "Read-only process/kernel-lock snapshot, not lock acquisition or future concurrency guarantee",
+  "account_scope": "binance:BTCUSDT:live:12000",
+  "shared_global_account_lock": "/home/agent/.local/state/coinquant/account-locks/213a7625d970e1d439a347a6df7ea963f72b6182d04d7522ed99a7222b4b0d7e",
+  "active_coin_or_queue_processes": [],
+  "matching_account_lock_table_entries": [],
+  "accessible_open_account_lock_descriptors": [],
+  "live_process_descriptor_permission_denied": [
+    "200",
+    "251"
+  ],
+  "descriptor_check_limit": "Some system-process descriptors inaccessible; complete visible kernel lock table independently matched against all account-lock inode/device identities. Zombies skipped because they retain no open descriptors.",
+  "remaining_stopped_pids": {
+    "31869": {
+      "state": "Z",
+      "args": []
+    }
+  },
+  "account_lock_files_retained": 39,
+  "no_locks_deleted_or_acquired": true
+}

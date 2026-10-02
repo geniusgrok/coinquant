@@ -1,0 +1,1353 @@
+{
+  "format": "independent-final64-financial-evidence-review-v1",
+  "scope": "Research financial evidence64 only; runtime bridge/native/adoption separate",
+  "identities": {
+    "/workspace/scratch/alpha-beta-next/registered-final-repaired.json": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+    "/workspace/scratch/alpha-beta-next/registered-final-repaired.command.json": "0d93d033818604eb8d849e854c092b9e764537da2b296ffc05bc39bb217f1431",
+    "/workspace/scratch/alpha-beta-next/registered-final-repaired.run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-remaining-repaired-index.json": "0d78b9355deb09f7597be3b756aa51c209980188536d186c3b5a72d7dcb6a44e",
+    "/workspace/btc-alpha-beta-next/review/audit_repaired_remaining_registered.py": "8366717a1758ba57998c89baa067a4ef23443ba538222ae1e259bbc00df0fdc5",
+    "/workspace/scratch/alpha-beta-next/registered-final.json": "538b7a3614d07088b6ac5db1bee25392dd08a45e543d714d5ad5702fa02db05b",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-remaining-index.json": "350d71db37536ec482e8f039e6697046095b770e689749c5adbc07a7caab79e5",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-unscaled-index.json": "c1fdd880d44acd052a780a63aebcfd9df48d31367229692d6049d14bacbaae88",
+    "/workspace/scratch/alpha-beta-next/risk-perp.json.gz": "3b958b2e92d8aefcf7b9f073a3916c325420a546cf7652203ce6692be5ee2446",
+    "/workspace/scratch/alpha-beta-next/risk-perp.command.json": "6177756a15cc19007ea7c14db7acdf84a02967512555c71d4272e26d495196d9",
+    "/workspace/scratch/alpha-beta-next/risk-perp-repaired-manifest.json": "ae15eb9f6bfe32bce91f5afef431d5dfa0c1bf595d96c0774f25195f724cd1b4",
+    "/workspace/scratch/alpha-beta-next/risk-perp-retained4-projection.json.gz": "6c786872a3b469fb61714c3465bf0690e96a72442d88f88e6f123b95ae14989c",
+    "/workspace/scratch/alpha-beta-next/risk-perp-incumbent-retry1.json.gz": "5344465a2980c03f20bfdf3a60cb2fbc4424caa61bd798c4da6485630f9623bb",
+    "/workspace/scratch/alpha-beta-next/risk-perp-incumbent-retry1.command.json": "17f4d5c3d25c931d499340deef6da0aeb91c25b1ca6f253a6817659c708d69a2",
+    "/workspace/btc-alpha-beta-next/review/independent_financial_audit.py": "492d46ff9bbff72f1291ad77988fbf8478b35fd880c818e1d3979a6215f1897c",
+    "/workspace/scratch/alpha-beta-next/registered-calibration.json": "ed8c99295e71386a7cef300f7d101ea941e5a7a0147bc9038012d6cc58e23821",
+    "/workspace/scratch/alpha-beta-next/spot-project-calibration.json": "d574693fe94480c598dc1698b008147267227385ada31df82eab9498d38e7b2b",
+    "/workspace/scratch/alpha-beta-next/registered-risk.json": "6854ef5fcfebb9e746c7a586f2122c7360d21ed2a40d573c73b8f6b8fee2bcfd",
+    "/workspace/scratch/alpha-beta-next/registered-risk.command.json": "152415cb310de6ec4eb9e6433c7cc4ce4a4ab70f40c0f0201b3e0ffd192ac0d5",
+    "/workspace/scratch/alpha-beta-next/registered-combinations.json": "6854ef5fcfebb9e746c7a586f2122c7360d21ed2a40d573c73b8f6b8fee2bcfd",
+    "/workspace/scratch/alpha-beta-next/registered-combinations.command.json": "dffa405bf037cff6e84b503bf8e0c67c6d410380234ebc8392db4623fd54a64e",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp.json": "e857608457e91996d07d40863eab71e2220c4bad6accd1158c668995cd6fdc47",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp.command.json": "d6a562d3f8abef7bfffad2c28a046e06898cdacf5356aad81a64542e48de576e",
+    "/workspace/btc-alpha-beta-next/review/coin-actual-risk-strict-first-attempt.log": "f2f5ba7f47b1fa92f3b6d63a6819e01b9ef1f969d9ffb1ecb24873875eab5ec3",
+    "/workspace/btc-alpha-beta-next/review/coin-actual-risk-financial-review.md": "378b29aeca4073ae68b7dece2c7d7865168f41e15888a4354ed9ff92654b0301",
+    "/workspace/btc-alpha-beta-next/review/final64-actual-repair-provenance-proof.json": "d844ce8274cb4e8cee1d19ad7ec94407c86c7716910ed8456376f17654af0eeb",
+    "/workspace/btc-alpha-beta-next/review/coin-unscaled20-financial-proof.json": "979cf8d362f7d9a7c4557827e753fd292d2cf17c2bac9c9eccd2ceb195453a4f",
+    "/workspace/scratch/alpha-beta-next/risk-perp-repair-projection-proof.json": "81b442a9aa311684f225decc7d6a2ff2197d56e59a712d69398a37ce17b0bd0c",
+    "/workspace/scratch/alpha-beta-next/risk-perp-incumbent-retry1.run.log": "86525a92c2d164d54fc23372b1f42415fe8acffcddd71e96e37f121c81bb0863",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-consensus-v2-final.json": "f9066e622622fd281d2ba4506499cf70170f458b19a98a981a648999e1c1aead",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/consensus.json.gz": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-trend-reentry.json": "1a6ab9d562a29f6e1326495aa258ddf408cdc07294b85dce4dd6de04a53a8091",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/trend-reentry.json.gz": "b72181ba8f7c3b8e925ccdf2bf2757ed4b67a1821c2b2a656ca74207034535a8",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-target-participation.json": "ec0761348d9ece7fcdb5fc2e3dd0c88d44a5b8c64434ccb6e30f4a758c6af0be",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/target-participation.json.gz": "f854446dd7bf4215940f279801b31e518fb7d3d356009755ae26c742072d1134",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-close.json": "91902699ca113eee21a71aecde04ad57846b11a8827e2ad044ec7e71a139b73a",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/atr-close.json.gz": "f84e6e6ad188996b1ab7f640f30aeb7c736034823c068a61ae850da336bb974a",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-stop.json": "a234543735c355d327ab41fb0e87f17386dca477a02dca334c39db324d160330",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/atr-stop.json.gz": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-permanent.json": "eb5383722699c89f98749f73b9ec28460900508a958ef9914a13364a6d2d79c7",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/core-permanent.json.gz": "f9174c404b757e5af53a5ff460903ff4e127f11d5d96493b22c26f2adfb8039a",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-slow.json": "69fd3563edf1a421d1ece1377beaba0e0bef36e950bd3530af7699cb374b1b4d",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/core-slow.json.gz": "02a9ba480bc48c0952df3ac949ef0b3f98db6c1fb7c61c89f3cecd99a49d921b",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+    "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.json": "5ada5a0f19f401db4d1b2e0a561c39daba08fd5d8ab3bdf19dc64240849e39a7",
+    "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.command.json": "ed1c70e2c7c98c8febc8f2f54ef176b38bf7fa732fa26a3f7500251972c0d11d",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.run.log": "9dc22b13e5ab8f4fd828fa96dafe0cc29e93d2d818b4f0112bfbcd7ee56f9c34",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-spot-unscaled-comparison.json": "7dbcf9eff66c804a2cddbdd45703735be5e308b9e1b78eb63b5c5fa0dc266455",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-0.json": "5cd5b713f5afbadadcb1aa0a634f41e19784a5fcc2f0e7d98cee5afc0616771c",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-9900-0.json.gz": "b3e894e94eab8d2d2376339d63739b7e39719675328aabba3f799f4e793c84f1",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-0.command.json": "fee4dfc1e1f1bb7bda4b7b431249598697e79c6ae135838e41c02000f70f9829",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-0.run.log": "b3b03abf458086eaa0edabddb7dec0d053211e848fb38fffe266c03a1c907973",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-1.json": "fe2473c0aa3f6727241d4490d7dd9dbcf8f530be7b9671306b0da840202cc7d2",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10100-0.json.gz": "163ca98cbeaa485adc4fff15d54719d4e12c24511cf735b430e0d57bfca6d970",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-1.command.json": "0d874f812be2b872a13610750804474d1d1812791e754cf9731081143e21e568",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-1.run.log": "f63cb15f94816ecb58dd793a3d3bab5f4dd847db958a019a9242662dffc5e74a",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-2.json": "9d60ffbd5c2aabbf4790faef4976af93f3de0f9c42046af9fc1972d91f18d7c3",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000--60000.json.gz": "cd916dbad8055b18e982db20bcecfce838f3d6af398e7e09a60b362d74e805af",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-2.command.json": "6ccb75c4ae111da6dc7d997082879f7c8dd13ce41699788259841cbfbc6cb76b",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-2.run.log": "15f72ec63382ca23f862c7188f2ab4d9ba493d68c0733fa989ea0c35b3acac41",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-3.json": "52b58f34620f1d1b63c7852d72ac6557ec0047cb7b1f492c2b42b683c395b3c5",
+    "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000-60000.json.gz": "38912a76ca423785de39d1a63aa1bcbcde4c28830c0f5e25819c91f6710c3ae6",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-3.command.json": "4d1cf7b893a5818be959062fa41346ecf55209b435fb337e8aecdeb1e6425350",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-3.run.log": "e42d7b1ffc97c2623db62269bea9db87f4198449b08ce601a073fd52fc4689da",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-retained4-repaired.json": "03e85797467de8d31e37eb36804b61b57e04d6fbf91f4a3ced5f7617e0d4f931",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-retained4-repaired.command.json": "f4969a4ac3bb267cfe041d7e77bd9f1e5001604a4cd07eecd7a754307808fd42",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-retained4-repaired.run.log": "ee3b398b0a0c98b59e65c481f43af4f8c0ff96b670389b47f9861591aa3349f8",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-incumbent-retry1.json": "b84475d25bbfe9209da0791a00ff696e443019bcb6714a42730246e908e28fe1",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-incumbent-retry1.command.json": "fed9b2ee92f38c202528b06789e9f74078b2f2351d088e0e19cbe515763f66ed",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-incumbent-retry1.run.log": "d83232b2c1f6cfdaec464a17ea7661d9cbbdc71ad6085c0d003b03c30cc69ad6",
+    "/workspace/btc-alpha-beta-next/review/spot-actual-risk-financial-proof.json": "d46f4b3da72c9b532ff1d9f20d8b0db0f938ac7f5d6b5ec85f85fc469bee554d",
+    "/workspace/btc-alpha-beta-next/review/spot-actual-risk-sizing-proof.json": "cf728ca85710ad8a23b4527b3d13692918ccd3986d2e32646bd63640b32dffed",
+    "/workspace/btc-alpha-beta-next/review/coin-actual-risk-financial-diagnostic-blocked.json": "cb77d177ae7581f8869c33d2d66d0aedf37ba7233b48f36944e5ad4f3ce46a99",
+    "/workspace/btc-alpha-beta-next/review/coin-four-sensitivity-financial-proof.json": "cc7964fff7bfa42b64477084118629ea779d9f696770cc768d1d2bc513111b22",
+    "/workspace/btc-alpha-beta-next/review/spot-canonical-five-financial-proof.json": "c1803ecb6c66a1f6397415ce2b033f569ebca46e6df42419bee87ea45f351b8d",
+    "/workspace/btc-alpha-beta-next/review/final64-financial-readonly-reconciliation.py": "cf99b017677e1ea66a36691af1b1f619f65fe1af86d7cb1d4d2dbf73075979ea"
+  },
+  "final_sha256": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+  "repaired_index_sha256": "0d78b9355deb09f7597be3b756aa51c209980188536d186c3b5a72d7dcb6a44e",
+  "actual_repair_provenance_sha256": "d844ce8274cb4e8cee1d19ad7ec94407c86c7716910ed8456376f17654af0eeb",
+  "audit_inventory": [
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-consensus-v2-final.json",
+      "audit_sha256": "f9066e622622fd281d2ba4506499cf70170f458b19a98a981a648999e1c1aead",
+      "raw_sha256": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a",
+      "kind": "spot",
+      "stage": "unscaled",
+      "accounts": 4
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-trend-reentry.json",
+      "audit_sha256": "1a6ab9d562a29f6e1326495aa258ddf408cdc07294b85dce4dd6de04a53a8091",
+      "raw_sha256": "b72181ba8f7c3b8e925ccdf2bf2757ed4b67a1821c2b2a656ca74207034535a8",
+      "kind": "spot",
+      "stage": "unscaled",
+      "accounts": 4
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-target-participation.json",
+      "audit_sha256": "ec0761348d9ece7fcdb5fc2e3dd0c88d44a5b8c64434ccb6e30f4a758c6af0be",
+      "raw_sha256": "f854446dd7bf4215940f279801b31e518fb7d3d356009755ae26c742072d1134",
+      "kind": "spot",
+      "stage": "unscaled",
+      "accounts": 4
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-close.json",
+      "audit_sha256": "91902699ca113eee21a71aecde04ad57846b11a8827e2ad044ec7e71a139b73a",
+      "raw_sha256": "f84e6e6ad188996b1ab7f640f30aeb7c736034823c068a61ae850da336bb974a",
+      "kind": "spot",
+      "stage": "unscaled",
+      "accounts": 4
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-stop.json",
+      "audit_sha256": "a234543735c355d327ab41fb0e87f17386dca477a02dca334c39db324d160330",
+      "raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "kind": "spot",
+      "stage": "unscaled",
+      "accounts": 4
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-permanent.json",
+      "audit_sha256": "eb5383722699c89f98749f73b9ec28460900508a958ef9914a13364a6d2d79c7",
+      "raw_sha256": "f9174c404b757e5af53a5ff460903ff4e127f11d5d96493b22c26f2adfb8039a",
+      "kind": "spot",
+      "stage": "unscaled",
+      "accounts": 4
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-slow.json",
+      "audit_sha256": "69fd3563edf1a421d1ece1377beaba0e0bef36e950bd3530af7699cb374b1b4d",
+      "raw_sha256": "02a9ba480bc48c0952df3ac949ef0b3f98db6c1fb7c61c89f3cecd99a49d921b",
+      "kind": "spot",
+      "stage": "unscaled",
+      "accounts": 4
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "kind": "perp",
+      "stage": "unscaled",
+      "accounts": 20
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.json",
+      "audit_sha256": "5ada5a0f19f401db4d1b2e0a561c39daba08fd5d8ab3bdf19dc64240849e39a7",
+      "raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+      "kind": "spot",
+      "stage": "risk",
+      "accounts": 7
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-0.json",
+      "audit_sha256": "5cd5b713f5afbadadcb1aa0a634f41e19784a5fcc2f0e7d98cee5afc0616771c",
+      "raw_sha256": "b3e894e94eab8d2d2376339d63739b7e39719675328aabba3f799f4e793c84f1",
+      "kind": "perp",
+      "stage": "sensitivity",
+      "accounts": 1
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-1.json",
+      "audit_sha256": "fe2473c0aa3f6727241d4490d7dd9dbcf8f530be7b9671306b0da840202cc7d2",
+      "raw_sha256": "163ca98cbeaa485adc4fff15d54719d4e12c24511cf735b430e0d57bfca6d970",
+      "kind": "perp",
+      "stage": "sensitivity",
+      "accounts": 1
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-2.json",
+      "audit_sha256": "9d60ffbd5c2aabbf4790faef4976af93f3de0f9c42046af9fc1972d91f18d7c3",
+      "raw_sha256": "cd916dbad8055b18e982db20bcecfce838f3d6af398e7e09a60b362d74e805af",
+      "kind": "perp",
+      "stage": "sensitivity",
+      "accounts": 1
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-3.json",
+      "audit_sha256": "52b58f34620f1d1b63c7852d72ac6557ec0047cb7b1f492c2b42b683c395b3c5",
+      "raw_sha256": "38912a76ca423785de39d1a63aa1bcbcde4c28830c0f5e25819c91f6710c3ae6",
+      "kind": "perp",
+      "stage": "sensitivity",
+      "accounts": 1
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-retained4-repaired.json",
+      "audit_sha256": "03e85797467de8d31e37eb36804b61b57e04d6fbf91f4a3ced5f7617e0d4f931",
+      "raw_sha256": "6c786872a3b469fb61714c3465bf0690e96a72442d88f88e6f123b95ae14989c",
+      "kind": "perp",
+      "stage": "risk",
+      "accounts": 4
+    },
+    {
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-incumbent-retry1.json",
+      "audit_sha256": "b84475d25bbfe9209da0791a00ff696e443019bcb6714a42730246e908e28fe1",
+      "raw_sha256": "5344465a2980c03f20bfdf3a60cb2fbc4424caa61bd798c4da6485630f9623bb",
+      "kind": "perp",
+      "stage": "risk",
+      "accounts": 1
+    }
+  ],
+  "exact64_account_identities": [
+    {
+      "kind": "perp",
+      "stage": "risk",
+      "account": "atr-trail/base",
+      "raw_sha256": "6c786872a3b469fb61714c3465bf0690e96a72442d88f88e6f123b95ae14989c",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-retained4-repaired.json",
+      "audit_sha256": "03e85797467de8d31e37eb36804b61b57e04d6fbf91f4a3ced5f7617e0d4f931",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-perp-retained4-projection.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "risk",
+      "account": "compression-breakout/base",
+      "raw_sha256": "6c786872a3b469fb61714c3465bf0690e96a72442d88f88e6f123b95ae14989c",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-retained4-repaired.json",
+      "audit_sha256": "03e85797467de8d31e37eb36804b61b57e04d6fbf91f4a3ced5f7617e0d4f931",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-perp-retained4-projection.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "risk",
+      "account": "fresh-entry/base",
+      "raw_sha256": "6c786872a3b469fb61714c3465bf0690e96a72442d88f88e6f123b95ae14989c",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-retained4-repaired.json",
+      "audit_sha256": "03e85797467de8d31e37eb36804b61b57e04d6fbf91f4a3ced5f7617e0d4f931",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-perp-retained4-projection.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "risk",
+      "account": "incumbent/base",
+      "raw_sha256": "5344465a2980c03f20bfdf3a60cb2fbc4424caa61bd798c4da6485630f9623bb",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-incumbent-retry1.json",
+      "audit_sha256": "b84475d25bbfe9209da0791a00ff696e443019bcb6714a42730246e908e28fe1",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-perp-incumbent-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "risk",
+      "account": "single-topup/base",
+      "raw_sha256": "6c786872a3b469fb61714c3465bf0690e96a72442d88f88e6f123b95ae14989c",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-perp-retained4-repaired.json",
+      "audit_sha256": "03e85797467de8d31e37eb36804b61b57e04d6fbf91f4a3ced5f7617e0d4f931",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-perp-retained4-projection.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "sensitivity",
+      "account": "incumbent/base",
+      "raw_sha256": "163ca98cbeaa485adc4fff15d54719d4e12c24511cf735b430e0d57bfca6d970",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-1.json",
+      "audit_sha256": "fe2473c0aa3f6727241d4490d7dd9dbcf8f530be7b9671306b0da840202cc7d2",
+      "raw_path": "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10100-0.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "sensitivity",
+      "account": "incumbent/base",
+      "raw_sha256": "38912a76ca423785de39d1a63aa1bcbcde4c28830c0f5e25819c91f6710c3ae6",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-3.json",
+      "audit_sha256": "52b58f34620f1d1b63c7852d72ac6557ec0047cb7b1f492c2b42b683c395b3c5",
+      "raw_path": "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000-60000.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "sensitivity",
+      "account": "incumbent/base",
+      "raw_sha256": "b3e894e94eab8d2d2376339d63739b7e39719675328aabba3f799f4e793c84f1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-0.json",
+      "audit_sha256": "5cd5b713f5afbadadcb1aa0a634f41e19784a5fcc2f0e7d98cee5afc0616771c",
+      "raw_path": "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-9900-0.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "sensitivity",
+      "account": "incumbent/base",
+      "raw_sha256": "cd916dbad8055b18e982db20bcecfce838f3d6af398e7e09a60b362d74e805af",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-sensitivity-perp-2.json",
+      "audit_sha256": "9d60ffbd5c2aabbf4790faef4976af93f3de0f9c42046af9fc1972d91f18d7c3",
+      "raw_path": "/workspace/scratch/alpha-beta-next/sensitivity-serial-retry1-incumbent-10000--60000.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "atr-trail/base",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "atr-trail/fees-x1.5",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "atr-trail/read-400ms",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "atr-trail/trigger-slip",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "compression-breakout/base",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "compression-breakout/fees-x1.5",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "compression-breakout/read-400ms",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "compression-breakout/trigger-slip",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "fresh-entry/base",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "fresh-entry/fees-x1.5",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "fresh-entry/read-400ms",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "fresh-entry/trigger-slip",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "incumbent/base",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "incumbent/fees-x1.5",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "incumbent/read-400ms",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "incumbent/trigger-slip",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "single-topup/base",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "single-topup/fees-x1.5",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "single-topup/read-400ms",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "perp",
+      "stage": "unscaled",
+      "account": "single-topup/trigger-slip",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "audit_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_path": "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "risk",
+      "account": "atr-close/base",
+      "raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.json",
+      "audit_sha256": "5ada5a0f19f401db4d1b2e0a561c39daba08fd5d8ab3bdf19dc64240849e39a7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "risk",
+      "account": "atr-stop/base",
+      "raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.json",
+      "audit_sha256": "5ada5a0f19f401db4d1b2e0a561c39daba08fd5d8ab3bdf19dc64240849e39a7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "risk",
+      "account": "consensus/base",
+      "raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.json",
+      "audit_sha256": "5ada5a0f19f401db4d1b2e0a561c39daba08fd5d8ab3bdf19dc64240849e39a7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "risk",
+      "account": "core-permanent/base",
+      "raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.json",
+      "audit_sha256": "5ada5a0f19f401db4d1b2e0a561c39daba08fd5d8ab3bdf19dc64240849e39a7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "risk",
+      "account": "core-slow/base",
+      "raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.json",
+      "audit_sha256": "5ada5a0f19f401db4d1b2e0a561c39daba08fd5d8ab3bdf19dc64240849e39a7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "risk",
+      "account": "target-participation/base",
+      "raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.json",
+      "audit_sha256": "5ada5a0f19f401db4d1b2e0a561c39daba08fd5d8ab3bdf19dc64240849e39a7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "risk",
+      "account": "trend-reentry/base",
+      "raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-risk-spot-project-early.json",
+      "audit_sha256": "5ada5a0f19f401db4d1b2e0a561c39daba08fd5d8ab3bdf19dc64240849e39a7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "atr-close/base",
+      "raw_sha256": "f84e6e6ad188996b1ab7f640f30aeb7c736034823c068a61ae850da336bb974a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-close.json",
+      "audit_sha256": "91902699ca113eee21a71aecde04ad57846b11a8827e2ad044ec7e71a139b73a",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/atr-close.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "atr-close/fee150",
+      "raw_sha256": "f84e6e6ad188996b1ab7f640f30aeb7c736034823c068a61ae850da336bb974a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-close.json",
+      "audit_sha256": "91902699ca113eee21a71aecde04ad57846b11a8827e2ad044ec7e71a139b73a",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/atr-close.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "atr-close/outage",
+      "raw_sha256": "f84e6e6ad188996b1ab7f640f30aeb7c736034823c068a61ae850da336bb974a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-close.json",
+      "audit_sha256": "91902699ca113eee21a71aecde04ad57846b11a8827e2ad044ec7e71a139b73a",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/atr-close.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "atr-close/slip2",
+      "raw_sha256": "f84e6e6ad188996b1ab7f640f30aeb7c736034823c068a61ae850da336bb974a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-close.json",
+      "audit_sha256": "91902699ca113eee21a71aecde04ad57846b11a8827e2ad044ec7e71a139b73a",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/atr-close.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "atr-stop/base",
+      "raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-stop.json",
+      "audit_sha256": "a234543735c355d327ab41fb0e87f17386dca477a02dca334c39db324d160330",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/atr-stop.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "atr-stop/fee150",
+      "raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-stop.json",
+      "audit_sha256": "a234543735c355d327ab41fb0e87f17386dca477a02dca334c39db324d160330",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/atr-stop.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "atr-stop/outage",
+      "raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-stop.json",
+      "audit_sha256": "a234543735c355d327ab41fb0e87f17386dca477a02dca334c39db324d160330",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/atr-stop.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "atr-stop/slip2",
+      "raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-stop.json",
+      "audit_sha256": "a234543735c355d327ab41fb0e87f17386dca477a02dca334c39db324d160330",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/atr-stop.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "consensus/base",
+      "raw_sha256": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-consensus-v2-final.json",
+      "audit_sha256": "f9066e622622fd281d2ba4506499cf70170f458b19a98a981a648999e1c1aead",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/consensus.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "consensus/fee150",
+      "raw_sha256": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-consensus-v2-final.json",
+      "audit_sha256": "f9066e622622fd281d2ba4506499cf70170f458b19a98a981a648999e1c1aead",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/consensus.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "consensus/outage",
+      "raw_sha256": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-consensus-v2-final.json",
+      "audit_sha256": "f9066e622622fd281d2ba4506499cf70170f458b19a98a981a648999e1c1aead",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/consensus.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "consensus/slip2",
+      "raw_sha256": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-consensus-v2-final.json",
+      "audit_sha256": "f9066e622622fd281d2ba4506499cf70170f458b19a98a981a648999e1c1aead",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/consensus.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "core-permanent/base",
+      "raw_sha256": "f9174c404b757e5af53a5ff460903ff4e127f11d5d96493b22c26f2adfb8039a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-permanent.json",
+      "audit_sha256": "eb5383722699c89f98749f73b9ec28460900508a958ef9914a13364a6d2d79c7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/core-permanent.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "core-permanent/fee150",
+      "raw_sha256": "f9174c404b757e5af53a5ff460903ff4e127f11d5d96493b22c26f2adfb8039a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-permanent.json",
+      "audit_sha256": "eb5383722699c89f98749f73b9ec28460900508a958ef9914a13364a6d2d79c7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/core-permanent.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "core-permanent/outage",
+      "raw_sha256": "f9174c404b757e5af53a5ff460903ff4e127f11d5d96493b22c26f2adfb8039a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-permanent.json",
+      "audit_sha256": "eb5383722699c89f98749f73b9ec28460900508a958ef9914a13364a6d2d79c7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/core-permanent.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "core-permanent/slip2",
+      "raw_sha256": "f9174c404b757e5af53a5ff460903ff4e127f11d5d96493b22c26f2adfb8039a",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-permanent.json",
+      "audit_sha256": "eb5383722699c89f98749f73b9ec28460900508a958ef9914a13364a6d2d79c7",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/core-permanent.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "core-slow/base",
+      "raw_sha256": "02a9ba480bc48c0952df3ac949ef0b3f98db6c1fb7c61c89f3cecd99a49d921b",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-slow.json",
+      "audit_sha256": "69fd3563edf1a421d1ece1377beaba0e0bef36e950bd3530af7699cb374b1b4d",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/core-slow.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "core-slow/fee150",
+      "raw_sha256": "02a9ba480bc48c0952df3ac949ef0b3f98db6c1fb7c61c89f3cecd99a49d921b",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-slow.json",
+      "audit_sha256": "69fd3563edf1a421d1ece1377beaba0e0bef36e950bd3530af7699cb374b1b4d",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/core-slow.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "core-slow/outage",
+      "raw_sha256": "02a9ba480bc48c0952df3ac949ef0b3f98db6c1fb7c61c89f3cecd99a49d921b",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-slow.json",
+      "audit_sha256": "69fd3563edf1a421d1ece1377beaba0e0bef36e950bd3530af7699cb374b1b4d",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/core-slow.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "core-slow/slip2",
+      "raw_sha256": "02a9ba480bc48c0952df3ac949ef0b3f98db6c1fb7c61c89f3cecd99a49d921b",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-slow.json",
+      "audit_sha256": "69fd3563edf1a421d1ece1377beaba0e0bef36e950bd3530af7699cb374b1b4d",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/core-slow.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "target-participation/base",
+      "raw_sha256": "f854446dd7bf4215940f279801b31e518fb7d3d356009755ae26c742072d1134",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-target-participation.json",
+      "audit_sha256": "ec0761348d9ece7fcdb5fc2e3dd0c88d44a5b8c64434ccb6e30f4a758c6af0be",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/target-participation.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "target-participation/fee150",
+      "raw_sha256": "f854446dd7bf4215940f279801b31e518fb7d3d356009755ae26c742072d1134",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-target-participation.json",
+      "audit_sha256": "ec0761348d9ece7fcdb5fc2e3dd0c88d44a5b8c64434ccb6e30f4a758c6af0be",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/target-participation.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "target-participation/outage",
+      "raw_sha256": "f854446dd7bf4215940f279801b31e518fb7d3d356009755ae26c742072d1134",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-target-participation.json",
+      "audit_sha256": "ec0761348d9ece7fcdb5fc2e3dd0c88d44a5b8c64434ccb6e30f4a758c6af0be",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/target-participation.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "target-participation/slip2",
+      "raw_sha256": "f854446dd7bf4215940f279801b31e518fb7d3d356009755ae26c742072d1134",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-target-participation.json",
+      "audit_sha256": "ec0761348d9ece7fcdb5fc2e3dd0c88d44a5b8c64434ccb6e30f4a758c6af0be",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/target-participation.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "trend-reentry/base",
+      "raw_sha256": "b72181ba8f7c3b8e925ccdf2bf2757ed4b67a1821c2b2a656ca74207034535a8",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-trend-reentry.json",
+      "audit_sha256": "1a6ab9d562a29f6e1326495aa258ddf408cdc07294b85dce4dd6de04a53a8091",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/trend-reentry.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "trend-reentry/fee150",
+      "raw_sha256": "b72181ba8f7c3b8e925ccdf2bf2757ed4b67a1821c2b2a656ca74207034535a8",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-trend-reentry.json",
+      "audit_sha256": "1a6ab9d562a29f6e1326495aa258ddf408cdc07294b85dce4dd6de04a53a8091",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/trend-reentry.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "trend-reentry/outage",
+      "raw_sha256": "b72181ba8f7c3b8e925ccdf2bf2757ed4b67a1821c2b2a656ca74207034535a8",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-trend-reentry.json",
+      "audit_sha256": "1a6ab9d562a29f6e1326495aa258ddf408cdc07294b85dce4dd6de04a53a8091",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/trend-reentry.json.gz"
+    },
+    {
+      "kind": "spot",
+      "stage": "unscaled",
+      "account": "trend-reentry/slip2",
+      "raw_sha256": "b72181ba8f7c3b8e925ccdf2bf2757ed4b67a1821c2b2a656ca74207034535a8",
+      "audit_path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-trend-reentry.json",
+      "audit_sha256": "1a6ab9d562a29f6e1326495aa258ddf408cdc07294b85dce4dd6de04a53a8091",
+      "raw_path": "/workspace/scratch/alpha-beta-next/spot-singletons/trend-reentry.json.gz"
+    }
+  ],
+  "exact64_reconciled": true,
+  "baseline_four_scenes_each_all_six_groups": true,
+  "actual_four_coin_unity_six_groups": true,
+  "profile12_actual731_recomputation_and1723_results": {
+    "spot/consensus": {
+      "profile": {
+        "scale": "1.0",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "5dc7be50f8ca12a42359ab0019d7e41d8bdec8d975fa81b94547afcde58e56a0",
+        "baseline_candidate": "consensus"
+      },
+      "scale_recomputed_from_actual731": 1.0,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.35458356473378116,
+      "validation_annual_volatility": 0.299915304478391,
+      "achieved_match": true,
+      "validation_cumulative_usdt_gain": 0.0,
+      "validation_hac95_annual_arithmetic": [
+        -0.10486298447166574,
+        0.34397535103196636
+      ]
+    },
+    "spot/trend-reentry": {
+      "profile": {
+        "scale": "0.9729026205883997",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "5dc7be50f8ca12a42359ab0019d7e41d8bdec8d975fa81b94547afcde58e56a0",
+        "baseline_candidate": "consensus"
+      },
+      "scale_recomputed_from_actual731": 0.9729026205884002,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.3482008230253822,
+      "validation_annual_volatility": 0.29441548849341376,
+      "achieved_match": true,
+      "validation_cumulative_usdt_gain": -0.009327849663647747,
+      "validation_hac95_annual_arithmetic": [
+        -0.10140084396712745,
+        0.33857523259662287
+      ]
+    },
+    "spot/target-participation": {
+      "profile": {
+        "scale": "0.9103288241320875",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "5dc7be50f8ca12a42359ab0019d7e41d8bdec8d975fa81b94547afcde58e56a0",
+        "baseline_candidate": "consensus"
+      },
+      "scale_recomputed_from_actual731": 0.9103288241320886,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.34271177795592944,
+      "validation_annual_volatility": 0.287786985913637,
+      "achieved_match": true,
+      "validation_cumulative_usdt_gain": 0.11477434548561716,
+      "validation_hac95_annual_arithmetic": [
+        -0.08175204019019629,
+        0.34156156211590355
+      ]
+    },
+    "spot/atr-close": {
+      "profile": {
+        "scale": "1.0",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "5dc7be50f8ca12a42359ab0019d7e41d8bdec8d975fa81b94547afcde58e56a0",
+        "baseline_candidate": "consensus"
+      },
+      "scale_recomputed_from_actual731": 1.0,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.3583266421071175,
+      "validation_annual_volatility": 0.301210477801437,
+      "achieved_match": true,
+      "validation_cumulative_usdt_gain": 0.01859606839214223,
+      "validation_hac95_annual_arithmetic": [
+        -0.10371388539425627,
+        0.3453763923469565
+      ]
+    },
+    "spot/atr-stop": {
+      "profile": {
+        "scale": "0.9972720085277638",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "5dc7be50f8ca12a42359ab0019d7e41d8bdec8d975fa81b94547afcde58e56a0",
+        "baseline_candidate": "consensus"
+      },
+      "scale_recomputed_from_actual731": 0.9972720085277638,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.33706477823955894,
+      "validation_annual_volatility": 0.2901597434739097,
+      "achieved_match": true,
+      "validation_cumulative_usdt_gain": 0.27723712126544164,
+      "validation_hac95_annual_arithmetic": [
+        -0.062357881549701635,
+        0.3554188440099524
+      ]
+    },
+    "spot/core-permanent": {
+      "profile": {
+        "scale": "0.8338190387997291",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "5dc7be50f8ca12a42359ab0019d7e41d8bdec8d975fa81b94547afcde58e56a0",
+        "baseline_candidate": "consensus"
+      },
+      "scale_recomputed_from_actual731": 0.8338190387997291,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.39324412995734165,
+      "validation_annual_volatility": 0.27177638490931993,
+      "achieved_match": false,
+      "validation_cumulative_usdt_gain": -0.11302496216824842,
+      "validation_hac95_annual_arithmetic": [
+        -0.08263508302681007,
+        0.2636210584152705
+      ]
+    },
+    "spot/core-slow": {
+      "profile": {
+        "scale": "0.9584097975933019",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "5dc7be50f8ca12a42359ab0019d7e41d8bdec8d975fa81b94547afcde58e56a0",
+        "baseline_candidate": "consensus"
+      },
+      "scale_recomputed_from_actual731": 0.9584097975933022,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.3518123021111347,
+      "validation_annual_volatility": 0.28888512931889776,
+      "achieved_match": true,
+      "validation_cumulative_usdt_gain": 0.0099685936432512,
+      "validation_hac95_annual_arithmetic": [
+        -0.09407625582373028,
+        0.33001626336145345
+      ]
+    },
+    "perp/fresh-entry": {
+      "profile": {
+        "scale": "1.0",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "baseline_candidate": "incumbent"
+      },
+      "scale_recomputed_from_actual731": 1.0,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.01906424988208872,
+      "validation_annual_volatility": 0.07622345464965098,
+      "achieved_match": true,
+      "validation_cumulative_usdt_gain": -9.005683563893845,
+      "validation_hac95_annual_arithmetic": [
+        -0.10680704290841762,
+        0.02697083200190371
+      ]
+    },
+    "perp/atr-trail": {
+      "profile": {
+        "scale": "1.0",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "baseline_candidate": "incumbent"
+      },
+      "scale_recomputed_from_actual731": 1.0,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.32908286329409064,
+      "validation_annual_volatility": 0.6428192495811437,
+      "achieved_match": false,
+      "validation_cumulative_usdt_gain": 4.10583547202884,
+      "validation_hac95_annual_arithmetic": [
+        0.05165813454323674,
+        1.2381870210579413
+      ]
+    },
+    "perp/compression-breakout": {
+      "profile": {
+        "scale": "0.7997705584944133",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "baseline_candidate": "incumbent"
+      },
+      "scale_recomputed_from_actual731": 0.7997705584944135,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.3569251083979442,
+      "validation_annual_volatility": 0.5840821807494982,
+      "achieved_match": false,
+      "validation_cumulative_usdt_gain": -8.355618674380507,
+      "validation_hac95_annual_arithmetic": [
+        -0.37162151674097355,
+        0.6882464630695398
+      ]
+    },
+    "perp/single-topup": {
+      "profile": {
+        "scale": "1.0",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "baseline_candidate": "incumbent"
+      },
+      "scale_recomputed_from_actual731": 1.0,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.22110505229659097,
+      "validation_annual_volatility": 0.45545520035199666,
+      "achieved_match": true,
+      "validation_cumulative_usdt_gain": -1.4558454468023196,
+      "validation_hac95_annual_arithmetic": [
+        0.08041833098928758,
+        0.8903947102019975
+      ]
+    },
+    "perp/incumbent": {
+      "profile": {
+        "scale": "1.0",
+        "effective_from_ms": 1640995200000,
+        "calibration_end_ms": 1640995200000,
+        "training_end_day_exclusive": "2022-01-01",
+        "base_bundle_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "baseline_candidate": "incumbent"
+      },
+      "scale_recomputed_from_actual731": 1.0,
+      "training_ledger_and_statistics_unchanged": true,
+      "validation_beta": 0.26836988788076954,
+      "validation_annual_volatility": 0.5159826234101154,
+      "achieved_match": true,
+      "validation_cumulative_usdt_gain": 0.0,
+      "validation_hac95_annual_arithmetic": [
+        0.0821112503415232,
+        0.986644568819198
+      ]
+    }
+  },
+  "max_existing_independent_audit_vs_final_regression_difference": 1.27675647831893e-15,
+  "max_ledger_rounding_delta": "1.2839341176470E-20",
+  "spot_outage789_executed_accounts": [
+    "consensus/outage",
+    "trend-reentry/outage",
+    "target-participation/outage",
+    "atr-close/outage",
+    "atr-stop/outage",
+    "core-permanent/outage",
+    "core-slow/outage"
+  ],
+  "other_accounts795_sessions": true,
+  "prior_causal_proofs_preserved_and_bound": true,
+  "repair_changes_no_selection_or_financial_outcomes": true,
+  "selection": {
+    "spot": {
+      "selected_research_candidate": "atr-stop",
+      "decisions": {
+        "consensus": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": true,
+          "base_improvement": false,
+          "worst_cagr": 0.5087610724396199,
+          "rejection_reasons": []
+        },
+        "trend-reentry": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": false,
+          "base_improvement": false,
+          "worst_cagr": 0.4957019398285223,
+          "rejection_reasons": [
+            "paired_stress_constraints",
+            "insufficient_base_improvement"
+          ]
+        },
+        "target-participation": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": false,
+          "base_improvement": true,
+          "worst_cagr": 0.5332866938986662,
+          "rejection_reasons": [
+            "paired_stress_constraints"
+          ]
+        },
+        "atr-close": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": false,
+          "base_improvement": false,
+          "worst_cagr": 0.4917754774489511,
+          "rejection_reasons": [
+            "paired_stress_constraints",
+            "insufficient_base_improvement"
+          ]
+        },
+        "atr-stop": {
+          "eligible": true,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": true,
+          "base_improvement": true,
+          "worst_cagr": 0.5410209158261161,
+          "rejection_reasons": []
+        },
+        "core-permanent": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": false,
+          "base_improvement": true,
+          "worst_cagr": 0.5009410283181259,
+          "rejection_reasons": [
+            "paired_stress_constraints"
+          ]
+        },
+        "core-slow": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": false,
+          "base_improvement": false,
+          "worst_cagr": 0.4776929829683465,
+          "rejection_reasons": [
+            "paired_stress_constraints",
+            "insufficient_base_improvement"
+          ]
+        }
+      },
+      "compatible_components": [
+        "atr-stop"
+      ],
+      "combination_status": "existing_singleton",
+      "production_promoted": false,
+      "native_qualification": "NOT_QUALIFIED",
+      "adoption_blocked": false
+    },
+    "perp": {
+      "selected_research_candidate": "incumbent",
+      "decisions": {
+        "incumbent": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": true,
+          "base_improvement": false,
+          "worst_cagr": 1.047729985096748,
+          "rejection_reasons": []
+        },
+        "fresh-entry": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": false,
+          "base_improvement": false,
+          "worst_cagr": 0.180023116156377,
+          "rejection_reasons": [
+            "paired_stress_constraints",
+            "insufficient_base_improvement"
+          ]
+        },
+        "atr-trail": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": false,
+          "base_improvement": false,
+          "worst_cagr": 0.7466807760354024,
+          "rejection_reasons": [
+            "paired_stress_constraints",
+            "insufficient_base_improvement"
+          ]
+        },
+        "compression-breakout": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": false,
+          "base_improvement": false,
+          "worst_cagr": 0.2974170272423795,
+          "rejection_reasons": [
+            "paired_stress_constraints",
+            "insufficient_base_improvement"
+          ]
+        },
+        "single-topup": {
+          "eligible": false,
+          "complete_known_audited": true,
+          "paired_unscaled_constraints": false,
+          "base_improvement": false,
+          "worst_cagr": 0.8444913107961369,
+          "rejection_reasons": [
+            "paired_stress_constraints",
+            "insufficient_base_improvement"
+          ]
+        }
+      },
+      "compatible_components": [],
+      "combination_status": "not_applicable",
+      "production_promoted": false,
+      "native_qualification": "NOT_QUALIFIED",
+      "adoption_blocked": false
+    }
+  },
+  "passive_controls": {
+    "cash": {
+      "metrics": {
+        "daily_mdd": 0.11851148237134723,
+        "longest_daily_underwater_days": 851,
+        "daily_es5_loss": 0.005708911031394762,
+        "worst_day": -0.019857138917234285,
+        "daily_volatility_annualized": 0.04115136161516442,
+        "cagr": -0.006031538320149354,
+        "final_cny": 9601.682823529412
+      },
+      "purchases": 0,
+      "initial_cny": 10000,
+      "additional_capital_cny": 0,
+      "market": "spot",
+      "method": "Daily-open economic benchmark with fractional BTC, not finite-session/Lifecycle fills.",
+      "fees_each_buy": ".001",
+      "entry_slippage": ".0005",
+      "terminal_valuation": "mark-to-market, no assumed terminal sale",
+      "continuous_mdd_verified": false,
+      "native_execution_verified": false
+    },
+    "buy_hold": {
+      "metrics": {
+        "daily_mdd": 0.738130703252574,
+        "longest_daily_underwater_days": 841,
+        "daily_es5_loss": 0.07066258295948678,
+        "worst_day": -0.3892960627274913,
+        "daily_volatility_annualized": 0.6008167520531342,
+        "cagr": 0.4255080080982412,
+        "final_cny": 108261.43579017713
+      },
+      "purchases": 1,
+      "initial_cny": 10000,
+      "additional_capital_cny": 0,
+      "market": "spot",
+      "method": "Daily-open economic benchmark with fractional BTC, not finite-session/Lifecycle fills.",
+      "fees_each_buy": ".001",
+      "entry_slippage": ".0005",
+      "terminal_valuation": "mark-to-market, no assumed terminal sale",
+      "continuous_mdd_verified": false,
+      "native_execution_verified": false
+    },
+    "btc25_cash75": {
+      "metrics": {
+        "daily_mdd": 0.5384182241778197,
+        "longest_daily_underwater_days": 841,
+        "daily_es5_loss": 0.04444511761553491,
+        "worst_day": -0.10852481791149593,
+        "daily_volatility_annualized": 0.36541642070514807,
+        "cagr": 0.20118391865375607,
+        "final_cny": 34266.62106519134
+      },
+      "purchases": 1,
+      "initial_cny": 10000,
+      "additional_capital_cny": 0,
+      "market": "spot",
+      "method": "Daily-open economic benchmark with fractional BTC, not finite-session/Lifecycle fills.",
+      "fees_each_buy": ".001",
+      "entry_slippage": ".0005",
+      "terminal_valuation": "mark-to-market, no assumed terminal sale",
+      "continuous_mdd_verified": false,
+      "native_execution_verified": false
+    },
+    "btc50_cash50": {
+      "metrics": {
+        "daily_mdd": 0.6571880176982863,
+        "longest_daily_underwater_days": 841,
+        "daily_es5_loss": 0.057364657854586366,
+        "worst_day": -0.1994876867023232,
+        "daily_volatility_annualized": 0.4770925640488002,
+        "cagr": 0.3021395546565939,
+        "final_cny": 58931.55930685327
+      },
+      "purchases": 1,
+      "initial_cny": 10000,
+      "additional_capital_cny": 0,
+      "market": "spot",
+      "method": "Daily-open economic benchmark with fractional BTC, not finite-session/Lifecycle fills.",
+      "fees_each_buy": ".001",
+      "entry_slippage": ".0005",
+      "terminal_valuation": "mark-to-market, no assumed terminal sale",
+      "continuous_mdd_verified": false,
+      "native_execution_verified": false
+    },
+    "btc75_cash25": {
+      "metrics": {
+        "daily_mdd": 0.7086368099635907,
+        "longest_daily_underwater_days": 841,
+        "daily_es5_loss": 0.06484525760333748,
+        "worst_day": -0.29662136000392414,
+        "daily_volatility_annualized": 0.5462073856186951,
+        "cagr": 0.37169391321071377,
+        "final_cny": 83596.4975485152
+      },
+      "purchases": 1,
+      "initial_cny": 10000,
+      "additional_capital_cny": 0,
+      "market": "spot",
+      "method": "Daily-open economic benchmark with fractional BTC, not finite-session/Lifecycle fills.",
+      "fees_each_buy": ".001",
+      "entry_slippage": ".0005",
+      "terminal_valuation": "mark-to-market, no assumed terminal sale",
+      "continuous_mdd_verified": false,
+      "native_execution_verified": false
+    },
+    "twelve_month_dca": {
+      "metrics": {
+        "daily_mdd": 0.738130703252574,
+        "longest_daily_underwater_days": 841,
+        "daily_es5_loss": 0.06580188130089099,
+        "worst_day": -0.14908716812772216,
+        "daily_volatility_annualized": 0.5467523404557691,
+        "cagr": 0.36409168294406413,
+        "final_cny": 80532.56330158199
+      },
+      "purchases": 12,
+      "initial_cny": 10000,
+      "additional_capital_cny": 0,
+      "market": "spot",
+      "method": "Daily-open economic benchmark with fractional BTC, not finite-session/Lifecycle fills.",
+      "fees_each_buy": ".001",
+      "entry_slippage": ".0005",
+      "terminal_valuation": "mark-to-market, no assumed terminal sale",
+      "continuous_mdd_verified": false,
+      "native_execution_verified": false
+    },
+    "volatility_control40": {
+      "metrics": {
+        "daily_mdd": 0.6293399768167482,
+        "longest_daily_underwater_days": 825,
+        "daily_es5_loss": 0.04988874504398632,
+        "worst_day": -0.2505341700059234,
+        "daily_volatility_annualized": 0.421987341253874,
+        "cagr": 0.273614824117681,
+        "final_cny": 50782.96223277881
+      },
+      "purchases": 963,
+      "initial_cny": 10000,
+      "additional_capital_cny": 0,
+      "market": "spot",
+      "method": "Daily-open economic benchmark with fractional BTC, not finite-session/Lifecycle fills.",
+      "fees_each_buy": ".001",
+      "entry_slippage": ".0005",
+      "terminal_valuation": "mark-to-market, no assumed terminal sale",
+      "continuous_mdd_verified": false,
+      "native_execution_verified": false
+    }
+  },
+  "spot_tail_tradeoff": {
+    "baseline_worst_day": -0.144837424078758,
+    "selected_worst_day": -0.15802886316559805,
+    "underwater_days_both": 713
+  },
+  "original_failed_reports_preserved": true,
+  "original_control_failure_waived": false,
+  "financial_evidence_approved": true,
+  "adoption_approved": false,
+  "native_cases": 0,
+  "actual_account_days": 0,
+  "continuous_proxy_independently_replayed": false,
+  "new_checker_or_producer_executed_by_reviewer": false
+}

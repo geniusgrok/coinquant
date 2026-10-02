@@ -1,0 +1,26 @@
+{
+  "runs": [
+    {
+      "repo": "coinquant",
+      "run_id": 36963293762,
+      "head_sha": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/geniusgrok/coinquant/actions/runs/36963293762",
+      "event": "pull_request",
+      "created_at": "2026-10-02T04:09:18Z",
+      "updated_at": "2026-10-02T04:09:46Z"
+    },
+    {
+      "repo": "spotquant",
+      "run_id": 36963295145,
+      "head_sha": "8ca002522fbdce531dcfbbb783ff4d152a7fd66c",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/geniusgrok/spotquant/actions/runs/36963295145",
+      "event": "pull_request",
+      "created_at": "2026-10-02T04:09:20Z",
+      "updated_at": "2026-10-02T04:09:41Z"
+    }
+  ]
+}

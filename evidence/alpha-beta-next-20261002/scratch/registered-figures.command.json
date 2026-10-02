@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/btc-alpha-beta-next/review/plot_registered_assessment.py",
+    "--assessment",
+    "/workspace/scratch/alpha-beta-next/registered-final-repaired.json",
+    "--out",
+    "/workspace/scratch/alpha-beta-next/figures"
+  ],
+  "cwd": "/workspace",
+  "started_utc": "2026-10-02T17:06:46.422141+00:00",
+  "ended_utc": "2026-10-02T17:06:47.723206+00:00",
+  "elapsed_seconds": 1.301079259996186,
+  "exit_code": 0,
+  "helper_sha256": "886c6ff4eea3a8703583cb49009c34d7fc709f17f44b774433ff7f9746bf9868",
+  "financial_review_sha256": "b7ba215bdc4b9ad645f6360ea688d15692e4a96c1bb63da53cae3d2bdec6656d",
+  "report_sha256": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "actual_files_equal_visually_inspected_preview": true,
+  "files": {
+    "figure-provenance.json": "20c650f1b9f16fb401505354d3fe95ca211855fe933298a4298eb7049204fa73",
+    "actual-validation-risk.svg": "038d10f71699dd71b5eb06da29d48441f9de7ecb046f0828607189b054f7246b",
+    "actual-validation-risk.png": "9f4087c43990b290f578808e8e1b68c48e9594f326da60d33b5445a82478512b",
+    "registered-risk-return.png": "7f748f40cd9ec91063a610a3d44af5ba466b4cdd31c63ef9a45cfe6f75f12a7e",
+    "registered-risk-return.svg": "4047eda658cc280b6c345066ebd9057e1663213618aa43b69c3a75abe49757b9"
+  }
+}

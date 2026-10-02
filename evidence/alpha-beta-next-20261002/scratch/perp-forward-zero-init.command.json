@@ -1,0 +1,24 @@
+{
+  "adoption_decision_sha256": "b44b7c4899021b3238c1968265d5e4b2c9338180fdb70d05dd056f48f041f8fc",
+  "analysis_git_head": "99fcf005d2cb15c13bb37322b65ab2863b19d65e",
+  "analysis_python_sources_sha256": "427f34ca3640cfa78f51173583af1d9c82f007baae155f3a992dcffb8171ad7b",
+  "analysis_sha256": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+  "argv": [
+    "python",
+    "-m",
+    "research.alpha_assessment",
+    "--analysis",
+    "/workspace/scratch/alpha-beta-next/registered-final-repaired.json",
+    "--kind",
+    "perp",
+    "--forward-init",
+    "/workspace/scratch/alpha-beta-next/perp-forward-zero-init.json"
+  ],
+  "completed_at_utc": "2026-10-02T17:17:59.146195+00:00",
+  "cwd": "/workspace/btc-alpha-beta-analysis/spotquant",
+  "elapsed_seconds": 0.4885154960065847,
+  "exit_code": 0,
+  "output_sha256": "3266202e258735e829a68a0b61527d47f0e98a4d0e4ec7580bbd00b8a0e36cbe",
+  "run_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "started_at_utc": "2026-10-02T17:17:58.657694+00:00"
+}

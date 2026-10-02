@@ -1,0 +1,76 @@
+{
+  "scope": "Bound unchanged actual Spot7 sizing/core findings supplement final64 review",
+  "sizing_proof_sha256": "cf728ca85710ad8a23b4527b3d13692918ccd3986d2e32646bd63640b32dffed",
+  "spot_risk_proof_sha256": "d46f4b3da72c9b532ff1d9f20d8b0db0f938ac7f5d6b5ec85f85fc469bee554d",
+  "actual_spot7_raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+  "all7_sizing_checks_passed": true,
+  "owned_decision_count": 265808,
+  "filled_buy_orders_linked_to_actual_budget": 540,
+  "core_pools": {
+    "core-permanent": {
+      "applicable": true,
+      "fraction": "0.20",
+      "fill_count": 172,
+      "native_owner_count": 617,
+      "observed_decision_pool_snapshots": 37009,
+      "same_timestamp_fill_boundary_count": 0,
+      "final_pools": {
+        "core": {
+          "cash": "490.456679461588801228183581024757595346",
+          "btc": "0.03993492728222112455233883895"
+        },
+        "tactical": {
+          "cash": "8057.59766414891979904710931592363038138",
+          "btc": "0.13629727479855922819366956201"
+        }
+      },
+      "minimum_pool_balances": {
+        "core": {
+          "cash": "0.0001313817223012281835811247575953458",
+          "btc": "0"
+        },
+        "tactical": {
+          "cash": "0.000896212227085309609325920630381383",
+          "btc": "0"
+        }
+      },
+      "max_recorded_cash_delta": "5.29736961862E-24",
+      "max_recorded_btc_delta": "1.1E-28",
+      "terminal_cash_conservation_delta": "1.6948387976726E-23",
+      "terminal_btc_conservation_delta": "6E-29"
+    },
+    "core-slow": {
+      "applicable": true,
+      "fraction": "0.20",
+      "fill_count": 184,
+      "native_owner_count": 586,
+      "observed_decision_pool_snapshots": 37585,
+      "same_timestamp_fill_boundary_count": 0,
+      "final_pools": {
+        "core": {
+          "cash": "60.066667790809360528183581113657595346",
+          "btc": "0.01942783950470529717259703965"
+        },
+        "tactical": {
+          "cash": "6746.22854843347944162210928276043038138",
+          "btc": "0.15889256629463498056440508557"
+        }
+      },
+      "minimum_pool_balances": {
+        "core": {
+          "cash": "0.000850744675352243808581291657595346",
+          "btc": "0"
+        },
+        "tactical": {
+          "cash": "0.000703991017869259609325609430381383",
+          "btc": "0"
+        }
+      },
+      "max_recorded_cash_delta": "6.35156961862E-24",
+      "max_recorded_btc_delta": "2.3E-28",
+      "terminal_cash_conservation_delta": "-1.6125912023274E-23",
+      "terminal_btc_conservation_delta": "-8E-29"
+    }
+  },
+  "adoption_approved": false
+}

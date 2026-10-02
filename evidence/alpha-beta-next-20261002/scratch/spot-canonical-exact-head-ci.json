@@ -1,0 +1,13 @@
+{
+  "verified_at_utc": "2026-10-02 09:48:02 UTC",
+  "repo": "geniusgrok/spotquant",
+  "run_id": 36991729615,
+  "event": "pull_request",
+  "head_sha": "0c52c812301de3712f3637a1ce1b1241de0c40f1",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/geniusgrok/spotquant/actions/runs/36991729615",
+  "draft_source_checkpoint_only": true,
+  "global_financial_review_pending": true,
+  "adoption_approved": false
+}

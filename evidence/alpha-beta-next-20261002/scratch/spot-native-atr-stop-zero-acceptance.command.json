@@ -1,0 +1,23 @@
+{
+  "label": "spot-native-atr-stop-zero-acceptance",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-m",
+    "research.native_acceptance",
+    "/workspace/scratch/alpha-beta-next/spot-native-atr-stop-zero-template.json",
+    "--package",
+    "/workspace/btc-alpha-beta-adoption/spotquant/spotquant"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-adoption/spotquant",
+  "source_head": "0c52c812301de3712f3637a1ce1b1241de0c40f1",
+  "started_utc": "2026-10-02T12:32:32.354179+00:00",
+  "elapsed_seconds": 0.03411187899473589,
+  "exit_code": 2,
+  "expected_exit_codes": [
+    2
+  ],
+  "log_sha256": "4921f37a2510a1b338c11959ed26bd147e771797387168b8653b7596042fac78",
+  "artifact_path": "/workspace/scratch/alpha-beta-next/spot-native-atr-stop-zero-template.json",
+  "artifact_sha256": "56cff84241727ff279063951a33b5e0a71bd7585f105f628f179682836797ba6",
+  "scope": "Source-bound blank native template or explicit zero-case check; no network/account/State/orders."
+}

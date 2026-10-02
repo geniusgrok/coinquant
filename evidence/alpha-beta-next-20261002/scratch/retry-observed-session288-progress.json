@@ -1,0 +1,131 @@
+{
+  "source": {
+    "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+    "dirty": false,
+    "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+  },
+  "complete": false,
+  "last_session": 288,
+  "accounts": {
+    "incumbent/base": {
+      "sessions": 289,
+      "wallet": "25813.32800089952288462471790",
+      "position": "0.000",
+      "failure": null
+    },
+    "incumbent/fees-x1.5": {
+      "sessions": 289,
+      "wallet": "28246.52046312195702711571788",
+      "position": "0.000",
+      "failure": null
+    },
+    "incumbent/read-400ms": {
+      "sessions": 289,
+      "wallet": "24070.68235580441461301611786",
+      "position": "0.000",
+      "failure": null
+    },
+    "incumbent/trigger-slip": {
+      "sessions": 289,
+      "wallet": "25127.78518760378218930871786",
+      "position": "0.000",
+      "failure": null
+    },
+    "fresh-entry/base": {
+      "sessions": 289,
+      "wallet": "6646.776888979557858609717891",
+      "position": "0.000",
+      "failure": null
+    },
+    "fresh-entry/fees-x1.5": {
+      "sessions": 289,
+      "wallet": "6497.542328999893621250917896",
+      "position": "0.000",
+      "failure": null
+    },
+    "fresh-entry/read-400ms": {
+      "sessions": 289,
+      "wallet": "5740.932653266381167538217891",
+      "position": "0.000",
+      "failure": null
+    },
+    "fresh-entry/trigger-slip": {
+      "sessions": 289,
+      "wallet": "6513.701586189813944784317902",
+      "position": "0.000",
+      "failure": null
+    },
+    "atr-trail/base": {
+      "sessions": 289,
+      "wallet": "9793.267225816555468325917902",
+      "position": "0.000",
+      "failure": null
+    },
+    "atr-trail/fees-x1.5": {
+      "sessions": 289,
+      "wallet": "9311.972427911811741854917902",
+      "position": "0.000",
+      "failure": null
+    },
+    "atr-trail/read-400ms": {
+      "sessions": 289,
+      "wallet": "8262.06748525406325442281788",
+      "position": "0.000",
+      "failure": null
+    },
+    "atr-trail/trigger-slip": {
+      "sessions": 289,
+      "wallet": "9298.102540353987252455817905",
+      "position": "0.000",
+      "failure": null
+    },
+    "compression-breakout/base": {
+      "sessions": 289,
+      "wallet": "6746.858051280676256848017884",
+      "position": "0.000",
+      "failure": null
+    },
+    "compression-breakout/fees-x1.5": {
+      "sessions": 289,
+      "wallet": "6269.275449987933006838017895",
+      "position": "0.000",
+      "failure": null
+    },
+    "compression-breakout/read-400ms": {
+      "sessions": 289,
+      "wallet": "5946.98665284834851620891786",
+      "position": "0.000",
+      "failure": null
+    },
+    "compression-breakout/trigger-slip": {
+      "sessions": 289,
+      "wallet": "6242.174665709920278038867897",
+      "position": "0.000",
+      "failure": null
+    },
+    "single-topup/base": {
+      "sessions": 289,
+      "wallet": "13632.00306669331853199161789",
+      "position": "0.000",
+      "failure": null
+    },
+    "single-topup/fees-x1.5": {
+      "sessions": 289,
+      "wallet": "13234.29984837354349696251790",
+      "position": "0.000",
+      "failure": null
+    },
+    "single-topup/read-400ms": {
+      "sessions": 289,
+      "wallet": "13984.97388106496912389991790",
+      "position": "0.000",
+      "failure": null
+    },
+    "single-topup/trigger-slip": {
+      "sessions": 289,
+      "wallet": "13341.95577424067448733771790",
+      "position": "0.000",
+      "failure": null
+    }
+  }
+}

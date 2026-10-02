@@ -32,39 +32,39 @@
 **Files:** create research/alpha_perp.py and tests/test_alpha_perp.py; modify shared pure code only if required for a reviewed seam, preserve existing default.
 **Consumes:** complete_perp.ResearchExchange/variant/session runner, original market/prints/FX, frozen JSON spec.
 **Produces:** CLI python -m research.alpha_perp --out FILE [--limit N] [--candidate NAME] [--scenario NAME] [--risk-calibration FILE] [--combo COMPONENTS] [--initial-cny VALUE] [--start-offset-ms VALUE] [--restore-prints]; source-bound JSON or lossless .json.gz with nested results candidate/scenario compatible monetary rows and causal opportunity_ledger. Inputs explicitly bind spec/protocol, component/risk/capital/starts and measured source. Full primary matrix default includes all5x4.
-- [ ] Read actual call paths and add meaningful tests for rolling prior-only trigger, stale/chase entry, primary-only monotone stop and through-mark exit, confirmed top-up allowance/unknown recovery, checkpoint identity and no-op baseline.
-- [ ] Implement exactly four variants and instrumentation with scoped hooks restored finally, no extra adapter calls. Reuse old measurement/audit; do not copy an exchange or change old candidate list permanently.
-- [ ] Ensure unchanged incumbent actual three-session monetary/fill/daily prefix versus old complete_perp; include generated incomplete smoke only in /tmp.
-- [ ] Run focused tests/compile, commit clean source. Write report with commits, exact tests, smoke evidence and limitations, no subagents.
-- [ ] Independent spec+quality review from BASE..HEAD diff and report; address material findings before completion.
+- [x] Read actual call paths and add meaningful tests for rolling prior-only trigger, stale/chase entry, primary-only monotone stop and through-mark exit, confirmed top-up allowance/unknown recovery, checkpoint identity and no-op baseline.
+- [x] Implement exactly four variants and instrumentation with scoped hooks restored finally, no extra adapter calls. Reuse old measurement/audit; do not copy an exchange or change old candidate list permanently.
+- [x] Ensure unchanged incumbent actual three-session monetary/fill/daily prefix versus old complete_perp; include generated incomplete smoke only in /tmp.
+- [x] Run focused tests/compile, commit clean source. Write report with commits, exact tests, smoke evidence and limitations, no subagents.
+- [x] Independent spec+quality review from BASE..HEAD diff and report; address material findings before completion.
 
 ### Task2: Spot mechanisms, independent core subpools and causal journal
 
 **Files:** create research/alpha_spot.py and tests/test_alpha_spot.py; only smallest shared seam if necessary, preserve default consensus.
 **Consumes:** complete_spot.measure/Policy, HistoricalVenue, session/Lifecycle, Model/follow, actual cached allocated fills and anchor.
 **Produces:** CLI python -m research.alpha_spot --out FILE [--limit N] [--candidate NAME] [--scenario NAME] [--risk-calibration FILE] [--combo COMPONENTS] [--workers1|2]; source-bound results candidate-scenario and opportunity_ledger. Default full7x4 and same monetary/audit schema.
-- [ ] Pin re-entry confirm/count/actual-exit/new-day gates and partial/unknown behavior; target participation existing material bulls only, one confirmed daily add, exits first.
-- [ ] Pin causal ATR close vs ATR stop separate, monotone native stop, current fill peak and no unattended actions.
-- [ ] Implement research-only sleeve200 and independent20/80 initial cash subpools, fee/dust conservation, separate tactical consensus and core intents, new-day restart, core0 no-op and mode-bound checkpoint rejection.
-- [ ] Prove current consensus three-session no-op equality and exception hook restoration. Run focused tests/compile; commit/report and independent spec+quality review.
+- [x] Pin re-entry confirm/count/actual-exit/new-day gates and partial/unknown behavior; target participation existing material bulls only, one confirmed daily add, exits first.
+- [x] Pin causal ATR close vs ATR stop separate, monotone native stop, current fill peak and no unattended actions.
+- [x] Implement research-only sleeve200 and independent20/80 initial cash subpools, fee/dust conservation, separate tactical consensus and core intents, new-day restart, core0 no-op and mode-bound checkpoint rejection.
+- [x] Prove current consensus three-session no-op equality and exception hook restoration. Run focused tests/compile; commit/report and independent spec+quality review.
 
 ### Task3: Shared diagnosis, risk calibration, full-matrix selection, combination and forward tools
 
 **Files:** create Spot research/alpha_assessment.py, tests/test_alpha_assessment.py and research/alpha-forward-GUIDE.md; use original complete_assessment canonical/attribution helpers. Small mirrored reader/calibration interface if needed in Coin.
 **Consumes:** raw complete matrices and SHA-bound risk/sensitivity/combo outputs fromTasks1/2.
 **Produces:** python -m research.alpha_assessment --spot FILE --perp FILE --out FILE [--calibration-out FILE] [--risk-spot FILE] [--risk-perp FILE] [--combo-spot FILE] [--combo-perp FILE]; all-candidate metrics, causal reason/exit event diagnosis, training-only fixed scales, conditional alpha/beta classification, mechanical choice and compatible combo list. Strict schemas/input identities; standalone export CSV/MD/plots and hash-bound all-cash forward initialization/append observed public bar interface.
-- [ ] Test exact missing/incomplete matrix rejection, mismatched source/input/candidate/starts/capital, calibration independence from postcutoff mutations and bad validation-risk match labeling.
-- [ ] Implement past-only calibration and achieved match checks from actual rerun; no curve scaling. Diagnose post-event5/20-day outcomes with explicit nonrealizable labels. Separate full and2022+statements, fees/funding, year/concentration, continuous/daily DD and source identity.
-- [ ] Pin all-match comparison against consensus/incumbent and deterministic compatible combination (core exclusion/tie slow), no hidden grid or strategy search.
-- [ ] Add forward artifact source/spec/baseline SHA and observed timestamp checks, initial all-cash/no fake elapsed days. Run relevant tests, commit/report; independent review.
+- [x] Test exact missing/incomplete matrix rejection, mismatched source/input/candidate/starts/capital, calibration independence from postcutoff mutations and bad validation-risk match labeling.
+- [x] Implement past-only calibration and achieved match checks from actual rerun; no curve scaling. Diagnose post-event5/20-day outcomes with explicit nonrealizable labels. Separate full and2022+statements, fees/funding, year/concentration, continuous/daily DD and source identity.
+- [x] Pin all-match comparison against consensus/incumbent and deterministic compatible combination (core exclusion/tie slow), no hidden grid or strategy search.
+- [x] Add forward artifact source/spec/baseline SHA and observed timestamp checks, initial all-cash/no fake elapsed days. Run relevant tests, commit/report; independent review.
 
 ### Task4: Freeze, measure all accounts, inspect completed evidence and adopt eligible code
 
 **Files:** immutable evidence/alpha-beta-next-20261002/*, selected minimal runtime changes if any, current README/AGENTS/PROJECT_STATE/HANDOFF and reproduction guide.
-- [ ] Freeze all implementation/evaluation source before full runs. Run every48 single case on exact original public inputs; preserve failed cases, repair proven implementation defects and rerun affected complete accounts with source provenance.
-- [ ] Verify baselines against originals, complete real session/archive gates and independent funds. Prepare training-only calibration and run all10 complete new-candidate base risk-account replays.
-- [ ] Run prescribed eligible compatible combos in all4stresses and incumbent/finalCoin9900/10100/start+/-60s sensitivity accounts. Do not skip registered single directions or turn diagnostics into optimal-capital search.
-- [ ] Independently review cash/fills/funding/daily/continuous proxy risks, causal gates, risk-calibration chronology, selected choices and all descriptive claims.
-- [ ] If eligible, move selected minimal logic into shared default path with complete executable equivalence, state migration rejection and mandatory safety tests; otherwise preserve default and document all rejection reasons.
-- [ ] Retain complete public raws/review/SHA manifests (exclude self/progress/cache), final attribution/CSV/chart, initialization only forward ledger and full reproduction commands. Preserve original targets, original measurement identities and native0/actualdays0.
+- [x] Freeze all implementation/evaluation source before full runs. Run every48 single case on exact original public inputs; preserve failed cases, repair proven implementation defects and rerun affected complete accounts with source provenance.
+- [x] Verify baselines against originals, complete real session/archive gates and independent funds. Prepare training-only calibration and run all10 complete new-candidate base risk-account replays.
+- [x] Run prescribed eligible compatible combos in all4stresses and incumbent/finalCoin9900/10100/start+/-60s sensitivity accounts. Do not skip registered single directions or turn diagnostics into optimal-capital search.
+- [x] Independently review cash/fills/funding/daily/continuous proxy risks, causal gates, risk-calibration chronology, selected choices and all descriptive claims.
+- [x] If eligible, move selected minimal logic into shared default path with complete executable equivalence, state migration rejection and mandatory safety tests; otherwise preserve default and document all rejection reasons.
+- [x] Retain complete public raws/review/SHA manifests (exclude self/progress/cache), final attribution/CSV/chart, initialization only forward ledger and full reproduction commands. Preserve original targets, original measurement identities and native0/actualdays0.
 - [ ] Run appropriate final local checks, normal branch push and independent whole-branch review; exact-head CI then normal PR integration, mainCI, clean worktrees. No additional permission for already-authorized normal integration.

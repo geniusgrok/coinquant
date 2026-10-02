@@ -1,0 +1,10 @@
+{
+  "started_utc": "2026-10-02T06:45:18.166149+00:00",
+  "tool_session": 36581,
+  "processes": [
+    "38554 python -u /workspace/btc-alpha-beta-next/review/audit_remaining_registered.py"
+  ],
+  "script_sha256": "5fdef514d1f3d382ca04a4a2e1c38d0e2991f698df08cbca46f1fcfb711090bd",
+  "review": "remaining-audit-queue-fix1-review.md",
+  "scope": "Read-only completed original risk/combo/sensitivity audits; no replay/source/account operation; final exact inventory reconciliation required."
+}

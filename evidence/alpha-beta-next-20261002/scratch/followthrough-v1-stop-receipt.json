@@ -1,0 +1,8 @@
+{
+  "controller_pid": 28019,
+  "controller_sha256": "07e85b50e4f95a179ac8aaadd038baea4354affde70c121c7f10bddb1922027d",
+  "stop_requested_at_utc": "2026-10-02T05:36:15.498897+00:00",
+  "phase": "waiting_only_no_economic_commands_started",
+  "reason": "Replace with independently reviewed equivalent command queue using separate incumbent probe cache.",
+  "producer_sources_or_processes_changed": false
+}

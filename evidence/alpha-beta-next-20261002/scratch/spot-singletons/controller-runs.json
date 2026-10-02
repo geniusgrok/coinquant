@@ -1,0 +1,159 @@
+{
+  "runs": [
+    {
+      "candidate": "consensus",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "research.alpha_spot",
+        "--candidate",
+        "consensus",
+        "--workers",
+        "2",
+        "--out",
+        "/workspace/scratch/alpha-beta-next/spot-singletons/consensus.json"
+      ],
+      "started_utc": "2026-10-02T04:10:44.151008+00:00",
+      "elapsed_seconds": 1314.0608717760042,
+      "exit_code": 0,
+      "cumulative_child_max_rss_kib": 1023428,
+      "raw_sha256": "a0de1c109e14868c7e02e7657d607719c71c759ea84e01d4bbc18e5daa5cb44f",
+      "raw_bytes": 197693952,
+      "retained_sha256": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a",
+      "retained_bytes": 5301001
+    },
+    {
+      "candidate": "trend-reentry",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "research.alpha_spot",
+        "--candidate",
+        "trend-reentry",
+        "--workers",
+        "2",
+        "--out",
+        "/workspace/scratch/alpha-beta-next/spot-singletons/trend-reentry.json"
+      ],
+      "started_utc": "2026-10-02T04:32:40.365638+00:00",
+      "elapsed_seconds": 1360.1440254269983,
+      "exit_code": 0,
+      "cumulative_child_max_rss_kib": 1039592,
+      "raw_sha256": "8bef5fbb9a046c4dd7ba3bad9016ad82b8de8ac2aa80df4edc270a284a8d9b21",
+      "raw_bytes": 199149204,
+      "retained_sha256": "b72181ba8f7c3b8e925ccdf2bf2757ed4b67a1821c2b2a656ca74207034535a8",
+      "retained_bytes": 5311428
+    },
+    {
+      "candidate": "target-participation",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "research.alpha_spot",
+        "--candidate",
+        "target-participation",
+        "--workers",
+        "2",
+        "--out",
+        "/workspace/scratch/alpha-beta-next/spot-singletons/target-participation.json"
+      ],
+      "started_utc": "2026-10-02T04:55:22.743040+00:00",
+      "elapsed_seconds": 1447.3815594449989,
+      "exit_code": 0,
+      "cumulative_child_max_rss_kib": 1039592,
+      "raw_sha256": "8570f758b4909587b4472e53f3cc469d4f45a2c23f2c8f188bc97eec7103f391",
+      "raw_bytes": 202165022,
+      "retained_sha256": "f854446dd7bf4215940f279801b31e518fb7d3d356009755ae26c742072d1134",
+      "retained_bytes": 5357041
+    },
+    {
+      "candidate": "atr-close",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "research.alpha_spot",
+        "--candidate",
+        "atr-close",
+        "--workers",
+        "2",
+        "--out",
+        "/workspace/scratch/alpha-beta-next/spot-singletons/atr-close.json"
+      ],
+      "started_utc": "2026-10-02T05:19:32.559438+00:00",
+      "elapsed_seconds": 1358.598503000001,
+      "exit_code": 0,
+      "cumulative_child_max_rss_kib": 1039592,
+      "raw_sha256": "25e5281d5dbefe5491500d4ef8585b3991d3f469a9dc3f2016f0818cd9531ced",
+      "raw_bytes": 197675171,
+      "retained_sha256": "f84e6e6ad188996b1ab7f640f30aeb7c736034823c068a61ae850da336bb974a",
+      "retained_bytes": 5294826
+    },
+    {
+      "candidate": "atr-stop",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "research.alpha_spot",
+        "--candidate",
+        "atr-stop",
+        "--workers",
+        "2",
+        "--out",
+        "/workspace/scratch/alpha-beta-next/spot-singletons/atr-stop.json"
+      ],
+      "started_utc": "2026-10-02T05:42:13.322195+00:00",
+      "elapsed_seconds": 1453.8488244580076,
+      "exit_code": 0,
+      "cumulative_child_max_rss_kib": 1046372,
+      "raw_sha256": "afd916b1f52f007e5efd6c5e943a6be8b7ea9202637eec844c3b7d48ea381250",
+      "raw_bytes": 202299396,
+      "retained_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "retained_bytes": 5357803
+    },
+    {
+      "candidate": "core-permanent",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "research.alpha_spot",
+        "--candidate",
+        "core-permanent",
+        "--workers",
+        "2",
+        "--out",
+        "/workspace/scratch/alpha-beta-next/spot-singletons/core-permanent.json"
+      ],
+      "started_utc": "2026-10-02T06:06:29.542119+00:00",
+      "elapsed_seconds": 1892.1823672799947,
+      "exit_code": 0,
+      "cumulative_child_max_rss_kib": 1383320,
+      "raw_sha256": "011d8456f5de688edbba4b817d68c0438401629a584ec62ba9047f9b69d2f00d",
+      "raw_bytes": 272814112,
+      "retained_sha256": "f9174c404b757e5af53a5ff460903ff4e127f11d5d96493b22c26f2adfb8039a",
+      "retained_bytes": 6324555
+    },
+    {
+      "candidate": "core-slow",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "research.alpha_spot",
+        "--candidate",
+        "core-slow",
+        "--workers",
+        "2",
+        "--out",
+        "/workspace/scratch/alpha-beta-next/spot-singletons/core-slow.json"
+      ],
+      "started_utc": "2026-10-02T06:38:04.510527+00:00",
+      "elapsed_seconds": 1920.4789480709878,
+      "exit_code": 0,
+      "cumulative_child_max_rss_kib": 1383320,
+      "raw_sha256": "0250f459ba235e7626ecf56a2b21b2d8d0b88314d5f933dbfe01a988944eeaf1",
+      "raw_bytes": 269019422,
+      "retained_sha256": "02a9ba480bc48c0952df3ac949ef0b3f98db6c1fb7c61c89f3cecd99a49d921b",
+      "retained_bytes": 6169617
+    }
+  ],
+  "expected_source_head": "8ca002522fbdce531dcfbbb783ff4d152a7fd66c"
+}

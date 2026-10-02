@@ -1,0 +1,1276 @@
+{
+  "method": "Independent Decimal40 ledger and NumPy matrix OLS/HAC7; no producer imports",
+  "fx_sha256": "67606315ea34c0301e0129ac8fc27056099986d9fbd58a552a07f140cdd05bb5",
+  "scope": "Provisional: completed Spot baseline four scenes and immutable original Coin incumbent four scenes only",
+  "spot": {
+    "consensus-base": {
+      "complete": true,
+      "original_field_differences": [],
+      "sessions": 795,
+      "all_archive_claims_true": true,
+      "ledger": {
+        "fills": 141,
+        "cash": "7858.06539503540475768466794947108797673",
+        "btc": "0.20777065181750602934053361239",
+        "fees_usdt": "1326.742986308661454706250006564380019354",
+        "fees_vs_audit_delta": "-4.35619980646E-25",
+        "max_daily_cash_delta": "2.241108797673E-23",
+        "max_daily_btc_delta": "3E-29",
+        "max_daily_usdt_equity_delta": "2.764561897673E-23",
+        "max_daily_cny_delta": "2.696334307331E-22",
+        "terminal_cash_delta": "9.47108797673E-24",
+        "terminal_btc_delta": "-1E-29"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.39706878753691877,
+          "alpha_daily": 0.0007541261296469425,
+          "hac7_se_daily": 0.00030309673090369893,
+          "alpha_annual_arithmetic": 0.27544456885354573,
+          "alpha_annual_normal95": [
+            0.05846065016689673,
+            0.49242848754019475
+          ],
+          "annual_vol": 0.37188170462747755,
+          "es5_loss": 0.04416593302011849,
+          "mdd_daily": 0.3833473700052047,
+          "cagr": 0.5277172649419439,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.48034914729120975,
+              "beta": 0.4621532824884948
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.4160228891275446,
+              "beta": 0.2433184660638991
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.39731538526568383,
+          "alpha_daily": 0.0007471192837422815,
+          "hac7_se_daily": 0.00030705173771149906,
+          "alpha_annual_arithmetic": 0.2728853183868683,
+          "alpha_annual_normal95": [
+            0.05307004987658324,
+            0.4927005868971534
+          ],
+          "annual_vol": 0.37357158934421814,
+          "es5_loss": 0.04435859459610133,
+          "mdd_daily": 0.3982569818671834,
+          "cagr": 0.5185027797160926,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.48117740163329736,
+              "beta": 0.46105587242674384
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.417367003368516,
+              "beta": 0.24294567908403883
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.35458356473378116,
+          "alpha_daily": 0.00032732699050006935,
+          "hac7_se_daily": 0.00031348275259022486,
+          "alpha_annual_arithmetic": 0.11955618328015033,
+          "alpha_annual_normal95": [
+            -0.10486298447166574,
+            0.34397535103196636
+          ],
+          "annual_vol": 0.299915304478391,
+          "es5_loss": 0.037392149927239604,
+          "mdd_daily": 0.3833473700052047,
+          "cagr": 0.17673422840307507,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.4137427420508055,
+              "beta": 0.37149754395335843
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.38089561038668124,
+              "beta": 0.25393596358120046
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.3588557548932764,
+          "alpha_daily": 0.0003485091443631972,
+          "hac7_se_daily": 0.0003197532447172479,
+          "alpha_annual_arithmetic": 0.12729296497865777,
+          "alpha_annual_normal95": [
+            -0.10161518538197283,
+            0.3562011153392884
+          ],
+          "annual_vol": 0.30421956520529664,
+          "es5_loss": 0.037526953643944025,
+          "mdd_daily": 0.3982569818671834,
+          "cagr": 0.19000857209365707,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.41635226665143377,
+              "beta": 0.3777361364445111
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.38095028035726536,
+              "beta": 0.26193750825353473
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 1.311063528953708,
+          "2021": 0.7684348260652863,
+          "2022": -0.21245164566115776,
+          "2023": 0.5178336442103255,
+          "2024": 0.3862279027794073,
+          "2025": 0.07573192649876921,
+          "2026": 0.0003684705323706828
+        },
+        "reported_continuous_proxy_mdd": "0.4120733483379037501201538132",
+        "final_cny_delta": "1.05595057245E-11"
+      }
+    },
+    "consensus-fee150": {
+      "complete": true,
+      "original_field_differences": [],
+      "sessions": 795,
+      "all_archive_claims_true": true,
+      "ledger": {
+        "fills": 141,
+        "cash": "7527.52403880487270164109156109678797673",
+        "btc": "0.19913265500064351525777902067",
+        "fees_usdt": "1937.095764180454072902604128512538128151",
+        "fees_vs_audit_delta": "1.512538128151E-24",
+        "max_daily_cash_delta": "1.542678797673E-23",
+        "max_daily_btc_delta": "3E-29",
+        "max_daily_usdt_equity_delta": "2.057621757673E-23",
+        "max_daily_cny_delta": "1.810826743450E-22",
+        "terminal_cash_delta": "1.509678797673E-23",
+        "terminal_btc_delta": "-3E-29"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.3970072353104546,
+          "alpha_daily": 0.0007368489930435534,
+          "hac7_se_daily": 0.00030358110029090696,
+          "alpha_annual_arithmetic": 0.2691340947091579,
+          "alpha_annual_normal95": [
+            0.0518034208219005,
+            0.48646476859641524
+          ],
+          "annual_vol": 0.37189668954219646,
+          "es5_loss": 0.044189392985036734,
+          "mdd_daily": 0.3856002338517974,
+          "cagr": 0.5180555503655622,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.47941970677737794,
+              "beta": 0.4622069171975947
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.41672618018202995,
+              "beta": 0.2432912548613044
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.3972583626662069,
+          "alpha_daily": 0.0007298397611394733,
+          "hac7_se_daily": 0.00030753416674899047,
+          "alpha_annual_arithmetic": 0.2665739727561926,
+          "alpha_annual_normal95": [
+            0.04641333812225784,
+            0.48673460739012736
+          ],
+          "annual_vol": 0.37359097168230043,
+          "es5_loss": 0.04438200668080352,
+          "mdd_daily": 0.40045537529737507,
+          "cagr": 0.5088993401414168,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.4802510377514667,
+              "beta": 0.46111129550573665
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.41807815586704433,
+              "beta": 0.24292178897413844
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.35451665454698333,
+          "alpha_daily": 0.0003096750940610884,
+          "hac7_se_daily": 0.00031414404257606174,
+          "alpha_annual_arithmetic": 0.11310882810581253,
+          "alpha_annual_normal95": [
+            -0.11178375053396429,
+            0.3380014067455894
+          ],
+          "annual_vol": 0.2999445976316028,
+          "es5_loss": 0.03742173725993309,
+          "mdd_daily": 0.3856002338517974,
+          "cagr": 0.16914258730543863,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.412633379979702,
+              "beta": 0.3715742711181433
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.3817245703548921,
+              "beta": 0.2539266853270667
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.3587991322694352,
+          "alpha_daily": 0.000330859140813351,
+          "hac7_se_daily": 0.0003204097450882018,
+          "alpha_annual_arithmetic": 0.12084630118207645,
+          "alpha_annual_normal95": [
+            -0.10853183122911632,
+            0.35022443359326927
+          ],
+          "annual_vol": 0.3042567045820992,
+          "es5_loss": 0.03755641848020432,
+          "mdd_daily": 0.40045537529737507,
+          "cagr": 0.18233129224202393,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.4152409503081884,
+              "beta": 0.37782626047746437
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.38178313992991797,
+              "beta": 0.26195547691499876
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 1.3060996769650628,
+          "2021": 0.7613050087281643,
+          "2022": -0.21546830968647104,
+          "2023": 0.511829205578364,
+          "2024": 0.3794464807580955,
+          "2025": 0.06767092906792926,
+          "2026": -0.00630013221169713
+        },
+        "reported_continuous_proxy_mdd": "0.4142212525279717792931851810",
+        "final_cny_delta": "8.7858269052E-12"
+      }
+    },
+    "consensus-slip2": {
+      "complete": true,
+      "original_field_differences": [],
+      "sessions": 795,
+      "all_archive_claims_true": true,
+      "ledger": {
+        "fills": 141,
+        "cash": "7522.97733095717531774091789042378797673",
+        "btc": "0.19900902321795361397841269550",
+        "fees_usdt": "1290.503381750024588399999982568800932530",
+        "fees_vs_audit_delta": "-4.31199067470E-25",
+        "max_daily_cash_delta": "1.057621202327E-23",
+        "max_daily_btc_delta": "6E-29",
+        "max_daily_usdt_equity_delta": "1.657385712327E-23",
+        "max_daily_cny_delta": "1.866417000042E-22",
+        "terminal_cash_delta": "-9.57621202327E-24",
+        "terminal_btc_delta": "0E-29"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.3970329672373815,
+          "alpha_daily": 0.0007365890694783605,
+          "hac7_se_daily": 0.00030363357549913683,
+          "alpha_annual_arithmetic": 0.26903915762697117,
+          "alpha_annual_normal95": [
+            0.05167091726289412,
+            0.48640739799104826
+          ],
+          "annual_vol": 0.371922209940905,
+          "es5_loss": 0.044193794711730044,
+          "mdd_daily": 0.38590675123184515,
+          "cagr": 0.5179164436361965,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.47942522963247364,
+              "beta": 0.4622115068865623
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.4167551730067842,
+              "beta": 0.24335376605449976
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.39728614327117984,
+          "alpha_daily": 0.0007295795110081902,
+          "hac7_se_daily": 0.0003075880450080273,
+          "alpha_annual_arithmetic": 0.2664789163957415,
+          "alpha_annual_normal95": [
+            0.04627971085494485,
+            0.48667812193653814
+          ],
+          "annual_vol": 0.373617896912318,
+          "es5_loss": 0.04438636384409148,
+          "mdd_daily": 0.4007544816084625,
+          "cagr": 0.5087610724396199,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.48025655685248075,
+              "beta": 0.4611158910933318
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.4181069527309823,
+              "beta": 0.24299212654900978
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.35454668597230743,
+          "alpha_daily": 0.0003094163341701124,
+          "hac7_se_daily": 0.000314245085377037,
+          "alpha_annual_arithmetic": 0.11301431605563356,
+          "alpha_annual_normal95": [
+            -0.11195059811493346,
+            0.3379792302262005
+          ],
+          "annual_vol": 0.2999860732242407,
+          "es5_loss": 0.03742668248141438,
+          "mdd_daily": 0.38590675123184515,
+          "cagr": 0.1690240715274478,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.4126385275984822,
+              "beta": 0.3715774032720615
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.3817573854782417,
+              "beta": 0.254008909880217
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.3588330146253477,
+          "alpha_daily": 0.000330599838222915,
+          "hac7_se_daily": 0.0003205121502875221,
+          "alpha_annual_arithmetic": 0.1207515909109197,
+          "alpha_annual_normal95": [
+            -0.10869985235841448,
+            0.3502030341802539
+          ],
+          "annual_vol": 0.3043002139659399,
+          "es5_loss": 0.037561304018931436,
+          "mdd_daily": 0.4007544816084625,
+          "cagr": 0.18221143952733843,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.4152460931423352,
+              "beta": 0.3778292614941665
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.38181576658186467,
+              "beta": 0.2620530892672286
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 1.3061066865193303,
+          "2021": 0.7611605232977854,
+          "2022": -0.21546535352831642,
+          "2023": 0.5118331518646211,
+          "2024": 0.37894601557094826,
+          "2025": 0.06766695538214193,
+          "2026": -0.006280813605277071
+        },
+        "reported_continuous_proxy_mdd": "0.4145134897229151532610803110",
+        "final_cny_delta": "4.188042703E-13"
+      }
+    },
+    "consensus-outage": {
+      "complete": true,
+      "original_field_differences": [],
+      "sessions": 789,
+      "all_archive_claims_true": true,
+      "ledger": {
+        "fills": 141,
+        "cash": "7858.06539503540475768466794947108797673",
+        "btc": "0.20777065181750602934053361239",
+        "fees_usdt": "1326.742986308661454706250006564380019354",
+        "fees_vs_audit_delta": "-4.35619980646E-25",
+        "max_daily_cash_delta": "2.241108797673E-23",
+        "max_daily_btc_delta": "3E-29",
+        "max_daily_usdt_equity_delta": "2.764561897673E-23",
+        "max_daily_cny_delta": "2.696334307331E-22",
+        "terminal_cash_delta": "9.47108797673E-24",
+        "terminal_btc_delta": "-1E-29"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.39706878753691877,
+          "alpha_daily": 0.0007541261296469425,
+          "hac7_se_daily": 0.00030309673090369893,
+          "alpha_annual_arithmetic": 0.27544456885354573,
+          "alpha_annual_normal95": [
+            0.05846065016689673,
+            0.49242848754019475
+          ],
+          "annual_vol": 0.37188170462747755,
+          "es5_loss": 0.04416593302011849,
+          "mdd_daily": 0.3833473700052047,
+          "cagr": 0.5277172649419439,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.48034914729120975,
+              "beta": 0.4621532824884948
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.4160228891275446,
+              "beta": 0.2433184660638991
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.39731538526568383,
+          "alpha_daily": 0.0007471192837422815,
+          "hac7_se_daily": 0.00030705173771149906,
+          "alpha_annual_arithmetic": 0.2728853183868683,
+          "alpha_annual_normal95": [
+            0.05307004987658324,
+            0.4927005868971534
+          ],
+          "annual_vol": 0.37357158934421814,
+          "es5_loss": 0.04435859459610133,
+          "mdd_daily": 0.3982569818671834,
+          "cagr": 0.5185027797160926,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.48117740163329736,
+              "beta": 0.46105587242674384
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.417367003368516,
+              "beta": 0.24294567908403883
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.35458356473378116,
+          "alpha_daily": 0.00032732699050006935,
+          "hac7_se_daily": 0.00031348275259022486,
+          "alpha_annual_arithmetic": 0.11955618328015033,
+          "alpha_annual_normal95": [
+            -0.10486298447166574,
+            0.34397535103196636
+          ],
+          "annual_vol": 0.299915304478391,
+          "es5_loss": 0.037392149927239604,
+          "mdd_daily": 0.3833473700052047,
+          "cagr": 0.17673422840307507,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.4137427420508055,
+              "beta": 0.37149754395335843
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.38089561038668124,
+              "beta": 0.25393596358120046
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.3588557548932764,
+          "alpha_daily": 0.0003485091443631972,
+          "hac7_se_daily": 0.0003197532447172479,
+          "alpha_annual_arithmetic": 0.12729296497865777,
+          "alpha_annual_normal95": [
+            -0.10161518538197283,
+            0.3562011153392884
+          ],
+          "annual_vol": 0.30421956520529664,
+          "es5_loss": 0.037526953643944025,
+          "mdd_daily": 0.3982569818671834,
+          "cagr": 0.19000857209365707,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.41635226665143377,
+              "beta": 0.3777361364445111
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.38095028035726536,
+              "beta": 0.26193750825353473
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 1.311063528953708,
+          "2021": 0.7684348260652863,
+          "2022": -0.21245164566115776,
+          "2023": 0.5178336442103255,
+          "2024": 0.3862279027794073,
+          "2025": 0.07573192649876921,
+          "2026": 0.0003684705323706828
+        },
+        "reported_continuous_proxy_mdd": "0.4120733483379037501201538132",
+        "final_cny_delta": "1.05595057245E-11"
+      }
+    }
+  },
+  "coin_original": {
+    "base": {
+      "complete": true,
+      "sessions": 795,
+      "ledger": {
+        "trades": 1561,
+        "funding_events": 921,
+        "realized_wac_pnl": "327291.2927499999999999999999999999999992",
+        "commission": "15290.5449985125",
+        "funding_paid": "21733.1561226997578762817",
+        "realized_vs_income_delta": "-7.115600000008E-22",
+        "fees_vs_income_delta": "0E-10",
+        "funding_public_max_delta": "0",
+        "position_delta": "0.000",
+        "terminal_usdt_delta": "-7.943762120241E-22",
+        "terminal_cny_delta": "-5.253138823535E-21",
+        "max_daily_wallet_delta": "8.28162120233E-23",
+        "max_daily_quantity_delta": "0",
+        "max_daily_equity_delta": "1.1428162120232E-21"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.27584820224575307,
+          "alpha_daily": 0.002247207772222438,
+          "hac7_se_daily": 0.000638477205571243,
+          "alpha_annual_arithmetic": 0.8207926388042455,
+          "alpha_annual_normal95": [
+            0.3637131921078484,
+            1.2778720855006425
+          ],
+          "annual_vol": 0.6440154312023251,
+          "es5_loss": 0.03618298797185281,
+          "mdd_daily": 0.3090334248025831,
+          "cagr": 1.2056221862014418,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.3806221871167982,
+              "beta": 0.5129876367222895
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.1670155872496733,
+              "beta": 0.023937425777411963
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.27295084783356405,
+          "alpha_daily": 0.002240311667499113,
+          "hac7_se_daily": 0.000638532727175879,
+          "alpha_annual_arithmetic": 0.818273836554051,
+          "alpha_annual_normal95": [
+            0.361154642496111,
+            1.275393030611991
+          ],
+          "annual_vol": 0.6432955322002905,
+          "es5_loss": 0.03748898846278908,
+          "mdd_daily": 0.27897771061274135,
+          "cagr": 1.1923188914655962,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.378180005466955,
+              "beta": 0.5083985937975937
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.16474353995164265,
+              "beta": 0.02138459921089402
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.26836988788076954,
+          "alpha_daily": 0.0014630469803705972,
+          "hac7_se_daily": 0.0006317544025462535,
+          "alpha_annual_arithmetic": 0.5343779095803606,
+          "alpha_annual_normal95": [
+            0.0821112503415232,
+            0.986644568819198
+          ],
+          "annual_vol": 0.5159826234101154,
+          "es5_loss": 0.02818814140024393,
+          "mdd_daily": 0.3090334248025831,
+          "cagr": 0.6237093325264089,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.3184500338463295,
+              "beta": 0.5042969532388991
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.15497211925091997,
+              "beta": 0.05528990095135592
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.26944377570971056,
+          "alpha_daily": 0.0014872176966664414,
+          "hac7_se_daily": 0.0006292168886554996,
+          "alpha_annual_arithmetic": 0.5432062637074178,
+          "alpha_annual_normal95": [
+            0.09275618528783212,
+            0.9936563421270034
+          ],
+          "annual_vol": 0.5169735461989826,
+          "es5_loss": 0.029928493344015056,
+          "mdd_daily": 0.2674071029025441,
+          "cagr": 0.642025852275147,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.31771708784789193,
+              "beta": 0.5069244445049425
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.15059108522139844,
+              "beta": 0.06232411821434266
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 2.6166382978866856,
+          "2021": 0.41136098387846204,
+          "2022": -0.27469581160613393,
+          "2023": 1.6401968527229094,
+          "2024": 0.47161559520830876,
+          "2025": 0.19693367823610516,
+          "2026": 0.25249566266354107
+        },
+        "reported_continuous_proxy_mdd": "0.4410507881955692423535878539",
+        "final_cny_delta": "-2.4630873758E-11"
+      }
+    },
+    "fees-x1.5": {
+      "complete": true,
+      "sessions": 795,
+      "ledger": {
+        "trades": 2026,
+        "funding_events": 921,
+        "realized_wac_pnl": "442315.7721799999999999999999999999999986",
+        "commission": "29369.42264247750",
+        "funding_paid": "28613.8155521272476993033",
+        "realized_vs_income_delta": "-4.961000000014E-22",
+        "fees_vs_income_delta": "0E-11",
+        "funding_public_max_delta": "0",
+        "position_delta": "0.000",
+        "terminal_usdt_delta": "-3.943762120247E-22",
+        "terminal_cny_delta": "-2.944978823539E-21",
+        "max_daily_wallet_delta": "1.127237879767E-22",
+        "max_daily_quantity_delta": "0",
+        "max_daily_equity_delta": "8.982762120234E-22"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.28333380720845425,
+          "alpha_daily": 0.0023892473867709063,
+          "hac7_se_daily": 0.0006886802603135008,
+          "alpha_annual_arithmetic": 0.8726726080180736,
+          "alpha_annual_normal95": [
+            0.37965329646224144,
+            1.3656919195739055
+          ],
+          "annual_vol": 0.6799845612714364,
+          "es5_loss": 0.03630200025023247,
+          "mdd_daily": 0.313339215462349,
+          "cagr": 1.2993122577381189,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.3937403103511938,
+              "beta": 0.5300695630907326
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.1664809005005691,
+              "beta": 0.02283013110475768
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.2802891953465723,
+          "alpha_daily": 0.002382514222339139,
+          "hac7_se_daily": 0.0006886957533585187,
+          "alpha_annual_arithmetic": 0.8702133197093705,
+          "alpha_annual_normal95": [
+            0.3771829168375405,
+            1.3632437225812004
+          ],
+          "annual_vol": 0.67918727280907,
+          "es5_loss": 0.037487354915480955,
+          "mdd_daily": 0.2847596655395992,
+          "cagr": 1.285443867745582,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.38933193938943933,
+              "beta": 0.5269618777173886
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.16191473468840115,
+              "beta": 0.021675769180339685
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.2825664846070569,
+          "alpha_daily": 0.0016104886610871227,
+          "hac7_se_daily": 0.0007336534421069885,
+          "alpha_annual_arithmetic": 0.5882309834620716,
+          "alpha_annual_normal95": [
+            0.06301582079209957,
+            1.1134461461320437
+          ],
+          "annual_vol": 0.5742407320300646,
+          "es5_loss": 0.027785967726962606,
+          "mdd_daily": 0.313339215462349,
+          "cagr": 0.6887204623240872,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.33218328502143296,
+              "beta": 0.5470562476715558
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.15180219768738573,
+              "beta": 0.05335142008349417
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.28360596971931107,
+          "alpha_daily": 0.001634203044821728,
+          "hac7_se_daily": 0.0007308513517277487,
+          "alpha_annual_arithmetic": 0.5968926621211361,
+          "alpha_annual_normal95": [
+            0.07368348793275814,
+            1.120101836309514
+          ],
+          "annual_vol": 0.5750854630854223,
+          "es5_loss": 0.02936655628255494,
+          "mdd_daily": 0.2719722899419199,
+          "cagr": 0.7077703507977402,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.3310921815500086,
+              "beta": 0.5503023918672963
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.1469960046942157,
+              "beta": 0.060362142740727195
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 2.7201702451066785,
+          "2021": 0.4021373478524847,
+          "2022": -0.2833591329937621,
+          "2023": 1.9238524620461381,
+          "2024": 0.48259418968394396,
+          "2025": 0.1879164543645054,
+          "2026": 0.16073384628983103
+        },
+        "reported_continuous_proxy_mdd": "0.4438491131225800640158734885",
+        "final_cny_delta": "-7.0332042957E-11"
+      }
+    },
+    "read-400ms": {
+      "complete": true,
+      "sessions": 795,
+      "ledger": {
+        "trades": 1069,
+        "funding_events": 921,
+        "realized_wac_pnl": "205621.4630400000000000000000000000000001",
+        "commission": "9241.4293965300",
+        "funding_paid": "13355.3004746915748191633",
+        "realized_vs_income_delta": "-7.31799999999E-23",
+        "fees_vs_income_delta": "0E-10",
+        "funding_public_max_delta": "0",
+        "position_delta": "0.000",
+        "terminal_usdt_delta": "-9.43762120232E-23",
+        "terminal_cny_delta": "-6.08978823529E-22",
+        "max_daily_wallet_delta": "8.96962120233E-23",
+        "max_daily_quantity_delta": "0",
+        "max_daily_equity_delta": "8.96962120233E-23"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.2479394622939298,
+          "alpha_daily": 0.0020289394277943854,
+          "hac7_se_daily": 0.000592930210018274,
+          "alpha_annual_arithmetic": 0.7410701260018993,
+          "alpha_annual_normal95": [
+            0.31659731795191715,
+            1.1655429340518815
+          ],
+          "annual_vol": 0.5923092582609494,
+          "es5_loss": 0.03217813783417757,
+          "mdd_daily": 0.30972652381498333,
+          "cagr": 1.0601862150691819,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.34041072631805874,
+              "beta": 0.46185121193927986
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.14722640594560768,
+              "beta": 0.02442128209153799
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.24515424846179096,
+          "alpha_daily": 0.002021640538176788,
+          "hac7_se_daily": 0.0005929615866911446,
+          "alpha_annual_arithmetic": 0.7384042065690719,
+          "alpha_annual_normal95": [
+            0.3139089362727484,
+            1.1628994768653953
+          ],
+          "annual_vol": 0.5917325466755498,
+          "es5_loss": 0.03357580476462899,
+          "mdd_daily": 0.2825155979656777,
+          "cagr": 1.0477601229663485,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.33935464489603645,
+              "beta": 0.4559582318558309
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.1466367066819736,
+              "beta": 0.021208262995483163
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.22285785468452907,
+          "alpha_daily": 0.0011883306881148858,
+          "hac7_se_daily": 0.0005310699017559756,
+          "alpha_annual_arithmetic": 0.4340377838339621,
+          "alpha_annual_normal95": [
+            0.053850151865876744,
+            0.8142254158020473
+          ],
+          "annual_vol": 0.4409904685340701,
+          "es5_loss": 0.025010339378238322,
+          "mdd_daily": 0.30972652381498333,
+          "cagr": 0.4946556896919012,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.27009676277157046,
+              "beta": 0.39967199807184844
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.13782520770739293,
+              "beta": 0.05368904228457442
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.22399798173798782,
+          "alpha_daily": 0.0012139796049735806,
+          "hac7_se_daily": 0.0005287673903941273,
+          "alpha_annual_arithmetic": 0.44340605071660033,
+          "alpha_annual_normal95": [
+            0.06486676360734851,
+            0.8219453378258521
+          ],
+          "annual_vol": 0.44232326150572887,
+          "es5_loss": 0.0268181101202836,
+          "mdd_daily": 0.2681419567025627,
+          "cagr": 0.5115163986312337,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.27043433822387275,
+              "beta": 0.4007042754087637
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.13458620827742976,
+              "beta": 0.06048069976500181
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 2.5510310419080757,
+          "2021": 0.40934052428425416,
+          "2022": -0.2739691566954285,
+          "2023": 1.238525077639115,
+          "2024": 0.49409897872051894,
+          "2025": 0.1745923815721914,
+          "2026": 0.26262291227075374
+        },
+        "reported_continuous_proxy_mdd": "0.4441185722536510697724903881",
+        "final_cny_delta": "1.8124613407E-11"
+      }
+    },
+    "trigger-slip": {
+      "complete": true,
+      "sessions": 795,
+      "ledger": {
+        "trades": 1795,
+        "funding_events": 921,
+        "realized_wac_pnl": "389600.4539544999999999999999999999999992",
+        "commission": "18626.1866533158750",
+        "funding_paid": "25716.9758028223250546160",
+        "realized_vs_income_delta": "-1.163000000008E-22",
+        "fees_vs_income_delta": "0E-13",
+        "funding_public_max_delta": "0",
+        "position_delta": "0.000",
+        "terminal_usdt_delta": "-9.43762120241E-23",
+        "terminal_cny_delta": "-1.125458823535E-21",
+        "max_daily_wallet_delta": "7.57237879767E-23",
+        "max_daily_quantity_delta": "0",
+        "max_daily_equity_delta": "9.780762120234E-22"
+      },
+      "statistics": {
+        "full_usdt": {
+          "days": 2454,
+          "beta": 0.2848694289136032,
+          "alpha_daily": 0.0023454189355599413,
+          "hac7_se_daily": 0.0006887008582262181,
+          "alpha_annual_arithmetic": 0.8566642662132685,
+          "alpha_annual_normal95": [
+            0.36363020881770136,
+            1.3496983236088358
+          ],
+          "annual_vol": 0.6808210622703343,
+          "es5_loss": 0.0365645048609953,
+          "mdd_daily": 0.3147280466934491,
+          "cagr": 1.2630523369381867,
+          "capture": {
+            "up": {
+              "days": 1250,
+              "arithmetic_capture": 0.3909313612559346,
+              "beta": 0.53626431055958
+            },
+            "down": {
+              "days": 1204,
+              "arithmetic_capture": 0.1674862352033275,
+              "beta": 0.023673166605777025
+            }
+          }
+        },
+        "full_cny": {
+          "days": 2454,
+          "beta": 0.2820550513712933,
+          "alpha_daily": 0.00233858935917819,
+          "hac7_se_daily": 0.0006889421458366151,
+          "alpha_annual_arithmetic": 0.854169763439834,
+          "alpha_annual_normal95": [
+            0.3609629706568595,
+            1.3473765562228084
+          ],
+          "annual_vol": 0.6801478485336896,
+          "es5_loss": 0.03782676869254552,
+          "mdd_daily": 0.2866231320730961,
+          "cagr": 1.2494026500474402,
+          "capture": {
+            "up": {
+              "days": 1252,
+              "arithmetic_capture": 0.3883793966843118,
+              "beta": 0.5321516521576015
+            },
+            "down": {
+              "days": 1202,
+              "arithmetic_capture": 0.16504795918391468,
+              "beta": 0.02115237692702136
+            }
+          }
+        },
+        "validation_usdt": {
+          "days": 1723,
+          "beta": 0.2879283738003424,
+          "alpha_daily": 0.0016200538465143996,
+          "hac7_se_daily": 0.0007411719786594784,
+          "alpha_annual_arithmetic": 0.5917246674393845,
+          "alpha_annual_normal95": [
+            0.06112705963685042,
+            1.1223222752419184
+          ],
+          "annual_vol": 0.5803215617139652,
+          "es5_loss": 0.028594705030329754,
+          "mdd_daily": 0.3147280466934491,
+          "cagr": 0.6909670157103498,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.3372011545441489,
+              "beta": 0.5573603053687598
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.15569907914847947,
+              "beta": 0.05479991379949875
+            }
+          }
+        },
+        "validation_cny": {
+          "days": 1723,
+          "beta": 0.2891197030661635,
+          "alpha_daily": 0.00164358575537539,
+          "hac7_se_daily": 0.0007383872291878817,
+          "alpha_annual_arithmetic": 0.6003196971508612,
+          "alpha_annual_normal95": [
+            0.07171566364754856,
+            1.1289237306541737
+          ],
+          "annual_vol": 0.581200062270572,
+          "es5_loss": 0.03027949837316504,
+          "mdd_daily": 0.2734447893821139,
+          "cagr": 0.7100422467983742,
+          "capture": {
+            "up": {
+              "days": 855,
+              "arithmetic_capture": 0.33627994606152967,
+              "beta": 0.5608291299355551
+            },
+            "down": {
+              "days": 868,
+              "arithmetic_capture": 0.15107803181979412,
+              "beta": 0.06185905869875132
+            }
+          }
+        },
+        "calendar_usdt_log_returns": {
+          "2020": 2.608250061981441,
+          "2021": 0.40098880368165735,
+          "2022": -0.2828348867524562,
+          "2023": 1.926026485464958,
+          "2024": 0.4463115784055442,
+          "2025": 0.1988207249581281,
+          "2026": 0.18968532903495575
+        },
+        "reported_continuous_proxy_mdd": "0.4464701359792075525299779820",
+        "final_cny_delta": "2.4912404442E-11"
+      }
+    }
+  },
+  "identities": {
+    "/workspace/btc-alpha-beta-next/spotquant/evidence/complete-delivery-20261001/spot-consensus-corrected.json": "cf075b86ba5df590e078a7c626c53cb20937be955cfb6ad8d41eae19b78645e8",
+    "/workspace/scratch/alpha-beta-next/spot-singletons/consensus.json.gz": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a",
+    "/workspace/btc-alpha-beta-next/coinquant/evidence/complete-delivery-20261001/perp-exclusive-accounts.json": "15dd7bfc242d52bf692663179cd1e3867418f8b55a4cad0894d253a8b296f00a"
+  },
+  "spot_source": {
+    "git_head": "8ca002522fbdce531dcfbbb783ff4d152a7fd66c",
+    "dirty": false,
+    "python_sources_sha256": "0df8c537ee8d47db6e841778e8e37eac847e1a0c1151e379440081b9473ae026"
+  },
+  "public_funding_mark_inputs": {
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-01.zip": "7f81b2f3694d13779e7e896b69d60cd61e9444d7b9f9e90df761935e1c1b76e2",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-02.zip": "6599466d108d120c64a078824326c063ed2d4335b3292e52c5e572f79166533a",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-03.zip": "eee845fde6336e29d25889563cba3d2cff2d4d640e51fb1f82ae9b28cedaee77",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-04.zip": "d009ce034d08c3dcf3e7f874b0f8b0ec76ba507bc6bb4e007e541df537bafbce",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-05.zip": "3f2b56dd6b9a42457009bb367d0adadd3cf7e2216cd325172d0089e3883125a8",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-06.zip": "30b3470ff98576578973d75e3c157a5cbf1778b11e4c26b4b4ff70a3cbb348ec",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-07.zip": "18dae7b11075fc0fba79ad47df46683415cba5d027caa69c66bc2a5c9d9b459a",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-08.zip": "e6f6d1749f674c85d4766e0eb36af6ea40d91a0674234d30df80eb9876b094e3",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-09.zip": "7ae9a3b6afb2dc06e46080582908ec8c27063b707a14c7f1e679dc991ff48032",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-10.zip": "4c55b191c101f39c7fb193a6529665dd9e83302ca21876521e4c93b3902e9fb1",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-11.zip": "676356a2d075caa51b4f8ada026e9430dc320ffd23d2343b13b7aa25324ed6d1",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2020-12.zip": "d7390f90edf54cc4ad9bbe78e2f6b291ae06ad9539f591a2d0fce445873bbd63",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-01.zip": "cff916dc4b638ec3de97828e8911cd91cf7d7a3d0836ec0175869c374e66823d",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-02.zip": "819a7b107443686adb313fc5fc223302a29f3981e1d1bd9828ad0ade65a8a8af",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-03.zip": "2125fd300848938c7b992b8f7b7b5007d5b277a4ff1ebda7da083b40242729da",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-04.zip": "9cd888e3b0a1954813d0062c2e60426fdc8e34a7f258f6838371ec67f535b028",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-05.zip": "ed934afb9cf84df6ecae742e755147333a84244836a66b51523abc66dd5f63af",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-06.zip": "7b8d9bfb8816636b800764dafb2aa2307d19166c695bfa245adbf7d01d61f766",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-07.zip": "8ab3df641d3bcf40527491f8e26d046ad2b662d1950ead9555ad32975571b7fe",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-08.zip": "7eb681cc45b94176f4b9192a62c3a1925d79031ba001cea2d8dec6ff6e5b9c35",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-09.zip": "03f25a7c25eef18d5f5b5b7bb0b664cab7a210b409f37e95a54e141808a0752d",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-10.zip": "f25820d6add687addbca3ef43bee58f70853a6da53832a0c1bc22d00dc8ec64a",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-11.zip": "e2e6b2d7218607e7e4a38137d50f553c2cfb901275c19edf567024c1cc6de85f",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2021-12.zip": "bf3ce484faf41d7dccfd38c5cc3d8de34d8297df30ab10784e874cc10fd1b310",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-01.zip": "22ee19079b620f5c6d820e7d7f8bafa7fde866d89bd664863b8bd527749c12cb",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-02.zip": "fa95088258a905c79ab79e8984d2f6f66933ec2e814dbab4ef9da89b01ab484a",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-03.zip": "4cf0883bc07f4ed4cdd3b0d8c0d166b4d15d21e666ab752f9f44401af4d6172f",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-04.zip": "57e2776cc68b3169fc9f8632dad67278f470cd453407a8ebe6c87963c8a31357",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-05.zip": "bced8a5013d09742b96682e6fd01ad4456213515a03d7586ec2b1f2689af5255",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-06.zip": "0cd0708f8903829eb46f98cf60f4b2516c986e1ccddf6620a5912b48e16baf93",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-07.zip": "29d58cce0cd45f74c6a112039835c6d9ee5a7e60e7c38c2503beb7930453a4fe",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-08.zip": "6f4f0c6c84c05694b4b4a5c085776730fd4059723eecd98ee6ffeb3fde4da811",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-09.zip": "d62cd4e13009de37add446dc4f63ead4c56dcc4955a1e60f6726bcadc5a68fa9",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-10.zip": "ad9efed10d4ca1567b865d7a158790977cec1b925395634217069df6696c8bc9",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-11.zip": "8febe5bec1a029e993bbf27490761f8c47c32849bf7dd13441b2b2f6ec1ffb51",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2022-12.zip": "4218c78331bcc4dbeb5768fa112242a880971c1f2cfd1d3f32aaa26ca34069af",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-01.zip": "05e3df32f28d0d50f4c5a280adee9368b4a66fc68c6ddca1b3277087ac0d19f5",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-02.zip": "5227accd9aaa59f71f5e682abffb58be5f99573ed208ab968b1704c81ac11345",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-03.zip": "ab022adff9b853d2f33cf80154e77c770f57c3392f0bbc36564b2e2cdbd0e872",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-04.zip": "2931039d26818edc65d4faefba84945fd1ba52989dd58fb127dc3cd7a12c7fbf",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-05.zip": "5d026fece46df86293054c8c56c2c8de575d30161b82979b11831831217a246e",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-06.zip": "3ffdde6f1dc9c3c065d77ae43f3ba64d19d4cb76512d4bc1d541933d4fb2e6f7",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-07.zip": "0304baed9fd407293a8a8040b30a1b68bd344803b630d33530375b421733a930",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-08.zip": "516a8f50631c6ede6a9642f6d1590b6a22c33ba09935501d2ace8dc1396501fd",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-09.zip": "3fd9df6fd1eef33cf5fe625c27012359bc6d64a68c109305d7b44a0354f533c2",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-10.zip": "03105cc140150bffca834bcccbddc6cfee245e079d2df1759653243bd6e92448",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-11.zip": "8015d2997f8d5e757ff3707ee87800ca30a74da0129daa747b64117f07bcc186",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2023-12.zip": "8f02fdd2a2da261bbf13ab301c74bdb57fae005f19d5088e9ece5f8824c1a2a7",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-01.zip": "3e0d30870672aa8f0f937881056e3cfd55913ae5c780cd50b33f2763aa0ba58e",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-02.zip": "daf1e4901e3d6436d82ad60f90d007eb5300be8047cfef121007203a7212cde6",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-03.zip": "711dcaf2a341aedfd06447b4117b540f60adb0784c5e64a313c718e4cf092bc3",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-04.zip": "6d220b8e2815362a11d294d35dbca28568370d8295351937eceec10f2b359b85",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-05.zip": "aef8c5fdce1493fd570b5829a72f2f17c7e459483390f25544d16c2a30be592e",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-06.zip": "43fc4473820d1fb4fe340d1b1951a87555f6841aa352e684fa95d6adffce04c6",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-07.zip": "acab0593c1452660ce74a6c239fb215c1192b0a9c6e8c1689e6495de40a0174b",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-08.zip": "7003d29a43dd5f9357f838da8766834954939e22c1d80af682d9f33984f67b71",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-09.zip": "6ef23b02392b481ef9c3855434bf3644289fb6e228b4f7d9a0dfc6d3cdff1116",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-10.zip": "26db65ac8020d80ece35df79c254c5f7e24427529bcceeb2972748c4fe2d2707",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-11.zip": "e1b19cccfe2cdcba48b022790789b7b01edd86c075f39bc152e44c267d43bd51",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2024-12.zip": "069409f525ebf6370ee1c7defe475167de4b97284c5ac8e68768652968cd3dc9",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-01.zip": "df725010d55458866eb5a47e9ee708c6796c9d7e77b14c38342cea11f381815e",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-02.zip": "e918b90fb33df3a3317feea13807a892047f1ec86eeac100bdb7b3dd83285d46",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-03.zip": "a3b95cfb315641fbfddc61eb32adf2a2588afb7a3973a61f464aca007ad43e3f",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-04.zip": "01dbb7bd0135f98bd63bdde6b943cde1accc1770cabf92f68a1ec0653ced3888",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-05.zip": "e7355e2775b88009c984db1783bb8ed6b5f24ede2b52bb764151b5722d6a5e42",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-06.zip": "a1f4a40953740fa83ee9ad97776ff8325d1958654a67f1325614071a983819d4",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-07.zip": "b097dff828f6e43fece23db0d3cb98042a9d7bc19693b8cbfd051d88eb973b7b",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-08.zip": "1180129860b6e196e8d70bb9719e81573aa6b4acb423ba5ee7f82f10c836f7ab",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-09.zip": "21dc6570fc6bffad0e7b5f9e99211b82ad07c95ab4f18c3a2daa3b95ec98344c",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-10.zip": "9ecdedab6344fc4cdb154763266b8e09627a71c3cc5574cf868158b541c259c2",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-11.zip": "23735400405627d610123e3a43db3e98ae7addb93459cd670e65a7659a5f081b",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2025-12.zip": "35318b789f020b0e04c9043112480743855554e52e1d188437cbdaa67246d51d",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2026-01.zip": "fcdc796484f395830d418588a34a26baed8849dbef0ff2b56173247e493ff51f",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2026-02.zip": "80df1dd669dc1e3afc360c9da8b9a949a127fce088eedbf5bf708bd37b0a1f58",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2026-03.zip": "5c069d5e9597a44fd0e213395082e59ff223fb99c9eab3a2a5a2a5622ba7867c",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2026-04.zip": "51cdeb4de7d5ef1d4eece80b6115e391bdf7a2d0803bf9ad8371ab23340b22d3",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2026-05.zip": "445b65fd6b17bfcfb5e4d035db29fad34f729fa078f0449024db42621be84e6e",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2026-06.zip": "cff97ce688329592bccbbf5873b5c7021649e093f5f5806e332c5b4fb7fd6a00",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2026-07.zip": "e36fcc66f493d7d9ec348c852fc22e9f318c79cf7adae17398a3994ae0adc41e",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2026-08.zip": "7c108b3a02bd6dc7345ca7323e3a49664edcea0afdcf780ffb3b44762c45a964",
+    "/tmp/coinquant-market/funding/BTCUSDT-fundingRate-2026-09.zip": "913cd31b8f924a06717a2fac17f3df6132c24ccded209eb3e4ae7d83e1b247f2",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2020-01.zip": "04a7ae26d01cdcc75edb917fafba70f2b2b026a64ce2e66d25dc7cef0f722531",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2020-03.zip": "93d4d8ca217dbd21e0079448e324e906df835e4e552b1256a55de768f8da8588",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2020-04.zip": "1999cc84238930a1d2b85eafbcbd60a62257b6bb8744ee737d8a5e8c56e16532",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2020-05.zip": "8fa6f2fc5fc1d710e2ee27e409e0ac7fa4deab05a66739825aa0d8c9e1dfa098",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2020-07.zip": "b8ee8e08290ceeac9fddbb57217ff3d920e505cc4aea1a24c79940cad745a17b",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2020-08.zip": "ea98a513d0a77dd4598b12b2df757a24879ef33574616ac5f9c82af1b058e21b",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2020-10.zip": "93b2a35009518db9fb7572b41dd0efe3a94d867606d6633c1f4f502f9a7c1323",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2020-12.zip": "cd3edb99a29714eab9f0b128c23a965b562e08170f4e1b95cce3486d5fde0740",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2021-02.zip": "b090f44eb2b24486e89c387db83533f309800aa44931d73964bfc211846205bf",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2021-05.zip": "9f5a9515e9ee59519cdce2d8b6ea2a81a21fe377ad524214a292cc51a1d55482",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2021-07.zip": "f803d5e91d9a932bee0b816abc7c6fdedcd9cf9c327474b195ef72d0c9693a06",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2021-10.zip": "4301f4ae15eec9c9ae241b973ddda311e964fb3c87eeb2f8c4d8c26e7b10c507",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2022-03.zip": "8cc7cd5451a9c9eaef4a82cb80ef96cabda957fb64943b3620e19bb467d71f49",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2022-07.zip": "35d2afc48289d0c9e75b311672aae21c6d635f62bb3836eb63694f554d39f1c6",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2022-08.zip": "fc15588d80e2fea766ce86906c5b7f1975f00a03637483f6606e26f1769a3675",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2022-12.zip": "03fe4fa0293236aba29e603e4bafcb128c3703f82bc7ef59bb385eb165f0b58a",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2023-01.zip": "18abe5d64d97bf153d1d8f7f9b39f51c37454add602b6af8d51f267dd0f19094",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2023-02.zip": "f84b1b0c1524f381fadaaee37b7be4912cb21fe947106cf01d6a9f0248e38d78",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2023-03.zip": "1debe8c9ac4d0e21ffb0715157bdb543577eff49ce0adf88793572ea48e4da65",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2023-04.zip": "f5a84258e4f0f62715f0c671b4807cee77ae21c7f2a42a45238728567762db00",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2023-06.zip": "9e888715d55dc099083916b35e386f5d1002a1daedc62c5ac489b789f709cc28",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2023-10.zip": "515848caafbd72c51e60fada274af8fff339f74fb80fa9ca22e28e2837e2aaee",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2023-11.zip": "15297e53a960de47f6880ad76f895b9c59573a546d1017c0c288b10434b2b01c",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2023-12.zip": "6c5f2473e4cbb328b7ec271c075c2203ae9b3eb23b53a2cf36325bcb2d0e3741",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2024-01.zip": "1607b1522928d2a698592019fef7c3fcc9bee2cd01674c72a27e7fc028fd66ca",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2024-02.zip": "2e6f24f3bc92a7d241d5dbcfc79c54a0aa24b26ad12b4988f61a8c8d93e867fc",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2024-03.zip": "7efa90ed53f47100633253faf45838584d1b148081c57196abf0f884d8452986",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2024-05.zip": "479435c79e0e56e3ded959ee47e3fb559720991732735211dd31c192c29924b3",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2024-08.zip": "e5be12f99523a72726e7235ad024465cc283b1ebbe1904e16674e130f373c362",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2024-09.zip": "ce04d1a5f85a15a2bbef83236816d394ada0c4de8fe826b6b23cbc209c515f1a",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2024-11.zip": "e7087d29fee5643844a9fafb77c263a28b7f5dcca788d891081a8d73c76c6b82",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2025-02.zip": "f541de26d9c2c0dbf259f3583bc505916c9cd993da0d62a26d556f79bfc91a94",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2025-03.zip": "5c5ee421ba6e062102de1860c89a52d9518633ec5e0c2a49e832744d6fae286d",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2025-04.zip": "67ccab1f1585d297ec6985a197b47ddb45d325ed094525dbe432d19ea10f9e0a",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2025-07.zip": "33eaa2e5fe002aacdd2656af3457186965325fde98a014d2cef754eb3ce849ad",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2025-10.zip": "628766a37dca06405268f2d4269598198d5c822aa4477a6804a192212ffa1f6e",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2026-04.zip": "a1655f959e24c73a010b949649d45fcb2854bb9e2f5fe8e998269eb6ad4585e4",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2026-06.zip": "5d5d8b86efbe709e034409634347a161183e7c0df3854f8d96c9778dc1c923ba",
+    "/tmp/coinquant-market/mark/1m/BTCUSDT-1m-2026-08.zip": "3bd0556d903ce14f833ed58c78fd8d3309bc1a3804bb401c9fa2dd9d902f2c37",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2020-01-19.zip": "dab38bf9e866a0c8af6711b03e15518d4c9933c28273dd4e54e1b11ad1463f69",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2020-12-17.zip": "05fbc735ee001291c062bb443368728ff2b5e0e2b9832e779504c7823b41788b",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2021-07-01.zip": "237538cdaff73b91a76edcbaee1797c59942751db36b0ed82d400d902cbed0a4",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2021-07-24.zip": "fc5569b14323e908f74b73c74f51c4152fcd7f8ca9e9be1f1e1d641c4dd1275a",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2021-07-25.zip": "9d92c79a0b84c86d4e2834305045b403088870de2403c8ef612b9ee40a6d14b2",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2021-07-26.zip": "d89bd409d52eac110a54fcfe68abcf1cc0bb2b03515b19557128d42cbcb8929b",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2021-07-27.zip": "851624bc74228bab9dbbc0140e701ba11b978f899c8121d496679a9430e9339b",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2022-07-31.zip": "36cf465f70b01aa4128fc684ae678beb5a16ab544460cd617f9f712564cb1823",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2023-02-24.zip": "ca3745ada0d946c65407cb010a2a5fcac37bf2e2cceebbb19dc9cb30ecd2473e",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2024-08-12.zip": "139f800b758d844744b51a2d2fa1e0391447091faba2cccedb17028acb34d8cc",
+    "/tmp/coinquant-market/mark/1m/daily/BTCUSDT-1m-2026-06-29.zip": "200e2ef30a86e9f91c011dae30d864f73c8480fddecc73ea227958596f6cd11c"
+  }
+}

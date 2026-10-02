@@ -1,0 +1,46 @@
+{
+  "scope": "Registered48 actual unscaled cases only; risks/combos/sensitivities/adoption still require review.",
+  "audits": [
+    {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-consensus-v2-final.json",
+      "sha256": "f9066e622622fd281d2ba4506499cf70170f458b19a98a981a648999e1c1aead",
+      "raw_sha256": "8c22b10383f637ae2cf87f7c8f027a765c5fb7b0e9af58d331d14dba89fe439a"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-trend-reentry.json",
+      "sha256": "1a6ab9d562a29f6e1326495aa258ddf408cdc07294b85dce4dd6de04a53a8091",
+      "raw_sha256": "b72181ba8f7c3b8e925ccdf2bf2757ed4b67a1821c2b2a656ca74207034535a8"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-target-participation.json",
+      "sha256": "ec0761348d9ece7fcdb5fc2e3dd0c88d44a5b8c64434ccb6e30f4a758c6af0be",
+      "raw_sha256": "f854446dd7bf4215940f279801b31e518fb7d3d356009755ae26c742072d1134"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-close.json",
+      "sha256": "91902699ca113eee21a71aecde04ad57846b11a8827e2ad044ec7e71a139b73a",
+      "raw_sha256": "f84e6e6ad188996b1ab7f640f30aeb7c736034823c068a61ae850da336bb974a"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-atr-stop.json",
+      "sha256": "a234543735c355d327ab41fb0e87f17386dca477a02dca334c39db324d160330",
+      "raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-permanent.json",
+      "sha256": "eb5383722699c89f98749f73b9ec28460900508a958ef9914a13364a6d2d79c7",
+      "raw_sha256": "f9174c404b757e5af53a5ff460903ff4e127f11d5d96493b22c26f2adfb8039a"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-spot-core-slow.json",
+      "sha256": "69fd3563edf1a421d1ece1377beaba0e0bef36e950bd3530af7699cb374b1b4d",
+      "raw_sha256": "02a9ba480bc48c0952df3ac949ef0b3f98db6c1fb7c61c89f3cecd99a49d921b"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json",
+      "sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555",
+      "raw_sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1"
+    }
+  ],
+  "account_count": 48
+}

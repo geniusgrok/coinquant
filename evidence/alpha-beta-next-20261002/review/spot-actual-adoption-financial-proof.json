@@ -1,0 +1,183 @@
+{
+  "format": "actual-spot-development-default-financial-approval-v1",
+  "identities": {
+    "/workspace/scratch/alpha-beta-next/spot-adoption-bridge.json": "0838fde5cd3f3645f846632f6a5e7e3c3d80ca923d3cd7de48e4292a278aa987",
+    "/workspace/scratch/alpha-beta-next/spot-adoption-bridge.command.json": "a4a269fe063b5201fe74654c09348353f66db2c2e7ae6e9b61c5cb42bb54aa35",
+    "/workspace/btc-alpha-beta-next/review/verify_spot_adoption_bridge.py": "a33daded5ce53ec90d6648a20fba8ba2f9b60906d9733ccde6538bcb6382c549",
+    "/workspace/scratch/alpha-beta-next/spot-adoption-bridge.run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/workspace/btc-alpha-beta-next/review/final64-financial-review.md": "b7ba215bdc4b9ad645f6360ea688d15692e4a96c1bb63da53cae3d2bdec6656d",
+    "/workspace/btc-alpha-beta-next/review/final64-financial-review-proof.json": "9453b031924322612da3445e305e0499dce87eda20eb604def14ff7aa54241de",
+    "/workspace/scratch/alpha-beta-next/registered-final-repaired.json": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+    "/workspace/scratch/alpha-beta-next/registered-final-repaired.command.json": "0d93d033818604eb8d849e854c092b9e764537da2b296ffc05bc39bb217f1431",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-unscaled-index.json": "c1fdd880d44acd052a780a63aebcfd9df48d31367229692d6049d14bacbaae88",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-remaining-repaired-index.json": "0d78b9355deb09f7597be3b756aa51c209980188536d186c3b5a72d7dcb6a44e",
+    "/workspace/btc-alpha-beta-next/review/spot-adoption-spec-fix1-review.md": "b128dd1ea4f58a3022882c4183c2cd96f555565aa67d67487beb003916690e29",
+    "/workspace/btc-alpha-beta-next/review/spot-adoption-financial-boundary-fix1-review.md": "dd2aade0417a3c0e6f58c90196d3d4d0819cea203de650246b5d201dd298a203",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/canonical-inventory.json": "db23143dffbd6d8c5711789fee8b3ac92454d7712bcad14644cd244197701b32",
+    "/workspace/btc-alpha-beta-next/review/spot-canonical-five-financial-proof.json": "c1803ecb6c66a1f6397415ce2b033f569ebca46e6df42419bee87ea45f351b8d",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/base.json.gz": "dc94a7b315ee8ea11cc7215cd8ff7c02a8ab94180499b2c4ebf7fe1448682323",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/base.command.json": "e8112486e87a367e7abc792707e43cb45a2c985c142bbefa3ba4c5b805dbaf08",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/base.compression.json": "58a52f3049d4285e1e948311ed50bc5468cfc8dcd8fdfa41164ee957f0e4f4a7",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/fee150.json.gz": "a52f6fb59fc77d7624fa4707123e6d94aeaa88f63ede55e68713ef76f8c630c1",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/fee150.command.json": "1d3c5aaa8e69028c5914b8c2fbe0fe70eba4402747dfb5933953a4e7d9996ba6",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/fee150.compression.json": "e4f66ab9ab5cc8d1d929ab0c1b62b02bcab080c09dfe6190fba689abbb791e39",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/slip2.json.gz": "32d9906c259a8ccc4670baff053b3e9ffe2291121db557b836e56319bd7ba68b",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/slip2.command.json": "d72c1fc63096c49e35950de3763b1a4a2c0a10f654529603dd12d1c2fbe64718",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/slip2.compression.json": "6d3d20f2050e72b816a1f0eb6dacca9c71dbac23c2fb4aebf11f566650c079e6",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/outage.json.gz": "478e9d2ab7a8ca7ac0434acdf273e82dbcd387ce34e14afe64c212cdab109264",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/outage.command.json": "53198c971813e0834182bb43754fe3c9123280c7a37c203cedb190555b98c496",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/outage.compression.json": "872cf861eb4b5324c02f1aef06c9b431497015844dce9132bb9c2d56b0784f48",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/calibrated-base.json.gz": "14b531c6be40e51fb3570744afc3a7131ee8a9e88556e2c4f41ca64064884b65",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/calibrated-base.command.json": "192ec227220b409f944e02f2b6b8c741d54741eb73b430b81e12220e923bcfcf",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/calibrated-base.compression.json": "8323f52d514a5330c1d358f0fd0a408b1452b5b5c9c4b8d4766754ae82317e73",
+    "/workspace/btc-alpha-beta-adoption/spotquant/AGENTS.md": "654b16c56ff08591f3f0be28901acc318b00c29b36572124f1be035bfa13cfdb",
+    "/workspace/btc-alpha-beta-adoption/spotquant/README.md": "a9a66b1c029326b359e8a79ca40f5d44931cda277543dafd86e82d89361a4591",
+    "/workspace/btc-alpha-beta-adoption/spotquant/research/adoption-GUIDE.md": "a52152a90499da4078b4eba4ff4fd967a2e7ee7bb843a92bd2fbaa789a7ee7cf",
+    "/workspace/btc-alpha-beta-adoption/spotquant/research/adoption_spot.py": "cabc1f01b5d0c32fe3a8be6cee54f7b1bd1d14cc5dbf015758b2a16e54c4c555",
+    "/workspace/btc-alpha-beta-adoption/spotquant/research/alpha_spot.py": "dcce52f3e6d133354403a8f6837b687c5b7098c086865d198eeafffdce5bd50b",
+    "/workspace/btc-alpha-beta-adoption/spotquant/research/complete_spot.py": "5956fac2766b3cec5299df00cbb34216cb52e49de1ee6290a659e87dcd754e55",
+    "/workspace/btc-alpha-beta-adoption/spotquant/spotquant/execution.py": "07ec228071afb7364024a82313972791348216df5218c4f0cfb64a85fbb4dcbf",
+    "/workspace/btc-alpha-beta-adoption/spotquant/spotquant/model.py": "a02da7dd9674155ee577ecd3cc176cfe9d934a4a5d4b65aa6b9a7ab14e2ff57f",
+    "/workspace/btc-alpha-beta-adoption/spotquant/spotquant/preview.py": "fe22ed3ef27722f237ab101d32949116f55e88b4877f87952013abe9f27770bf",
+    "/workspace/btc-alpha-beta-adoption/spotquant/spotquant/session.py": "aea8107ddbc318ba623988c3448c4df1a5bc39db147f05f3818995912630e0b6",
+    "/workspace/btc-alpha-beta-adoption/spotquant/tests/test_adoption_spot.py": "2d94f3d73c48d765a6b8bce461427153d5797609bbae9d8c612544158ad60aef",
+    "/workspace/btc-alpha-beta-adoption/spotquant/tests/test_grouped_close.py": "2a3c8657be3f3ad56ddb5226d78386076b29af5228d327637038cabbdaf8de99",
+    "/workspace/btc-alpha-beta-adoption/spotquant/tests/test_p4_execution.py": "d8da25ec9ab085f3e58b834057c5f220f95659ca8aeea66176b0f69b2f486337",
+    "/workspace/btc-alpha-beta-adoption/spotquant/tests/test_session.py": "9ea79e24121da7076cdc1a93eee4d74d2ddfe5051c64f8593a7391ec359905e6",
+    "/workspace/btc-alpha-beta-adoption/spotquant/research/alpha_beta_spec.json": "8228013f4ac41affb65162c1cabad8f51b5ef32b9607f62231a4776168a337d0",
+    "/workspace/btc-alpha-beta-adoption/spotquant/research/alpha-beta-PROTOCOL.md": "4ae09ae0bc9224f8028ddcc1373dc1bbc7251a70be2945e5655f5e5fa12eb27e",
+    "/workspace/scratch/alpha-beta-next/spot-project-calibration.json": "d574693fe94480c598dc1698b008147267227385ada31df82eab9498d38e7b2b",
+    "/workspace/scratch/alpha-beta-next/registered-calibration.json": "ed8c99295e71386a7cef300f7d101ea941e5a7a0147bc9038012d6cc58e23821",
+    "/workspace/btc-alpha-beta-next/coinquant/coinquant/campaign.py": "2115a36353f078227a5015afa7d5221c42030e106f46d7e5bee5a1ab4f68c320"
+  },
+  "actual_bridge_sha256": "0838fde5cd3f3645f846632f6a5e7e3c3d80ca923d3cd7de48e4292a278aa987",
+  "global_financial_review_sha256": "b7ba215bdc4b9ad645f6360ea688d15692e4a96c1bb63da53cae3d2bdec6656d",
+  "global_financial_proof_sha256": "9453b031924322612da3445e305e0499dce87eda20eb604def14ff7aa54241de",
+  "canonical_five_financial_proof_sha256": "c1803ecb6c66a1f6397415ce2b033f569ebca46e6df42419bee87ea45f351b8d",
+  "canonical_source": {
+    "git_head": "0c52c812301de3712f3637a1ce1b1241de0c40f1",
+    "dirty": false,
+    "python_sources_sha256": "619570fb7baa586f28ad5de2a440d7752a536cc8f8ce7e357264612e65801537"
+  },
+  "frozen_reference_source": {
+    "git_head": "8ca002522fbdce531dcfbbb783ff4d152a7fd66c",
+    "dirty": false,
+    "python_sources_sha256": "0df8c537ee8d47db6e841778e8e37eac847e1a0c1151e379440081b9473ae026"
+  },
+  "analysis_source": {
+    "git_head": "99fcf005d2cb15c13bb37322b65ab2863b19d65e",
+    "dirty": false,
+    "python_sources_sha256": "427f34ca3640cfa78f51173583af1d9c82f007baae155f3a992dcffb8171ad7b"
+  },
+  "canonical_cases": {
+    "base": {
+      "canonical_raw_path": "/workspace/scratch/alpha-beta-next/spot-canonical/base.json.gz",
+      "canonical_raw_sha256": "dc94a7b315ee8ea11cc7215cd8ff7c02a8ab94180499b2c4ebf7fe1448682323",
+      "reference_raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "six_evidence_groups": {
+        "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+        "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+        "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+        "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+        "operating": "4362fab3ac4866c2a0ec6244bb0148c04e4fdb696d01d962a5a82b51dcc5d98f",
+        "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+      },
+      "calibrated": false,
+      "scale": "1",
+      "money_and_stats_inherit_exact_canonical_financial_proof": true,
+      "expected_sessions": 795
+    },
+    "fee150": {
+      "canonical_raw_path": "/workspace/scratch/alpha-beta-next/spot-canonical/fee150.json.gz",
+      "canonical_raw_sha256": "a52f6fb59fc77d7624fa4707123e6d94aeaa88f63ede55e68713ef76f8c630c1",
+      "reference_raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "six_evidence_groups": {
+        "financial": "0ce0d83123fe8449680004182b5f4194ec4d3dfb4681ec2e51992946911d4631",
+        "fills": "e9e216de43bdb1594d99e4f9fbeb49d1f7eba9b93c5c225e2ba10ef37aaa6687",
+        "daily": "b2343ca809926f2a120c41b116d80a25175fb73d37f6946fb2f0b11c53efbb5d",
+        "ownership": "18e1b62c93ecca8d2f0b6bf27e4560aad08145df7ede757884ea66ec95b27469",
+        "operating": "86fe237a1fdeedfabab0415ca5f8bdfcab3019c19c8f56103f0cc7482fd45a5f",
+        "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+      },
+      "calibrated": false,
+      "scale": "1",
+      "money_and_stats_inherit_exact_canonical_financial_proof": true,
+      "expected_sessions": 795
+    },
+    "slip2": {
+      "canonical_raw_path": "/workspace/scratch/alpha-beta-next/spot-canonical/slip2.json.gz",
+      "canonical_raw_sha256": "32d9906c259a8ccc4670baff053b3e9ffe2291121db557b836e56319bd7ba68b",
+      "reference_raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "six_evidence_groups": {
+        "financial": "771f3085fc8c8cc8dcfffe0f6b8d4bc09b21dc11879053155957a0cf1d47019a",
+        "fills": "ea1ab2da26dc0aa5b1b40b7841f5e88bda56eabfe847ca085324fd7b55748ae4",
+        "daily": "e09d7f608bd05514db409fe114afb3e41a0b0c12ef69c498ba9203a57a0e0b35",
+        "ownership": "c0cf5ac382bf083742c3b78564db2f96419b3ff95b96834b274be1f2726354f9",
+        "operating": "8965e5943f4b2346a71deea91be97da34733d1c94ec3de8beb71dbd3458c337d",
+        "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+      },
+      "calibrated": false,
+      "scale": "1",
+      "money_and_stats_inherit_exact_canonical_financial_proof": true,
+      "expected_sessions": 795
+    },
+    "outage": {
+      "canonical_raw_path": "/workspace/scratch/alpha-beta-next/spot-canonical/outage.json.gz",
+      "canonical_raw_sha256": "478e9d2ab7a8ca7ac0434acdf273e82dbcd387ce34e14afe64c212cdab109264",
+      "reference_raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+      "six_evidence_groups": {
+        "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+        "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+        "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+        "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+        "operating": "b202c19b6ece8d53c43147a600e410a894b430a569324c1513b6096680e5f5ff",
+        "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+      },
+      "calibrated": false,
+      "scale": "1",
+      "money_and_stats_inherit_exact_canonical_financial_proof": true,
+      "expected_sessions": 789
+    },
+    "calibrated-base": {
+      "canonical_raw_path": "/workspace/scratch/alpha-beta-next/spot-canonical/calibrated-base.json.gz",
+      "canonical_raw_sha256": "14b531c6be40e51fb3570744afc3a7131ee8a9e88556e2c4f41ca64064884b65",
+      "reference_raw_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
+      "six_evidence_groups": {
+        "financial": "5d9afcb5c3795a971d69c063a8b003f8e5cb8b6e13973bf683f7017bb4f3fbba",
+        "fills": "d9d9fe5d86aa6a857c4664ed44e9f5941624cd6497f2ca254dc76ce14b30391d",
+        "daily": "386303124cc858bfced9e47ffa070ffd812486990dc75efa43baac0d9a77d6e3",
+        "ownership": "63ae1992bf9a3f602da2656f6effbb9ade0ccdd86aeb8a2c045a0fec7ea18f58",
+        "operating": "7ae3cda73de85a6e5ce8f58c8c85a7abd1ddcf52455d9fded91a58eef56914bc",
+        "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+      },
+      "calibrated": true,
+      "scale": "0.9972720085277638",
+      "money_and_stats_inherit_exact_canonical_financial_proof": true,
+      "expected_sessions": 795
+    }
+  },
+  "financial_verdict": "PASS / APPROVE development-default adoption only",
+  "approved_default": {
+    "spot": "canonical shared atr-stop",
+    "spot_default_scale": "1",
+    "spot_diagnostic_only_calibrated_scale": "0.9972720085277638",
+    "coin": "unchanged incumbent",
+    "coin_primary_budget": "7.5",
+    "coin_macro_budget": "3.6",
+    "schedule_changed": false,
+    "capital_optimized": false,
+    "new_combination_selected": false
+  },
+  "bridge_original_flags_unchanged": {
+    "adoption_approved": false,
+    "independent_adoption_review_pending": true
+  },
+  "separate_coordinator_decision_required": true,
+  "production_or_account_actions_approved": false,
+  "native_execution_approved": false,
+  "native_cases": 0,
+  "actual_account_days": 0,
+  "continuous_proxy_independently_replayed": false,
+  "prior_history_clean_out_of_sample": false,
+  "source_override_or_raw_relabelling_approved": false
+}

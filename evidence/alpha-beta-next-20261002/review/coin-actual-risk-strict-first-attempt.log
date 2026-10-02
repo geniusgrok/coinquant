@@ -1,0 +1,10 @@
+{"actual_risk_account": "incumbent/base", "money_and_sizing_passed": true}
+{"actual_risk_account": "fresh-entry/base", "money_and_sizing_passed": true}
+{"actual_risk_account": "atr-trail/base", "money_and_sizing_passed": true}
+{"actual_risk_account": "compression-breakout/base", "money_and_sizing_passed": true}
+{"actual_risk_account": "single-topup/base", "money_and_sizing_passed": true}
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-next/review/review_coin_actual_risk_financial.py", line 59, in <module>
+    if item['scale']=='1.0':assert acct['evidence_sha256']==original['accounts'][key]['evidence_sha256'];item['unity_all_six_groups_equal']=True
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

@@ -1,0 +1,56 @@
+{
+  "scope": "Preliminary complete canonical base only; not final5/global/adoption acceptance.",
+  "analysis_source": {
+    "git_head": "99fcf005d2cb15c13bb37322b65ab2863b19d65e",
+    "dirty": false,
+    "python_sources_sha256": "427f34ca3640cfa78f51173583af1d9c82f007baae155f3a992dcffb8171ad7b"
+  },
+  "canonical_source": {
+    "git_head": "0c52c812301de3712f3637a1ce1b1241de0c40f1",
+    "dirty": false,
+    "python_sources_sha256": "619570fb7baa586f28ad5de2a440d7752a536cc8f8ce7e357264612e65801537"
+  },
+  "reference_source": {
+    "git_head": "8ca002522fbdce531dcfbbb783ff4d152a7fd66c",
+    "dirty": false,
+    "python_sources_sha256": "0df8c537ee8d47db6e841778e8e37eac847e1a0c1151e379440081b9473ae026"
+  },
+  "canonical_raw_sha256": "dc94a7b315ee8ea11cc7215cd8ff7c02a8ab94180499b2c4ebf7fe1448682323",
+  "reference_raw_sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+  "input_checks": {
+    "spec_sha256": true,
+    "protocol_sha256": true,
+    "fx_sha256": true,
+    "schedule_sha256": true,
+    "market_sha256": true
+  },
+  "canonical_rejections": [],
+  "reference_rejections": [],
+  "evidence_checks": {
+    "financial": true,
+    "fills": true,
+    "daily": true,
+    "ownership": true,
+    "operating": true,
+    "remaining_original_fields": true
+  },
+  "canonical_evidence": {
+    "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+    "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+    "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+    "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+    "operating": "4362fab3ac4866c2a0ec6244bb0148c04e4fdb696d01d962a5a82b51dcc5d98f",
+    "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+  },
+  "reference_evidence": {
+    "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+    "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+    "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+    "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+    "operating": "4362fab3ac4866c2a0ec6244bb0148c04e4fdb696d01d962a5a82b51dcc5d98f",
+    "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+  },
+  "adoption_approved": false,
+  "native_cases": 0,
+  "actual_account_days": 0
+}

@@ -1,0 +1,636 @@
+diff --git a/research/alpha-forward-GUIDE.md b/research/alpha-forward-GUIDE.md
+index 96b70c7..5a49bb1 100644
+--- a/research/alpha-forward-GUIDE.md
++++ b/research/alpha-forward-GUIDE.md
+@@ -13,11 +13,11 @@ python -m research.alpha_assessment \
+   --csv /path/provisional.csv --markdown /path/provisional.md
+ ```
+ 
+-Spot must contain exactly seven candidates × four stresses; Coin must contain exactly five × four. Missing/extra accounts fail. Explicit `complete:false` cases remain rejected accounts, with no valid-performance or calibration claim. Spot outage uses the producer's exact 789 starts; other original accounts use 795. Source digests are independently reconstructed from recorded Git trees. Spot full-schedule file hashes and Coin primary-list hashes are checked in their respective native formats. Source history must remain available locally.
++Spot must contain exactly seven candidates × four stresses; Coin must contain exactly five × four. Missing/extra accounts fail. Explicit `complete:false` cases remain rejected accounts, with no valid-performance or calibration claim. Spot outage uses the producer's exact 789 starts; other original accounts use 795. Every Spot archive proof is checked. Original timing is preserved: reads dispatched before the deadline may finish within their fixed 200ms latency; writes require actual trace evidence of dispatch before deadline and receipt exactly 1000ms later. Elapsed time must exactly match the recorded millisecond clock; no epsilon is used. Source digests are independently reconstructed from recorded Git trees. Spot full-schedule file hashes and Coin primary-list hashes are checked in their respective native formats. Source history must remain available locally.
+ 
+ The default public daily archive is `/tmp/spotquant-market/klines`; `--market`, `--fx`, and `--schedule` can override paths, never their bound input identities. Existing canonical, attribution, regression, daily metrics and passive-control helpers are reused. The Spot archive and FX bytes are rehashed locally. Coin retains its original market identity and consumed minute/print file hashes; matching accounts require equal market identity and equal hashes for every overlapping consumed file. The assessor does not download or recreate Coin archives.
+ 
+-The generated calibration includes all ten new candidates and both scale-one baseline controls. Each profile binds candidate/baseline, the exact original bundle bytes, and the 2022-01-01 cutoff. Only actual 2020–2021 USDT returns enter calibration. If a base account failed, its profile is absent; do not invent one. Rerun the real producers with the fixed calibration:
++The generated calibration includes all ten new candidates and both scale-one baseline controls. Each profile binds candidate/baseline, the exact original bundle bytes, and the 2022-01-01 cutoff. Only actual 2020–2021 USDT returns enter calibration. If a base account failed, its profile is absent; its registered risk obligation remains explicitly `not_applicable_due_to_invalid_unscaled_base` with rejection reasons. The report always inventories all ten directions. An invalid contemporaneous baseline blocks calibration of otherwise valid candidates; those obligations remain pending until that baseline is corrected. The invalid baseline itself has no invented unity-control profile. These statuses do not claim valid performance and keep `all_measured_accounts_valid:false` and `rules_freeze_ready:false`. Missing legal profiles produce a controlled error; do not invent one. Rerun the real producers with the fixed calibration:
+ 
+ ```sh
+ python -m research.alpha_spot --scenario base --risk-calibration /path/calibration.json --out /path/risk-spot.json
+@@ -25,13 +25,13 @@ python -m research.alpha_spot --scenario base --risk-calibration /path/calibrati
+ python -m research.alpha_perp --scenario base --risk-calibration /path/calibration.json --out /path/risk-perp.json.gz
+ ```
+ 
+-These commands document later authorized measurement, not a daemon. Baseline replicas are optional no-op controls and must exactly match original baseline money, fills, and daily records. Ten actual new risk accounts are required; derived/scaled curves are never accepted as substitutes. Validation volatility and beta are recomputed from actual rerun daily accounts. A failed/unidentifiable risk match cannot receive a matched-alpha label.
++These commands document later authorized measurement, not a daemon. Both valid baseline replicas are required unity controls and must exactly match the unscaled baselines' full financial, fill, daily, ownership, session/action/client/clock and bounded-path evidence. Every valid unscaled candidate requires an actual new risk account; derived/scaled curves are never accepted as substitutes. Validation volatility and beta are recomputed from actual rerun daily accounts. A failed/unidentifiable risk match cannot receive a matched-alpha label.
+ 
+-Repeat assessment with `--calibration`, `--risk-spot`, and `--risk-perp`. Supply approved original baselines via `--baseline-spot` and `--baseline-perp`. The approved Spot original is `evidence/complete-delivery-20261001/spot-consensus-corrected.json`, not the older failed consensus stage. The Coin original is its sibling's `evidence/complete-delivery-20261001/perp-exclusive-accounts.json`. The gate retains measured and derivation identities, verifies source ancestry to the registered adopted baselines, and compares every stress's monetary/trade/daily fingerprint after removing only synthetic fill identifiers. An original mismatch blocks adoption and rule freeze.
++Repeat assessment with `--calibration`, `--risk-spot`, and `--risk-perp`. Supply approved original baselines via `--baseline-spot` and `--baseline-perp`. The approved Spot original is `evidence/complete-delivery-20261001/spot-consensus-corrected.json`, not the older failed consensus stage. The Coin original is its sibling's `evidence/complete-delivery-20261001/perp-exclusive-accounts.json`. The gate pins the exact approved raw SHA256 values: Spot `cf075b86ba5df590e078a7c626c53cb20937be955cfb6ad8d41eae19b78645e8`; Coin `15dd7bfc242d52bf692663179cd1e3867418f8b55a4cad0894d253a8b296f00a`. Supply those original bytes, not recompressed/substituted copies. It retains measured/derivation identities, verifies committed source and ancestry, checks the exact Coin original input SHA and incumbent row bindings, and compares six separate evidence groups for every stress: financial (including Spot audit fees), fills, daily, ownership, operating and remaining original fields. Synthetic client-ID spellings normalize relationally; numeric order/trade IDs, sizes/prices/cash, status/actions/cleanup/bounded-path evidence and every timestamp stay exact. Nondeterministic Spot archive hashes normalize only after each archive proof and hash shape passes. Explicit producer research identity/checkpoint/diagnostic additions are separately validated and excluded from account-operation equality. An original mismatch blocks adoption and rule freeze.
+ 
+ Selection uses unscaled paired same-stress accounts. All eligible compatible components are proposed. Core modes are exclusive, with higher worst-stress CAGR winning and ties choosing slow core. Zero components means not applicable; one uses its existing account. Two or more require exactly the proposed combination's actual four stresses via `--combo-spot` / `--combo-perp`. A rejected combination preserves the best eligible singleton. No subsets are searched. Risk evidence remains a separate descriptive classification.
+ 
+-Supply each predeclared Coin sensitivity replay via repeated `--sensitivity-perp FILE`: incumbent and final selected account at 9900/10100 CNY and original 10000 CNY with −/+60000 ms starts. If incumbent remains selected, identical identity tuples are counted once. No budget or schedule is optimized. `--final` rejects pending registered work; failures remain explicit failures. All output files use exclusive creation.
++Supply each predeclared Coin sensitivity replay via repeated `--sensitivity-perp FILE`: incumbent and final selected account at 9900/10100 CNY and original 10000 CNY with −/+60000 ms starts. If incumbent remains selected, identical identity tuples are counted once. No budget or schedule is optimized. `--final` rejects pending registered work; explicitly rejected/inapplicable obligations may close work while retaining invalid performance and blocking rule freeze. Completion never implies validation. All output files use exclusive creation.
+ 
+ For independently measured case files, supply an explicit one-level manifest in place of a bundle:
+ 
+@@ -41,7 +41,7 @@ For independently measured case files, supply an explicit one-level manifest in
+ 
+ Paths resolve relative to the manifest. Every file's original raw hash/source is retained in `account_source_manifests`; overlapping accounts, nested manifests, source changes and input mismatches fail. The manifest's raw SHA binds the calibration input; each contributing original account SHA remains in the report. Never assemble a file by relabeling its measured source.
+ 
+-The JSON report contains all-candidate financial metrics, separate full/2022+ returns, daily versus continuous MDD, costs/funding, descriptive HAC7 regression, ES, calendar log-return concentration, passive cash controls, causal event/reason/exit counts, actual sizing/fill observations, post-event five/twenty-day close diagnostics, rejection explanations, source manifests, risk controls and sensitivity inventory. Year 2026 is partial through September19. Warm-up opportunities are counted separately and excluded from post-event in-window summaries. Opportunity creation does not establish actionability; actual recorded gate reasons remain explicit. Future endpoints unavailable within the window are counted, not invented. CSV and Markdown are standalone concise exports; full diagnosis remains in JSON. No plotting dependency is required.
++The JSON report contains all-candidate financial metrics, separate full/2022+ returns, daily versus continuous MDD, costs/funding, descriptive HAC7 regression, ES, calendar log-return concentration, passive cash controls, causal event/reason/exit counts, actual desired/accepted/fill size summaries (counts/min/max/sums with semantic opportunity/reason links) and Coin trigger/decision-price gaps, post-event five/twenty-day close diagnostics, rejection explanations, source manifests, risk controls and sensitivity inventory. Year 2026 is partial through September19. Warm-up opportunities are counted separately and excluded from post-event in-window summaries. Opportunity creation does not establish actionability; actual recorded gate reasons remain explicit. Future endpoints unavailable within the window are counted, not invented. CSV and Markdown are standalone concise exports; full diagnosis remains in JSON. No plotting dependency is required.
+ 
+ Memory is bounded by one parsed input bundle plus compact summaries/base curves. Rows release bulky journals, fills and allocations immediately after summarization; bundles are consumed sequentially. For especially large outputs, use one-account files with a manifest. No generic streaming framework, new dependency or strategy grid is added.
+ 
+diff --git a/research/alpha_assessment.py b/research/alpha_assessment.py
+index 2e4a579..8f22951 100644
+--- a/research/alpha_assessment.py
++++ b/research/alpha_assessment.py
+@@ -3,6 +3,7 @@
+ No execution, curve scaling, parameter search, or public-data download occurs here.
+ """
+ import argparse
++import bisect
+ from collections import Counter
+ from datetime import datetime, timezone
+ from decimal import Decimal as D
+@@ -31,6 +32,11 @@ SPEC_PATH = ROOT / 'research/alpha_beta_spec.json'
+ PROTOCOL_PATH = ROOT / 'research/alpha-beta-PROTOCOL.md'
+ SPEC = json.loads(SPEC_PATH.read_text())
+ CUTOFF = 1640995200000
++APPROVED_BASELINES = {
++    'spot': 'cf075b86ba5df590e078a7c626c53cb20937be955cfb6ad8d41eae19b78645e8',
++    'perp': '15dd7bfc242d52bf692663179cd1e3867418f8b55a4cad0894d253a8b296f00a',
++}
++COIN_ORIGINAL_ACCOUNTS_SHA = '55aa8ba0d8e54d572907a5d57cc557face20a0ce6666692d526df37387585423'
+ 
+ 
+ def sha(path):
+@@ -163,6 +169,45 @@ def rows(bundle, kind):
+                 yield candidate, scenario, row
+ 
+ 
++def verify_spot_timing(row):
++    """Check original dispatch semantics, not an elapsed-time tolerance.
++
++    Reads check the stop predicate before their 200ms advance; writes do so
++    before their 1000ms advance and record both timestamps. Integer-ms starts
++    therefore permit an already dispatched read to finish at deadline+199.
++    Any later finish must be the recorded receipt of a pre-deadline write.
++    """
++    sessions = row['sessions']
++    starts = [session['start_ms'] for session in sessions]
++    receipts = {start: [] for start in starts}
++    prior_received = -1
++    for event in row['client_events']:
++        sent, received = event['sent_ms'], event['received_ms']
++        require(type(sent) is int and type(received) is int and sent >= prior_received,
++                'client trace timestamps/order invalid')
++        index = bisect.bisect_right(starts, sent) - 1
++        require(index >= 0 and sent < starts[index] + 300000, 'client dispatch outside session deadline')
++        require(event['method'] in ('POST', 'DELETE') and received == sent + 1000,
++                'client write latency differs from original meter')
++        require(received <= sessions[index]['ended_ms'], 'client receipt after recorded session end')
++        receipts[starts[index]].append(received)
++        prior_received = received
++    for session in sessions:
++        start, end = session['start_ms'], session['ended_ms']
++        require(type(start) is int and type(end) is int and end >= start + 300000,
++                'session ended before original deadline')
++        require(number(session['elapsed_seconds']) == max(0, end / 1000 - start / 1000),
++                'elapsed clock differs from recorded integer-ms clock')
++        require(session['archive_verified'] is True and hash_value(session['archive_backup_sha256']),
++                'archive/session proof failed')
++        require(session['status'] in ('offline_execution', 'demo_execution') or
++                (session['errors'] and all('session deadline' in e['reason'] for e in session['errors'])),
++                'session status is not original resolved/deadline-only path')
++        if end >= start + 300200:
++            require(end in receipts[start] and end < start + 301000,
++                    'session overrun lacks an actual pre-deadline write receipt')
++
++
+ def row_validity(row, kind, starts, capital, scenario='base'):
+     if kind == 'spot' and scenario == 'outage':
+         starts = [v for v in starts if not 1583020800000 <= v < 1584835200000]
+@@ -177,9 +222,10 @@ def row_validity(row, kind, starts, capital, scenario='base'):
+         require(actual == starts, 'complete account lacks all starts')
+         for session in row['sessions']:
+             require(not session['execution_unresolved'], 'complete account has unresolved execution')
+-            if kind == 'spot':
+-                require(session['archive_verified'] is True and number(session['elapsed_seconds']) <= 300,
+-                        'archive/session bound failed')
++            if kind == 'perp':
++                require(session['cleanup'] == 'verified', 'complete Coin account lacks verified cleanup')
++        if kind == 'spot':
++            verify_spot_timing(row)
+     if not row['audit']['passed']:
+         reasons.append('audit_failed')
+     if kind == 'perp':
+@@ -238,20 +284,80 @@ def achieved_match(curve, baseline, market_returns, initial_usdt):
+             'prospective_alpha_proven': False}
+ 
+ 
++def evidence_fingerprints(row, kind):
++    """Separate money, fills, curves, ownership and operating equality.
++
++    Only client-ID spelling and separately verified nondeterministic archive
++    hashes normalize. Numeric order/trade IDs, every timestamp/deadline, all
++    sizes/prices/cash and references between ownership records stay intact.
++    The first dispatch defines each client ID's stable relational identity.
++    """
++    ids = {}
++    if kind == 'spot':
++        for event in row['client_events']:
++            ids.setdefault(event['client_id'], 'synthetic-client-' + str(len(ids)))
++        for identity, _, _, _ in row['allocations']:
++            ids.setdefault(identity, 'synthetic-client-' + str(len(ids)))
++    def normalize(value):
++        if isinstance(value, dict):
++            return {ids.get(k, k): normalize(v) for k, v in value.items()}
++        if isinstance(value, list):
++            return [normalize(v) for v in value]
++        return ids.get(value, value) if isinstance(value, str) else value
++    financial = ('initial_cny', 'final_cny', 'final_usdt', 'cagr', 'mdd', 'audit') + (
++        ('cash_usdt', 'btc') if kind == 'spot' else ('fees', 'funding', 'position', 'final_mark', 'mdd_close'))
++    fill_fields = ('fills',) if kind == 'spot' else ('trades', 'funding_ledger')
++    curve_fields = ('daily',) if kind == 'spot' else ('daily', 'daily_cny')
++    ownership = ('positions', 'allocations', 'pending_intents') if kind == 'spot' else ('position',)
++    operating = ('sessions', 'session_error_count', 'execution_unresolved_sessions', 'policy_pending',
++                 'filters', 'client_events') if kind == 'spot' else (
++                 'sessions', 'known_path', 'unknown_from', 'hindsight_bounded', 'bounded_minutes',
++                 'mdd_envelope_at', 'mdd_close_at', 'funnel', 'failure', 'feature_coverage', 'execution_unresolved')
++    groups = {}
++    for name, fields in (('financial', financial), ('fills', fill_fields), ('daily', curve_fields),
++                         ('ownership', ownership), ('operating', operating)):
++        require(all(k in row for k in fields), 'missing baseline evidence fields: ' + name)
++        body = {k: row[k] for k in fields}
++        if 'allocations' in body:
++            body['allocations'] = [[identity, json.loads(payload), status, json.loads(result)]
++                                   for identity, payload, status, result in body['allocations']]
++        if 'sessions' in body and kind == 'spot':
++            require(all(s['archive_verified'] is True and hash_value(s['archive_backup_sha256'])
++                        for s in body['sessions']), 'archive proof missing before normalization')
++            body['sessions'] = [{k: v for k, v in session.items() if k != 'archive_backup_sha256'}
++                                for session in body['sessions']]
++        groups[name] = checksum(normalize(body))
++    # Include all other original row fields, excluding explicit identity/journal
++    # additions. This prevents a future producer field being silently omitted.
++    covered = set(financial + fill_fields + curve_fields + ownership + operating)
++    additions = {'candidate', 'scenario', 'original_row_sha256', 'opportunity_ledger',
++                 'research_identity', 'risk_calibration', 'subpools'}
++    groups['remaining_original_fields'] = checksum(normalize({k: v for k, v in row.items() if k not in covered | additions}))
++    return groups
++
++
+ def monetary_fingerprint(row, kind):
+-    """Normalize only synthetic order/trade IDs; preserve actual money, fills and dates."""
+-    fields = ('initial_cny', 'final_cny', 'final_usdt', 'mdd', 'daily')
+-    body = {k: row[k] for k in fields}
+-    body.update({k: row.get(k) for k in ('fees', 'funding', 'cash_usdt', 'btc', 'position', 'funding_ledger')})
+-    ignored = {'id', 'order_id', 'orderId', 'clientOrderId', 'client_order_id'}
+-    body['fills'] = [{k: v for k, v in fill.items() if k not in ignored}
+-                     for fill in row['fills' if kind == 'spot' else 'trades']]
+-    return checksum(body)
++    evidence = evidence_fingerprints(row, kind)
++    return checksum({k: evidence[k] for k in ('financial', 'fills', 'daily')})
+ 
+ 
+ def diagnose(events, bars, kind):
+     counts, reasons, exits, opportunities = Counter(), Counter(), Counter(), {}
+-    sizing, idle, ages, price_gaps = Counter(), [], [], []
++    sizing, idle, ages, price_gaps = {}, [], [], []
++    fills_by_opportunity, price_gap_links = {}, {}
++
++    def quantities(into, identity, values):
++        key = json.dumps(identity, sort_keys=True)
++        record = into.setdefault(key, {'identity': identity, 'observations': 0, 'values': {}})
++        record['observations'] += 1
++        for name, raw in values.items():
++            if raw is None:
++                continue
++            number(raw)
++            value = D(str(raw))
++            field = record['values'].setdefault(name, {'n': 0, 'sum': '0', 'min': str(value), 'max': str(value)})
++            field.update(n=field['n'] + 1, sum=str(D(field['sum']) + value),
++                         min=str(min(D(field['min']), value)), max=str(max(D(field['max']), value)))
+     actionability = Counter()
+     filled = Counter()
+     closes = {b[0] + DAY: float(b[4]) for b in bars if START_MS <= b[0] < END_MS}
+@@ -261,11 +367,22 @@ def diagnose(events, bars, kind):
+             fill = event.get('trade', event)
+             filled['count'] += 1
+             filled['quantity_btc'] += number(fill.get('qty', '0'))
++            quantities(fills_by_opportunity,
++                       {'opportunity': event.get('opportunity', event.get('signal_ms')),
++                        'order_id': fill.get('order_id', fill.get('orderId')),
++                        'side': fill.get('side', 'BUY' if fill.get('buyer') else 'SELL'),
++                        'exit_type': event.get('exit_type')},
++                       {k: fill.get(k) for k in ('qty', 'quote', 'price', 'commission')})
+         if event.get('opportunity') is not None:
+             actionability[str(event.get('reason', event.get('event')))] += 1
+         for label in ('desired_orders', 'accepted_orders'):
+             for order in event.get(label, []):
+-                sizing[label + ':' + str(order.get('side'))] += 1
++                quantities(sizing, {'event': label, 'opportunity': event.get('opportunity_id'),
++                                    'side': order.get('side'), 'sleeves': order.get('sleeves'),
++                                    'sleeve_opportunity_ids': [event.get('sleeves', {}).get(str(w), {}).get('opportunity', {}).get('id')
++                                                               for w in order.get('sleeves', [])],
++                                    'constraints': event.get('constraints', [])},
++                           {k: order.get(k) for k in ('quoteOrderQty', 'quantity', 'price', 'stopPrice')})
+         if event.get('reason') is not None:
+             reasons[str(event['reason'])] += 1
+         for constraint in event.get('constraints', []):
+@@ -277,7 +394,19 @@ def diagnose(events, bars, kind):
+         if event.get('idle_cash_usdt') is not None:
+             idle.append(number(event['idle_cash_usdt']))
+         if 'desired_btc' in event:
+-            sizing[json.dumps({k: event.get(k) for k in ('desired_btc', 'accepted_btc', 'constraint')}, sort_keys=True)] += 1
++            quantities(sizing, {'event': event['event'], 'opportunity': event.get('opportunity'),
++                                'constraint': event.get('constraint')},
++                       {k: event.get(k) for k in ('desired_btc', 'accepted_btc', 'entry_estimate',
++                                                 'sizing_capital_usdt', 'allocated_margin_usdt')})
++        if kind == 'perp' and event['event'] == 'decision' and event.get('trigger') and event.get('decision_mark'):
++            trigger = event['trigger']
++            price = trigger.get('close', trigger.get('decision_mark'))
++            if price is not None and number(price) > 0:
++                gap = number(event['decision_mark']) / number(price) - 1
++                price_gaps.append(gap)
++                quantities(price_gap_links, {'opportunity': event.get('opportunity'), 'reason': event.get('reason'),
++                                             'constraint': event.get('constraint')},
++                           {'trigger_price': price, 'decision_price': event['decision_mark'], 'gap_return': gap})
+         for sleeve in (event.get('sleeves', {}).values() if isinstance(event.get('sleeves'), dict) else []):
+             reasons[str(sleeve['reason'])] += 1
+             opportunity = sleeve.get('opportunity', {})
+@@ -316,7 +445,10 @@ def diagnose(events, bars, kind):
+             'in_window_opportunities': sum(START_MS <= at < END_MS for at, _ in opportunities.values()),
+             'actionability': 'Opportunity creation alone is not actionability; reasons/constraints include cold-start and consumed gates.',
+             'opportunity_age_ms': summary(ages), 'decision_vs_trigger_return': summary(price_gaps),
+-            'idle_cash_usdt': summary(idle), 'sizing_observations': dict(sizing), 'filled': dict(filled),
++            'idle_cash_usdt': summary(idle), 'sizing_observations': list(sizing.values()), 'filled': dict(filled),
++            'fill_size_observations': list(fills_by_opportunity.values()),
++            'decision_price_gap_observations': list(price_gap_links.values()),
++            'size_summary_note': 'Counts/min/max/sums of actual recorded observations; repeated desired/accepted observations are not fills.',
+             'opportunity_gate_observations': dict(actionability),
+             'post_event_completed_day_closes': horizons,
+             'diagnostic_only': 'Spot public daily closes at floored horizon; unavailable tails excluded. Post-run price observations; not executable fills, missed realized profit, or decision inputs.'}
+@@ -396,6 +528,8 @@ def consume(path, kind, env, bars, fx, market_returns, cny_returns, *, expected=
+             require(parts == ([] if candidate == names[0] else [candidate]), 'candidate/components mismatch')
+         else:
+             require(len(parts) >= 2 and (kind != 'spot' or candidate == 'combo'), 'invalid combination')
++        if calibration:
++            require(candidate in calibration.get('profiles', {}), 'no legal calibration profile for candidate: ' + candidate)
+         profile = calibration['profiles'][candidate] if calibration else None
+         if kind == 'spot':
+             identity = row['research_identity']
+@@ -418,8 +552,10 @@ def consume(path, kind, env, bars, fx, market_returns, cny_returns, *, expected=
+                 'causal': diagnose(row['opportunity_ledger'], bars, kind)}
+         if not rejection:
+             curve = canonical(row, bars, fx, float(capital), kind)
++            evidence = evidence_fingerprints(row, kind)
+             item.update(financial=financial(row, curve, bars, fx, market_returns, cny_returns, float(capital)),
+-                        monetary_sha256=monetary_fingerprint(row, kind))
++                        monetary_sha256=checksum({k: evidence[k] for k in ('financial', 'fills', 'daily')}),
++                        evidence_sha256=evidence)
+             # Only base curves are needed for calibration/actual rerun matching.
+             if scenario == 'base':
+                 item['curve'] = curve
+@@ -485,30 +621,70 @@ def calibration_document(bundles, market_returns, fx):
+     return {'format': 1, 'cutoff_ms': CUTOFF, 'spec_sha256': sha(SPEC_PATH), 'profiles': profiles}, diagnostics
+ 
+ 
++def risk_inventory(bundle, kind):
++    """Inventory every registered direction before seeing any rerun outcome."""
++    names = SPEC[kind + '_candidates']
++    baseline = bundle['accounts'][names[0] + '/base']
++    inventory, required = {}, set()
++    for name in names[1:]:
++        base = bundle['accounts'][name + '/base']
++        if not base['valid']:
++            status, reasons = 'not_applicable_due_to_invalid_unscaled_base', base['rejections']
++        elif not baseline['valid']:
++            status, reasons = 'pending_valid_unscaled_baseline_for_calibration', baseline['rejections']
++        else:
++            status, reasons = 'pending_actual_risk_account', []
++            required.add(name + '/base')
++        inventory[name] = {'status': status, 'rejections': reasons, 'achieved_match': False,
++                           'unscaled_base_raw_sha256': base['raw_bundle_sha256']}
++    if baseline['valid']:
++        required.add(names[0] + '/base')
++    control = {'status': 'pending_actual_unity_control' if baseline['valid'] else
++                        'not_applicable_due_to_invalid_unscaled_baseline',
++               'passed': False, 'rejections': baseline['rejections']}
++    return inventory, required, control
++
++
+ def original_baseline(path, kind, bundle, env):
+-    """Original raw source is preserved; only economic identities are compared."""
++    """Pin immutable originals and compare complete financial/operating evidence."""
+     old, digest = read_json(path)
++    require(digest == APPROVED_BASELINES[kind], 'original baseline raw SHA is not the approved immutable reference')
+     meta = old if kind == 'spot' else old['inputs']
+     verify_source(meta['source'], kind)
+     repo = ROOT if kind == 'spot' else ROOT.parent / 'coinquant'
+     ancestry = subprocess.run(['git', 'merge-base', '--is-ancestor', meta['source']['git_head'], SPEC[kind + '_baseline_git']], cwd=repo)
+     require(ancestry.returncode == 0, 'original baseline is not ancestor of registered baseline')
+     if kind == 'perp':
+-        require(old['derivation']['execution_source'] == meta['source'] and hash_value(old['derivation']['original_accounts_sha256']), 'original derivation provenance differs')
++        require(old['derivation']['execution_source'] == meta['source'] and
++                old['derivation']['original_accounts_sha256'] == COIN_ORIGINAL_ACCOUNTS_SHA and
++                old['derivation']['method'] == 'remove only exact END funding debit; no curve scaling or replay relabelling',
++                'original derivation provenance differs')
+         verify_source(meta['derivation_source'], kind)
+     for key in ('fx_sha256', 'schedule_sha256'):
+         require(meta[key] == bundle['metadata'][key], 'original baseline input mismatch')
+     market_key = 'market_sha256' if kind == 'spot' else 'market_identity'
+     require(meta[market_key] == bundle['metadata'][market_key], 'original baseline market mismatch')
+     name = SPEC[kind + '_candidates'][0]
+-    checks = {}
++    checks, evidence_checks = {}, {}
+     for scenario in SPEC[kind + '_scenarios']:
+         row = old['results'][name + '-' + scenario] if kind == 'spot' else old['results'][name][scenario]
+         require(not row_validity(row, kind, env['starts'], '10000', scenario), 'invalid original baseline account')
+-        checks[scenario] = monetary_fingerprint(row, kind) == bundle['accounts'][name + '/' + scenario].get('monetary_sha256')
++        if kind == 'perp':
++            key = name + '/' + scenario
++            require(key not in old['derivation']['changed_accounts'], 'incumbent baseline must be unchanged by terminal derivation')
++            original = {k: v for k, v in row.items() if k not in ('candidate', 'scenario', 'initial_cny', 'original_row_sha256')}
++            require(checksum(original) == row['original_row_sha256'] == old['derivation']['row_bindings_sha256'][key],
++                    'Coin original row binding differs')
++        incoming = bundle['accounts'][name + '/' + scenario]
++        measured = incoming.get('evidence_sha256', {})
++        expected = evidence_fingerprints(row, kind)
++        evidence_checks[scenario] = {k: value == measured.get(k) for k, value in expected.items()}
++        checks[scenario] = all(evidence_checks[scenario].values())
+     return {'raw_sha256': digest, 'source': meta['source'], 'registered_baseline_git': SPEC[kind + '_baseline_git'],
+             'derivation': old.get('derivation'), 'derivation_source': meta.get('derivation_source'),
+-            'scenarios': checks, 'passed': all(checks.values())}
++            'scenarios': checks, 'evidence_checks': evidence_checks,
++            'comparison_scope': 'financial, fills, daily, ownership, operating and remaining original fields',
++            'passed': all(checks.values())}
+ 
+ 
+ def market_returns_for(bars, fx):
+@@ -578,28 +754,39 @@ def assess(args):
+         selected['adoption_blocked'] = not report['baseline_verification'][kind]['passed']
+         report['selection'][kind] = selected
+         risk_path = getattr(args, 'risk_' + kind)
+-        report['risk'][kind] = {}
++        inventory, needed, control = risk_inventory(bundle, kind)
++        report['risk'][kind] = inventory
++        report['risk_baseline_controls'][kind] = control
+         if risk_path:
+             require(calibration is not None, 'actual risk bundle requires --calibration exact file')
+-            # Optional unity baseline control is allowed, never required as a new direction.
++            require(bool(needed), 'no legal risk profiles for an invalid unscaled baseline')
+             risk = consume(risk_path, kind, env, bars, fx, usd_returns, cny_returns, reference=bundle,
+-                           calibration=calibration, calibration_sha=calibration_hash)
+-            needed = {n + '/base' for n in SPEC[kind + '_candidates'][1:]}
+-            require(set(risk['accounts']) in (needed, needed | {baseline + '/base'}), 'risk matrix must contain all new base accounts only')
++                           calibration=calibration, calibration_sha=calibration_hash, expected=needed)
+             report['inputs']['risk_' + kind] = {k: v for k, v in risk.items() if k != 'accounts'}
+             for key, account in risk['accounts'].items():
+                 if account['candidate'] == baseline:
+-                    equal = account.get('monetary_sha256') == bundle['accounts'][key].get('monetary_sha256') and account['valid']
+-                    report['risk_baseline_controls'][kind] = {'passed': bool(equal), 'raw_sha256': risk['raw_sha256']}
+-                    require(equal, 'unity baseline risk control changed money/fills/daily')
+-                elif account['valid'] and bundle['accounts'][baseline + '/base']['valid']:
+-                    report['risk'][kind][account['candidate']] = achieved_match(account['curve'], bundle['accounts'][baseline + '/base']['curve'], usd_returns, initial)
++                    expected_evidence = bundle['accounts'][key].get('evidence_sha256', {})
++                    actual_evidence = account.get('evidence_sha256', {})
++                    equal = account['valid'] and bool(expected_evidence) and actual_evidence == expected_evidence
++                    if account['valid'] and not equal:
++                        account['valid'] = False
++                        account['rejections'].append('unity_control_evidence_mismatch')
++                    control.update(status='measured_passed' if equal else 'rejected_actual_unity_control',
++                                   passed=bool(equal), raw_sha256=risk['raw_sha256'],
++                                   rejections=account['rejections'],
++                                   evidence_checks={k: v == actual_evidence.get(k) for k, v in expected_evidence.items()})
+                 else:
+-                    report['risk'][kind][account['candidate']] = {'achieved_match': False, 'classification': 'actual_rerun_invalid', 'rejections': account['rejections']}
++                    obligation = inventory[account['candidate']]
++                    obligation.update(status='measured_valid' if account['valid'] else 'rejected_actual_rerun',
++                                      raw_sha256=risk['raw_sha256'])
++                    if account['valid']:
++                        obligation.update(achieved_match(account['curve'], bundle['accounts'][baseline + '/base']['curve'], usd_returns, initial))
++                    else:
++                        obligation.update(classification='actual_rerun_invalid', rejections=account['rejections'])
+                 account.pop('curve', None)
+                 report['accounts'][kind + '/risk/' + key] = account
+-        else:
+-            report['pending'].append(kind + ':risk_base_accounts')
++        elif needed or any(v['status'].startswith('pending_') for v in inventory.values()):
++            report['pending'].append(kind + ':risk_base_accounts_and_unity_control')
+         for key, account in bundle['accounts'].items():
+             account.pop('curve', None)
+             report['accounts'][kind + '/' + key] = account
+@@ -627,10 +814,13 @@ def assess(args):
+     if required - seen:
+         report['pending'].append('perp:capital_start_sensitivity')
+     report['sensitivity_missing'] = sorted(required - seen)
++    report['risk_obligation_count'] = sum(len(v) for v in report['risk'].values())
++    require(report['risk_obligation_count'] == 10, 'all ten registered risk obligations must remain inventoried')
++    report['final_completion_note'] = 'No pending work is distinct from validation; rejected/inapplicable cases remain invalid and block rule freeze.'
+     report['risk_accounts_pending'] = any(':risk_' in item for item in report['pending'])
+     report['registered_work_pending'] = bool(report['pending'])
+     report['all_measured_accounts_valid'] = all(a['valid'] for a in report['accounts'].values()) and all(s['account']['valid'] for s in report['sensitivity'])
+-    report['rules_freeze_ready'] = not report['registered_work_pending'] and all(v['passed'] for v in report['baseline_verification'].values()) and report['all_measured_accounts_valid']
++    report['rules_freeze_ready'] = not report['registered_work_pending'] and all(v['passed'] for v in report['baseline_verification'].values()) and report['all_measured_accounts_valid'] and all(v['passed'] for v in report['risk_baseline_controls'].values())
+     if args.final:
+         require(not report['registered_work_pending'], 'final report still has pending registered work')
+     write_new(args.out, report)
+diff --git a/tests/test_alpha_assessment.py b/tests/test_alpha_assessment.py
+index ee2ea4b..38899f8 100644
+--- a/tests/test_alpha_assessment.py
++++ b/tests/test_alpha_assessment.py
+@@ -230,13 +230,17 @@ class AssessmentTests(unittest.TestCase):
+         self.assertFalse(a.selection(rows, 'perp')['decisions']['fresh-entry']['eligible'])
+ 
+     def test_outage_uses_actual_filtered_789_and_complete_requires_archive(self):
+-        schedule = json.loads((a.ROOT.parent / 'coinquant/research/session_schedule.json').read_text())
+-        starts = schedule['primary']['starts_ms']
++        # Synthetic 795-start fixture; six starts lie in the registered outage.
++        starts = ([a.START_MS + i * a.DAY for i in range(50)] +
++                  [1583020800000 + i * a.DAY for i in range(6)] +
++                  [1584835200000 + i * a.DAY for i in range(739)])
+         actual = [v for v in starts if not 1583020800000 <= v < 1584835200000]
+         self.assertEqual(len(actual), 789)
+         row = self.spot()['results']['consensus-base']
+         row.update(complete=True, cagr=.1, mdd='.2', final_cny='11000', final_usdt='1500',
+-                   sessions=[{'start_ms': s, 'execution_unresolved': False, 'archive_verified': True, 'elapsed_seconds': 300} for s in actual])
++                   client_events=[], sessions=[{'start_ms': s, 'ended_ms': s + 300000, 'status': 'offline_execution',
++                     'errors': [], 'execution_unresolved': False, 'archive_verified': True,
++                     'archive_backup_sha256': 'a' * 64, 'elapsed_seconds': 300.0} for s in actual])
+         self.assertEqual(a.row_validity(row, 'spot', starts, '10000', 'outage'), [])
+         with self.assertRaises(ValueError):
+             a.row_validity(row, 'spot', starts, '10000', 'base')
+@@ -244,6 +248,170 @@ class AssessmentTests(unittest.TestCase):
+         with self.assertRaisesRegex(ValueError, 'archive'):
+             a.row_validity(row, 'spot', starts, '10000', 'outage')
+ 
++    def evidence_row(self):
++        row = self.spot()['results']['consensus-base']
++        start = 1578636000000
++        identity = 'sq-original'
++        order = {'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET', 'quoteOrderQty': '100'}
++        row.update(complete=True, final_cny='10000', final_usdt='1400', cagr=0, mdd='.1', cash_usdt='1000', btc='.01',
++                   audit={'passed': True, 'fees_usdt': '.1', 'cash_from_fills': '1000', 'btc_from_fills': '.01', 'no_deposits': True},
++                   fills=[{'id': 1, 'order_id': 1, 'time': start + 2000, 'qty': '.01', 'quote': '100', 'price': '10000',
++                           'buyer': True, 'commission': '.00001', 'commission_asset': 'BTC'}], daily={},
++                   positions={'30': {'qty': '.01', 'first_ms': start + 2000, 'sell_applied': {}}},
++                   allocations=[[identity, json.dumps({'order': order, 'sleeves': [30], 'signal_ms': start - a.DAY}),
++                                 'settled', json.dumps(dict(order, id=identity, clientOrderId=identity, orderId=1, executedQty='.01'))]],
++                   filters={'blocked': 0, 'missing': 0}, session_error_count=1,
++                   client_events=[{'method': 'POST', 'client_id': identity, 'sent_ms': start + 1000,
++                                   'received_ms': start + 2000, 'order': order}],
++                   sessions=[{'start_ms': start, 'status': 'unknown', 'cycles': 45,
++                              'errors': [{'cycle': 45, 'reason': 'session deadline reached'}], 'pending_intents': 0,
++                              'elapsed_seconds': 300.1989998817444, 'ended_ms': 1578636300199,
++                              'archive_verified': True, 'archive_backup_sha256': 'a' * 64, 'execution_unresolved': False}])
++        return row
++
++    def test_original_read_completion_and_actual_write_deadlines_not_epsilon(self):
++        row = self.evidence_row()
++        a.verify_spot_timing(row)
++        start = row['sessions'][0]['start_ms']
++        # A write sent 1ms before deadline is allowed to finish 999ms afterward.
++        row['client_events'][0].update(sent_ms=start + 299999, received_ms=start + 300999)
++        row['sessions'][0].update(ended_ms=start + 300999, elapsed_seconds=(start + 300999) / 1000 - start / 1000)
++        a.verify_spot_timing(row)
++        row['client_events'][0].update(sent_ms=start + 300000, received_ms=start + 301000)
++        with self.assertRaisesRegex(ValueError, 'dispatch outside'):
++            a.verify_spot_timing(row)
++        row = self.evidence_row()
++        row['sessions'][0].update(ended_ms=start + 300200, elapsed_seconds=(start + 300200) / 1000 - start / 1000)
++        with self.assertRaisesRegex(ValueError, 'lacks an actual'):
++            a.verify_spot_timing(row)
++        row = self.evidence_row()
++        row['sessions'][0]['elapsed_seconds'] += .000001
++        with self.assertRaisesRegex(ValueError, 'elapsed clock'):
++            a.verify_spot_timing(row)
++        row = self.evidence_row()
++        row['client_events'][0]['received_ms'] += 1
++        with self.assertRaisesRegex(ValueError, 'latency'):
++            a.verify_spot_timing(row)
++
++    def test_full_baseline_evidence_detects_money_ownership_actions_and_clocks(self):
++        row = self.evidence_row()
++        expected = a.evidence_fingerprints(row, 'spot')
++        mutations = [lambda r: r['audit'].update(fees_usdt='99'),
++                     lambda r: r['sessions'][0].update(cycles=1),
++                     lambda r: r['sessions'][0].update(status='blocked'),
++                     lambda r: r['sessions'][0].update(ended_ms=0),
++                     lambda r: r.update(client_events=[]),
++                     lambda r: r['client_events'][0]['order'].update(quoteOrderQty='1'),
++                     lambda r: r.update(positions={}),
++                     lambda r: r['allocations'][0].__setitem__(2, 'unknown'),
++                     lambda r: r['fills'][0].update(qty='999')]
++        for mutate in mutations:
++            changed = copy.deepcopy(row)
++            mutate(changed)
++            self.assertNotEqual(expected, a.evidence_fingerprints(changed, 'spot'))
++        changed = json.loads(json.dumps(row).replace('sq-original', 'sq-renamed'))
++        changed['sessions'][0]['archive_backup_sha256'] = 'b' * 64
++        self.assertEqual(expected, a.evidence_fingerprints(changed, 'spot'))
++        changed['sessions'][0]['archive_verified'] = False
++        with self.assertRaisesRegex(ValueError, 'archive proof'):
++            a.evidence_fingerprints(changed, 'spot')
++
++    def test_original_reference_is_pinned_before_any_source_or_comparison_work(self):
++        fake = self.root / 'substitute.json'
++        fake.write_text(json.dumps({'plausible': 'substituted reference'}))
++        for kind in ('spot', 'perp'):
++            with self.assertRaisesRegex(ValueError, 'approved immutable'):
++                a.original_baseline(fake, kind, {}, self.env)
++        self.assertEqual(a.APPROVED_BASELINES['spot'], 'cf075b86ba5df590e078a7c626c53cb20937be955cfb6ad8d41eae19b78645e8')
++        self.assertEqual(a.APPROVED_BASELINES['perp'], '15dd7bfc242d52bf692663179cd1e3867418f8b55a4cad0894d253a8b296f00a')
++
++    def test_invalid_base_keeps_all_ten_obligations_with_no_fabricated_profile(self):
++        inventories = []
++        for kind in ('spot', 'perp'):
++            names = a.SPEC[kind + '_candidates']
++            accounts = {n + '/base': {'valid': True, 'rejections': [], 'raw_bundle_sha256': 'a' * 64} for n in names}
++            accounts[names[1] + '/base'].update(valid=False, rejections=['measurement_incomplete'])
++            inventory, needed, control = a.risk_inventory({'accounts': accounts}, kind)
++            inventories.extend(inventory)
++            self.assertEqual(inventory[names[1]]['status'], 'not_applicable_due_to_invalid_unscaled_base')
++            self.assertEqual(inventory[names[1]]['rejections'], ['measurement_incomplete'])
++            self.assertNotIn(names[1] + '/base', needed)
++            self.assertIn(names[0] + '/base', needed)
++            self.assertEqual(control['status'], 'pending_actual_unity_control')
++            accounts[names[0] + '/base'].update(valid=False, rejections=['audit_failed'])
++            blocked, _, _ = a.risk_inventory({'accounts': accounts}, kind)
++            self.assertEqual(blocked[names[2]]['status'], 'pending_valid_unscaled_baseline_for_calibration')
++        self.assertEqual(len(inventories), 10)
++        body = self.spot()
++        path = self.root / 'missing-profile.json'
++        path.write_text(json.dumps(body))
++        with patch.object(a, 'verify_source'), self.assertRaisesRegex(ValueError, 'no legal calibration profile'):
++            a.consume(path, 'spot', self.env, [], None, [], [], calibration={'profiles': {}})
++
++    def test_final_rejected_inventory_closes_work_without_claiming_validity(self):
++        from decimal import Decimal as D
++        from types import SimpleNamespace
++        from contextlib import ExitStack
++        baseline_files = {'spot': self.root / 'spot-original', 'perp': self.root / 'perp-original'}
++        bundles = {}
++        for kind in ('spot', 'perp'):
++            accounts = {n + '/' + scenario: {'candidate': n, 'scenario': scenario, 'valid': False,
++                        'rejections': ['measurement_incomplete'], 'cagr': None, 'mdd': None,
++                        'raw_bundle_sha256': 'a' * 64}
++                        for n in a.SPEC[kind + '_candidates'] for scenario in a.SPEC[kind + '_scenarios']}
++            bundles[kind] = {'accounts': accounts, 'raw_sha256': 'a' * 64, 'metadata': {'source': self.source}}
++        sensitivities = []
++        for index, (capital, offset) in enumerate([('9900', 0), ('10100', 0), ('10000', -60000), ('10000', 60000)]):
++            path = self.root / ('sensitivity-' + str(index) + '.json')
++            path.write_text(json.dumps({'inputs': {'initial_cny': capital, 'start_offset_ms': offset},
++                                        'results': {'incumbent': {'base': {}}}}))
++            sensitivities.append(path)
++        args = SimpleNamespace(schedule=None, fx=None, market=None, spot='spot', perp='perp',
++            calibration=None, calibration_out=self.root / 'calibration.json',
++            baseline_spot=baseline_files['spot'], baseline_perp=baseline_files['perp'],
++            combo_spot=None, combo_perp=None, risk_spot=None, risk_perp=None,
++            sensitivity_perp=sensitivities, out=self.root / 'final.json', csv=None, markdown=None, final=True)
++        def consume(path, kind, *args, **kwargs):
++            if path in ('spot', 'perp'):
++                return copy.deepcopy(bundles[kind])
++            return {'accounts': {'incumbent/base': copy.deepcopy(bundles['perp']['accounts']['incumbent/base'])},
++                    'metadata': {}, 'raw_sha256': 'b' * 64}
++        with ExitStack() as stack:
++            for name, value in [('source_identity', self.source), ('environment', self.env), ('load_daily', []),
++                                ('PriorFX', lambda timestamp: D(7)), ('market_returns_for', ([], [])),
++                                ('passive_controls', {}), ('original_baseline', {'passed': False})]:
++                stack.enter_context(patch.object(a, name, return_value=value))
++            stack.enter_context(patch.object(a, 'consume', side_effect=consume))
++            report = a.assess(args)
++        self.assertFalse(report['registered_work_pending'])
++        self.assertFalse(report['risk_accounts_pending'])
++        self.assertFalse(report['all_measured_accounts_valid'])
++        self.assertFalse(report['rules_freeze_ready'])
++        self.assertEqual(report['risk_obligation_count'], 10)
++        self.assertTrue(all(item['status'] == 'not_applicable_due_to_invalid_unscaled_base'
++                            for group in report['risk'].values() for item in group.values()))
++        self.assertEqual(json.loads(args.calibration_out.read_text())['profiles'], {})
++
++    def test_causal_sizes_are_actual_and_coin_trigger_gap_has_identity(self):
++        spot = [{'event': 'decision', 'opportunity_id': 'op1', 'constraints': [{'reason': 'cash'}],
++                 'desired_orders': [{'side': 'BUY', 'sleeves': [30], 'quoteOrderQty': '1000'}],
++                 'accepted_orders': [{'side': 'BUY', 'sleeves': [30], 'quoteOrderQty': '100'}]}]
++        old = a.diagnose(spot, [], 'spot')
++        spot[0]['desired_orders'][0]['quoteOrderQty'] = '999999'
++        spot[0]['accepted_orders'][0]['quoteOrderQty'] = '1'
++        new = a.diagnose(spot, [], 'spot')
++        self.assertNotEqual(old, new)
++        self.assertEqual(new['sizing_observations'][0]['values']['quoteOrderQty']['max'], '999999')
++        coin = [{'event': 'decision', 'opportunity': 123, 'trigger': {'close': '100'},
++                 'decision_mark': '120', 'reason': 'hold', 'constraint': 'target'},
++                {'event': 'entry_sizing', 'opportunity': 123, 'desired_btc': '2', 'accepted_btc': '1', 'constraint': 'cash'},
++                {'event': 'fill', 'trade': {'orderId': 1, 'side': 'BUY', 'qty': '.5', 'price': '120'}}]
++        result = a.diagnose(coin, [], 'perp')
++        self.assertEqual(result['decision_vs_trigger_return']['n'], 1)
++        self.assertAlmostEqual(result['decision_vs_trigger_return']['mean'], .2)
++        self.assertEqual(result['decision_price_gap_observations'][0]['identity']['opportunity'], 123)
++        self.assertEqual(result['fill_size_observations'][0]['values']['qty']['sum'], '0.5')
++
+     def test_diagnostic_warmup_distinct_ids_future_tail_and_actual_fill(self):
+         events = [{'event': 'opportunity', 'identity': 1, 'at_ms': a.START_MS - a.DAY, 'close': '100'},
+                   {'event': 'opportunity', 'identity': 2, 'at_ms': a.START_MS, 'close': '100'},

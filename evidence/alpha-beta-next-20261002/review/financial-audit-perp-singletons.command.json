@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/btc-alpha-beta-next/review/independent_financial_audit.py",
+    "--bundle",
+    "/workspace/scratch/alpha-beta-next/perp-singletons-retry1.json.gz",
+    "--sha256",
+    "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+    "--kind",
+    "perp",
+    "--out",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-perp-singletons.json"
+  ],
+  "checker_sha256": "492d46ff9bbff72f1291ad77988fbf8478b35fd880c818e1d3979a6215f1897c",
+  "elapsed_seconds": 6.3616954239987535,
+  "exit_code": 0,
+  "log_sha256": "6005faca9c93d70355145e19a60af8c1448aebc829ede446b7674d4a43f87326",
+  "output_sha256": "051fade57cea7f85e33b799a7302da3d3c2f9adfae490f1161bcdf30a3ba0555"
+}

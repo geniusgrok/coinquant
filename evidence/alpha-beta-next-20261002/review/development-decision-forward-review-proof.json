@@ -1,0 +1,112 @@
+{
+  "format": "independent-development-decision-forward-init-review-v1",
+  "identities": {
+    "/workspace/scratch/alpha-beta-next/adoption-decision.json": "b44b7c4899021b3238c1968265d5e4b2c9338180fdb70d05dd056f48f041f8fc",
+    "/workspace/btc-alpha-beta-next/review/final-code-review-source-proof.json": "79b44b5566378674d146d0b0d5df925bb2150d9e9cc4533f1b48bdcfe9c0ca44",
+    "/workspace/btc-alpha-beta-next/review/final64-financial-review-proof.json": "9453b031924322612da3445e305e0499dce87eda20eb604def14ff7aa54241de",
+    "/workspace/btc-alpha-beta-next/review/final64-financial-review.md": "b7ba215bdc4b9ad645f6360ea688d15692e4a96c1bb63da53cae3d2bdec6656d",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-remaining-repaired-index.json": "0d78b9355deb09f7597be3b756aa51c209980188536d186c3b5a72d7dcb6a44e",
+    "/workspace/btc-alpha-beta-next/review/spot-actual-adoption-bridge-review-proof.json": "9832d81e890725584a0f1c87881743bbbba2ec6dc43cf15ac93508319eecf85a",
+    "/workspace/btc-alpha-beta-next/review/spot-actual-adoption-bridge-review.md": "5734aa52ada149c97b9b81c7c08c8589c2693a4ccfe950645353cd0e6346381d",
+    "/workspace/btc-alpha-beta-next/review/spot-actual-adoption-financial-proof.json": "ea19f9735ff563aadaeb30748e2bcd69ee1cbdbc45669890477f701911e68d2a",
+    "/workspace/btc-alpha-beta-next/review/spot-actual-adoption-financial-review.md": "6345ffa3519d5ab9316984487f7669ea1a90f49f11f50b471f540c91102f675b",
+    "/workspace/btc-alpha-beta-next/review/spot-canonical-five-financial-proof.json": "c1803ecb6c66a1f6397415ce2b033f569ebca46e6df42419bee87ea45f351b8d",
+    "/workspace/scratch/alpha-beta-next/native-zero-source-binding-proof.json": "b080698ff82000ecc499ce72750546eb2ec9490317786e4ea84777543ea9bd21",
+    "/workspace/scratch/alpha-beta-next/registered-final-repaired.json": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+    "/workspace/scratch/alpha-beta-next/spot-adoption-bridge.json": "0838fde5cd3f3645f846632f6a5e7e3c3d80ca923d3cd7de48e4292a278aa987",
+    "/workspace/scratch/alpha-beta-next/spot-canonical/canonical-inventory.json": "db23143dffbd6d8c5711789fee8b3ac92454d7712bcad14644cd244197701b32",
+    "/workspace/scratch/alpha-beta-next/spot-forward-zero-init.json": "0376e3aa081ea953cbed665adb757f9e42de711dfb3191bdf004ec915ceec6c1",
+    "/workspace/scratch/alpha-beta-next/spot-forward-zero-init.command.json": "78c3ce5df2521c40819c5683fb74dad64d85a21f999bb62aecbbebf0cfa0af15",
+    "/workspace/scratch/alpha-beta-next/spot-forward-zero-init.run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/workspace/scratch/alpha-beta-next/perp-forward-zero-init.json": "3266202e258735e829a68a0b61527d47f0e98a4d0e4ec7580bbd00b8a0e36cbe",
+    "/workspace/scratch/alpha-beta-next/perp-forward-zero-init.command.json": "0db0cec560a1b5bf623a7874af80f96623ae7991ce8841bbd57f233849977476",
+    "/workspace/scratch/alpha-beta-next/perp-forward-zero-init.run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "verdict": "PASS",
+  "decision_sha256": "b44b7c4899021b3238c1968265d5e4b2c9338180fdb70d05dd056f48f041f8fc",
+  "decision_time_utc": "2026-10-02T17:17:58.192654+00:00",
+  "development_defaults_match_exact_approved_scope": true,
+  "both_independent_adoption_reviews_bound": true,
+  "bridge_initial_false_pending_flags_preserved": true,
+  "diaries": {
+    "spot": {
+      "path": "/workspace/scratch/alpha-beta-next/spot-forward-zero-init.json",
+      "raw_sha256": "0376e3aa081ea953cbed665adb757f9e42de711dfb3191bdf004ec915ceec6c1",
+      "body_sha256": "e0961f5b2922960c97bab776722c55049fa6685ae23c9938e0a39a80b2b02e2c",
+      "receipt_sha256": "78c3ce5df2521c40819c5683fb74dad64d85a21f999bb62aecbbebf0cfa0af15",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "binding": {
+        "analysis_sha256": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+        "source": {
+          "git_head": "8ca002522fbdce531dcfbbb783ff4d152a7fd66c",
+          "dirty": false,
+          "python_sources_sha256": "0df8c537ee8d47db6e841778e8e37eac847e1a0c1151e379440081b9473ae026"
+        },
+        "spec_sha256": "8228013f4ac41affb65162c1cabad8f51b5ef32b9607f62231a4776168a337d0",
+        "protocol_sha256": "4ae09ae0bc9224f8028ddcc1373dc1bbc7251a70be2945e5655f5e5fa12eb27e",
+        "kind": "spot",
+        "rule": "atr-stop",
+        "baseline_sha256": "cf075b86ba5df590e078a7c626c53cb20937be955cfb6ad8d41eae19b78645e8"
+      },
+      "execution_source": {
+        "git_head": "99fcf005d2cb15c13bb37322b65ab2863b19d65e",
+        "dirty": false,
+        "python_sources_sha256": "427f34ca3640cfa78f51173583af1d9c82f007baae155f3a992dcffb8171ad7b"
+      },
+      "initialized_ms": 1790961478642,
+      "receipt_start": "2026-10-02T17:17:58.193201+00:00",
+      "receipt_end": "2026-10-02T17:17:58.657178+00:00",
+      "initialized_within_actual_command": true,
+      "after_development_decision": true,
+      "cash_cny": "10000",
+      "btc": "0",
+      "observations": 0,
+      "native_cases": 0,
+      "actual_account_days": 0,
+      "elapsed_account_days": 0,
+      "backfilled_observations": false
+    },
+    "perp": {
+      "path": "/workspace/scratch/alpha-beta-next/perp-forward-zero-init.json",
+      "raw_sha256": "3266202e258735e829a68a0b61527d47f0e98a4d0e4ec7580bbd00b8a0e36cbe",
+      "body_sha256": "8bdaba510521aef67d6f4f89a1c168a8ace50e329bb293298b2aac72cdec7aa3",
+      "receipt_sha256": "0db0cec560a1b5bf623a7874af80f96623ae7991ce8841bbd57f233849977476",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "binding": {
+        "analysis_sha256": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+        "source": {
+          "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+          "dirty": false,
+          "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+        },
+        "spec_sha256": "8228013f4ac41affb65162c1cabad8f51b5ef32b9607f62231a4776168a337d0",
+        "protocol_sha256": "4ae09ae0bc9224f8028ddcc1373dc1bbc7251a70be2945e5655f5e5fa12eb27e",
+        "kind": "perp",
+        "rule": "incumbent",
+        "baseline_sha256": "15dd7bfc242d52bf692663179cd1e3867418f8b55a4cad0894d253a8b296f00a"
+      },
+      "execution_source": {
+        "git_head": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+        "dirty": false,
+        "python_sources_sha256": "a6e3f30f02208ff7e604b6181c5d8fa7000fe7e30dbc3276fbcc93ffbb0ad227"
+      },
+      "initialized_ms": 1790961479131,
+      "receipt_start": "2026-10-02T17:17:58.657694+00:00",
+      "receipt_end": "2026-10-02T17:17:59.146195+00:00",
+      "initialized_within_actual_command": true,
+      "after_development_decision": true,
+      "cash_cny": "10000",
+      "btc": "0",
+      "observations": 0,
+      "native_cases": 0,
+      "actual_account_days": 0,
+      "elapsed_account_days": 0,
+      "backfilled_observations": false
+    }
+  },
+  "public_observation_only": true,
+  "forward_observations_accumulated": 0,
+  "native_or_private_account_activity_approved": false,
+  "past_financial_reviews_unchanged": true,
+  "no_producer_checker_frozen_import_tests_State_or_process_action": true
+}

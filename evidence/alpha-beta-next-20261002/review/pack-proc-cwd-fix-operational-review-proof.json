@@ -1,0 +1,289 @@
+{
+  "scope": "stopped proc cwd fix only",
+  "spec": "PASS",
+  "quality": "APPROVE",
+  "old_sha256": "72260dbdaccfb4298752e4b55b9e5ef7a6a9d86feda1a697719ea3e35fbf0ab4",
+  "helper_sha256": "8ea9f39b233ccedd6d578aa46d64ef0a0d7af03bf8df2c07007d530997c99857",
+  "exact_text_delta_only": true,
+  "all_other_top_level_ast_equal": true,
+  "unchanged_ast_sha256": "7434f543a4ac0f13d0469d1531bd3c39da31e43af82f7adc6ca713a524662066",
+  "in_memory_compile": "PASS",
+  "synthetic_checks_count": 22,
+  "synthetic_checks": [
+    {
+      "name": "unrelated_nonpython_denied_cwd",
+      "expected": "accepted",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_shell_research.alpha_perp",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_shell_research.complete_spot",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_shell_research.adoption_spot",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_shell_run_registered_queue",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_shell_run_spot_registered",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_shell_audit_remaining_queue",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_shell_audit_singles_queue",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_shell_independent_financial_audit",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_shell_public_print_vault.py",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "local_python",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm",
+          "cwd"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "python_args_root_reference",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm",
+          "cwd"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "unrelated_python_denied_cwd",
+      "expected": "PermissionError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm",
+          "cwd"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "relevant_python_denied_cwd",
+      "expected": "PermissionError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm",
+          "cwd"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "unreadable_argv",
+      "expected": "PermissionError",
+      "calls": [
+        [
+          "stat",
+          "cmdline"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "unreadable_comm",
+      "expected": "PermissionError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "unreadable_stat",
+      "expected": "PermissionError",
+      "calls": [
+        [
+          "stat"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "zombie_skip",
+      "expected": "accepted",
+      "calls": [
+        [
+          "stat"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "current_process_skip",
+      "expected": "accepted",
+      "calls": [
+        []
+      ],
+      "passed": true
+    },
+    {
+      "name": "unrelated_readable_python",
+      "expected": "accepted",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm",
+          "cwd"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "scan_continues_after_unrelated_dockerd",
+      "expected": "ValueError",
+      "calls": [
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ],
+        [
+          "stat",
+          "cmdline",
+          "comm"
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "vanished_process_behavior_retained",
+      "expected": "accepted",
+      "calls": [
+        [
+          "stat"
+        ]
+      ],
+      "passed": true
+    }
+  ],
+  "real_proc_access": false,
+  "pack_executed": false,
+  "financial_or_runtime_imports": false,
+  "source_or_account_operations": false,
+  "inputs": {
+    "pack-proc-cwd-fix.diff": "84516b4bdea74d033cb028acb497ab0ee22700cfdd432f6c4c9820e806ef0676",
+    "pack-proc-cwd-fix-report.md": "0917015f29858651b563cfd63e9214b3060e620dfd1ef02a8ab2a7ee612f3ecf",
+    "pack-proc-cwd-pure-checks.py": "e6d8914761bc36298c3f9b30fed3bb6055840136e2ba83e9ce0465595f736dbd",
+    "pack-proc-cwd-pure-checks.log": "c604e102bec22f7d8ed911439ca54944c302ab9c00a60e78e15042c5719b64f2",
+    "pack-attempt1-proc-cwd-denied.command.json": "f56d20809181b570b912c4cb34078c719caf8900e3a32b3a1811042e29e20a95",
+    "pack-attempt1-proc-cwd-denied.run.log": "0fd1319befbf1719c58d048b7d847192cbf138efb206e83c9a10b928d14a38d3"
+  }
+}

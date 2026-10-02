@@ -1,0 +1,11 @@
+{
+  "queue_sha256": "b9dabb63236db0a0c16a8f965ddb0afe964cb1a6b0a6b49b88861bed6f3d1c3c",
+  "fixture_only": true,
+  "subprocesses": 0,
+  "account_replays": 0,
+  "findings": {
+    "existing_risk_audit_without_required_context_reused": true,
+    "receipt_output_sha_not_checked": true,
+    "duplicate_same_raw_manifest_child_counted_twice": true
+  }
+}

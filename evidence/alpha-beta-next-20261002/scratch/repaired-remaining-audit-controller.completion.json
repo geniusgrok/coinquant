@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/btc-alpha-beta-next/review/audit_repaired_remaining_registered.py",
+    "--final-report",
+    "/workspace/scratch/alpha-beta-next/registered-final-repaired.json",
+    "--out",
+    "/workspace/btc-alpha-beta-next/review/financial-audit-remaining-repaired-index.json",
+    "--execute"
+  ],
+  "cwd": "/workspace",
+  "pid": 74560,
+  "wrapper_pid": 74559,
+  "started_utc": "2026-10-02T16:47:43.159225+00:00",
+  "helper_sha256": "8366717a1758ba57998c89baa067a4ef23443ba538222ae1e259bbc00df0fdc5",
+  "operational_review_sha256": "bfa54c92c407db9d7e046ea134fef394b2f5710968f5a96d440dc181ef0b5582",
+  "preflight_already_passed": true,
+  "exit_code": 0,
+  "ended_utc": "2026-10-02T16:47:55.389486+00:00",
+  "elapsed_seconds": 12.230298248992767,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "index_sha256": "0d78b9355deb09f7597be3b756aa51c209980188536d186c3b5a72d7dcb6a44e"
+}

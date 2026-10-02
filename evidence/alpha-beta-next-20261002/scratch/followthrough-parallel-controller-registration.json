@@ -1,0 +1,12 @@
+{
+  "registered_at_utc": "2026-10-02T05:36:29.496468+00:00",
+  "controller_path": "/workspace/btc-alpha-beta-next/review/run_registered_followthrough_parallel_sensitivity.py",
+  "controller_sha256": "82ab032036359d064c60f172a978d78fac577ca07007e7539d888f2c69f01128",
+  "independent_review_sha256": "49ea2cc27795e3b5b5678d7fdc45ef9e434f96e62aac24991746a1f6da816af9",
+  "original_waiter_exited_code": 143,
+  "economic_rules_changed": false,
+  "sources_changed": false,
+  "probe_cache": "/workspace/scratch/alpha-beta-next/incumbent-sensitivity-prints",
+  "main_cache": "/workspace/.btc-third-round-prints",
+  "cache_ownership": "One Coin chain per distinct ZIP/bin root; official basename/byte identities retained."
+}
