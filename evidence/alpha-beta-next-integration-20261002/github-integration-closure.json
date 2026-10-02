@@ -1,0 +1,75 @@
+{
+  "format": "btc-alpha-beta-github-integration-closure-v1",
+  "observed_at_utc": "2026-10-02 18:00:58 UTC",
+  "pull_requests": {
+    "coin": {
+      "url": "https://github.com/geniusgrok/coinquant/pull/57",
+      "number": 57,
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-02T17:57:20Z",
+      "head_sha": "f9e4d78458ce806c44553fc493f9c773e1ef98a5",
+      "merge_commit_sha": "4eca520ce66e288cd2c7979b35d4c5695c56a0bc"
+    },
+    "spot": {
+      "url": "https://github.com/geniusgrok/spotquant/pull/9",
+      "number": 9,
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-02T17:57:26Z",
+      "head_sha": "4ca2865b37e94b8f971f8457d66ab0e9f338b900",
+      "merge_commit_sha": "8d07aa58340e09f058e0463b521724d913abba2d"
+    }
+  },
+  "ci": {
+    "coin": {
+      "reviewed_head": {
+        "id": 37043727098,
+        "head_sha": "f9e4d78458ce806c44553fc493f9c773e1ef98a5",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "pull_request",
+        "url": "https://github.com/geniusgrok/coinquant/actions/runs/37043727098",
+        "updated_at": "2026-10-02T17:53:48Z"
+      },
+      "merged_main": {
+        "id": 37044195737,
+        "head_sha": "4eca520ce66e288cd2c7979b35d4c5695c56a0bc",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "push",
+        "url": "https://github.com/geniusgrok/coinquant/actions/runs/37044195737",
+        "updated_at": "2026-10-02T17:58:03Z"
+      }
+    },
+    "spot": {
+      "reviewed_head": {
+        "id": 37043764423,
+        "head_sha": "4ca2865b37e94b8f971f8457d66ab0e9f338b900",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "pull_request",
+        "url": "https://github.com/geniusgrok/spotquant/actions/runs/37043764423",
+        "updated_at": "2026-10-02T17:54:00Z"
+      },
+      "merged_main": {
+        "id": 37044209390,
+        "head_sha": "8d07aa58340e09f058e0463b521724d913abba2d",
+        "status": "completed",
+        "conclusion": "success",
+        "event": "push",
+        "url": "https://github.com/geniusgrok/spotquant/actions/runs/37044209390",
+        "updated_at": "2026-10-02T17:58:01Z"
+      }
+    }
+  },
+  "packet_manifest_sha256": "74cba90a0f70f813bf0349d6a087264b2e713ee8cf8cd5a03c9b76fe0158642a",
+  "whole_branch_review_sha256": "9e891617e40af169eb1ad2a8200f28bdd81030c40bbd259f2e2dd1c10313fa22",
+  "scope": "Executed normal expected-head PR merges and exact reviewed-head/merged-main CI. Final state/PLAN closure changes documentation and evidence receipt only; its exact new-head CI is verified separately after normal push.",
+  "native_cases": 0,
+  "actual_account_days": 0,
+  "elapsed_account_days": 0,
+  "economic_qualification": "NOT_MET",
+  "native_qualification": "NOT_QUALIFIED",
+  "owner_account_actions_authorized": false
+}

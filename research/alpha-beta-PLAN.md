@@ -67,4 +67,4 @@
 - [x] Independently review cash/fills/funding/daily/continuous proxy risks, causal gates, risk-calibration chronology, selected choices and all descriptive claims.
 - [x] If eligible, move selected minimal logic into shared default path with complete executable equivalence, state migration rejection and mandatory safety tests; otherwise preserve default and document all rejection reasons.
 - [x] Retain complete public raws/review/SHA manifests (exclude self/progress/cache), final attribution/CSV/chart, initialization only forward ledger and full reproduction commands. Preserve original targets, original measurement identities and native0/actualdays0.
-- [ ] Run appropriate final local checks, normal branch push and independent whole-branch review; exact-head CI then normal PR integration, mainCI, clean worktrees. No additional permission for already-authorized normal integration.
+- [x] Run appropriate final local checks, normal branch push and independent whole-branch review; exact-head CI then normal PR integration, mainCI, clean worktrees. No additional permission for already-authorized normal integration.
