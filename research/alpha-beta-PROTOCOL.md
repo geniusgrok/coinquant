@@ -43,3 +43,7 @@ Candidate/default code may be integrated only after review and economic gates, p
 ## Implementation workflow
 
 User already authorized implementation and normal integration. Use two mirrored isolated worktrees so existing sibling schedule/FX paths resolve; no account operations. Standard library runtime, no new dependencies or daemons. Use the existing PROJECT_STATE.md/HANDOFF_PROMPT.md as the single progress/recovery source. Briefs/reports/diff packages live in external task scratch, not a second progress system. Independently review source and completed financial evidence, run risk-relevant tests and exact-head CI, then integrate normal PRs without force or history loss.
+
+### Pre-measurement clarification: core initialization
+
+Core keeps the original session bootstrap gate: a saved checkpoint and entries_after must exist, the current completed daily bar must be newer than entries_after, and entries_enabled must be true. It also enforces its own exit_through/new-completed-day guard and all existing cash/capital/execution gates. After these gates, permanent core may enter whenever legally actionable; slow core additionally requires completed close>SMA200. Core policy does not inherit tactical need_reset/fresh-cross as an extra SMA200 signal, and never forges Model checkpoint flags. The original three tactical sleeves retain their complete fresh-cross rules. This resolves the phrase cold-start before any new full-window outcome; it does not change the frozen ratios or candidate grid.

@@ -17,7 +17,15 @@ Ruling: use existing PROJECT_STATE/HANDOFF rather than an additional SDD progres
 | Task2/4 | frozen Spot engine/core ledger, later selected bridge equivalence | no core edits while financial worker active |
 | Task3/4 | deterministic calibration/combo output, completed inputs | false complete/native never promote |
 
-Task1: pending; Task2: pending; Task3: pending; Task4: pending.
+Ruling: matched economic selection constraints compare identical stress scenes on unscaled actual accounts; separately rerun training-calibrated base accounts for achieved risk/alpha diagnosis — because the spec separates selection from risk-match claims; cost if wrong: add a risk-based adoption constraint before promotion.
+Ruling: test the exact all-compatible eligible combination, never subsets; if that combination is rejected keep the best eligible singleton, ranking any accepted combo by the same worst-stress CAGR with singleton priority on ties — because an unevaluated or inferior combination cannot justify default replacement; cost if wrong: combination remains research-only.
+
+Ruling: Coin trailing high excludes the 4h bar that overlaps actual entry; only bars opening at/after confirmed entry contribute high, with initial anchor at the actual fill — avoids a pre-entry wick becoming a stop under the completed-bar spec; cost if wrong: conservatively later tightening, fully disclosed before outcomes.
+
+Task1: complete — source c2a01d1 + attribution fix31e8b1e; 359 offline checks,13focused and exact real three-session no-op monetary equality. Independent spec PASS/quality APPROVE at ../review/task1-fix1-review.md. Full-window/economic evidence remains Task4; production unchanged.
+Task2: running /root/alpha_spot_implementation; BASEa3aed915 (Spot); requirements/report ../review/task2-brief.md /task2-report.md. Task3: pending; Task4: pending.
+Ruling: core cold-start retains saved-checkpoint/entries_after/new-day and original execution gates, without a tactical SMA200 fresh-cross latch; original three tactical signals unchanged — permanent core otherwise gains an unregistered initial timing rule; cost if wrong: conservative comparison requires a separately registered variant, never post-outcome switching. Protocol clarified before any full new outcome.
+
 
 --- Previous completed delivery ---
 
