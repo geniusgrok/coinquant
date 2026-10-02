@@ -1,5 +1,28 @@
 # PROJECT_STATE
 
+Updated: 2026-10-02T23:05:38.392404+00:00
+
+## Active BTC alpha/beta improvement round
+
+The user approved the full next-phase design and direct implementation. Worktrees are /workspace/btc-alpha-beta-improve/{spotquant,coinquant}, branch codex/btc-alpha-beta-improve-20261003; bases Spot ffd14d3aa53b191d15bd8377f0809a8846c53232 and Coin c363a582a064bd36d633f6439803f4c570d52333 match actual remote main. Prior delivery remains complete and immutable. See research/edge-PLAN.md for scope; no old producer queue is restarted.
+
+Task 1: active — existing-evidence attribution; no new financial producers.
+Tasks 2–6: pending — frozen protocol/features; Spot mechanisms; Coin mechanisms; assessment/actual split capital; measurement/adoption/forward/integration.
+External briefs/reports/diff packages: /workspace/btc-alpha-beta-improve/task-artifacts. This file is the only progress ledger.
+
+Preflight: every task agrees with BTC-only, unchanged economics, no account access and immutable prior sources. Interface review:
+| Tasks | Produced/consumed interface | Finding |
+|---|---|---|
+| 1/2 | attribution/prior mechanisms -> frozen hypotheses | simple funding/basis filters already tested; interactions must be distinct |
+| 2/3/4 | edge spec + PIT features -> Spot/Coin policies | freeze before financial outcomes; missing features explicit |
+| 3/4/5 | complete raw accounts -> new assessment | preserve existing raw schema and original audits |
+| 5/6 | audited eligibility and split budgets -> adoption | shared runtime equivalence required before default change |
+| 1..6/state | all tasks -> progress | use PROJECT_STATE only; inaccessible cloud skill bash helpers replaced by manual briefs/diff packages |
+
+Authorization resolves routine isolated worktree creation and normal integration without another permission request. Sources/inputs/rules for new measurements freeze only after implementation review. Historical stability never becomes clean prospective evidence.
+
+## Completed previous delivery
+
 Updated: 2026-10-02T18:02:46.857901+00:00
 
 Complete BTC alpha/beta engineering delivery, independent reviews and normal GitHub integration. Two development runtimes: Coinquant perpetual and Spotquant spot. Starquant remains historical research/FX. All existing implementation and delivery PLAN items are closed. No economic producer/controller/audit/observer remains active; do not restart superseded queues.
