@@ -984,10 +984,11 @@ def observe(path, export, export_sha, review_sha, urls, *, declared_gap=False):
     path = Path(path)
     with (path.parent / (path.name + '.lock')).open('a+b') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        original = path.read_bytes(); state = strict(original); audit(state)
+        original = path.read_bytes(); state = strict(original)
         binding, export_raw = validate_export(export, export_sha, review_sha)
         require({k: v for k, v in binding.items() if k != 'current_source'} ==
                 {k: v for k, v in state['binding'].items() if k != 'current_source'}, 'diary binding mismatch')
+        audit(state)
         require(now_ms() >= state['initialized_ms'], 'wall clock before initialization')
         for r in state['initial_receipts']:
             payload(r)
@@ -1029,7 +1030,8 @@ def main(argv=None):
     elif args.command == 'init': result = initialize(args.diary, args.export, args.export_sha, args.review_sha, args.history)
     elif args.command == 'observe': result = observe(args.diary, args.export, args.export_sha, args.review_sha, args.url, declared_gap=args.declared_gap)
     else:
-        state = strict(Path(args.diary).read_bytes()); result = {'audit': audit(state), 'events': len(state['events']), 'qualification': 'NOT_QUALIFIED'}
+        state = strict(Path(args.diary).read_bytes()); result = {'audit': audit(state), 'scope': 'raw_ledger_reconstruction_only', 'source_binding_verified': False,
+                  'events': len(state['events']), 'qualification': 'NOT_QUALIFIED'}
     print(json.dumps(result, sort_keys=True))
 
 
