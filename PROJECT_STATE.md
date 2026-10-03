@@ -1,6 +1,6 @@
 # PROJECT_STATE
 
-Updated: 2026-10-03T01:05:20.434076+00:00
+Updated: 2026-10-03T01:08:40.778033+00:00
 
 ## Active BTC alpha/beta improvement round
 
@@ -18,6 +18,7 @@ Task 4: active — /root/edge_perp_impl (gpt-6-astra/high) owns Coin mechanisms/
 Ruling: original proven closed sub-BASE_STEP residual may be reused by a genuine new control campaign only with follow position.dust=True and next-completed-day timing; quantity threshold alone is insufficient, active partial/sub-step holdings must not top up. Ledger/weighted cost basis remain original. Durable research policy also binds executable Python digest, not docs-only HEAD changes.
 Task3 self-review tightened stop-budget: wholly unprotected owneddust blocks new risk, tolerance only under proved active stop; final source6eb9474. Earlierddccd60 partialreceipts remain separately retained. Root shared-index commit ddccd60 included staged implfiles; no loss/reset/relabel, fullBASE-tofinal review includes them. Root uses path-only documentation commits thereafter to prevent index overlap.
 Cross-task calibration schema fixed: format1/project_kind/baseline_candidate/cutoff_ms/spec_sha256/profiles; profile candidate/project_kind/scale/base_bundle_sha256/baseline_candidate/effective_from_ms/calibration_end_ms/training_end_day_exclusive. Validate registered unused profiles too, reject unknown/foreign/schema extras; exact deterministic full inventory verified by assessor. Source raw field is base_bundle_sha256, no alias.
+Task4 immutable public-vault preflight: 798 official ZIP/CHECKSUM pairs and all records rehashed read-only, total14481648622bytes; external vault-before-task4.json SHA0eb95e42044332231b6670c680d81d0ed19682e0c03c316765a7cb6d9061eb5f. No original bytes mutated; cache receipts still must verify actual consumed bytes.
 External briefs/reports/diff packages: /workspace/btc-alpha-beta-improve/task-artifacts. This file is the only progress ledger.
 
 Preflight: every task agrees with BTC-only, unchanged economics, no account access and immutable prior sources. Interface review:
