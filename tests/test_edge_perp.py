@@ -1,4 +1,5 @@
 from collections import deque
+import array
 from copy import deepcopy
 from dataclasses import replace
 from decimal import Decimal as D
@@ -41,8 +42,13 @@ class Features:
 
 
 class EdgeTests(unittest.TestCase):
+    def binding(self, offset=0, source='fixture'):
+        schedule = edge._load_frozen_schedule()['primary']
+        return {'source': source, 'start_offset_ms': offset, 'original_schedule_sha256': schedule['sha256'],
+                'actual_starts_sha256': meter.checksum([s+offset for s in schedule['starts_ms']])}
+
     def variant(self, name='quality-budget', features=None, **kwargs):
-        return edge.variant(name, features=features or Features(), binding={'source': 'fixture'}, **kwargs)
+        return edge.variant(name, features=features or Features(), binding=self.binding(), **kwargs)
 
     def warm(self):
         model = edge.EdgeCampaign()
@@ -56,13 +62,17 @@ class EdgeTests(unittest.TestCase):
     def engine(self, model, now=None, allowed=True):
         now = now if now is not None else model.last+1000
         return SimpleNamespace(reader=SimpleNamespace(clock=lambda: now/1000), authorized=True,
-            session=now-1000, may_enter=lambda: allowed, state=Mock())
+            session=now//BAR*BAR, may_enter=lambda: allowed, state=Mock())
 
     def snapshot(self, model, quantity='1'):
         return {'quantity_btc': quantity, 'mark_price': str(model.model.close)}
 
     def aged(self, days=5):
-        model = self.warm()
+        model = edge.EdgeCampaign()
+        trigger = edge._load_frozen_schedule()['primary']['starts_ms'][0]-5*DAY
+        while model.last < trigger-BAR:
+            model.update(model.last+BAR, '101', '99', '100')
+        model.update(trigger, '110', '100', '108')
         model.filled(model.active.identity)
         for i in range(days*6):
             close = D(108)+D(i+1)/10
@@ -235,8 +245,57 @@ class EdgeTests(unittest.TestCase):
             bad = deepcopy(saved);bad['body']['edge']['extension'] = [bad['body']['edge']['extension']]*2
             bad['sha256'] = meter.checksum(bad['body'])
             with self.assertRaises(Blocked): edge.EdgeCampaign.restore(bad)
-        with edge.variant('cost-horizon', features=Features(), binding={'source': 'changed'}):
+        with edge.variant('cost-horizon', features=Features(), binding=self.binding(source='changed')):
             with self.assertRaises(Blocked): edge.EdgeCampaign.restore(saved)
+
+    def test_extension_session_is_registered_offset_bound_and_rejects_before_recovery(self):
+        first = edge._load_frozen_schedule()['primary']['starts_ms'][0]
+        for offset in (-60000, 0, 60000):
+            with self.subTest(offset=offset), tempfile.TemporaryDirectory() as path:
+                with edge.variant('cost-horizon', features=Features(), binding=self.binding(offset)) as identity:
+                    model = self.aged()
+                    now = max(first+1000, first+offset+1000)
+                    engine = self.engine(model, now);engine.session = first+offset
+                    model.prepare_decision(engine, self.snapshot(model))
+                    saved = model.checkpoint()
+                    self.assertEqual(model.extension['session_deadline_ms'], first+offset+300000)
+                    self.assertEqual(edge.EdgeCampaign.restore(saved).checkpoint(), saved)
+                    bad = deepcopy(saved)
+                    event = bad['body']['edge']['extension']
+                    event['session_ms'] += 999
+                    event['session_deadline_ms'] += 999  # still internally coherent
+                    self.assertLess(event['session_ms'], event['decision_at_ms'])
+                    bad['sha256'] = meter.checksum(bad['body'])
+                    venue = Venue();venue.now = now
+                    with State(path, 'binance:BTCUSDT:live:123') as state:
+                        state.set('edge_identity', identity)
+                        state.set('linear_campaign', bad)
+                    with patch.object(lifecycle.Lifecycle, 'settle') as settle, patch.object(lifecycle.Lifecycle, 'finish') as finish:
+                        with self.assertRaises(Blocked): self.run_session(venue, path)
+                        settle.assert_not_called();finish.assert_not_called()
+                    self.assertEqual(venue.sent, [])
+        for field in ('original_schedule_sha256', 'actual_starts_sha256'):
+            binding = self.binding();binding[field] = '0'*64
+            with self.assertRaisesRegex(ValueError, 'schedule binding mismatch'):
+                with edge.variant('cost-horizon', features=Features(), binding=binding): pass
+
+    def test_extension_crossed_bar_keeps_original_hold_and_roundtrips(self):
+        first = edge._load_frozen_schedule()['primary']['starts_ms'][0]
+        # A permitted minus60s session straddles the first four-hour boundary.
+        with edge.variant('cost-horizon', features=Features(), binding=self.binding(-60000)):
+            model = self.aged()
+            # Recreate the still-causal checkpoint immediately before that boundary.
+            model = edge.EdgeCampaign.restore(model.checkpoint())
+            model.last -= BAR;model.model.last -= BAR
+            model.model.close = model.closes[-2];model.closes.pop();model.closes.appendleft(D(108))
+            original = model.active
+            engine = self.engine(model, first+1000);engine.session = first-60000
+            model.prepare_decision(engine, self.snapshot(model))
+            self.assertIsNone(model.extension)
+            self.assertEqual(model.active, original)
+            self.assertEqual(model.action(D(1)), 'hold')
+            engine.state.set.assert_not_called()
+            self.assertEqual(edge.EdgeCampaign.restore(model.checkpoint()).checkpoint(), model.checkpoint())
 
     def test_identity_and_checkpoint_reject_before_recovery_or_cleanup(self):
         for corruption in ('binding', 'checkpoint', 'missing'):
@@ -400,6 +459,62 @@ class PrintTests(unittest.TestCase):
             (tape.root/source.name).unlink();Path(str(tape.root/source.name)+'.CHECKSUM').unlink()
             self.assertEqual(before, {p.name: p.read_bytes() for p in vault.iterdir()})
             with self.assertRaises(ValueError): VerifiedPrints(vault, vault)
+
+    def test_foreign_packed_price_and_unknown_directory_are_rejected_untouched(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            vault = Path(tmp)/'vault';source = self.archive(vault)
+            root = Path(tmp)/'scratch';binary = Path(tmp)/'scratch-cache';binary.mkdir()
+            packed = binary/(source.name+'.'+digest(source)+'.bin')
+            with packed.open('wb') as stream:
+                for column in ([1], [1577836800000], [1], [99900000000], [100000000]):
+                    array.array('q', column).tofile(stream)
+            before = packed.read_bytes()
+            with self.assertRaises(FileExistsError): VerifiedPrints(root, vault)
+            self.assertFalse(root.exists())
+            self.assertEqual(packed.read_bytes(), before)
+            self.assertEqual(list(binary.iterdir()), [packed])
+            # A forged ownership/provenance document cannot establish reuse.
+            (binary/'.edge-print-owner').write_text('{}')
+            with self.assertRaises(FileExistsError): VerifiedPrints(root, vault)
+            self.assertEqual(packed.read_bytes(), before)
+
+    def test_owned_binary_is_verified_before_reuse_and_unknown_files_preserved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            vault = Path(tmp)/'vault';source = self.archive(vault)
+            tape = VerifiedPrints(Path(tmp)/'cache', vault)
+            rows = tape._load(1577836800000)
+            self.assertEqual(D(rows[2][0])/10**8, D(7000))
+            packed = next(tape.binary_cache.glob('*.bin'))
+            self.assertEqual(tape.receipts[-1]['derived_binary_sha256'], digest(packed))
+            original = packed.read_bytes()
+            with packed.open('wb') as stream:
+                for column in ([1], [1577836800000], [1], [99900000000], [100000000]):
+                    array.array('q', column).tofile(stream)
+            tampered = packed.read_bytes();tape._day_ms = None
+            with self.assertRaisesRegex(ValueError, 'integrity/provenance'): tape._load(1577836800000)
+            self.assertEqual(packed.read_bytes(), tampered)
+            packed.write_bytes(original)
+            self.assertEqual(D(tape._load(1577836800000)[2][0])/10**8, D(7000))
+            unknown = tape.binary_cache/'unowned.bin';unknown.write_bytes(b'do not delete')
+            tape._day_ms = None
+            with self.assertRaisesRegex(ValueError, 'unknown derived tape'): tape._load(1577836800000)
+            self.assertEqual(unknown.read_bytes(), b'do not delete')
+            with self.assertRaises(FileExistsError): VerifiedPrints(tape.root, vault)
+
+    def test_missing_day_eviction_preserves_owned_cache_and_vault(self):
+        import urllib.error
+        with tempfile.TemporaryDirectory() as tmp:
+            vault = Path(tmp)/'vault'
+            for day in ('2020-01-01', '2020-01-02', '2020-01-03'):
+                self.archive(vault, day)
+            before = {p.name: p.read_bytes() for p in vault.iterdir()}
+            tape = VerifiedPrints(Path(tmp)/'cache', vault)
+            for i in range(3): tape._load(1577836800000+i*DAY)
+            with patch('urllib.request.urlopen', side_effect=urllib.error.HTTPError('fixture', 404, 'missing', {}, None)):
+                self.assertIsNone(tape._load(1577836800000+3*DAY))
+            self.assertEqual(len(tape.binaries), 2)
+            self.assertEqual(D(tape._load(1577836800000+DAY)[2][0])/10**8, D(7000))
+            self.assertEqual(before, {p.name: p.read_bytes() for p in vault.iterdir()})
 
     def test_corrupt_vault_and_orphan_destination_fail_without_overwrite(self):
         with tempfile.TemporaryDirectory() as tmp:

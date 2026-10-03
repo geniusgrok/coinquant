@@ -24,6 +24,7 @@ SPEC = Path(__file__).with_name('edge_spec.json')
 PROTOCOL = Path(__file__).with_name('edge-PROTOCOL.md')
 FEATURE_SHA256 = 'bf920626cc13653b8bbeafd171650cc1a76888e15aad0c20bbd1061fb41da512'
 file_hash = alpha.file_hash
+_load_frozen_schedule = session_schedule.load
 
 
 def components(name):
@@ -63,8 +64,21 @@ def calibration(path, names):
     return profiles, file_hash(path)
 
 
+def registered_sessions(binding):
+    frozen = _load_frozen_schedule()
+    offset = binding.get('start_offset_ms')
+    if type(offset) is not int or offset not in (-60000, 0, 60000):
+        raise ValueError('invalid registered session offset')
+    starts = [stamp+offset for stamp in frozen['primary']['starts_ms']]
+    if (binding.get('original_schedule_sha256') != frozen['primary']['sha256'] or
+            binding.get('actual_starts_sha256') != meter.checksum(starts)):
+        raise ValueError('extension session schedule binding mismatch')
+    return {stamp: stamp+frozen['session_seconds']*1000 for stamp in starts}
+
+
 class EdgeCampaign(alpha.AlphaCampaign):
     features = None
+    session_deadlines = {}
 
     def __init__(self):
         super().__init__()
@@ -163,10 +177,12 @@ class EdgeCampaign(alpha.AlphaCampaign):
         active = self.active
         if (active.identity > 0 and self.position_campaign == active.identity and self.extension is None and
                 5*DAY <= now-active.identity < 7*DAY and active.expires == active.identity+7*DAY and
+                engine.session in self.session_deadlines and
+                now < self.session_deadlines[engine.session] and self.last <= now < self.last+BAR and
                 signal['trend'] and signal['momentum'] and D(funding) <= D('.0003') and
                 active.stop < self.decision_mark < active.take):
             self.extension = {'campaign': active.identity, 'decision_at_ms': now,
-                'session_ms': engine.session, 'owned_campaign': self.position_campaign,
+                'session_ms': engine.session, 'session_deadline_ms': self.session_deadlines[engine.session], 'owned_campaign': self.position_campaign,
                 'old_expiry_ms': active.expires, 'new_expiry_ms': active.identity+10*DAY,
                 'binding': self.binding, 'features': deepcopy(self.rules['features']),
                 'closes': list(map(str, self.closes)), 'bar_ms': self.last,
@@ -201,11 +217,11 @@ class EdgeCampaign(alpha.AlphaCampaign):
             active = result.model.active
             if result.extension is not None:
                 event = result.extension
-                expected_keys = {'campaign', 'decision_at_ms', 'session_ms', 'owned_campaign', 'old_expiry_ms',
+                expected_keys = {'campaign', 'decision_at_ms', 'session_ms', 'session_deadline_ms', 'owned_campaign', 'old_expiry_ms',
                     'new_expiry_ms', 'binding', 'features', 'closes', 'bar_ms', 'decision_mark', 'stop', 'take'}
                 if not isinstance(event, dict) or set(event) != expected_keys or 'cost-horizon' not in cls.components:
                     raise ValueError('extension fields')
-                for key in ('campaign', 'decision_at_ms', 'session_ms', 'owned_campaign', 'old_expiry_ms', 'new_expiry_ms', 'bar_ms'):
+                for key in ('campaign', 'decision_at_ms', 'session_ms', 'session_deadline_ms', 'owned_campaign', 'old_expiry_ms', 'new_expiry_ms', 'bar_ms'):
                     if type(event[key]) is not int:
                         raise ValueError('extension clock')
                 identity, now = event['campaign'], event['decision_at_ms']
@@ -214,7 +230,9 @@ class EdgeCampaign(alpha.AlphaCampaign):
                         event['owned_campaign'] != identity or event['binding'] != cls.binding or
                         event['old_expiry_ms'] != identity+7*DAY or event['new_expiry_ms'] != identity+10*DAY or
                         active.expires != event['new_expiry_ms'] or not 5*DAY <= now-identity < 7*DAY or
-                        not event['session_ms'] <= now < event['session_ms']+300000 or
+                        event['session_ms'] not in cls.session_deadlines or
+                        event['session_deadline_ms'] != cls.session_deadlines[event['session_ms']] or
+                        not event['session_ms'] <= now < event['session_deadline_ms'] or
                         event['bar_ms'] % BAR or not event['bar_ms'] <= now < event['bar_ms']+BAR or
                         event['bar_ms'] > result.last or len(values) != 20 or
                         any(not v.is_finite() or v <= 0 for v in values) or
@@ -236,6 +254,7 @@ class EdgeCampaign(alpha.AlphaCampaign):
 @contextmanager
 def variant(name, *, features, binding, legacy_binding=None, profile=None, journal=None):
     selected = components(name)
+    deadlines = registered_sessions(binding) if 'cost-horizon' in selected else {}
     profile = profile or {}
     journal = journal if journal is not None else []
     identity = {'candidate': name, 'components': list(selected), 'binding': binding,
@@ -296,7 +315,8 @@ def variant(name, *, features, binding, legacy_binding=None, profile=None, journ
 
             for obj, key, value in ((campaign, 'Campaign', EdgeCampaign), (linear_preview, 'Campaign', EdgeCampaign),
                     (EdgeCampaign, 'components', selected), (EdgeCampaign, 'binding', digest),
-                    (EdgeCampaign, 'features', features), (lifecycle.Lifecycle, 'decide', decide)):
+                    (EdgeCampaign, 'features', features), (EdgeCampaign, 'session_deadlines', deadlines),
+                    (lifecycle.Lifecycle, 'decide', decide)):
                 stack.enter_context(patch.object(obj, key, value))
         yield identity
 
