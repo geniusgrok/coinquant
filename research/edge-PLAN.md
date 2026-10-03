@@ -41,10 +41,10 @@ Missing causal feature data must not become zero; future bars/rates cannot influ
 
 ### Task 3: Spot mechanisms and executable controls
 
-- [ ] Implement independently: two completed closes for ordinary SMA exit, and stop-distance account risk budget for genuine new BUY. Both retain the current ATR incumbent and all other exit/cash/protection gates.
-- [ ] Implement a separately registered funding/basis-trend interaction only if Task 2 establishes complete causal inputs; otherwise deliver the precise infeasibility/rejection evidence.
-- [ ] Reuse actual finite Lifecycle replay with attributable decisions, actual fills, risk scale and initial capital inputs. Add declared protected BTC participation/cash controls under the same execution meter, identifying any policy-specific protection differences.
-- [ ] Test money, ownership, exit priority, causality and restoration; commit and independently review.
+- [x] Implement independently: two completed closes for ordinary SMA exit, and stop-distance account risk budget for genuine new BUY. Both retain the current ATR incumbent and all other exit/cash/protection gates.
+- [x] Implement a separately registered funding/basis-trend interaction only if Task 2 establishes complete causal inputs; otherwise deliver the precise infeasibility/rejection evidence.
+- [x] Reuse actual finite Lifecycle replay with attributable decisions, actual fills, risk scale and initial capital inputs. Add declared protected BTC participation/cash controls under the same execution meter, identifying any policy-specific protection differences.
+- [x] Test money, ownership, exit priority, causality and restoration; commit and independently review.
 
 ### Task 4: Coin mechanisms
 

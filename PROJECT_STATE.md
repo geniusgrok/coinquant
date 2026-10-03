@@ -1,6 +1,6 @@
 # PROJECT_STATE
 
-Updated: 2026-10-03T00:55:51.357290+00:00
+Updated: 2026-10-03T01:00:14.490706+00:00
 
 ## Active BTC alpha/beta improvement round
 
@@ -13,7 +13,8 @@ Feature coverage:7488funding/2485basis verified,180futures+111Spot archive CHECK
 Baseline validation: Python3.12 and3.13 both pass Coin359/Spot209. Existing causal funding/basis input independently reconstructed with original official checksums: SHA1d87be0b4c8cd8a7eacd4970a1a194e5f1ed0b2f3aa3710a43417aa9ab066ef2; 7488funding/2485basis points.
 
 Ruling: funding staleness remains exactly age>=28800000ms from availability, no extra jitter tolerance — fixed registration takes precedence; missing gaps are reported. No partial-code discard or Task1 re-dispatch after reconnect.
-Task 3: active — implementation DONE_WITH_CONCERNS, independent reviewer /root/edge_spot_review; BASEbdde051..final6eb9474. Source59faadc…;261full/13focused PASS,10clean partialCLI audit/archive PASS(completefalse/CAGRnull;2protected BUYs). Final diff56d18c8f…/report/first-source receipts retained. No financial matrix or native actions; no Coin jobs.
+Task 3: complete — fullBASEbdde051..final6eb9474, independent /root/edge_spot_review SPEC PASS/QUALITY APPROVE, zero findings.261full/13focused PASS; independent13test+10gzipraw/money/fees/ownedstops audit PASS. Tiny mechanism receipts have no newentry lookups, no financial improvement claimed. Source59faadc… and finaldiff56d18c8f… retained.
+Task 4: active — Coin mechanisms/cache from task-4-brief.md, implementer dispatch next. No Coin test/producer currently running. Tasks5/6 pending: strict assessment/risk/actualbudgets; reviewed forwardstrategyledger before fullsource freeze; complete measurements/reviews/adoption/integration. Previous delivery and Task1–3 remain closed; no old queue restart.
 Ruling: original proven closed sub-BASE_STEP residual may be reused by a genuine new control campaign only with follow position.dust=True and next-completed-day timing; quantity threshold alone is insufficient, active partial/sub-step holdings must not top up. Ledger/weighted cost basis remain original. Durable research policy also binds executable Python digest, not docs-only HEAD changes.
 Task3 self-review tightened stop-budget: wholly unprotected owneddust blocks new risk, tolerance only under proved active stop; final source6eb9474. Earlierddccd60 partialreceipts remain separately retained. Root shared-index commit ddccd60 included staged implfiles; no loss/reset/relabel, fullBASE-tofinal review includes them. Root uses path-only documentation commits thereafter to prevent index overlap.
 Cross-task calibration schema fixed: format1/project_kind/baseline_candidate/cutoff_ms/spec_sha256/profiles; profile candidate/project_kind/scale/base_bundle_sha256/baseline_candidate/effective_from_ms/calibration_end_ms/training_end_day_exclusive. Validate registered unused profiles too, reject unknown/foreign/schema extras; exact deterministic full inventory verified by assessor. Source raw field is base_bundle_sha256, no alias.
