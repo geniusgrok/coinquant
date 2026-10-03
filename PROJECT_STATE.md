@@ -13,7 +13,7 @@ Feature coverage:7488funding/2485basis verified,180futures+111Spot archive CHECK
 Baseline validation: Python3.12 and3.13 both pass Coin359/Spot209. Existing causal funding/basis input independently reconstructed with original official checksums: SHA1d87be0b4c8cd8a7eacd4970a1a194e5f1ed0b2f3aa3710a43417aa9ab066ef2; 7488funding/2485basis points.
 
 Ruling: funding staleness remains exactly age>=28800000ms from availability, no extra jitter tolerance — fixed registration takes precedence; missing gaps are reported. No partial-code discard or Task1 re-dispatch after reconnect.
-Task 3: active — Spot mechanisms and actual executable controls from task-3-brief.md; new implementer dispatch next. Tasks4–6 pending: Coin mechanisms; strict assessment/calibration/actual budgets; reviewed forward ledger before source freeze, complete measurement/adoption/integration. No financial producers or Coin jobs active.
+Task 3: active — implementer /root/edge_spot_impl, Spot mechanisms and actual executable controls from task-3-brief.md; review BASEbdde051. No other implementation agent runs. Tasks4–6 pending: Coin mechanisms; strict assessment/calibration/actual budgets; reviewed forward ledger before source freeze, complete measurement/adoption/integration. No financial producers or Coin jobs active.
 External briefs/reports/diff packages: /workspace/btc-alpha-beta-improve/task-artifacts. This file is the only progress ledger.
 
 Preflight: every task agrees with BTC-only, unchanged economics, no account access and immutable prior sources. Interface review:
