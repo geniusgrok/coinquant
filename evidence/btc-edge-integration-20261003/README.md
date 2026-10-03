@@ -5,3 +5,5 @@ The once-only complete review of the frozen candidate source/packet PASSes. WB-D
 [Whole-branch review](final-whole-branch-review.md), [machine proof](final-whole-branch-machineproof.json), [retention](final-whole-branch-retention-proof.json), [presentation](final-whole-branch-presentation-proof.json). Exact-head final CI and normal merge receipts are recorded by GitHub and PROJECT_STATE; no repeat fullsuite/research is requested.
 
 Final actual validation: [receipt](final-ci/final-composite-validation.json) and [three-fixture review](final-ci/spot-targeted-recovery/narrow-fixture-review.md). Spot original CI remains failed; local three-case recovery passes. No fullsuite repeated.
+
+Normal integration completed: [actual closure](github-integration-closure.json). Both merge trees exactly equal their accepted feature trees. Main closure changes documentation/evidence only; no test or economic replay.

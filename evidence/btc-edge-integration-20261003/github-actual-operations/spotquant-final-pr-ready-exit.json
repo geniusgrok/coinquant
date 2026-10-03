@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "graphql",
+    "--input",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/spotquant-final-pr-ready-request.json"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-10-03T18:29:31.838396+00:00"
+}

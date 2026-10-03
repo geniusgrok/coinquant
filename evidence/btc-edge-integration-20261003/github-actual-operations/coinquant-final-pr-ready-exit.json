@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "graphql",
+    "--input",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/coinquant-final-pr-ready-request.json"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-10-03T18:29:44.300031+00:00"
+}

@@ -1,0 +1,10 @@
+{
+  "expected_head": "890fefeb68dfcaf9f9ca5ed9c00e6da3f1cd5afd",
+  "actual_pr_head": "890fefeb68dfcaf9f9ca5ed9c00e6da3f1cd5afd",
+  "actual_main": "c363a582a064bd36d633f6439803f4c570d52333",
+  "base_unchanged": true,
+  "draft": false,
+  "protected": false,
+  "spot_ci_green": null,
+  "validation": "accepted original full CI with necessary local failed-case recovery; no repeated fullsuite"
+}

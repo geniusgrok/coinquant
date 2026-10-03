@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "--method",
+    "PUT",
+    "repos/geniusgrok/coinquant/pulls/59/merge",
+    "--input",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/coinquant-final-normal-merge-request.json"
+  ],
+  "exit_code": 0,
+  "finished_utc": "2026-10-03T18:29:51.506907+00:00"
+}

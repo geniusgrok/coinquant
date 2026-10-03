@@ -1,0 +1,28 @@
+{
+  "spotquant": {
+    "pr": "https://github.com/geniusgrok/spotquant/pull/10",
+    "feature_head": "78655f0202c8d9f90bfd2e748250e42b728e63f2",
+    "original_main": "ffd14d3aa53b191d15bd8377f0809a8846c53232",
+    "merge_commit": "9b5b2d69efcb15c1ab95e8513097db843d5f9c78",
+    "merged_at": "2026-10-03T18:29:34Z",
+    "merged": true,
+    "method": "merge",
+    "feature_tree": "225e1b83dcccb24bcec7272b4f43ce00bbd1fc23",
+    "fullsuite_repeated": false,
+    "merge_tree_equals_validated_feature_tree": true,
+    "local_main_fast_forwarded": true
+  },
+  "coinquant": {
+    "pr": "https://github.com/geniusgrok/coinquant/pull/59",
+    "feature_head": "890fefeb68dfcaf9f9ca5ed9c00e6da3f1cd5afd",
+    "original_main": "c363a582a064bd36d633f6439803f4c570d52333",
+    "merge_commit": "3da4f77bc73dadb7153878d1745121b3c32d5574",
+    "merged_at": "2026-10-03T18:29:48Z",
+    "merged": true,
+    "method": "merge",
+    "feature_tree": "ba1cce6a8cd8e558f9b4cf8dcbb1a2ad8703c8f1",
+    "fullsuite_repeated": false,
+    "merge_tree_equals_validated_feature_tree": true,
+    "local_main_fast_forwarded": true
+  }
+}

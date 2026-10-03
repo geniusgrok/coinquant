@@ -1,0 +1,6 @@
+{
+  "sha": "78655f0202c8d9f90bfd2e748250e42b728e63f2",
+  "merge_method": "merge",
+  "commit_title": "Merge PR #10: complete BTC alpha/beta delivery [skip ci]",
+  "commit_message": "Preserve source histories and reviewed results. Coin final full CI passed; Spot original full CI failed three obsolete fixtures, corrected and passed once locally with independent narrow approval. No repeated fullsuite per user instruction. [skip ci]"
+}
