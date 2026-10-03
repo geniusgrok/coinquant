@@ -1,6 +1,6 @@
 # PROJECT_STATE
 
-Updated: 2026-10-03T01:52:33.181957+00:00
+Updated: 2026-10-03T01:53:05.263767+00:00
 
 ## Active BTC alpha/beta improvement round
 
@@ -22,7 +22,7 @@ Task4 round1/5: own fix49248555feb0ef588db33c5900956720e1be5b31, Pythonfaec069a�
 Task4 immutable public-vault preflight: 798 official ZIP/CHECKSUM pairs and all records rehashed read-only, total14481648622bytes; external vault-before-task4.json SHA0eb95e42044332231b6670c680d81d0ed19682e0c03c316765a7cb6d9061eb5f. No original bytes mutated; cache receipts still must verify actual consumed bytes.
 Controller preparation: fixed50commands register52unscaled+8risk+2offset+6baseline-budget accounts (e58114f2…), external run-registered-phase.py c3e5cc9c… executes only exactargv with source/input guards/exclusive receipts/no retries, max2Spotprocesses/1Coin. No producer launched. Accepted reference convenience index f377ed37… verifies8baseline rows and all11prior bound inputs; original raws/proofs remain authoritative.
 Ruling: verify each producer's actual original meter/spec envelope separately from its new edge envelope; keep historical/new source identities distinct, compare original economics and all-six row groups without rewriting input fields — source-bound wrappers intentionally retain different protocol envelopes; wrong interpretation would reject valid bridges or weaken source proof. Task5 brief carries exact interface.
-Task 5: active next dispatch — strict new assessment in Spot; task-5-brief.md and task-5-review-brief.md prepared. Reviewed forward strategy ledger follows before full source freeze. No full financial job has run; all52+8+2+6 commands remain prepared only.
+Task 5: active — /root/edge_assessment_impl (gpt-6-astra/high) owns strict new assessment in Spot, reviewBASE8c1be0fbfcc6a1c12d74450d29b5916bd10fa5dc; task-5-brief.md and task-5-review-brief.md prepared. Reviewed forward strategy ledger follows before full source freeze. No full financial job has run; all52+8+2+6 commands remain prepared only.
 External briefs/reports/diff packages: /workspace/btc-alpha-beta-improve/task-artifacts. This file is the only progress ledger.
 
 Preflight: every task agrees with BTC-only, unchanged economics, no account access and immutable prior sources. Interface review:
