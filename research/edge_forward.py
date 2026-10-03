@@ -557,6 +557,19 @@ def book_from(receipts, call):
     result = {'missing': []}
     for category in ('depth', 'trades', 'instrument', 'mark' if KIND == 'perp' else 'trades'):
         if category not in grouped: result['missing'].append(category)
+    # Selection inputs remain usable when only downstream execution evidence is
+    # missing. Native bootstrap commits before book/sizing entry gates.
+    if KIND == 'perp':
+        if 'dfii10' in grouped:
+            require(len(grouped['dfii10']) == 1, 'duplicate DFII10 source')
+            result['dfii10'] = dfii_from(grouped['dfii10'][0], call)
+        if 'mark' in grouped:
+            require(len(grouped['mark']) == 1, 'duplicate current mark')
+            mark = strict(payload(grouped['mark'][0]))
+            require(mark['symbol'] == 'BTCUSDT' and type(mark['time']) is int and
+                    0 <= call - mark['time'] <= MAX_AGE and mark['time'] <= grouped['mark'][0]['receipt_ms'], 'wrong/stale/future mark')
+            require(number(mark['markPrice']) > 0, 'invalid mark')
+            result['mark'] = str(number(mark['markPrice']))
     if result['missing']: return result
     require(all(len(grouped[c]) == 1 for c in ('depth', 'instrument')), 'duplicate current snapshot category')
     depth = strict(payload(grouped['depth'][0])); trade_rows = {}
@@ -590,17 +603,9 @@ def book_from(receipts, call):
     for key in ('LOT_SIZE', 'MARKET_LOT_SIZE', 'PRICE_FILTER'):
         require(key in filters, 'missing instrument size/tick filter')
     require('MIN_NOTIONAL' in filters or 'NOTIONAL' in filters, 'missing minimum notional')
-    result.update(instrument=instrument, trade=str(trade), mark=str(trade), trades=trades,
+    if KIND == 'spot': result['mark'] = str(trade)
+    result.update(instrument=instrument, trade=str(trade), trades=trades,
                   trade_sources=[r['sha256'] for r in grouped['trades']])
-    if KIND == 'perp':
-        if 'dfii10' in grouped:
-            require(len(grouped['dfii10']) == 1, 'duplicate DFII10 source')
-            result['dfii10'] = dfii_from(grouped['dfii10'][0], call)
-        mark = strict(payload(grouped['mark'][0]))
-        require(mark['symbol'] == 'BTCUSDT' and type(mark['time']) is int and
-                0 <= call - mark['time'] <= MAX_AGE and mark['time'] <= grouped['mark'][0]['receipt_ms'], 'wrong/stale/future mark')
-        require(number(mark['markPrice']) > 0, 'invalid mark')
-        result['mark'] = str(number(mark['markPrice']))
     return result
 
 
@@ -646,7 +651,7 @@ def initial_engine():
     from coinquant.campaign import Campaign
     from coinquant.linear_account import Account
     return {'campaign': Campaign().checkpoint(), 'account': {k: str(v) for k, v in asdict(Account(D(0))).items()},
-            'committed_target': None}
+            'committed_target': None, 'market_bootstrap': True}
 
 
 def advance(engine, bars, *, bootstrap=False):
@@ -669,10 +674,11 @@ def advance(engine, bars, *, bootstrap=False):
             engine['models'][window] = model.checkpoint()
     else:
         from coinquant.campaign import Campaign
+        require(type(engine['market_bootstrap']) is bool, 'invalid market bootstrap state')
         model = Campaign.restore(engine['campaign'])
         for bar in bars:
             if bar['end'] > model.last: model.update(bar['end'], bar['high'], bar['low'], bar['close'])
-        if bootstrap:
+        if bootstrap or engine['market_bootstrap']:
             model.consumed = model.primary_consumed = model.model.active.identity if model.model.active else None
         engine['campaign'] = model.checkpoint()
 
@@ -785,6 +791,7 @@ def audit(state):
         for saved in state['engine']['models'].values(): Model.restore(saved)
     else:
         from coinquant.campaign import Campaign
+        require(all(type(state[k]['market_bootstrap']) is bool for k in ('engine', 'initial_engine')), 'invalid market bootstrap state')
         model = Campaign.restore(state['engine']['campaign'])
         account = state['engine']['account']
         require(number(account['wallet']) == wallet and number(account['q']) == q and number(account['entry']) == entry and
@@ -1002,16 +1009,21 @@ def coin_decide(state, bars, book, call, enabled):
     from coinquant.linear_account import Account
     from coinquant.linear_sizing import funded_target
     from coinquant.native_preview import MACRO_STOP_BUDGET
+    require(type(state['engine']['market_bootstrap']) is bool, 'invalid market bootstrap state')
     model = Campaign.restore(state['engine']['campaign'])
     account = Account(**{k: number(v) for k, v in state['engine']['account'].items()})
     missing_macro = model.macro_relevant() and 'dfii10' not in book
     # No fabricated macro row: relevant missing public vintage evidence blocks
     # new risk. Existing macro ownership is left explicitly unresolved.
-    if missing_macro:
-        if account.q: state['unresolved'].append('missing_causal_DFII10_for_owned_macro')
-        proposal = {'action': 'blocked', 'reason': 'causal DFII10 raw vintage evidence required', 'opportunity': None}
+    if missing_macro or 'mark' not in book:
+        if missing_macro and account.q: state['unresolved'].append('missing_causal_DFII10_for_owned_macro')
+        proposal = {'action': 'blocked', 'reason': 'causal DFII10 raw vintage evidence required' if missing_macro else 'current public mark required', 'opportunity': None}
     else:
-        model.select_macro(book.get('dfii10'), book.get('mark', bars[-1]['close']), call, bootstrap=not any(e.get('kind', 'decision') == 'decision' for e in state['events']))
+        model.select_macro(book.get('dfii10'), book['mark'], call, bootstrap=state['engine']['market_bootstrap'])
+        # Native session.cycle commits selection and completion together, before
+        # preview/entry safety gates. A missing relevant row never reaches here.
+        state['engine']['campaign'] = model.checkpoint()
+        state['engine']['market_bootstrap'] = False
         proposal = preview(model, dict(quantity_btc=str(account.q), native_full_position_protected=True, stop_before_liquidation=True))
         if proposal['opportunity'] is not None: proposal['opportunity'] = {k: str(v) if isinstance(v, D) else v for k, v in asdict(proposal['opportunity']).items()}
     money, simulated = [], []
