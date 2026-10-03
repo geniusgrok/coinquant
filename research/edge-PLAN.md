@@ -55,15 +55,17 @@ Missing causal feature data must not become zero; future bars/rates cannot influ
 ### Task 5: Assessment, combinations and two-account capital
 
 - [x] Reuse independent money reconstruction and risk/statistics helpers with the new spec identity and current ATR baseline; retain all negative results.
-- [ ] Calibrate only on 2020–2021 USDT returns and rerun actual new sizing after 2022; report achieved beta/vol upper bands accurately, along with tails/capture/underwater and historical-selection limitations.
-- [ ] Combine all independently eligible compatible mechanisms without subset search; measure a new combination if needed.
-- [ ] Register actual fixed separate budget pairs Spot/Coin CNY2500/7500,5000/5000,7500/2500, no transfers/rebalancing. Aggregate synchronized real daily equity/exposure; do not claim continuous joint MDD from daily-only data.
+- [x] Calibrate only on 2020–2021 USDT returns and rerun actual new sizing after 2022; report achieved beta/vol upper bands accurately, along with tails/capture/underwater and historical-selection limitations.
+- [x] Combine all independently eligible compatible mechanisms without subset search; measure a new combination if needed.
+- [x] Register actual fixed separate budget pairs Spot/Coin CNY2500/7500,5000/5000,7500/2500, no transfers/rebalancing. Aggregate synchronized real daily equity/exposure; do not claim continuous joint MDD from daily-only data.
 - [x] Test invalid/missing/source-mismatched rows, calibration boundaries and capital conservation; commit and independently review.
 
 ### Task 6: Measurement, adoption, future evidence and integration
 
-- [ ] Freeze reviewed producers/evaluator; run all registered candidates and controls across declared stresses, actual risk accounts, applicable combinations and original +/-60s Coin diagnostics. Complete independent financial review before promotion.
-- [ ] Run actual split-budget selected accounts and produce a capital/exposure recommendation, including budget-sensitive execution differences and uncertainty.
-- [ ] Integrate eligible mechanisms into canonical shared runtime and prove executable account equivalence. Rejected mechanisms remain research-only; default retention is an explicit outcome.
-- [ ] Implement a source-bound forward shadow decision/execution ledger with public observations, explicit modeled fills/costs and no retrospective backfill. Freeze and initialize; no unsupported promise of unattended operation or fabricated elapsed account days.
+- [x] Freeze reviewed producers/evaluator; run all registered candidates and controls across declared stresses, actual risk accounts, applicable combinations and original +/-60s Coin diagnostics. Complete independent financial review before promotion.
+- [x] Run actual split-budget selected accounts and produce a capital/exposure recommendation, including budget-sensitive execution differences and uncertainty.
+- [x] Integrate eligible mechanisms into canonical shared runtime and prove executable account equivalence. Rejected mechanisms remain research-only; default retention is an explicit outcome.
+- [x] Implement a source-bound forward shadow decision/execution ledger with public observations, explicit modeled fills/costs and no retrospective backfill. Freeze and initialize; no unsupported promise of unattended operation or fabricated elapsed account days.
 - [ ] Write every result/rejection and original-target distance, preserve complete originals and manifest, run relevant local checks and whole-branch review, push normal PRs and verify exact-head CI/integration.
+
+Financial/default/forward implementation closed after independent71+5 acceptance; final evidence packaging/whole-branch review/exact-head CI and normal merge remain the only integration work. User minimum-check policy: no repeated or optional tests; one final fullsuite per repository.

@@ -12,7 +12,13 @@ Economic targets remain cost-net CAGR >= 150% and continuous full-account MDD < 
 
 Strategy, risk, dependencies and architecture may be replaced when evidence supports the change. The repository keeps only the current version: the retired Bybit/inverse code, the sparse-invocation specification and draws, and historical candidate research were removed on 2026-09-28 and remain in Git history (`3e9a696` and earlier).
 
-## Latest complete BTC alpha/beta delivery (2026-10-02)
+## Current complete BTC edge delivery (2026-10-03)
+
+Complete71 registered original accounts and5 separately source-bound canonical Spot accounts independently PASS; evidence/btc-edge-20261003 retains all raw/negative/failure/proof identities. Coin quality-budget/cost-horizon/crowding all reject registered paired gates; quality/cost also fail actual risk upper bands. Default SX60+DFII10/primary7.5/macro3.6/scale1 remains unchanged,119.2284% cost-net CNY CAGR/44.1051% original continuous minute/envelope proxy MDD,150%/<50% goalsNOT_MET. Original producer37061/Pythonba638 remains distinct from later metadata/mergeHEADs. Preserve protected source modes/bytes and original Git objects; no schedule/start/capital optimization. Spot adopts crowding development change only after independent71+5 proof, with zero actual historical halving events and missing-input-blocking interpretation disclosed. Runtime repos remain separate and Coin forward reader is standalone.
+
+Current result/operation: research/edge-RESULT.md and edge-GUIDE.md. Actual forward ledgers begin cold CNY10000/BTC0/events0 at realUTC, no backfill and no prospective/native claim. Coin later mark-path uncertainty stays unresolved rather than inventing fills. Nativecases0/accountdays0/NOT_QUALIFIED. User verification policy: reuse passed unchanged scoped/financial evidence; no optional/repeated tests, one final fullCI perrepo. All Coin account producers/tests sharingUID are strictly serial; never change HOME/UID/locks. Engineering work does not authorize private accounts/orders/transfers/settings.
+
+## Previous complete BTC alpha/beta delivery (2026-10-02)
 
 Evidence/alpha-beta-next-20261002 preserves the complete registered64-account inventory: Spot28/Coin20 unscaled cases, actualSpot7/Coin5 trained-risk controls and four prescribed incumbent capital/start sensitivities. Five additional canonical Spot shared-runtime cases establish a separate source bridge; they do not count as native trades. Spot selects consensus plus ATR-stop; Coin rejects all four new mechanisms and retains SX60+DFII10/primary7.5/macro3.6/defaultscale1. No multi-component combination applies, no capital optimum is selected and no short is introduced. Registered start-minus/plus60s CAGR136.018640%/127.114524% versus original119.228356% shows material execution-timing sensitivity; neither offset is selected and the frozen schedule is unchanged.
 
