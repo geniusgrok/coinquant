@@ -54,11 +54,11 @@ Missing causal feature data must not become zero; future bars/rates cannot influ
 
 ### Task 5: Assessment, combinations and two-account capital
 
-- [ ] Reuse independent money reconstruction and risk/statistics helpers with the new spec identity and current ATR baseline; retain all negative results.
+- [x] Reuse independent money reconstruction and risk/statistics helpers with the new spec identity and current ATR baseline; retain all negative results.
 - [ ] Calibrate only on 2020–2021 USDT returns and rerun actual new sizing after 2022; report achieved beta/vol upper bands accurately, along with tails/capture/underwater and historical-selection limitations.
 - [ ] Combine all independently eligible compatible mechanisms without subset search; measure a new combination if needed.
 - [ ] Register actual fixed separate budget pairs Spot/Coin CNY2500/7500,5000/5000,7500/2500, no transfers/rebalancing. Aggregate synchronized real daily equity/exposure; do not claim continuous joint MDD from daily-only data.
-- [ ] Test invalid/missing/source-mismatched rows, calibration boundaries and capital conservation; commit and independently review.
+- [x] Test invalid/missing/source-mismatched rows, calibration boundaries and capital conservation; commit and independently review.
 
 ### Task 6: Measurement, adoption, future evidence and integration
 
