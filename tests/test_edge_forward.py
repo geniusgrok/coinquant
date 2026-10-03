@@ -230,6 +230,19 @@ class ForwardTests(unittest.TestCase):
         self.assertTrue(all(v['time'] == stamp - 120 and receipt['sha256'] in v['source_sha256'] for v in fills))
         self.assertTrue(f.audit(result))
 
+    @unittest.skipUnless(f.KIND == 'perp', 'perpetual protection preflight')
+    def test_coin_unplaceable_protection_rejects_model_size(self):
+        self.initialize(); stamp = self.initial + f.INTERVAL
+        receipts = self.observations(stamp, ['112'])
+        receipt = next(r for r in receipts if r['category'] == 'instrument')
+        body = f.strict(f.payload(receipt))
+        next(v for v in body['symbols'][0]['filters'] if v['filterType'] == 'PRICE_FILTER')['maxPrice'] = '113'
+        raw = f.dump(body); Path(receipt['path']).write_bytes(raw); receipt['sha256'] = f.sha(raw)
+        with patch.object(f, 'validate_export', return_value=(self.binding, b'fixture')), patch.object(f, 'now_ms', side_effect=[stamp - 200, stamp, stamp + 1]), patch.object(f, 'acquire', side_effect=receipts):
+            state = f.observe(self.diary, self.export, 'e' * 64, 'a' * 64, [r['url'] for r in receipts])
+        self.assertEqual(D(state['btc']), 0)
+        self.assertEqual(state['events'][-1]['simulated'][0]['reason'], 'instrument_protection_price_bounds')
+
     @unittest.skipUnless(f.KIND == 'perp', 'ALFRED macro source')
     def test_raw_alfred_vintage_parsing_and_future_rejection(self):
         stamp = 1580601600000

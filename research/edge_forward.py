@@ -884,8 +884,12 @@ def coin_decide(state, bars, book, call, enabled):
         filters = {r['filterType']: r for r in book['instrument']['filters']}
         tick = number(filters['PRICE_FILTER']['tickSize'])
         sl, tp = floor(opportunity.stop, tick), floor(opportunity.take, tick)
-        result = funded_target(account, 1, fraction, price, number(book['mark']), sl, tp,
-                               quantity_limit(capacity, price, book['instrument']), book['instrument'], intended_add=True)
+        limits = filters['PRICE_FILTER']
+        if not number(limits['minPrice']) <= sl < tp <= number(limits['maxPrice']):
+            result = dict(requested=str(requested), accepted='0', reason='instrument_protection_price_bounds')
+        else:
+            result = funded_target(account, 1, fraction, price, number(book['mark']), sl, tp,
+                                   quantity_limit(capacity, price, book['instrument']), book['instrument'], intended_add=True)
         simulated.append({k: str(v) if isinstance(v, D) else v for k, v in result.items()})
         amount = number(result['accepted'])
         if amount:
