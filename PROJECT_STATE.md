@@ -1,6 +1,6 @@
 # PROJECT_STATE
 
-Updated: 2026-10-03T00:33:40.009534+00:00
+Updated: 2026-10-03T00:47:38.434532+00:00
 
 ## Active BTC alpha/beta improvement round
 
@@ -14,6 +14,8 @@ Baseline validation: Python3.12 and3.13 both pass Coin359/Spot209. Existing caus
 
 Ruling: funding staleness remains exactly age>=28800000ms from availability, no extra jitter tolerance — fixed registration takes precedence; missing gaps are reported. No partial-code discard or Task1 re-dispatch after reconnect.
 Task 3: active — implementer /root/edge_spot_impl, Spot mechanisms and actual executable controls from task-3-brief.md; review BASEbdde051. No other implementation agent runs. Tasks4–6 pending: Coin mechanisms; strict assessment/calibration/actual budgets; reviewed forward ledger before source freeze, complete measurement/adoption/integration. No financial producers or Coin jobs active.
+Ruling: original proven closed sub-BASE_STEP residual may be reused by a genuine new control campaign only with follow position.dust=True and next-completed-day timing; quantity threshold alone is insufficient, active partial/sub-step holdings must not top up. Ledger/weighted cost basis remain original. Durable research policy also binds executable Python digest, not docs-only HEAD changes.
+Cross-task calibration schema fixed: format1/project_kind/baseline_candidate/cutoff_ms/spec_sha256/profiles; profile candidate/project_kind/scale/base_bundle_sha256/baseline_candidate/effective_from_ms/calibration_end_ms/training_end_day_exclusive. Validate registered unused profiles too, reject unknown/foreign/schema extras; exact deterministic full inventory verified by assessor. Source raw field is base_bundle_sha256, no alias.
 External briefs/reports/diff packages: /workspace/btc-alpha-beta-improve/task-artifacts. This file is the only progress ledger.
 
 Preflight: every task agrees with BTC-only, unchanged economics, no account access and immutable prior sources. Interface review:
