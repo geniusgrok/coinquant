@@ -221,4 +221,3 @@ def _coverage(rows, name):
         'missing_duration_ms': END_MS - START_MS - valid_ms,
         'missing_intervals_ms': gaps,
     }
-
