@@ -23,7 +23,7 @@ class ForwardTests(unittest.TestCase):
         self.origin = 1546300800000 if f.KIND == 'spot' else 1575158400000
         self.initial = self.origin + (410 if f.KIND == 'spot' else 210) * f.INTERVAL + 10000
         self.base = 'https://api.binance.com/api/v3/' if f.KIND == 'spot' else 'https://fapi.binance.com/fapi/v1/'
-        self.binding = {'export_sha256': 'e' * 64, 'review_sha256': 'a' * 64, 'analysis_sha256': 'b' * 64,
+        self.binding = {'initialization_modes': list(f.INITIALIZATION_MODES), 'export_sha256': 'e' * 64, 'review_sha256': 'a' * 64, 'analysis_sha256': 'b' * 64,
                         'recorded_source': {}, 'current_source': {}, 'bridge': {}}
         self.export = self.root / 'export.json'; self.export.write_bytes(b'fixture')
         self.history = self.root / 'history.json'
@@ -49,7 +49,15 @@ class ForwardTests(unittest.TestCase):
 
     def fx(self, stamp):
         day = f.datetime.fromtimestamp(stamp / 1000, f.timezone.utc).date() - f.timedelta(days=1)
-        return self.receipt(f.FX_URL, f'observation_date,DEXCHUS\n{day},7\n'.encode(), stamp, raw=True)
+        receipt = self.receipt(f.FX_URL, f'observation_date,DEXCHUS\n{day},7\n'.encode(), stamp, raw=True)
+        receipt['metadata'] = self.receipt(f.FX_METADATA_URL, self.fx_html(str(day), '7', str(day) + 'T20:00:00+00:00'), stamp, raw=True)
+        return receipt
+
+    def fx_html(self, day, value, publication, *, series='DEXCHUS'):
+        dataset = {'@context': 'http://schema.org', '@type': 'Dataset', 'alternateName': series, 'dateModified': publication}
+        return ('<script type="application/ld+json">' + json.dumps(dataset) + '</script>' +
+                '<table id="recent-obs"><tr><td>' + day + ':&nbsp;</td><td class="series-obs value">' + value +
+                '</td><td>&nbsp;</td></tr><tr><td colspan="2">View All</td></tr></table>').encode()
 
     def instrument(self):
         return dict(symbol='BTCUSDT', status='TRADING', baseAsset='BTC', quoteAsset='USDT', marginAsset='USDT', contractType='PERPETUAL',
@@ -474,6 +482,198 @@ class ForwardTests(unittest.TestCase):
         self.assertGreater(D(proposal['sizing']['requested_quantity']), 0)
 
 
+    def paired_fx(self, stamp, *, day='2026-09-25', value='6.7110', publication='2026-09-28T15:16:00-05:00', rows=None, series='DEXCHUS'):
+        rows = rows or [(day, value)]
+        raw = ('observation_date,DEXCHUS\n' + ''.join(d + ',' + v + '\n' for d, v in rows)).encode()
+        receipt = self.receipt(f.FX_URL, raw, stamp - 100, raw=True)
+        receipt['metadata'] = self.receipt(f.FX_METADATA_URL, self.fx_html(day, value, publication, series=series), stamp - 50, raw=True)
+        return receipt
+
+    def test_fx_correct_csv_endpoint_and_html_metadata_only(self):
+        self.assertEqual(f.FX_URL, 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXCHUS')
+        self.assertEqual(f.endpoint(f.FX_METADATA_URL), 'fx_metadata')
+        for url in ('https://fred.stlouisfed.org/graph.csv?id=DEXCHUS', f.FX_URL + '&id=DEXCHUS', f.FX_URL.replace('DEXCHUS', 'DEXUSEU')):
+            with self.assertRaises(ValueError): f.endpoint(url)
+        stamp = 1791002400000
+        pair = self.paired_fx(stamp)
+        with self.assertRaises(ValueError): f.fx_from(pair['metadata'], stamp)
+        result = f.fx_from(pair, stamp)
+        self.assertEqual(result['day'], '2026-09-25'); self.assertEqual(result['cny_per_usdt'], '6.7110')
+        self.assertEqual(result['metadata_sha256'], pair['metadata']['sha256'])
+        self.assertIn('not an executable', result['basis'])
+
+    def test_fx_publication_freshness_exact_week_and_prior_date_rule(self):
+        published = int(f.datetime.fromisoformat('2026-09-28T15:16:00-05:00').timestamp() * 1000)
+        boundary = published + 7 * f.DAY
+        self.assertEqual(f.fx_from(self.paired_fx(boundary), boundary)['day'], '2026-09-25')
+        with self.assertRaises(ValueError): f.fx_from(self.paired_fx(boundary + 1), boundary + 1)
+        stamp = int(f.datetime(2026, 10, 3, 4, 40, tzinfo=f.timezone.utc).timestamp() * 1000)
+        pair = self.paired_fx(stamp, day='2026-10-03', value='6.6', publication='2026-10-03T01:00:00+00:00', rows=[('2026-10-02', '6.7'), ('2026-10-03', '6.6')])
+        result = f.fx_from(pair, stamp)
+        self.assertEqual(result['day'], '2026-10-02'); self.assertEqual(result['cny_per_usdt'], '6.7')
+        self.assertEqual(result['published_latest_day'], '2026-10-03')
+
+    def test_fx_bad_publication_identity_latest_value_and_gaps_reject(self):
+        stamp = int(f.datetime(2026, 10, 3, 4, 40, tzinfo=f.timezone.utc).timestamp() * 1000)
+        cases = [dict(publication='2026-10-04T00:00:00+00:00'), dict(publication='2026-09-28T15:16:00'),
+                 dict(publication='bad-date'), dict(publication='2026-09-24T15:00:00+00:00'),
+                 dict(publication='2026-10-03T01:00:00+00:00'), dict(series='WRONG'),
+                 dict(rows=[('2026-09-25', '6.8')]), dict(rows=[('2026-09-24', '6.7110')]),
+                 dict(value='NaN'), dict(rows=[('2026-09-25', '6.7110'), ('2026-09-25', '6.7110')])]
+        for case in cases:
+            with self.subTest(case=case), self.assertRaises((ValueError, KeyError)):
+                f.fx_from(self.paired_fx(stamp, **case), stamp)
+        pair = self.paired_fx(stamp)
+        original = f.payload(pair['metadata'])
+        variants = [original.replace(b'"dateModified": "2026-09-28T15:16:00-05:00",', b''),
+                    original.replace(b'"alternateName": "DEXCHUS"', b'"alternateName":"DEXCHUS","alternateName":"DEXCHUS"'),
+                    original + original, b'<html>No Dataset metadata</html>',
+                    original.replace(b'</table>', b''), original.replace(b'6.7110</td>', b'Infinity</td>')]
+        # dateModified is the last JSON member in this faithful fixture.
+        variants[0] = original.replace(b', "dateModified": "2026-09-28T15:16:00-05:00"', b'')
+        for raw in variants:
+            with self.subTest(raw=raw[:70]):
+                Path(pair['metadata']['path']).write_bytes(raw); pair['metadata']['sha256'] = f.sha(raw)
+                with self.assertRaises((ValueError, KeyError)): f.fx_from(pair, stamp)
+
+    def test_fx_nested_raw_clock_url_tamper_and_paired_actual_fetch(self):
+        stamp = int(f.datetime(2026, 10, 3, 4, 40, tzinfo=f.timezone.utc).timestamp() * 1000)
+        for field, value in [('sha256', '0' * 64), ('url', f.FX_URL), ('receipt_ms', stamp + 1), ('request_ms', stamp - f.MAX_AGE - 1)]:
+            pair = self.paired_fx(stamp); pair['metadata'][field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError): f.fx_from(pair, stamp)
+        csv_raw = b'observation_date,DEXCHUS\n2026-09-25,6.7110\n'
+        html = self.fx_html('2026-09-25', '6.7110', '2026-09-28T15:16:00-05:00')
+        class Response(io.BytesIO):
+            def __init__(self, raw, url): super().__init__(raw); self.url = url
+            def geturl(self): return self.url
+        with patch.object(f, 'urlopen', side_effect=[Response(csv_raw, f.FX_URL), Response(html, f.FX_METADATA_URL)]) as fetch, patch.object(f, 'now_ms', side_effect=[stamp - 40, stamp - 30, stamp - 20, stamp - 10]):
+            pair = f.acquire(f.FX_URL, self.root / 'paired-public-fixture')
+        self.assertEqual(fetch.call_count, 2)
+        self.assertEqual((pair['request_ms'], pair['receipt_ms']), (stamp - 40, stamp - 30))
+        self.assertEqual((pair['metadata']['request_ms'], pair['metadata']['receipt_ms']), (stamp - 20, stamp - 10))
+        self.assertEqual(f.payload(pair), csv_raw); self.assertEqual(f.payload(pair['metadata']), html)
+        self.assertEqual(f.fx_from(pair, stamp)['cny_per_usdt'], '6.7110')
+
+    def test_invalid_paired_fx_keeps_init_and_append_unchanged(self):
+        bad = self.fx(self.initial + 1); bad['metadata']['sha256'] = '0' * 64
+        with patch.object(f, 'validate_export', return_value=(self.binding, b'fixture')), patch.object(f, 'now_ms', side_effect=[self.initial, self.initial + 2]), patch.object(f, 'acquire', return_value=bad):
+            with self.assertRaises(ValueError): f.initialize(self.diary, self.export, 'e' * 64, 'a' * 64, self.history)
+        self.assertFalse(self.diary.exists())
+        self.initialize(); before = self.diary.read_bytes(); stamp = self.initial + f.INTERVAL
+        receipts = self.observations(stamp, ['112'])
+        next(r for r in receipts if r['category'] == 'fx')['metadata']['sha256'] = '0' * 64
+        with self.assertRaises(ValueError): self.append_receipts(stamp, receipts)
+        self.assertEqual(before, self.diary.read_bytes())
+
+    def initialize_deferred(self):
+        fx = self.fx(self.initial + 1)
+        with patch.object(f, 'validate_export', return_value=(self.binding, b'fixture')), patch.object(f, 'now_ms', side_effect=[self.initial, self.initial + 2]), patch.object(f, 'acquire', return_value=fx):
+            return f.initialize(self.diary, self.export, 'e' * 64, 'a' * 64, defer_market_warmup=True)
+
+    def warmup_receipts(self, stamp):
+        history = f.strict(self.history.read_bytes()); rows = f.strict(f.payload(history[0]))
+        rows[-2] = self.bar(rows[-2][0], '110'); rows[-1] = self.bar(rows[-1][0], '112')
+        return [self.receipt('klines?symbol=BTCUSDT&interval=' + ('1d' if f.KIND == 'spot' else '4h'), rows, stamp - 100)]
+
+    def test_deferred_init_is_empty_source_bound_paper_cash(self):
+        state = self.initialize_deferred()
+        self.assertFalse(state['market_ready']); self.assertIsNone(state['last_interval'])
+        self.assertEqual(state['market_ready_reason'], f.MARKET_PENDING)
+        self.assertEqual(state['initialized_ms'], self.initial)
+        self.assertEqual(state['events'], []); self.assertEqual(state['btc'], '0')
+        self.assertEqual(state['fees'], '0'); self.assertEqual(state['funding'], '0')
+        expected = f.initial_engine()
+        if f.KIND == 'perp': expected['account']['wallet'] = state['initial_wallet']
+        self.assertEqual(state['engine'], expected); self.assertTrue(f.audit(state))
+        self.assertEqual(state['native_cases'], 0); self.assertEqual(state['actual_account_days'], 0)
+        other = self.root / 'mixed.json'
+        with patch.object(f, 'validate_export', return_value=(self.binding, b'fixture')):
+            with self.assertRaises(ValueError): f.initialize(other, self.export, 'e' * 64, 'a' * 64, self.history, defer_market_warmup=True)
+        self.assertFalse(other.exists())
+        denied = dict(self.binding, initialization_modes=['history'])
+        with patch.object(f, 'validate_export', return_value=(denied, b'fixture')):
+            with self.assertRaises(ValueError): f.initialize(other, self.export, 'e' * 64, 'a' * 64, defer_market_warmup=True)
+        self.assertFalse(other.exists())
+
+    def test_deferred_first_observation_is_only_warmup_then_native_fresh_cross(self):
+        initial = self.initialize_deferred(); stamp = self.initial + 1000
+        warmed = self.append_receipts(stamp, self.warmup_receipts(stamp))
+        self.assertTrue(warmed['market_ready']); self.assertEqual(warmed['market_ready_at_ms'], stamp)
+        self.assertEqual(warmed['events'][0]['kind'], 'warmup_only')
+        self.assertIsNone(warmed['events'][0]['proposal']); self.assertEqual(warmed['events'][0]['money'], [])
+        self.assertNotIn('mark', warmed['events'][0])
+        for key in ('wallet', 'btc', 'fees', 'funding'): self.assertEqual(initial[key], warmed[key])
+        if f.KIND == 'spot':
+            from spotquant.model import Model
+            self.assertTrue(all(Model.restore(saved).need_reset for saved in warmed['engine']['models'].values()))
+        else:
+            from coinquant.campaign import Campaign
+            model = Campaign.restore(warmed['engine']['campaign'])
+            self.assertEqual(model.primary_consumed, model.model.active.identity)
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+        before = self.diary.read_bytes()
+        with self.assertRaises(ValueError): self.observe(stamp + 100, ['113'])
+        self.assertEqual(before, self.diary.read_bytes())
+        held = self.observe(self.initial + f.INTERVAL, ['113'])
+        self.assertEqual(held['btc'], '0')  # bootstrap consumed the existing impulse
+        self.observe(self.initial + 2 * f.INTERVAL, ['90'])
+        fresh = self.observe(self.initial + 3 * f.INTERVAL, ['112'])
+        if f.KIND == 'spot':
+            self.assertEqual(fresh['btc'], '0')
+            fresh = self.observe(self.initial + 4 * f.INTERVAL, ['113'])
+        self.assertGreater(D(fresh['btc']), 0)
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+
+    def test_delayed_first_warmup_records_gap_without_past_decisions(self):
+        initial = self.initialize_deferred(); stamp = self.initial + 3 * f.INTERVAL
+        receipts = self.warmup_receipts(stamp); rows = f.strict(f.payload(receipts[0]))
+        for offset in range(3): rows.append(self.bar(self.initial // f.INTERVAL * f.INTERVAL + offset * f.INTERVAL, '112'))
+        raw = f.dump(rows); Path(receipts[0]['path']).write_bytes(raw); receipts[0]['sha256'] = f.sha(raw)
+        ready = self.append_receipts(stamp, receipts)
+        self.assertEqual(len(ready['events']), 1); self.assertEqual(ready['events'][0]['skipped_intervals'], 3)
+        self.assertEqual(ready['events'][0]['kind'], 'warmup_only'); self.assertEqual(ready['events'][0]['money'], [])
+        self.assertEqual(ready['wallet'], initial['wallet']); self.assertEqual(ready['btc'], '0')
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+
+    def test_deferred_readiness_is_reconstructed_not_trusted(self):
+        initial = self.initialize_deferred()
+        forged = copy.deepcopy(initial); forged['initialized_ms'] = initial['recorded_at_ms'] + 1
+        forged['initialized_utc'] = f.utc(forged['initialized_ms'])
+        with self.assertRaises(ValueError): f.audit(f.seal(forged))
+        forged = copy.deepcopy(initial); forged['market_ready'] = True
+        with self.assertRaises(ValueError): f.audit(f.seal(forged))
+        stamp = self.initial + 1000
+        ready = self.append_receipts(stamp, self.warmup_receipts(stamp))
+        forged = copy.deepcopy(ready); forged['events'] = []
+        with self.assertRaises(ValueError): f.audit(f.seal(forged))
+        forged = copy.deepcopy(ready); forged['events'][0]['proposal'] = {'action': 'enter'}
+        with self.assertRaises(ValueError): f.audit(f.seal(forged))
+        forged = copy.deepcopy(ready); forged['events'][0]['money'] = [{'kind': 'buy'}]
+        with self.assertRaises(ValueError): f.audit(f.seal(forged))
+        forged = copy.deepcopy(ready); forged['initial_engine'] = forged['engine']
+        with self.assertRaises(ValueError): f.audit(f.seal(forged))
+
+    def test_pending_bad_history_source_and_atomic_failure_preserve_bytes(self):
+        self.initialize_deferred(); before = self.diary.read_bytes(); stamp = self.initial + 1000
+        variants = []
+        stale = self.warmup_receipts(stamp); stale[0]['request_ms'] -= f.MAX_AGE; variants.append(stale)
+        tampered = self.warmup_receipts(stamp); tampered[0]['sha256'] = '0' * 64; variants.append(tampered)
+        missing = self.warmup_receipts(stamp); rows = f.strict(f.payload(missing[0])); rows.pop(100)
+        raw = f.dump(rows); Path(missing[0]['path']).write_bytes(raw); missing[0]['sha256'] = f.sha(raw); variants.append(missing)
+        old = self.warmup_receipts(stamp); rows = f.strict(f.payload(old[0])); rows.pop()
+        raw = f.dump(rows); Path(old[0]['path']).write_bytes(raw); old[0]['sha256'] = f.sha(raw); variants.append(old)
+        future = self.warmup_receipts(stamp); future[0]['receipt_ms'] = stamp + 1; variants.append(future)
+        for receipts in variants:
+            with self.assertRaises(ValueError): self.append_receipts(stamp, receipts)
+            self.assertEqual(before, self.diary.read_bytes())
+        with patch.object(f, 'validate_export', side_effect=ValueError('changed protected source')):
+            with self.assertRaises(ValueError): f.observe(self.diary, self.export, 'e' * 64, 'a' * 64, [])
+        self.assertEqual(before, self.diary.read_bytes())
+        with patch.object(f, 'replace_file', side_effect=OSError('synthetic pre-replace failure')):
+            with self.assertRaises(OSError): self.append_receipts(stamp, self.warmup_receipts(stamp))
+        self.assertEqual(before, self.diary.read_bytes())
+
+
 
 class SourceAndExportTests(unittest.TestCase):
     def setUp(self):
@@ -544,7 +744,7 @@ class SourceAndExportTests(unittest.TestCase):
         canonical_raw = f.dump(dict(format='btc-edge-canonical-forward-bridge-v1', status='independently_reviewed', project=f.KIND, bridge=bridge))
         bridge['canonical_review'] = dict(path='canonical.json', sha256=f.sha(canonical_raw))
         raw, braw = f.dump(report), f.dump({f.KIND: bridge})
-        return dict(format='btc-edge-forward-export-v1', analysis_raw=base64.b64encode(raw).decode(), analysis_sha256=f.sha(raw),
+        return dict(format='btc-edge-forward-export-v1', initialization_modes=list(f.INITIALIZATION_MODES), analysis_raw=base64.b64encode(raw).decode(), analysis_sha256=f.sha(raw),
                     review_raw=base64.b64encode(proof).decode(), review_sha256=f.sha(proof), bridges_raw=base64.b64encode(braw).decode(), bridges_sha256=f.sha(braw),
                     expected=expected, artifacts=artifacts, preliminary_raw=base64.b64encode(prior_raw).decode(),
                     canonical_reviews={f.KIND: base64.b64encode(canonical_raw).decode()})

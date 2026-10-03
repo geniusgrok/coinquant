@@ -16,6 +16,7 @@ from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal as D, ROUND_DOWN
 import fcntl
 import hashlib
+from html.parser import HTMLParser
 import io
 import json
 import os
@@ -35,9 +36,12 @@ INTERVAL = 14400000
 DAY = 86400000
 BASE = {'spot': 'atr-stop', 'perp': 'incumbent'}
 ADAPTER = 'canonical-incumbent-v1'
+INITIALIZATION_MODES = ['history', 'deferred_market_warmup']
+MARKET_PENDING = 'fresh_public_market_pending'
 CATEGORIES = {'source_and_inputs', 'original_accounting', 'baseline_six_groups',
               'calibration_and_actual_risk', 'adoption_gates', 'actual_budget_aggregation'}
-FX_URL = 'https://fred.stlouisfed.org/graph/?id=DEXCHUS'
+FX_URL = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXCHUS'
+FX_METADATA_URL = 'https://fred.stlouisfed.org/graph/?id=DEXCHUS'
 DFII_URL = 'https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10'
 FX_FEE = D('.001')
 FEE = D('.001') if KIND == 'spot' else D('.00075')
@@ -191,7 +195,7 @@ def export_binding(analysis, review, bridges, out):
         a, b = read_bound(p, item['artifact']['sha256'])
         artifacts[category] = base64.b64encode(b).decode()
     bridge_raw = Path(bridges).read_bytes(); bridge = strict(bridge_raw)
-    body = {'format': 'btc-edge-forward-export-v1', 'analysis_raw': base64.b64encode(raw).decode(),
+    body = {'format': 'btc-edge-forward-export-v1', 'initialization_modes': INITIALIZATION_MODES, 'analysis_raw': base64.b64encode(raw).decode(),
             'analysis_sha256': sha(raw), 'review_raw': base64.b64encode(proof_raw).decode(),
             'review_sha256': sha(proof_raw), 'artifacts': artifacts, 'expected': expected,
             'bridges_raw': base64.b64encode(bridge_raw).decode(), 'bridges_sha256': sha(bridge_raw),
@@ -217,6 +221,8 @@ def decode(raw):
 def validate_export(path, expected_hash, review_hash, root=ROOT):
     body, raw = read_bound(path, expected_hash)
     require(body['format'] == 'btc-edge-forward-export-v1', 'unknown export format')
+    require(body['initialization_modes'] and len(set(body['initialization_modes'])) == len(body['initialization_modes']) and
+            set(body['initialization_modes']) <= set(INITIALIZATION_MODES), 'unknown initialization modes')
     analysis_raw, proof_raw, bridge_raw = (decode(body[key]) for key in ('analysis_raw', 'review_raw', 'bridges_raw'))
     require(sha(analysis_raw) == body['analysis_sha256'] and sha(proof_raw) == body['review_sha256'] == review_hash and
             sha(bridge_raw) == body['bridges_sha256'], 'export embedded evidence mismatch')
@@ -270,7 +276,7 @@ def validate_export(path, expected_hash, review_hash, root=ROOT):
     current = source(root); assert_equivalent(bridge['source'], current, root)
     for key, name in [('spec_sha256', 'edge_spec.json'), ('protocol_sha256', 'edge-PROTOCOL.md')]:
         require(current['protected_files']['research/' + name] == report['contracts'][KIND][key], 'local contract differs from reviewed selection')
-    return {'export_sha256': expected_hash, 'review_sha256': review_hash,
+    return {'export_sha256': expected_hash, 'review_sha256': review_hash, 'initialization_modes': body['initialization_modes'],
             'analysis_sha256': body['analysis_sha256'], 'bridge': bridge, 'recorded_source': bridge['source'],
             'current_source': current}, raw
 
@@ -302,9 +308,8 @@ def endpoint(url, kind=KIND):
     require(parsed.scheme == 'https' and not parsed.username and not parsed.password and
             not parsed.fragment and parsed.port in (None, 443), 'public HTTPS URL required')
     if kind == 'perp' and url == DFII_URL: return 'dfii10'
-    if parsed.hostname == 'fred.stlouisfed.org' and parsed.path == '/graph/':
-        require(parse_qs(parsed.query) == {'id': ['DEXCHUS']}, 'only public DEXCHUS FX CSV allowed')
-        return 'fx'
+    if url == FX_URL: return 'fx'
+    if url == FX_METADATA_URL: return 'fx_metadata'
     host, prefix = ('api.binance.com', '/api/v3/') if kind == 'spot' else ('fapi.binance.com', '/fapi/v1/')
     require(parsed.hostname == host and parsed.path.startswith(prefix), 'wrong official market endpoint')
     name = parsed.path[len(prefix):]; query = parse_qs(parsed.query)
@@ -332,8 +337,10 @@ def acquire(url, directory):
     digest = sha(raw); directory = Path(directory); directory.mkdir(parents=True, exist_ok=True)
     path = directory / (str(request) + '-' + digest + '.raw')
     new_file(path, raw)
-    return {'category': category, 'url': url, 'request_ms': request, 'receipt_ms': receipt,
-            'sha256': digest, 'path': str(path.resolve())}
+    result = {'category': category, 'url': url, 'request_ms': request, 'receipt_ms': receipt,
+              'sha256': digest, 'path': str(path.resolve())}
+    if category == 'fx': result['metadata'] = acquire(FX_METADATA_URL, directory)
+    return result
 
 
 def acquire_dfii(directory):
@@ -406,8 +413,15 @@ def dfii_from(receipt, call):
 
 
 def payload(receipt):
+    require(type(receipt['request_ms']) is int and type(receipt['receipt_ms']) is int and
+            0 <= receipt['receipt_ms'] - receipt['request_ms'] <= MAX_AGE, 'invalid public receipt clocks')
     raw = Path(receipt['path']).read_bytes()
     require(sha(raw) == receipt['sha256'] and endpoint(receipt['url']) == receipt['category'], 'raw public provenance mismatch')
+    if receipt['category'] == 'fx':
+        require(receipt.get('metadata', {}).get('category') == 'fx_metadata', 'paired official FX metadata required')
+        payload(receipt['metadata'])
+    else:
+        require('metadata' not in receipt, 'unexpected nested receipt')
     return raw
 
 
@@ -435,26 +449,107 @@ def bars_from(receipts, available):
     return result
 
 
+class FredMetadata(HTMLParser):
+    """The official Dataset JSON-LD and the recent-obs table, not page prose."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.documents = []; self.rows = []; self.tables = 0
+        self.script = None; self.table = False; self.row = None; self.cell = None
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == 'script' and attrs.get('type') == 'application/ld+json':
+            require(self.script is None, 'nested JSON-LD')
+            self.script = []
+        if tag == 'table' and attrs.get('id') == 'recent-obs':
+            self.tables += 1; require(not self.table, 'nested recent observations')
+            self.table = True
+        if self.table and tag == 'tr':
+            require(self.row is None, 'malformed observation row'); self.row = []
+        if self.table and tag == 'td':
+            require(self.row is not None and self.cell is None, 'malformed observation cell')
+            self.cell = [attrs.get('class', '').split(), []]
+
+    def handle_data(self, data):
+        if self.script is not None: self.script.append(data)
+        if self.cell is not None: self.cell[1].append(data)
+
+    def handle_endtag(self, tag):
+        if tag == 'script' and self.script is not None:
+            self.documents.append(strict(''.join(self.script))); self.script = None
+        if self.table and tag == 'td' and self.cell is not None:
+            self.row.append((self.cell[0], ''.join(self.cell[1]).strip())); self.cell = None
+        if self.table and tag == 'tr':
+            require(self.row is not None and self.cell is None, 'incomplete observation row')
+            if any('series-obs' in classes for classes, _ in self.row):
+                require(len(self.row) >= 2 and {'series-obs', 'value'} <= set(self.row[1][0]) and
+                        sum('series-obs' in c for c, _ in self.row) == 1, 'wrong observation value column')
+                self.rows.append((date.fromisoformat(self.row[0][1].rstrip(':').strip()), number(self.row[1][1])))
+            self.row = None
+        if self.table and tag == 'table':
+            require(self.row is None and self.cell is None, 'incomplete recent observations')
+            self.table = False
+
+    def result(self):
+        require(self.script is None and not self.table and self.tables == 1, 'missing/malformed FX metadata')
+        datasets = [v for v in self.documents if isinstance(v, dict) and v.get('@type') == 'Dataset']
+        require(len(datasets) == 1 and datasets[0].get('alternateName') == 'DEXCHUS' and
+                datasets[0].get('@context') in ('http://schema.org', 'https://schema.org'), 'unique DEXCHUS Dataset required')
+        published = datetime.fromisoformat(datasets[0]['dateModified'])
+        require(published.tzinfo is not None and published.utcoffset() is not None, 'timezone-aware FX publication required')
+        require(self.rows and all(value > 0 for _, value in self.rows) and
+                all(a[0] > b[0] for a, b in zip(self.rows, self.rows[1:])), 'duplicate/unordered FX recent observations')
+        return published, self.rows[0]
+
+
+def receipt_chain(receipts):
+    for receipt in receipts:
+        yield receipt
+        if receipt['category'] == 'fx': yield receipt['metadata']
+
+
+def fresh_receipts(receipts, call):
+    for receipt in receipt_chain(receipts):
+        payload(receipt)
+        require(receipt['request_ms'] <= receipt['receipt_ms'] <= call and
+                call - receipt['request_ms'] <= MAX_AGE, 'stale/future public receipt')
+
+
 def fx_from(receipt, call):
-    require(receipt['category'] == 'fx' and receipt['receipt_ms'] <= call, 'FX source/availability mismatch')
+    require(receipt['category'] == 'fx', 'official FX CSV required')
+    fresh_receipts([receipt], call)
     rows = list(csv.reader(io.StringIO(payload(receipt).decode('utf-8-sig'))))
     require(rows and rows[0] in (['DATE', 'DEXCHUS'], ['observation_date', 'DEXCHUS']), 'official FX CSV schema required')
     today = datetime.fromtimestamp(call / 1000, timezone.utc).date()
-    values = []
+    values = []; seen = set()
     for row in rows[1:]:
         require(len(row) == 2, 'FX CSV width')
-        day = datetime.strptime(row[0], '%Y-%m-%d').date()
+        day = date.fromisoformat(row[0])
+        require(day not in seen and day <= today, 'duplicate/future FX observation')
+        seen.add(day)
         if row[1] in ('', '.'): continue
         value = number(row[1]); require(value > 0, 'FX positive rate required')
-        if day < today: values.append((day, value))
-    require(values and len({d for d, _ in values}) == len(values), 'missing/duplicate prior-date FX')
-    day, rate = max(values)
-    require((today - day).days <= 7, 'stale prior-date FX')
+        values.append((day, value))
+    require(values, 'missing FX observations')
+    parser = FredMetadata(); parser.feed(payload(receipt['metadata']).decode('utf-8')); parser.close()
+    published, latest = parser.result(); publication_ms = int(published.timestamp() * 1000)
+    require(latest == max(values), 'FX published latest date/value differs from CSV')
+    require(0 <= call - publication_ms <= 7 * DAY and publication_ms <= receipt['metadata']['receipt_ms'],
+            'stale/future FX publication')
+    require(0 <= (published.date() - latest[0]).days <= 7 and
+            publication_ms >= int(datetime.combine(latest[0], datetime.min.time(), timezone.utc).timestamp() * 1000),
+            'FX observation/publication gap')
+    prior = [(day, value) for day, value in values if day < today]
+    require(prior, 'prior-date FX required')
+    day, rate = max(prior)
     return {'day': str(day), 'cny_per_usdt': str(rate), 'usd_usdt_assumption': '1', 'conversion_fee': str(FX_FEE),
-            'source_sha256': receipt['sha256']}
+            'source_sha256': receipt['sha256'], 'metadata_sha256': receipt['metadata']['sha256'],
+            'published_ms': publication_ms, 'published_latest_day': str(latest[0]),
+            'basis': 'weekly published benchmark; not an executable FX quote'}
 
 
 def book_from(receipts, call):
+    fresh_receipts(receipts, call)
     grouped = {}
     for r in receipts:
         require(r['request_ms'] <= r['receipt_ms'] <= call and call - r['request_ms'] <= MAX_AGE, 'stale/future public receipt')
@@ -588,15 +683,19 @@ def seal(state):
     return body
 
 
-def initialize(path, export, export_sha, review_sha, history, fx_url=FX_URL):
+def initialize(path, export, export_sha, review_sha, history=None, fx_url=FX_URL, *, defer_market_warmup=False):
     path = Path(path)
     require(not path.exists(), 'exclusive new diary required')
     binding, export_raw = validate_export(export, export_sha, review_sha)
-    initialized = now_ms()
-    history = strict(Path(history).read_bytes())
-    bars = bars_from(history, initialized)
-    require(bars[-1]['end'] == initialized // INTERVAL * INTERVAL, 'warmup must reach latest completed interval')
-    engine = initial_engine(); advance(engine, bars, bootstrap=True)
+    mode = 'deferred_market_warmup' if defer_market_warmup else 'history'
+    require(type(defer_market_warmup) is bool and mode in binding['initialization_modes'], 'initialization mode not approved by export')
+    require((history is None) == defer_market_warmup, 'choose history OR deferred market warmup')
+    initialized = now_ms(); engine = initial_engine(); last_interval = None
+    history = [] if defer_market_warmup else strict(Path(history).read_bytes())
+    if not defer_market_warmup:
+        bars = bars_from(history, initialized)
+        require(bars[-1]['end'] == initialized // INTERVAL * INTERVAL, 'warmup must reach latest completed interval')
+        advance(engine, bars, bootstrap=True); last_interval = bars[-1]['end']
     receipts_dir = path.parent / (path.name + '.observations')
     fx_receipt = acquire(fx_url, receipts_dir); recorded = now_ms()
     fx = fx_from(fx_receipt, recorded)
@@ -606,7 +705,10 @@ def initialize(path, export, export_sha, review_sha, history, fx_url=FX_URL):
              'initialized_ms': initialized, 'initialized_utc': utc(initialized), 'recorded_at_ms': recorded,
              'initial_cny': '10000', 'initial_fx': fx, 'initial_wallet': str(wallet), 'initial_receipts': history + [fx_receipt],
              'initial_engine': copy.deepcopy(engine), 'engine': engine, 'wallet': str(wallet), 'btc': '0',
-             'fees': '0', 'funding': '0', 'last_interval': bars[-1]['end'], 'events': [],
+             'fees': '0', 'funding': '0', 'last_interval': last_interval, 'events': [],
+             'initialization_mode': mode, 'market_ready': not defer_market_warmup,
+             'market_ready_reason': MARKET_PENDING if defer_market_warmup else None,
+             'market_ready_at_ms': None if defer_market_warmup else initialized,
              'unresolved': [], 'native_cases': 0, 'actual_account_days': 0, 'qualification': 'NOT_QUALIFIED',
              'execution': 'DECLARED_MODELED_FILLS_ONLY', 'continuous_equity': False,
              'assumptions': {'fee': str(FEE), 'adverse_slippage': str(SLIP), 'fx_fee': str(FX_FEE),
@@ -615,26 +717,41 @@ def initialize(path, export, export_sha, review_sha, history, fx_url=FX_URL):
     require(validate_export(export, export_sha, review_sha)[0] == binding and Path(export).read_bytes() == export_raw,
             'binding changed during initialization')
     for r in state['initial_receipts']: payload(r)
-    new_file(path, dump(seal(state)))
-    return seal(state)
+    result = seal(state); audit(result)
+    new_file(path, dump(result))
+    return result
 
 
 def audit(state):
     body = dict(state); digest = body.pop('sha256')
     require(sha(dump(body)) == digest and state['format'] == 'btc-edge-forward-ledger-v1' and state['project'] == KIND,
             'ledger/checkpoint checksum or identity mismatch')
-    require(state['initial_cny'] == '10000' and state['initialized_utc'] == utc(state['initialized_ms']), 'initial capital/clock identity mismatch')
+    require(type(state['initialized_ms']) is int and type(state['recorded_at_ms']) is int and
+            state['initialized_ms'] <= state['recorded_at_ms'] and state['initial_cny'] == '10000' and
+            state['initialized_utc'] == utc(state['initialized_ms']), 'initial capital/clock identity mismatch')
     require(state['native_cases'] == state['actual_account_days'] == 0 and state['qualification'] == 'NOT_QUALIFIED', 'qualification cannot change')
     wallet, q, fees, funding, entry = number(state['initial_wallet']), D(0), D(0), D(0), D(0)
-    last_record, last_interval = state['recorded_at_ms'], state['initialized_ms'] // INTERVAL * INTERVAL
+    mode = state['initialization_mode']
+    require(mode in INITIALIZATION_MODES and mode in state['binding']['initialization_modes'], 'unbound initialization mode')
+    ready_at = state['initialized_ms'] if mode == 'history' else None
+    last_record = state['recorded_at_ms']
+    last_interval = state['initialized_ms'] // INTERVAL * INTERVAL if ready_at is not None else None
     ids = set()
     for event in state['events']:
         require(event['id'] not in ids and event['id'] == len(ids) + 1 and
                 last_record <= event['request_ms'] <= event['receipt_ms'] <= event['decision_ms'] <= event['recorded_at_ms'] and
-                event['interval_end'] > max(last_interval, state['initialized_ms']) and
                 event['interval_end'] == event['decision_ms'] // INTERVAL * INTERVAL,
                 'event identity/clock/backfill mismatch')
+        if event['kind'] == 'warmup_only':
+            require(last_interval is None and not ids and event['proposal'] is None and event['money'] == [] and
+                    event['simulated'] == [] and all(number(event[k]) == v for k, v in
+                    [('wallet', wallet), ('btc', q), ('fees', fees), ('funding', funding)]), 'warmup cannot trade or change money')
+            ready_at = event['decision_ms']
+        else:
+            require(event['kind'] == 'decision' and last_interval is not None and
+                    event['interval_end'] > max(last_interval, state['initialized_ms'], ready_at), 'no backfill/duplicate/pre-warmup decision')
         ids.add(event['id']); last_record = event['recorded_at_ms']; last_interval = event['interval_end']
+        if event['kind'] == 'warmup_only': continue
         for item in event['money']:
             amount, price, fee = number(item.get('qty', '0')), number(item.get('price', '0')), number(item.get('fee', '0'))
             if item['kind'] == 'funding':
@@ -673,21 +790,35 @@ def audit(state):
         require(number(account['wallet']) == wallet and number(account['q']) == q and number(account['entry']) == entry and
                 number(account['fees']) == fees and number(account['funding']) == funding and
                 bool(q) == (model.position_campaign is not None), 'campaign/account checkpoint ownership mismatch')
-    require(state['last_interval'] == last_interval, 'checkpoint interval mismatch')
-    initial_bars = bars_from([r for r in state['initial_receipts'] if r['category'] == 'bars'], state['initialized_ms'])
-    initial = initial_engine(); advance(initial, initial_bars, bootstrap=True)
+    require(state['last_interval'] == last_interval and type(state['market_ready']) is bool and
+            state['market_ready'] == (ready_at is not None) and state['market_ready_at_ms'] == ready_at and
+            state['market_ready_reason'] == (None if ready_at is not None else MARKET_PENDING), 'checkpoint market readiness mismatch')
+    initial = initial_engine(); initial_interval = None
+    initial_history = [r for r in state['initial_receipts'] if r['category'] == 'bars']
+    require(all(r['category'] in ('bars', 'fx') for r in state['initial_receipts']), 'unexpected initialization input')
+    if mode == 'history':
+        initial_bars = bars_from(initial_history, state['initialized_ms'])
+        initial_interval = initial_bars[-1]['end']
+        require(initial_interval == state['initialized_ms'] // INTERVAL * INTERVAL, 'initial history boundary mismatch')
+        advance(initial, initial_bars, bootstrap=True)
+    else:
+        require(not initial_history, 'deferred initialization cannot contain historical bars')
     fx_receipts = [r for r in state['initial_receipts'] if r['category'] == 'fx']
     require(len(fx_receipts) == 1, 'initial FX receipt missing')
     fx = fx_from(fx_receipts[0], state['recorded_at_ms'])
     require(fx == state['initial_fx'] and number(state['initial_wallet']) == D(10000) / number(fx['cny_per_usdt']) * (1 - FX_FEE), 'initial capital/FX mismatch')
     if KIND == 'perp': initial['account']['wallet'] = state['initial_wallet']
-    require(initial == state['initial_engine'] and initial_bars[-1]['end'] == state['initialized_ms'] // INTERVAL * INTERVAL, 'cold-start checkpoint differs from raw history')
+    require(initial == state['initial_engine'], 'cold-start checkpoint differs from raw history/readiness mode')
     replay = copy.deepcopy(state)
-    replay.update(events=[], engine=initial, wallet=state['initial_wallet'], btc='0', fees='0', funding='0', unresolved=[], last_interval=initial_bars[-1]['end'])
+    replay.update(events=[], engine=initial, wallet=state['initial_wallet'], btc='0', fees='0', funding='0', unresolved=[], last_interval=initial_interval, market_ready=(mode == 'history'),
+                  market_ready_at_ms=state['initialized_ms'] if mode == 'history' else None,
+                  market_ready_reason=None if mode == 'history' else MARKET_PENDING)
     for event in state['events']:
         replay = apply_observation(replay, event['receipts'], event['decision_ms'], event['recorded_at_ms'], bool(event['skipped_intervals']), event['current_source'])
         require(replay['events'][-1] == event, 'proposal/execution/raw replay mismatch')
-    require(replay['engine'] == state['engine'] and replay['unresolved'] == state['unresolved'], 'checkpoint differs from independently replayed ownership/protection')
+    require(replay['engine'] == state['engine'] and replay['unresolved'] == state['unresolved'] and
+            all(replay[k] == state[k] for k in ('market_ready', 'market_ready_at_ms', 'market_ready_reason')),
+            'checkpoint differs from independently replayed ownership/protection/readiness')
     return True
 
 
@@ -880,7 +1011,7 @@ def coin_decide(state, bars, book, call, enabled):
         if account.q: state['unresolved'].append('missing_causal_DFII10_for_owned_macro')
         proposal = {'action': 'blocked', 'reason': 'causal DFII10 raw vintage evidence required', 'opportunity': None}
     else:
-        model.select_macro(book.get('dfii10'), book.get('mark', bars[-1]['close']), call, bootstrap=not state['events'])
+        model.select_macro(book.get('dfii10'), book.get('mark', bars[-1]['close']), call, bootstrap=not any(e.get('kind', 'decision') == 'decision' for e in state['events']))
         proposal = preview(model, dict(quantity_btc=str(account.q), native_full_position_protected=True, stop_before_liquidation=True))
         if proposal['opportunity'] is not None: proposal['opportunity'] = {k: str(v) if isinstance(v, D) else v for k, v in asdict(proposal['opportunity']).items()}
     money, simulated = [], []
@@ -939,12 +1070,27 @@ def coin_decide(state, bars, book, call, enabled):
 
 def apply_observation(state, receipts, call, recorded, declared_gap, current_source):
     """Pure deterministic transition; audit replays this from retained raw bytes."""
+    fresh_receipts(receipts, call)
     opening_balances = {k: state[k] for k in ('wallet', 'btc', 'fees', 'funding')}
     bars = bars_from([r for r in receipts if r['category'] == 'bars'], call)
     latest = bars[-1]['end']
     require(latest == call // INTERVAL * INTERVAL and
-            all(latest == r['receipt_ms'] // INTERVAL * INTERVAL for r in receipts), 'only latest completed interval at actual receipt/decision allowed')
-    require(latest > max(state['last_interval'], state['initialized_ms']), 'no backfill/duplicate/preinitialization decision')
+            all(latest == r['receipt_ms'] // INTERVAL * INTERVAL for r in receipt_chain(receipts)), 'only latest completed interval at actual receipt/decision allowed')
+    if not state['market_ready']:
+        require(state['last_interval'] is None and not state['events'] and not state['unresolved'] and
+                state['engine'] == state['initial_engine'] and all(number(state[k]) == 0 for k in ('btc', 'fees', 'funding')) and
+                state['wallet'] == state['initial_wallet'], 'pending warmup requires untouched cold paper account')
+        advance(state['engine'], bars, bootstrap=True)
+        require(call <= recorded and recorded - min(r['request_ms'] for r in receipt_chain(receipts)) <= MAX_AGE, 'warmup observation expired')
+        event = dict(kind='warmup_only', id=1, request_ms=min(r['request_ms'] for r in receipt_chain(receipts)),
+                     receipt_ms=max(r['receipt_ms'] for r in receipt_chain(receipts)), decision_ms=call, recorded_at_ms=recorded,
+                     interval_end=latest, skipped_intervals=max(0, (latest - state['initialized_ms'] // INTERVAL * INTERVAL) // INTERVAL),
+                     receipts=receipts, proposal=None, simulated=[], money=[], **opening_balances,
+                     reason='first_fresh_public_market_warmup_only', current_source=current_source, performance_qualified=False)
+        state.update(market_ready=True, market_ready_at_ms=call, market_ready_reason=None, last_interval=latest)
+        state['events'].append(event)
+        return seal(state)
+    require(latest > max(state['last_interval'], state['initialized_ms'], state['market_ready_at_ms']), 'no backfill/duplicate/preinitialization decision')
     gap = (latest - state['last_interval']) // INTERVAL - 1
     require(not gap or declared_gap is True, 'skipped periods must be declared')
     new_bars = [b for b in bars if b['end'] > state['last_interval']]
@@ -973,7 +1119,7 @@ def apply_observation(state, receipts, call, recorded, declared_gap, current_sou
     proposal, fills, simulated = (spot_decide if KIND == 'spot' else coin_decide)(state, new_bars, book, call, not state['unresolved'] and not passive)
     money = passive + funding + fills
     wallet, q, fees, total_funding = [number(opening_balances[k]) for k in ('wallet', 'btc', 'fees', 'funding')]
-    entry = number(state['events'][-1]['entry']) if state['events'] else D(0)
+    entry = number(state['events'][-1].get('entry', '0')) if state['events'] else D(0)
     for item in money:
         if item['kind'] == 'funding': wallet -= number(item['cost']); total_funding += number(item['cost']); continue
         amount, price, fee = [number(item[k]) for k in ('qty', 'price', 'fee')]
@@ -988,9 +1134,9 @@ def apply_observation(state, receipts, call, recorded, declared_gap, current_sou
     mark = number(book.get('mark', bars[-1]['close']))
     equity = wallet + q * (mark if KIND == 'spot' else mark - entry)
     cny = equity * number(fx['cny_per_usdt']) * (1 - FX_FEE)
-    require(call <= recorded and recorded - min(r['request_ms'] for r in receipts) <= MAX_AGE, 'observation expired during decision')
-    event = {'id': len(state['events']) + 1, 'request_ms': min(r['request_ms'] for r in receipts),
-             'receipt_ms': max(r['receipt_ms'] for r in receipts), 'decision_ms': call, 'recorded_at_ms': recorded,
+    require(call <= recorded and recorded - min(r['request_ms'] for r in receipt_chain(receipts)) <= MAX_AGE, 'observation expired during decision')
+    event = {'kind': 'decision', 'id': len(state['events']) + 1, 'request_ms': min(r['request_ms'] for r in receipt_chain(receipts)),
+             'receipt_ms': max(r['receipt_ms'] for r in receipt_chain(receipts)), 'decision_ms': call, 'recorded_at_ms': recorded,
              'interval_end': latest, 'skipped_intervals': gap, 'receipts': receipts, 'proposal': proposal,
              'simulated': simulated, 'money': money, 'wallet': str(wallet), 'btc': str(q), 'fees': str(fees),
              'funding': str(total_funding), 'entry': str(entry), 'mark': str(mark), 'fx': fx,
@@ -1025,7 +1171,7 @@ def observe(path, export, export_sha, review_sha, urls, *, declared_gap=False):
         call = now_ms()
         result = apply_observation(state, receipts, call, call, declared_gap, binding['current_source'])
         recorded = now_ms()
-        require(call <= recorded and recorded - min(r['request_ms'] for r in receipts) <= MAX_AGE, 'observation expired during decision')
+        require(call <= recorded and recorded - min(r['request_ms'] for r in receipt_chain(receipts)) <= MAX_AGE, 'observation expired during decision')
         result['events'][-1]['recorded_at_ms'] = recorded
         result = seal(result); audit(result)
         require(validate_export(export, export_sha, review_sha)[0] == binding and Path(export).read_bytes() == export_raw,
@@ -1045,7 +1191,10 @@ def main(argv=None):
     for command in ('init', 'observe'):
         p = sub.add_parser(command)
         for name in ('diary', 'export', 'export-sha', 'review-sha'): p.add_argument('--' + name, required=True)
-        if command == 'init': p.add_argument('--history', required=True)
+        if command == 'init':
+            mode = p.add_mutually_exclusive_group(required=True)
+            mode.add_argument('--history')
+            mode.add_argument('--defer-market-warmup', action='store_true')
         else: p.add_argument('--url', action='append', required=True); p.add_argument('--declared-gap', action='store_true')
     p = sub.add_parser('audit'); p.add_argument('--diary', required=True)
     args = parser.parse_args(argv)
@@ -1053,7 +1202,7 @@ def main(argv=None):
     elif args.command == 'acquire':
         result = acquire(args.url, args.directory); new_file(args.out, dump(result))
     elif args.command == 'export': result = {'sha256': export_binding(args.analysis, args.review, args.bridges, args.out)}
-    elif args.command == 'init': result = initialize(args.diary, args.export, args.export_sha, args.review_sha, args.history)
+    elif args.command == 'init': result = initialize(args.diary, args.export, args.export_sha, args.review_sha, args.history, defer_market_warmup=args.defer_market_warmup)
     elif args.command == 'observe': result = observe(args.diary, args.export, args.export_sha, args.review_sha, args.url, declared_gap=args.declared_gap)
     else:
         state = strict(Path(args.diary).read_bytes()); result = {'audit': audit(state), 'scope': 'raw_ledger_reconstruction_only', 'source_binding_verified': False,
