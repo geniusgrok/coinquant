@@ -292,6 +292,8 @@ class EdgeTests(unittest.TestCase):
                 results.append((report, venue.now, venue.wallet, venue.q, venue.orders, venue.algos,
                                 venue.trades, venue.calls, venue.sent, checkpoint))
         self.assertEqual(results[0], results[1])
+        self.assertEqual(edge.decision_coverage([{'event': 'decision'}])['actual_decisions'], 1)
+        self.assertEqual(edge.decision_coverage([{'event': 'decision'}])['edge_evaluations'], 0)
 
     def test_real_decision_journal_has_distinct_completion_clocks(self):
         with tempfile.TemporaryDirectory() as path, self.variant(journal=(journal := [])) as identity:

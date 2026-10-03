@@ -393,7 +393,8 @@ def measure(args):
 
 def decision_coverage(ledger):
     rows = [e for e in ledger if e['event'] == 'edge_predecision']
-    return {'actual_decisions': len(rows),
+    return {'actual_decisions': sum(e['event'] == 'decision' for e in ledger),
+        'edge_evaluations': len(rows),
         'primary_new_risk_blocked': sum(e['rules']['blocked_primary_new_risk'] for e in rows),
         'missing_inputs': dict(Counter(cause for e in rows for cause in e['rules']['missing'])),
         'feature_lookups': dict(Counter(name+':'+(value['cause'] or 'known')
