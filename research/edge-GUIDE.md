@@ -6,7 +6,7 @@
 
 当前规则2026-10-03-atr-stop-crowding-interaction-v1，SMA30/40/50、ATR14保护、默认规模1。拥挤度只约束真正NEW BUY，三项同时成立时减半一次；缺失只阻止该BUY，安全退出/止损不依赖这些数据。没有旧持仓补仓或自动资金再平衡。公开BTC fundingRate及配对现货/期货1d klines共用原始响应、SHA、请求/接收时钟和相同因果解析；不读未来历史特征文件，不请求私有期货账户。
 
-funding结算+28800000ms才可用，自availability起age≥28800000ms即过期；basis使用closeTime+1的匹配UTC完成边界、完成+60000ms可用、当前UTC可用日期及最多一日年龄。响应接收须≤决策，且最多一分钟旧。不能用未完成K线或预测资金费率，也不能把缺失/非有限值变为0。详细说明 [canonical-crowding-GUIDE.md](canonical-crowding-GUIDE.md)。
+funding结算+28800000ms才可用，自availability起age≥28800000ms即过期；basis使用closeTime+1的匹配UTC完成边界、完成+60000ms可用、当前UTC可用日期及最多一日年龄。响应接收须≤决策，且最多一分钟旧。不能用未完成K线或预测资金费率，也不能把缺失/非有限值变为0。详细说明 [Spotquant现货规则细则](https://github.com/geniusgrok/spotquant/blob/main/research/canonical-crowding-GUIDE.md)。
 
 旧规则/不兼容状态恢复前拒绝，包括平仓状态。Model格式5不代表执行策略版本兼容。保留旧State/SQLite/订单身份，只读核对或受控迁移需要额外真实账户证据；本交付未进行迁移，不创建空目录绕过拒绝。Spot的run --execute继续阻止；Coin受控Demo/小额试验入口仍须原授权和全部账户保护门，默认只读。工程工作不授予账户、订单、转账或设置权限。
 
