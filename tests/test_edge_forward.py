@@ -285,11 +285,26 @@ class SourceAndExportTests(unittest.TestCase):
     def test_archive_metadata_equivalence_actual_protected_byte_rejection(self):
         recorded = f.source(self.repo)
         (self.repo / 'NOTES.md').write_text('metadata only\n'); self.commit()
+        (self.repo / 'evidence').mkdir()
+        (self.repo / 'evidence' / 'review.json').write_text('{}')
+        (self.repo / 'evidence' / 'independent_proof.py').write_text('print(1)\n')
+        (self.repo / 'research' / 'GUIDE.md').write_text('inert prose\n')
+        self.commit()
         current = f.source(self.repo)
         self.assertNotEqual(recorded['git_head'], current['git_head'])
         f.assert_equivalent(recorded, current, self.repo)
         (self.repo / f.PACKAGE / 'rule.py').write_text('RULE = 2\n')
         with self.assertRaises(ValueError): f.source(self.repo)
+        self.commit()
+        with self.assertRaises(ValueError): f.assert_equivalent(recorded, f.source(self.repo), self.repo)
+
+    def test_executable_configuration_and_protocol_are_protected(self):
+        recorded = f.source(self.repo)
+        (self.repo / 'config.example.json').write_text('{}')
+        self.commit()
+        with self.assertRaises(ValueError): f.assert_equivalent(recorded, f.source(self.repo), self.repo)
+        recorded = f.source(self.repo)
+        (self.repo / 'research' / 'edge-PROTOCOL.md').write_text('changed rule')
         self.commit()
         with self.assertRaises(ValueError): f.assert_equivalent(recorded, f.source(self.repo), self.repo)
 

@@ -101,8 +101,9 @@ def source(root=ROOT, head=None):
     """Archive every runtime byte, research program/data and executable/configuration file.
 
     Ordinary Markdown prose is metadata. All runtime files, research non-prose
-    files, every protocol Markdown, all Python, executable modes and configuration
-    suffixes anywhere are protected. No per-file change exclusions or caller allowlist.
+    files and research protocols, root executable/configuration files, and .github
+    execution configuration are protected, including their modes. Tests and inert
+    evidence/review packets are not execution inputs. No per-file change exclusions or caller allowlist.
     """
     root = Path(root)
     current = git(root, 'rev-parse', 'HEAD').decode().strip()
@@ -117,10 +118,11 @@ def source(root=ROOT, head=None):
                 require(not member.issym() and not member.islnk(), 'source symlinks unsupported')
                 continue
             name = member.name
-            protected = (name.split('/')[0] == package or
-                         (name.startswith('research/') and (not name.endswith('.md') or 'protocol' in Path(name).name.lower())) or
-                         Path(name).suffix in {'.py', '.json', '.toml', '.yaml', '.yml', '.cfg', '.ini', '.sh'} or
-                         bool(member.mode & 0o111))
+            parts = Path(name).parts
+            protected = (parts[0] in (package, '.github') or
+                         (parts[0] == 'research' and (not name.endswith('.md') or 'protocol' in parts[-1].lower())) or
+                         (len(parts) == 1 and (Path(name).suffix in {'.py', '.json', '.toml', '.yaml', '.yml', '.cfg', '.ini', '.sh'} or
+                                               bool(member.mode & 0o111))))
             if not protected: continue
             raw = tree.extractfile(member).read()
             files[name] = sha(raw); modes[name] = member.mode
