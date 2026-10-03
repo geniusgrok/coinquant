@@ -8,7 +8,7 @@
 
 funding结算+28800000ms才可用，自availability起age≥28800000ms即过期；basis使用closeTime+1的匹配UTC完成边界、完成+60000ms可用、当前UTC可用日期及最多一日年龄。响应接收须≤决策，且最多一分钟旧。不能用未完成K线或预测资金费率，也不能把缺失/非有限值变为0。详细说明 [canonical-crowding-GUIDE.md](canonical-crowding-GUIDE.md)。
 
-旧规则/不兼容状态恢复前拒绝，包括平仓状态。Model格式5不代表执行策略版本兼容。保留旧State/SQLite/订单身份，只读核对或受控迁移需要额外真实账户证据；本交付未进行迁移，不创建空目录绕过拒绝。默认只读，run --execute仍阻止；工程工作不授予账户、订单、转账或设置权限。
+旧规则/不兼容状态恢复前拒绝，包括平仓状态。Model格式5不代表执行策略版本兼容。保留旧State/SQLite/订单身份，只读核对或受控迁移需要额外真实账户证据；本交付未进行迁移，不创建空目录绕过拒绝。Spot的run --execute继续阻止；Coin受控Demo/小额试验入口仍须原授权和全部账户保护门，默认只读。工程工作不授予账户、订单、转账或设置权限。
 
 ## 手动前向影子账本
 
@@ -27,10 +27,17 @@ python -m research.edge_forward init --diary /NEW/path/ledger.json \
 python -m research.edge_forward observe --diary /existing/ledger.json \
   --export /restored/forward-binding.json --export-sha PINNED_RAW_EXPORT_SHA \
   --review-sha 50dc293c8225027f2bfa49508cdd058f2ccc4a44ebb4976f3b41b206d048aefc \
-  --url bars=OFFICIAL_CURRENT_BTC_BAR_URL --url depth=OFFICIAL_CURRENT_DEPTH_URL
+  --url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=4h&limit=150' \
+  --url 'https://fapi.binance.com/fapi/v1/depth?symbol=BTCUSDT&limit=1000' \
+  --url 'https://fapi.binance.com/fapi/v1/aggTrades?symbol=BTCUSDT&limit=1000' \
+  --url 'https://fapi.binance.com/fapi/v1/exchangeInfo?symbol=BTCUSDT' \
+  --url 'https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT' \
+  --url 'https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=100' \
+  --url 'https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10' \
+  --url 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXCHUS'
 ```
 
-具体所需公开类别以各仓库edge_forward.py CLI与当前指南所述为准：Spot另需futures_bars/crowding_funding，Coin需mark/funding/dfii配对公开证据，观察还保留FX。响应必须实际取得且时间/来源/哈希满足契约；HTTP失败留原始响应，不绕过地理限制。Observe是纯公开、显式模型成交影子账本，不是交易账户/原生成交。不要为了让事件数变大回填观察或反复刷新同一区间。
+--url参数接收实际官方URL，类别由URL识别，不使用category=URL语法。必须传入完整所需公开输入，含当前DEXCHUS FX配对证据。具体所需公开类别以各仓库edge_forward.py CLI与当前指南所述为准：Spot另需futures_bars/crowding_funding，Coin需mark/funding/dfii配对公开证据，观察还保留FX。响应必须实际取得且时间/来源/哈希满足契约；HTTP失败留原始响应，不绕过地理限制。Observe是纯公开、显式模型成交影子账本，不是交易账户/原生成交。不要为了让事件数变大回填观察或反复刷新同一区间。
 
 ## 复现与检查
 
