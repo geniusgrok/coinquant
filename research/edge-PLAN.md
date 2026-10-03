@@ -48,9 +48,9 @@ Missing causal feature data must not become zero; future bars/rates cannot influ
 
 ### Task 4: Coin mechanisms
 
-- [ ] Implement opportunity-quality risk budget and trend/funding-aware holding-horizon rules independently, preserving actual funded sizing, installed stops and finite-session constraints.
-- [ ] Apply an execution-dependence fix only if Task 1 identifies a specific unnecessary same-opportunity dependency; otherwise record no justified fix and retain timing sensitivity tests.
-- [ ] Include actual journals, causally known features, fixed risk scale and split initial-capital inputs. Test checkpoint/recovery, causal expiry/extension and unchanged macro/safety paths; commit and independently review.
+- [x] Implement opportunity-quality risk budget and trend/funding-aware holding-horizon rules independently, preserving actual funded sizing, installed stops and finite-session constraints.
+- [x] Apply an execution-dependence fix only if Task 1 identifies a specific unnecessary same-opportunity dependency; otherwise record no justified fix and retain timing sensitivity tests.
+- [x] Include actual journals, causally known features, fixed risk scale and split initial-capital inputs. Test checkpoint/recovery, causal expiry/extension and unchanged macro/safety paths; commit and independently review.
 
 ### Task 5: Assessment, combinations and two-account capital
 
