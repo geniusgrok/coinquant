@@ -278,6 +278,202 @@ class ForwardTests(unittest.TestCase):
         with self.assertRaises(FileNotFoundError): f.audit(state)
 
 
+    def next_print(self, stamp, close, identity=101, *, high=None, capacity=None):
+        receipts = self.observations(stamp, [close])
+        for receipt in receipts:
+            body = f.strict(f.payload(receipt)) if receipt['category'] != 'fx' else None
+            if receipt['category'] == 'trades':
+                body = [dict(a=identity, p=close, q='100', T=stamp - 120)]
+            elif receipt['category'] == 'bars' and high is not None:
+                body[0][2] = high
+            elif receipt['category'] == 'depth' and capacity is not None:
+                body['bids'][0][1] = capacity
+            else:
+                continue
+            raw = f.dump(body); Path(receipt['path']).write_bytes(raw); receipt['sha256'] = f.sha(raw)
+        return receipts
+
+    def append_receipts(self, stamp, receipts):
+        with patch.object(f, 'validate_export', return_value=(self.binding, b'fixture')), patch.object(f, 'now_ms', side_effect=[stamp - 200, stamp, stamp + 1]), patch.object(f, 'acquire', side_effect=receipts):
+            return f.observe(self.diary, self.export, 'e' * 64, 'a' * 64, [r['url'] for r in receipts])
+
+    @unittest.skipUnless(f.KIND == 'spot', 'Spot unresolved survival regression')
+    def test_prior_unresolved_span_blocks_later_local_passive_fill(self):
+        self.enter()
+        uncertain = self.observe(self.initial + 3 * f.INTERVAL, ['112'])
+        self.assertIn('incomplete_public_protection_path', uncertain['unresolved'])
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+        balances = {k: uncertain[k] for k in ('wallet', 'btc', 'fees', 'funding')}
+        owners = copy.deepcopy(uncertain['engine']['owners'])
+        quantities = {w: p['qty'] for w, p in uncertain['engine']['positions'].items()}
+        stamp = self.initial + 4 * f.INTERVAL
+        result = self.append_receipts(stamp, self.next_print(stamp, '80'))
+        self.assertEqual(result['events'][-1]['money'], [])
+        self.assertEqual({k: result[k] for k in balances}, balances)
+        self.assertEqual(result['engine']['owners'], owners)
+        self.assertEqual({w: p['qty'] for w, p in result['engine']['positions'].items()}, quantities)
+        self.assertTrue(result['events'][-1]['conditional_equity'])
+        self.assertIn('incomplete_public_protection_path', result['unresolved'])
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+
+    @unittest.skipUnless(f.KIND == 'spot', 'Spot fill-time-aware ownership')
+    def test_entry_day_prefill_wick_does_not_tighten_owned_stop(self):
+        self.initial += 120000  # entry is beyond native first-minute allowance
+        entered = self.enter()
+        positions = copy.deepcopy(entered['engine']['positions'])
+        stamp = self.initial + 3 * f.INTERVAL
+        result = self.append_receipts(stamp, self.next_print(stamp, '112', high='200'))
+        self.assertEqual(result['events'][-1]['money'], [])
+        self.assertEqual(result['unresolved'], [])
+        for w, p in result['engine']['positions'].items():
+            self.assertEqual(p['peak'], positions[w]['peak'])
+            self.assertEqual(p['stop'], positions[w]['stop'])
+            self.assertEqual(result['events'][-1]['proposal']['sleeves'][w]['action'], 'hold')
+            self.assertEqual(result['engine']['models'][w]['body']['entry'], None)
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+        # A bar opening after the fill does count toward ownership.
+        later = stamp + f.INTERVAL
+        result = self.append_receipts(later, self.next_print(later, '113', identity=102, high='114'))
+        self.assertTrue(all(D(p['peak']) == 114 for p in result['engine']['positions'].values()))
+        self.assertTrue(f.audit(result))
+
+    def broad_atr_history(self):
+        history = f.strict(self.history.read_bytes()); receipt = history[0]
+        rows = f.strict(f.payload(receipt))
+        for row in rows:
+            row[1:5] = ['110', '110.1', '109.9', '110']
+        rows[-1][1:5] = ['109', '109.1', '108.9', '109']
+        for row in rows[-20:]: row[2:4] = ['130', '70']
+        raw = f.dump(rows); Path(receipt['path']).write_bytes(raw); receipt['sha256'] = f.sha(raw)
+        self.history.write_bytes(f.dump(history))
+
+    @unittest.skipUnless(f.KIND == 'spot', 'Spot native full/partial ownership close')
+    def test_bearish_ordinary_full_exit_restores_then_requires_fresh_cross(self):
+        from spotquant.model import Model
+        self.broad_atr_history(); self.enter()
+        stamp = self.initial + 3 * f.INTERVAL
+        result = self.append_receipts(stamp, self.next_print(stamp, '110'))
+        self.assertEqual(D(result['btc']), 0)
+        self.assertEqual(result['unresolved'], [])
+        self.assertEqual([m['kind'] for m in result['events'][-1]['money']], ['sell'])
+        for item in result['events'][-1]['proposal']['sleeves'].values():
+            self.assertIn('not above', item['reason'])
+        for saved in result['engine']['models'].values():
+            model = Model.restore(saved)
+            self.assertFalse(model.bull); self.assertFalse(model.need_reset); self.assertFalse(model.enter)
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+        before = self.diary.read_bytes()
+        with self.assertRaises(ValueError): self.append_receipts(stamp, self.next_print(stamp, '110'))
+        self.assertEqual(before, self.diary.read_bytes())
+        first = self.observe(stamp + f.INTERVAL, ['112'])
+        self.assertEqual(D(first['btc']), 0)  # first bullish close cannot reenter
+        second = self.observe(stamp + 2 * f.INTERVAL, ['113'])
+        self.assertGreater(D(second['btc']), 0)
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+
+    @unittest.skipUnless(f.KIND == 'spot', 'Spot partial ownership and passive checkpoint')
+    def test_partial_ordinary_exit_and_later_passive_exit_restore(self):
+        from spotquant.model import Model
+        self.broad_atr_history(); entered = self.enter()
+        stamp = self.initial + 3 * f.INTERVAL
+        partial = self.append_receipts(stamp, self.next_print(stamp, '110', capacity='5'))
+        self.assertEqual(D(partial['btc']), D(entered['btc']) - 5)
+        self.assertGreater(len(partial['engine']['positions']), 0)
+        self.assertLess(len(partial['engine']['positions']), len(entered['engine']['positions']))
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+        for saved in partial['engine']['models'].values(): Model.restore(saved)
+        # Prior completed models are bearish when the later passive trigger arrives.
+        later = stamp + f.INTERVAL
+        closed = self.append_receipts(later, self.next_print(later, '70', identity=102))
+        self.assertEqual(D(closed['btc']), 0)
+        self.assertTrue(all(m['passive'] for m in closed['events'][-1]['money']))
+        self.assertTrue(f.audit(f.strict(self.diary.read_bytes())))
+        for saved in closed['engine']['models'].values(): Model.restore(saved)
+
+    def coin_sizing_fixture(self, *, macro=True, depth='100', mark='112', minimum=None):
+        state = self.initialize(); stamp = self.initial + f.INTERVAL
+        bars = f.bars_from([r for r in self.observations(stamp, ['100' if macro else '112']) if r['category'] == 'bars'], stamp)
+        f.advance(state['engine'], bars)
+        if macro: state['events'] = [{}]  # pure post-bootstrap sizing probe only
+        book = f.book_from(self.observations(stamp, ['112']), stamp)
+        book['asks'][0][1] = depth; book['mark'] = mark
+        if minimum is not None:
+            rule = next(r for r in book['instrument']['filters'] if r['filterType'] == 'MIN_NOTIONAL')
+            rule['notional'] = rule['minNotional'] = minimum
+        today = f.datetime.fromtimestamp(stamp / 1000, f.timezone.utc).date()
+        book['dfii10'] = dict(missing_reason=None, latest_observation_date=str(today - f.timedelta(days=3)),
+            prior20_observation_date=str(today - f.timedelta(days=30)), latest_value='1.5', prior20_value='2',
+            latest_value_available_ms=stamp - f.DAY, prior20_value_available_ms=stamp - f.DAY,
+            asof_vintage_date=str(today - f.timedelta(days=3)), response_sha256='synthetic-pure-sizing')
+        return state, bars, book, stamp
+
+    @unittest.skipUnless(f.KIND == 'perp', 'Coin canonical macro stop budget')
+    def test_macro_cap_binds_executable_entry_and_keeps_original_target(self):
+        state, bars, book, stamp = self.coin_sizing_fixture(mark='111')
+        capital = D(state['wallet'])
+        proposal, fills, simulated = f.coin_decide(state, bars, book, stamp, True)
+        a = state['engine']['account']; target = state['engine']['committed_target']
+        price, stop, qty = D(a['entry']), D(a['sl']), D(a['q'])
+        self.assertLess(proposal['opportunity']['identity'], 0)
+        self.assertLessEqual(qty * (price - stop), capital * D('.03'))
+        self.assertEqual(D(target['quantity']), capital * D('.03') / (price - stop))
+        self.assertEqual(target['quantity'], simulated[0]['requested'])
+        self.assertEqual(target['accepted_quantity'], a['q'])
+        self.assertLess(D(target['accepted_quantity']), D(target['quantity']))
+        self.assertEqual(D(target['stop_budget_usdt']), capital * D('.03'))
+        self.assertEqual(target['created_ms'], stamp); self.assertIsNone(target['expires'])
+        self.assertEqual(D(fills[0]['fee']), qty * price * f.FEE)
+
+    @unittest.skipUnless(f.KIND == 'perp', 'Coin macro entry-versus-mark geometry')
+    def test_macro_volatility_target_uses_higher_mark_not_entry_price(self):
+        from coinquant.campaign import Campaign
+        state, bars, book, stamp = self.coin_sizing_fixture(mark='125')
+        model = Campaign.restore(state['engine']['campaign'])
+        model.returns.clear(); model.returns.extend([D('1')] * 20)
+        state['engine']['campaign'] = model.checkpoint()
+        fraction = model.fraction('3.6', str(f.SLIP))
+        proposal, fills, simulated = f.coin_decide(state, bars, book, stamp, True)
+        target = state['engine']['committed_target']
+        self.assertLess(D(target['entry_estimate']), D(book['mark']))
+        self.assertEqual(D(target['quantity']), D(state['wallet']) * fraction / D(book['mark']))
+        self.assertLess(D(target['quantity']) * (D(target['entry_estimate']) - D(target['stop'])), D(target['stop_budget_usdt']))
+
+    @unittest.skipUnless(f.KIND == 'perp', 'Coin target versus constrained fill')
+    def test_primary_target_unchanged_and_fee_margin_limited_fill(self):
+        state, bars, book, stamp = self.coin_sizing_fixture(macro=False)
+        capital = D(state['wallet'])
+        proposal, fills, simulated = f.coin_decide(state, bars, book, stamp, True)
+        target = state['engine']['committed_target']
+        self.assertGreater(target['opportunity'], 0)
+        self.assertIsNone(target['stop_budget_usdt'])
+        self.assertEqual(state['engine']['account']['q'], '74.45505')  # retained incumbent fixture
+        self.assertEqual(simulated[0]['reason'], 'funding_cap')
+        self.assertEqual(D(target['quantity']), capital * D(proposal['target_fraction']) / max(D(target['entry_estimate']), D(book['mark'])))
+        self.assertGreater(D(target['quantity']), D(target['accepted_quantity']))
+
+    @unittest.skipUnless(f.KIND == 'perp', 'Coin depth and minimum caps')
+    def test_macro_depth_and_minimum_limits_do_not_relabel_target(self):
+        state, bars, book, stamp = self.coin_sizing_fixture(depth='.1')
+        proposal, fills, simulated = f.coin_decide(state, bars, book, stamp, True)
+        target = state['engine']['committed_target']
+        self.assertEqual(D(target['accepted_quantity']), D('.1'))
+        self.assertGreater(D(target['quantity']), D('.1'))
+        self.assertEqual(simulated[0]['reason'], 'liquidity_cap')
+        # A rejected minimum still journals its target but commits no filled campaign.
+        state['engine']['account'] = f.initial_engine()['account']
+        state['engine']['account']['wallet'] = state['initial_wallet']
+        from coinquant.campaign import Campaign
+        model = Campaign.restore(state['engine']['campaign']); model.position_campaign = None
+        model.macro_consumed = None; model.consumed = None
+        state['engine']['campaign'] = model.checkpoint(); state['engine']['committed_target'] = None
+        rule = next(r for r in book['instrument']['filters'] if r['filterType'] == 'MIN_NOTIONAL')
+        rule['notional'] = rule['minNotional'] = '1000'
+        proposal, fills, simulated = f.coin_decide(state, bars, book, stamp, True)
+        self.assertEqual(fills, []); self.assertIsNone(state['engine']['committed_target'])
+        self.assertEqual(simulated[0]['accepted'], '0')
+        self.assertGreater(D(proposal['sizing']['requested_quantity']), 0)
+
+
 
 class SourceAndExportTests(unittest.TestCase):
     def setUp(self):

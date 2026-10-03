@@ -557,14 +557,19 @@ def initial_engine():
 def advance(engine, bars, *, bootstrap=False):
     if KIND == 'spot':
         from spotquant.model import Model
+        from spotquant.follow import advance as advance_owned
         for window, saved in engine['models'].items():
             model = Model.restore(saved); position = engine['positions'].get(window)
-            if position:
-                model.position_peak = number(position['peak'])
             for bar in bars:
                 if model.last is None or bar['start'] > model.last:
+                    # Full OHLC belongs to the market checkpoint. Canonical
+                    # follow state separately owns fill-time peaks/repair flags.
                     model.update(bar['start'], bar['high'], bar['low'], bar['close'])
-            if position: position['peak'] = str(model.position_peak)
+                    if position:
+                        position = advance_owned(position, dict(open_ms=bar['start'], high=number(bar['high']),
+                            low=number(bar['low']), close=number(bar['close']), bull=model.bull,
+                            cap_high=model._view_cap_high()), model)
+                        engine['positions'][window] = position
             if bootstrap: model.note_flat()
             engine['models'][window] = model.checkpoint()
     else:
@@ -694,6 +699,9 @@ def passive_fills(state, book, call):
     trigger on marks; trade prints cannot prove that path and remain unknown.
     """
     if not number(state['btc']): return [], True
+    # A later local print slice cannot prove survival through an earlier gap.
+    # Recovery is deliberately unsupported; conditional exposure stays sticky.
+    if state['unresolved']: return [], False
     if KIND == 'perp' or book['missing'] or not state['events']:
         return [], False
     prior = state['events'][-1]
@@ -725,7 +733,7 @@ def passive_fills(state, book, call):
     from spotquant.model import Model
     for item in money:
         w = item['sleeves'][0]
-        model = Model.restore(state['engine']['models'][w]); model.note_exit(); model.enter = False
+        model = Model.restore(state['engine']['models'][w]); model.note_flat()
         state['engine']['models'][w] = model.checkpoint()
         del positions[w]; state['engine']['owners'].pop(w, None)
     return money, True
@@ -781,12 +789,12 @@ def funding_entries(state, receipts, call):
 def spot_decide(state, bars, book, call, enabled):
     from spotquant.model import Model
     from spotquant.preview import decision
+    from spotquant.session import _view
     engine = state['engine']; positions = engine['positions']; models = {}
     owned = {}
     for w, saved in engine['models'].items():
-        model = Model.restore(saved); p = positions.get(w)
-        if p: model.position_peak = number(p['peak'])
-        models[int(w)] = model; owned[int(w)] = number(p['qty']) if p else D(0)
+        model, quantity = _view(Model.restore(saved), positions.get(w))
+        models[int(w)] = model; owned[int(w)] = quantity
     snap = dict(btc=state['btc'], usdt_free=state['wallet'], avg_price=book.get('mark', bars[-1]['close']), open_orders=[])
     proposal = decision(models, owned, snap, positions={int(w): p for w, p in positions.items()},
                         owners=engine['owners'], entries_enabled=enabled,
@@ -833,15 +841,17 @@ def spot_decide(state, bars, book, call, enabled):
                 part = left if index == len(group) - 1 else floor(qty / len(group), D('.00001'))
                 left -= part
                 if not part: continue
-                model.note_entry(price, peak=price)
-                if model.cap_enter: model.note_cap_entry()
-                positions[w] = dict(qty=str(part), peak=str(price), entry_fill=str(price), first_ms=call, stop=str(stops[w]))
+                positions[w] = dict(qty=str(part), peak=str(price), entry_fill=str(price), first_ms=call, stop=str(stops[w]),
+                                    entry_open_ms=call // DAY * DAY, repair=bool(model.cap_enter),
+                                    repair_peak=str(price) if model.cap_enter else None, adverse=False,
+                                    through=None, protection='resting')
             else:
                 part = min(left, number(positions[w]['qty'])); left -= part
                 positions[w]['qty'] = str(number(positions[w]['qty']) - part)
                 if not number(positions[w]['qty']):
-                    del positions[w]; model.note_exit(); model.enter = False
-            engine['models'][w] = model.checkpoint()
+                    del positions[w]
+                    market_model = Model.restore(engine['models'][w]); market_model.note_flat()
+                    engine['models'][w] = market_model.checkpoint()
     # Amend only at this manual observation; allocated floors never loosen.
     for w, p in positions.items():
         model = models[int(w)]
@@ -860,6 +870,7 @@ def coin_decide(state, bars, book, call, enabled):
     from coinquant.linear_preview import preview
     from coinquant.linear_account import Account
     from coinquant.linear_sizing import funded_target
+    from coinquant.native_preview import MACRO_STOP_BUDGET
     model = Campaign.restore(state['engine']['campaign'])
     account = Account(**{k: number(v) for k, v in state['engine']['account'].items()})
     missing_macro = model.macro_relevant() and 'dfii10' not in book
@@ -884,18 +895,29 @@ def coin_decide(state, bars, book, call, enabled):
         filters = {r['filterType']: r for r in book['instrument']['filters']}
         tick = number(filters['PRICE_FILTER']['tickSize'])
         sl, tp = floor(opportunity.stop, tick), floor(opportunity.take, tick)
+        capital = account.wallet  # A new campaign is flat and owns this funded sleeve.
+        requested = capital * fraction / max(price, number(book['mark']))
+        target = stop_budget = None
+        if opportunity is model.macro_opportunity:
+            require(price > sl, 'macro stop must be below executable entry')
+            stop_budget = capital * MACRO_STOP_BUDGET
+            target = min(requested, stop_budget / (price - sl))
         limits = filters['PRICE_FILTER']
         if not number(limits['minPrice']) <= sl < tp <= number(limits['maxPrice']):
-            result = dict(requested=str(requested), accepted='0', reason='instrument_protection_price_bounds')
+            result = dict(requested=str(requested if target is None else target), accepted='0', reason='instrument_protection_price_bounds')
         else:
             result = funded_target(account, 1, fraction, price, number(book['mark']), sl, tp,
-                                   quantity_limit(capacity, price, book['instrument']), book['instrument'], intended_add=True)
+                                   quantity_limit(capacity, price, book['instrument']), book['instrument'], intended_add=True,
+                                   target_quantity=target)
+        proposal['sizing'] = dict(requested_quantity=result['requested'], accepted_quantity=result['accepted'],
+                                  sizing_capital_usdt=str(capital), entry_estimate=str(price), stop=str(sl), take=str(tp),
+                                  stop_budget_usdt=None if stop_budget is None else str(stop_budget))
         simulated.append({k: str(v) if isinstance(v, D) else v for k, v in result.items()})
         amount = number(result['accepted'])
         if amount:
             model.filled(opportunity.identity)
-            state['engine']['committed_target'] = {'quantity': str(account.q), 'opportunity': opportunity.identity,
-                                                    'created_ms': call, 'expires': opportunity.expires}
+            state['engine']['committed_target'] = dict(proposal['sizing'], quantity=result['requested'],
+                                                      opportunity=opportunity.identity, created_ms=call, expires=opportunity.expires)
             money.append(dict(kind='buy', qty=str(amount), price=str(price), fee=str(amount * price * FEE),
                               modeled=True, time=call, slippage_reserve=str(SLIP), opportunity=opportunity.identity))
     elif action == 'exit' and account.q:
