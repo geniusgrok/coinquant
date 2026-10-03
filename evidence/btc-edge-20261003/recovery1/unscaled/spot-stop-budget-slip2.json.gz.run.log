@@ -1,0 +1,9 @@
+{"candidate": "stop-budget", "scenario": "slip2", "session": 0}
+{"candidate": "stop-budget", "scenario": "slip2", "session": 100}
+{"candidate": "stop-budget", "scenario": "slip2", "session": 200}
+{"candidate": "stop-budget", "scenario": "slip2", "session": 300}
+{"candidate": "stop-budget", "scenario": "slip2", "session": 400}
+{"candidate": "stop-budget", "scenario": "slip2", "session": 500}
+{"candidate": "stop-budget", "scenario": "slip2", "session": 600}
+{"candidate": "stop-budget", "scenario": "slip2", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-slip2.json.gz", "complete": true, "sha256": "ecf06ee7f9d1cc645aba31cfd7cda162400302b6287cb7cbd1ae02ce5b4aabc7"}

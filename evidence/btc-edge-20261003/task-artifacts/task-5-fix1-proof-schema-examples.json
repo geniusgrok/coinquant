@@ -1,0 +1,348 @@
+{
+  "scope": "Synthetic contract examples only; incomplete record subsets, not an admissible final proof or actual outcomes.",
+  "format": "btc-edge-financial-review-v1",
+  "artifact_exact_fields": [
+    "inventory_sha256",
+    "category",
+    "recomputations"
+  ],
+  "record_exact_fields": [
+    "id",
+    "raw_bindings",
+    "values",
+    "matches"
+  ],
+  "complete_synthetic_68_account_coverage": {
+    "source_and_inputs": 136,
+    "original_accounting": 68,
+    "baseline_six_groups": 10,
+    "calibration_and_actual_risk": 16,
+    "adoption_gates": 8,
+    "actual_budget_aggregation": 3
+  },
+  "examples": {
+    "source_and_inputs": [
+      {
+        "id": "raw:perp|cost-horizon|base|1E+4|0|risk.json",
+        "raw_bindings": {
+          "perp|cost-horizon|base|1E+4|0|risk.json": "74ffbc49add9cae0e0303e141a4cce74f41835089a656bd96bc489e8124b0078"
+        },
+        "values": {
+          "project_kind": "perp",
+          "source": {
+            "git_head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "dirty": false,
+            "python_sources_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "spec_sha256": "53296233aadc6429359dd7b664c4e03a28eb451d6bacf4318fced4ce13f7e3de",
+          "protocol_sha256": "714e0eae887fc9aac79380662c7db1e931823484fc2fe3781c80c2853bb4163b",
+          "fx_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "schedule_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "market_sha256": "0e95a2a623e7cd14c17db4cc7f65523a4831881a10ad9d337dbfcf66900a0ce6",
+          "feature_sha256": "bf920626cc13653b8bbeafd171650cc1a76888e15aad0c20bbd1061fb41da512",
+          "original_envelope_sha256": "e034d8307a0c40f353f00bb86f12de19bf5527c9c492857e0c10643fbb86ae44",
+          "all_input_bytes_sha256": "4cdff63b5236b5f94a185e468986fd7068d0b13faffcfaa44b460b1aa74eac6f"
+        },
+        "matches": true
+      },
+      {
+        "id": "account:perp|cost-horizon|base|1E+4|0|risk",
+        "raw_bindings": {
+          "perp|cost-horizon|base|1E+4|0|risk": "74ffbc49add9cae0e0303e141a4cce74f41835089a656bd96bc489e8124b0078"
+        },
+        "values": {
+          "project_kind": "perp",
+          "candidate": "cost-horizon",
+          "scenario": "base",
+          "initial_cny": "10000",
+          "start_offset_ms": 0,
+          "calibrated": true,
+          "components": [
+            "cost-horizon"
+          ],
+          "source": {
+            "git_head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "dirty": false,
+            "python_sources_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          },
+          "original_file": "perp|cost-horizon|base|1E+4|0|risk.json"
+        },
+        "matches": true
+      }
+    ],
+    "original_accounting": [
+      {
+        "id": "perp|cost-horizon|base|1E+4|0|risk",
+        "raw_bindings": {
+          "perp|cost-horizon|base|1E+4|0|risk": "74ffbc49add9cae0e0303e141a4cce74f41835089a656bd96bc489e8124b0078"
+        },
+        "values": {
+          "money": {
+            "initial_cny": "10000",
+            "final_cny": 9980.01,
+            "final_usdt": 999.0,
+            "fees_usdt": "0",
+            "funding_paid_usdt": "0",
+            "fill_count": 0,
+            "continuous_proxy_mdd": 0.001998999999999973,
+            "cny_cagr": -0.0002977818537247545,
+            "usdt_cagr": 0.0
+          },
+          "daily_days": 2454,
+          "daily_curve_sha256": "5042ffa9ffc9244f6286f50d4a5e57ec96a245d192fd8c0b05efcca464439a90",
+          "ledger_reconstruction_sha256": "748eda8085f7e3c82149775d9542083427f0f8a955173c4a0ed18c85c69c5c09",
+          "daily_cny_metrics": {
+            "daily_mdd": 0.001998999999999973,
+            "longest_daily_underwater_days": 2454,
+            "worst_day": -0.001998999999999973,
+            "daily_volatility_annualized": 0.0007712064039819504,
+            "cagr": -0.0002977818537247545,
+            "final_cny": 9980.01,
+            "daily_es99_loss": 7.996e-05
+          },
+          "daily_usdt_metrics": {
+            "daily_mdd": 0,
+            "longest_daily_underwater_days": 0,
+            "worst_day": 0.0,
+            "daily_volatility_annualized": 0.0,
+            "cagr": 0.0,
+            "final_usdt": 999.0
+          }
+        },
+        "matches": true
+      }
+    ],
+    "baseline_six_groups": [
+      {
+        "id": "spot:base",
+        "raw_bindings": {
+          "reference": "ef560f2de5259d139d0749854f27ed61c48e04bf6391061388e8cccc58870bb0",
+          "spot|atr-stop|base|1E+4|0|unscaled": "f50df24598841082518850d9d084381c7856e6051cd0c641cca2f97269f9a653"
+        },
+        "values": {
+          "reference_groups": {
+            "financial": "fed0e4820af42571c936e28300ccb88026f72e075232358cd1fae4e802fe902b",
+            "fills": "94f308903c3d1e41c0b00ed182859d5af8a897cc5305a7569c1dfbed92e540c3",
+            "daily": "6f31304cdfd0a3a6362bffbc6dc4f33ecb20221b84f79cf0137b7dc0f5d3a616",
+            "ownership": "01b8016fdce455c4343951d02b110bd9c02ce8456f43f8893c8b4ccbb1ca54aa",
+            "operating": "6f49db6846664c1e7f50e0ec19a23795c64bbb0a373989b63d0ba6ca2f2f2d8f",
+            "remaining_original_fields": "c2376d0b80fa3d57706c1a1a6cc1e3641f683f43de3e78b79d0930d682ccf981"
+          },
+          "actual_groups": {
+            "financial": "fed0e4820af42571c936e28300ccb88026f72e075232358cd1fae4e802fe902b",
+            "fills": "94f308903c3d1e41c0b00ed182859d5af8a897cc5305a7569c1dfbed92e540c3",
+            "daily": "6f31304cdfd0a3a6362bffbc6dc4f33ecb20221b84f79cf0137b7dc0f5d3a616",
+            "ownership": "01b8016fdce455c4343951d02b110bd9c02ce8456f43f8893c8b4ccbb1ca54aa",
+            "operating": "6f49db6846664c1e7f50e0ec19a23795c64bbb0a373989b63d0ba6ca2f2f2d8f",
+            "remaining_original_fields": "c2376d0b80fa3d57706c1a1a6cc1e3641f683f43de3e78b79d0930d682ccf981"
+          }
+        },
+        "matches": true
+      }
+    ],
+    "calibration_and_actual_risk": [
+      {
+        "id": "profile:spot:atr-stop",
+        "raw_bindings": {
+          "spot|atr-stop|base|1E+4|0|unscaled": "f50df24598841082518850d9d084381c7856e6051cd0c641cca2f97269f9a653"
+        },
+        "values": {
+          "profile": {
+            "candidate": "atr-stop",
+            "project_kind": "spot",
+            "scale": "1",
+            "effective_from_ms": 1640995200000,
+            "calibration_end_ms": 1640995200000,
+            "training_end_day_exclusive": "2022-01-01",
+            "baseline_candidate": "atr-stop",
+            "base_bundle_sha256": "f50df24598841082518850d9d084381c7856e6051cd0c641cca2f97269f9a653"
+          },
+          "document_sha256": [
+            "65bb9a1b92d6e71262134eaef18ca05f62ab7e6f0ddb87874ab171f09f1827a7"
+          ],
+          "training_days": 731,
+          "training_candidate": {
+            "volatility": 0.0,
+            "beta": 0.0,
+            "days": 731
+          },
+          "training_baseline": {
+            "volatility": 0.0,
+            "beta": 0.0,
+            "days": 731
+          },
+          "source": {
+            "git_head": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "dirty": false,
+            "python_sources_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        },
+        "matches": true
+      },
+      {
+        "id": "actual:perp|cost-horizon|base|1E+4|0|risk",
+        "raw_bindings": {
+          "perp|cost-horizon|base|1E+4|0|risk": "74ffbc49add9cae0e0303e141a4cce74f41835089a656bd96bc489e8124b0078",
+          "unscaled_base": "b1bf659749f97cb2f429eace2afca4d5be978198744d392b8d4060f7368a4a97",
+          "actual_unity": "d0472c586cb0fba5005e0489c06b6dccf3f4bb86839166b5dc0795a2c0805c42"
+        },
+        "values": {
+          "document_sha256": "079cabb61522a5202152a2405a2bd268130a6aed60606736f29a606153bfb19a",
+          "profile": {
+            "candidate": "cost-horizon",
+            "project_kind": "perp",
+            "scale": "1.0",
+            "effective_from_ms": 1640995200000,
+            "calibration_end_ms": 1640995200000,
+            "training_end_day_exclusive": "2022-01-01",
+            "baseline_candidate": "incumbent",
+            "base_bundle_sha256": "b1bf659749f97cb2f429eace2afca4d5be978198744d392b8d4060f7368a4a97"
+          },
+          "validation": {
+            "beta": 0.0,
+            "volatility": 0.0,
+            "total_usdt_return": 0.0,
+            "continuous_proxy_mdd": 0.001998999999999973
+          }
+        },
+        "matches": true
+      }
+    ],
+    "adoption_gates": [
+      {
+        "id": "spot:ranking",
+        "raw_bindings": {
+          "exit-confirm": "c31aaf1d753369bd4ddbabe8f30e151911bd2706ad5e9cab9ac8c3f5dc25e0a3",
+          "stop-budget": "6154aec340331b904f9c097299af602e8bf21c1aaff8116a6eacdc55a4fb6df5",
+          "crowding-interaction": "dec1ab4eb1e67b2a543dc6b0c482df9e034ca344af4b03cc0794071a9b5e3052"
+        },
+        "values": {
+          "registered_order": [
+            "exit-confirm",
+            "stop-budget",
+            "crowding-interaction"
+          ],
+          "ranked_eligible_singles": [],
+          "best_single": "atr-stop",
+          "all_eligible_components": [],
+          "selected": "atr-stop"
+        },
+        "matches": true
+      },
+      {
+        "id": "spot:exit-confirm",
+        "raw_bindings": {
+          "spot|atr-stop|base|1E+4|0|unscaled": "f50df24598841082518850d9d084381c7856e6051cd0c641cca2f97269f9a653",
+          "spot|atr-stop|fee150|1E+4|0|unscaled": "a083f984f854acfa1e40a7b25cfde7bda3fbe4004d4fa2b24a268d83d3426e76",
+          "spot|atr-stop|slip2|1E+4|0|unscaled": "d90cc44f43036cf6cc99b4245c8a5cafbd39c47410234831192ff3db5e5af0a2",
+          "spot|atr-stop|outage|1E+4|0|unscaled": "828db496b0c14884052683a04344be5128b9dbc1f8e6414110038defd03299a7",
+          "spot|exit-confirm|base|1E+4|0|unscaled": "c31aaf1d753369bd4ddbabe8f30e151911bd2706ad5e9cab9ac8c3f5dc25e0a3",
+          "spot|exit-confirm|fee150|1E+4|0|unscaled": "ebabb76baff641edc5c2464f286e602bb4d1e0fe500ef8a45c58cc79a615aed4",
+          "spot|exit-confirm|slip2|1E+4|0|unscaled": "2fda9f3968dd3772fcd5d592aff9cdcf3e58d7d0e7f78110c8c17776c2a00cb6",
+          "spot|exit-confirm|outage|1E+4|0|unscaled": "adc49d0232b71eba5ea443d80eec664c26da634debddbe454cc14f4133c21999",
+          "spot|atr-stop|base|1E+4|0|risk": "f818e92061f4697680f3cbb9ab62d31772a6a6f117311b3fd143187200afa12f",
+          "spot|exit-confirm|base|1E+4|0|risk": "dd722d6500e39d7e300a129257eec963753c187e4829ef428d9c8b69d4f9c4c2"
+        },
+        "values": {
+          "result": {
+            "eligible": false,
+            "checks": {
+              "baseline_equality": true,
+              "base:cagr": true,
+              "base:mdd": true,
+              "fee150:cagr": true,
+              "fee150:mdd": true,
+              "slip2:cagr": true,
+              "slip2:mdd": true,
+              "outage:cagr": true,
+              "outage:mdd": true,
+              "base_improvement": false,
+              "worst_cny_day": true,
+              "es99": true,
+              "underwater": true,
+              "actual_risk_bands": true,
+              "actual_validation": false
+            },
+            "reasons": [
+              "base_improvement",
+              "actual_validation"
+            ],
+            "worst_stress_cagr": "-0.0002977818537247545",
+            "status": "complete",
+            "achieved_risk": {
+              "achieved_match": true,
+              "candidate": {
+                "volatility": 0.0,
+                "beta": 0.0,
+                "days": 1723
+              },
+              "baseline": {
+                "volatility": 0.0,
+                "beta": 0.0,
+                "days": 1723
+              },
+              "validation_total_usdt_return_gain": 0.0,
+              "classification": "no_positive_matched_return_evidence",
+              "prospective_alpha_proven": false
+            }
+          }
+        },
+        "matches": true
+      }
+    ],
+    "actual_budget_aggregation": [
+      {
+        "id": "current_default:2500/7500",
+        "raw_bindings": {
+          "spot|atr-stop|base|2.5E+3|0|unscaled": "55ff7825076f1c55650e2ce3446cd33ca1d0fa00ea67920c142def34c62beeb1",
+          "perp|incumbent|base|7.5E+3|0|unscaled": "0f0adb7d0ed377050015961a278956e06bda7a9058e3f76056160492e706843b"
+        },
+        "values": {
+          "budgets": [
+            2500,
+            7500
+          ],
+          "initial_cny": 10000,
+          "cash_flows": 0,
+          "daily_days": 2454,
+          "daily_equity_exposure_sha256": "d8a5bf2cdfa5b0e30e2bb83b35ae4a0690cf8505fce881ec998eba88f72bad3d",
+          "daily_cny_metrics": {
+            "daily_mdd": 0.001998999999999973,
+            "longest_daily_underwater_days": 2454,
+            "worst_day": -0.001998999999999973,
+            "daily_volatility_annualized": 0.0007712064039819504,
+            "cagr": -0.0002977818537247545,
+            "final_cny": 9980.01,
+            "daily_es99_loss": 7.995999999999892e-05
+          },
+          "daily_usdt_metrics": {
+            "daily_mdd": 0,
+            "longest_daily_underwater_days": 0,
+            "worst_day": 0.0,
+            "daily_volatility_annualized": 0.0,
+            "cagr": 0.0,
+            "final_usdt": 999.0
+          },
+          "beta": "0",
+          "correlation": {
+            "identifiable": false
+          },
+          "closing_gross_exposure": "0",
+          "fees_usdt": [
+            "0",
+            "0"
+          ],
+          "funding_usdt": [
+            "0",
+            "0"
+          ],
+          "fill_counts": [
+            0,
+            0
+          ]
+        },
+        "matches": true
+      }
+    ]
+  }
+}

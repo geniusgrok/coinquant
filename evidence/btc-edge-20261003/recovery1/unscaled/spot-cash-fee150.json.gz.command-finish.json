@@ -1,0 +1,13 @@
+{
+  "label": "spot-cash-fee150",
+  "state": "exited",
+  "pid": 101131,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T09:07:52.657291+00:00",
+  "elapsed_seconds": 375.89801574999,
+  "errors": [],
+  "command_start_sha256": "ed7d55d545e613dab2c50d0a7f9110fb149ecca632da5ee328c7dd33ebd696b2",
+  "log_sha256": "986b8d79ffcb851558fcbe41000eb0bcdd97548b3ac3eb39fdbbe1ec597b7a19",
+  "output_sha256": "e2f13dba8b361edc50bea52c4f01a863b990b66b6b47ae795b3d0038ea249902"
+}

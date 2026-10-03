@@ -1,0 +1,297 @@
+{
+  "format": "btc-edge-final-whole-branch-review-v1",
+  "reviewed_at_utc": "2026-10-03T18:01:41.232882+00:00",
+  "scope": "Once-only whole-branch delivery review; all non-evidence changed paths, implementation source, closed scoped test/review proofs, retained packet, operation/docs and presentation. No financial recomputation.",
+  "spec": "PASS",
+  "quality": "PASS",
+  "decision": "APPROVE",
+  "projects": {
+    "spot": {
+      "repository": "/workspace/btc-alpha-beta-improve/spotquant",
+      "base": "ffd14d3aa53b191d15bd8377f0809a8846c53232",
+      "candidate": "ad4b43856a75303fe6ac8e2b1a73931695fc8b6f",
+      "recorded_export_source": "f1383f1034e3f72df68bbda30793d22835e74557",
+      "python_sources_sha256": "8396c368948fe9f939c9aa3910384e2092a3ca4bb6fb0c7aae075ba7033bc585",
+      "non_evidence_baseline_candidate_diff": {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/final-whole-branch-spot.diff",
+        "bytes": 598675,
+        "sha256": "793c8e6c7493cf5437f9fcf160bc28c8209bfaaa97c4673fe1ce558c7a180d0d"
+      },
+      "source_binding": {
+        "candidate": "ad4b43856a75303fe6ac8e2b1a73931695fc8b6f",
+        "recorded_export_source": "f1383f1034e3f72df68bbda30793d22835e74557",
+        "protected_files": 54,
+        "protected_sha256": "b0675875e1777d95f5e9b2a35a7929538f596d52d5f5b4fb08bde56586a419aa",
+        "python_sources_sha256": "8396c368948fe9f939c9aa3910384e2092a3ca4bb6fb0c7aae075ba7033bc585",
+        "all_protected_bytes_and_archive_modes_equal": true,
+        "all_tests_unchanged_since_consumer_binding": true,
+        "metadata_evidence_delta_file_count": 3369
+      }
+    },
+    "perp": {
+      "repository": "/workspace/btc-alpha-beta-improve/coinquant",
+      "base": "c363a582a064bd36d633f6439803f4c570d52333",
+      "candidate": "e9efd44b845545e9eb8ab4b9e7a5289f54fc2b77",
+      "recorded_export_source": "762d75c22d19686dbd364a6b58b59dbc23340430",
+      "python_sources_sha256": "ba63895131db566e708a5c96cde4504beace39fa0bdd54881d039dd5b8ef4c50",
+      "non_evidence_baseline_candidate_diff": {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/final-whole-branch-perp.diff",
+        "bytes": 340791,
+        "sha256": "bcaa4149b61c466a9b82dda8d90494eb6fefa80008abe22e27ef6966f197c45f"
+      },
+      "source_binding": {
+        "candidate": "e9efd44b845545e9eb8ab4b9e7a5289f54fc2b77",
+        "recorded_export_source": "762d75c22d19686dbd364a6b58b59dbc23340430",
+        "protected_files": 59,
+        "protected_sha256": "b0cb0b7df265767f28e4fa7511865cbbb8f3150a3f2edfa1c5caf33138a1ebc9",
+        "python_sources_sha256": "ba63895131db566e708a5c96cde4504beace39fa0bdd54881d039dd5b8ef4c50",
+        "all_protected_bytes_and_archive_modes_equal": true,
+        "all_tests_unchanged_since_consumer_binding": true,
+        "metadata_evidence_delta_file_count": 3369
+      }
+    }
+  },
+  "packet": {
+    "relative": "evidence/btc-edge-20261003",
+    "manifest_sha256": "ebbb57bec20badb0b43dc47f07ccbcc8ec1d20be0109919ba1b4fdd434310225",
+    "payload_files_per_copy": 3365,
+    "payload_bytes_per_copy": 352804566,
+    "directory_files_per_copy": 3366,
+    "directory_bytes_per_copy": 354984997,
+    "identical_copies": true,
+    "retention_pass": true,
+    "gzip_derivatives": 7,
+    "byte_identical_entries": 3357,
+    "delivery_prose_entries": 1,
+    "skipped_original_symlink_descriptors": 4,
+    "prior_packet_and_public_vault_duplicated": false
+  },
+  "accepted_identities": {
+    "final_report": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json",
+      "retained_path": "assessment/complete-final-input-path-fix1.json.retained.gz",
+      "original_bytes": 68719704,
+      "original_sha256": "16ee432bd45c9783f9f38beb19aa7fef21ca3cc6305bee29469a371d388b2625",
+      "retained_bytes": 9331166,
+      "retained_sha256": "48e2833d4fafd067fa20e2dbb1f5a43848c97b283673e92185770f86593a0944",
+      "storage": "lossless-gzip"
+    },
+    "financial_proof": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/independent-financial-review-proof.json",
+      "retained_path": "assessment/independent-financial-review-proof.json",
+      "original_bytes": 2258,
+      "original_sha256": "50dc293c8225027f2bfa49508cdd058f2ccc4a44ebb4976f3b41b206d048aefc",
+      "retained_bytes": 2258,
+      "retained_sha256": "50dc293c8225027f2bfa49508cdd058f2ccc4a44ebb4976f3b41b206d048aefc",
+      "storage": "byte-identical"
+    },
+    "canonical_five": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/spot-canonical-five-case-proof.json",
+      "retained_path": "financial-review/spot-canonical-five-case-proof.json",
+      "original_bytes": 141907,
+      "original_sha256": "44bd6e504f7e33b3e702f9bfe28a8084f643f9dcf4ce1e94c1e376658939f8a0",
+      "retained_bytes": 141907,
+      "retained_sha256": "44bd6e504f7e33b3e702f9bfe28a8084f643f9dcf4ce1e94c1e376658939f8a0",
+      "storage": "byte-identical"
+    },
+    "consumer_binding": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding-consumer-fix1/consumer-binding-proof.json",
+      "retained_path": "financial-review/final-binding-consumer-fix1/consumer-binding-proof.json",
+      "original_bytes": 83251,
+      "original_sha256": "abf4645bb45322587ee060e4cf4c670bd01bc3f1942b806b8abecb12cf419c03",
+      "retained_bytes": 83251,
+      "retained_sha256": "abf4645bb45322587ee060e4cf4c670bd01bc3f1942b806b8abecb12cf419c03",
+      "storage": "byte-identical"
+    },
+    "efb1_review": {
+      "original_path": "/workspace/btc-alpha-beta-improve/task-artifacts/final-export-proof-reader-fix/independent-review.md",
+      "retained_path": "task-artifacts/final-export-proof-reader-fix/independent-review.md",
+      "original_bytes": 6454,
+      "original_sha256": "fb6d045c975e3a197923ba603ac90ceef5cadd61eec6a5a1d59f421a79b3305c",
+      "retained_bytes": 6454,
+      "retained_sha256": "fb6d045c975e3a197923ba603ac90ceef5cadd61eec6a5a1d59f421a79b3305c",
+      "storage": "byte-identical"
+    },
+    "export": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/forward/forward-binding.json",
+      "retained_path": "forward/forward-binding.json.retained.gz",
+      "original_bytes": 184330939,
+      "original_sha256": "d2bc7eca7f2dfdb9a1049c41f1f80f10f603cedc8ab2f9d8bcb260897fab3b31",
+      "retained_bytes": 24975151,
+      "retained_sha256": "6e39edc6cecbd0a13e4da76086614a51e9d045acb246437f371665372d7259c6",
+      "storage": "lossless-gzip"
+    },
+    "export_approval": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-export-approval/export-approval-proof.json",
+      "retained_path": "financial-review/final-export-approval/export-approval-proof.json",
+      "original_bytes": 8172,
+      "original_sha256": "7f9d68ab262c785948162faea6b2808943044d22aff3cb7d39012c971a0a46f1",
+      "retained_bytes": 8172,
+      "retained_sha256": "7f9d68ab262c785948162faea6b2808943044d22aff3cb7d39012c971a0a46f1",
+      "storage": "byte-identical"
+    },
+    "forward_receipt": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/forward/delivery-forward-receipt.json",
+      "retained_path": "forward/delivery-forward-receipt.json",
+      "original_bytes": 21176,
+      "original_sha256": "f985d4801ab4db3668bf9527a0bd1f6c60eeedc2cf169c7e6d36bff8c5b7bd79",
+      "retained_bytes": 21176,
+      "retained_sha256": "f985d4801ab4db3668bf9527a0bd1f6c60eeedc2cf169c7e6d36bff8c5b7bd79",
+      "storage": "byte-identical"
+    },
+    "spot_ledger": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/forward/spot-ledger.json",
+      "retained_path": "forward/spot-ledger.json",
+      "original_bytes": 66007,
+      "original_sha256": "e455de70187d189f0bbf38233e2319169a8a44e6a49842fd0be7067b045bd823",
+      "retained_bytes": 66007,
+      "retained_sha256": "e455de70187d189f0bbf38233e2319169a8a44e6a49842fd0be7067b045bd823",
+      "storage": "byte-identical"
+    },
+    "perp_ledger": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/forward/perp-ledger.json",
+      "retained_path": "forward/perp-ledger.json",
+      "original_bytes": 27751,
+      "original_sha256": "c4faca264ef65959d9ac463573b3587231aaac9ade3da0bf80d04287775c95a0",
+      "retained_bytes": 27751,
+      "retained_sha256": "c4faca264ef65959d9ac463573b3587231aaac9ade3da0bf80d04287775c95a0",
+      "storage": "byte-identical"
+    },
+    "schedule": {
+      "original_path": "/workspace/btc-alpha-beta-improve/coinquant/research/session_schedule.json",
+      "retained_path": "input-retention/session_schedule.json",
+      "original_bytes": 46681,
+      "original_sha256": "c21b4fcfe3cb12fb062bb01d3c3591aa0ee8c65db9e9afde3c26b1bcdc2ac28e",
+      "retained_bytes": 46681,
+      "retained_sha256": "c21b4fcfe3cb12fb062bb01d3c3591aa0ee8c65db9e9afde3c26b1bcdc2ac28e",
+      "storage": "byte-identical"
+    },
+    "historical_fx": {
+      "original_path": "/workspace/btc-alpha-beta-improve/starquant/data/usdcny_frankfurter.json",
+      "retained_path": "input-retention/usdcny_frankfurter.json",
+      "original_bytes": 48082,
+      "original_sha256": "67606315ea34c0301e0129ac8fc27056099986d9fbd58a552a07f140cdd05bb5",
+      "retained_bytes": 48082,
+      "retained_sha256": "67606315ea34c0301e0129ac8fc27056099986d9fbd58a552a07f140cdd05bb5",
+      "storage": "byte-identical"
+    },
+    "extra_print_zip": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/public-print-inputs-v1/BTCUSDT-aggTrades-2026-08-01.zip",
+      "retained_path": "input-retention/BTCUSDT-aggTrades-2026-08-01.zip",
+      "original_bytes": 5049749,
+      "original_sha256": "6bfdb219726ab774c25ae782e4e8f4a5e4dbc69b807f1b7c200e71586d69b6fb",
+      "retained_bytes": 5049749,
+      "retained_sha256": "6bfdb219726ab774c25ae782e4e8f4a5e4dbc69b807f1b7c200e71586d69b6fb",
+      "storage": "byte-identical"
+    },
+    "extra_print_checksum": {
+      "original_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/public-print-inputs-v1/BTCUSDT-aggTrades-2026-08-01.zip.CHECKSUM",
+      "retained_path": "input-retention/BTCUSDT-aggTrades-2026-08-01.zip.CHECKSUM",
+      "original_bytes": 99,
+      "original_sha256": "1283c92250f64ee7db709a8e1952f682fad1ec3131e9ec6d9690aaa52a6ecec0",
+      "retained_bytes": 99,
+      "retained_sha256": "1283c92250f64ee7db709a8e1952f682fad1ec3131e9ec6d9690aaa52a6ecec0",
+      "storage": "byte-identical"
+    }
+  },
+  "financial_acceptance_reused": {
+    "registered_accounts": 71,
+    "spot_accounts": 46,
+    "perp_accounts": 25,
+    "separate_canonical_accounts": 5,
+    "selected": {
+      "spot": "crowding-interaction",
+      "perp": "incumbent"
+    },
+    "targets": {
+      "spot": {
+        "status": "NOT_MET",
+        "selection_separate_from_targets": true
+      },
+      "perp": {
+        "status": "NOT_MET",
+        "selection_separate_from_targets": true
+      }
+    },
+    "native_cases": 0,
+    "actual_account_days": 0,
+    "prospective_alpha_proven": false,
+    "observed_crowding_proposals": {
+      "unchanged": 689,
+      "missing_feature_blocked": 200,
+      "actual_halving": 0
+    },
+    "selection_is_not_halving_profitability_evidence": true
+  },
+  "forward": {
+    "receipt": "/workspace/scratch/btc-alpha-beta-edge-20261003/forward/delivery-forward-receipt.json",
+    "export_sha256": "d2bc7eca7f2dfdb9a1049c41f1f80f10f603cedc8ab2f9d8bcb260897fab3b31",
+    "independent_approval_sha256": "7f9d68ab262c785948162faea6b2808943044d22aff3cb7d39012c971a0a46f1",
+    "spot_actual_init": "2026-10-03T17:39:25.198000+00:00",
+    "perp_actual_init": "2026-10-03T17:40:21.116000+00:00",
+    "events": 0,
+    "native_cases": 0,
+    "market_ready": false
+  },
+  "presentation": {
+    "csv_rows": 71,
+    "csv_columns": 21,
+    "cells_compared": 1491,
+    "errors": [],
+    "png_visual_checks": 2,
+    "svg_documents_inspected": 2,
+    "rerendered": false,
+    "cosmetic_observation": "Scatter labels overlap for nearly coincident Coin points; full labels/values remain in CSV and report. No optional redraw requested."
+  },
+  "findings": {
+    "format": "btc-edge-final-whole-branch-findings-v1",
+    "critical": 0,
+    "important": 0,
+    "minor": 1,
+    "blocking": false,
+    "findings": [
+      {
+        "id": "WB-D1",
+        "severity": "Minor",
+        "blocking": false,
+        "repository": "coinquant",
+        "path": "research/edge-GUIDE.md",
+        "line": 9,
+        "basis": "The relative canonical-crowding-GUIDE.md target does not exist in Coinquant; the document exists in the separate Spotquant repository. The concrete cold-init/observe commands and packet links remain usable.",
+        "fix": "Change only this prose hyperlink to https://github.com/geniusgrok/spotquant/blob/main/research/canonical-crowding-GUIDE.md (normal integration delivers that file to Spot main). Keep immutable packet bytes unchanged.",
+        "resolution": "Root acknowledged and will apply as the sole guide correction before final CI; no source/test/protocol change or whole-branch rereview required."
+      }
+    ]
+  },
+  "final_ci": {
+    "status": "NOT_STARTED_PENDING_ROOT",
+    "policy": "One full exact integration-head PR CI per repository after this approval and inert review receipt/prose commit. No duplicate local fullsuite or identical-tree merge sweep.",
+    "approval_scope": "Code/evidence delivery approved; actual final CI success and normal expected-head integration still required.",
+    "prior_ci_receipts_reused_only": [
+      "task-artifacts/github-reviewed-milestone-ci.json",
+      "task-artifacts/github-forward-reviewed-checkpoint-ci.json",
+      "task-artifacts/github-forward-final-reviewed-ci.json"
+    ]
+  },
+  "subsequent_metadata_alias": {
+    "allowed": "Named guide hyperlink fix, root Markdown closure and inert review/integration receipts in separate evidence directory, retaining all program/config/protocol/tests bytes and modes and immutable packet exactly.",
+    "whole_branch_rereview_required": false,
+    "source_changes": "Any actual executable/config/protocol/test delta requires targeted resolution; no blanket alias to historical609606/b81 or74bd/f2."
+  },
+  "review_actions": {
+    "subagents": 0,
+    "tests": 0,
+    "producers": 0,
+    "financial_recalculations": 0,
+    "network_requests": 0,
+    "private_native_account_actions": 0,
+    "chart_rerenders": 0,
+    "source_edits": 0,
+    "commits": 0
+  },
+  "review_tooling_notes": [
+    "Initial retention total assertion compared directory including MANIFEST with declared payload excluding it; resolved by explicit count semantics without repeating verification.",
+    "Initial presentation mapper used nonexistent regression_usdt key and stopped before checking any cells; corrected to actual usdt_btc_regression schema and completed once.",
+    "Initial artifact-index display stopped on delivery-prose original_path:null before any identity result; corrected optional-path handling only. No original evidence was changed."
+  ]
+}

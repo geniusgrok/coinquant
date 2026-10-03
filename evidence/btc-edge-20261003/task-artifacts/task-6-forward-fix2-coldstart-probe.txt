@@ -1,0 +1,6 @@
+FIRST_DECISION {'action': 'blocked', 'reason': 'causal DFII10 raw vintage evidence required', 'opportunity': None} BTC 0
+KNOWN_BEFORE_INIT True LATEST_OBSERVATION 2019-12-30 VINTAGE 2020-01-01
+NATIVE_FIRST_VALID_MACRO_ACTION consumed
+EVENT_KINDS ['warmup_only', 'decision', 'decision']
+FIRST_VALID_MACRO_ACTION enter BTC 3.49984
+APPENDED_AND_RELOADED_AUDIT True

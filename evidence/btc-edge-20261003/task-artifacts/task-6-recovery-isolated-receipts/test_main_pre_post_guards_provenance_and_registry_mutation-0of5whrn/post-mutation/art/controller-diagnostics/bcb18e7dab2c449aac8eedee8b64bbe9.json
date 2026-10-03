@@ -1,0 +1,36 @@
+{
+  "error": {
+    "stage": "post_guard",
+    "label": "perp-registered-16",
+    "error": "ValueError('recovery registry/approval bytes changed')",
+    "recorded_utc": "2026-10-03T05:53:03.792178+00:00"
+  },
+  "phase": "recovery1-unscaled",
+  "project_kind": "perp",
+  "provenance": {
+    "attempt": "recovery1",
+    "registry_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/post-mutation/art/registered-financial-recovery1.json",
+    "registry_sha256": "c78491a53195a21c14b574fa75e6d2e4aaeb490ff5c9ba1a177423af8b9788f8",
+    "parent_registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+    "freeze_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/post-mutation/art/reviewed-source-freeze.json",
+    "freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+    "first_failure": {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/post-mutation/art/first-financial-attempt-storage-failure.json",
+      "bytes": 6396,
+      "sha256": "2318ea9f9982e6dc7dac2601bd0cc6014e3f66694fdaffc4c82e969332e0f765"
+    },
+    "approval_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/post-mutation/art/recovery-approval.json",
+    "approval_sha256": "ab714c2086a323623a80363c2bcfee88ea0711c3ec597fe36e768b2e62cfc809",
+    "phase_input_path": null,
+    "phase_input_sha256": null,
+    "supplemental_path": null,
+    "supplemental_sha256": null,
+    "controller_sha256": "960a0f9f1bda7b653339d17852ce55f725586b7ee2607993e82c509611e7d298",
+    "concurrency": 1,
+    "tmpdir": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/post-mutation/recovery1/tmp/perp"
+  },
+  "pending_labels": [],
+  "active_labels": [
+    "perp-registered-16"
+  ]
+}

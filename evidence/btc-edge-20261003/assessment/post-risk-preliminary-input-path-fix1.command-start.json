@@ -1,0 +1,50 @@
+{
+  "created_utc": "2026-10-03T13:10:58.585115+00:00",
+  "label": "post-risk-preliminary-input-path-fix1",
+  "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-m",
+    "research.edge_assessment",
+    "--phase",
+    "preliminary",
+    "--spot",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/post-risk-preliminary-spot-manifest.json",
+    "--perp",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/post-risk-preliminary-perp-manifest.json",
+    "--features",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+    "--schedule",
+    "/workspace/btc-alpha-beta-improve/coinquant/research/session_schedule.json",
+    "--fx",
+    "/workspace/btc-alpha-beta-improve/starquant/data/usdcny_frankfurter.json",
+    "--market",
+    "/tmp/spotquant-market/klines",
+    "--coin-market",
+    "/tmp/coinquant-market",
+    "--coin-prints",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/public-print-inputs-v1",
+    "--references",
+    "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002",
+    "--spot-calibration",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/spot.json",
+    "--perp-calibration",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/perp.json",
+    "--out",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/post-risk-preliminary-input-path-fix1.json",
+    "--csv",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/post-risk-preliminary-input-path-fix1.csv",
+    "--markdown",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/post-risk-preliminary-input-path-fix1.md"
+  ],
+  "original_failed_command_start": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/post-risk-preliminary.command-start.json",
+  "input_path_correction": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/public-print-input-path-correction.json",
+    "sha256": "9445a934a22a36e5803544259aa900debdd97e03a2da5318ebaef804c1a8b162"
+  },
+  "changes": [
+    "assessment --coin-prints resolves exact consumed official bytes",
+    "exclusive output paths"
+  ],
+  "protected_source_or_account_changes": false
+}

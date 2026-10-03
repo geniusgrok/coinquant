@@ -1,0 +1,9 @@
+{
+  "forward_exception": "JSONDecodeError",
+  "forward_message": "Expecting value: line 1 column 1 (char 0)",
+  "input_sha256": "0df847ea9270f67ac81a3a141cefad85f239f23c274ab30799e7a25aab4dfe67",
+  "native_missing_cause": "invalid_public_funding:public_endpoint_JSONDecodeError",
+  "native_value": null,
+  "scope": "pure mocked public parsing only; no State/Lifecycle/account/network",
+  "source_head": "bd9fbc04813d29015c8231cdc63ec784d4a46256"
+}

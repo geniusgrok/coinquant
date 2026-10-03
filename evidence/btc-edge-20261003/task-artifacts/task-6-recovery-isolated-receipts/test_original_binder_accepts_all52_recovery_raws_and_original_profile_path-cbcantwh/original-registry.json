@@ -1,0 +1,1 @@
+{"jobs": [{"project_kind": "spot", "phase": "risk", "command": ["synthetic", "--risk-calibration", "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_original_binder_accepts_all52_recovery_raws_and_original_profile_path-cbcantwh/original-root/assessment/spot-calibration.json"]}]}

@@ -1,0 +1,45 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "owner_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash/controller-reservations/spot/654e6db91c3f4c159db13f759b96cf06.owner.json",
+  "created_utc": "2026-10-03T05:52:09.584721+00:00",
+  "jobs": [
+    {
+      "label": "first",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash/first.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash/first.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash",
+      "project_kind": "spot"
+    },
+    {
+      "label": "second",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash/second.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash/second.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash",
+      "project_kind": "spot"
+    },
+    {
+      "label": "third",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash/third.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash/third.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-l49b_l8s/guard/hash",
+      "project_kind": "spot"
+    }
+  ]
+}

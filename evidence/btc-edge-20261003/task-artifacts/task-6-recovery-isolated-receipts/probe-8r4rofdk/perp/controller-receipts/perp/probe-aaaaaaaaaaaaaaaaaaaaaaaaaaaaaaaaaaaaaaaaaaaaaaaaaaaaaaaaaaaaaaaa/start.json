@@ -1,0 +1,33 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "perp",
+  "owner_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-8r4rofdk/perp/controller-reservations/perp/cc44e6a7c57e4d31b7ad1a3ee3c741a2.owner.json",
+  "created_utc": "2026-10-03T05:50:47.482029+00:00",
+  "jobs": [
+    {
+      "label": "first",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.08); Path(sys.argv[1]).write_text(\"ok\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-8r4rofdk/perp/first.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-8r4rofdk/perp/first.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-8r4rofdk/perp",
+      "project_kind": "perp"
+    },
+    {
+      "label": "second",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.08); Path(sys.argv[1]).write_text(\"ok\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-8r4rofdk/perp/second.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-8r4rofdk/perp/second.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-8r4rofdk/perp",
+      "project_kind": "perp"
+    }
+  ]
+}

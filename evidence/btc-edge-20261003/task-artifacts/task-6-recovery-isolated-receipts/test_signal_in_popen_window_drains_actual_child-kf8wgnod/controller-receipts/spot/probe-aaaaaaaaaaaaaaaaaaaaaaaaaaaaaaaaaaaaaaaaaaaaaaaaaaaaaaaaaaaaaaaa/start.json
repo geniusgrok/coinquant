@@ -1,0 +1,45 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "owner_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod/controller-reservations/spot/42cdd60a540f48c994eac7009fac29c2.owner.json",
+  "created_utc": "2026-10-03T05:53:05.648425+00:00",
+  "jobs": [
+    {
+      "label": "first",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod/first.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod/first.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod",
+      "project_kind": "spot"
+    },
+    {
+      "label": "second",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod/second.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod/second.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod",
+      "project_kind": "spot"
+    },
+    {
+      "label": "third",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod/third.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod/third.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_signal_in_popen_window_drains_actual_child-kf8wgnod",
+      "project_kind": "spot"
+    }
+  ]
+}

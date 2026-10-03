@@ -1,0 +1,13 @@
+{
+  "label": "spot-exit-confirm-base",
+  "state": "exited",
+  "pid": 95225,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T06:58:10.165297+00:00",
+  "elapsed_seconds": 693.0350898609904,
+  "errors": [],
+  "command_start_sha256": "4d7d0fb148d0289ddb55064d36b244d4db430c666dc08bbc58d5ef741c67558f",
+  "log_sha256": "4d42c11611b7f107ffe9a04e9325583d9b9b21ee0656d727a84382117e619e12",
+  "output_sha256": "a28f09443a1818c338b0a33cb8eeefb12b07fd2d71b1c932a885c2bf4507e6f3"
+}

@@ -1,0 +1,283 @@
+{
+  "format": "btc-edge-first-attempt-storage-failure-v1",
+  "recorded_utc": "2026-10-03T05:48:00.542470+00:00",
+  "parent_freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "cause": "Separate /tmp tmpfs has only about3.4GB free after preserved review workspaces; source meters create synthetic SQLite/session backups there and fail with SQLITE_FULL. Filesystem /workspace remains about11GB free. Native account/HOME/UID/locks unchanged. Original meters clean ephemeral TemporaryDirectory state on exit.",
+  "spaces_after_source_cleanup": {
+    "/workspace": {
+      "available_bytes": 11165757440,
+      "total_bytes": 33770192896
+    },
+    "/tmp": {
+      "available_bytes": 3641208832,
+      "total_bytes": 9441349632
+    }
+  },
+  "mount_evidence": [
+    "none /tmp tmpfs rw,relatime 0 0"
+  ],
+  "phases": {
+    "spot": {
+      "status": "failed",
+      "all_children_reaped": true,
+      "pending_labels": [
+        "spot-atr-stop-slip2",
+        "spot-atr-stop-outage",
+        "spot-exit-confirm-base",
+        "spot-exit-confirm-fee150",
+        "spot-exit-confirm-slip2",
+        "spot-exit-confirm-outage",
+        "spot-stop-budget-base",
+        "spot-stop-budget-fee150",
+        "spot-stop-budget-slip2",
+        "spot-stop-budget-outage",
+        "spot-crowding-interaction-base",
+        "spot-crowding-interaction-fee150",
+        "spot-crowding-interaction-slip2",
+        "spot-crowding-interaction-outage",
+        "spot-cash-base",
+        "spot-cash-fee150",
+        "spot-cash-slip2",
+        "spot-cash-outage",
+        "spot-protected-participation-25-base",
+        "spot-protected-participation-25-fee150",
+        "spot-protected-participation-25-slip2",
+        "spot-protected-participation-25-outage",
+        "spot-protected-participation-50-base",
+        "spot-protected-participation-50-fee150",
+        "spot-protected-participation-50-slip2",
+        "spot-protected-participation-50-outage",
+        "spot-protected-participation-75-base",
+        "spot-protected-participation-75-fee150",
+        "spot-protected-participation-75-slip2",
+        "spot-protected-participation-75-outage",
+        "spot-protected-participation-100-base",
+        "spot-protected-participation-100-fee150",
+        "spot-protected-participation-100-slip2",
+        "spot-protected-participation-100-outage"
+      ],
+      "results": [
+        {
+          "label": "spot-atr-stop-base",
+          "state": "exited",
+          "pid": 93983,
+          "exit_code": 1,
+          "reaped": true,
+          "finished_utc": "2026-10-03T05:41:34.858791+00:00",
+          "elapsed_seconds": 147.1902181689802,
+          "errors": [
+            {
+              "stage": "output_hash",
+              "error": "FileNotFoundError(2, 'No such file or directory')"
+            }
+          ],
+          "command_start_sha256": "3e6d2638826af6b571fa7de7935ddb3db5860360161bd4a61898cb4a80d27072",
+          "log_sha256": "0a9e3be4f358f85b69f11c085c61c59192fda408bcc0a2b9ea6f253bf522d64e",
+          "output_sha256": null,
+          "finish_receipt_saved": true,
+          "finish_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.command-finish.json"
+        },
+        {
+          "label": "spot-atr-stop-fee150",
+          "state": "exited",
+          "pid": 94002,
+          "exit_code": 1,
+          "reaped": true,
+          "finished_utc": "2026-10-03T05:41:35.037910+00:00",
+          "elapsed_seconds": 147.16026630598935,
+          "errors": [
+            {
+              "stage": "output_hash",
+              "error": "FileNotFoundError(2, 'No such file or directory')"
+            }
+          ],
+          "command_start_sha256": "d0005e7608bc8fa4fb8dc05d4f6dcdbfb98958625ae3af6f0dfd9b9af77044ec",
+          "log_sha256": "423298f150ea224c9dbbbff7bcb65e348f9d721439d2e28975ae0d19a9bf2661",
+          "output_sha256": null,
+          "finish_receipt_saved": true,
+          "finish_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.command-finish.json"
+        }
+      ],
+      "errors": [
+        {
+          "stage": "output_hash",
+          "label": "spot-atr-stop-base",
+          "error": "FileNotFoundError(2, 'No such file or directory')",
+          "recorded_utc": "2026-10-03T05:41:34.856606+00:00"
+        },
+        {
+          "stage": "child_exit",
+          "label": "spot-atr-stop-base",
+          "error": "ValueError('actual exit code: 1')",
+          "recorded_utc": "2026-10-03T05:41:34.858106+00:00"
+        },
+        {
+          "stage": "output_hash",
+          "label": "spot-atr-stop-fee150",
+          "error": "FileNotFoundError(2, 'No such file or directory')",
+          "recorded_utc": "2026-10-03T05:41:35.036656+00:00"
+        },
+        {
+          "stage": "child_exit",
+          "label": "spot-atr-stop-fee150",
+          "error": "ValueError('actual exit code: 1')",
+          "recorded_utc": "2026-10-03T05:41:35.037369+00:00"
+        }
+      ]
+    },
+    "perp": {
+      "status": "failed",
+      "all_children_reaped": true,
+      "pending_labels": [],
+      "results": [
+        {
+          "label": "perp-registered-16",
+          "state": "exited",
+          "pid": 94014,
+          "exit_code": 1,
+          "reaped": true,
+          "finished_utc": "2026-10-03T05:41:47.470461+00:00",
+          "elapsed_seconds": 145.39001627400285,
+          "errors": [],
+          "command_start_sha256": "ed6d617abfa047725e487e1ccf7c515b6f38db6727e31dd94c20000698d288a9",
+          "log_sha256": "b6ee3ad665d5a96c67dfcd7b829f84ca41c89c1674423f82fb04696f8b44389e",
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "finish_receipt_saved": true,
+          "finish_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.command-finish.json"
+        }
+      ],
+      "errors": [
+        {
+          "stage": "child_exit",
+          "label": "perp-registered-16",
+          "error": "ValueError('actual exit code: 1')",
+          "recorded_utc": "2026-10-03T05:41:47.469640+00:00"
+        }
+      ]
+    }
+  },
+  "retained_files": [
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.command-finish.json",
+      "bytes": 485,
+      "sha256": "8455ab22e0f5450656090d1013e751a66ab90c272ea842d39ab390831c1733ea"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.command-start.json",
+      "bytes": 1448,
+      "sha256": "ed6d617abfa047725e487e1ccf7c515b6f38db6727e31dd94c20000698d288a9"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.run.log",
+      "bytes": 2092,
+      "sha256": "b6ee3ad665d5a96c67dfcd7b829f84ca41c89c1674423f82fb04696f8b44389e"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.progress.json",
+      "bytes": 2829,
+      "sha256": "39d7f32c710f811aa13a20ddf917c09a936e20bde17335f8cd8cfbed7db4725a"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.command-finish.json",
+      "bytes": 534,
+      "sha256": "ffaa6ab37c1f32eb437e56fac060cd7116fd8bdd7aec7c0a02817e3d4f554fcb"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.command-start.json",
+      "bytes": 1386,
+      "sha256": "3e6d2638826af6b571fa7de7935ddb3db5860360161bd4a61898cb4a80d27072"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.run.log",
+      "bytes": 2432,
+      "sha256": "0a9e3be4f358f85b69f11c085c61c59192fda408bcc0a2b9ea6f253bf522d64e"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.command-finish.json",
+      "bytes": 537,
+      "sha256": "d26063ccdffbb577b1b3134a048d9e4723119407a354471a75df3c066c34618a"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.command-start.json",
+      "bytes": 1394,
+      "sha256": "d0005e7608bc8fa4fb8dc05d4f6dcdbfb98958625ae3af6f0dfd9b9af77044ec"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.run.log",
+      "bytes": 1735,
+      "sha256": "423298f150ea224c9dbbbff7bcb65e348f9d721439d2e28975ae0d19a9bf2661"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/spot/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/finish.json",
+      "bytes": 4462,
+      "sha256": "650c53310d7a2e50e9552b7fbc161d5eb4abe10a8ba80940268599766faedbea"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/spot/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/spot-atr-stop-base.launched.json",
+      "bytes": 106,
+      "sha256": "c85e1e107f1a6ac957b9f4fba260b19dbecb1eba53dcaf877fe56de71a9ccafa"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/spot/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/spot-atr-stop-fee150.launched.json",
+      "bytes": 108,
+      "sha256": "342949fbb97c7ed0f0ff962907cb6fb1535e81f673568c18c00964b93822fe6f"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/spot/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/start.json",
+      "bytes": 30014,
+      "sha256": "ce31fa588e556842a930b0812ab7cfb659c86af04939c2003f505e43b74dd5df"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/perp/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/finish.json",
+      "bytes": 1734,
+      "sha256": "ed03bb38823bcb2c7a394eb22199052adf1f6d74fceb139a780ff0940960ca3b"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/perp/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/perp-registered-16.launched.json",
+      "bytes": 106,
+      "sha256": "75e051fb229d86d3c5c42325828b5086d290ed709024678e30003435cc82ef6a"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/perp/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/start.json",
+      "bytes": 1709,
+      "sha256": "71949af8fc230cf91182f7c140589093de090b2b7b74a863e9fbfcd7f5ab8c89"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/spot/e89be99cd7204c46aa5e05d1baf41c31.owner.json",
+      "bytes": 121,
+      "sha256": "6dca160849f49de54048512592c109078a45802a0e68631a4acf2b76de451268"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/spot/e89be99cd7204c46aa5e05d1baf41c31.released.json",
+      "bytes": 174,
+      "sha256": "04902ca155656a2f4713dedc5c17e31affba423bfbe6307b245dc25dffefd786"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/spot/reservation.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/perp/fb4666cd2798433da00dd38123c3925e.owner.json",
+      "bytes": 121,
+      "sha256": "3b8c8447a20a617ba6b1001835c67d4854449ea7dd0330d98c13a9d93ba5311f"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/perp/fb4666cd2798433da00dd38123c3925e.released.json",
+      "bytes": 174,
+      "sha256": "0a3a881e12818bc3d76be18e6757f1a49226e257a5355d2773070b91bb8caee7"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/perp/reservation.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "meaning": "Failed original attempt retained; no completed financial acceptance, no result selection, no rerun yet"
+}

@@ -1,0 +1,68 @@
+{
+  "attempt": "recovery1",
+  "registry_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-6j6psxio/art/registered-financial-recovery1.json",
+  "registry_sha256": "44fc8f333f19b8e6311c940341d2f0d802d89428cd5967714b3d352dce6952da",
+  "parent_registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "freeze_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-6j6psxio/art/reviewed-source-freeze.json",
+  "freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "first_failure": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-6j6psxio/art/first-financial-attempt-storage-failure.json",
+    "bytes": 6396,
+    "sha256": "2318ea9f9982e6dc7dac2601bd0cc6014e3f66694fdaffc4c82e969332e0f765"
+  },
+  "approval_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-6j6psxio/art/recovery-approval.json",
+  "approval_sha256": "00cd7480130a0cfe26e01b5e64454b5d400da11b13a06b9e556fe55bfa83c2ad",
+  "phase_input_path": null,
+  "phase_input_sha256": null,
+  "supplemental_path": null,
+  "supplemental_sha256": null,
+  "controller_sha256": "cdc8538d01b46963c12b8810b468cafd754b58303a69495cfb32f4e62d497185",
+  "concurrency": 1,
+  "tmpdir": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-6j6psxio/recovery1/tmp/perp",
+  "uid": 1000,
+  "home": "/home/agent",
+  "environment_overrides": {
+    "TMPDIR": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-6j6psxio/recovery1/tmp/perp"
+  },
+  "phase": "recovery1-unscaled",
+  "project_kind": "perp",
+  "owner_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-6j6psxio/art/controller-reservations/perp/b6901499609347999c758d6d7355f2b6.owner.json",
+  "created_utc": "2026-10-03T05:53:57.042703+00:00",
+  "jobs": [
+    {
+      "label": "perp-registered-16",
+      "project_kind": "perp",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys; Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-6j6psxio/recovery1/unscaled/perp-registered-16.json.gz"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-6j6psxio/recovery1/unscaled/perp-registered-16.json.gz",
+      "expected_accounts": 16,
+      "original_job": {
+        "label": "perp-registered-16",
+        "project_kind": "perp",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_perp",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--restore-prints",
+          "--prints",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz",
+        "expected_accounts": 16
+      }
+    }
+  ]
+}

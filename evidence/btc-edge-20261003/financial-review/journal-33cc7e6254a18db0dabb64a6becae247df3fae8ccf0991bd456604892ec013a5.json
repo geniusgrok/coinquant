@@ -1,0 +1,12 @@
+{
+  "spot|atr-stop|base|1E+4|0|risk": {
+    "raw_sha256": "78d1c6e0e9369a467f079d49d02146c1c122744d17f7f246e0e6e7a2c2b4b082",
+    "events_scanned": 0,
+    "counts": {
+      "training_daily_identity": 731
+    },
+    "sample_rule": "all feature exceptional/missing and sizing constraints; deterministic every997th Spot decision/every97th Coin sizing; all decision scales and committed targets checked",
+    "samples": [],
+    "passed": true
+  }
+}

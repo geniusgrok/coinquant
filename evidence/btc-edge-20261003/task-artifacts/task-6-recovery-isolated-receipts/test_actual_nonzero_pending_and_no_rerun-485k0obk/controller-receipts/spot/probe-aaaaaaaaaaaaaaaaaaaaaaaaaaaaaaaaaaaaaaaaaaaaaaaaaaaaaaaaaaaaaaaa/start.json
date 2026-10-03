@@ -1,0 +1,45 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "owner_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk/controller-reservations/spot/84cbbf06b4ca4636a8712bb84deb09a3.owner.json",
+  "created_utc": "2026-10-03T06:01:42.452080+00:00",
+  "jobs": [
+    {
+      "label": "first",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys; Path(sys.argv[1]).write_text(\"failed\"); raise SystemExit(7)",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk/first.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk/first.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk",
+      "project_kind": "spot"
+    },
+    {
+      "label": "second",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys; Path(sys.argv[1]).write_text(\"failed\"); raise SystemExit(7)",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk/second.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk/second.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk",
+      "project_kind": "spot"
+    },
+    {
+      "label": "third",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys; Path(sys.argv[1]).write_text(\"failed\"); raise SystemExit(7)",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk/third.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk/third.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-485k0obk",
+      "project_kind": "spot"
+    }
+  ]
+}

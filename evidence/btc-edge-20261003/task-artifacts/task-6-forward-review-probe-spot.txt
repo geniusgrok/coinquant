@@ -1,0 +1,7 @@
+T6-F1 before: ['incomplete_public_protection_path'] btc= 12.71449
+T6-F1 after: ['incomplete_public_protection_path'] btc= 0.00000 fills= [('4.23816', '79.9120', 1582070409880), ('4.23816', '79.9120', 1582070409880), ('4.23817', '79.9120', 1582070409880)] audit= True
+T6-F3 before: entry_day_ms= 130000 peak= 112.133211 canonical_high_counts= False
+T6-F3 after: peak= 200
+T6-F4 stops: ['78.49', '78.49', '78.49']
+T6-F4 transition: unresolved= [] money= [('sell', '12.71449', False)]
+T6-F4 audit rejection: Blocked model checkpoint does not match this origin

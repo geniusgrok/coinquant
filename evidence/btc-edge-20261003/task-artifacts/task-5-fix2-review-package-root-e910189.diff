@@ -1,0 +1,320 @@
+e910189 Keep exact gate input validation independent of economic limits
+ddfd1b7 Retain exact raw gate inputs for financial review precision
+
+ research/edge_assessment.py   | 50 +++++++++++++++--------
+ tests/test_edge_assessment.py | 94 ++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 126 insertions(+), 18 deletions(-)
+
+diff --git a/research/edge_assessment.py b/research/edge_assessment.py
+index ec4f6a3..b59e36f 100644
+--- a/research/edge_assessment.py
++++ b/research/edge_assessment.py
+@@ -700,48 +700,69 @@ def ingest(paths, env, bars, fx, market_returns, cny_returns, documents):
+                     verify_account_binding(account, documents)
+                     reasons = old.row_validity(row, kind, [s + offset for s in env['starts']], capital, scenario)
+                     if kind == 'perp':
+                         verify_coin_timing(row)
+                     account['reasons'] = reasons
+                     account['status'] = 'pending' if reasons else 'complete'
+                     if not reasons:
+                         account['monetary_audit'] = monetary_audit(row, kind, fx)
+                         account['curve'] = original_curve(row, bars, fx, kind)
+                         account['metrics'] = curve_metrics(row, account['curve'], kind, bars, fx, market_returns, cny_returns)
++                        account['gate_inputs'] = dict(raw_sha256=digest, values=gate_values(account))
+                 except (ValueError, KeyError, TypeError, ArithmeticError) as exc:
+                     account['status'] = 'rejected'
+                     account['reasons'].append(str(exc))
+     files.update(consumed)
+     return accounts, files, rejected
+ 
+ 
+ def gate_values(account):
+-    m = account['metrics']['metrics']
+-    return dict(cagr=account['row']['cagr'], mdd=account['row']['mdd'], worst_day=m['worst_day'],
+-                es99=m['daily_es99_loss'], underwater=m['longest_daily_underwater_days'])
++    """One exact raw-bound gate input contract for decisions and proof comparison."""
++    bound = account.get('gate_inputs')
++    if bound is not None:
++        require(type(bound) is dict, 'exact gate input binding type')
++    if 'row' in account:
++        m = account['metrics']['metrics']
++        values = dict(cagr=account['row']['cagr'], mdd=account['row']['mdd'], worst_day=m['worst_day'],
++                      es99=m['daily_es99_loss'], underwater=m['longest_daily_underwater_days'])
++        if bound is not None:
++            require(bound.get('values') == values, 'retained gate inputs differ from original row/statistics')
++    else:
++        require(type(bound) is dict, 'missing exact original gate inputs')
++        values = bound.get('values')
++    if bound is not None:
++        require(set(bound) == {'raw_sha256', 'values'} and bound['raw_sha256'] == account['raw_sha256'] and
++                old.hash_value(bound['raw_sha256']), 'exact gate raw binding mismatch')
++    require(type(values) is dict and set(values) == {'cagr', 'mdd', 'worst_day', 'es99', 'underwater'}, 'exact gate input fields')
++    require(type(values['mdd']) is str and
++            all(type(values[k]) in (int, float) for k in ('cagr', 'worst_day', 'es99')) and
++            type(values['underwater']) is int and values['underwater'] >= 0, 'exact gate input types')
++    for value in values.values():
++        decimal(value)
++    return values
+ 
+ 
+ def decisions_for(accounts, kind, names, equality, market_returns, initial_usdt):
+     decisions = {}
+     for name in names:
+         keys = [account_id(kind, n, scenario) for n in (BASE[kind], name) for scenario in STRESSES[kind]]
+         keys += [account_id(kind, n, risk=True) for n in (BASE[kind], name)]
+         missing = [k for k in keys if k not in accounts or accounts[k]['status'] != 'complete']
+         if missing:
+             decisions[name] = dict(eligible=False, status='pending', required_accounts=missing)
+             continue
+         actual, control = (accounts[account_id(kind, n, risk=True)] for n in (name, BASE[kind]))
+         achieved = risk_match(actual['curve'], control['curve'], market_returns, initial_usdt)
+         outcome = adoption_gates(kind,
+             {s: gate_values(accounts[account_id(kind, name, s)]) for s in STRESSES[kind]},
+             {s: gate_values(accounts[account_id(kind, BASE[kind], s)]) for s in STRESSES[kind]},
+-            achieved, actual['row']['mdd'], control['row']['mdd'], equality)
++            achieved, gate_values(actual)['mdd'], gate_values(control)['mdd'], equality)
+         decisions[name] = dict(outcome, status='complete', achieved_risk=achieved)
+     return decisions
+ 
+ 
+ def inventory_binding(report):
+     """Stable cycle-free review target, independent of phase/output paths."""
+     return {'inputs': report['inputs'], 'analysis_source': report['analysis_source'],
+             'contracts': report['contracts'], 'accounts': {
+                 k: {f: v[f] for f in ('raw_sha256', 'source', 'status', 'reasons', 'components')}
+                 for k, v in report['accounts'].items()},
+@@ -796,24 +817,24 @@ def review_expectations(report):
+         add('source_and_inputs', 'account:' + key, {key: digest},
+             project_kind=account['kind'], candidate=account['candidate'], scenario=account['scenario'],
+             initial_cny=account['capital'], start_offset_ms=account['offset'], calibrated=account['risk'],
+             components=account['components'], source=account['source'], original_file=path)
+         curve, m = account['curve'], account['metrics']
+         require([p['day_ms'] for p in curve] == list(range(START, END, DAY)), 'review daily coverage incomplete')
+         for point in curve:
+             numeric({k: point[k] for k in ('equity_cny', 'equity_usdt', 'net_btc', 'price_usdt')})
+         money = numeric(dict(initial_cny=account['capital'], final_cny=curve[-1]['equity_cny'],
+             final_usdt=curve[-1]['equity_usdt'], fees_usdt=m['fees_usdt'], funding_paid_usdt=m['funding_paid_usdt'],
+-            fill_count=m['fill_count'], continuous_proxy_mdd=m['continuous_mdd_from_account'],
++            fill_count=m['fill_count'], continuous_proxy_mdd=gate_values(account)['mdd'],
+             cny_cagr=m['registered_account_cagr'], usdt_cagr=m['registered_account_usdt_cagr']))
+         require(account['monetary_audit']['passed'] is True, 'review monetary audit failed')
+-        add('original_accounting', key, {key: digest}, money=money,
++        add('original_accounting', key, {key: digest}, money=money, gate_inputs=account['gate_inputs'],
+             daily_days=len(curve), daily_curve_sha256=old.checksum(curve),
+             ledger_reconstruction_sha256=old.checksum(account['monetary_audit']),
+             daily_cny_metrics=numeric(m['metrics']), daily_usdt_metrics=numeric(m['usdt_metrics']))
+     require(set(files) == set(report['input_envelopes']), 'review original envelope coverage mismatch')
+     for path, (kind, digest, source) in files.items():
+         envelope = report['input_envelopes'][path]
+         meta, edge = (envelope, envelope) if kind == 'spot' else (envelope['inputs'], envelope['edge'])
+         require(meta['source'] == source and report['contracts'][kind] == dict(spec_sha256=SPEC_HASH[kind], protocol_sha256=PROTOCOL_HASH[kind]), 'review source/contract mismatch')
+         add('source_and_inputs', 'raw:' + path, {path: digest}, project_kind=kind, source=source,
+             spec_sha256=edge['spec_sha256'], protocol_sha256=edge['protocol_sha256'],
+@@ -865,61 +886,56 @@ def review_expectations(report):
+         require(document in report['calibration_documents'].values(), 'review foreign actual calibration')
+         profile = document['profiles'][name]
+         control_id = account_id(kind, BASE[kind], risk=True)
+         validation = account['metrics']['validation_2022_plus']
+         prior = next(p for p in account['curve'] if p['day_ms'] == CUTOFF - DAY)
+         add('calibration_and_actual_risk', 'actual:' + key,
+             {key: account['raw_sha256'], 'unscaled_base': profile['base_bundle_sha256'], 'actual_unity': accounts[control_id]['raw_sha256']},
+             document_sha256=digest, profile=profile, validation=numeric(dict(
+                 beta=validation['regression']['beta_btc'], volatility=validation['usdt']['daily_volatility_annualized'],
+                 total_usdt_return=account['curve'][-1]['equity_usdt'] / prior['equity_usdt'] - 1,
+-                continuous_proxy_mdd=account['metrics']['continuous_mdd_from_account'])))
++                continuous_proxy_mdd=gate_values(account)['mdd'])))
+     for kind in BASE:
+         decisions = report['decisions'][kind]
+         singles = {n: decisions[n] for n in ORDER[kind]}
+         best, parts = choose_singles(kind, singles)
+         require(report['combinations'].get(kind, []) == parts, 'review all-component combination mismatch')
+         names = [*ORDER[kind], *([combo_name(kind, parts)] if parts else [])]
+         require(set(decisions) == set(names), 'review candidate gate coverage mismatch')
+         for name in names:
+             decision = decisions[name]
+             require(decision['status'] == 'complete' and type(decision['eligible']) is bool and
+                     all(type(v) is bool for v in decision['checks'].values()), 'review gate result incomplete')
+             def values(candidate):
+-                output = {}
+-                for scenario in STRESSES[kind]:
+-                    a = accounts[account_id(kind, candidate, scenario)]['metrics']
+-                    output[scenario] = dict(cagr=a['registered_account_cagr'], mdd=a['continuous_mdd_from_account'],
+-                        worst_day=a['metrics']['worst_day'], es99=a['metrics']['daily_es99_loss'],
+-                        underwater=a['metrics']['longest_daily_underwater_days'])
+-                return output
++                return {s: gate_values(accounts[account_id(kind, candidate, s)]) for s in STRESSES[kind]}
+             actual = accounts[account_id(kind, name, risk=True)]
+             control = accounts[account_id(kind, BASE[kind], risk=True)]
+             achieved = decision['achieved_risk']
+             statistics_pair, ratios = [], []
+             for a in (actual, control):
+                 validation = a['metrics']['validation_2022_plus']
+                 statistics_pair.append(numeric(dict(volatility=validation['usdt']['daily_volatility_annualized'],
+                     beta=validation['regression']['beta_btc'], days=(END - CUTOFF) // DAY)))
+                 prior = next(p for p in a['curve'] if p['day_ms'] == CUTOFF - DAY)
+                 ratios.append(a['curve'][-1]['equity_usdt'] / prior['equity_usdt'])
+             c, b = statistics_pair
+             matched = decimal(c['volatility']) <= decimal(b['volatility']) * D('1.05') and decimal(c['beta']) <= decimal(b['beta']) + D('.02')
+             require(achieved['candidate'] == c and achieved['baseline'] == b and
+                     achieved['achieved_match'] is matched and
+                     achieved['validation_total_usdt_return_gain'] == ratios[0] - ratios[1], 'review actual risk bands/gain inconsistent')
+             derived = adoption_gates(kind, values(name), values(BASE[kind]), decision['achieved_risk'],
+-                actual['metrics']['continuous_mdd_from_account'], control['metrics']['continuous_mdd_from_account'], True)
+-            require(all(decision[k] == v for k, v in derived.items()), 'review gates inconsistent with actual metrics')
++                gate_values(actual)['mdd'], gate_values(control)['mdd'], True)
++            require(all(decision[k] == v for k, v in derived.items()), 'review gates inconsistent with exact original inputs')
+             keys = [account_id(kind, n, s) for n in (BASE[kind], name) for s in STRESSES[kind]]
+             keys += [account_id(kind, n, risk=True) for n in (BASE[kind], name)]
+-            add('adoption_gates', kind + ':' + name, {k: accounts[k]['raw_sha256'] for k in keys}, result=decision)
++            add('adoption_gates', kind + ':' + name, {k: accounts[k]['raw_sha256'] for k in keys},
++                gate_inputs={k: accounts[k]['gate_inputs'] for k in keys}, result=decision)
+         selected = combo_name(kind, parts) if parts and decisions[combo_name(kind, parts)]['eligible'] else best
+         require(report['selected'][kind] == selected, 'review registered ranking/selection mismatch')
+         ranked = sorted((n for n in ORDER[kind] if singles[n]['eligible']), key=lambda n: (-decimal(singles[n]['worst_stress_cagr']), ORDER[kind].index(n)))
+         add('adoption_gates', kind + ':ranking', {n: accounts[account_id(kind, n)]['raw_sha256'] for n in names},
+             registered_order=list(ORDER[kind]), ranked_eligible_singles=ranked, best_single=best,
+             all_eligible_components=parts, selected=selected)
+     selections = {'current_default': BASE}
+     if report['selected'] != BASE:
+         selections['selected'] = report['selected']
+     require(set(report['portfolios']) == set(selections), 'review portfolio selection coverage mismatch')
+diff --git a/tests/test_edge_assessment.py b/tests/test_edge_assessment.py
+index 26b78be..9875bec 100644
+--- a/tests/test_edge_assessment.py
++++ b/tests/test_edge_assessment.py
+@@ -426,21 +426,22 @@ def complete_review_fixture():
+         path = key + '.json'
+         cny, _ = e.daily_metrics([p['equity_cny'] for p in points], float(capital)); cny.pop('daily_es5_loss')
+         cny['daily_es99_loss'] = e.es99([-.001999] + [0.] * (len(points) - 1))
+         usd, _ = e.daily_metrics([p['equity_usdt'] for p in points], points[0]['equity_usdt']); usd.pop('daily_es5_loss')
+         usd['final_usdt'] = usd.pop('final_cny')
+         m = dict(metrics=cny, usdt_metrics=usd, registered_account_cagr=cny['cagr'], registered_account_usdt_cagr=0.,
+             continuous_mdd_from_account=cny['daily_mdd'], fees_usdt='0', funding_paid_usdt='0', fill_count=0,
+             validation_2022_plus=dict(regression={'beta_btc': 0.}, usdt={'daily_volatility_annualized': 0.}))
+         a = dict(kind=kind, candidate=name, scenario=scenario, capital=capital, offset=int(offset), risk=role == 'risk',
+             components=e.components(kind, name), source=source, path=path, raw_sha256=digest, status='complete', reasons=[],
+-            curve=points, metrics=m, monetary_audit={'passed': True}, row=dict(initial_cny=capital, audit={'passed': True}, fills=[], cagr=cny['cagr'], mdd=cny['daily_mdd']))
++            curve=points, metrics=m, monetary_audit={'passed': True}, row=dict(initial_cny=capital, audit={'passed': True}, fills=[], cagr=cny['cagr'], mdd=str(cny['daily_mdd'])))
++        a['gate_inputs'] = dict(raw_sha256=digest, values=e.gate_values(a))
+         report['accounts'][key] = a
+         meta = dict(source=source, fx_sha256='f' * 64, schedule_sha256='d' * 64, market_sha256='e' * 64,
+                     spec_sha256=e.SPEC_HASH[kind], protocol_sha256=e.PROTOCOL_HASH[kind], feature_sha256=e.FEATURE_HASH,
+                     feature_file_sha256=e.FEATURE_HASH, market_identity={'original': 'market'}, risk_calibration_sha256=None)
+         report['input_envelopes'][path] = meta if kind == 'spot' else dict(inputs=meta, edge=dict(meta))
+         report['inputs'][path] = digest
+     for kind in e.BASE:
+         doc, stats = e.calibration_document(report['accounts'], kind, market, 999.)
+         report['calibration_documents'][kind] = doc
+         report['calibration_diagnostics'][kind] = stats
+@@ -502,20 +503,111 @@ class FinancialReviewCoverageTests(unittest.TestCase):
+     def test_complete_roundtrip_and_correct_negative_candidates(self):
+         self.assertEqual(len(self.report['accounts']), 68)
+         self.assertEqual({k: len(v) for k, v in self.expected.items()}, dict(source_and_inputs=136,
+             original_accounting=68, baseline_six_groups=10, calibration_and_actual_risk=16,
+             adoption_gates=8, actual_budget_aggregation=3))
+         self.assertTrue(all(not d['eligible'] for decisions in self.report['decisions'].values() for d in decisions.values()))
+         path = self.proof()
+         with patch.object(e, 'verify_source', return_value={}):
+             self.assertEqual(e.verify_financial_review(path, self.report)['sha256'], e.sha(path))
+ 
++    def test_exact_negative_mdd_complete_proof_roundtrip(self):
++        self.report = complete_review_fixture()
++        accounts = self.report['accounts']
++        for scenario in e.STRESSES['spot']:
++            a = accounts[e.account_id('spot', e.BASE['spot'], scenario)]
++            a['gate_inputs']['values']['mdd'] = '0.31'
++            a['metrics']['continuous_mdd_from_account'] = .31
++        key = e.account_id('spot', 'exit-confirm')
++        accounts[key]['gate_inputs']['values']['mdd'] = '0.30000000000000001'
++        accounts[key]['metrics']['continuous_mdd_from_account'] = .3
++        market = [.01 if i % 2 else -.01 for i in range((e.END - e.START) // e.DAY)]
++        self.report['decisions']['spot'] = e.decisions_for(accounts, 'spot', e.ORDER['spot'], True, market, 999.)
++        decision = self.report['decisions']['spot']['exit-confirm']
++        self.assertFalse(decision['checks']['base_improvement'])
++        self.assertFalse(decision['eligible'])
++        self.expected = e.review_expectations(self.report)
++        self.assertEqual(self.expected['original_accounting'][key]['values']['money']['continuous_proxy_mdd'],
++                         '0.30000000000000001')
++        self.assertEqual(self.expected['adoption_gates']['spot:exit-confirm']['values']['gate_inputs'][key],
++                         accounts[key]['gate_inputs'])
++        self.inventory = e.old.checksum(e.inventory_binding(self.report))
++        self.prior = self.root / 'exact-negative-preliminary.json'
++        e.write_new(self.prior, self.report)
++        path = self.proof()
++        with patch.object(e, 'verify_source', return_value={}):
++            self.assertEqual(e.verify_financial_review(path, self.report)['sha256'], e.sha(path))
++            # A freshly hashed artifact still cannot substitute its rounded display value.
++            def rounded(category, records):
++                if category == 'adoption_gates':
++                    record = next(r for r in records if r['id'] == 'spot:exit-confirm')
++                    record['values']['gate_inputs'][key]['values']['mdd'] = '0.3'
++            with self.assertRaises(ValueError):
++                e.verify_financial_review(self.proof(rounded), self.report)
++
++    def test_actual_calibrated_and_coin_strict_mdd_exact_boundaries(self):
++        report = complete_review_fixture()
++        accounts = report['accounts']
++        market = [.01 if i % 2 else -.01 for i in range((e.END - e.START) // e.DAY)]
++        for kind in e.BASE:
++            name = e.ORDER[kind][0]
++            control = accounts[e.account_id(kind, e.BASE[kind], risk=True)]
++            actual = accounts[e.account_id(kind, name, risk=True)]
++            control['gate_inputs']['values']['mdd'] = '0.31'
++            control['metrics']['continuous_mdd_from_account'] = .31
++            for value, passed in [('0.30', True), ('0.30000000000000001', False)]:
++                with self.subTest(kind=kind, actual_mdd=value):
++                    actual['gate_inputs']['values']['mdd'] = value
++                    actual['metrics']['continuous_mdd_from_account'] = float(value)
++                    report['decisions'][kind] = e.decisions_for(accounts, kind, e.ORDER[kind], True, market, 999.)
++                    self.assertIs(report['decisions'][kind][name]['checks']['actual_validation'], passed)
++                    expected = e.review_expectations(report)
++                    self.assertEqual(expected['calibration_and_actual_risk']['actual:' + e.account_id(kind, name, risk=True)]
++                                     ['values']['validation']['continuous_proxy_mdd'], value)
++        name = e.ORDER['perp'][0]
++        account = accounts[e.account_id('perp', name)]
++        for value, passed in [('0.49999999999999999', True), ('0.50', False), ('0.50000000000000001', False)]:
++            with self.subTest(coin_strict_mdd=value):
++                account['gate_inputs']['values']['mdd'] = value
++                account['metrics']['continuous_mdd_from_account'] = float(value)
++                report['decisions']['perp'] = e.decisions_for(accounts, 'perp', e.ORDER['perp'], True, market, 999.)
++                self.assertIs(report['decisions']['perp'][name]['checks']['base:mdd'], passed)
++                e.review_expectations(report)
++
++    def test_exact_gate_input_schema_finite_and_raw_binding(self):
++        account = next(iter(self.report['accounts'].values()))
++        mutations = [lambda a: a.pop('gate_inputs'),
++            lambda a: a.update(gate_inputs=[]),
++            lambda a: a['gate_inputs'].update(raw_sha256='0' * 64),
++            lambda a: a['gate_inputs'].update(extra=0),
++            lambda a: a['gate_inputs']['values'].pop('es99'),
++            lambda a: a['gate_inputs']['values'].update(extra=0),
++            lambda a: a['gate_inputs']['values'].update(mdd=.3),
++            lambda a: a['gate_inputs']['values'].update(mdd='NaN'),
++            lambda a: a['gate_inputs']['values'].update(cagr=True),
++            lambda a: a['gate_inputs']['values'].update(worst_day=float('inf')),
++            lambda a: a['gate_inputs']['values'].update(underwater=0.)]
++        for index, mutate in enumerate(mutations):
++            with self.subTest(index=index):
++                changed = copy.deepcopy(account)
++                mutate(changed)
++                with self.assertRaises(ValueError):
++                    e.gate_values(changed)
++        changed = copy.deepcopy(account)
++        changed['row'] = dict(cagr=changed['gate_inputs']['values']['cagr'], mdd='0.30000000000000001')
++        with self.assertRaisesRegex(ValueError, 'differ from original'):
++            e.gate_values(changed)
++        # This schema checks exact finite inputs; only the existing gates decide economics.
++        changed = copy.deepcopy(account)
++        changed['gate_inputs']['values']['mdd'] = '1.01'
++        self.assertEqual(e.gate_values(changed)['mdd'], '1.01')
++
+     def test_missing_each_category_duplicate_unknown_failed_and_wrong_raw(self):
+         mutations = []
+         for target in self.expected:
+             mutations.append((target + ':missing', lambda category, rows, target=target: rows.pop() if category == target else None))
+         mutations.extend([
+             ('duplicate', lambda category, rows: rows.append(copy.deepcopy(rows[0])) if category == 'original_accounting' else None),
+             ('unknown', lambda category, rows: rows[0].update(id='NOT_AN_ACCOUNT') if category == 'original_accounting' else None),
+             ('failed', lambda category, rows: rows[0].update(matches=False) if category == 'original_accounting' else None),
+             ('null', lambda category, rows: rows[0].update(values=None) if category == 'original_accounting' else None),
+             ('wrong_raw', lambda category, rows: rows[0]['raw_bindings'].update({next(iter(rows[0]['raw_bindings'])): '0' * 64}) if category == 'original_accounting' else None),

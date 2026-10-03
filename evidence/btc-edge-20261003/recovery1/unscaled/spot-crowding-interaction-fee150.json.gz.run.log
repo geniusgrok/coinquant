@@ -1,0 +1,9 @@
+{"candidate": "crowding-interaction", "scenario": "fee150", "session": 0}
+{"candidate": "crowding-interaction", "scenario": "fee150", "session": 100}
+{"candidate": "crowding-interaction", "scenario": "fee150", "session": 200}
+{"candidate": "crowding-interaction", "scenario": "fee150", "session": 300}
+{"candidate": "crowding-interaction", "scenario": "fee150", "session": 400}
+{"candidate": "crowding-interaction", "scenario": "fee150", "session": 500}
+{"candidate": "crowding-interaction", "scenario": "fee150", "session": 600}
+{"candidate": "crowding-interaction", "scenario": "fee150", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-fee150.json.gz", "complete": true, "sha256": "142c328c958f7459df93b1b4032ba61a66a9a550241937646adee212ba7647d0"}

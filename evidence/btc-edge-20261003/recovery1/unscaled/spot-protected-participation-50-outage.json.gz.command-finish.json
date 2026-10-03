@@ -1,0 +1,13 @@
+{
+  "label": "spot-protected-participation-50-outage",
+  "state": "exited",
+  "pid": 102981,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T10:40:10.795460+00:00",
+  "elapsed_seconds": 561.9719171260076,
+  "errors": [],
+  "command_start_sha256": "a3c67d23a13ea63f63b9af030a93179883a62ef9200e8c25dcd6a0fbffb9d872",
+  "log_sha256": "444c1e4a0bcb309729d295e798f5c3ebe6dbb48589864646cfe50d875e18d832",
+  "output_sha256": "431ca26ccff0ae754d109114913b3b2dfc7718d320f33f590b455609750b91e8"
+}

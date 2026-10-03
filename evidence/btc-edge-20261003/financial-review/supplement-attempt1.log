@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/supplement.py", line 124, in <module>
+    try:provenance_extra();journal(features());print('SUPPLEMENT PASS',flush=True)
+        ^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/supplement.py", line 19, in provenance_extra
+    actual=sorted(str(p) for p in Path(tree['root']).rglob('*') if p.is_file() and any(str(p).endswith(s) for s in tree['suffixes']));eq(actual,tree['files'],'immutable input set')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/supplement.py", line 19, in <genexpr>
+    actual=sorted(str(p) for p in Path(tree['root']).rglob('*') if p.is_file() and any(str(p).endswith(s) for s in tree['suffixes']));eq(actual,tree['files'],'immutable input set')
+                                                                                                                   ~~~~^^^^^^^^^^^^
+TypeError: 'NoneType' object is not iterable

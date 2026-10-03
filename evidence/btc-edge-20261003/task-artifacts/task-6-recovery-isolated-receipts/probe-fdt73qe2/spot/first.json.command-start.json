@@ -1,0 +1,15 @@
+{
+  "label": "first",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-c",
+    "from pathlib import Path; import sys,time; time.sleep(.08); Path(sys.argv[1]).write_text(\"ok\")",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-fdt73qe2/spot/first.json"
+  ],
+  "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-fdt73qe2/spot/first.json",
+  "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-fdt73qe2/spot",
+  "project_kind": "spot",
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T05:49:31.609294+00:00"
+}

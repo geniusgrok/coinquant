@@ -1,0 +1,162 @@
+{
+  "format": "btc-edge-first-attempt-storage-failure-v1",
+  "recorded_utc": "2026-10-03T05:48:00.542470+00:00",
+  "parent_freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "cause": "Separate /tmp tmpfs has only about3.4GB free after preserved review workspaces; source meters create synthetic SQLite/session backups there and fail with SQLITE_FULL. Filesystem /workspace remains about11GB free. Native account/HOME/UID/locks unchanged. Original meters clean ephemeral TemporaryDirectory state on exit.",
+  "spaces_after_source_cleanup": {
+    "/workspace": {
+      "available_bytes": 11165757440,
+      "total_bytes": 33770192896
+    },
+    "/tmp": {
+      "available_bytes": 3641208832,
+      "total_bytes": 9441349632
+    }
+  },
+  "mount_evidence": [
+    "none /tmp tmpfs rw,relatime 0 0"
+  ],
+  "phases": {
+    "spot": {
+      "status": "failed",
+      "all_children_reaped": true,
+      "pending_labels": [
+        "spot-atr-stop-slip2",
+        "spot-atr-stop-outage",
+        "spot-exit-confirm-base",
+        "spot-exit-confirm-fee150",
+        "spot-exit-confirm-slip2",
+        "spot-exit-confirm-outage",
+        "spot-stop-budget-base",
+        "spot-stop-budget-fee150",
+        "spot-stop-budget-slip2",
+        "spot-stop-budget-outage",
+        "spot-crowding-interaction-base",
+        "spot-crowding-interaction-fee150",
+        "spot-crowding-interaction-slip2",
+        "spot-crowding-interaction-outage",
+        "spot-cash-base",
+        "spot-cash-fee150",
+        "spot-cash-slip2",
+        "spot-cash-outage",
+        "spot-protected-participation-25-base",
+        "spot-protected-participation-25-fee150",
+        "spot-protected-participation-25-slip2",
+        "spot-protected-participation-25-outage",
+        "spot-protected-participation-50-base",
+        "spot-protected-participation-50-fee150",
+        "spot-protected-participation-50-slip2",
+        "spot-protected-participation-50-outage",
+        "spot-protected-participation-75-base",
+        "spot-protected-participation-75-fee150",
+        "spot-protected-participation-75-slip2",
+        "spot-protected-participation-75-outage",
+        "spot-protected-participation-100-base",
+        "spot-protected-participation-100-fee150",
+        "spot-protected-participation-100-slip2",
+        "spot-protected-participation-100-outage"
+      ],
+      "results": [
+        {
+          "label": "spot-atr-stop-base",
+          "state": "exited",
+          "pid": 93983,
+          "exit_code": 1,
+          "reaped": true,
+          "finished_utc": "2026-10-03T05:41:34.858791+00:00",
+          "elapsed_seconds": 147.1902181689802,
+          "errors": [
+            {
+              "stage": "output_hash",
+              "error": "FileNotFoundError(2, 'No such file or directory')"
+            }
+          ],
+          "command_start_sha256": "3e6d2638826af6b571fa7de7935ddb3db5860360161bd4a61898cb4a80d27072",
+          "log_sha256": "0a9e3be4f358f85b69f11c085c61c59192fda408bcc0a2b9ea6f253bf522d64e",
+          "output_sha256": null,
+          "finish_receipt_saved": true,
+          "finish_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.command-finish.json"
+        },
+        {
+          "label": "spot-atr-stop-fee150",
+          "state": "exited",
+          "pid": 94002,
+          "exit_code": 1,
+          "reaped": true,
+          "finished_utc": "2026-10-03T05:41:35.037910+00:00",
+          "elapsed_seconds": 147.16026630598935,
+          "errors": [
+            {
+              "stage": "output_hash",
+              "error": "FileNotFoundError(2, 'No such file or directory')"
+            }
+          ],
+          "command_start_sha256": "d0005e7608bc8fa4fb8dc05d4f6dcdbfb98958625ae3af6f0dfd9b9af77044ec",
+          "log_sha256": "423298f150ea224c9dbbbff7bcb65e348f9d721439d2e28975ae0d19a9bf2661",
+          "output_sha256": null,
+          "finish_receipt_saved": true,
+          "finish_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.command-finish.json"
+        }
+      ],
+      "errors": [
+        {
+          "stage": "output_hash",
+          "label": "spot-atr-stop-base",
+          "error": "FileNotFoundError(2, 'No such file or directory')",
+          "recorded_utc": "2026-10-03T05:41:34.856606+00:00"
+        },
+        {
+          "stage": "child_exit",
+          "label": "spot-atr-stop-base",
+          "error": "ValueError('actual exit code: 1')",
+          "recorded_utc": "2026-10-03T05:41:34.858106+00:00"
+        },
+        {
+          "stage": "output_hash",
+          "label": "spot-atr-stop-fee150",
+          "error": "FileNotFoundError(2, 'No such file or directory')",
+          "recorded_utc": "2026-10-03T05:41:35.036656+00:00"
+        },
+        {
+          "stage": "child_exit",
+          "label": "spot-atr-stop-fee150",
+          "error": "ValueError('actual exit code: 1')",
+          "recorded_utc": "2026-10-03T05:41:35.037369+00:00"
+        }
+      ]
+    },
+    "perp": {
+      "status": "failed",
+      "all_children_reaped": true,
+      "pending_labels": [],
+      "results": [
+        {
+          "label": "perp-registered-16",
+          "state": "exited",
+          "pid": 94014,
+          "exit_code": 1,
+          "reaped": true,
+          "finished_utc": "2026-10-03T05:41:47.470461+00:00",
+          "elapsed_seconds": 145.39001627400285,
+          "errors": [],
+          "command_start_sha256": "ed6d617abfa047725e487e1ccf7c515b6f38db6727e31dd94c20000698d288a9",
+          "log_sha256": "b6ee3ad665d5a96c67dfcd7b829f84ca41c89c1674423f82fb04696f8b44389e",
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "finish_receipt_saved": true,
+          "finish_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.command-finish.json"
+        }
+      ],
+      "errors": [
+        {
+          "stage": "child_exit",
+          "label": "perp-registered-16",
+          "error": "ValueError('actual exit code: 1')",
+          "recorded_utc": "2026-10-03T05:41:47.469640+00:00"
+        }
+      ]
+    }
+  },
+  "retained_files": [],
+  "meaning": "Failed original attempt retained; no completed financial acceptance, no result selection, no rerun yet"
+}

@@ -1,0 +1,29 @@
+{
+  "format": "btc-edge-controller-preparation-v1",
+  "recorded_utc": "2026-10-03T02:09:09.247655+00:00",
+  "meaning": "synthetic guard checks only; no account/producer/financial result",
+  "artifacts": [
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/prepare-source-freeze.py",
+      "sha256": "742f6b895cf18e691a64d1819099e6cdf15eda26babb04e4ef0fcd2fbb417af8"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/run-registered-phase.py",
+      "sha256": "57ce768b53b4277031d82f344506c7d4f3b8db569f350762f52cfa0944756a2a"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/run-registered-phase-pre-freeze-hardening.py",
+      "sha256": "c3e5cc9c3f23ee6fcb5089f9c5b36995c81de11ea41d2a58f0a1d5d8c0d91208"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/market-before-financial-preflight.json",
+      "sha256": "840610d71447bdc7310e4b5e98b03fd1173a700c21bd4cdcbe991012390bd965"
+    }
+  ],
+  "synthetic_guard_checks": [
+    "unchanged synthetic source/input accepted",
+    "registered public input inventory changed",
+    "registered input/source bytes changed",
+    "producer source changed"
+  ]
+}

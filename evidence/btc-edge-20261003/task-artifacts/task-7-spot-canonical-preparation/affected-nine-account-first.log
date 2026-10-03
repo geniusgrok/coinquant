@@ -1,0 +1,161 @@
+test_canonical_synthetic_account_matches_selected_research_all_six_groups (test_adoption_spot.AdoptionTests.test_canonical_synthetic_account_matches_selected_research_all_six_groups) ... {"candidate": "crowding-interaction", "scenario": "base", "session": 0}
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a175030>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a174e50>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a175210>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a175120>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1763e0>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a175990>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+{"candidate": "crowding-interaction", "scenario": "base", "session": 0}
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1753f0>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a174d60>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/preview.py:196: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1755d0>
+  known = any(snapshot.get(key) is not None for key in (
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/preview.py:196: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1765c0>
+  known = any(snapshot.get(key) is not None for key in (
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_canonical_meter_never_installs_research_decisions (test_adoption_spot.AdoptionTests.test_canonical_meter_never_installs_research_decisions) ... /workspace/btc-alpha-beta-canonical-prepare/spotquant/research/session_account.py:94: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1763e0>
+  return [(t, h, l, c) for t, o, h, l, c, q in self.all_bars[begin:end]]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/research/session_account.py:94: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a175030>
+  return [(t, h, l, c) for t, o, h, l, c, q in self.all_bars[begin:end]]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+{"candidate": "crowding-interaction", "scenario": "base", "session": 0}
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:213: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a175990>
+  yday <= D(1) - self.cap_drop
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:213: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a174e50>
+  yday <= D(1) - self.cap_drop
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/preview.py:359: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176a70>
+  sleeve['order'] = dict(sleeve['order'], quoteOrderQty=str(share),
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/preview.py:359: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1766b0>
+  sleeve['order'] = dict(sleeve['order'], quoteOrderQty=str(share),
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_diagnostic_profile_cutoff_owned_sizes_and_rerun_binding (test_adoption_spot.AdoptionTests.test_diagnostic_profile_cutoff_owned_sizes_and_rerun_binding) ... ok
+test_unity_baseline_all_six_original_groups_and_budget (test_edge_spot.EdgeSpotTests.test_unity_baseline_all_six_original_groups_and_budget) ... /workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176980>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+{"candidate": "atr-stop", "scenario": "base", "session": 0}
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1765c0>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a175300>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1766b0>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1765c0>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176c50>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+{"candidate": "atr-stop", "scenario": "base", "session": 0}
+/usr/lib/python3.13/json/encoder.py:252: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a175300>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.13/json/encoder.py:252: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176b60>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.13/json/encoder.py:261: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176c50>
+  return _iterencode(o, 0)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.13/json/encoder.py:261: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1753f0>
+  return _iterencode(o, 0)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176c50>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176e30>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+{"candidate": "atr-stop", "scenario": "base", "session": 0}
+/usr/lib/python3.13/json/encoder.py:252: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1753f0>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.13/json/encoder.py:252: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a174e50>
+  _iterencode = c_make_encoder(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.13/json/encoder.py:261: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176c50>
+  return _iterencode(o, 0)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.13/json/encoder.py:261: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a175210>
+  return _iterencode(o, 0)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_cold_start_then_two_bullish_closes_preview_entry (test_session.SessionTests.test_cold_start_then_two_bullish_closes_preview_entry) ... /workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176c50>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176b60>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_real_session_partial_entry_restart_stop_amend_and_offline_trigger (test_p4_execution.P4ExecutionTests.test_real_session_partial_entry_restart_stop_amend_and_offline_trigger) ... /workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176890>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176a70>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1765c0>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a176b60>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a174e50>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a174d60>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+FAIL
+test_query_outage_after_send_recovers_with_original_identity (test_p4_execution.P4ExecutionTests.test_query_outage_after_send_recovers_with_original_identity) ... /workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1765c0>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1766b0>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a1763e0>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f8d7a10f100>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_proposal_modeled_fill_fee_net_conservation_and_checkpoint (test_edge_forward.ForwardTests.test_proposal_modeled_fill_fee_net_conservation_and_checkpoint) ... ok
+test_size_minimum_rounding_depth_and_no_topup (test_edge_forward.ForwardTests.test_size_minimum_rounding_depth_and_no_topup) ... ok
+
+======================================================================
+FAIL: test_real_session_partial_entry_restart_stop_amend_and_offline_trigger (test_p4_execution.P4ExecutionTests.test_real_session_partial_entry_restart_stop_amend_and_offline_trigger)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-canonical-prepare/spotquant/tests/test_p4_execution.py", line 226, in test_real_session_partial_entry_restart_stop_amend_and_offline_trigger
+    self.assertEqual(D(active[0]['stopPrice']), D('99.00'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Decimal('91.80') != Decimal('99.00')
+
+----------------------------------------------------------------------
+Ran 9 tests in 4.413s
+
+FAILED (failures=1)

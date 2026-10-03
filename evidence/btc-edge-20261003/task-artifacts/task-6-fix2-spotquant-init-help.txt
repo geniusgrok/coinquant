@@ -1,0 +1,12 @@
+usage: edge_forward.py init [-h] --diary DIARY --export EXPORT --export-sha
+                            EXPORT_SHA --review-sha REVIEW_SHA
+                            (--history HISTORY | --defer-market-warmup)
+
+options:
+  -h, --help            show this help message and exit
+  --diary DIARY
+  --export EXPORT
+  --export-sha EXPORT_SHA
+  --review-sha REVIEW_SHA
+  --history HISTORY
+  --defer-market-warmup

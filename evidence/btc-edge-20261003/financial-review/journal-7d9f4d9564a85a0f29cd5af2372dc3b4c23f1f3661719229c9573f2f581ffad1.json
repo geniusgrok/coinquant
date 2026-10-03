@@ -1,0 +1,812 @@
+{
+  "spot|protected-participation-25|base|1E+4|0|unscaled": {
+    "raw_sha256": "d5325031be5ded522e909ce4a65cc7bc6939bc488ebb4957a55c4c2be2f8a699",
+    "events_scanned": 37537,
+    "counts": {
+      "unity_before_cutoff": 7,
+      "scaled_new_buy_after_cutoff": 9
+    },
+    "sample_rule": "all feature exceptional/missing and sizing constraints; deterministic every997th Spot decision/every97th Coin sizing; all decision scales and committed targets checked",
+    "samples": [
+      {
+        "index": 0,
+        "time": 1577836800600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "3bc3d9082ba30cca6128175878a6504eba597ba624feb4ada1394cc3b2d4480b",
+        "sleeves": {
+          "30": {
+            "action": "flat",
+            "owned_btc": "0"
+          },
+          "40": {
+            "action": "flat",
+            "owned_btc": "0"
+          },
+          "50": {
+            "action": "flat",
+            "owned_btc": "0"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 997,
+        "time": 1582304401200,
+        "kind": "ownership_or_exception",
+        "event_sha256": "86cc6724a60ad65419aa73ade79912d85c04aec12506da912cff3e5856a19054",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01715429591637023101389166266"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01715429591637023101389166266"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01715429591637023101389166265"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 1994,
+        "time": 1588816825400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "a4d990dc3d6788117a97a7d5806243ed8cd6857f1d50f4bf6ac5be9f31e53324",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 2991,
+        "time": 1593982884800,
+        "kind": "ownership_or_exception",
+        "event_sha256": "3955b0b69bdd07e5f9455ccfad418148c2f240342490f045b233780e564084cc",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 3988,
+        "time": 1599235342400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "ab9c83beb9aa345f185229b1ca14f38ed3b2a4f69ca49e3379025cf714a4bbb9",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 4985,
+        "time": 1604912591600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "ce7b1c71007fe17183f5e062c5d8583dda7c7863a93da521dd86194a664c7a11",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 5982,
+        "time": 1610215416400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "c58b8a205255be62bf2688845d59ba19c668c44ef85d92756654cb6300b6bfc1",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.02272870174281113737013852983"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 6979,
+        "time": 1616267038400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "ffb33cdf03ffe6a84c7f38dba8786025db164caba97789fa927114505c3ccb39",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.008219162631483621053759886003"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.008219162631483621053759886003"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00821916263148362105375988600"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 7976,
+        "time": 1622865889200,
+        "kind": "ownership_or_exception",
+        "event_sha256": "c2e77404e4dbcd6479182895a2db1f43bc9f225944751dee6944489d1ab2bf6c",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.007181053860130573630411078768"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.007181053860130573630411078768"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00718105386013057363041107877"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 8973,
+        "time": 1629172807800,
+        "kind": "ownership_or_exception",
+        "event_sha256": "d29d34b713f19414ac29b6406ba1145dfde5bad3905f14f89dad9c5fd48eb977",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.008030912322432005008639591941"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.008030912322432005008639591941"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00803091232243200500863959194"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 9970,
+        "time": 1634317250800,
+        "kind": "ownership_or_exception",
+        "event_sha256": "25e86d044940bd3480ad6aa6b80a84233beee68e49e813367e7ba494784a72f0",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.008030912322432005008639591941"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.008030912322432005008639591941"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00803091232243200500863959194"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 10967,
+        "time": 1640498475800,
+        "kind": "ownership_or_exception",
+        "event_sha256": "4e1b0fb5886f93532151aa8b6a7894b7c998472e8d161ce79c6b47c0297372d9",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.005775439985137554417034141871"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.005775439985137554417034141871"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00577543998513755441703414188"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 11964,
+        "time": 1646283710400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "ecd550550f1c6c61316a936dad6165f33c1245d292c2d54f6fdbdd63624b920c",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.007647808372284789658601836413"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.007647808372284789658601836413"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00764780837228478965860183642"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 12961,
+        "time": 1652738567400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "08dd9d4c01680c9fa8e3ffe4a3640d90d1a30e6f79da2628e3ae10fc69ef0956",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.008971038084687402013985495503"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.008971038084687402013985495503"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00897103808468740201398549550"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 13958,
+        "time": 1657558999600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "62455587b0c297cb1311da963f2755724b9c5403ae66c6e20be7ed1d91096baf",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01200179522508239131659928599"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01200179522508239131659928599"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01200179522508239131659928598"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 14955,
+        "time": 1662797031600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "6513f9368009b042cad3c12ff23c5d749e6de0dad0e46afb3fa8f7b9da886cc4",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01200179522508239131659928599"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01200179522508239131659928599"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01200179522508239131659928598"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 15952,
+        "time": 1668582263600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "43b98fcb1e691f0a1f09b692da994d138ec7464cdb5b218743c972c41a1d145b",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 16949,
+        "time": 1673845227200,
+        "kind": "ownership_or_exception",
+        "event_sha256": "0543f27260dc052904a9f7af54f7f15dac73f26ee999346c543d930a573be6a9",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 17946,
+        "time": 1679796057000,
+        "kind": "ownership_or_exception",
+        "event_sha256": "0e55ff9c055d61e644fe0075ab3be5fb0202a04986e3f1b339e9171b3e814fc6",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 18943,
+        "time": 1685631710600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "e3aa5393b78ee66685ece29d74e7908777fafa0506f1b16aada2940bdfe7fa18",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 19940,
+        "time": 1691402567600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "75fc61e928920ef41af81405bcc568120dfadd6254efe5f54d02464a27d491fb",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 20937,
+        "time": 1696734232000,
+        "kind": "ownership_or_exception",
+        "event_sha256": "0447d0d8ff6d290a21744a2ae8d20b7c22c5758fb4a89b783e50cd028323e86d",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 21934,
+        "time": 1702915482800,
+        "kind": "ownership_or_exception",
+        "event_sha256": "0efee4707aa34e2f484ec2c1ecb26c71bf2a894a7c23f53a5b6426f4a1ac32f3",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 22931,
+        "time": 1708293618400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "32fb34598a8cf2de8726030d9630d3095c4454c515a01aaafdc3ebf5819d42de",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 23928,
+        "time": 1715641272000,
+        "kind": "ownership_or_exception",
+        "event_sha256": "1b932e3acfa63b7987d9c98de6c162365b011f46379a315219464905da06c441",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 24925,
+        "time": 1720375336000,
+        "kind": "ownership_or_exception",
+        "event_sha256": "c92175d50c1e83384e96458711de75056b907d6f36bc79d723a5c1bde2f44f8e",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234834"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.01299711863811160892089234833"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 25922,
+        "time": 1726822974400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "316ac859195a8802feaf5d38f43d8e4d7bb2fd7179dd85e9e92eceb845138e2d",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.005830412718870368682570635053"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.005830412718870368682570635053"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00583041271887036868257063504"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 26919,
+        "time": 1732579391400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "c785d553fb9292769444f59a6a5ab37d4d7a1838b11ea1c4b08267e3302012e8",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.005830412718870368682570635053"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.005830412718870368682570635053"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00583041271887036868257063504"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 27916,
+        "time": 1736780644400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "78bb9130d30d258704849b68bb16b3d38e65f52a0c2732f46ad3c9df22877382",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.005830412718870368682570635053"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.005830412718870368682570635053"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00583041271887036868257063504"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 28913,
+        "time": 1741759463800,
+        "kind": "ownership_or_exception",
+        "event_sha256": "98208b988c7f069d5c601e100dfd899ed017cc38e2972d195a5f1e74e72938e1",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.004197768560483138368956293379"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.004197768560483138368956293379"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00419776856048313836895629338"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 29910,
+        "time": 1747771201400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "870c5cbb8994df23e49887105128347a120666b951813a4c55abd05ac596418a",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.004197768560483138368956293379"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.004197768560483138368956293379"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00419776856048313836895629338"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 30907,
+        "time": 1754240452600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "b66bcb530a8c920492690a21b6b3cf3544ed8009be81861dd472ee8c435c8601",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.004197768560483138368956293379"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.004197768560483138368956293379"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00419776856048313836895629338"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 31904,
+        "time": 1759363310600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "cee4e97c49ff6a0951976698858357858a53776995000f6bbe66ca6e3071db0e",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.004197768560483138368956293379"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.004197768560483138368956293379"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.00419776856048313836895629338"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 32901,
+        "time": 1764068539400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "edf13443dfc00e1b1a1d1a73b640e710db95ebb8619f0ad0b7a0895f21c8e2ae",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.004427634528566898983242827097"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.004427634528566898983242827097"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.004427634528566898983242827094"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 33898,
+        "time": 1769587399600,
+        "kind": "ownership_or_exception",
+        "event_sha256": "57b4c477faca1043bc6d5d30a7d339b3a74d26a9f004aca2c297a18f531aed79",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.004427634528566898983242827097"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.004427634528566898983242827097"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.004427634528566898983242827094"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 34895,
+        "time": 1775437425400,
+        "kind": "ownership_or_exception",
+        "event_sha256": "bfcf9862329ecb612a0ee296c3060ed15faae6f1431b1c6d6f1c26588832b4fa",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.005322098714093839144623519066"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.005322098714093839144623519066"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.005322098714093839144623519066"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 35892,
+        "time": 1779746651800,
+        "kind": "ownership_or_exception",
+        "event_sha256": "7987c41586e419c2dd1378c3675ded4e2b573ba0f4f4b18c2473c69a9278a45e",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.005322098714093839144623519066"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.005322098714093839144623519066"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.005322098714093839144623519066"
+          }
+        },
+        "accepted_orders": []
+      },
+      {
+        "index": 36889,
+        "time": 1786352689200,
+        "kind": "ownership_or_exception",
+        "event_sha256": "f6a9882c8813d637cb0cbf06759f82d04559653afb353f16b77b2d5426df5240",
+        "sleeves": {
+          "30": {
+            "action": "hold",
+            "owned_btc": "0.005750191342749833526748066190"
+          },
+          "40": {
+            "action": "hold",
+            "owned_btc": "0.005750191342749833526748066190"
+          },
+          "50": {
+            "action": "hold",
+            "owned_btc": "0.005750191342749833526748066186"
+          }
+        },
+        "accepted_orders": []
+      }
+    ],
+    "passed": true
+  }
+}

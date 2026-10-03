@@ -1,0 +1,6 @@
+{
+  "label": "first",
+  "state": "not_started",
+  "error": "ValueError('existing output/progress/invocation receipt: /workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_existing_output_and_progress_refuse_before_popen-wn1wccjm/output/progress/first.json')",
+  "recorded_utc": "2026-10-03T05:53:56.992571+00:00"
+}

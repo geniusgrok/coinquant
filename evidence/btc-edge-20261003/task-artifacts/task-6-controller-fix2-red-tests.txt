@@ -1,0 +1,275 @@
+test_first_handled_signals_during_failed_wait_reap_real_children (__main__.ControllerTests.test_first_handled_signals_during_failed_wait_reap_real_children) ... 
+  test_first_handled_signals_during_failed_wait_reap_real_children (__main__.ControllerTests.test_first_handled_signals_during_failed_wait_reap_real_children) (signal='SIGTERM') ... FAIL
+  test_first_handled_signals_during_failed_wait_reap_real_children (__main__.ControllerTests.test_first_handled_signals_during_failed_wait_reap_real_children) (signal='SIGINT') ... FAIL
+test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) ... 
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit='True') ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit='1') ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="'passed'") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="['passed']") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'synthetic': True}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': False}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': None}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': 0}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': 1}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': 'true'}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': []}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': {}}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit='True') ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit='1') ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="'passed'") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="['passed']") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'synthetic': True}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': False}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': None}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': 0}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': 1}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': 'true'}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': []}") ... FAIL
+  test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': {}}") ... FAIL
+test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) ... FAIL
+
+======================================================================
+FAIL: test_first_handled_signals_during_failed_wait_reap_real_children (__main__.ControllerTests.test_first_handled_signals_during_failed_wait_reap_real_children) (signal='SIGTERM')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 436, in test_first_handled_signals_during_failed_wait_reap_real_children
+    self.assertFalse(child_alive_at_return)
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_first_handled_signals_during_failed_wait_reap_real_children (__main__.ControllerTests.test_first_handled_signals_during_failed_wait_reap_real_children) (signal='SIGINT')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 436, in test_first_handled_signals_during_failed_wait_reap_real_children
+    self.assertFalse(child_alive_at_return)
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit='1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="'passed'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="['passed']")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'synthetic': True}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': False}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': None}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': 0}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': 1}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': 'true'}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': []}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|unscaled', audit="{'passed': {}}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit='True')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit='1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="'passed'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="['passed']")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'synthetic': True}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': False}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': None}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': 0}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': 1}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': 'true'}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': []}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts) (account='spot|atr-stop|base|1E+4|0|risk', audit="{'passed': {}}")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 466, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_audit_requires_actual_boolean_pass_for_original_and_later_accounts (__main__.ControllerTests.test_audit_requires_actual_boolean_pass_for_original_and_later_accounts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-fix2.py", line 474, in test_audit_requires_actual_boolean_pass_for_original_and_later_accounts
+    with self.assertRaisesRegex(ValueError,'complete audited account required'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.898s
+
+FAILED (failures=27)

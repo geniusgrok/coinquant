@@ -1,0 +1,37 @@
+{
+  "format": "btc-edge-final-render-v1",
+  "report": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json",
+    "sha256": "16ee432bd45c9783f9f38beb19aa7fef21ca3cc6305bee29469a371d388b2625"
+  },
+  "renderer_sha256": "0dcd9cfed9e2234d4d5627cb37de68b6266395fa668f9d0752a21cb6dd25c985",
+  "arithmetic_metrics": "Copied from independently reviewed final report; no new financial replay.",
+  "plot_limitations": "Closing daily curves; joint daily drawdown is not continuous joint MDD. Historical descriptive attribution is not proven prospective alpha. Continuous account MDD remains the original producer proxy.",
+  "files": [
+    {
+      "path": "account-metrics.csv",
+      "bytes": 28394,
+      "sha256": "b4770af7ed9fb5fec9f595321e7a65b731a3f7502d93a7e18eede6107e9f6d84"
+    },
+    {
+      "path": "alpha-beta-and-risk.png",
+      "bytes": 172015,
+      "sha256": "9f8855fc2e2011a1fbfee848870ec02ca889ed03a8a0126a21da5e896a66f121"
+    },
+    {
+      "path": "alpha-beta-and-risk.svg",
+      "bytes": 104812,
+      "sha256": "ac29ac8d733e01bca48e51c948d8f2c1a640157d33e913651cb8e35ddd314763"
+    },
+    {
+      "path": "funded-performance.png",
+      "bytes": 290490,
+      "sha256": "7f43946ba417927b4ce36d1b03d1a17340108c2ba3e6a163478016ee6b7d44da"
+    },
+    {
+      "path": "funded-performance.svg",
+      "bytes": 352449,
+      "sha256": "95bd91a825ec406d90af3db94e011d849dc0909a314adbcfc0dbbb1c02b1488c"
+    }
+  ]
+}

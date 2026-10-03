@@ -1,0 +1,13 @@
+{
+  "label": "spot-cash-slip2",
+  "state": "exited",
+  "pid": 101216,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T09:14:27.246247+00:00",
+  "elapsed_seconds": 378.8792850380123,
+  "errors": [],
+  "command_start_sha256": "46e933e9ae87c990e4a42fec33b5d49a5ff2b6e05ac4cf756739ec0211a1bc11",
+  "log_sha256": "62213ea012928be23dc4b3368dafc9fa60d533a95d321d374f8541e41c47b797",
+  "output_sha256": "5bb969e0772e42faf479eeacb5864f3a1650bc7bd4d82d41f5c017a92dae87e3"
+}

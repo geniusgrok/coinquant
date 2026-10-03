@@ -1,0 +1,44 @@
+{
+  "scope": "Synthetic reviewer evidence; no actual freeze/queue/account operation",
+  "helper_sha256": {
+    "prepare-source-freeze.py": "3a78d0bb2c158cc0a5dc723ab149cb42b0f6456b416dd41fe6bd040cb876c2cf",
+    "run-registered-phase.py": "628d549a8e485e5fe9db8384613db46dc828a035a7e1fc60cde1b9dbcd791bd7",
+    "bind-phase-inputs.py": "3169ffc501ec2a82ec4eaf02d20f877e01d1e243e59512462676c3d9f16e7e12"
+  },
+  "signal_during_failure_wait": {
+    "controller_exit": 2,
+    "elapsed_seconds": 0.10261047899257392,
+    "child_still_running": true,
+    "all_children_reaped": false,
+    "recorded_result": {
+      "label": "first",
+      "state": "unknown",
+      "pid": 90479,
+      "exit_code": null,
+      "reaped": false,
+      "finished_utc": "2026-10-03T04:31:49.329365+00:00",
+      "elapsed_seconds": 0.10140644098282792,
+      "errors": [
+        {
+          "stage": "wait",
+          "error": "RuntimeError('controller received signal 15')"
+        },
+        {
+          "stage": "output_hash",
+          "error": "FileNotFoundError(2, 'No such file or directory')"
+        }
+      ],
+      "command_start_sha256": "4062215fe5446e5e92c2ab75dd2f97c90dd756a175548f3f72a9efa430aac13d",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": null,
+      "finish_receipt_saved": true,
+      "finish_path": "/tmp/controller-scoped-reap-lqq5bpyq/harmless-child.json.command-finish.json"
+    },
+    "reviewer_cleanup_actual_child_exit": 0,
+    "actual_output_after_reviewer_wait": "done"
+  },
+  "explicit_failed_audits": {
+    "failed_audits": 52,
+    "accepted_raw_bindings": 52
+  }
+}

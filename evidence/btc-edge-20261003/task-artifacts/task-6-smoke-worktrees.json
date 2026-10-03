@@ -1,0 +1,10 @@
+{
+  "spotquant": {
+    "commit": "898c6b2e77ca0e43a49ee400f5596d7acb5080a7",
+    "path": "/tmp/task6-spotquant-uw93eqcp"
+  },
+  "coinquant": {
+    "commit": "6a08602cfb62285e3ed6ceb1fcb1c8640132a96a",
+    "path": "/tmp/task6-coinquant-bq8qlpsw"
+  }
+}

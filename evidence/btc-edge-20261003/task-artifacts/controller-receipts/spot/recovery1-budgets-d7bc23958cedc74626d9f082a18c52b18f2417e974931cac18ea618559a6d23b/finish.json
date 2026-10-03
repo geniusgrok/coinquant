@@ -1,0 +1,81 @@
+{
+  "attempt": "recovery1",
+  "registry_path": "/workspace/btc-alpha-beta-improve/task-artifacts/registered-financial-recovery1.json",
+  "registry_sha256": "d7bc23958cedc74626d9f082a18c52b18f2417e974931cac18ea618559a6d23b",
+  "parent_registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "freeze_path": "/workspace/btc-alpha-beta-improve/task-artifacts/reviewed-source-freeze.json",
+  "freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "first_failure": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/first-financial-attempt-storage-failure.json",
+    "bytes": 12545,
+    "sha256": "d2fc82347f44dc278b5700e0e144e247479fc78f787d1cf96ba10754ec288e40"
+  },
+  "approval_path": "/workspace/btc-alpha-beta-improve/task-artifacts/recovery-approval.json",
+  "approval_sha256": "61b0fdd88a64f120db39c31d0a82f3ec9a115da2e37166b77596e9c0040c0963",
+  "phase_input_path": null,
+  "phase_input_sha256": null,
+  "supplemental_path": null,
+  "supplemental_sha256": null,
+  "controller_sha256": "cdc8538d01b46963c12b8810b468cafd754b58303a69495cfb32f4e62d497185",
+  "concurrency": 1,
+  "tmpdir": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/tmp/spot",
+  "uid": 1000,
+  "home": "/home/agent",
+  "environment_overrides": {
+    "TMPDIR": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/tmp/spot"
+  },
+  "phase": "recovery1-budgets",
+  "project_kind": "spot",
+  "finished_utc": "2026-10-03T13:31:28.562454+00:00",
+  "status": "completed",
+  "all_children_reaped": true,
+  "pending_labels": [],
+  "results": [
+    {
+      "label": "spot-baseline-budget-2500",
+      "state": "exited",
+      "pid": 116610,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T13:11:06.506492+00:00",
+      "elapsed_seconds": 602.4101739309845,
+      "errors": [],
+      "command_start_sha256": "57bccd294bd64c98c10c40747c99bc8eeaa8c958388ee30adf146f2bb2d92208",
+      "log_sha256": "71ca389fc2f54dcf8e3d15ef64e68a27d9de78f42fe6192ca1cf6cb0755bb04d",
+      "output_sha256": "16169342ab46e3cbd7111fec2e30dada11caeb3a8cb2e0f0912c19ee9dd51cac",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-2500.json.gz.command-finish.json"
+    },
+    {
+      "label": "spot-baseline-budget-5000",
+      "state": "exited",
+      "pid": 118523,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T13:21:13.205957+00:00",
+      "elapsed_seconds": 592.4256760780117,
+      "errors": [],
+      "command_start_sha256": "e9d2ddf40f34469b9732eb6278ecf211330f3e01ec568cfb79108bcff2b89de8",
+      "log_sha256": "90c458c1d31e0bd17c902cc6ed29a5c43c43c2c6ae2ba2798554662abe7f540f",
+      "output_sha256": "b81328dfc6286e193662ad33e1251bf9ed0ac7ed1728de204e7e7fe6f781574a",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-5000.json.gz.command-finish.json"
+    },
+    {
+      "label": "spot-baseline-budget-7500",
+      "state": "exited",
+      "pid": 120302,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T13:31:28.561839+00:00",
+      "elapsed_seconds": 601.027024222014,
+      "errors": [],
+      "command_start_sha256": "1daa36f967556f8e20681c707e96500b9f098f2b5a55128839ffe7879859954c",
+      "log_sha256": "ced9f7e276606d22de902dd624bd1c1784abf9bd02d6808ff54782fe289ea0a2",
+      "output_sha256": "18864a07b696c02c81f5b35f7874ed95e1f6d5034bf02fac98faac7929aa75c7",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-7500.json.gz.command-finish.json"
+    }
+  ],
+  "errors": []
+}

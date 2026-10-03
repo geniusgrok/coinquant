@@ -1,0 +1,57 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "perp",
+  "finished_utc": "2026-10-03T05:52:09.384258+00:00",
+  "status": "completed",
+  "all_children_reaped": true,
+  "pending_labels": [],
+  "results": [
+    {
+      "label": "first",
+      "state": "exited",
+      "pid": 94326,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T05:52:09.177806+00:00",
+      "elapsed_seconds": 0.10106189700309187,
+      "errors": [],
+      "command_start_sha256": "00580a70907b8b07325756b4111dbdddf67c79ac20d5540acd9fbf5aae3a0191",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_one_child_per_project-q6gi3irs/spot/perp/first.json.command-finish.json"
+    },
+    {
+      "label": "second",
+      "state": "exited",
+      "pid": 94327,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T05:52:09.280662+00:00",
+      "elapsed_seconds": 0.10144598598708399,
+      "errors": [],
+      "command_start_sha256": "9eeb84270607f8dbe83c61d546321c28fcbfb5af77cbe8435acf20cc3f116894",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_one_child_per_project-q6gi3irs/spot/perp/second.json.command-finish.json"
+    },
+    {
+      "label": "third",
+      "state": "exited",
+      "pid": 94328,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T05:52:09.383399+00:00",
+      "elapsed_seconds": 0.10132455301936716,
+      "errors": [],
+      "command_start_sha256": "64bbdb70b0dbcf271a69ec781f8e044b7990dc1465e0c764b04494210fa3f1f8",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_one_child_per_project-q6gi3irs/spot/perp/third.json.command-finish.json"
+    }
+  ],
+  "errors": []
+}

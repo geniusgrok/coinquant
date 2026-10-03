@@ -1,0 +1,13 @@
+{
+  "label": "spot-stop-budget-fee150",
+  "state": "exited",
+  "pid": 97261,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T07:49:45.753330+00:00",
+  "elapsed_seconds": 493.74836276101996,
+  "errors": [],
+  "command_start_sha256": "438af663146e4d5ee42ace2d2522716e5ce2652b40699e6e9101fad4bb9463a1",
+  "log_sha256": "ca2feec3d2fd70816584235ba974623e2bccf0a93cd1ee63d08ef9e4a162ac4e",
+  "output_sha256": "e2327566b997b92c1c0993bbe0a98054ae15573ab48030a346968550c23f15ed"
+}

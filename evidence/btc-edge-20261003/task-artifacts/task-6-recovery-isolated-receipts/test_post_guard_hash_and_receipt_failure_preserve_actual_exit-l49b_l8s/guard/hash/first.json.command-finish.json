@@ -1,0 +1,18 @@
+{
+  "label": "first",
+  "state": "exited",
+  "pid": 94332,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T05:52:09.688425+00:00",
+  "elapsed_seconds": 0.10264556400943547,
+  "errors": [
+    {
+      "stage": "output_hash",
+      "error": "OSError('output hash unavailable')"
+    }
+  ],
+  "command_start_sha256": "d8cb0a4780145c32b78336ede254d83cc523f5fac53433db0320a11d0cd7daef",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "output_sha256": null
+}

@@ -1,0 +1,45 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "owner_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x/controller-reservations/spot/514b9c0005ba44e594017ae22d875213.owner.json",
+  "created_utc": "2026-10-03T05:53:58.180531+00:00",
+  "jobs": [
+    {
+      "label": "first",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x/first.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x/first.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x",
+      "project_kind": "spot"
+    },
+    {
+      "label": "second",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x/second.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x/second.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x",
+      "project_kind": "spot"
+    },
+    {
+      "label": "third",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x/third.json"
+      ],
+      "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x/third.json",
+      "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-5y524_1x",
+      "project_kind": "spot"
+    }
+  ]
+}

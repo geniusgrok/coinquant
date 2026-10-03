@@ -1,0 +1,13 @@
+{
+  "label": "perp-risk-registered-4",
+  "state": "exited",
+  "pid": 136146,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T16:18:41.068003+00:00",
+  "elapsed_seconds": 5606.367932298017,
+  "errors": [],
+  "command_start_sha256": "a377496c7f257f5e2ba381b6fc926ff4cff2ef8b56fa75ec16b66c7e293d0fe5",
+  "log_sha256": "b83e6317159cf30425f668f0c9a9054f9da6a27e6fb895f900f5258794fcb413",
+  "output_sha256": "3e7a4720971cef6dd621a4a83544b1d65f8d5fdf6ee868e7e8baac5463a64520"
+}

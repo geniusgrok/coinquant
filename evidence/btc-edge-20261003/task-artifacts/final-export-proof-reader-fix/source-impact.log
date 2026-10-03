@@ -1,0 +1,30 @@
+{
+  "original_measurement": {
+    "git_head": "74bd6e035e36531c517029077c1a9e2e5ec44516",
+    "python_sources_sha256": "f2d6c3e73c2acb7b328a7a0e2678bb95ceb77d8a17a46139abfe8b357befdbf6",
+    "protected_sha256": "f932c103e73e1fdc0b3b3592ad75d7a0dde21396d6df43888e4c620a4af49d93"
+  },
+  "accepted_canonical": {
+    "git_head": "609606d9c0e0ad8d3c3038b329c9c4ab6d1b9629",
+    "python_sources_sha256": "b81f1bfee086e875cbf8ff22a67b2cfdff419130a7918a6ce8754b2e9e2936c5",
+    "protected_sha256": "eeb22cfe227c0d9ed60c937da330f515a6093dfcd82205114644e8bed8c7c7f6"
+  },
+  "implementation_base": {
+    "git_head": "baf0939a8d0ae1f38b84d7579912d67b0db8c13c",
+    "python_sources_sha256": "b81f1bfee086e875cbf8ff22a67b2cfdff419130a7918a6ce8754b2e9e2936c5",
+    "protected_sha256": "eeb22cfe227c0d9ed60c937da330f515a6093dfcd82205114644e8bed8c7c7f6"
+  },
+  "implementation_final": {
+    "git_head": "b49291f7a1df569c2910359e0de1c5a769c40256",
+    "python_sources_sha256": "8396c368948fe9f939c9aa3910384e2092a3ca4bb6fb0c7aae075ba7033bc585",
+    "protected_sha256": "b0675875e1777d95f5e9b2a35a7929538f596d52d5f5b4fb08bde56586a419aa"
+  }
+}
+{
+  "research/edge_assessment.py": {
+    "before_sha256": "0ccc7fd901f16f2018d34328aa772b0804361fb354148c03bc97d8b5b709bae3",
+    "after_sha256": "fce83c7b8cfbbc53584cb8d6709a3869532fcf5c5db7884521fa68eeaafa656c",
+    "before_mode": 436,
+    "after_mode": 436
+  }
+}

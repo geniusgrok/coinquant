@@ -1,0 +1,39 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "isolated",
+  "project_kind": "spot",
+  "owner_path": "/tmp/controller-isolated-t435oiqi/controller-reservations/spot/a94eeff79200424bbd04e80b9726bbbf.owner.json",
+  "created_utc": "2026-10-03T04:18:33.434186+00:00",
+  "jobs": [
+    {
+      "label": "one",
+      "command": [
+        "harmless",
+        "/tmp/controller-isolated-t435oiqi/one.json"
+      ],
+      "cwd": "/tmp/controller-isolated-t435oiqi",
+      "project_kind": "spot",
+      "output": "/tmp/controller-isolated-t435oiqi/one.json"
+    },
+    {
+      "label": "two",
+      "command": [
+        "harmless",
+        "/tmp/controller-isolated-t435oiqi/two.json"
+      ],
+      "cwd": "/tmp/controller-isolated-t435oiqi",
+      "project_kind": "spot",
+      "output": "/tmp/controller-isolated-t435oiqi/two.json"
+    },
+    {
+      "label": "three",
+      "command": [
+        "harmless",
+        "/tmp/controller-isolated-t435oiqi/three.json"
+      ],
+      "cwd": "/tmp/controller-isolated-t435oiqi",
+      "project_kind": "spot",
+      "output": "/tmp/controller-isolated-t435oiqi/three.json"
+    }
+  ]
+}

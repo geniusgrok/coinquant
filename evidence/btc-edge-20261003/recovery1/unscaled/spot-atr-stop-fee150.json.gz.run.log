@@ -1,0 +1,9 @@
+{"candidate": "atr-stop", "scenario": "fee150", "session": 0}
+{"candidate": "atr-stop", "scenario": "fee150", "session": 100}
+{"candidate": "atr-stop", "scenario": "fee150", "session": 200}
+{"candidate": "atr-stop", "scenario": "fee150", "session": 300}
+{"candidate": "atr-stop", "scenario": "fee150", "session": 400}
+{"candidate": "atr-stop", "scenario": "fee150", "session": 500}
+{"candidate": "atr-stop", "scenario": "fee150", "session": 600}
+{"candidate": "atr-stop", "scenario": "fee150", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-fee150.json.gz", "complete": true, "sha256": "0dddd2f1dab44140115bfe118f55859fdb821f46d07ef3ddd175334cb0c80a72"}

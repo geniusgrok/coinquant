@@ -1,0 +1,22 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "finished_utc": "2026-10-03T05:53:04.524046+00:00",
+  "status": "failed",
+  "all_children_reaped": true,
+  "pending_labels": [
+    "first",
+    "second",
+    "third"
+  ],
+  "results": [],
+  "errors": [
+    {
+      "stage": "launch_not_started",
+      "label": "first",
+      "error": "OSError('isolated Popen failure')",
+      "recorded_utc": "2026-10-03T05:53:04.523246+00:00"
+    }
+  ]
+}

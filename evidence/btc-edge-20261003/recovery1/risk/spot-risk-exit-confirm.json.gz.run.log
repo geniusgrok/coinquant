@@ -1,0 +1,9 @@
+{"candidate": "exit-confirm", "scenario": "base", "session": 0}
+{"candidate": "exit-confirm", "scenario": "base", "session": 100}
+{"candidate": "exit-confirm", "scenario": "base", "session": 200}
+{"candidate": "exit-confirm", "scenario": "base", "session": 300}
+{"candidate": "exit-confirm", "scenario": "base", "session": 400}
+{"candidate": "exit-confirm", "scenario": "base", "session": 500}
+{"candidate": "exit-confirm", "scenario": "base", "session": 600}
+{"candidate": "exit-confirm", "scenario": "base", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-exit-confirm.json.gz", "complete": true, "sha256": "2ed1e487ccd7b1efbff0d00ad5894fd2f70550e20e511327b22ea44d365ce66d"}

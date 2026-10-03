@@ -1,0 +1,266 @@
+{
+  "inventory_sha256": "c3f4e9d3bee09bac4242660aafaed51e767d849dae5549343af7176c62226e74",
+  "category": "baseline_six_groups",
+  "recomputations": [
+    {
+      "id": "spot:base",
+      "raw_bindings": {
+        "reference": "dc94a7b315ee8ea11cc7215cd8ff7c02a8ab94180499b2c4ebf7fe1448682323",
+        "spot|atr-stop|base|1E+4|0|unscaled": "4362d338f0fe123089df245e8814a909f86bc2e90ccfd6ebf0c2f95126b635f3"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+          "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+          "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+          "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+          "operating": "4362fab3ac4866c2a0ec6244bb0148c04e4fdb696d01d962a5a82b51dcc5d98f",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        },
+        "actual_groups": {
+          "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+          "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+          "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+          "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+          "operating": "4362fab3ac4866c2a0ec6244bb0148c04e4fdb696d01d962a5a82b51dcc5d98f",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        }
+      },
+      "matches": true
+    },
+    {
+      "id": "spot:fee150",
+      "raw_bindings": {
+        "reference": "a52f6fb59fc77d7624fa4707123e6d94aeaa88f63ede55e68713ef76f8c630c1",
+        "spot|atr-stop|fee150|1E+4|0|unscaled": "0dddd2f1dab44140115bfe118f55859fdb821f46d07ef3ddd175334cb0c80a72"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "0ce0d83123fe8449680004182b5f4194ec4d3dfb4681ec2e51992946911d4631",
+          "fills": "e9e216de43bdb1594d99e4f9fbeb49d1f7eba9b93c5c225e2ba10ef37aaa6687",
+          "daily": "b2343ca809926f2a120c41b116d80a25175fb73d37f6946fb2f0b11c53efbb5d",
+          "ownership": "18e1b62c93ecca8d2f0b6bf27e4560aad08145df7ede757884ea66ec95b27469",
+          "operating": "86fe237a1fdeedfabab0415ca5f8bdfcab3019c19c8f56103f0cc7482fd45a5f",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        },
+        "actual_groups": {
+          "financial": "0ce0d83123fe8449680004182b5f4194ec4d3dfb4681ec2e51992946911d4631",
+          "fills": "e9e216de43bdb1594d99e4f9fbeb49d1f7eba9b93c5c225e2ba10ef37aaa6687",
+          "daily": "b2343ca809926f2a120c41b116d80a25175fb73d37f6946fb2f0b11c53efbb5d",
+          "ownership": "18e1b62c93ecca8d2f0b6bf27e4560aad08145df7ede757884ea66ec95b27469",
+          "operating": "86fe237a1fdeedfabab0415ca5f8bdfcab3019c19c8f56103f0cc7482fd45a5f",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        }
+      },
+      "matches": true
+    },
+    {
+      "id": "spot:slip2",
+      "raw_bindings": {
+        "reference": "32d9906c259a8ccc4670baff053b3e9ffe2291121db557b836e56319bd7ba68b",
+        "spot|atr-stop|slip2|1E+4|0|unscaled": "8b8b20f856264ec2cfcfe7d6e68bc3f1529e6548b8fb346f6621644eb98a4496"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "771f3085fc8c8cc8dcfffe0f6b8d4bc09b21dc11879053155957a0cf1d47019a",
+          "fills": "ea1ab2da26dc0aa5b1b40b7841f5e88bda56eabfe847ca085324fd7b55748ae4",
+          "daily": "e09d7f608bd05514db409fe114afb3e41a0b0c12ef69c498ba9203a57a0e0b35",
+          "ownership": "c0cf5ac382bf083742c3b78564db2f96419b3ff95b96834b274be1f2726354f9",
+          "operating": "8965e5943f4b2346a71deea91be97da34733d1c94ec3de8beb71dbd3458c337d",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        },
+        "actual_groups": {
+          "financial": "771f3085fc8c8cc8dcfffe0f6b8d4bc09b21dc11879053155957a0cf1d47019a",
+          "fills": "ea1ab2da26dc0aa5b1b40b7841f5e88bda56eabfe847ca085324fd7b55748ae4",
+          "daily": "e09d7f608bd05514db409fe114afb3e41a0b0c12ef69c498ba9203a57a0e0b35",
+          "ownership": "c0cf5ac382bf083742c3b78564db2f96419b3ff95b96834b274be1f2726354f9",
+          "operating": "8965e5943f4b2346a71deea91be97da34733d1c94ec3de8beb71dbd3458c337d",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        }
+      },
+      "matches": true
+    },
+    {
+      "id": "spot:outage",
+      "raw_bindings": {
+        "reference": "478e9d2ab7a8ca7ac0434acdf273e82dbcd387ce34e14afe64c212cdab109264",
+        "spot|atr-stop|outage|1E+4|0|unscaled": "41863d08944d564007903570be57f476cffc3c9d6c214bd9174c17bb512a7de2"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+          "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+          "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+          "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+          "operating": "b202c19b6ece8d53c43147a600e410a894b430a569324c1513b6096680e5f5ff",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        },
+        "actual_groups": {
+          "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+          "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+          "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+          "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+          "operating": "b202c19b6ece8d53c43147a600e410a894b430a569324c1513b6096680e5f5ff",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        }
+      },
+      "matches": true
+    },
+    {
+      "id": "spot:actual_unity",
+      "raw_bindings": {
+        "reference": "4362d338f0fe123089df245e8814a909f86bc2e90ccfd6ebf0c2f95126b635f3",
+        "spot|atr-stop|base|1E+4|0|risk": "78d1c6e0e9369a467f079d49d02146c1c122744d17f7f246e0e6e7a2c2b4b082"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+          "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+          "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+          "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+          "operating": "4362fab3ac4866c2a0ec6244bb0148c04e4fdb696d01d962a5a82b51dcc5d98f",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        },
+        "actual_groups": {
+          "financial": "f59e106f42a86083896190891252d85ebe80ab969382d18152ded7b6774e6846",
+          "fills": "e810b462d1506230ee96480f045e6c74fcec7d8fa505b37d35b6ede011c2af44",
+          "daily": "58ea2bdd2a004ebffc71ce29225af3d23ab96822b33ea394f9a2f644a722752a",
+          "ownership": "e1f419abd9dbc7699f4d34e822a844f6d90b18f9de746ead1776bb6e5e1e0cfe",
+          "operating": "4362fab3ac4866c2a0ec6244bb0148c04e4fdb696d01d962a5a82b51dcc5d98f",
+          "remaining_original_fields": "451544c3dc1fac48782779c4a139e414f52a577e6aba837fa8697f22c5f9dec9"
+        }
+      },
+      "matches": true
+    },
+    {
+      "id": "perp:base",
+      "raw_bindings": {
+        "reference": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "perp|incumbent|base|1E+4|0|unscaled": "a071749cb6498a0e9612241bca23b57f8de9bae002b93fe189b7e1a3777a416d"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "a263f6206173df300e9537e43e5df2d9750b2817543a4e8399320c3f7eb2a4ec",
+          "fills": "595b6096557786e932baaa7abfee0602a1822aee57ebac74b1af8edaa6d513f4",
+          "daily": "07898bd921f29a9bffbfd9af84aba585f60984618add7f2e849a807587fc064f",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "3628c041d33b67da9e38cbeeefc39c8f16b6c529f368600c73f9e19f0643e36e",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        },
+        "actual_groups": {
+          "financial": "a263f6206173df300e9537e43e5df2d9750b2817543a4e8399320c3f7eb2a4ec",
+          "fills": "595b6096557786e932baaa7abfee0602a1822aee57ebac74b1af8edaa6d513f4",
+          "daily": "07898bd921f29a9bffbfd9af84aba585f60984618add7f2e849a807587fc064f",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "3628c041d33b67da9e38cbeeefc39c8f16b6c529f368600c73f9e19f0643e36e",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        }
+      },
+      "matches": true
+    },
+    {
+      "id": "perp:fees-x1.5",
+      "raw_bindings": {
+        "reference": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "perp|incumbent|fees-x1.5|1E+4|0|unscaled": "a071749cb6498a0e9612241bca23b57f8de9bae002b93fe189b7e1a3777a416d"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "2fce9b54f4026bc6f74537d80de2edbada1b20f149bbeaed32e39f6a95441b1b",
+          "fills": "f011a15f5883a3f8ff2ef6047e6f5efae1b48ec156668eb639de3a298e3ebdc5",
+          "daily": "b844c269651b87743f4a602db43a823082a90e58661355d565f3a6ec1867fe12",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "5ac17a4a011029944c53ac317653b73e88c90f16e9ccbdcc8923a7f533b4a6de",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        },
+        "actual_groups": {
+          "financial": "2fce9b54f4026bc6f74537d80de2edbada1b20f149bbeaed32e39f6a95441b1b",
+          "fills": "f011a15f5883a3f8ff2ef6047e6f5efae1b48ec156668eb639de3a298e3ebdc5",
+          "daily": "b844c269651b87743f4a602db43a823082a90e58661355d565f3a6ec1867fe12",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "5ac17a4a011029944c53ac317653b73e88c90f16e9ccbdcc8923a7f533b4a6de",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        }
+      },
+      "matches": true
+    },
+    {
+      "id": "perp:read-400ms",
+      "raw_bindings": {
+        "reference": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "perp|incumbent|read-400ms|1E+4|0|unscaled": "a071749cb6498a0e9612241bca23b57f8de9bae002b93fe189b7e1a3777a416d"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "8c93014904099c72dd8c438ee946aaf64f753c4491d4e2a58dbd80be6eb396cb",
+          "fills": "addf1ad38b486106ffb9574cd746b16bd95f2d77abed32d83dcff88f751bf24a",
+          "daily": "61ff317ffaeb8e5ab5bade09ca05028e0e942341feef5eb50e7cb8b2844ab328",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "a362be497d2566d2a9ad58bf7a96105da878a4c1cc994604b0cf4ef3f556955e",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        },
+        "actual_groups": {
+          "financial": "8c93014904099c72dd8c438ee946aaf64f753c4491d4e2a58dbd80be6eb396cb",
+          "fills": "addf1ad38b486106ffb9574cd746b16bd95f2d77abed32d83dcff88f751bf24a",
+          "daily": "61ff317ffaeb8e5ab5bade09ca05028e0e942341feef5eb50e7cb8b2844ab328",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "a362be497d2566d2a9ad58bf7a96105da878a4c1cc994604b0cf4ef3f556955e",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        }
+      },
+      "matches": true
+    },
+    {
+      "id": "perp:trigger-slip",
+      "raw_bindings": {
+        "reference": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "perp|incumbent|trigger-slip|1E+4|0|unscaled": "a071749cb6498a0e9612241bca23b57f8de9bae002b93fe189b7e1a3777a416d"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "8ecfd3e2a491a59ce8ac7e4145b9d2822560d053a81af65fa6c51402efd4884e",
+          "fills": "b6c6a2902d75af4ac5d7c2e4507a30a9d1b3864dbdb573f989739229a4e15a2e",
+          "daily": "19b03dbb0884f5c3448b24010c0781f787bfdba166b66f2241be4b66fac6f4e4",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "126ac576eddeda773839faec495edc1e713b3ff940c452b6885554972e6ffbff",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        },
+        "actual_groups": {
+          "financial": "8ecfd3e2a491a59ce8ac7e4145b9d2822560d053a81af65fa6c51402efd4884e",
+          "fills": "b6c6a2902d75af4ac5d7c2e4507a30a9d1b3864dbdb573f989739229a4e15a2e",
+          "daily": "19b03dbb0884f5c3448b24010c0781f787bfdba166b66f2241be4b66fac6f4e4",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "126ac576eddeda773839faec495edc1e713b3ff940c452b6885554972e6ffbff",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        }
+      },
+      "matches": true
+    },
+    {
+      "id": "perp:actual_unity",
+      "raw_bindings": {
+        "reference": "a071749cb6498a0e9612241bca23b57f8de9bae002b93fe189b7e1a3777a416d",
+        "perp|incumbent|base|1E+4|0|risk": "3e7a4720971cef6dd621a4a83544b1d65f8d5fdf6ee868e7e8baac5463a64520"
+      },
+      "values": {
+        "reference_groups": {
+          "financial": "a263f6206173df300e9537e43e5df2d9750b2817543a4e8399320c3f7eb2a4ec",
+          "fills": "595b6096557786e932baaa7abfee0602a1822aee57ebac74b1af8edaa6d513f4",
+          "daily": "07898bd921f29a9bffbfd9af84aba585f60984618add7f2e849a807587fc064f",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "3628c041d33b67da9e38cbeeefc39c8f16b6c529f368600c73f9e19f0643e36e",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        },
+        "actual_groups": {
+          "financial": "a263f6206173df300e9537e43e5df2d9750b2817543a4e8399320c3f7eb2a4ec",
+          "fills": "595b6096557786e932baaa7abfee0602a1822aee57ebac74b1af8edaa6d513f4",
+          "daily": "07898bd921f29a9bffbfd9af84aba585f60984618add7f2e849a807587fc064f",
+          "ownership": "5c5f4e968e0994d50fc20fabd7f0dbb0f90aeef15492fc1f4cdc8912d9545eb7",
+          "operating": "3628c041d33b67da9e38cbeeefc39c8f16b6c529f368600c73f9e19f0643e36e",
+          "remaining_original_fields": "be0ba73ee2428cfb189f8d1d1c87345e0b69c9628fd647d3f051a2514d38e8ae"
+        }
+      },
+      "matches": true
+    }
+  ]
+}

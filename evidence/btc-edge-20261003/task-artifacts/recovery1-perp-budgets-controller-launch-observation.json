@@ -1,0 +1,30 @@
+{
+  "recorded_utc": "2026-10-03T11:52:03.170873+00:00",
+  "meaning": "Actual tool launch observation; controller child/start/finish receipts are authoritative",
+  "project_kind": "perp",
+  "phase": "budgets",
+  "tool_session_id": 22404,
+  "command": [
+    "python",
+    "-u",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/run-registered-recovery.py",
+    "--kind",
+    "perp",
+    "--phase",
+    "budgets",
+    "--approval-sha256",
+    "61b0fdd88a64f120db39c31d0a82f3ec9a115da2e37166b77596e9c0040c0963"
+  ],
+  "approval_sha256": "61b0fdd88a64f120db39c31d0a82f3ec9a115da2e37166b77596e9c0040c0963",
+  "recovery_registry_sha256": "d7bc23958cedc74626d9f082a18c52b18f2417e974931cac18ea618559a6d23b",
+  "source_freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "preceding_perp_sensitivity_tool_exit_code": 0,
+  "original_initial_cny": [
+    2500,
+    5000,
+    7500
+  ],
+  "spot_unscaled_session_still_active": 16340,
+  "parameter_changes": false,
+  "tests_launched": 0
+}

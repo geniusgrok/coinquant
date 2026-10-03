@@ -1,0 +1,13 @@
+{
+  "label": "second",
+  "state": "exited",
+  "pid": 94304,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T05:50:47.737339+00:00",
+  "elapsed_seconds": 0.10129237399087287,
+  "errors": [],
+  "command_start_sha256": "7aa7906956fbd04c87a3526cfc9194c45bf5bcb318f1d735418d68f6319e69a7",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "output_sha256": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df"
+}

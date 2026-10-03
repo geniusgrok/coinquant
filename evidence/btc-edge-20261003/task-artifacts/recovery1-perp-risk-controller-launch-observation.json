@@ -1,0 +1,20 @@
+{
+  "format": "btc-edge-recovery-controller-launch-observation-v1",
+  "tool_result": {
+    "chunk_id": "68d2fe",
+    "wall_time_seconds": 1.001383801,
+    "session_id": 27615,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "preceding_budget_parent_session": 22404,
+  "preceding_budget_actual_exit": {
+    "chunk_id": "e94b5f",
+    "wall_time_seconds": 24.119278936,
+    "exit_code": 0,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "approval_sha256": "61b0fdd88a64f120db39c31d0a82f3ec9a115da2e37166b77596e9c0040c0963",
+  "phase_input_path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/perp-risk-phase-input-binding.json"
+}

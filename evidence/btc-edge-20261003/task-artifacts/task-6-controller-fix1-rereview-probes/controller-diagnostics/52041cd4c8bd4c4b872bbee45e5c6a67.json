@@ -1,0 +1,19 @@
+{
+  "error": {
+    "stage": "child_exit",
+    "label": "first",
+    "error": "ValueError('actual exit code: None')",
+    "recorded_utc": "2026-10-03T04:31:49.329202+00:00"
+  },
+  "phase": "probe",
+  "project_kind": "spot",
+  "provenance": {
+    "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "pending_labels": [
+    "second"
+  ],
+  "active_labels": [
+    "first"
+  ]
+}

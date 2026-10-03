@@ -1,0 +1,18 @@
+usage: run-registered-phase.py [-h] --phase PHASE --kind {spot,perp} --freeze
+                               FREEZE [--phase-input PHASE_INPUT]
+                               [--supplemental-registry SUPPLEMENTAL_REGISTRY]
+                               [--supplemental-sha256 SUPPLEMENTAL_SHA256]
+
+Run exact registered research jobs with immutable guards and exclusive
+receipts. Task-owned project reservation is inherited by children, never an
+account lock. A failed/unknown owner is never automatically cleared. No
+retries or subset runs.
+
+options:
+  -h, --help            show this help message and exit
+  --phase PHASE
+  --kind {spot,perp}
+  --freeze FREEZE
+  --phase-input PHASE_INPUT
+  --supplemental-registry SUPPLEMENTAL_REGISTRY
+  --supplemental-sha256 SUPPLEMENTAL_SHA256

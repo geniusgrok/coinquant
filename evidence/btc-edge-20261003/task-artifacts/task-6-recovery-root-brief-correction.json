@@ -1,0 +1,17 @@
+{
+  "recorded_utc": "2026-10-03T06:00:25.453130+00:00",
+  "action": "Root corrected output report filename in its own review brief after implementer had frozen a manifest including that brief",
+  "initial_validation": "one manifest mismatch: task-6-recovery-review-brief.md",
+  "original_brief_restored_exact": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-review-brief.md",
+    "bytes": 3013,
+    "sha256": "2ed14c5ab01d51b620ea9b877df40a4873e4231f7fd217c720b67079d2725e0d"
+  },
+  "new_review_brief": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-final-review-brief.md",
+    "bytes": 3015,
+    "sha256": "db813adb8dcaa4a496f637f1eac5c1b65e30015956039d9e34efc5c035a017d2"
+  },
+  "all_manifest_files_verified": 13,
+  "meaning": "No recovery source/registration/parent freeze/producer/economic bytes changed and no actual recovery launched; preserve original manifest and both brief versions without rewriting hashes"
+}

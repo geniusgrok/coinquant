@@ -1,0 +1,13 @@
+{
+  "label": "spot-canonical-base",
+  "state": "exited",
+  "pid": 133385,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T14:40:28.617339+00:00",
+  "elapsed_seconds": 629.2542129999783,
+  "errors": [],
+  "command_start_sha256": "b617e665490a48dedccb1a6b14714e63a7506c76982c70fe0a14f572bb4f60f1",
+  "log_sha256": "8570c29078760dc3e25cc5abee02acfab6c52bb4a79354ee34756ffd33b849ca",
+  "output_sha256": "21a4a691ce704dc088a61d5d885984f0d6a3d436bb57432e4314e2d94245a109"
+}

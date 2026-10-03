@@ -1,0 +1,15 @@
+{
+  "label": "first",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-c",
+    "from pathlib import Path; import sys; Path(sys.argv[1]).write_text(\"failed\"); raise SystemExit(7)",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-73ikk9cu/first.json"
+  ],
+  "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-73ikk9cu/first.json",
+  "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_actual_nonzero_pending_and_no_rerun-73ikk9cu",
+  "project_kind": "spot",
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T05:53:03.250364+00:00"
+}

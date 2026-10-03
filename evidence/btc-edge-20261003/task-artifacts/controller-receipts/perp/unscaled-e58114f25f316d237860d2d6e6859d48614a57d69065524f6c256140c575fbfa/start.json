@@ -1,0 +1,37 @@
+{
+  "registry_path": "/workspace/btc-alpha-beta-improve/task-artifacts/registered-financial-commands.json",
+  "registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "parent_registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "freeze_path": "/workspace/btc-alpha-beta-improve/task-artifacts/reviewed-source-freeze.json",
+  "freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "phase_input_path": null,
+  "phase_input_sha256": null,
+  "controller_sha256": "082d362d71977cec1e5f10afec47421cf8ab869c19ca0f064b5f8fba355977b1",
+  "phase": "unscaled",
+  "project_kind": "perp",
+  "owner_path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/perp/fb4666cd2798433da00dd38123c3925e.owner.json",
+  "created_utc": "2026-10-03T05:39:07.422603+00:00",
+  "jobs": [
+    {
+      "label": "perp-registered-16",
+      "project_kind": "perp",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_perp",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--restore-prints",
+        "--prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz",
+      "expected_accounts": 16
+    }
+  ]
+}

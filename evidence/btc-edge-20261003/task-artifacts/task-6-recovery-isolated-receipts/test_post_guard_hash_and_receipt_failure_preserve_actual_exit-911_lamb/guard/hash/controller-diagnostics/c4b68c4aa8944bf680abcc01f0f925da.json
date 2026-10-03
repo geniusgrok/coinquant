@@ -1,0 +1,20 @@
+{
+  "error": {
+    "stage": "output_hash",
+    "label": "first",
+    "error": "OSError('output hash unavailable')",
+    "recorded_utc": "2026-10-03T06:01:44.017920+00:00"
+  },
+  "phase": "probe",
+  "project_kind": "spot",
+  "provenance": {
+    "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "pending_labels": [
+    "second",
+    "third"
+  ],
+  "active_labels": [
+    "first"
+  ]
+}

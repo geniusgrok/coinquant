@@ -1,0 +1,7 @@
+test_malformed_crowding_missing_blocks_buy_but_safety_processing_continues (test_canonical_crowding.CanonicalCrowdingTests.test_malformed_crowding_missing_blocks_buy_but_safety_processing_continues) ... ok
+test_crowding_missing_conversion_keeps_receipt_integrity_and_spot_bars_strict (test_canonical_crowding.CanonicalCrowdingTests.test_crowding_missing_conversion_keeps_receipt_integrity_and_spot_bars_strict) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.046s
+
+OK

@@ -1,0 +1,13 @@
+{
+  "label": "perp-incumbent-offset-60000",
+  "state": "exited",
+  "pid": 103511,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T11:48:44.603791+00:00",
+  "elapsed_seconds": 3510.218126196007,
+  "errors": [],
+  "command_start_sha256": "7127bc0d9d11a43ce87363eb1453fe820f9fb19475b9140ab0eafb3255c49fc1",
+  "log_sha256": "06353f57b5206d3648ea4e5fd7834cde3eb9d19fdc1fdfa726c7a2afd1035f5d",
+  "output_sha256": "af2c2f743ed627a1fd4ea865fca0f268f62dc2873481127802b2b7cf1f859560"
+}

@@ -1,0 +1,13 @@
+{
+  "label": "spot-crowding-interaction-slip2",
+  "state": "exited",
+  "pid": 99837,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T08:43:05.750559+00:00",
+  "elapsed_seconds": 683.9506018909742,
+  "errors": [],
+  "command_start_sha256": "249becf1245b9b8bfee78d965adefcdfbfa2445cc3e1f1eed21d5626fa2d18c6",
+  "log_sha256": "5fd9f775eaf7cc82f1d98dc6b6d80c31f7b4fe1b15e5b14d1b3865ae5f439fcd",
+  "output_sha256": "29d80444fc598545a209be1cc8d840a30d264307f45700a81cac7974c877b42e"
+}

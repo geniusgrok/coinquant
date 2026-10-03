@@ -1,0 +1,19 @@
+{
+  "purpose": "Save independently reviewed implementation milestone and run draft CI; financial/forward/adoption delivery pending",
+  "projects": {
+    "spotquant": {
+      "main": "ffd14d3aa53b191d15bd8377f0809a8846c53232",
+      "saved_feature_head": "083b5c1bfb937b91384ec6ec075ae11c3656e62b",
+      "verified_remote_head": "083b5c1bfb937b91384ec6ec075ae11c3656e62b",
+      "pr": "https://github.com/geniusgrok/spotquant/pull/10",
+      "push_output": "remote: \nremote: Create a pull request for 'codex/btc-alpha-beta-improve-20261003' on GitHub by visiting:        \nremote:      https://github.com/geniusgrok/spotquant/pull/new/codex/btc-alpha-beta-improve-20261003        \nremote: \nTo https://github.com/geniusgrok/spotquant.git\n * [new branch]      083b5c1bfb937b91384ec6ec075ae11c3656e62b -> codex/btc-alpha-beta-improve-20261003"
+    },
+    "coinquant": {
+      "main": "c363a582a064bd36d633f6439803f4c570d52333",
+      "saved_feature_head": "3c697e15ac46c95617d6b170861609e4f9062851",
+      "verified_remote_head": "3c697e15ac46c95617d6b170861609e4f9062851",
+      "pr": "https://github.com/geniusgrok/coinquant/pull/59",
+      "push_output": "remote: \nremote: Create a pull request for 'codex/btc-alpha-beta-improve-20261003' on GitHub by visiting:        \nremote:      https://github.com/geniusgrok/coinquant/pull/new/codex/btc-alpha-beta-improve-20261003        \nremote: \nTo https://github.com/geniusgrok/coinquant.git\n * [new branch]      3c697e15ac46c95617d6b170861609e4f9062851 -> codex/btc-alpha-beta-improve-20261003"
+    }
+  }
+}

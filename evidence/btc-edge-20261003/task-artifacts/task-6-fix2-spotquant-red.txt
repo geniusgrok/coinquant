@@ -1,0 +1,1 @@
+{"default_fx_url":"https://fred.stlouisfed.org/graph/?id=DEXCHUS","deferred_init_interface":false,"fx_rejection":"stale prior-date FX","synthetic":true}

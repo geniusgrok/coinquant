@@ -1,0 +1,28 @@
+{
+  "recorded_utc": "2026-10-03T04:55:30.216815+00:00",
+  "scope": "Reviewed four-finding forward checkpoint CI, pending F5/F6 and actual finances",
+  "spot": {
+    "head": "75c7d8efb07c98d21f1350d0f6186b48ed48a5a2",
+    "run_id": 37098000811,
+    "status": "completed",
+    "conclusion": "success",
+    "tests": 319,
+    "skipped": 7,
+    "seconds": 97.277,
+    "log": "spotquant-ci-forward-checkpoint-37098000811.log",
+    "log_sha256": "8a8ece7f3ee260178b19961bc64b6cf85a9475c6be34fc7a15cfdba1d3d1a6f6"
+  },
+  "perp": {
+    "head": "e9a1117a79f391346be9af85ad3636ea8d438b4d",
+    "run_id": 37097999640,
+    "status": "completed",
+    "conclusion": "success",
+    "tests": 429,
+    "skipped": 5,
+    "seconds": 18.634,
+    "log": "coinquant-ci-forward-checkpoint-37097999640.log",
+    "log_sha256": "c257b3b84016d3c3ff4da4ed4331456317590f463d8cfe7873977942c0f17eb3"
+  },
+  "actual_financial_runs": 0,
+  "native_cases": 0
+}

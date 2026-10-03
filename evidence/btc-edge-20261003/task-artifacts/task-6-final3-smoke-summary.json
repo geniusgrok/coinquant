@@ -1,0 +1,62 @@
+{
+  "spotquant": {
+    "commit": "953caac5b244f10885e7a70b8fdb6f6e62edcde0",
+    "worktree": "/tmp/task6-complete-spotquant-kiuty5_q",
+    "python_sources_sha256": "ed4cd90eceb4e3b346e94849c0b1d8edb46c39b7b51898cc19c33c29324fa634",
+    "protected_sha256": "764e40c6158b06f64faa938780aa751c0a54239d77522c3e4565f6286a24a889",
+    "smoke": {
+      "actual_account_days": 0,
+      "actual_public_observations": 0,
+      "btc": "12.71449",
+      "diary_sha256": "0ae8326d0d640eb6a19447a7ab2d5e83081f443885d3afe79c91d6b117239e5f",
+      "events": 2,
+      "fees": "1.42571658992739",
+      "ledger_audit": "actual local implementation",
+      "mocked_boundaries": [
+        "clock",
+        "final reviewed export",
+        "HTTP acquisition"
+      ],
+      "qualification": "NOT_QUALIFIED",
+      "strategy_adapter": "actual local pure runtime",
+      "synthetic": true
+    },
+    "cli_audit": {
+      "audit": true,
+      "events": 2,
+      "qualification": "NOT_QUALIFIED",
+      "scope": "raw_ledger_reconstruction_only",
+      "source_binding_verified": false
+    }
+  },
+  "coinquant": {
+    "commit": "fc9b9d5230b698fd94ca95dce3092c4caf1b09ee",
+    "worktree": "/tmp/task6-complete-coinquant-fruvtp9a",
+    "python_sources_sha256": "5b35dd010e38594180958da4bbf355341060400c8eebe14d125d706fea06aac5",
+    "protected_sha256": "0f60e77fae446391f21b67d32db154ee77d5813687f5e3eb90449dc53a0f6183",
+    "smoke": {
+      "actual_account_days": 0,
+      "actual_public_observations": 0,
+      "btc": "74.45505",
+      "diary_sha256": "5f5a2a070346c179ea90e067c654fde6b2bafb338c690d5a10638ff75411d10e",
+      "events": 1,
+      "fees": "6.2616628737491625",
+      "ledger_audit": "actual local implementation",
+      "mocked_boundaries": [
+        "clock",
+        "final reviewed export",
+        "HTTP acquisition"
+      ],
+      "qualification": "NOT_QUALIFIED",
+      "strategy_adapter": "actual local pure runtime",
+      "synthetic": true
+    },
+    "cli_audit": {
+      "audit": true,
+      "events": 1,
+      "qualification": "NOT_QUALIFIED",
+      "scope": "raw_ledger_reconstruction_only",
+      "source_binding_verified": false
+    }
+  }
+}

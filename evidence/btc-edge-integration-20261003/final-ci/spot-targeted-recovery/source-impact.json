@@ -1,0 +1,29 @@
+{
+  "base": "90fd8c35a65e786b75a97fc168a737b0ebca630d",
+  "final_head": "bf5ea35a6f83ebdb1f283feca5c4b9683f6e783d",
+  "changed_paths": [
+    "tests/test_edge_spot.py",
+    "tests/test_session_account.py"
+  ],
+  "unchanged_other_tracked_entries": 4855,
+  "all_other_tracked_modes_and_blob_ids_identical": true,
+  "program_config_protocol_bytes_unchanged": true,
+  "python_sources_sha256_base": "8396c368948fe9f939c9aa3910384e2092a3ca4bb6fb0c7aae075ba7033bc585",
+  "python_sources_sha256_final": "8396c368948fe9f939c9aa3910384e2092a3ca4bb6fb0c7aae075ba7033bc585",
+  "runtime_python_sources_sha256": "8834fe75cef53524a14d30dc0d32bad9da511d284927ec33e75e98cf73f8606b",
+  "base_to_final_diff_sha256": "5a3d2ef8b26a024c5113748ce5d3b6143c7362604348e729cabe8f3c13d3159e",
+  "tested_working_diff_matches_committed_diff": true,
+  "working_tree_status": "",
+  "original_ci_log": "/workspace/btc-alpha-beta-improve/task-artifacts/spotquant-final-ci-37142985145.log",
+  "original_ci_log_sha256": "6e44dce68f187c6d94ba611cc3ee6d5a790f7115fe34656fb555685237b0b379",
+  "targeted_result": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "exit_code": 0,
+    "runs": 1
+  },
+  "ci_rerun": false,
+  "fullsuite_rerun": false
+}

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/canonical.py", line 31, in <module>
+    try:main()
+        ^^^^^^
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/canonical.py", line 12, in main
+    source=source_proof(CAN,b['source']);arch=ROOT/'task-artifacts/task-7-spot-canonical-preparation/spot-canonical-reviewed-source-fix3.tar.gz';require(sha(arch)=='250bd1381114afde1b06d835185b908b1b499d3c773d53bf4ac6baecf580175a','canonical archive bytes')
+                                                                                                                                                         ^^^^^^^^^
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/recompute.py", line 15, in sha
+    with Path(p).open('rb') as f:
+         ^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/btc-alpha-beta-improve/task-artifacts/task-7-spot-canonical-preparation/spot-canonical-reviewed-source-fix3.tar.gz'

@@ -1,0 +1,13 @@
+{
+  "label": "spot-crowding-interaction-outage",
+  "state": "exited",
+  "pid": 100751,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T08:54:44.221961+00:00",
+  "elapsed_seconds": 682.8151081799879,
+  "errors": [],
+  "command_start_sha256": "a01ed2ae1537efd1a37856c9060783ca4d9501f56253f87e37505e18a60c8831",
+  "log_sha256": "fcea9f63b559cb2f4b766c3ea07da05ec2bd5fa2f73263044e184b634487a92c",
+  "output_sha256": "b5cb4e69c1b2970c8e8df0e7c8bb17e04093303c2a27c019cb9d5ea534fd471b"
+}

@@ -1,0 +1,33 @@
+{"session": 0, "date": "2020-01-01T00:00:00Z", "failures": {}}
+{"session": 10, "date": "2020-01-28T04:00:00Z", "failures": {}}
+{"session": 20, "date": "2020-02-20T10:00:00Z", "failures": {}}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/btc-alpha-beta-improve/coinquant/research/edge_perp.py", line 464, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/btc-alpha-beta-improve/coinquant/research/edge_perp.py", line 455, in main
+    output = measure(args)
+             ^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/coinquant/research/edge_perp.py", line 387, in measure
+    output = meter.measure(shared)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/coinquant/research/complete_perp.py", line 335, in measure
+    report = run(Config(str(e.uid), str(c['state']), 300, 5), e,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/coinquant/research/edge_perp.py", line 367, in run
+    report = original_run(config, exchange, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/coinquant/coinquant/session.py", line 136, in run
+    current=cycle(reader,state,config.account_uid,execute=execute,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/coinquant/research/alpha_perp.py", line 313, in cycle
+    return original_cycle(reader, state, uid, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/coinquant/coinquant/session.py", line 68, in cycle
+    try:audit=income(reader,state)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/coinquant/coinquant/audit.py", line 67, in income
+    state.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('income_coverage',json.dumps(result,sort_keys=True)))
+sqlite3.OperationalError: database or disk is full

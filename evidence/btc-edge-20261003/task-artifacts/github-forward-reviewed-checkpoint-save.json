@@ -1,0 +1,22 @@
+{
+  "recorded_utc": "2026-10-03T04:53:48.298656+00:00",
+  "meaning": "Reviewed forward F1-F4 checkpoint normal push; draft PRs remain open, financial results and public-readiness fixes pending",
+  "spot": {
+    "head": "75c7d8efb07c98d21f1350d0f6186b48ed48a5a2",
+    "pr": 10,
+    "url": "https://github.com/geniusgrok/spotquant/pull/10",
+    "remote_exact_ref_verified": true
+  },
+  "perp": {
+    "head": "e9a1117a79f391346be9af85ad3636ea8d438b4d",
+    "pr": 59,
+    "url": "https://github.com/geniusgrok/coinquant/pull/59",
+    "remote_exact_ref_verified": true
+  },
+  "native_cases": 0,
+  "actual_financial_runs": 0,
+  "review": {
+    "forward_fix1": "be77e4f57a6a7fad9073dddd3bf9d4a0e990f21a164cda73738c1ba0bb28d044",
+    "controller_fix2": "d7e8bc06d247e3c077d8208dc79a52e48db56340fce3be75443d3d25d7b563e3"
+  }
+}

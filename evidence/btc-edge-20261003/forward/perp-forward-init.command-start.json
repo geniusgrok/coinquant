@@ -1,0 +1,27 @@
+{
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T17:40:13.810454+00:00",
+  "operation": {
+    "label": "perp-forward-init",
+    "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+    "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/forward/perp-ledger.json",
+    "command": [
+      "python3.13",
+      "-m",
+      "research.edge_forward",
+      "init",
+      "--diary",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/forward/perp-ledger.json",
+      "--export",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/forward/forward-binding.json",
+      "--export-sha",
+      "d2bc7eca7f2dfdb9a1049c41f1f80f10f603cedc8ab2f9d8bcb260897fab3b31",
+      "--review-sha",
+      "50dc293c8225027f2bfa49508cdd058f2ccc4a44ebb4976f3b41b206d048aefc",
+      "--defer-market-warmup"
+    ],
+    "conditions": "Execute only after independent actual export-byte approval. Actual current UTC, CNY10000/BTC0/events0; real paired FRED observations; market pending; no historical fill/backfill/native/private calls."
+  },
+  "operation_sha256": "ba1244487fc86dd16c7001c7bc09c5f031d02361693808cd75adda96402dcd3c",
+  "driver_sha256": "aae18bda19067d498802d0323a18dc40bc2363df8bc0cef5d2c019b53ab1492d"
+}

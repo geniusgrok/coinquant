@@ -1,0 +1,19 @@
+{
+  "error": {
+    "stage": "launch_not_started",
+    "label": "second",
+    "error": "ValueError('existing output/progress/invocation receipt: /tmp/controller-scoped-reap-lqq5bpyq/occupied.json')",
+    "recorded_utc": "2026-10-03T04:31:49.228591+00:00"
+  },
+  "phase": "probe",
+  "project_kind": "spot",
+  "provenance": {
+    "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "pending_labels": [
+    "second"
+  ],
+  "active_labels": [
+    "first"
+  ]
+}

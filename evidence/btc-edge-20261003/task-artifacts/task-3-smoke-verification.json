@@ -1,0 +1,172 @@
+[
+  {
+    "output": "/tmp/spot-edge-task3-atr-stop-base-1790988538625617963.json.gz",
+    "candidate": "atr-stop",
+    "scenario": "base",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 2,
+    "fills": 0,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  },
+  {
+    "output": "/tmp/spot-edge-task3-exit-confirm-base-1790988538625617963.json.gz",
+    "candidate": "exit-confirm",
+    "scenario": "base",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 2,
+    "fills": 0,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  },
+  {
+    "output": "/tmp/spot-edge-task3-stop-budget-base-1790988538625617963.json.gz",
+    "candidate": "stop-budget",
+    "scenario": "base",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 2,
+    "fills": 0,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  },
+  {
+    "output": "/tmp/spot-edge-task3-crowding-interaction-base-1790988538625617963.json.gz",
+    "candidate": "crowding-interaction",
+    "scenario": "base",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 2,
+    "fills": 0,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  },
+  {
+    "output": "/tmp/spot-edge-task3-cash-base-1790988538625617963.json.gz",
+    "candidate": "cash",
+    "scenario": "base",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 2,
+    "fills": 0,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  },
+  {
+    "output": "/tmp/spot-edge-task3-protected-participation-25-base-1790988538625617963.json.gz",
+    "candidate": "protected-participation-25",
+    "scenario": "base",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 2,
+    "fills": 1,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  },
+  {
+    "output": "/tmp/spot-edge-task3-protected-participation-100-base-1790988538625617963.json.gz",
+    "candidate": "protected-participation-100",
+    "scenario": "base",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 2,
+    "fills": 1,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  },
+  {
+    "output": "/tmp/spot-edge-task3-atr-stop-fee150-1790988538625617963.json.gz",
+    "candidate": "atr-stop",
+    "scenario": "fee150",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 1,
+    "fills": 0,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  },
+  {
+    "output": "/tmp/spot-edge-task3-atr-stop-slip2-1790988538625617963.json.gz",
+    "candidate": "atr-stop",
+    "scenario": "slip2",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 1,
+    "fills": 0,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  },
+  {
+    "output": "/tmp/spot-edge-task3-atr-stop-outage-1790988538625617963.json.gz",
+    "candidate": "atr-stop",
+    "scenario": "outage",
+    "source": {
+      "git_head": "ddccd6074f773e7b0aaf2d4e8a17682bccc95599",
+      "dirty": false,
+      "python_sources_sha256": "411f71598585cb2cda73dd8abfe85a32f014341b458eb498e16b172db5f7d9ff"
+    },
+    "sessions": 1,
+    "fills": 0,
+    "archives_verified": true,
+    "complete": false,
+    "cagr": null,
+    "lookups": 0,
+    "original_fields_preserved": true
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "format": "task4-vault-immutability-check-v1",
+  "before_sha256": "0eb95e42044332231b6670c680d81d0ed19682e0c03c316765a7cb6d9061eb5f",
+  "files": 2396,
+  "total_bytes": 14481648622,
+  "all_files_hash_and_size_unchanged": true,
+  "added_files": [],
+  "missing_files": [],
+  "immutable": true
+}

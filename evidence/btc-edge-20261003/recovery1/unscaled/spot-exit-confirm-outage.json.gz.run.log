@@ -1,0 +1,9 @@
+{"candidate": "exit-confirm", "scenario": "outage", "session": 0}
+{"candidate": "exit-confirm", "scenario": "outage", "session": 100}
+{"candidate": "exit-confirm", "scenario": "outage", "session": 200}
+{"candidate": "exit-confirm", "scenario": "outage", "session": 300}
+{"candidate": "exit-confirm", "scenario": "outage", "session": 400}
+{"candidate": "exit-confirm", "scenario": "outage", "session": 500}
+{"candidate": "exit-confirm", "scenario": "outage", "session": 600}
+{"candidate": "exit-confirm", "scenario": "outage", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-outage.json.gz", "complete": true, "sha256": "a3c8798a95b996ab2ad2b739f24566d33843a1cf9725038ec50359f8d9ec2f57"}

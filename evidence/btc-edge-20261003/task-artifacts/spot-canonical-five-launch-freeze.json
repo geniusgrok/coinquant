@@ -1,0 +1,2020 @@
+{
+  "format": "btc-edge-canonical-five-source-freeze-v1",
+  "registry": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-7-spot-canonical-preparation/five-canonical-commands-fix3.json",
+    "bytes": 59584,
+    "sha256": "2afa67613285f9f71a4311701d802d1e3df4983503c6967f91c707fee7bbfc6d"
+  },
+  "original_spot": {
+    "repository": "/workspace/btc-alpha-beta-improve/spotquant",
+    "source": {
+      "git_head": "74bd6e035e36531c517029077c1a9e2e5ec44516",
+      "dirty": false,
+      "python_sources_sha256": "f2d6c3e73c2acb7b328a7a0e2678bb95ceb77d8a17a46139abfe8b357befdbf6"
+    },
+    "bound_files": [
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-01.zip",
+        "sha256": "445904985d35f847c5c0cb4dc582c10e07967aaa6a424ee30373194b2f815519",
+        "bytes": 2149
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-01.zip.CHECKSUM",
+        "sha256": "7f41b3c64c73d5eea2f9ffb7ed15c77df434e1420782ec53623571515e2262fc",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-02.zip",
+        "sha256": "9bcdcbc003cce89ba5917367cd617bdd5abf17e427e4f7625b62f9ab9cc7439c",
+        "bytes": 1955
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-02.zip.CHECKSUM",
+        "sha256": "3245eaff4e04da4de3bab90ab2fda34962a9cbe7764c652c7feaffd0c076fc26",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-03.zip",
+        "sha256": "385bd09eea4a950b5a509cc2dac8812b5945d4b7edc180a26e43287a5812a7b4",
+        "bytes": 2119
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-03.zip.CHECKSUM",
+        "sha256": "29d5d48622887994cc15d7bb29bf27daad850980223a9547c118a9e1318998ce",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-04.zip",
+        "sha256": "73774cf609ff32f08ca86e999f72aa6451cf76aaf55dc51a4c7922f20c805bd3",
+        "bytes": 2074
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-04.zip.CHECKSUM",
+        "sha256": "de61db460dc443ee2e78b36fe1233109bf0a0619460a96d063e7c8688756d4e3",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-05.zip",
+        "sha256": "924f9b192e6817ebc627581d826b1272747e1d36e2725a805e616558a231919e",
+        "bytes": 2190
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-05.zip.CHECKSUM",
+        "sha256": "190c25ce78645d52164343519784e905c2a041090c446dcb57ee92ace67bac79",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-06.zip",
+        "sha256": "a027352795179a3255ecf05cf3be4f8030e836deee0dc6a5f14ebdc173b345e2",
+        "bytes": 2147
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-06.zip.CHECKSUM",
+        "sha256": "8c7c4638b104964114a35a7430b3c7481bc8426ef8de521be8527556f330d22a",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-07.zip",
+        "sha256": "52afd0bad5ac94a8cfec04d8922e2ec19806783c3a905d4e1149246561c4a331",
+        "bytes": 2217
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-07.zip.CHECKSUM",
+        "sha256": "2eae011b12c758f7f7a37c476c6b2a88b18c955a3fc17dce1a9483a2c0a01283",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-08.zip",
+        "sha256": "b33dc2c6b606598d8daa5db45d60b568b42d2d4ec33b8f4cd9303da1ee6a58c4",
+        "bytes": 2212
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-08.zip.CHECKSUM",
+        "sha256": "a804c1f592afe99a4592c8f4be7c181eb3c2651ef0d2469a1d6e007a78cd636f",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-09.zip",
+        "sha256": "9d1d72fb97ea4324615b096af10a78c0511ba99569e729e483acd983fd2d0677",
+        "bytes": 2120
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-09.zip.CHECKSUM",
+        "sha256": "a5f845cc763af4c1ee70586c336f6553df5f6f15f56a9a69a8d5d756e9fbcd30",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-10.zip",
+        "sha256": "f117e45966cefc57a57ba5c9296bee5b989b125b145bca5459da7201c7191db7",
+        "bytes": 2184
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-10.zip.CHECKSUM",
+        "sha256": "432dbb7fa5f4f9eb29a16f41bbe1428f99256a36c1bb609b8c73f2d22387ce49",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-11.zip",
+        "sha256": "d8e85503c78a4e8a0289046607f3a9e2b304d511812167ad97b3be82923df39e",
+        "bytes": 2123
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-11.zip.CHECKSUM",
+        "sha256": "c0b0eef290238fee733c19c7d8e9e30b361379d548c12277c77631a7dcf68ae4",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-12.zip",
+        "sha256": "1d0cf3ae0ab25953a733b51cc84c21b4685089ed86f278ad9fc7ea3acdd4be17",
+        "bytes": 2168
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-12.zip.CHECKSUM",
+        "sha256": "5412c60676e12403126a91326b1bd86be75737fda3b851f5cecc815b27430004",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-01.zip",
+        "sha256": "b77d84cc335299783f64e6ef845ffbab6cc6198a2c396cc1c2c6f8dd1a9db5a5",
+        "bytes": 2192
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-01.zip.CHECKSUM",
+        "sha256": "ff26143357d2bde4040ff908709a2c59d98a6bf008c4a840fa6eb408154c2b4d",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-02.zip",
+        "sha256": "808ebfc66e77113d4d5f4ead3a5e0eab4404b62548fa786b07830a4d73972152",
+        "bytes": 2045
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-02.zip.CHECKSUM",
+        "sha256": "25294bf541f3e3df9d6ab4e54686e4ec1cb51e37743dd98874ae63c6d4ccf137",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-03.zip",
+        "sha256": "26a062af0efb4dbba71fa3db7a041629ee7cc4cf636ed13a98bf90f8fe0e1d0d",
+        "bytes": 2222
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-03.zip.CHECKSUM",
+        "sha256": "624823f5918f48849cfe5440aec9428eb17306aebea72723d1345349655902d3",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-04.zip",
+        "sha256": "bf4674f7aaf5baafea9e1d73c95344558b381dfe0c117110a156a0d64d8d5cf5",
+        "bytes": 2126
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-04.zip.CHECKSUM",
+        "sha256": "07d7b773cd389a4c11833835fa5bc533e13153ca4188cec006169ad1dcd45316",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-05.zip",
+        "sha256": "7ae5d56d12ce599fbceac80ae04bde51c7421b39f22f924f1f46a53e560a1f75",
+        "bytes": 2183
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-05.zip.CHECKSUM",
+        "sha256": "9ba5ea304edf15824a654ef7c7bef6a3ad6f90558aa4082a0a850d05cbf933e2",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-06.zip",
+        "sha256": "19e9ffb7c77e0b8c7bc17d6c47fdc52eb50fcb61ac8d94d32b9c13eb17c700d6",
+        "bytes": 2103
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-06.zip.CHECKSUM",
+        "sha256": "4b65bd8810637e719db962a16266e3a6455be09bb453cffd7246584f0b9450c0",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-07.zip",
+        "sha256": "76fab627ce54ba1457c63e3906e2afd3162cf053283709672fb3eb676b3dde3b",
+        "bytes": 2174
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-07.zip.CHECKSUM",
+        "sha256": "088879aa884d7b5986871359631e0f0084d68c06419d01318311b79651a0d0f6",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-08.zip",
+        "sha256": "ff20895a43680f991fa26ee2c9b34376c17487404d57a22f088af8c7ed1fd9ec",
+        "bytes": 2197
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-08.zip.CHECKSUM",
+        "sha256": "55da83a92970ced012cac25acd2a7cd169a2131a71d751b107a7788bc3c15842",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-09.zip",
+        "sha256": "d6f9590a181d58a992e6a3ce2346a4dbc96ecf5310c12df66c57be4818bfc28a",
+        "bytes": 2148
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-09.zip.CHECKSUM",
+        "sha256": "fd74a7ab083c02d83b2ede4d3a0ccead475adc2b5680b7533a8c7ce4437c8924",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-10.zip",
+        "sha256": "e240ecb14f1120af34290ed9c7e8937e7cd8a80f0d0bbc88a924f7e520e78cec",
+        "bytes": 2210
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-10.zip.CHECKSUM",
+        "sha256": "87bd26f010a29ca075af16b88aa361dc97bf89ff67532c39a9ae47629d8c3a02",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-11.zip",
+        "sha256": "4a7b8bd36409c7ae92916489621e298d750e5dda7be5b7389dc814dffb16a29e",
+        "bytes": 2161
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-11.zip.CHECKSUM",
+        "sha256": "94e8e6b9fa473d172b50e98f2e359f84131e6eb3d13a25983f6a444587d55f5f",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-12.zip",
+        "sha256": "77e2c7fa9a940828b3f36f7212f6def777acfc1402d173bdfad958d2e37ea469",
+        "bytes": 2231
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-12.zip.CHECKSUM",
+        "sha256": "d7f4ac7d5be8435a4cffebaaa3894112f8ea282b94f24ac842fa146917c4bea9",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-01.zip",
+        "sha256": "6ff53d94f600e2a208882bfd5c00e2133cff8f07e57b7f373af29f85f86e0284",
+        "bytes": 2295
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-01.zip.CHECKSUM",
+        "sha256": "72eaa7cb939fa9154b4f7d0fadecba2cb3dbeab2e6134b9bdaf7ca7de325805a",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-02.zip",
+        "sha256": "f18254dc4a70f396494be83a6081cfafd1935aaef42aef5a12f18b0244edeb27",
+        "bytes": 2103
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-02.zip.CHECKSUM",
+        "sha256": "15ac316d6a4d564d8716ba3cbfa19ee19e359a3ef4d7117c9cb50227d70861af",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-03.zip",
+        "sha256": "f43e48b5efc8e0b06e0520b91aad4e5668844c766933c0c5cf403115dba03303",
+        "bytes": 2282
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-03.zip.CHECKSUM",
+        "sha256": "391f801e7cad5064b2c1346d6203f1c53078deab679234df0fbb38f6c962efbd",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-04.zip",
+        "sha256": "3dd852f06608173dec98b7210f6a38728ef221f08717b362b4f3f09436e0a5fe",
+        "bytes": 2189
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-04.zip.CHECKSUM",
+        "sha256": "d5c5c5995743b15c0759d16fb0b2a81356a8c410bd8421d0a238f4b9c99ad473",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-05.zip",
+        "sha256": "3122e1ebaa1376937d479964563dced19f850636a700bb7cb97d7872ea8c8f28",
+        "bytes": 2283
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-05.zip.CHECKSUM",
+        "sha256": "cf9274c954a51b98dcc60ea7fe4fbea70c99bb9a209b8b5e845206748bda1145",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-06.zip",
+        "sha256": "9875e11e890f75ef6eb0188ef7f952e5c0ba6919bd6d72d3da4d6847b84c5ccf",
+        "bytes": 2204
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-06.zip.CHECKSUM",
+        "sha256": "f5a5f36cffba5eee4056792a6946a3e99ee4db52b4cec5766e9a7a34beabcda8",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-07.zip",
+        "sha256": "636f588a6abb568f977aea3ae798f34ced4135f2f96fbc1493a2f9ab54a844eb",
+        "bytes": 2264
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-07.zip.CHECKSUM",
+        "sha256": "92f4dd51269ae0c6594700d0b3dd07eef6a4c0651859d9ae536da4ac7deed492",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-08.zip",
+        "sha256": "68612e3fb74c184f97e4d3b2e061dd3743156401a6813ab897014b0b35caedd7",
+        "bytes": 2246
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-08.zip.CHECKSUM",
+        "sha256": "c85cec46b9b63ae8838d885d01fa7db644473141b518987b152a00e6cb0dd79e",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-09.zip",
+        "sha256": "9f6535a0fe8a417b0909d230e4a02f6a9933eb23c770f54c9f6bf140e8d02257",
+        "bytes": 2156
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-09.zip.CHECKSUM",
+        "sha256": "6ebb428fc8a0ad23af7bffd52de4ff26972685113ec6b8e3f67ba448356685db",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-10.zip",
+        "sha256": "ba50ff3dab5726ca8b9fa26065fe3a8f612aed4baa978ecdd9d39647cd108684",
+        "bytes": 2210
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-10.zip.CHECKSUM",
+        "sha256": "ede05b913e28d99d4719dd1f797da9bc810552fe6c498006ba7c27a2556667cf",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-11.zip",
+        "sha256": "64162d8ec11458e9d02f49d8569e47765517852bcf0a908cd4d71211e3912e62",
+        "bytes": 2166
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-11.zip.CHECKSUM",
+        "sha256": "f9f37887289f4dbebe24b1f0f2f3e38875fb383e09e2ead186ac22b8bc60da08",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-12.zip",
+        "sha256": "6231b57d3a3b71fb76a1a34078a01a01275a59870857bf60408ccd3ba4618e75",
+        "bytes": 2196
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-12.zip.CHECKSUM",
+        "sha256": "5bf2e3dc5aec8c3acb6a20be925e0828064e34fad162657083ab045943a3b412",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-01.zip",
+        "sha256": "a4a2e0432a8f0b42e2da71ac26599b2e6385b579ca4feba692a95cb897decdcd",
+        "bytes": 2183
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-01.zip.CHECKSUM",
+        "sha256": "8d8e07a36ae514a0b6926792707bfaa810d406cec0930fee27adb41879c7e137",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-02.zip",
+        "sha256": "faffa5eadb9ebf0b32742773777596d0dbf3f282e94a16dd05cf1eb7b53a3763",
+        "bytes": 2011
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-02.zip.CHECKSUM",
+        "sha256": "9e8ef1a0ff37732b65bdd9535668cffaac0ada816684e53ee2c1edd64c8d21ad",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-03.zip",
+        "sha256": "452129b478585b18931f728f89daed9d2a19d4824b932af7a099366efd4db639",
+        "bytes": 2206
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-03.zip.CHECKSUM",
+        "sha256": "0aebf864c31b47a428382b4a2ccdfa3f2fd91e993dadda1e700ea182ac58b8b0",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-04.zip",
+        "sha256": "70413f67212d012ebfd600a6ebf20c03a9c8311bf764ab6d21d1bfd2d21d1b19",
+        "bytes": 2117
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-04.zip.CHECKSUM",
+        "sha256": "6a072d8953153971f017ed72b4f8c7ed6eb4374bfab40feab72f32ccef7381d6",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-05.zip",
+        "sha256": "53eee1be2d5b461dabc67645ad706610b0465d8bbacd5f9cd99fc790c68f18f5",
+        "bytes": 2212
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-05.zip.CHECKSUM",
+        "sha256": "c0d5cbd2418e556a4885350865f2755752aa3a0077b24358e4e318793f39430b",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-06.zip",
+        "sha256": "dd5047ce33c16231bcb01f534951a709937bbfe0c0667c61f20f188cf9b94de4",
+        "bytes": 2169
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-06.zip.CHECKSUM",
+        "sha256": "154490cabd8b5c8a4447e3b2b1bd09d111df617c82d1da22e6ad91204f9163f1",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-07.zip",
+        "sha256": "216567f1a8bc1dbeaada097f7eddff12dafde177c16b26507c762a613a57eb5f",
+        "bytes": 2245
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-07.zip.CHECKSUM",
+        "sha256": "2f9ed3c390498a19aa7998a87d443f9f3be4712888eea9a178f09324353f7d24",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-08.zip",
+        "sha256": "fc8bd69e95141afb6f83c5a4450c3f6b49c4a1cb16e42d90eb960c3ffa9e766e",
+        "bytes": 2237
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-08.zip.CHECKSUM",
+        "sha256": "7725126f2d9f8f2adbfb10557c42e5352afd1767d674c0c03c5af70d16b753b8",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-09.zip",
+        "sha256": "68a8357e23277ebd98842fd88d492b012d53dd578b5061cafb8c070c440b235e",
+        "bytes": 2213
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-09.zip.CHECKSUM",
+        "sha256": "bb00e1e35f8030ffbb7c07df13bdea9dafa95b7e5d873ef617b207d8a4901015",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-10.zip",
+        "sha256": "5b086535cba596ef1b465f247a26385b4ccfd12673a76f225e2dd9e00dddadfd",
+        "bytes": 2219
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-10.zip.CHECKSUM",
+        "sha256": "9593c36f1c40cfa130f8ef6f72acc414da61a7028df0aa5113e1bc97042903c2",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-11.zip",
+        "sha256": "142202b226078f54342c4a1d74c8c6081a98c655d7d6f6fba06314f9c101e2d9",
+        "bytes": 2191
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-11.zip.CHECKSUM",
+        "sha256": "f14ecab2b0c8fcec6a329b007d5b499bd8ffe7663c5677fa129c498251d6db37",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-12.zip",
+        "sha256": "aff24746afa9a3dbd355dd3462bcef80e59e96ed9aa55f79007532f9e07991bf",
+        "bytes": 2222
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-12.zip.CHECKSUM",
+        "sha256": "69270bc38bf2bce2ef473bab3846e9119952f597dc44e1f9c4062acbfef364cf",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-01.zip",
+        "sha256": "a9fd53b75add7cc42fb4779a545811606260f79810f3826215d6ebecda11bb36",
+        "bytes": 2250
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-01.zip.CHECKSUM",
+        "sha256": "dee4c03862bcec3cb77c43d50973d450ea4b3a6c6114005c2b230a9aad01d454",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-02.zip",
+        "sha256": "13df1e3633f15be3eeba4768d0cc323ef221191002657b53936a6d0fb5e6556f",
+        "bytes": 2072
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-02.zip.CHECKSUM",
+        "sha256": "5947aa09bcce8b0af5a71bed3241b0680bed9a05b57ba22ce4d8580032b66f29",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-03.zip",
+        "sha256": "1cb1209700ec74fa4592048de2e4ea4a38ab2bd622dfe03f1d6195c249501381",
+        "bytes": 2265
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-03.zip.CHECKSUM",
+        "sha256": "4ae87b95b41803371c50754d4e9d66bfdc29009b17452dc5b499784525cff52e",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-04.zip",
+        "sha256": "999e86be73731ebc347c6ada94abceb5e291b65e7f1b4df2ce390af1aa2a4a08",
+        "bytes": 2108
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-04.zip.CHECKSUM",
+        "sha256": "ff934dc2f11da5df37b475a7ae4f392ef7df9d7945a820b7c51295e0e355c6ab",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-05.zip",
+        "sha256": "c343e4689784c29f83d25147a096dd44b6ae5c1063c909f8adda82b56414469d",
+        "bytes": 2168
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-05.zip.CHECKSUM",
+        "sha256": "bc849dbfcc027fcc1e03c93e00616938644079ae632f4eea20a77256c80f2ba1",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-06.zip",
+        "sha256": "634919565c55a29729543d730927ca4b547c0e52d118a38de730f37fdd7617ef",
+        "bytes": 2099
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-06.zip.CHECKSUM",
+        "sha256": "6db68d70a6c9c6701ec1bf0d9737bff3344838fc5b6c8b515f01d12e7d289e02",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-07.zip",
+        "sha256": "32363d37de02e6ad8d334ac332c685f8cdf5684733a9f2cfbca40e15e591396b",
+        "bytes": 2132
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-07.zip.CHECKSUM",
+        "sha256": "364fe4b0962f9e1836a12bab7b47164f0117ad06bf516d3c6ffbd105b927ff4b",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-08.zip",
+        "sha256": "8c5e47bfe3f0b0273534379e8ba5c93e69c84d67e8b9a03f293d6621bead2a5f",
+        "bytes": 2160
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-08.zip.CHECKSUM",
+        "sha256": "9d3396b6e98ead2e00c7aa5fcb51132ce4f10a40e15c24e6632d0032cdd1e21f",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-09.zip",
+        "sha256": "2fe68ecad48d6927a9280d89700e991cb6481dc2767698c785f2b2d1c0b14744",
+        "bytes": 2080
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-09.zip.CHECKSUM",
+        "sha256": "4ba133f29316eafef1a8af1d25f78e3690538f479625ee855a1ac284d8d7df82",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-10.zip",
+        "sha256": "358b83bf0c2a5d5390a4bc4d4ae14fa9df0f56139642ad996c0df0f7bc712400",
+        "bytes": 2154
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-10.zip.CHECKSUM",
+        "sha256": "55a9c4cef733df85900e7abbb0119629afdbc427e435e0e554db4fc0af1105ae",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-11.zip",
+        "sha256": "fac9823cac7bf56a3a6038c3b79417e949b00c172939e62000451c8c25edd7c1",
+        "bytes": 2102
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-11.zip.CHECKSUM",
+        "sha256": "12583d6752383ddf5e070e25306c7fe425f7a57249cda15b2af940da5000a4fa",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-12.zip",
+        "sha256": "056dad65795c9264ef90ee668a4c245e8fec73ebcbb272d28f5596c389913979",
+        "bytes": 2177
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-12.zip.CHECKSUM",
+        "sha256": "c02ae2a53fecc777a02272345ace99488ca15a19cbd7ea9a0a7265d057029ae9",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-01.zip",
+        "sha256": "474c1ce6fbb09e42cfc7231fee249aecc58af2fb5918570ffeba37998926b4a4",
+        "bytes": 2190
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-01.zip.CHECKSUM",
+        "sha256": "71b077b0fdf209e46fce5e951ce9e6c7e5cbfa24da0615b1abc014eff610bfa2",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-02.zip",
+        "sha256": "4dae0b3d6b8ea59e39e6493b7964040c52459ea7b0a50b9c2793dcbfae53800d",
+        "bytes": 2053
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-02.zip.CHECKSUM",
+        "sha256": "f1b2d31240117fc874dfaadbf1d53322881b178b7e86f23a0ecd9580f1154672",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-03.zip",
+        "sha256": "f7cd4fcafe79d1fac0c830d5fe152f7b3b9100e7c97e40352188766388af0ae0",
+        "bytes": 2224
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-03.zip.CHECKSUM",
+        "sha256": "2e25240c502df99c33605676d89ce121ae749242885e576f5738b085ec5beb80",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-04.zip",
+        "sha256": "b4a8542c33e5251fb53f8a3352dd4e6f3cde4ac25f2c24935db8089aa1a2c3a0",
+        "bytes": 2141
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-04.zip.CHECKSUM",
+        "sha256": "ea23a2ea25f9fd86b3e3bfc6bf80b5530f70b2ba86d6b05710f93f4d61248a90",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-05.zip",
+        "sha256": "0175f696039b9e30f06c6398d218c99e577661ac30424869c648fe9770507248",
+        "bytes": 2185
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-05.zip.CHECKSUM",
+        "sha256": "2ad2d24b78bab81ba229d216441330003fd24138f1dc43d2a84be072b0adca39",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-06.zip",
+        "sha256": "8a0f6416c2a83cfa15ba26c688d716fdafe35bb1748dd244f0550e8b2f7e38f7",
+        "bytes": 2095
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-06.zip.CHECKSUM",
+        "sha256": "7d4f2d0569b4465ea956474827ed5f3aae670d8272e64e578dea0542bf5b9cf5",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-07.zip",
+        "sha256": "9a2963ef6541b4d7630eff8df7b2eaee48ece33180af03c34b0bf92675692899",
+        "bytes": 2203
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-07.zip.CHECKSUM",
+        "sha256": "e8f15da5d2588d694e9c5cd6d2b7b5a351a356083ef4f42e8d22fc13bbe48ead",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-08.zip",
+        "sha256": "df41fe3260920b85da86855b4880f34618982e689081317d3d63b9b3bbcb1d53",
+        "bytes": 2190
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-08.zip.CHECKSUM",
+        "sha256": "875dcd65e6d6595bb50280408f5eb54f0404c01a93ad4b6322f9f1c053006bf0",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-09.zip",
+        "sha256": "89e459b2a8f4b138dc742d9358c0084fcabf719d40468e156c3149a3635f3359",
+        "bytes": 2106
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-09.zip.CHECKSUM",
+        "sha256": "26d0bdd27f946237638a33025086796747d41e276019784c2e60a45fdf1935f3",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-10.zip",
+        "sha256": "d442a5f158d45d9ff7b1584b35023a4161cf915a3857f5e71a2a2e6aa68c69c5",
+        "bytes": 2203
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-10.zip.CHECKSUM",
+        "sha256": "bf315ea2b65839fbd220d29bbee4f2844b50b48ab5c0daecc2329a6d6156a7aa",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-11.zip",
+        "sha256": "b197219d9e8b5e933226e1cd24fe2b7bfc3a2e8a3e74e6f7dc08a48f314da8c3",
+        "bytes": 2157
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-11.zip.CHECKSUM",
+        "sha256": "0cc578524970a94a4bff742840013f82d997afb119e558f08a86f0ceba467654",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-12.zip",
+        "sha256": "82ec90210f492694b9d01722f97f579108ee787968b8485b53d736ea735700da",
+        "bytes": 2218
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-12.zip.CHECKSUM",
+        "sha256": "6bcfb157f3058010bc0331caa2e0039f9593c91fcee335474ca246363d4e4a90",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-01.zip",
+        "sha256": "3a3eb1b723d944deb4dbef5ae361bbe39340a17fe987fe22e397ef03dca268d2",
+        "bytes": 2254
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-01.zip.CHECKSUM",
+        "sha256": "05d0a547d855337e21458aac72e9586949f164dd8e7b5c9390832c70cf1f8b9c",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-02.zip",
+        "sha256": "27cfde08c9eb8e3801fb049e3be351a3e50ab46abd8553c24023fa98ea5e919e",
+        "bytes": 2039
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-02.zip.CHECKSUM",
+        "sha256": "6ef3ad5df09d936dad60d0e03da85b237404723c60ae2d5f57fcbece8dd1e6dd",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-03.zip",
+        "sha256": "5874e405f55c46f040de1a8ea9daae583dc12b5bcaef6078b21aae9c627cedcc",
+        "bytes": 2249
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-03.zip.CHECKSUM",
+        "sha256": "138b5f5c11ae31e420e60c9af555e9ed4de58da0e03e5b11c7a4f975d714c831",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-04.zip",
+        "sha256": "8068a571425857cb0f5f71f75e733d3bc1e731362a09f84f835bbea6e087aeb2",
+        "bytes": 2165
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-04.zip.CHECKSUM",
+        "sha256": "846eae034bd776fbccce88700fada009b583d2b89f79e0fa87184ce5f3fa7a61",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-05.zip",
+        "sha256": "2b87aa0c63641ba1e954855bcfed96d7fc4eb21efe7936f354ff74e8e06cfcea",
+        "bytes": 2253
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-05.zip.CHECKSUM",
+        "sha256": "c25517eecd64eec69a9e754b840076642234866297920e1d43325b51e199c490",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-06.zip",
+        "sha256": "dc4bbe2c75f04372b909febe8e6b379b053f88423d78cdb3ad8b0be3a66d6ede",
+        "bytes": 2170
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-06.zip.CHECKSUM",
+        "sha256": "50c39900f594d6232f6417cf94356e7a2c8fbd773d1a239503afc0801f583d65",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-07.zip",
+        "sha256": "1ea64a346f6be0aaf455eb1ce107e6d38367164d97d0dd3719b9f9bb239796f4",
+        "bytes": 2232
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-07.zip.CHECKSUM",
+        "sha256": "750409ce8d0652edc443d45698ab39d3653e7abe8c717f6216a7d8c734fdf46d",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-08.zip",
+        "sha256": "6720b573210cfbb98765f4a0de6826033d203fda42a6c8364455144b703ceace",
+        "bytes": 2237
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-08.zip.CHECKSUM",
+        "sha256": "bf324e930e68c56f4c77458b93ab815c0e066f20a84a92412a39af4d7a756142",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-09.zip",
+        "sha256": "9934e6d98a90139039bb070a90ba409ff1832ad80116920adcf088090ce4c996",
+        "bytes": 2154
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-09.zip.CHECKSUM",
+        "sha256": "455fbe0afca8e7aa218451a85fa3f534f94a024e5487a5b9e206ad583cc965bd",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-10.zip",
+        "sha256": "3597639a18f343c768e374157e8bd08dd046bb33693495ff4e13380abac1260e",
+        "bytes": 2262
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-10.zip.CHECKSUM",
+        "sha256": "3e2595a0973f0f3982b64c0b0e564890ded4cb990f816b35d6c61f3289daea6a",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-11.zip",
+        "sha256": "9eded1225f9e3f3d4f127fad46111eb403553c1125cf6d11995e69d91d037290",
+        "bytes": 2185
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-11.zip.CHECKSUM",
+        "sha256": "b0fcede65ae84bf23e9941902590f9cb66713decdc76f352451da228536e989a",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-12.zip",
+        "sha256": "b12a106198f3be3ba5916195f75c1c6d34d8e5302ab77b8fd7c4b1b58b6144f4",
+        "bytes": 2230
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-12.zip.CHECKSUM",
+        "sha256": "2a84af8efe413c5ed397d30905c266573ade59e5f2fb2812579d84e78c1a957f",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-01.zip",
+        "sha256": "b7775ddec3ddd3edafc6ad5abcc94d6ab8b8f063a0911d8a3f3daae6a8bbad2e",
+        "bytes": 2237
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-01.zip.CHECKSUM",
+        "sha256": "bd06ae552301ee3e034474d2bb7bb82f3e9d137d3c5f28d9270a70eefa1972b6",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-02.zip",
+        "sha256": "f8806308002477a1a28d6cc55ec9ea7bd91bfd4b44c04500d9fc4aec50fd9464",
+        "bytes": 2030
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-02.zip.CHECKSUM",
+        "sha256": "3467646789b7f2ba9d3bd8aaaed04c9f4ce6fe6547942dacc9480e0a1b555d2a",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-03.zip",
+        "sha256": "b81fb1942f9653564f355e3bd62dc06e0552d1c64bc966f7dce5a9c1f8780c47",
+        "bytes": 2242
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-03.zip.CHECKSUM",
+        "sha256": "354636092075f991f8eff911f3c087d08c3f4b6282c23081fe22040575a73c71",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-04.zip",
+        "sha256": "1f7da05da9f9a8f30945bde41872ca649c61d6e6e324e916f4c3cbafa0a9276a",
+        "bytes": 2151
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-04.zip.CHECKSUM",
+        "sha256": "12949fb953f76a2288d2a646cfee55c04fd2328de072f4261959bd1b8d62cb07",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-05.zip",
+        "sha256": "978936e8f1f80b570248f8d4478d6fe08d94b98bc1c7d372feb27573ff466cde",
+        "bytes": 2223
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-05.zip.CHECKSUM",
+        "sha256": "af2c8f1e97e35fc1daffaa18ebbe7e367650b3ab6b88181da11c1064b0f6c843",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-06.zip",
+        "sha256": "7020d4d850a875b93f0b0fa6df4a4c36ab615273e2ab03f9e896852330dad77e",
+        "bytes": 2144
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-06.zip.CHECKSUM",
+        "sha256": "9e6bd683960eea0a6a3d1b96f31126c26a38477593e4c612e4daba3dc632e8c8",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-07.zip",
+        "sha256": "74ddc3e39aae9445b9f9dae00d53fe2ce6ff503ee469417e207a8f5970bad11a",
+        "bytes": 2193
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-07.zip.CHECKSUM",
+        "sha256": "c89a6a9026119f6e4e3a8bb573bf5924506e796731d9a3dca9938eba8eeda5e3",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-08.zip",
+        "sha256": "fd8374a811ac7d3f4144d9c857c4f10796402c178316a25ed0c2f0ca6e16a8c1",
+        "bytes": 2185
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-08.zip.CHECKSUM",
+        "sha256": "1de1ecbcdf53a9492e07e298a6650e0340e66e85f48a73ccd155bc09737d51c8",
+        "bytes": 88
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-01.zip",
+        "sha256": "db633d61a2e20aeb57e02d252ba86923cf0b6c39b792a6ddfa513145423921e4",
+        "bytes": 238
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-01.zip.CHECKSUM",
+        "sha256": "03a18d5f1ea235235586e3fa69e1007674def9602c552b6b1cab59548cd7fdb4",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-02.zip",
+        "sha256": "150b08c662088a3e915ac4716effd829b8a3bb194bb508ca91b969a207d9fef5",
+        "bytes": 237
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-02.zip.CHECKSUM",
+        "sha256": "08c581a398244a7c5ddbf4ba12ce41924a0f718ef47811cb54f3264cbbe38ea1",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-03.zip",
+        "sha256": "23f688ec229d54e2601dac93a31c63c18cdd96ea30da19212c1358068ee07db7",
+        "bytes": 238
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-03.zip.CHECKSUM",
+        "sha256": "efc693b9b4f9445e547a95fea19877d4d2a243c3a6d6a1c5f0bd54355657f736",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-04.zip",
+        "sha256": "c7415ae628903620fbbd7e8144576f88ca14b0b9dec7d604701ad3bc2db3b50b",
+        "bytes": 236
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-04.zip.CHECKSUM",
+        "sha256": "4c21efdef65c81ca8c2ebb7c9fc2aaed7baecdd3feca1ad4a8ff44291da2b946",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-05.zip",
+        "sha256": "029f78c5b79503b0e8de2c3f803e2814a0ab31317151b01fd9ba7d7a3090822b",
+        "bytes": 236
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-05.zip.CHECKSUM",
+        "sha256": "61d1e322c933ac976a7aec78af758d2ed5b50950b0a5f16a34ed280e512b427b",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-06.zip",
+        "sha256": "6bbca760351e51af46ebd51f4aa922559ecd2a06309386406653caec4f50d516",
+        "bytes": 237
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-06.zip.CHECKSUM",
+        "sha256": "4cfe782a5d17d471eba0c5279436a07a858e543a93be4fbc738355e40c477414",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-07.zip",
+        "sha256": "a7598dffcc806825f1827908439fb642d34b20b48ec41787c09ff073d92b91bd",
+        "bytes": 239
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-07.zip.CHECKSUM",
+        "sha256": "dd73289c88907f3e8473edc7056fd5c807fb87420d4bb9f7a30a9f035ba66506",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-08.zip",
+        "sha256": "7063ce73461b1b67273e83226d1eba70beece694191f578c8c9547ff214c5950",
+        "bytes": 237
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-08.zip.CHECKSUM",
+        "sha256": "efc83f02c5c7c6595cf2eee735f7bca7fd45bbb0d0c7da55f6f6d49a6001cbfa",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-09.zip",
+        "sha256": "599b82289bc11c4f60605b5a3fbd496b04a583d7d9c38896d96fbc3afe2e434d",
+        "bytes": 236
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-09.zip.CHECKSUM",
+        "sha256": "82ed94505f01b351e6cdc6ced98ad55e0111c97b7166a535f158de924c55f0e3",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-10.zip",
+        "sha256": "85b8513b50601307edfcaa3f844e07fc989f9295f31da90cbe3b3e7e81d74cd5",
+        "bytes": 239
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-10.zip.CHECKSUM",
+        "sha256": "e8dcdfce4880806f5ec9f308a8f7a0dadad324ce2dab38a4f5a153245e56bd9c",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-11.zip",
+        "sha256": "13c557327fe53160855f076ade665f78cd723d8029c48831c1a6d46bd583a47c",
+        "bytes": 238
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-11.zip.CHECKSUM",
+        "sha256": "633720b2560e878c4587c6eee4dec799d38ff4f5170fe6a9343da5d49a80a6b1",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-12.zip",
+        "sha256": "be579a6b89278f47b140d1a74d86b5cdb0997b2556e979efa11a6002db81ca09",
+        "bytes": 236
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-12.zip.CHECKSUM",
+        "sha256": "7e09504179780e239f26d1a5615bbfba24ab61ad6ddda95201c611188a51bd30",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-13.zip",
+        "sha256": "fdd0dcd40c71da0706d9920b7b695cab5bbe63238bbefa1ddcbb4c0df718b432",
+        "bytes": 238
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-13.zip.CHECKSUM",
+        "sha256": "507f3b6ea0270c11a2efa4e8454435216ba879283bfb9ea9c5a0906a49761c46",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-14.zip",
+        "sha256": "d05aa36ea18406a69dee5ae4e45f0776e65566212c9deebf30183c1828cb81de",
+        "bytes": 237
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-14.zip.CHECKSUM",
+        "sha256": "02b2e4470fbdce9853993bf773258ee46fd084cf74c64628b956c3b3ef014023",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-15.zip",
+        "sha256": "10b83a73daadc66b0fcf04e7946c385e15f144a79491d3072e54bd170ee066b5",
+        "bytes": 240
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-15.zip.CHECKSUM",
+        "sha256": "f33f7d0cfd644bc8cd0a32ed6f431858a863d0c4d1c06128266e2f437ac01745",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-16.zip",
+        "sha256": "d409bed943d24c474e07e342e2fe28c31915a7abddb4a42fd3e896975590fcaa",
+        "bytes": 239
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-16.zip.CHECKSUM",
+        "sha256": "a52ad8c5b3800342adba588f8241edea1dce7aaa20ed78ba3f0ef70b415efcf7",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-17.zip",
+        "sha256": "6cebcc584b01111722da8031bff655b9979a03d1cfa684ec8689bb5397080a9c",
+        "bytes": 239
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-17.zip.CHECKSUM",
+        "sha256": "40625c1dd7eee0f1619852f6d6634c12289b92c9ed01fa337b9a48451d4093f2",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-18.zip",
+        "sha256": "b7442e87ee1453b17df35619706984a435f4ec88723ac3341401efa255f81217",
+        "bytes": 238
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-18.zip.CHECKSUM",
+        "sha256": "9a40c588af8ce06ae8bc2dc7aea61d041bd44de8245150c031a59d968ac7243a",
+        "bytes": 91
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-19.zip",
+        "sha256": "c1cf7e0edcb47aa6524c7aca8188acef8636d22bab2b68c7a2c9e3741304d99d",
+        "bytes": 238
+      },
+      {
+        "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-19.zip.CHECKSUM",
+        "sha256": "486f37816acc8806c24c60476af7deb1ed607745cec92edb1904d197763109af",
+        "bytes": 91
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/coinquant/research/session_schedule.json",
+        "sha256": "c21b4fcfe3cb12fb062bb01d3c3591aa0ee8c65db9e9afde3c26b1bcdc2ac28e",
+        "bytes": 46681
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/review/final64-financial-review-proof.json",
+        "sha256": "9453b031924322612da3445e305e0499dce87eda20eb604def14ff7aa54241de",
+        "bytes": 68897
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/review/spot-canonical-five-financial-proof.json",
+        "sha256": "c1803ecb6c66a1f6397415ce2b033f569ebca46e6df42419bee87ea45f351b8d",
+        "bytes": 61880
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/perp-singletons-retry1.json.gz",
+        "sha256": "bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1",
+        "bytes": 12869574
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/registered-final-repaired.json",
+        "sha256": "a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6",
+        "bytes": 31177530
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/sensitivity-serial-retry1-incumbent-10000--60000.json.gz",
+        "sha256": "cd916dbad8055b18e982db20bcecfce838f3d6af398e7e09a60b362d74e805af",
+        "bytes": 768394
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/sensitivity-serial-retry1-incumbent-10000-60000.json.gz",
+        "sha256": "38912a76ca423785de39d1a63aa1bcbcde4c28830c0f5e25819c91f6710c3ae6",
+        "bytes": 753119
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/spot-canonical/base.json.gz",
+        "sha256": "dc94a7b315ee8ea11cc7215cd8ff7c02a8ab94180499b2c4ebf7fe1448682323",
+        "bytes": 273389
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/spot-canonical/canonical-inventory.json",
+        "sha256": "db23143dffbd6d8c5711789fee8b3ac92454d7712bcad14644cd244197701b32",
+        "bytes": 14090
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/spot-canonical/fee150.json.gz",
+        "sha256": "a52f6fb59fc77d7624fa4707123e6d94aeaa88f63ede55e68713ef76f8c630c1",
+        "bytes": 274836
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/spot-canonical/outage.json.gz",
+        "sha256": "478e9d2ab7a8ca7ac0434acdf273e82dbcd387ce34e14afe64c212cdab109264",
+        "bytes": 273069
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/spot-canonical/slip2.json.gz",
+        "sha256": "32d9906c259a8ccc4670baff053b3e9ffe2291121db557b836e56319bd7ba68b",
+        "bytes": 273038
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002/scratch/spot-singletons/atr-stop.json.gz",
+        "sha256": "f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917",
+        "bytes": 5357803
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/complete-delivery-20261001/assessment.json",
+        "sha256": "a1cc9e0990c61713fa216221add48e28aa57e5c4675d9295ededb6ba541624bf",
+        "bytes": 885187
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/evidence/complete-delivery-20261001/manifest.json",
+        "sha256": "220508d338b57744a88ca1f2704263da97f6eb3c9601d1ad71aac2de1068f0d1",
+        "bytes": 19054
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/PROTOCOL.md",
+        "sha256": "6c263a387b44b87ae0d3e31aebcee63032b8c6d4fb8ccaafd1f5706011223f49",
+        "bytes": 19124
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/__init__.py",
+        "sha256": "4ef6b8ca2c2931d4dbb54656feee6091498932f9cb853c6b8f95c7d13f30d23b",
+        "bytes": 72
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/account.py",
+        "sha256": "ad477a109d75558a61f4d6859f3d80de9b7557e18b9bcd0b3981bcf93a4f1e00",
+        "bytes": 19624
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/adoption-GUIDE.md",
+        "sha256": "44eb956e90c6cf76d8bb69570991ff120a119e40279684c8cd59efbf9e29a807",
+        "bytes": 7879
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/adoption_spot.py",
+        "sha256": "cabc1f01b5d0c32fe3a8be6cee54f7b1bd1d14cc5dbf015758b2a16e54c4c555",
+        "bytes": 3796
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/alpha-beta-PLAN.md",
+        "sha256": "151b65b34b265cacfa6ddb371db205bcb7eb4c133882ba3fecb7ea753e8c3872",
+        "bytes": 9109
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/alpha-beta-PROTOCOL.md",
+        "sha256": "4ae09ae0bc9224f8028ddcc1373dc1bbc7251a70be2945e5655f5e5fa12eb27e",
+        "bytes": 10288
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/alpha-forward-GUIDE.md",
+        "sha256": "4d50c0598988e4f707751e3bba7ce2cd7dd95bcb0de280183592b18673b1fdd1",
+        "bytes": 14330
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/alpha_assessment.py",
+        "sha256": "a5bb0569f25e66b5aa660b0106d42c3ecffc7f30ebc5e2cf1b1216958ff43edf",
+        "bytes": 68823
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/alpha_beta_spec.json",
+        "sha256": "8228013f4ac41affb65162c1cabad8f51b5ef32b9607f62231a4776168a337d0",
+        "bytes": 4784
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/alpha_spot.py",
+        "sha256": "dcce52f3e6d133354403a8f6837b687c5b7098c086865d198eeafffdce5bd50b",
+        "bytes": 33322
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/assemble_spot.py",
+        "sha256": "2be73072e67c1031be4e7ea2853cfb587acaef43f62dd4f097476df8c46b8073",
+        "bytes": 6473
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/baselines.py",
+        "sha256": "f1b11712425b7343ec74e75dfa54d92f0cea6b8e1ac585753b69d459c4b775d8",
+        "bytes": 7905
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/complete-delivery-GUIDE.md",
+        "sha256": "5d51a3e5d2c4c1a33563a2a92f198e43af2a3370f6208838a786b87807f3e72a",
+        "bytes": 10955
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/complete-delivery-PROTOCOL.md",
+        "sha256": "f4e85073400e7fcd960feb1bf8bb75d7dffbb4b081235f2f4781c2d3b745c43d",
+        "bytes": 5139
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/complete_assessment.py",
+        "sha256": "647bafe8590785dcbb66546f95a31bde44a8f12a3831d3265942dcf2efc32dab",
+        "bytes": 24471
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/complete_spot.py",
+        "sha256": "5956fac2766b3cec5299df00cbb34216cb52e49de1ee6290a659e87dcd754e55",
+        "bytes": 15551
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/edge-PLAN.md",
+        "sha256": "864c472943485216e0881a39a07d9d879ffd1142c4121458295c28135e2ffa05",
+        "bytes": 7948
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/edge-PROTOCOL.md",
+        "sha256": "c20446129708ef998ce9ab403ec6a14760b008cc00ad0ad49ea3488c2dc897bd",
+        "bytes": 10886
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/edge_assessment.py",
+        "sha256": "0ccc7fd901f16f2018d34328aa772b0804361fb354148c03bc97d8b5b709bae3",
+        "bytes": 83569
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/edge_attribution.py",
+        "sha256": "4f7d32f57dc44a5594d042b8dcd1ce529fd60831cab2397069c02fb98c4b369d",
+        "bytes": 32058
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/edge_features.py",
+        "sha256": "84a1a109f0262f61380185b955afaab634f42d247be92050142dabde4252c766",
+        "bytes": 15929
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/edge_forward.py",
+        "sha256": "7fd5e8c5a7f49902f0b1c0c477f2f8670e4e66baef3e50e54846593253d6eefa",
+        "bytes": 76671
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/edge_spec.json",
+        "sha256": "af23d8afdce40c7cfc60387cc70e0332739a017c7b9a5460b9a5dbe9444b409f",
+        "bytes": 9972
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/edge_spot.py",
+        "sha256": "0173f8cf23c52e2220362640172f8e7b34ac637637c8dfb002b0a1142a90193f",
+        "bytes": 26585
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/execution_replay.py",
+        "sha256": "cd892cb033c6a34b7d5b794d83ac2a5bc93ccb6320098bffa5ff05bb2f1d4439",
+        "bytes": 7014
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/forward.py",
+        "sha256": "1d80b45955e66d15321e150616b7835f977e4508b95978e263f60d5109360e2f",
+        "bytes": 6268
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/fx.py",
+        "sha256": "aa17221406fed62ed3d1f939aa2d7faa420e1f76291db98837bb4e01d04ee958",
+        "bytes": 1748
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/market.py",
+        "sha256": "51c2cb75dd83bd6e27c9fb9a5e208508c7f4e583ce6b2f5e68657e56e2677919",
+        "bytes": 4083
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/native_acceptance.py",
+        "sha256": "e442d8abbfa97dadc318dbc4a37cb26863ee002e54cfc17f1d70bf3782b55635",
+        "bytes": 10792
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/operations.py",
+        "sha256": "2d3cc8bee6b294644339d8d1123c053a9aaf3d91742a3884a772ea32623b3449",
+        "bytes": 14665
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/portfolio_spot.py",
+        "sha256": "323ada1fd60729fc64c37b88109df8465cf35e65471f0b9160611dc49d432225",
+        "bytes": 2859
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/prepare_inputs.py",
+        "sha256": "512ec1cc9047610daf9e261cf2d5a72ffac97d985f287dc7a9762a1090f159e6",
+        "bytes": 3866
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/rebuild.py",
+        "sha256": "66ece88fed9f311b034b567ebc1057076eadc58fc9276978d82772898c7437eb",
+        "bytes": 25787
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/recovery_drill.py",
+        "sha256": "d821803e93cc1062bca296a3f8d1dfffa6d5519bc02e3f8379543607543ae2a2",
+        "bytes": 4188
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/restore_btc.py",
+        "sha256": "35845449f4e01be1073f6402a0806c7cba60e7dc25be352af94417374f84d555",
+        "bytes": 3342
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/restore_check.py",
+        "sha256": "eba86082fa4768b9198c803c072af157b20939d05500f417ae462d4d29f1055d",
+        "bytes": 2686
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/session_account.py",
+        "sha256": "7204d04320d9356b65a51441461b075d1d1c0bd2678bf189181ef24e4fe32a5b",
+        "bytes": 7111
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/simplify.py",
+        "sha256": "9468029ac5f0b21c8e7b015539d48d3f1c36097dee328e5060a761a5808ef0fb",
+        "bytes": 3011
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/research/spec.json",
+        "sha256": "24e6f67fae638367f94db602545b9ef0cd40dffe645e12e0043c722372806642",
+        "bytes": 4896
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/__init__.py",
+        "sha256": "0e34cba0f80eea484a6cdb451079f968bc73bfaff555d8419491368579f1867b",
+        "bytes": 110
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/__main__.py",
+        "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+        "bytes": 48
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/binance.py",
+        "sha256": "0aa2963452246580cc9e997d93c6e61ca15b341f07124059c09cf6c78e80d596",
+        "bytes": 22093
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/cli.py",
+        "sha256": "fa62c992a91da2b26bc2b022c731f6a7f35ebd79ac985f39786d8a0f9d85b7cb",
+        "bytes": 6240
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/config.py",
+        "sha256": "666c7b0a7b8340c859d821712aa00dd6ee2d74b2f10fdbafdbc6237136495e9e",
+        "bytes": 2729
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/execution.py",
+        "sha256": "07ec228071afb7364024a82313972791348216df5218c4f0cfb64a85fbb4dcbf",
+        "bytes": 13694
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/follow.py",
+        "sha256": "535c87e0ac3386492a64bd30c1ab07596667bc267603879da0457c1557037c54",
+        "bytes": 17022
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/model.py",
+        "sha256": "a02da7dd9674155ee577ecd3cc176cfe9d934a4a5d4b65aa6b9a7ab14e2ff57f",
+        "bytes": 21798
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/offline.py",
+        "sha256": "3f25dd91ae13c5a4b9d5ddfdecab37047de7e495f0ce60fe6e656785ef3a59f8",
+        "bytes": 15712
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/preview.py",
+        "sha256": "fe22ed3ef27722f237ab101d32949116f55e88b4877f87952013abe9f27770bf",
+        "bytes": 20593
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/session.py",
+        "sha256": "aea8107ddbc318ba623988c3448c4df1a5bc39db147f05f3818995912630e0b6",
+        "bytes": 26674
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/snapshot.py",
+        "sha256": "ad7fad9b043f063ee9070167e70020928c55da9eaeccad328f93740c0c09c465",
+        "bytes": 1869
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/state.py",
+        "sha256": "7d10021c93763dc1bda293fcaacab55658334a2553cfdd28c298834070a540cc",
+        "bytes": 9973
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/spotquant/spotquant/types.py",
+        "sha256": "0a6572a3d5a38c5948fdee9c1c81ed9f1fdaf202939a53481904eb36ea6f53d1",
+        "bytes": 1556
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/baseline-reference-bindings.json",
+        "sha256": "f377ed37731b37ba50556c2210d21cf256673b6bdffaf98f8d7923266d9ac460",
+        "bytes": 12712
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/bind-phase-inputs.py",
+        "sha256": "a07d5b63db39a9e0934dc9df887ccaaa059a7cab5c4d3a4d1337727eff3c9cf2",
+        "bytes": 13263
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/coinquant-reviewed-financial-source.json",
+        "sha256": "c14899ca586e4f0459c8e4a6125b4fae3de77e66262721d2d0f98fdfe17e541b",
+        "bytes": 8445
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/coinquant-reviewed-financial-source.tar.gz",
+        "sha256": "6695bd6a0fccdc9ae86924012cb035a95729ba16ee53a39215845893f931ccf7",
+        "bytes": 329264
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "sha256": "bf920626cc13653b8bbeafd171650cc1a76888e15aad0c20bbd1061fb41da512",
+        "bytes": 1049039
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/github-forward-final-reviewed-ci.json",
+        "sha256": "2922df0523648afdb38e858e5d959b6f4a186c5bc80c190b6d2ed218846f5e85",
+        "bytes": 1710
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/prepare-source-freeze.py",
+        "sha256": "3a78d0bb2c158cc0a5dc723ab149cb42b0f6456b416dd41fe6bd040cb876c2cf",
+        "bytes": 7759
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/registered-financial-commands.json",
+        "sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+        "bytes": 42592
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/reviewed-financial-source-archives.json",
+        "sha256": "a53ede32869692d6ea5eaf1e6a39fcadb425306f5d6459e0d83a433908304782",
+        "bytes": 18715
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/run-registered-phase.py",
+        "sha256": "082d362d71977cec1e5f10afec47421cf8ab869c19ca0f064b5f8fba355977b1",
+        "bytes": 19301
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/spotquant-reviewed-financial-source.json",
+        "sha256": "86ca5356faf22716c551e1864a2a3c9787eee93beed0fa4c55747953dafd772d",
+        "bytes": 7429
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/spotquant-reviewed-financial-source.tar.gz",
+        "sha256": "c19ce4bab5e0e188b7680516475e77f831f586dda857055c69bbe26b37db0d64",
+        "bytes": 315815
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-1-fix1-review.md",
+        "sha256": "695c87e988c0a292c99e59f1e9dcac3467eff2f6494e371a3b18e7fe5a0a2883",
+        "bytes": 6585
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-2-review.md",
+        "sha256": "de438f68e8587470b934e025b7129f1273440441bf1481470da90f302d851a3c",
+        "bytes": 9183
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-review.md",
+        "sha256": "14a5b6cbe7c0872441acdca03cdc30a6fca3e175e41f5f4c0446431c1fd1796e",
+        "bytes": 10778
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-4-fix1-rereview.md",
+        "sha256": "8dff0da55a863ebb64b5fc12d896dc992554d806497aa4882648d835242d38a2",
+        "bytes": 6525
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-5-fix1-rereview.md",
+        "sha256": "d212d2ff21c23b6d66aad8024edb77e2e38e10f92d281cee22a064507d1ae866",
+        "bytes": 7188
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-5-fix2-rereview.md",
+        "sha256": "3228c346d043d4d33745f3b78cc8763eebf8f3a52096fe333648a9ea3e2bbc37",
+        "bytes": 5647
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-5-selection-contract-review.md",
+        "sha256": "2e99cdb910d15e84ba9fedf168aa7dd728c33c45c90e66d383feebbcf4c87fce",
+        "bytes": 5819
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-controller-fix2-rereview.md",
+        "sha256": "d7e8bc06d247e3c077d8208dc79a52e48db56340fce3be75443d3d25d7b563e3",
+        "bytes": 5816
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-forward-fix1-rereview.md",
+        "sha256": "be77e4f57a6a7fad9073dddd3bf9d4a0e990f21a164cda73738c1ba0bb28d044",
+        "bytes": 9707
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-forward-fix2-rereview.md",
+        "sha256": "7013d4a15ddfecedfb9fba5a3c5afe3e02dd31996c925f615700bf9d8f798f5d",
+        "bytes": 11552
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-forward-fix3-rereview.md",
+        "sha256": "6bc1084d1c7add852f8a67e646adb9455ad133a99d92224fd18db368c6f77b00",
+        "bytes": 9534
+      },
+      {
+        "path": "/workspace/btc-alpha-beta-improve/task-artifacts/vault-before-task4.json",
+        "sha256": "0eb95e42044332231b6670c680d81d0ed19682e0c03c316765a7cb6d9061eb5f",
+        "bytes": 416164
+      },
+      {
+        "path": "/workspace/starquant/data/usdcny_frankfurter.json",
+        "sha256": "67606315ea34c0301e0129ac8fc27056099986d9fbd58a552a07f140cdd05bb5",
+        "bytes": 48082
+      }
+    ],
+    "bound_trees": [
+      {
+        "root": "/tmp/spotquant-market/klines",
+        "suffixes": [
+          ".zip",
+          ".zip.CHECKSUM"
+        ],
+        "files": [
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-01.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-01.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-02.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-02.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-03.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-03.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-04.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-04.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-05.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-05.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-06.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-06.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-07.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-07.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-08.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-08.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-09.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-09.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-10.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-10.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-11.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-11.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-12.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-12.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-01.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-01.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-02.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-02.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-03.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-03.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-04.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-04.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-05.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-05.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-06.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-06.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-07.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-07.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-08.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-08.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-09.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-09.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-10.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-10.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-11.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-11.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-12.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-12.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-01.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-01.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-02.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-02.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-03.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-03.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-04.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-04.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-05.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-05.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-06.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-06.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-07.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-07.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-08.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-08.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-09.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-09.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-10.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-10.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-11.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-11.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-12.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-12.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-01.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-01.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-02.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-02.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-03.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-03.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-04.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-04.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-05.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-05.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-06.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-06.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-07.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-07.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-08.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-08.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-09.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-09.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-10.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-10.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-11.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-11.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-12.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-12.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-01.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-01.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-02.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-02.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-03.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-03.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-04.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-04.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-05.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-05.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-06.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-06.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-07.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-07.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-08.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-08.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-09.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-09.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-10.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-10.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-11.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-11.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-12.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-12.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-01.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-01.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-02.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-02.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-03.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-03.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-04.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-04.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-05.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-05.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-06.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-06.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-07.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-07.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-08.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-08.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-09.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-09.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-10.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-10.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-11.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-11.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-12.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-12.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-01.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-01.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-02.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-02.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-03.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-03.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-04.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-04.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-05.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-05.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-06.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-06.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-07.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-07.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-08.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-08.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-09.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-09.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-10.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-10.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-11.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-11.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-12.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-12.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-01.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-01.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-02.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-02.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-03.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-03.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-04.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-04.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-05.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-05.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-06.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-06.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-07.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-07.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-08.zip",
+          "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-08.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-01.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-01.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-02.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-02.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-03.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-03.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-04.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-04.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-05.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-05.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-06.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-06.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-07.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-07.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-08.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-08.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-09.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-09.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-10.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-10.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-11.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-11.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-12.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-12.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-13.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-13.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-14.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-14.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-15.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-15.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-16.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-16.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-17.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-17.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-18.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-18.zip.CHECKSUM",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-19.zip",
+          "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-19.zip.CHECKSUM"
+        ]
+      }
+    ]
+  },
+  "canonical_source": {
+    "git_head": "609606d9c0e0ad8d3c3038b329c9c4ab6d1b9629",
+    "dirty": false,
+    "python_sources_sha256": "b81f1bfee086e875cbf8ff22a67b2cfdff419130a7918a6ce8754b2e9e2936c5",
+    "protected_files": {
+      ".github/workflows/check.yml": "44f19d0b9f55ce5c9b25a3b30459b1fb64e4a56cd837c687756481c17371834b",
+      "config.demo.example.json": "e11f0260e8188c838c7655e7fc5832a621ac79a1018825ed939c3500b41dd9a4",
+      "config.example.json": "0d927cdba3dd2c643444dd3e89f8031a1e9314d3d7126f4ecd902b3cdbb98660",
+      "main.py": "dc158be089cbe96bacee2178f2132475c4f37f2325713f59ae38576af6a919fe",
+      "research/PROTOCOL.md": "6c263a387b44b87ae0d3e31aebcee63032b8c6d4fb8ccaafd1f5706011223f49",
+      "research/__init__.py": "4ef6b8ca2c2931d4dbb54656feee6091498932f9cb853c6b8f95c7d13f30d23b",
+      "research/account.py": "ad477a109d75558a61f4d6859f3d80de9b7557e18b9bcd0b3981bcf93a4f1e00",
+      "research/adoption_spot.py": "d0fd46a481ac6c29924b4673d3d2833fa12dd48f515d5020164b59851aed88c4",
+      "research/alpha-beta-PROTOCOL.md": "4ae09ae0bc9224f8028ddcc1373dc1bbc7251a70be2945e5655f5e5fa12eb27e",
+      "research/alpha_assessment.py": "a5bb0569f25e66b5aa660b0106d42c3ecffc7f30ebc5e2cf1b1216958ff43edf",
+      "research/alpha_beta_spec.json": "8228013f4ac41affb65162c1cabad8f51b5ef32b9607f62231a4776168a337d0",
+      "research/alpha_spot.py": "59934100074645d9ec831ef55c107ff7bfa1bc6ed8b02e57a0a1b13d68988251",
+      "research/assemble_spot.py": "2be73072e67c1031be4e7ea2853cfb587acaef43f62dd4f097476df8c46b8073",
+      "research/baselines.py": "f1b11712425b7343ec74e75dfa54d92f0cea6b8e1ac585753b69d459c4b775d8",
+      "research/complete-delivery-PROTOCOL.md": "f4e85073400e7fcd960feb1bf8bb75d7dffbb4b081235f2f4781c2d3b745c43d",
+      "research/complete_assessment.py": "647bafe8590785dcbb66546f95a31bde44a8f12a3831d3265942dcf2efc32dab",
+      "research/complete_spot.py": "4ef422e75fd871f1840f1a6e0cb19609ef640488bdfe373c54ee8871ecbc64c4",
+      "research/edge-PROTOCOL.md": "c20446129708ef998ce9ab403ec6a14760b008cc00ad0ad49ea3488c2dc897bd",
+      "research/edge_assessment.py": "0ccc7fd901f16f2018d34328aa772b0804361fb354148c03bc97d8b5b709bae3",
+      "research/edge_attribution.py": "4f7d32f57dc44a5594d042b8dcd1ce529fd60831cab2397069c02fb98c4b369d",
+      "research/edge_features.py": "84a1a109f0262f61380185b955afaab634f42d247be92050142dabde4252c766",
+      "research/edge_forward.py": "1d59ce1b772252ca7179b404d30628af01cbf1d0559e28fda8bc4e657397e40e",
+      "research/edge_spec.json": "af23d8afdce40c7cfc60387cc70e0332739a017c7b9a5460b9a5dbe9444b409f",
+      "research/edge_spot.py": "f91fa46f746cf1fd018030e9c5a501b02a5dfe358df6def360e3b1b7d218dc83",
+      "research/execution_replay.py": "cd892cb033c6a34b7d5b794d83ac2a5bc93ccb6320098bffa5ff05bb2f1d4439",
+      "research/forward.py": "1d80b45955e66d15321e150616b7835f977e4508b95978e263f60d5109360e2f",
+      "research/fx.py": "aa17221406fed62ed3d1f939aa2d7faa420e1f76291db98837bb4e01d04ee958",
+      "research/market.py": "51c2cb75dd83bd6e27c9fb9a5e208508c7f4e583ce6b2f5e68657e56e2677919",
+      "research/native_acceptance.py": "e442d8abbfa97dadc318dbc4a37cb26863ee002e54cfc17f1d70bf3782b55635",
+      "research/operations.py": "2d3cc8bee6b294644339d8d1123c053a9aaf3d91742a3884a772ea32623b3449",
+      "research/portfolio_spot.py": "323ada1fd60729fc64c37b88109df8465cf35e65471f0b9160611dc49d432225",
+      "research/prepare_inputs.py": "512ec1cc9047610daf9e261cf2d5a72ffac97d985f287dc7a9762a1090f159e6",
+      "research/rebuild.py": "66ece88fed9f311b034b567ebc1057076eadc58fc9276978d82772898c7437eb",
+      "research/recovery_drill.py": "d821803e93cc1062bca296a3f8d1dfffa6d5519bc02e3f8379543607543ae2a2",
+      "research/restore_btc.py": "35845449f4e01be1073f6402a0806c7cba60e7dc25be352af94417374f84d555",
+      "research/restore_check.py": "eba86082fa4768b9198c803c072af157b20939d05500f417ae462d4d29f1055d",
+      "research/session_account.py": "7204d04320d9356b65a51441461b075d1d1c0bd2678bf189181ef24e4fe32a5b",
+      "research/simplify.py": "9468029ac5f0b21c8e7b015539d48d3f1c36097dee328e5060a761a5808ef0fb",
+      "research/spec.json": "24e6f67fae638367f94db602545b9ef0cd40dffe645e12e0043c722372806642",
+      "spotquant/__init__.py": "0e34cba0f80eea484a6cdb451079f968bc73bfaff555d8419491368579f1867b",
+      "spotquant/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "spotquant/binance.py": "dd5019a3dc4131e22fb373701ab11b3d240868eb0d468811d3c7df064309d878",
+      "spotquant/cli.py": "fa62c992a91da2b26bc2b022c731f6a7f35ebd79ac985f39786d8a0f9d85b7cb",
+      "spotquant/config.py": "666c7b0a7b8340c859d821712aa00dd6ee2d74b2f10fdbafdbc6237136495e9e",
+      "spotquant/crowding.py": "fe23a2b64befb984f0268418aca2da3f878e597e54976f729d7ed614ea06c73b",
+      "spotquant/execution.py": "07ec228071afb7364024a82313972791348216df5218c4f0cfb64a85fbb4dcbf",
+      "spotquant/follow.py": "535c87e0ac3386492a64bd30c1ab07596667bc267603879da0457c1557037c54",
+      "spotquant/model.py": "a02da7dd9674155ee577ecd3cc176cfe9d934a4a5d4b65aa6b9a7ab14e2ff57f",
+      "spotquant/offline.py": "3f25dd91ae13c5a4b9d5ddfdecab37047de7e495f0ce60fe6e656785ef3a59f8",
+      "spotquant/preview.py": "dfbabeb9af5522aaae4c001c6e077245a350bb1635ba69c6f96f1805c8b78adb",
+      "spotquant/session.py": "848ca75095bb4458b8632a89dd20d91b87031824e849aaaba40d1ba37c6df56b",
+      "spotquant/snapshot.py": "ad7fad9b043f063ee9070167e70020928c55da9eaeccad328f93740c0c09c465",
+      "spotquant/state.py": "7d10021c93763dc1bda293fcaacab55658334a2553cfdd28c298834070a540cc",
+      "spotquant/types.py": "0a6572a3d5a38c5948fdee9c1c81ed9f1fdaf202939a53481904eb36ea6f53d1"
+    },
+    "protected_modes": {
+      ".github/workflows/check.yml": 436,
+      "config.demo.example.json": 436,
+      "config.example.json": 436,
+      "main.py": 436,
+      "research/PROTOCOL.md": 436,
+      "research/__init__.py": 436,
+      "research/account.py": 436,
+      "research/adoption_spot.py": 436,
+      "research/alpha-beta-PROTOCOL.md": 436,
+      "research/alpha_assessment.py": 436,
+      "research/alpha_beta_spec.json": 436,
+      "research/alpha_spot.py": 436,
+      "research/assemble_spot.py": 436,
+      "research/baselines.py": 436,
+      "research/complete-delivery-PROTOCOL.md": 436,
+      "research/complete_assessment.py": 436,
+      "research/complete_spot.py": 436,
+      "research/edge-PROTOCOL.md": 436,
+      "research/edge_assessment.py": 436,
+      "research/edge_attribution.py": 436,
+      "research/edge_features.py": 436,
+      "research/edge_forward.py": 436,
+      "research/edge_spec.json": 436,
+      "research/edge_spot.py": 436,
+      "research/execution_replay.py": 436,
+      "research/forward.py": 436,
+      "research/fx.py": 436,
+      "research/market.py": 436,
+      "research/native_acceptance.py": 436,
+      "research/operations.py": 436,
+      "research/portfolio_spot.py": 436,
+      "research/prepare_inputs.py": 436,
+      "research/rebuild.py": 436,
+      "research/recovery_drill.py": 436,
+      "research/restore_btc.py": 436,
+      "research/restore_check.py": 436,
+      "research/session_account.py": 436,
+      "research/simplify.py": 436,
+      "research/spec.json": 436,
+      "spotquant/__init__.py": 436,
+      "spotquant/__main__.py": 436,
+      "spotquant/binance.py": 436,
+      "spotquant/cli.py": 436,
+      "spotquant/config.py": 436,
+      "spotquant/crowding.py": 436,
+      "spotquant/execution.py": 436,
+      "spotquant/follow.py": 436,
+      "spotquant/model.py": 436,
+      "spotquant/offline.py": 436,
+      "spotquant/preview.py": 436,
+      "spotquant/session.py": 436,
+      "spotquant/snapshot.py": 436,
+      "spotquant/state.py": 436,
+      "spotquant/types.py": 436
+    },
+    "protected_sha256": "eeb22cfe227c0d9ed60c937da330f515a6093dfcd82205114644e8bed8c7c7f6"
+  },
+  "bound_files": [
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-7-spot-canonical-preparation/five-canonical-commands-fix3.json",
+      "bytes": 59584,
+      "sha256": "2afa67613285f9f71a4311701d802d1e3df4983503c6967f91c707fee7bbfc6d"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-7-spot-canonical-preparation-rereview-fix3.md",
+      "bytes": 8285,
+      "sha256": "106510fe8ebadd3ce219a463b9d7d35a25847097c2a0b977ddb81411d9b2f14e"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/run-spot-canonical-five.py",
+      "bytes": 3154,
+      "sha256": "d5d59748d82ab84f97a77d2704cde764e2d7d5f7cf365fbd1d3417aacd87faf6"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/spot-canonical-reviewed-source-fix3.tar.gz",
+      "bytes": 208443,
+      "sha256": "250bd1381114afde1b06d835185b908b1b499d3c773d53bf4ac6baecf580175a"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+      "bytes": 1777,
+      "sha256": "7dc82577afa57db44f2c0d25e976826862e9cfbc6713d61baec4656ae55691f4"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/spot.json",
+      "bytes": 1777,
+      "sha256": "7dc82577afa57db44f2c0d25e976826862e9cfbc6713d61baec4656ae55691f4"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/post-risk-preliminary-input-path-fix1.json",
+      "bytes": 51580803,
+      "sha256": "2e6ea2aeee64ef8ad3aa37841799576a1b02c9c17a6cdaccf5e6d739111005f9"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-base.json.gz",
+      "bytes": 710679,
+      "sha256": "4c937ecf80f60d957486a752562c8ab8dfee4c06fa2e5b38b135cfb24ec38872"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-fee150.json.gz",
+      "bytes": 723725,
+      "sha256": "142c328c958f7459df93b1b4032ba61a66a9a550241937646adee212ba7647d0"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-slip2.json.gz",
+      "bytes": 703564,
+      "sha256": "29d80444fc598545a209be1cc8d840a30d264307f45700a81cac7974c877b42e"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-outage.json.gz",
+      "bytes": 707885,
+      "sha256": "b5cb4e69c1b2970c8e8df0e7c8bb17e04093303c2a27c019cb9d5ea534fd471b"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-crowding-interaction.json.gz",
+      "bytes": 711152,
+      "sha256": "32b2068dc7c043cbdc8de01ad805f4571c336c8eb42d0e18fd4acc9342d7d600"
+    }
+  ],
+  "tmpdir": "/workspace/scratch/btc-alpha-beta-edge-20261003/canonical-tmp/spot",
+  "original_parent_freeze": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/reviewed-source-freeze.json",
+    "bytes": 1202697,
+    "sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9"
+  },
+  "adoption_approved": false,
+  "native_cases": 0,
+  "actual_account_days": 0
+}

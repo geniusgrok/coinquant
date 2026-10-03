@@ -1,0 +1,22 @@
+test_basis_before_at_and_current_utc_availability_date (tests.test_edge_features.FeatureTests.test_basis_before_at_and_current_utc_availability_date) ... ok
+test_coverage_is_recomputed_and_tracks_exact_jitter_gap (tests.test_edge_features.FeatureTests.test_coverage_is_recomputed_and_tracks_exact_jitter_gap) ... ok
+test_duplicate_json_keys_and_nonfinite_json_numbers_reject (tests.test_edge_features.FeatureTests.test_duplicate_json_keys_and_nonfinite_json_numbers_reject) ... ok
+test_empty_features_are_missing_never_zero (tests.test_edge_features.FeatureTests.test_empty_features_are_missing_never_zero) ... ok
+test_file_content_and_source_identity_checks (tests.test_edge_features.FeatureTests.test_file_content_and_source_identity_checks) ... ok
+test_frozen_window_blocks_valid_tail_and_before_window (tests.test_edge_features.FeatureTests.test_frozen_window_blocks_valid_tail_and_before_window) ... ok
+test_funding_before_at_and_exact_expiry_with_negative_rate (tests.test_edge_features.FeatureTests.test_funding_before_at_and_exact_expiry_with_negative_rate) ... ok
+test_future_tail_perturbation_cannot_change_prior_decisions (tests.test_edge_features.FeatureTests.test_future_tail_perturbation_cannot_change_prior_decisions) ... ok
+test_invalid_and_nonfinite_decimal_values (tests.test_edge_features.FeatureTests.test_invalid_and_nonfinite_decimal_values) ... ok
+test_invalid_container_shapes_reject (tests.test_edge_features.FeatureTests.test_invalid_container_shapes_reject) ... ok
+test_invalid_lookup_names_and_times_reject (tests.test_edge_features.FeatureTests.test_invalid_lookup_names_and_times_reject) ... ok
+test_invalid_time_lag_boundary_and_order_records (tests.test_edge_features.FeatureTests.test_invalid_time_lag_boundary_and_order_records) ... ok
+test_lookup_journal_binds_input_sources_and_missing_cause (tests.test_edge_features.FeatureTests.test_lookup_journal_binds_input_sources_and_missing_cause) ... ok
+test_missing_day_is_explicit_and_cannot_carry_yesterdays_basis (tests.test_edge_features.FeatureTests.test_missing_day_is_explicit_and_cannot_carry_yesterdays_basis) ... ok
+test_null_requires_cause_and_known_value_cannot_have_one (tests.test_edge_features.FeatureTests.test_null_requires_cause_and_known_value_cannot_have_one) ... ok
+test_registered_rules_are_finite_and_project_bound (tests.test_edge_features.FeatureTests.test_registered_rules_are_finite_and_project_bound) ... ok
+test_settlement_jitter_is_not_repaired_or_tolerated (tests.test_edge_features.FeatureTests.test_settlement_jitter_is_not_repaired_or_tolerated) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.012s
+
+OK

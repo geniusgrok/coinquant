@@ -1,0 +1,1491 @@
+12fd6f1 Add strict source-bound BTC edge assessment and funded-account gates
+6a37cdc Record strict assessment implementation dispatch
+
+ PROJECT_STATE.md              |   4 +-
+ research/edge_assessment.py   | 996 ++++++++++++++++++++++++++++++++++++++++++
+ tests/test_edge_assessment.py | 433 ++++++++++++++++++
+ 3 files changed, 1431 insertions(+), 2 deletions(-)
+
+diff --git a/PROJECT_STATE.md b/PROJECT_STATE.md
+index 59b51a1..da0da06 100644
+--- a/PROJECT_STATE.md
++++ b/PROJECT_STATE.md
+@@ -1,13 +1,13 @@
+ # PROJECT_STATE
+ 
+-Updated: 2026-10-03T01:52:33.181611+00:00
++Updated: 2026-10-03T01:53:05.263493+00:00
+ 
+ ## Active BTC alpha/beta improvement round
+ 
+ The user approved the full next-phase design and direct implementation. Worktrees are /workspace/btc-alpha-beta-improve/{spotquant,coinquant}, branch codex/btc-alpha-beta-improve-20261003; bases Spot ffd14d3aa53b191d15bd8377f0809a8846c53232 and Coin c363a582a064bd36d633f6439803f4c570d52333 match actual remote main. Prior delivery remains complete and immutable. See research/edge-PLAN.md for scope; no old producer queue is restarted.
+ 
+ Task 1: complete (Spot commits0ca979e..fa81bf5, final independent scoped review APPROVE). Final17targeted tests pass; prior full222pass. Original I1/M1 fixed in round1/5, no remaining Critical/Important. Finalv3 diagnostic JSON SHA02948e9026ed77bb43af02da9cbe04bbfbce564b826a7ffbe8187c5008f81b96; all11immutable source inputs rechecked. Brief/report/diffs/reviews/v1/v2/v3 retained in external task-artifacts.
+ Spot66SMA/30stop/2extended/26other sleeve exits; flat sleeve-days2054SMA/1306stop/136extended/620other/17never-entered. Initial valuation excluded; dust/ownership limits explicit. Coin121contexts; first price observations differ with initial wallet equal, no unnecessary same-observation dependency established,50fills/run remain unowned. Therefore no automatic timing fix; shifted schedules remain diagnostics.
+ Task 2: complete — own heads Spot1a229ac/Coin7828caa, independent /root/edge_features_review SPEC PASS/QUALITY APPROVE, no findings. Featurebf920626… and acceptancef13ed01e… retained; affected22Spot/17Coin PASS,94714boundary lookups perrepo identical plus independent39892paired probes. All exact rules fixed before financial outcomes.
+ Feature coverage:7488funding/2485basis verified,180futures+111Spot archive CHECKSUMs. Nominal795×60pollprobes funding23stale/basis432date-mismatch; these are not adapter clocks. Ruling: implement registered cause-known missing-feature blocks, preserve exits, distinguish feature gaps from unknown fills; no zero/tolerance repair. Exact project kinds spot/perp; .01 only beta operands, not minimum scale; ordinary exit only after both closes below ownSMA.
+ Baseline validation: Python3.12 and3.13 both pass Coin359/Spot209. Existing causal funding/basis input independently reconstructed with original official checksums: SHA1d87be0b4c8cd8a7eacd4970a1a194e5f1ed0b2f3aa3710a43417aa9ab066ef2; 7488funding/2485basis points.
+@@ -15,21 +15,21 @@ Baseline validation: Python3.12 and3.13 both pass Coin359/Spot209. Existing caus
+ Ruling: funding staleness remains exactly age>=28800000ms from availability, no extra jitter tolerance — fixed registration takes precedence; missing gaps are reported. No partial-code discard or Task1 re-dispatch after reconnect.
+ Task 3: complete — fullBASEbdde051..final6eb9474, independent /root/edge_spot_review SPEC PASS/QUALITY APPROVE, zero findings.261full/13focused PASS; independent13test+10gzipraw/money/fees/ownedstops audit PASS. Tiny mechanism receipts have no newentry lookups, no financial improvement claimed. Source59faadc… and finaldiff56d18c8f… retained.
+ Task 4: complete — fullBASE25cd5d0..49248555feb0ef588db33c5900956720e1be5b31, original independent review FAILED then scoped fix round1/5 allR1/R2/R3 ADDRESSED, SPEC PASS/QUALITY APPROVE by /root/edge_perp_review, immutable re-reviewSHA8dff0da55a863ebb64b5fc12d896dc992554d806497aa4882648d835242d38a2.104affected/26edge PASS,20fresh one-session audited/cleanup PASS, all4incumbent original rows equal,2396vaultfiles unchanged. Final Pythonfaec069a…, append-only report4a78e030…/rootfixdiff19bb1be8…. Native0/no full financial claim. Coin lane idle. No justified timing fix; exact±60s diagnostics retained.
+ Ruling: original proven closed sub-BASE_STEP residual may be reused by a genuine new control campaign only with follow position.dust=True and next-completed-day timing; quantity threshold alone is insufficient, active partial/sub-step holdings must not top up. Ledger/weighted cost basis remain original. Durable research policy also binds executable Python digest, not docs-only HEAD changes.
+ Task3 self-review tightened stop-budget: wholly unprotected owneddust blocks new risk, tolerance only under proved active stop; final source6eb9474. Earlierddccd60 partialreceipts remain separately retained. Root shared-index commit ddccd60 included staged implfiles; no loss/reset/relabel, fullBASE-tofinal review includes them. Root uses path-only documentation commits thereafter to prevent index overlap.
+ Cross-task calibration schema fixed: format1/project_kind/baseline_candidate/cutoff_ms/spec_sha256/profiles; profile candidate/project_kind/scale/base_bundle_sha256/baseline_candidate/effective_from_ms/calibration_end_ms/training_end_day_exclusive. Validate registered unused profiles too, reject unknown/foreign/schema extras; exact deterministic full inventory verified by assessor. Source raw field is base_bundle_sha256, no alias.
+ Task4 round1/5: own fix49248555feb0ef588db33c5900956720e1be5b31, Pythonfaec069a….104affected including26edge PASS;20fresh one-session audited/cleanup PASS,4incumbent original rows equal;2396vaultfiles unchanged. R1 foreign binaries refused before loader and in-process derivation hashes retained; R2 actual registered original/offset session + bounddeadline rejected before recovery; R3 currentbar persistence guard included. Independent scoped verdict PASS; original FAILEDreview72b0fd81… preserved and append-only report4a78e030…; root fixdiff19bb1be8… coversfa77..492. No full financial producer/promotion. R3 independently confirmed addressed; no deferred Task4 issue. Ruling: registered Coin jobs use distinct per-invocation print-cache paths; cross-invocation derived-binary reuse is unnecessary. Exclusive fresh ownership plus in-process verified derivation is sufficient; any supported prior reuse needs trusted proof or semantic rederivation, not an unpinned self-authored hash manifest — smaller valid retrieval scope preserves virtual economics; cost if wrong is extra physical replay time, never a source/price waiver.
+ Task4 immutable public-vault preflight: 798 official ZIP/CHECKSUM pairs and all records rehashed read-only, total14481648622bytes; external vault-before-task4.json SHA0eb95e42044332231b6670c680d81d0ed19682e0c03c316765a7cb6d9061eb5f. No original bytes mutated; cache receipts still must verify actual consumed bytes.
+ Controller preparation: fixed50commands register52unscaled+8risk+2offset+6baseline-budget accounts (e58114f2…), external run-registered-phase.py c3e5cc9c… executes only exactargv with source/input guards/exclusive receipts/no retries, max2Spotprocesses/1Coin. No producer launched. Accepted reference convenience index f377ed37… verifies8baseline rows and all11prior bound inputs; original raws/proofs remain authoritative.
+ Ruling: verify each producer's actual original meter/spec envelope separately from its new edge envelope; keep historical/new source identities distinct, compare original economics and all-six row groups without rewriting input fields — source-bound wrappers intentionally retain different protocol envelopes; wrong interpretation would reject valid bridges or weaken source proof. Task5 brief carries exact interface.
+-Task 5: active next dispatch — strict new assessment in Spot; task-5-brief.md and task-5-review-brief.md prepared. Reviewed forward strategy ledger follows before full source freeze. No full financial job has run; all52+8+2+6 commands remain prepared only.
++Task 5: active — /root/edge_assessment_impl (gpt-6-astra/high) owns strict new assessment in Spot, reviewBASE8c1be0fbfcc6a1c12d74450d29b5916bd10fa5dc; task-5-brief.md and task-5-review-brief.md prepared. Reviewed forward strategy ledger follows before full source freeze. No full financial job has run; all52+8+2+6 commands remain prepared only.
+ External briefs/reports/diff packages: /workspace/btc-alpha-beta-improve/task-artifacts. This file is the only progress ledger.
+ 
+ Preflight: every task agrees with BTC-only, unchanged economics, no account access and immutable prior sources. Interface review:
+ | Tasks | Produced/consumed interface | Finding |
+ |---|---|---|
+ | 1/2 | attribution/prior mechanisms -> frozen hypotheses | simple funding/basis filters already tested; interactions must be distinct |
+ | 2/3/4 | edge spec + PIT features -> Spot/Coin policies | freeze before financial outcomes; missing features explicit |
+ | 3/4/5 | complete raw accounts -> new assessment | preserve existing raw schema and original audits |
+ | 5/6 | audited eligibility and split budgets -> adoption | shared runtime equivalence required before default change |
+ | 1..6/state | all tasks -> progress | use PROJECT_STATE only; inaccessible cloud skill bash helpers replaced by manual briefs/diff packages |
+diff --git a/research/edge_assessment.py b/research/edge_assessment.py
+new file mode 100644
+index 0000000..f26b691
+--- /dev/null
++++ b/research/edge_assessment.py
+@@ -0,0 +1,996 @@
++"""Read-only, source-bound assessment of the frozen edge account inventory.
++
++Every input is an original producer file (or one-level hash manifest). No producer,
++network client, order, curve scaling, or parameter search runs in this module.
++"""
++import argparse
++import bisect
++from collections import Counter
++from decimal import Decimal as D
++import csv
++import hashlib
++import json
++import math
++from pathlib import Path
++import statistics
++import subprocess
++import sys
++from types import SimpleNamespace
++
++from research import alpha_assessment as old
++from research.complete_assessment import canonical, daily_metrics
++from research.edge_features import FeatureBook
++from research.session_account import audit as spot_audit
++
++ROOT = Path(__file__).resolve().parents[1]
++DAY, START, END, CUTOFF = old.DAY, old.START_MS, old.END_MS, old.CUTOFF
++BASE = {'spot': 'atr-stop', 'perp': 'incumbent'}
++ORDER = {'spot': ('exit-confirm', 'stop-budget', 'crowding-interaction'),
++         'perp': ('quality-budget', 'cost-horizon', 'crowding-interaction')}
++STRESSES = {'spot': ('base', 'fee150', 'slip2', 'outage'),
++            'perp': ('base', 'fees-x1.5', 'read-400ms', 'trigger-slip')}
++CONTROLS = ('cash', 'protected-participation-25', 'protected-participation-50',
++            'protected-participation-75', 'protected-participation-100')
++SPEC_HASH = {'spot': 'af23d8afdce40c7cfc60387cc70e0332739a017c7b9a5460b9a5dbe9444b409f',
++             'perp': '53296233aadc6429359dd7b664c4e03a28eb451d6bacf4318fced4ce13f7e3de'}
++PROTOCOL_HASH = {'spot': 'c20446129708ef998ce9ab403ec6a14760b008cc00ad0ad49ea3488c2dc897bd',
++                 'perp': '714e0eae887fc9aac79380662c7db1e931823484fc2fe3781c80c2853bb4163b'}
++FEATURE_HASH = 'bf920626cc13653b8bbeafd171650cc1a76888e15aad0c20bbd1061fb41da512'
++PRIMARY_HASH = 'f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a'
++PINNED_REFERENCES = {
++    'review/final64-financial-review-proof.json': '9453b031924322612da3445e305e0499dce87eda20eb604def14ff7aa54241de',
++    'scratch/registered-final-repaired.json': 'a35ef6727d1a3befa1c86778eadc3bb604ffff3ad2b7cb63275419dc30c9a5d6',
++    'review/spot-canonical-five-financial-proof.json': 'c1803ecb6c66a1f6397415ce2b033f569ebca46e6df42419bee87ea45f351b8d',
++    'scratch/spot-canonical/canonical-inventory.json': 'db23143dffbd6d8c5711789fee8b3ac92454d7712bcad14644cd244197701b32',
++    'scratch/perp-singletons-retry1.json.gz': 'bf1d167979f4bb3d15925f0bcaf5337bd1cc0a17523628b3af0599875dc5a7c1',
++    'scratch/spot-singletons/atr-stop.json.gz': 'f8f2e18abbeb7f062796026c074fb7868e3b2524a52c5a5bcf89131b6e655917',
++}
++MANIFEST = 'btc-edge-account-manifest-v1'
++require, sha, write_new = old.require, old.sha, old.write_new
++
++
++def read_json(path):
++    body, digest = old.read_json(path)
++    def finite(value):
++        if isinstance(value, dict):
++            for item in value.values():
++                finite(item)
++        elif isinstance(value, list):
++            for item in value:
++                finite(item)
++        elif isinstance(value, float):
++            require(math.isfinite(value), 'nonfinite JSON numeric overflow')
++    finite(body)
++    return body, digest
++
++
++def decimal(value):
++    require(not isinstance(value, bool), 'boolean numeric value')
++    result = D(str(value))
++    require(result.is_finite(), 'nonfinite numeric value')
++    return result
++
++
++def committed_hash(repo, head, name):
++    raw = subprocess.run(['git', 'show', head + ':' + name], cwd=repo,
++                         check=True, capture_output=True).stdout
++    return hashlib.sha256(raw).hexdigest()
++
++
++def verify_source(source, kind):
++    """Prove the full Python digest and both actual committed protocol families."""
++    require(kind in BASE, 'unknown project')
++    files = old.verify_source(source, kind)
++    repo = ROOT if kind == 'spot' else ROOT.parent / 'coinquant'
++    for name in ('edge_spec.json', 'edge-PROTOCOL.md', 'complete-delivery-PROTOCOL.md'):
++        path = 'research/' + name
++        files[path] = committed_hash(repo, source['git_head'], path)
++    require(files['research/edge_spec.json'] == SPEC_HASH[kind] and
++            files['research/edge-PROTOCOL.md'] == PROTOCOL_HASH[kind], 'committed edge contract mismatch')
++    changed = subprocess.run(['git', 'diff', '--name-only', source['git_head'], 'HEAD', '--', 'research',
++                              kind.replace('perp', 'coin') + 'quant'], cwd=repo, check=True, capture_output=True, text=True).stdout.splitlines()
++    allowed = {'research/edge_assessment.py'} if kind == 'spot' else set()
++    require(not [p for p in changed if p.endswith('.py') and p not in allowed], 'measured execution differs from current frozen producer')
++    return files
++
++
++def components(kind, name, explicit=None):
++    if name == BASE[kind] or (kind == 'spot' and name in CONTROLS):
++        parts = []
++    elif name in ORDER[kind]:
++        parts = [name]
++    else:
++        parts = explicit if kind == 'spot' and name == 'combo' else name.split('+')
++        require(isinstance(parts, list) and len(parts) >= 2 and
++                parts == [p for p in ORDER[kind] if p in parts], 'unregistered combination/order')
++    if explicit is not None:
++        require(parts == explicit, 'component envelope mismatch')
++    return parts
++
++
++def account_id(kind, name, scenario='base', capital='10000', offset=0, risk=False):
++    return '|'.join((kind, name, scenario, str(decimal(capital).normalize()), str(offset), 'risk' if risk else 'unscaled'))
++
++
++def required_matrix(selected=None, combos=None):
++    selected, combos = selected or BASE, combos or {}
++    result = set()
++    for kind in BASE:
++        names = (BASE[kind], *ORDER[kind], *(CONTROLS if kind == 'spot' else ()))
++        for name in names:
++            result.update(account_id(kind, name, s) for s in STRESSES[kind])
++        for name in (BASE[kind], *ORDER[kind]):
++            result.add(account_id(kind, name, risk=True))
++        if combos.get(kind):
++            name = combo_name(kind, combos[kind])
++            result.update(account_id(kind, name, s) for s in STRESSES[kind])
++            result.add(account_id(kind, name, risk=True))
++        for name in {BASE[kind], selected[kind]}:
++            result.update(account_id(kind, name, capital=b) for b in (2500, 5000, 7500))
++    result.update(account_id('perp', BASE['perp'], offset=o) for o in (-60000, 60000))
++    return result
++
++
++def load_files(path):
++    """One-level manifests keep every original child envelope and exact byte hash."""
++    path = Path(path)
++    body, digest = read_json(path)
++    if body.get('format') != MANIFEST:
++        return [(path, digest, body)], {str(path): digest}
++    require(set(body) == {'format', 'files'} and isinstance(body['files'], list), 'manifest schema')
++    result, bindings, seen = [], {str(path): digest}, set()
++    for item in body['files']:
++        require(set(item) == {'path', 'sha256'} and old.hash_value(item['sha256']), 'manifest child binding')
++        child = (path.parent / item['path']).resolve()
++        require(child not in seen, 'duplicate manifest file')
++        seen.add(child)
++        raw, actual = read_json(child)
++        require(actual == item['sha256'], 'manifest original child hash mismatch')
++        require(raw.get('format') != MANIFEST and 'files' not in raw, 'nested manifests forbidden')
++        result.append((child, actual, raw))
++        bindings[str(child)] = actual
++    return result, bindings
++
++
++def environment(schedule, fx, market, features):
++    schedule_body, schedule_hash = read_json(schedule)
++    starts = schedule_body['primary']['starts_ms']
++    require(len(starts) == 795 and starts == sorted(set(starts)) and all(type(v) is int for v in starts), '795 frozen starts required')
++    primary = hashlib.sha256(json.dumps(starts, separators=(',', ':')).encode()).hexdigest()
++    require(primary == schedule_body['primary']['sha256'] == PRIMARY_HASH and
++            schedule_body['session_seconds'] == 300 and schedule_body['poll_seconds'] == 5, 'registered schedule differs')
++    book = FeatureBook(features, expected_sha256=FEATURE_HASH)
++    require(book.source['market_identities']['spot_daily_sha256'] == old.file_digest(market), 'feature/market bytes mismatch')
++    return dict(starts=starts, primary_sha256=primary, schedule_sha256=schedule_hash,
++                fx_sha256=sha(fx), market_sha256=old.file_digest(market), feature_source=book.source,
++                features_sha256=sha(features))
++
++
++def envelope(bundle, kind, env, source_cache):
++    edge = bundle['edge']
++    meta = bundle if kind == 'spot' else bundle['inputs']
++    binding = bundle if kind == 'spot' else edge
++    source = meta['source']
++    key = (kind, json.dumps(source, sort_keys=True))
++    if key not in source_cache:
++        source_cache[key] = verify_source(source, kind)
++    proof = source_cache[key]
++    for name in ('spec_sha256', 'protocol_sha256'):
++        expected = SPEC_HASH[kind] if name == 'spec_sha256' else PROTOCOL_HASH[kind]
++        require(binding[name] == expected, 'edge ' + name + ' mismatch')
++    require(meta['fx_sha256'] == env['fx_sha256'], 'FX input mismatch')
++    if kind == 'spot':
++        require(bundle['format'] == 'btc-alpha-beta-edge-spot-v1', 'Spot producer format')
++        require(meta['schedule_sha256'] == env['schedule_sha256'] and
++                meta['market_sha256'] == env['market_sha256'], 'Spot market/schedule mismatch')
++        require(binding['feature_sha256'] in (None, FEATURE_HASH), 'Spot feature hash mismatch')
++        require(edge['execution'] == 'actual_finite_session_lifecycle', 'actual Spot execution required')
++        require(len(bundle['results']) == 1, 'Spot envelope is single-account')
++        name, scenario = edge['candidate'], edge['scenario']
++        parts = components(kind, name, edge['components'])
++        require(bundle['feature_consumed'] is ('crowding-interaction' in parts), 'feature consumption mismatch')
++        require('crowding-interaction' not in parts or binding['feature_sha256'] == FEATURE_HASH, 'missing consumed features')
++        row = bundle['results'][name + '-' + scenario]
++        require(row['candidate'] == edge['original_candidate'] == name and row['scenario'] == scenario, 'original Spot identity mismatch')
++        return [(name, scenario, row)], binding, source, 0
++    require(edge['measured_source'] == source, 'conflicting Coin measured source')
++    require(edge['original_inputs'] == meta and edge['original_conditions'] == bundle['conditions'], 'original Coin envelope altered')
++    require(meta['protocol_sha256'] == proof['research/complete-delivery-PROTOCOL.md'], 'original Coin meter protocol mismatch')
++    require(meta['schedule_sha256'] == edge['original_schedule_sha256'] == env['primary_sha256'], 'Coin schedule mismatch')
++    offset = edge['start_offset_ms']
++    require(type(offset) is int and offset in (-60000, 0, 60000), 'unregistered start offset')
++    require(edge['actual_starts_sha256'] == old.checksum([v + offset for v in env['starts']]), 'actual starts digest mismatch')
++    require(edge['feature_file_sha256'] == FEATURE_HASH and edge['feature_source'] == env['feature_source'] and
++            edge['feature_reader_sha256'] == proof['research/edge_features.py'], 'Coin feature source mismatch')
++    require(meta['crowding_sha256'] == old.checksum(None) and meta['crowding_source'] == 'not used by alpha/beta mechanisms', 'foreign original crowding input')
++    require(meta['market_identity'] == env['feature_source']['futures_market_identity'], 'Coin original market identity mismatch')
++    for field in ('loaded_minute_files', 'loaded_print_files'):
++        require(isinstance(meta[field], dict) and all(old.hash_value(v) for v in meta[field].values()), 'invalid consumed market hashes')
++    conditions = bundle['conditions']
++    require(decimal(conditions['conversion_each_way']) == D('.001') and
++            conditions['initial_fx_corrected_before_first_metric'] is True and
++            conditions['read_latency_ms'] == 200 and conditions['write_latency_ms'] == 1000 and
++            decimal(conditions['default_fee']) == D('.00075'), 'Coin original economic conditions mismatch')
++    require(set(bundle['results']) == set(edge['candidates']), 'Coin candidate manifest mismatch')
++    rows = []
++    for name, scenarios in bundle['results'].items():
++        components(kind, name, edge['candidates'][name])
++        for scenario, row in scenarios.items():
++            expected_options = {'base': {}, 'fees-x1.5': {'fee': '0.001125'},
++                                'read-400ms': {'read_latency_ms': 400}, 'trigger-slip': {'trigger_slippage': '0.0015'}}
++            require(scenario in expected_options and conditions['scenarios'].get(scenario) == expected_options[scenario], 'original scenario conditions mismatch')
++            if row['complete']:
++                require(conditions.get('terminal_funding_exclusive_ms') == END, 'exclusive terminal funding boundary missing')
++            require(decimal(row['initial_cny']) == decimal(edge['initial_cny']) == decimal(conditions['start_cny']), 'Coin capital envelope mismatch')
++            rows.append((name, scenario, row))
++    return rows, binding, source, offset
++
++
++def compare_inputs(left, right, kind, *, current=False):
++    """Compare economics across old/new families without overwriting source labels."""
++    a = left if kind == 'spot' else left['inputs']
++    b = right if kind == 'spot' else right['inputs']
++    keys = ('fx_sha256', 'schedule_sha256', 'market_sha256') if kind == 'spot' else (
++        'fx_sha256', 'schedule_sha256', 'market_identity', 'crowding_sha256', 'crowding_source')
++    for key in keys:
++        require(a[key] == b[key], 'economic input disagreement: ' + key)
++    if kind == 'perp':
++        for key in ('loaded_minute_files', 'loaded_print_files'):
++            require(all(a[key][n] == b[key][n] for n in a[key].keys() & b[key].keys()), 'consumed file disagreement: ' + key)
++        excluded = {'start_cny', 'scenarios', 'alpha_beta_research', 'post_run_diagnostic_prices_used_for_decisions'}
++        require({k: v for k, v in left['conditions'].items() if k not in excluded} ==
++                {k: v for k, v in right['conditions'].items() if k not in excluded}, 'original operating conditions disagreement')
++        for s in left['conditions']['scenarios'].keys() & right['conditions']['scenarios'].keys():
++            require(left['conditions']['scenarios'][s] == right['conditions']['scenarios'][s], 'scenario conditions disagreement')
++    if current:
++        require(a['source'] == b['source'], 'current producer source disagreement')
++        x, y = (left, right) if kind == 'spot' else (left['edge'], right['edge'])
++        for key in ('spec_sha256', 'protocol_sha256'):
++            require(x[key] == y[key], 'current contract disagreement')
++
++
++def baseline_equality(reference, actual, kind):
++    """Six established groups plus fields the old helper excluded as annotations.
++
++    Only opportunity_ledger is a new baseline instrumentation field. Existing
++    research_identity, risk_calibration, subpools and original identifiers remain
++    checked here; no clock, status, constraint or owner data is discarded.
++    """
++    before, after = old.evidence_fingerprints(reference, kind), old.evidence_fingerprints(actual, kind)
++    differences = {k: {'reference_sha256': v, 'actual_sha256': after[k]}
++                   for k, v in before.items() if after[k] != v}
++    annotations = ('candidate', 'scenario', 'original_row_sha256', 'research_identity', 'risk_calibration', 'subpools')
++    drift = {k: {'reference': reference.get(k), 'actual': actual.get(k)}
++             for k in annotations if (k in reference) != (k in actual) or reference.get(k) != actual.get(k)}
++    if drift:
++        differences['original_annotations'] = drift
++    return {'passed': not differences, 'reference': before, 'actual': after, 'differences': differences}
++
++
++def approved_references(directory):
++    """Trust pinned acceptance bytes and original raws, never a caller's passed flag."""
++    directory = Path(directory)
++    bound, documents = {}, {}
++    for name, digest in PINNED_REFERENCES.items():
++        body, actual = read_json(directory / name)
++        require(actual == digest, 'approved reference bytes mismatch: ' + name)
++        bound[str(directory / name)] = actual
++        documents[name] = body
++    inventory = documents['scratch/spot-canonical/canonical-inventory.json']
++    bridge = documents['review/spot-canonical-five-financial-proof.json']
++    result = {'spot': {}, 'perp': {}}
++    singleton = documents['scratch/spot-singletons/atr-stop.json.gz']
++    coin = documents['scratch/perp-singletons-retry1.json.gz']
++    for kind, body in (('spot', singleton), ('perp', coin)):
++        meta = body if kind == 'spot' else body['inputs']
++        proof = old.verify_source(meta['source'], kind)
++        require(meta['spec_sha256'] == proof['research/alpha_beta_spec.json'] and
++                meta['protocol_sha256'] == proof['research/alpha-beta-PROTOCOL.md'], 'prior committed contract mismatch')
++    for item in inventory['files']:
++        if item['calibrated']:
++            continue
++        path = directory / 'scratch/spot-canonical' / item['path']
++        body, digest = read_json(path)
++        require(digest == item['sha256'] and digest in bridge['identities'].values(), 'canonical original raw/bridge mismatch')
++        require(body['source'] == bridge['canonical_source'], 'canonical bridge source mismatch')
++        old.verify_source(body['source'], 'spot')
++        row = body['results']['atr-stop-' + item['scenario']]
++        require(old.evidence_fingerprints(singleton['results']['atr-stop-' + item['scenario']], 'spot') == old.evidence_fingerprints(row, 'spot'), 'canonical singleton bridge mismatch')
++        result['spot'][item['scenario']] = {'bundle': body, 'row': row, 'raw_sha256': digest}
++        bound[str(path)] = digest
++    require(set(result['spot']) == set(STRESSES['spot']), 'approved canonical stress inventory incomplete')
++    require(result['spot']['base']['raw_sha256'] == 'dc94a7b315ee8ea11cc7215cd8ff7c02a8ab94180499b2c4ebf7fe1448682323', 'wrong current Spot baseline')
++    for scenario in STRESSES['perp']:
++        result['perp'][scenario] = {'bundle': coin, 'row': coin['results']['incumbent'][scenario],
++                                    'raw_sha256': PINNED_REFERENCES['scratch/perp-singletons-retry1.json.gz']}
++    return result, bound
++
++
++def monetary_audit(row, kind, fx):
++    """Reconstruct the funded wallet from original fills/income, independently of passed."""
++    initial = decimal(row['initial_cny']) / fx(START) * D('.999')
++    if kind == 'spot':
++        fills = []
++        for fill in row['fills']:
++            require(type(fill['buyer']) is bool and fill['commission_asset'] in ('BTC', 'USDT'), 'invalid spot fill')
++            trade = dict(fill, **{k: decimal(fill[k]) for k in ('qty', 'quote', 'price', 'commission')})
++            require(all(trade[k] >= 0 for k in ('qty', 'quote', 'price', 'commission')), 'negative fill values')
++            fills.append(trade)
++        proof = spot_audit(SimpleNamespace(initial_cash=initial, cash=decimal(row['cash_usdt']), btc=decimal(row['btc']), fills=fills))
++        require(proof == row['audit'] and proof['passed'], 'rederived Spot audit mismatch')
++    else:
++        # Same original average-cost accounting, without importing a sibling runtime.
++        qty, entry, realized = D(0), D(0), D(0)
++        identities = set()
++        for trade in row['trades']:
++            require(trade['id'] not in identities and trade['side'] in ('BUY', 'SELL'), 'duplicate/invalid Coin fill')
++            identities.add(trade['id'])
++            part, price = decimal(trade['qty']), decimal(trade['price'])
++            require(part > 0 and price > 0, 'invalid Coin fill money')
++            signed = part if trade['side'] == 'BUY' else -part
++            if not qty or qty * signed > 0:
++                entry = (abs(qty) * entry + part * price) / (abs(qty) + part)
++            else:
++                realized += min(abs(qty), part) * (price - entry) * (1 if qty > 0 else -1)
++                if part > abs(qty):
++                    entry = price
++            qty += signed
++            if not qty:
++                entry = D(0)
++        totals = Counter()
++        for income in row['funding_ledger']:
++            require(type(income['time']) is int and START <= income['time'] < END, 'income outside exclusive window')
++            totals[income['incomeType']] += decimal(income['income'])
++        require(set(totals) <= {'REALIZED_PNL', 'COMMISSION', 'INSURANCE_CLEAR', 'FUNDING_FEE'}, 'external cash flows')
++        wallet = initial + sum(totals.values(), D(0))
++        near = lambda a, b: abs(a - b) <= D('1e-8')
++        require(near(qty, decimal(row['position'])) and near(realized, totals['REALIZED_PNL']) and
++                near(decimal(row['fees']), -totals['COMMISSION'] - totals['INSURANCE_CLEAR']) and
++                near(decimal(row['funding']), -totals['FUNDING_FEE']), 'rederived Coin fill/income mismatch')
++        equity = wallet + (qty * (decimal(row['final_mark']) - entry) if qty else 0)
++        require(near(equity, decimal(row['final_usdt'])) and
++                near(wallet, decimal(row['audit']['wallet_from_ledger_usdt'])) and
++                all(row['audit']['checks'].values()), 'rederived Coin terminal mismatch')
++        proof = {'passed': True, 'wallet_usdt': str(wallet), 'position_btc': str(qty), 'entry_usdt': str(entry)}
++    require(abs(decimal(row['final_usdt']) * fx(END) * D('.999') - decimal(row['final_cny'])) <= D('.000001'), 'terminal CNY conversion mismatch')
++    return proof
++
++
++def es99(returns):
++    values = [decimal(v) for v in returns]
++    require(bool(values), 'ES99 needs returns')
++    count = (len(values) + 99) // 100
++    return float(-sum(sorted(values)[:count], D(0)) / count)
++
++
++def curve_metrics(row, curve, kind, bars, fx, usd_market, cny_market):
++    initial = float(decimal(row['initial_cny']))
++    metrics = old.financial(row, curve, bars, fx, usd_market, cny_market, initial, kind=kind)
++    _, returns = daily_metrics([p['equity_cny'] for p in curve], initial)
++    metrics['fill_count'] = len(row.get('fills', row.get('trades', [])))
++    metrics['closing_gross_exposure_over_equity'] = curve[-1]['gross_exposure_over_equity']
++    metrics['closing_signed_exposure_over_equity'] = (1 if curve[-1]['net_btc'] >= 0 else -1) * curve[-1]['gross_exposure_over_equity']
++    metrics['metrics']['daily_es99_loss'] = es99(returns)
++    metrics['metrics'].pop('daily_es5_loss', None)
++    for key in ('cny', 'usdt'):
++        stats = metrics['validation_2022_plus'][key]
++        start = (CUTOFF - START) // DAY
++        vals = [p['equity_' + key] for p in curve]
++        stats['daily_es99_loss'] = es99(daily_metrics(vals[start:], vals[start - 1])[1])
++        stats.pop('daily_es5_loss', None)
++    metrics['usdt_metrics'].pop('daily_es5_loss', None)
++    metrics['registered_account_usdt_cagr'] = (curve[-1]['equity_usdt'] / float(decimal(row['initial_cny']) / fx(START) * D('.999'))) ** (
++        metrics['annualization']['account_year_days'] * DAY / (END - START)) - 1
++    return metrics
++
++
++def validate_profile_document(document, kind, names):
++    require(set(document) == {'format', 'project_kind', 'baseline_candidate', 'cutoff_ms', 'spec_sha256', 'profiles'}, 'calibration document schema')
++    require(type(document['format']) is int and document['format'] == 1 and document['project_kind'] == kind and
++            document['baseline_candidate'] == BASE[kind] and type(document['cutoff_ms']) is int and
++            document['cutoff_ms'] == CUTOFF and document['spec_sha256'] == SPEC_HASH[kind] and
++            set(document['profiles']) == set(names), 'calibration identity/inventory')
++    fields = {'candidate', 'project_kind', 'scale', 'base_bundle_sha256', 'baseline_candidate',
++              'effective_from_ms', 'calibration_end_ms', 'training_end_day_exclusive'}
++    for name, profile in document['profiles'].items():
++        require(set(profile) == fields and profile['candidate'] == name and profile['project_kind'] == kind and
++                profile['baseline_candidate'] == BASE[kind] and type(profile['scale']) is str and
++                0 <= decimal(profile['scale']) <= 1 and old.hash_value(profile['base_bundle_sha256']) and
++                profile['training_end_day_exclusive'] == '2022-01-01' and
++                all(type(profile[k]) is int and profile[k] == CUTOFF for k in ('effective_from_ms', 'calibration_end_ms')) and
++                (name != BASE[kind] or decimal(profile['scale']) == 1), 'invalid calibration profile')
++
++
++def calibration_document(accounts, kind, market_returns, initial_usdt, combo=None):
++    names = [BASE[kind], *ORDER[kind], *([combo] if combo else [])]
++    baseline = accounts[account_id(kind, BASE[kind])]['curve']
++    profiles, diagnostics = {}, {}
++    expected_days = list(range(START, CUTOFF, DAY))
++    require(len(expected_days) == 731 and len(market_returns) >= 731, '731 training returns required')
++    for name in names:
++        account = accounts[account_id(kind, name)]
++        require(account['status'] == 'complete', 'calibration requires complete actual unscaled base')
++        curve = account['curve']
++        for values in (curve, baseline):
++            require([p['day_ms'] for p in values if p['day_ms'] < CUTOFF] == expected_days, 'exact 731-day training coverage required')
++        scale, stats = old.calibrate(curve[:731], baseline[:731], market_returns[:731], initial_usdt)
++        require(all(v[k] is not None and math.isfinite(v[k]) for v in stats.values() for k in ('beta', 'volatility')), 'unidentifiable calibration risk')
++        profiles[name] = dict(candidate=name, project_kind=kind, scale='1' if name == BASE[kind] else scale,
++                              effective_from_ms=CUTOFF, calibration_end_ms=CUTOFF,
++                              training_end_day_exclusive='2022-01-01', baseline_candidate=BASE[kind],
++                              base_bundle_sha256=account['raw_sha256'])
++        diagnostics[name] = dict(stats, source=account['source'], raw_sha256=account['raw_sha256'], training_days=731)
++    document = dict(format=1, project_kind=kind, baseline_candidate=BASE[kind], cutoff_ms=CUTOFF,
++                    spec_sha256=SPEC_HASH[kind], profiles=profiles)
++    validate_profile_document(document, kind, names)
++    return document, diagnostics
++
++
++def risk_match(candidate, baseline, market_returns, initial_usdt):
++    require([p['day_ms'] for p in candidate] == [p['day_ms'] for p in baseline] == list(range(START, END, DAY)), 'actual risk daily alignment')
++    result = old.achieved_match(candidate, baseline, market_returns, initial_usdt)
++    c, b = result['candidate'], result['baseline']
++    identified = all(v[k] is not None and math.isfinite(v[k]) for v in (c, b) for k in ('volatility', 'beta'))
++    result['achieved_match'] = identified and decimal(c['volatility']) <= decimal(b['volatility']) * D('1.05') and decimal(c['beta']) <= decimal(b['beta']) + D('.02')
++    return result
++
++
++def adoption_gates(kind, candidate, baseline, achieved, actual_candidate_mdd, actual_baseline_mdd, equality):
++    """Pure exact threshold checks; inputs are independently recomputable metrics."""
++    require(set(candidate) == set(baseline) == set(STRESSES[kind]), 'matched four stresses required')
++    c, b = candidate['base'], baseline['base']
++    checks = {'baseline_equality': equality is True}
++    for scenario in STRESSES[kind]:
++        x, y = candidate[scenario], baseline[scenario]
++        checks[scenario + ':cagr'] = decimal(x['cagr']) >= decimal(y['cagr']) - D('.01')
++        checks[scenario + ':mdd'] = (decimal(x['mdd']) <= decimal(y['mdd']) if kind == 'spot' else decimal(x['mdd']) < D('.50'))
++    checks['base_improvement'] = decimal(c['cagr']) >= decimal(b['cagr']) + D('.01') or (
++        decimal(c['mdd']) <= decimal(b['mdd']) - D('.01') and decimal(c['cagr']) >= decimal(b['cagr']) - D('.01'))
++    checks['worst_cny_day'] = decimal(c['worst_day']) >= decimal(b['worst_day']) - D('.005')
++    checks['es99'] = decimal(c['es99']) <= decimal(b['es99']) * D('1.05')
++    checks['underwater'] = decimal(c['underwater']) <= decimal(b['underwater'])
++    checks['actual_risk_bands'] = achieved.get('achieved_match') is True
++    gain = decimal(achieved['validation_total_usdt_return_gain'])
++    checks['actual_validation'] = gain > 0 or (decimal(actual_candidate_mdd) <= decimal(actual_baseline_mdd) - D('.01') and gain >= D('-.01'))
++    return {'eligible': all(checks.values()), 'checks': checks,
++            'reasons': [key for key, passed in checks.items() if not passed],
++            'worst_stress_cagr': str(min(decimal(r['cagr']) for r in candidate.values()))}
++
++
++def combo_name(kind, parts):
++    require(len(parts) >= 2 and parts == [n for n in ORDER[kind] if n in parts], 'all registered ordered eligible components required')
++    return 'combo' if kind == 'spot' else '+'.join(parts)
++
++
++def choose_singles(kind, decisions):
++    require(set(decisions) == set(ORDER[kind]), 'every registered single needs a decision')
++    eligible = [name for name in ORDER[kind] if decisions[name].get('eligible') is True]
++    best = min(eligible, key=lambda n: (-decimal(decisions[n]['worst_stress_cagr']), ORDER[kind].index(n))) if eligible else BASE[kind]
++    return best, eligible if len(eligible) >= 2 else []
++
++
++def aggregate_pair(spot, perp, budgets, market_returns, fx, candidates=None):
++    candidates = BASE if candidates is None else candidates
++    require(tuple(budgets) in ((2500, 7500), (5000, 5000), (7500, 2500)) and sum(budgets) == 10000, 'fixed CNY10000 budgets required')
++    for account, budget, kind in zip((spot, perp), budgets, ('spot', 'perp')):
++        require(account['candidate'] == candidates[kind], 'wrong budget candidate')
++        require(account['status'] == 'complete' and account['kind'] == kind and
++                decimal(account['capital']) == budget and account['offset'] == 0 and
++                account['scenario'] == 'base' and not account['risk'], 'actual funded base budget account required')
++        require(account['row']['audit']['passed'] is True and decimal(account['row']['initial_cny']) == budget, 'wrong raw budget capital')
++    a, b = spot['curve'], perp['curve']
++    require([p['day_ms'] for p in a] == [p['day_ms'] for p in b] == list(range(START, END, DAY)), 'full synchronized budget daily alignment required')
++    curve = []
++    for x, y in zip(a, b):
++        equity = x['equity_usdt'] + y['equity_usdt']
++        gross = abs(x['net_btc']) * x['price_usdt'] + abs(y['net_btc']) * y['price_usdt']
++        signed = x['net_btc'] * x['price_usdt'] + y['net_btc'] * y['price_usdt']
++        curve.append(dict(day_ms=x['day_ms'], equity_cny=x['equity_cny'] + y['equity_cny'],
++                          equity_usdt=equity, absolute_btc_notional_usdt=gross,
++                          gross_exposure_over_equity=gross / equity, signed_exposure_over_equity=signed / equity))
++    cny, returns = daily_metrics([p['equity_cny'] for p in curve], 10000)
++    cny.pop('daily_es5_loss', None)
++    cny['daily_es99_loss'] = es99(returns)
++    initial = float(D(10000) / fx(START) * D('.999'))
++    usd, usd_returns = daily_metrics([p['equity_usdt'] for p in curve], initial)
++    usd.pop('daily_es5_loss', None)
++    usd['final_usdt'] = usd.pop('final_cny')
++    ra = old.returns_for(a, float(D(budgets[0]) / fx(START) * D('.999')))
++    rb = old.returns_for(b, float(D(budgets[1]) / fx(START) * D('.999')))
++    correlation = statistics.correlation(ra, rb) if len(set(ra)) > 1 and len(set(rb)) > 1 else None
++    return dict(budgets=budgets, candidates=[spot['candidate'], perp['candidate']], initial_cny=10000,
++                cash_flows=0, daily_cny=cny, daily_usdt=usd, regression=old.safe_regression(usd_returns, market_returns),
++                account_return_correlation=correlation, curve=curve,
++                closing_gross_exposure_over_equity=curve[-1]['gross_exposure_over_equity'],
++                account_raw_sha256=[spot['raw_sha256'], perp['raw_sha256']],
++                fees_usdt=[v['metrics']['fees_usdt'] for v in (spot, perp)],
++                funding_usdt=[v['metrics']['funding_paid_usdt'] for v in (spot, perp)],
++                fill_counts=[len(v['row'].get('fills', v['row'].get('trades', []))) for v in (spot, perp)],
++                neutral_reference=budgets == (5000, 5000),
++                limitations='Actual independently funded accounts retain fees, minimum notionals and rounding; budget-sensitive paths. Daily joint MDD is not independently measured continuous joint MDD. Other splits are robustness, never an optimized recommendation.')
++
++
++
++
++def verify_coin_timing(row):
++    starts = [s['start_ms'] for s in row['sessions']]
++    for index, session in enumerate(row['sessions']):
++        require(session['index'] == index and session['status'] in ('executed', 'no_action', 'unknown') and
++                type(session['cycles']) is int and session['cycles'] >= 0, 'invalid original Coin session')
++    for event in row['opportunity_ledger']:
++        if event['event'] not in ('decision', 'edge_predecision', 'write_attempt'):
++            continue
++        stamp = event['at_ms']
++        require(type(stamp) is int, 'invalid Coin journal clock')
++        index = bisect.bisect_right(starts, stamp) - 1
++        require(index >= 0 and stamp <= starts[index] + 300000, 'Coin decision outside original session')
++        if event['event'] == 'write_attempt':
++            require(stamp < starts[index] + 300000, 'Coin write attempt outside original deadline')
++        if 'completed_at_ms' in event:
++            require(type(event['completed_at_ms']) is int and event['completed_at_ms'] >= stamp, 'Coin completion clock precedes decision')
++
++def verify_consumed_files(bundle, env, checked):
++    """Verify retained official bytes/CHECKSUMs, not a cache manifest's assertion."""
++    receipts = bundle['edge']['print_restore_receipts']
++    for field, root in (('loaded_minute_files', Path(env['coin_market'])),
++                        ('loaded_print_files', Path(env['coin_prints']))):
++        for name, digest in bundle['inputs'][field].items():
++            path = (root / name).resolve()
++            require(path.is_relative_to(root.resolve()), 'consumed input escapes root')
++            checksum = path.with_suffix(path.suffix + '.CHECKSUM')
++            if str(path) not in checked:
++                fields = checksum.read_text().split()
++                require(len(fields) == 2 and fields[1].lstrip('*') == path.name and
++                        fields[0] == digest == sha(path), 'consumed official ZIP/CHECKSUM mismatch')
++                checked[str(path)], checked[str(checksum)] = digest, sha(checksum)
++            require(checked[str(path)] == digest, 'conflicting consumed market bytes')
++            if field == 'loaded_print_files':
++                matches = [r for r in receipts if r['name'] == name]
++                require(matches and all(r['sha256'] == digest and
++                    r['checksum_sha256'] == checked[str(checksum)] and
++                    old.hash_value(r['derived_binary_sha256']) for r in matches), 'missing/invalid derived tape receipt')
++
++
++def audit_daily(row, daily, kind, fx):
++    """Rederive every retained daily wallet/position, using original capture clocks."""
++    cash = decimal(row['initial_cny']) / fx(START) * D('.999')
++    qty, entry = D(0), D(0)
++    fills = row['fills'] if kind == 'spot' else row['trades']
++    incomes = [] if kind == 'spot' else row['funding_ledger']
++    for events in (fills, incomes):
++        require([r['time'] for r in events] == sorted(r['time'] for r in events), 'cash/fill events out of order')
++    fi, ii = 0, 0
++    near = lambda a, b: abs(decimal(a) - decimal(b)) <= D('1e-8')
++    for point in daily:
++        stamp = point['timestamp_ms' if kind == 'spot' else 'stamp_ms']
++        # Original Coin hook recaptures after boundary funding, before the
++        # next minute's same-stamp print fills. END funding is excluded above.
++        boundary = stamp - (1 if kind == 'perp' and stamp % DAY == 0 else 0)
++        while fi < len(fills) and fills[fi]['time'] <= boundary:
++            trade = fills[fi]
++            part, price = decimal(trade['qty']), decimal(trade['price'])
++            buy = trade['buyer'] if kind == 'spot' else trade['side'] == 'BUY'
++            signed = part if buy else -part
++            if kind == 'spot':
++                fee = decimal(trade['commission'])
++                cash -= (decimal(trade['quote']) if buy else -decimal(trade['quote'])) + (fee if trade['commission_asset'] == 'USDT' else 0)
++                qty += signed - (fee if trade['commission_asset'] == 'BTC' else 0)
++            else:
++                if not qty or qty * signed > 0:
++                    entry = (abs(qty) * entry + part * price) / (abs(qty) + part)
++                elif part > abs(qty):
++                    entry = price
++                qty += signed
++                if not qty:
++                    entry = D(0)
++            fi += 1
++        while ii < len(incomes) and (incomes[ii]['time'] <= boundary or (incomes[ii]['time'] == stamp and incomes[ii]['incomeType'] == 'FUNDING_FEE')):
++            cash += decimal(incomes[ii]['income'])
++            ii += 1
++        price = decimal(point['price_usdt' if kind == 'spot' else 'mark_usdt'])
++        equity = cash + qty * (price if kind == 'spot' else price - entry)
++        require(near(cash, point['cash_usdt' if kind == 'spot' else 'wallet_usdt']) and
++                near(qty, point['btc' if kind == 'spot' else 'quantity_btc']) and
++                near(equity, point['equity_usdt']) and
++                near(equity * fx(stamp) * D('.999'), point['equity_cny']), 'daily monetary reconstruction mismatch at ' + str(stamp))
++
++def original_curve(row, bars, fx, kind):
++    raw = list(row['daily'].values()) if isinstance(row['daily'], dict) else row['daily']
++    audit_daily(row, raw, kind, fx)
++    key = 'timestamp_ms' if kind == 'spot' else 'stamp_ms'
++    stamps = [v[key] for v in raw]
++    require(stamps == sorted(set(stamps)) and all(type(v) is int and START <= v <= END for v in stamps), 'daily timestamps duplicate/unordered/outside window')
++    curve = canonical(row, bars, fx, float(decimal(row['initial_cny'])), kind)
++    # Perpetual exposure uses its actual closing mark, not the Spot BTC comparator.
++    if kind == 'perp':
++        daily = {p['stamp_ms']: p for p in raw}
++        for point in curve:
++            if point['net_btc']:
++                record = daily[point['day_ms'] + DAY]
++                mark = decimal(record['mark_usdt'])
++                require(mark > 0 and abs(decimal(record['quantity_btc']) * mark) == decimal(record['gross_btc_exposure_usdt']), 'perp daily exposure mismatch')
++                point['price_usdt'] = float(mark)
++                point['gross_exposure_over_equity'] = float(decimal(record['gross_btc_exposure_usdt']) / decimal(record['equity_usdt']))
++    return curve
++
++
++def verify_account_binding(account, documents):
++    kind, name, bundle = account['kind'], account['candidate'], account['bundle']
++    binding = bundle if kind == 'spot' else bundle['edge']
++    digest = binding['risk_calibration_sha256']
++    if digest is None:
++        expected = {'scale': '1', 'sha256': None} if kind == 'spot' else {}
++        require(binding['risk_calibration' if kind == 'spot' else 'risk_profiles'] == expected, 'unscaled profile mismatch')
++        if kind == 'perp':
++            require(binding['risk_calibration_document'] is None, 'undeclared risk document')
++        profile = expected
++    else:
++        require(digest in documents[kind], 'missing exact project calibration bytes')
++        doc = documents[kind][digest]['body']
++        profile = doc['profiles'][name]
++        if kind == 'spot':
++            profile = dict(profile, sha256=digest)
++            require(binding['risk_calibration'] == profile, 'Spot actual calibration/profile binding mismatch')
++        else:
++            require(binding['risk_profiles'] == doc['profiles'] and
++                    binding['risk_calibration_document'].encode() == documents[kind][digest]['bytes'], 'Coin exact calibration bytes/profile mismatch')
++    if kind == 'spot' and name != BASE[kind]:
++        row = account['row']
++        require(row['risk_calibration'] == profile, 'row profile mismatch')
++        identity = dict(candidate=name, components=account['components'], project_kind=kind,
++                        spec_sha256=SPEC_HASH[kind], risk_calibration=profile,
++                        execution_source_sha256=account['source']['python_sources_sha256'],
++                        features_sha256=FEATURE_HASH if 'crowding-interaction' in account['components'] else None)
++        require(row['research_identity'] == identity, 'row research source/profile/features mismatch')
++        for event in row['opportunity_ledger']:
++            if event['event'] == 'decision':
++                for diag in event['diagnostics']:
++                    if diag['mechanism'] == 'new-buy':
++                        expected_scale = decimal(profile['scale']) if event['decision_ms'] >= CUTOFF else D(1)
++                        require(decimal(diag['risk_scale']) == expected_scale, 'new-order calibration clock/scale mismatch')
++    if kind == 'perp' and account['components']:
++        identity = dict(candidate=name, components=account['components'], binding={k: v for k, v in binding.items() if k not in (
++            'candidates', 'original_inputs', 'original_conditions', 'decision_coverage', 'print_restore_receipts')},
++            features_sha256=FEATURE_HASH, profile=profile, spec_sha256=SPEC_HASH[kind], protocol_sha256=PROTOCOL_HASH[kind])
++        expected = old.checksum(identity)
++        for event in account['row']['opportunity_ledger']:
++            if event['event'] == 'edge_predecision':
++                require(event['binding'] == expected, 'Coin decision source/profile binding mismatch')
++
++
++def ingest(paths, env, bars, fx, market_returns, cny_returns, documents):
++    accounts, files, rejected, cache, consumed = {}, {}, [], {}, {}
++    for kind, path in paths.items():
++        if path is None:
++            continue
++        children, bindings = load_files(path)
++        files.update(bindings)
++        for child, digest, bundle in children:
++            try:
++                rows, binding, source, offset = envelope(bundle, kind, env, cache)
++                if kind == 'perp':
++                    verify_consumed_files(bundle, env, consumed)
++            except (ValueError, KeyError, TypeError, ArithmeticError, OSError, subprocess.CalledProcessError) as exc:
++                rejected.append(dict(path=str(child), raw_sha256=digest, kind=kind, reason=str(exc)))
++                continue
++            for name, scenario, row in rows:
++                capital, risk = str(decimal(row['initial_cny'])), binding['risk_calibration_sha256'] is not None
++                key = account_id(kind, name, scenario, capital, offset, risk)
++                require(key not in accounts, 'duplicate account identity: ' + key)
++                parts = components(kind, name, bundle['edge']['components'] if kind == 'spot' else bundle['edge']['candidates'][name])
++                account = dict(kind=kind, candidate=name, scenario=scenario, capital=capital, offset=offset,
++                               risk=risk, components=parts, path=str(child), raw_sha256=digest,
++                               source=source, bundle=bundle, row=row, status='rejected', reasons=[])
++                accounts[key] = account
++                try:
++                    require(scenario in STRESSES[kind] and decimal(capital) in (2500, 5000, 7500, 10000), 'unregistered scenario/capital')
++                    require(not offset or (kind == 'perp' and name == BASE[kind] and scenario == 'base' and decimal(capital) == 10000 and not risk), 'unregistered offset account')
++                    require(decimal(capital) == 10000 or (scenario == 'base' and not risk and not offset), 'unregistered budget role')
++                    require(not risk or (name not in CONTROLS and scenario == 'base' and decimal(capital) == 10000 and not offset), 'unregistered calibrated role')
++                    verify_account_binding(account, documents)
++                    reasons = old.row_validity(row, kind, [s + offset for s in env['starts']], capital, scenario)
++                    if kind == 'perp':
++                        verify_coin_timing(row)
++                    account['reasons'] = reasons
++                    account['status'] = 'pending' if reasons else 'complete'
++                    if not reasons:
++                        account['monetary_audit'] = monetary_audit(row, kind, fx)
++                        account['curve'] = original_curve(row, bars, fx, kind)
++                        account['metrics'] = curve_metrics(row, account['curve'], kind, bars, fx, market_returns, cny_returns)
++                except (ValueError, KeyError, TypeError, ArithmeticError) as exc:
++                    account['status'] = 'rejected'
++                    account['reasons'].append(str(exc))
++    files.update(consumed)
++    return accounts, files, rejected
++
++
++def gate_values(account):
++    m = account['metrics']['metrics']
++    return dict(cagr=account['row']['cagr'], mdd=account['row']['mdd'], worst_day=m['worst_day'],
++                es99=m['daily_es99_loss'], underwater=m['longest_daily_underwater_days'])
++
++
++def decisions_for(accounts, kind, names, equality, market_returns, initial_usdt):
++    decisions = {}
++    for name in names:
++        keys = [account_id(kind, n, scenario) for n in (BASE[kind], name) for scenario in STRESSES[kind]]
++        keys += [account_id(kind, n, risk=True) for n in (BASE[kind], name)]
++        missing = [k for k in keys if k not in accounts or accounts[k]['status'] != 'complete']
++        if missing:
++            decisions[name] = dict(eligible=False, status='pending', required_accounts=missing)
++            continue
++        actual, control = (accounts[account_id(kind, n, risk=True)] for n in (name, BASE[kind]))
++        achieved = risk_match(actual['curve'], control['curve'], market_returns, initial_usdt)
++        outcome = adoption_gates(kind,
++            {s: gate_values(accounts[account_id(kind, name, s)]) for s in STRESSES[kind]},
++            {s: gate_values(accounts[account_id(kind, BASE[kind], s)]) for s in STRESSES[kind]},
++            achieved, actual['row']['mdd'], control['row']['mdd'], equality)
++        decisions[name] = dict(outcome, status='complete', achieved_risk=achieved)
++    return decisions
++
++
++def inventory_binding(report):
++    """Stable cycle-free review target, independent of phase/output paths."""
++    return {'inputs': report['inputs'], 'analysis_source': report['analysis_source'],
++            'contracts': report['contracts'], 'accounts': {
++                k: {f: v[f] for f in ('raw_sha256', 'source', 'status', 'reasons', 'components')}
++                for k, v in report['accounts'].items()},
++            'required_accounts': report['required_accounts'], 'selected': report['selected'],
++            'calibration_documents': report['calibration_documents'],
++            'decisions': report['decisions'], 'baseline_equality': report['baseline_equality']}
++
++
++def verify_financial_review(path, report):
++    """A proof binds the completed preliminary report, inventory and review artifacts.
++
++    Schema: format='btc-edge-financial-review-v1', preliminary={path,sha256},
++    inventory_sha256, reviewer_source (clean full Spot Python proof), checks
++    (all six named categories, each {artifact:{path,sha256},passed:true}).
++    The review artifacts retain recomputations; booleans alone cannot qualify.
++    """
++    proof, digest = read_json(path)
++    required = {'source_and_inputs', 'original_accounting', 'baseline_six_groups',
++                'calibration_and_actual_risk', 'adoption_gates', 'actual_budget_aggregation'}
++    require(set(proof) == {'format', 'preliminary', 'inventory_sha256', 'reviewer_source', 'checks'} and
++            proof['format'] == 'btc-edge-financial-review-v1' and set(proof['checks']) == required, 'financial review schema')
++    prior_path = Path(path).parent / proof['preliminary']['path']
++    prior, prior_hash = read_json(prior_path)
++    require(prior_hash == proof['preliminary']['sha256'] and prior['phase'] == 'preliminary' and
++            prior['status'] == 'complete_pending_independent_review' and not prior['pending'] and not prior['blocking'], 'review needs complete preliminary evidence')
++    current = inventory_binding(report)
++    require(inventory_binding(prior) == current and proof['inventory_sha256'] == old.checksum(current), 'financial review inventory/source mismatch')
++    verify_source(proof['reviewer_source'], 'spot')
++    artifacts = {}
++    for name, check in proof['checks'].items():
++        require(set(check) == {'passed', 'artifact'} and check['passed'] is True and
++                set(check['artifact']) == {'path', 'sha256'}, 'missing independent recomputation artifact')
++        artifact_path = Path(path).parent / check['artifact']['path']
++        artifact, actual = read_json(artifact_path)
++        require(actual == check['artifact']['sha256'] and artifact.get('inventory_sha256') == proof['inventory_sha256'] and
++                artifact.get('category') == name and isinstance(artifact.get('recomputations'), (dict, list)) and
++                bool(artifact['recomputations']), 'financial review artifact binding/recomputations missing')
++        artifacts[str(artifact_path)] = actual
++    return {'path': str(path), 'sha256': digest, 'preliminary_sha256': prior_hash,
++            'reviewer_source': proof['reviewer_source'], 'artifacts': artifacts}
++
++
++def assess(args):
++    source = old.source_identity()
++    require(source['dirty'] is False, 'clean committed assessor source required')
++    verify_source(source, 'spot')
++    env = environment(args.schedule, args.fx, args.market, args.features)
++    env.update(coin_market=str(args.coin_market), coin_prints=str(args.coin_prints))
++    bars = old.load_daily(args.market, END, require_through=END)
++    fx = old.PriorFX(args.fx)
++    market_returns, cny_returns = old.market_returns_for(bars, fx)
++    references, reference_files = approved_references(args.references)
++    documents, document_bindings = {'spot': {}, 'perp': {}}, {}
++    for kind in BASE:
++        for path in getattr(args, kind + '_calibration') or []:
++            doc, digest = read_json(path)
++            require(Path(path).suffix != '.gz', 'producer calibration must be original JSON bytes')
++            names = [BASE[kind], *ORDER[kind]]
++            extra = set(doc['profiles']) - set(names)
++            require(len(extra) <= 1, 'only one applicable all-component combo profile')
++            for name in extra:
++                components(kind, name, list(ORDER[kind]) if kind == 'spot' else None)
++            validate_profile_document(doc, kind, [*names, *extra])
++            require(digest not in documents[kind], 'duplicate calibration document')
++            documents[kind][digest] = {'body': doc, 'bytes': Path(path).read_bytes(), 'path': str(path)}
++            document_bindings[str(path)] = digest
++    accounts, files, rejected = ingest({'spot': args.spot, 'perp': args.perp}, env, bars, fx, market_returns, cny_returns, documents)
++    report = dict(format='btc-edge-assessment-v1', phase=args.phase, analysis_source=source,
++                  contracts={k: {'spec_sha256': SPEC_HASH[k], 'protocol_sha256': PROTOCOL_HASH[k]} for k in BASE},
++                  inputs=dict(files, **reference_files, **document_bindings,
++                              **{str(p): sha(p) for p in (args.schedule, args.fx, args.features)}),
++                  environment=env, accounts=accounts, rejected_files=rejected,
++                  pending=[], blocking=[r['reason'] for r in rejected], baseline_equality={},
++                  calibration_documents={}, calibration_diagnostics={}, decisions={}, selected=dict(BASE), combinations={}, portfolios={},
++                  native_cases=0, actual_account_days=0, native_qualification='NOT_QUALIFIED', prospective_alpha_proven=False,
++                  limitations=['Continuous OHLC/minute/envelope MDD remains an original historical proxy, not independent continuous replay.',
++                               '2022+ history is contaminated; HAC7 intervals and upper risk bands are descriptive.',
++                               'Cash/protected participation are actual finite protected accounts, not pure buy-and-hold or maintained fractional weights.',
++                               'No native execution or prospective alpha qualification; offsets are diagnostics, no schedule or capital optimization.'])
++    equal = {}
++    initial_usdt = float(D(10000) / fx(START) * D('.999'))
++    for kind in BASE:
++        equality = {}
++        for scenario in STRESSES[kind]:
++            key = account_id(kind, BASE[kind], scenario)
++            account = accounts.get(key)
++            if account and account['status'] == 'complete':
++                try:
++                    compare_inputs(account['bundle'], references[kind][scenario]['bundle'], kind)
++                    equality[scenario] = baseline_equality(references[kind][scenario]['row'], account['row'], kind)
++                    require(equality[scenario]['passed'], 'baseline fingerprint mismatch: ' + key)
++                except (ValueError, KeyError, TypeError) as exc:
++                    report['blocking'].append(str(exc))
++            else:
++                equality[scenario] = {'passed': False, 'pending': key}
++        base_account = accounts.get(account_id(kind, BASE[kind]))
++        if base_account and base_account['status'] == 'complete':
++            for key, account in accounts.items():
++                if account['kind'] != kind or account['status'] != 'complete':
++                    continue
++                try:
++                    compare_inputs(account['bundle'], base_account['bundle'], kind, current=True)
++                except (ValueError, KeyError, TypeError) as exc:
++                    account['status'] = 'rejected'
++                    account['reasons'].append(str(exc))
++                    report['blocking'].append(key + ': ' + str(exc))
++        unity = accounts.get(account_id(kind, BASE[kind], risk=True))
++        if unity and base_account and unity['status'] == base_account['status'] == 'complete':
++            equality['actual_unity'] = baseline_equality(base_account['row'], unity['row'], kind)
++            if not equality['actual_unity']['passed']:
++                report['blocking'].append(kind + ' actual unity baseline fingerprint mismatch')
++        else:
++            equality['actual_unity'] = {'passed': False, 'pending': account_id(kind, BASE[kind], risk=True)}
++        report['baseline_equality'][kind] = equality
++        equal[kind] = all(v['passed'] for v in equality.values())
++        base_keys = [account_id(kind, n) for n in (BASE[kind], *ORDER[kind])]
++        if all(k in accounts and accounts[k]['status'] == 'complete' for k in base_keys):
++            document, diagnostics = calibration_document(accounts, kind, market_returns, initial_usdt)
++            report['calibration_documents'][kind] = document
++            report['calibration_diagnostics'][kind] = diagnostics
++        else:
++            report['pending'].append(kind + ' calibration requires four complete unscaled bases')
++        singles = decisions_for(accounts, kind, ORDER[kind], equal[kind], market_returns, initial_usdt)
++        report['decisions'][kind] = singles
++        selected, combo = choose_singles(kind, singles)
++        report['selected'][kind] = selected
++        if any(v['status'] == 'pending' for v in singles.values()):
++            report['pending'].append(kind + ' individual eligibility remains pending')
++        elif combo:
++            report['combinations'][kind] = combo
++            name = combo_name(kind, combo)
++            for a in accounts.values():
++                if a['kind'] == kind and a['candidate'] == name:
++                    require(a['components'] == combo, 'combo must contain ALL individually eligible components in registered order')
++            combo_base = accounts.get(account_id(kind, name))
++            if combo_base and combo_base['status'] == 'complete':
++                document, diagnostics = calibration_document(accounts, kind, market_returns, initial_usdt, name)
++                report['calibration_documents'][kind + '_combo'] = document
++                report['calibration_diagnostics'][kind + '_combo'] = diagnostics
++            outcome = decisions_for(accounts, kind, [name], equal[kind], market_returns, initial_usdt)[name]
++            report['decisions'][kind][name] = outcome
++            if outcome['eligible']:
++                report['selected'][kind] = name
++            if outcome['status'] == 'pending':
++                report['pending'].append(kind + ' applicable combination pending')
++    # Actual profiles must equal independently recomputed training and raw binding.
++    for kind in BASE:
++        for digest, entry in documents[kind].items():
++            expected = report['calibration_documents'].get(kind + ('_combo' if len(entry['body']['profiles']) > 4 else ''))
++            if expected is None or entry['body'] != expected:
++                report['blocking'].append(kind + ' calibration differs from deterministic source-bound training: ' + digest)
++    expected = required_matrix(report['selected'], report['combinations'])
++    report['required_accounts'] = sorted(expected)
++    extra = sorted(set(accounts) - expected)
++    if extra:
++        report['blocking'].append('unregistered/inapplicable account identities: ' + ', '.join(extra))
++    report['pending'].extend(sorted(expected - set(accounts)))
++    for key, a in accounts.items():
++        if a['status'] != 'complete':
++            report['pending'].append(key + ': ' + '; '.join(a['reasons']))
++            if a['status'] == 'rejected':
++                report['blocking'].append(key + ': rejected account')
++    for label, selected in (('current_default', BASE), ('selected', report['selected'])):
++        if label == 'selected' and selected == BASE:
++            continue
++        portfolios = []
++        for budgets in ((2500, 7500), (5000, 5000), (7500, 2500)):
++            pair = [accounts.get(account_id(k, selected[k], capital=b)) for k, b in zip(BASE, budgets)]
++            if all(a and a['status'] == 'complete' for a in pair):
++                portfolios.append(aggregate_pair(*pair, budgets, market_returns, fx, selected))
++        report['portfolios'][label] = portfolios
++    report['targets'] = {}
++    for kind, name in report['selected'].items():
++        a = accounts.get(account_id(kind, name))
++        met = bool(a and a['status'] == 'complete' and decimal(a['row']['cagr']) >= (1 if kind == 'spot' else D('1.5')) and
++                   (decimal(a['row']['mdd']) <= D('.30') if kind == 'spot' else decimal(a['row']['mdd']) < D('.50')))
++        report['targets'][kind] = {'status': 'MET' if met else 'NOT_MET', 'selection_separate_from_targets': True}
++    # Preserve original per-file envelopes in inventory (one copy per original file).
++    report['input_envelopes'] = {a['path']: {k: v for k, v in a['bundle'].items() if k != 'results'} for a in accounts.values()}
++    report['accounts'] = {k: {f: v for f, v in a.items() if f not in ('bundle', 'row')} for k, a in accounts.items()}
++    report['status'] = 'blocked' if report['blocking'] else ('pending' if report['pending'] else 'complete_pending_independent_review')
++    report['financial_review'] = None
++    if args.financial_review:
++        require(not report['blocking'] and not report['pending'], 'financial review cannot approve incomplete or blocked inventory')
++        report['financial_review'] = verify_financial_review(args.financial_review, report)
++        report['status'] = 'complete_reviewed'
++    if args.phase == 'final' and report['financial_review'] is None:
++        report['blocking'].append('final requires matching independent financial-review proof')
++        report['status'] = 'blocked'
++    report['inventory_sha256'] = old.checksum(inventory_binding(report))
++    require(old.source_identity() == source, 'assessor source changed during read')
++    return report
++
++
++def export_csv(path, report):
++    with Path(path).open('x', newline='') as stream:
++        writer = csv.writer(stream)
++        writer.writerow(('account', 'status', 'reasons', 'raw_sha256', 'cagr', 'continuous_proxy_mdd', 'es99_cny_loss'))
++        for key, account in sorted(report['accounts'].items()):
++            m = account.get('metrics', {})
++            writer.writerow((key, account['status'], '; '.join(account['reasons']), account['raw_sha256'],
++                             m.get('registered_account_cagr'), m.get('continuous_mdd_from_account'), m.get('metrics', {}).get('daily_es99_loss')))
++
++
++def export_markdown(path, report):
++    with Path(path).open('x') as stream:
++        stream.write('# Frozen BTC edge assessment\n\nStatus: ' + report['status'] + '\n\n')
++        stream.write('Native cases 0; actual account-days 0; NOT_QUALIFIED; prospective_alpha_proven=false.\n\n')
++        stream.write('Command: `' + ' '.join(report['command']) + '`\n\n')
++        stream.write('Inventory SHA256: `' + report['inventory_sha256'] + '`\n\n')
++        stream.write('Assessor source: `' + json.dumps(report['analysis_source'], sort_keys=True) + '`\n\n')
++        for kind in BASE:
++            stream.write(f"{kind}: selected {report['selected'][kind]}; original targets {report['targets'][kind]['status']}.\n\n")
++        for name in ('pending', 'blocking', 'limitations'):
++            stream.write(name + ':\n\n')
++            for value in report[name]:
++                stream.write('- ' + value + '\n')
++            stream.write('\n')
++        stream.write('Exact input identities:\n\n')
++        for path, digest in report['inputs'].items():
++            stream.write(f'- `{path}`: `{digest}`\n')
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--phase', choices=('preliminary', 'calibration', 'final'), required=True)
++    for kind in BASE:
++        parser.add_argument('--' + kind, type=Path)
++        parser.add_argument('--' + kind + '-calibration', type=Path, action='append')
++    parser.add_argument('--schedule', type=Path, default=ROOT.parent / 'coinquant/research/session_schedule.json')
++    parser.add_argument('--fx', type=Path, default=ROOT.parent / 'starquant/data/usdcny_frankfurter.json')
++    parser.add_argument('--market', type=Path, default=Path('/tmp/spotquant-market/klines'))
++    parser.add_argument('--features', type=Path, required=True)
++    parser.add_argument('--coin-market', type=Path, default=Path('/tmp/coinquant-market'))
++    parser.add_argument('--coin-prints', type=Path, default=Path('/workspace/scratch/alpha-beta-next/public-print-vault'))
++    parser.add_argument('--references', type=Path, default=ROOT / 'evidence/alpha-beta-next-20261002')
++    parser.add_argument('--financial-review', type=Path)
++    parser.add_argument('--calibration-out-dir', type=Path)
++    parser.add_argument('--out', type=Path, required=True)
++    parser.add_argument('--csv', type=Path)
++    parser.add_argument('--markdown', type=Path)
++    args = parser.parse_args(argv)
++    for path in (args.out, args.csv, args.markdown, args.calibration_out_dir):
++        require(path is None or not path.exists(), 'exclusive output already exists: ' + str(path))
++    report = assess(args)
++    report['command'] = [sys.executable, '-m', 'research.edge_assessment', *(sys.argv[1:] if argv is None else argv)]
++    if args.calibration_out_dir:
++        require(not report['blocking'], 'blocked accounts cannot produce calibration documents')
++        args.calibration_out_dir.mkdir()
++        for name, document in report['calibration_documents'].items():
++            write_new(args.calibration_out_dir / (name + '.json'), document)
++    write_new(args.out, report)
++    if args.csv:
++        export_csv(args.csv, report)
++    if args.markdown:
++        export_markdown(args.markdown, report)
++    print(json.dumps({'out': str(args.out), 'sha256': sha(args.out), 'status': report['status']}, allow_nan=False))
++    return 2 if report['blocking'] or (args.phase == 'final' and report['status'] != 'complete_reviewed') else 0
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/tests/test_edge_assessment.py b/tests/test_edge_assessment.py
+new file mode 100644
+index 0000000..13c1589
+--- /dev/null
++++ b/tests/test_edge_assessment.py
+@@ -0,0 +1,433 @@
++import copy
++from decimal import Decimal as D
++import gzip
++import hashlib
++import json
++from pathlib import Path
++import subprocess
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from research import edge_assessment as e
++
++
++def spot_row():
++    return dict(candidate='atr-stop', scenario='base', initial_cny='10000', final_cny='10000',
++                final_usdt='1000', cagr=.1, mdd='.1', audit={'passed': True}, cash_usdt='1000', btc='0',
++                fills=[], daily=[], sessions=[], client_events=[], positions={}, allocations=[], pending_intents=[],
++                session_error_count=0, execution_unresolved_sessions=0, policy_pending=False,
++                filters={'blocked': 0}, complete=True, risk_calibration={'scale': '1', 'sha256': None},
++                research_identity={'original': True}, opportunity_ledger=[], subpools=None)
++
++
++def curve(factor=1, days=None):
++    days = days or list(range(e.START, e.END, e.DAY))
++    value, result = 1000., []
++    for i, day in enumerate(days):
++        value *= 1 + factor * (.002 if i % 2 else -.001)
++        result.append(dict(day_ms=day, equity_usdt=value, equity_cny=value * 10,
++                           net_btc=0., price_usdt=10., gross_exposure_over_equity=0.))
++    return result
++
++
++def accounts(kind='spot'):
++    return {e.account_id(kind, name): dict(status='complete', curve=curve(1 if name == e.BASE[kind] else 2),
++        raw_sha256=hashlib.sha256((kind + name).encode()).hexdigest(), source={'frozen': kind})
++        for name in (e.BASE[kind], *e.ORDER[kind])}
++
++
++def gates(kind='spot'):
++    base = {s: dict(cagr='.50', mdd='.30', worst_day='-.10', es99='.08', underwater=100) for s in e.STRESSES[kind]}
++    candidate = copy.deepcopy(base)
++    candidate['base']['cagr'] = '.51'
++    achieved = dict(achieved_match=True, validation_total_usdt_return_gain='.001')
++    return candidate, base, achieved
++
++
++class InventoryTests(unittest.TestCase):
++    def test_full_matrix_includes_losing_singles_risk_controls_offsets_budgets(self):
++        matrix = e.required_matrix()
++        self.assertEqual(len(matrix), 68)
++        for kind in e.BASE:
++            for name in (e.BASE[kind], *e.ORDER[kind]):
++                self.assertIn(e.account_id(kind, name, risk=True), matrix)
++        self.assertIn(e.account_id('perp', 'incumbent', offset=-60000), matrix)
++        self.assertIn(e.account_id('spot', 'cash', 'outage'), matrix)
++        self.assertEqual(len(e.required_matrix({'spot': 'exit-confirm', 'perp': 'incumbent'})), 71)
++
++    def test_manifest_hash_nested_duplicate_and_original_envelope(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            raw = root / 'raw.json.gz'
++            raw.write_bytes(gzip.compress(json.dumps({'source': {'original': True}, 'results': {}}).encode(), mtime=0))
++            manifest = root / 'manifest.json'
++            body = dict(format=e.MANIFEST, files=[dict(path=raw.name, sha256=e.sha(raw))])
++            e.write_new(manifest, body)
++            children, bindings = e.load_files(manifest)
++            self.assertEqual(children[0][2]['source'], {'original': True})
++            self.assertEqual(bindings[str(raw)], e.sha(raw))
++            body['files'].append(body['files'][0])
++            manifest.write_text(json.dumps(body))
++            with self.assertRaisesRegex(ValueError, 'duplicate'):
++                e.load_files(manifest)
++            body['files'] = [dict(path=raw.name, sha256='0' * 64)]
++            manifest.write_text(json.dumps(body))
++            with self.assertRaisesRegex(ValueError, 'hash'):
++                e.load_files(manifest)
++            nested = root / 'nested.json'
++            nested.write_text(json.dumps(dict(format=e.MANIFEST, files=[])))
++            body['files'] = [dict(path=nested.name, sha256=e.sha(nested))]
++            manifest.write_text(json.dumps(body))
++            with self.assertRaisesRegex(ValueError, 'nested'):
++                e.load_files(manifest)
++
++    def test_strict_json_and_exclusive_outputs(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            path = Path(tmp) / 'raw.json'
++            for text in ('{"a":1,"a":2}', '{"a":NaN}', '{"a":Infinity}', '{"a":1e999}'):
++                path.write_text(text)
++                with self.assertRaises(ValueError):
++                    e.read_json(path)
++            with self.assertRaises(FileExistsError):
++                e.write_new(path, {})
++            with self.assertRaises(ValueError):
++                e.decimal('NaN')
++            with self.assertRaises(ValueError):
++                e.decimal(True)
++
++    def test_combo_all_eligible_order_ties_no_controls(self):
++        kind = 'spot'
++        decisions = {n: dict(eligible=True, worst_stress_cagr='.4') for n in e.ORDER[kind]}
++        best, combo = e.choose_singles(kind, decisions)
++        self.assertEqual(best, 'exit-confirm')
++        self.assertEqual(combo, list(e.ORDER[kind]))
++        self.assertEqual(e.combo_name(kind, combo), 'combo')
++        with self.assertRaises(ValueError):
++            e.combo_name(kind, list(reversed(combo)))
++        with self.assertRaises(ValueError):
++            e.components(kind, 'combo', ['exit-confirm', 'cash'])
++        decisions['stop-budget']['eligible'] = False
++        decisions['crowding-interaction']['eligible'] = False
++        self.assertEqual(e.choose_singles(kind, decisions)[1], [])
++
++
++class EqualityAndSourceTests(unittest.TestCase):
++    def test_six_groups_and_operating_drift_and_original_annotations(self):
++        before = spot_row()
++        self.assertTrue(e.baseline_equality(before, copy.deepcopy(before), 'spot')['passed'])
++        for key, value, group in [('final_usdt', '999', 'financial'), ('btc', '1', 'financial'),
++                                   ('filters', {'blocked': 1}, 'operating'), ('extra_original', 1, 'remaining_original_fields'),
++                                   ('risk_calibration', {'scale': '.9'}, 'original_annotations')]:
++            actual = copy.deepcopy(before)
++            actual[key] = value
++            proof = e.baseline_equality(before, actual, 'spot')
++            self.assertFalse(proof['passed'])
++            self.assertIn(group, proof['differences'])
++        actual = copy.deepcopy(before)
++        actual['opportunity_ledger'] = [{'event': 'added_edge_instrumentation'}]
++        self.assertTrue(e.baseline_equality(before, actual, 'spot')['passed'])
++
++    def test_source_committed_tree_digest_contract_and_dirty(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            (root / 'research').mkdir()
++            (root / 'spotquant').mkdir()
++            for name in ('edge_spec.json', 'edge-PROTOCOL.md'):
++                (root / 'research' / name).write_bytes((e.ROOT / 'research' / name).read_bytes())
++            for name in ('alpha_beta_spec.json', 'alpha-beta-PROTOCOL.md', 'complete-delivery-PROTOCOL.md'):
++                (root / 'research' / name).write_text('fixture')
++            (root / 'research/a.py').write_text('a = 1\n')
++            (root / 'spotquant/b.py').write_text('b = 2\n')
++            def git(*args):
++                return subprocess.check_output(['git', *args], cwd=root, stderr=subprocess.DEVNULL).decode().strip()
++            git('init', '-q'); git('add', '.')
++            git('-c', 'user.name=Test', '-c', 'user.email=test@example.test', 'commit', '-qm', 'fixture')
++            digest = hashlib.sha256()
++            for name in ('research/a.py', 'spotquant/b.py'):
++                digest.update(name.encode() + b'\0' + (root / name).read_bytes() + b'\0')
++            source = dict(git_head=git('rev-parse', 'HEAD'), dirty=False, python_sources_sha256=digest.hexdigest())
++            with patch.object(e, 'ROOT', root), patch.object(e.old, 'ROOT', root):
++                self.assertEqual(e.verify_source(source, 'spot')['research/edge_spec.json'], e.SPEC_HASH['spot'])
++                for changed in (dict(source, dirty=True), dict(source, python_sources_sha256='0' * 64)):
++                    with self.assertRaises(ValueError):
++                        e.verify_source(changed, 'spot')
++                (root / 'research/edge_spec.json').write_text('{}')
++                git('add', '.'); git('-c', 'user.name=Test', '-c', 'user.email=test@example.test', 'commit', '-qm', 'bad spec')
++                with self.assertRaisesRegex(ValueError, 'contract'):
++                    e.verify_source(dict(source, git_head=git('rev-parse', 'HEAD')), 'spot')
++
++    def test_original_session_clocks_and_outage(self):
++        row = spot_row()
++        start = e.START
++        row['sessions'] = [dict(start_ms=start, ended_ms=start + 300000, elapsed_seconds=300.,
++            archive_verified=True, archive_backup_sha256='a' * 64, status='offline_execution',
++            errors=[], execution_unresolved=False)]
++        self.assertEqual(e.old.row_validity(row, 'spot', [start], 10000), [])
++        for change in (dict(ended_ms=start + 301000), dict(execution_unresolved=True), dict(archive_verified=False)):
++            altered = copy.deepcopy(row)
++            altered['sessions'][0].update(change)
++            with self.assertRaises(ValueError):
++                e.old.row_validity(altered, 'spot', [start], 10000)
++        self.assertEqual(e.old.row_validity(row, 'spot', [start, 1583020800000], 10000, 'outage'), [])
++        with self.assertRaises(ValueError):
++            e.old.row_validity(row, 'spot', [start, start + e.DAY], 10000)
++        row['complete'] = False
++        self.assertIn('measurement_incomplete', e.old.row_validity(row, 'spot', [start, start + e.DAY], 10000))
++
++
++class RiskAndGateTests(unittest.TestCase):
++    def test_es99_ceil_and_sign(self):
++        self.assertEqual(e.es99([-.3, -.1] + [.01] * 99), .2)
++        self.assertEqual(e.es99([.1] * 100), -.1)
++        self.assertEqual(e.es99([-.3] + [.01] * 99), .3)
++
++    def test_training_only_future_perturbation_exact_731_and_project_separation(self):
++        market = [.01 if i % 2 else -.005 for i in range(len(curve()))]
++        data = accounts()
++        doc, stats = e.calibration_document(data, 'spot', market, 1000)
++        self.assertEqual(stats['exit-confirm']['training_days'], 731)
++        self.assertEqual(doc['profiles']['atr-stop']['scale'], '1')
++        changed = copy.deepcopy(data)
++        for a in changed.values():
++            for p in a['curve'][731:]:
++                p['equity_usdt'] *= 1000
++        other, _ = e.calibration_document(changed, 'spot', market[:731] + [999] * (len(market) - 731), 1000)
++        self.assertEqual(doc, other)
++        changed = copy.deepcopy(data)
++        changed[e.account_id('spot', 'exit-confirm')]['curve'].pop(5)
++        with self.assertRaisesRegex(ValueError, '731'):
++            e.calibration_document(changed, 'spot', market, 1000)
++        perp, _ = e.calibration_document(accounts('perp'), 'perp', market, 1000)
++        self.assertNotEqual(doc['profiles']['crowding-interaction'], perp['profiles']['crowding-interaction'])
++        self.assertEqual(perp['profiles']['crowding-interaction']['project_kind'], 'perp')
++
++    def test_profile_schema_scale_raw_binding_and_unity(self):
++        market = [.01 if i % 2 else -.005 for i in range(len(curve()))]
++        doc, _ = e.calibration_document(accounts(), 'spot', market, 1000)
++        names = list(doc['profiles'])
++        for changes in ({'scale': '-.01'}, {'scale': 'NaN'}, {'base_bundle_sha256': 'x'},
++                        {'project_kind': 'perp'}, {'calibration_end_ms': e.CUTOFF + 1}, {'extra': 1}):
++            altered = copy.deepcopy(doc)
++            altered['profiles']['exit-confirm'].update(changes)
++            with self.assertRaises(ValueError):
++                e.validate_profile_document(altered, 'spot', names)
++        doc['profiles']['atr-stop']['scale'] = '.999'
++        with self.assertRaises(ValueError):
++            e.validate_profile_document(doc, 'spot', names)
++
++    def test_exact_adoption_equality_and_just_fail(self):
++        candidate, baseline, match = gates()
++        candidate['base'].update(worst_day='-.105', es99='.084', underwater=100)
++        for s in e.STRESSES['spot'][1:]:
++            candidate[s]['cagr'] = '.49'
++        run = lambda: e.adoption_gates('spot', candidate, baseline, match, '.30', '.30', True)
++        self.assertTrue(run()['eligible'])
++        for field, bad, reason in [('worst_day', '-.1050000001', 'worst_cny_day'),
++                                   ('es99', '.0840000001', 'es99'), ('underwater', 101, 'underwater'),
++                                   ('cagr', '.5099999999', 'base_improvement'), ('mdd', '.3000000001', 'base:mdd')]:
++            saved = candidate['base'][field]
++            candidate['base'][field] = bad
++            self.assertIn(reason, run()['reasons'])
++            candidate['base'][field] = saved
++        self.assertFalse(e.adoption_gates('spot', candidate, baseline, match, '.30', '.30', False)['eligible'])
++
++    def test_perp_strict_mdd_and_actual_risk_only_fallback(self):
++        candidate, baseline, match = gates('perp')
++        candidate['base']['mdd'] = '.50'
++        self.assertIn('base:mdd', e.adoption_gates('perp', candidate, baseline, match, '.3', '.3', True)['reasons'])
++        candidate['base']['mdd'] = '.499999'
++        match['validation_total_usdt_return_gain'] = '-.01'
++        self.assertTrue(e.adoption_gates('perp', candidate, baseline, match, '.29', '.30', True)['eligible'])
++        self.assertFalse(e.adoption_gates('perp', candidate, baseline, match, '.290000001', '.30', True)['eligible'])
++        match['achieved_match'] = False
++        self.assertFalse(e.adoption_gates('perp', candidate, baseline, match, '.29', '.30', True)['eligible'])
++
++    def test_cash_identifiable_and_degenerate_market(self):
++        regression = e.old.safe_regression([0.] * 10, [.01, -.01] * 5)
++        self.assertTrue(regression['identifiable'])
++        self.assertEqual(regression['beta_btc'], 0)
++        self.assertEqual(e.old.risk_stats([0.] * 10, [.01, -.01] * 5)['volatility'], 0)
++        self.assertFalse(e.old.safe_regression([0.] * 10, [0.] * 10)['identifiable'])
++
++
++class CapitalTests(unittest.TestCase):
++    def pair(self):
++        result = []
++        for kind, budget in (('spot', 2500), ('perp', 7500)):
++            initial = float(D(budget) / 10 * D('.999'))
++            values = [dict(day_ms=d, equity_cny=budget * .998001, equity_usdt=initial,
++                           net_btc=1., price_usdt=10.) for d in range(e.START, e.END, e.DAY)]
++            result.append(dict(status='complete', kind=kind, candidate=e.BASE[kind], capital=str(budget),
++                offset=0, scenario='base', risk=False, row=dict(audit={'passed': True}, initial_cny=str(budget)),
++                curve=values, raw_sha256=kind, metrics=dict(fees_usdt='1', funding_paid_usdt='0')))
++        return result
++
++    def test_actual_budget_sum_exposure_conservation(self):
++        a, b = self.pair()
++        result = e.aggregate_pair(a, b, (2500, 7500), [.01, -.01] * (len(a['curve']) // 2) + [.01] * (len(a['curve']) % 2), lambda _: D(10))
++        self.assertAlmostEqual(result['curve'][0]['equity_cny'], 9980.01)
++        self.assertEqual(result['curve'][0]['absolute_btc_notional_usdt'], 20)
++        self.assertIsNone(result['account_return_correlation'])
++        self.assertFalse(result['neutral_reference'])
++        self.assertEqual(result['initial_cny'], 10000)
++        self.assertEqual(result['cash_flows'], 0)
++
++    def test_wrong_capital_role_daily_alignment_and_curve_scaling_rejected(self):
++        market = [0.] * len(curve())
++        for changes in (dict(capital='10000'), dict(offset=60000), dict(risk=True), dict(status='pending'), dict(scenario='outage'), dict(candidate='cash')):
++            a, b = self.pair()
++            a.update(changes)
++            with self.assertRaises(ValueError):
++                e.aggregate_pair(a, b, (2500, 7500), market, lambda _: D(10))
++        a, b = self.pair()
++        b['curve'].pop()
++        with self.assertRaises(ValueError):
++            e.aggregate_pair(a, b, (2500, 7500), market, lambda _: D(10))
++        a, b = self.pair()
++        a['row']['initial_cny'] = '10000'
++        with self.assertRaises(ValueError):
++            e.aggregate_pair(a, b, (2500, 7500), market, lambda _: D(10))
++
++
++class EnvelopeAndPhaseTests(unittest.TestCase):
++    def fixture(self):
++        env = dict(starts=[e.START], fx_sha256='fx', market_sha256='market', schedule_sha256='schedule')
++        source = dict(git_head='a' * 40, dirty=False, python_sources_sha256='b' * 64)
++        row = spot_row()
++        row.update(complete=False, cagr=None)
++        body = dict(format='btc-alpha-beta-edge-spot-v1', source=source,
++            spec_sha256=e.SPEC_HASH['spot'], protocol_sha256=e.PROTOCOL_HASH['spot'],
++            fx_sha256='fx', market_sha256='market', schedule_sha256='schedule', feature_sha256=None,
++            feature_consumed=False, risk_calibration_sha256=None, risk_calibration={'scale': '1', 'sha256': None},
++            edge=dict(candidate='atr-stop', scenario='base', components=[], execution='actual_finite_session_lifecycle',
++                      original_candidate='atr-stop', partial_limit=1), results={'atr-stop-base': row})
++        return body, env
++
++    def test_envelope_source_contract_inputs_and_partial_retention(self):
++        body, env = self.fixture()
++        with tempfile.TemporaryDirectory() as tmp, patch.object(e, 'verify_source', return_value={}) as proof:
++            path = Path(tmp) / 'raw.json'
++            e.write_new(path, body)
++            accounts, files, rejected = e.ingest({'spot': path}, env, [], lambda _: D(7), [], [], {'spot': {}, 'perp': {}})
++            self.assertFalse(rejected)
++            row = accounts[e.account_id('spot', 'atr-stop')]
++            self.assertEqual(row['status'], 'pending')
++            self.assertEqual(row['bundle']['source'], body['source'])
++            proof.assert_called_once_with(body['source'], 'spot')
++            for field in ('spec_sha256', 'protocol_sha256', 'fx_sha256', 'schedule_sha256', 'market_sha256'):
++                bad = copy.deepcopy(body); bad[field] = 'wrong'
++                with self.assertRaises(ValueError):
++                    e.envelope(bad, 'spot', env, {})
++            bad = copy.deepcopy(body); bad['edge']['original_candidate'] = 'consensus'
++            with self.assertRaises(ValueError):
++                e.envelope(bad, 'spot', env, {})
++
++    def test_duplicate_account_identity_rejected_across_distinct_files(self):
++        body, env = self.fixture()
++        with tempfile.TemporaryDirectory() as tmp, patch.object(e, 'verify_source', return_value={}):
++            root = Path(tmp)
++            files = []
++            for name in ('a.json', 'b.json'):
++                path = root / name; e.write_new(path, body)
++                files.append(dict(path=name, sha256=e.sha(path)))
++            manifest = root / 'manifest.json'; e.write_new(manifest, dict(format=e.MANIFEST, files=files))
++            with self.assertRaisesRegex(ValueError, 'duplicate account identity'):
++                e.ingest({'spot': manifest}, env, [], lambda _: D(7), [], [], {'spot': {}, 'perp': {}})
++
++    def test_actual_profile_exact_document_binding(self):
++        data = accounts()
++        doc, _ = e.calibration_document(data, 'spot', [.01, -.01] * 1227, 1000)
++        body, _ = self.fixture()
++        digest = 'd' * 64
++        body['risk_calibration_sha256'] = digest
++        body['risk_calibration'] = dict(doc['profiles']['atr-stop'], sha256=digest)
++        account = dict(kind='spot', candidate='atr-stop', bundle=body)
++        docs = {'spot': {digest: {'body': doc, 'bytes': b'original'}}}
++        e.verify_account_binding(account, docs)
++        body['risk_calibration']['base_bundle_sha256'] = 'e' * 64
++        with self.assertRaises(ValueError):
++            e.verify_account_binding(account, docs)
++        with self.assertRaises(ValueError):
++            e.verify_account_binding(account, {'spot': {}})
++
++    def test_daily_cash_reconstruction_and_terminal_rejection(self):
++        row = spot_row()
++        row['initial_cny'] = '10000'; row['fills'] = []
++        daily = [dict(timestamp_ms=e.START + e.DAY, cash_usdt='999', btc='0', price_usdt='10',
++                      equity_usdt='999', equity_cny='9980.01')]
++        e.audit_daily(row, daily, 'spot', lambda _: D(10))
++        daily[0]['cash_usdt'] = '998'
++        with self.assertRaisesRegex(ValueError, 'daily monetary'):
++            e.audit_daily(row, daily, 'spot', lambda _: D(10))
++        row.update(final_usdt='999', final_cny='9980.01', cash_usdt='999', btc='0',
++                   audit=dict(passed=True, cash_from_fills='999.000', btc_from_fills='0', fees_usdt='0', no_deposits=True))
++        # Audit fields retain exact original Decimal spelling; derive with helper.
++        row['audit'] = e.spot_audit(e.SimpleNamespace(initial_cash=D('999.000'), cash=D(999), btc=D(0), fills=[]))
++        self.assertTrue(e.monetary_audit(row, 'spot', lambda _: D(10))['passed'])
++        row['final_cny'] = '9980.02'
++        with self.assertRaisesRegex(ValueError, 'terminal CNY'):
++            e.monetary_audit(row, 'spot', lambda _: D(10))
++
++    def test_consumed_official_bytes_checksum_and_derived_receipts(self):
++        with tempfile.TemporaryDirectory() as tmp:
++            root = Path(tmp)
++            path = root / 'tape.zip'; path.write_bytes(b'official-original')
++            checksum = path.with_suffix('.zip.CHECKSUM'); checksum.write_text(e.sha(path) + '  tape.zip\n')
++            bundle = dict(inputs=dict(loaded_minute_files={}, loaded_print_files={'tape.zip': e.sha(path)}),
++                edge=dict(print_restore_receipts=[dict(name='tape.zip', sha256=e.sha(path),
++                checksum_sha256=e.sha(checksum), derived_binary_sha256='a' * 64)]))
++            env = dict(coin_market=tmp, coin_prints=tmp)
++            e.verify_consumed_files(bundle, env, {})
++            path.write_bytes(b'foreign')
++            with self.assertRaisesRegex(ValueError, 'CHECKSUM'):
++                e.verify_consumed_files(bundle, env, {})
++
++    def test_preliminary_pending_and_final_fail_closed_without_inventory(self):
++        from contextlib import ExitStack
++        args = e.SimpleNamespace(phase='preliminary', schedule=Path('schedule'), fx=Path('fx'), market=Path('market'),
++            features=Path('features'), coin_market=Path('coin'), coin_prints=Path('prints'), references=Path('references'),
++            spot=None, perp=None, spot_calibration=None, perp_calibration=None, financial_review=None)
++        with ExitStack() as stack:
++            for owner, name, value in ((e.old, 'source_identity', {'dirty': False}), (e, 'verify_source', {}),
++                (e, 'environment', {}), (e.old, 'load_daily', []), (e.old, 'PriorFX', lambda _: D(10)),
++                (e.old, 'market_returns_for', ([], [])), (e, 'approved_references', ({'spot': {}, 'perp': {}}, {})),
++                (e, 'ingest', ({}, {}, [])), (e, 'sha', 'a' * 64)):
++                stack.enter_context(patch.object(owner, name, return_value=value))
++            preliminary = e.assess(args)
++            self.assertEqual(preliminary['status'], 'pending')
++            self.assertEqual(len(preliminary['required_accounts']), 68)
++            self.assertFalse(preliminary['blocking'])
++            args.phase = 'final'
++            final = e.assess(args)
++            self.assertEqual(final['status'], 'blocked')
++            self.assertIn('final requires matching independent financial-review proof', final['blocking'])
++            self.assertEqual(final['native_qualification'], 'NOT_QUALIFIED')
++
++    def test_financial_review_exact_preliminary_and_inventory_binding(self):
++        report = dict(inputs={'original': 'a' * 64}, analysis_source={'dirty': False}, contracts={}, accounts={},
++            required_accounts=[], selected=e.BASE, calibration_documents={}, decisions={}, baseline_equality={},
++            phase='preliminary', status='complete_pending_independent_review', pending=[], blocking=[])
++        with tempfile.TemporaryDirectory() as tmp, patch.object(e, 'verify_source', return_value={}):
++            root = Path(tmp)
++            prior = root / 'preliminary.json'; e.write_new(prior, report)
++            binding = e.old.checksum(e.inventory_binding(report))
++            checks = {}
++            for category in ('source_and_inputs', 'original_accounting', 'baseline_six_groups',
++                             'calibration_and_actual_risk', 'adoption_gates', 'actual_budget_aggregation'):
++                path = root / (category + '.json')
++                e.write_new(path, dict(inventory_sha256=binding, category=category, recomputations={'case': 'result'}))
++                checks[category] = dict(passed=True, artifact=dict(path=path.name, sha256=e.sha(path)))
++            proof = dict(format='btc-edge-financial-review-v1', preliminary=dict(path=prior.name, sha256=e.sha(prior)),
++                         inventory_sha256=binding, reviewer_source={'dirty': False}, checks=checks)
++            path = root / 'review.json'; e.write_new(path, proof)
++            self.assertEqual(e.verify_financial_review(path, report)['sha256'], e.sha(path))
++            changed = copy.deepcopy(report); changed['inputs']['original'] = 'b' * 64
++            with self.assertRaisesRegex(ValueError, 'inventory'):
++                e.verify_financial_review(path, changed)
++            prior.write_text(prior.read_text() + ' ')
++            with self.assertRaisesRegex(ValueError, 'preliminary'):
++                e.verify_financial_review(path, report)
++
++if __name__ == '__main__':
++    unittest.main()

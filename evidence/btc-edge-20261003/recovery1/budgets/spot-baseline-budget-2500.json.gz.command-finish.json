@@ -1,0 +1,13 @@
+{
+  "label": "spot-baseline-budget-2500",
+  "state": "exited",
+  "pid": 116610,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T13:11:06.506492+00:00",
+  "elapsed_seconds": 602.4101739309845,
+  "errors": [],
+  "command_start_sha256": "57bccd294bd64c98c10c40747c99bc8eeaa8c958388ee30adf146f2bb2d92208",
+  "log_sha256": "71ca389fc2f54dcf8e3d15ef64e68a27d9de78f42fe6192ca1cf6cb0755bb04d",
+  "output_sha256": "16169342ab46e3cbd7111fec2e30dada11caeb3a8cb2e0f0912c19ee9dd51cac"
+}

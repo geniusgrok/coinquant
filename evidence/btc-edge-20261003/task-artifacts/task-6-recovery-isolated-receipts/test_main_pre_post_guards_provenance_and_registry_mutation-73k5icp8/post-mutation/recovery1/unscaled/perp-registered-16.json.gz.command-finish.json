@@ -1,0 +1,18 @@
+{
+  "label": "perp-registered-16",
+  "state": "exited",
+  "pid": 94705,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T06:01:43.069257+00:00",
+  "elapsed_seconds": 0.05231645202729851,
+  "errors": [
+    {
+      "stage": "post_guard",
+      "error": "ValueError('recovery registry/approval bytes changed')"
+    }
+  ],
+  "command_start_sha256": "a253dd1fe227549bdb33b12758e4da9c67494272b2dad8646388a04da6d10a2b",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211"
+}

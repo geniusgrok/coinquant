@@ -1,0 +1,24 @@
+test_active_substep_partial_fill_does_not_authorize_a_topup (test_edge_spot.EdgeSpotTests.test_active_substep_partial_fill_does_not_authorize_a_topup) ... ok
+test_calibration_all_profiles_strict_fields_kind_boundaries_duplicate (test_edge_spot.EdgeSpotTests.test_calibration_all_profiles_strict_fields_kind_boundaries_duplicate) ... ok
+test_crowding_strict_actual_clock_momentum_and_missing_safety (test_edge_spot.EdgeSpotTests.test_crowding_strict_actual_clock_momentum_and_missing_safety) ... ok
+test_exit_confirmation_preserves_bearish_vote_and_safety_priority (test_edge_spot.EdgeSpotTests.test_exit_confirmation_preserves_bearish_vote_and_safety_priority) ... ok
+test_hooks_restored_on_decision_and_measurement_failure (test_edge_spot.EdgeSpotTests.test_hooks_restored_on_decision_and_measurement_failure) ... ok
+test_previous_sma_uses_its_own_completed_window_and_equality_is_below (test_edge_spot.EdgeSpotTests.test_previous_sma_uses_its_own_completed_window_and_equality_is_below) ... ok
+test_real_cash_and_two_protected_controls_fees_stop_no_same_day_reentry (test_edge_spot.EdgeSpotTests.test_real_cash_and_two_protected_controls_fees_stop_no_same_day_reentry) ... {"candidate": "cash", "scenario": "base", "session": 0}
+{"candidate": "protected-participation-25", "scenario": "base", "session": 0}
+{"candidate": "protected-participation-100", "scenario": "base", "session": 0}
+ok
+test_registered_components_and_minimum_rounding (test_edge_spot.EdgeSpotTests.test_registered_components_and_minimum_rounding) ... ok
+test_risk_cutoff_and_held_protections_untouched (test_edge_spot.EdgeSpotTests.test_risk_cutoff_and_held_protections_untouched) ... ok
+test_state_rule_checkpoint_profile_reject_before_recover_spy (test_edge_spot.EdgeSpotTests.test_state_rule_checkpoint_profile_reject_before_recover_spy) ... ok
+test_stop_budget_caps_original_proposal_accounts_fees_and_blocks_missing (test_edge_spot.EdgeSpotTests.test_stop_budget_caps_original_proposal_accounts_fees_and_blocks_missing) ... ok
+test_stop_risk_aggregates_allocated_sleeves_and_rounding_dust (test_edge_spot.EdgeSpotTests.test_stop_risk_aggregates_allocated_sleeves_and_rounding_dust) ... ok
+test_unity_baseline_all_six_original_groups_and_budget (test_edge_spot.EdgeSpotTests.test_unity_baseline_all_six_original_groups_and_budget) ... {"candidate": "atr-stop", "scenario": "base", "session": 0}
+{"candidate": "atr-stop", "scenario": "base", "session": 0}
+{"candidate": "atr-stop", "scenario": "base", "session": 0}
+ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 5.227s
+
+OK

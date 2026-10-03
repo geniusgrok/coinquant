@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "bridges": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding-consumer-fix1/canonical-bridges.json",
+    "sha256": "38485f3b6116c88f889576fba1eb35d459490de4ae6204cd0a04073bc809201b"
+  },
+  "attestations": {
+    "spot": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding-consumer-fix1/spot-canonical-forward-attestation.json",
+      "sha256": "3c10be44b3f6845b667f4419579814fc54f18a658625728bf2725b325050495d"
+    },
+    "perp": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding-consumer-fix1/perp-canonical-forward-attestation.json",
+      "sha256": "48966dfc0675acb33d0a2fabd7e48ce6bd0595705478b2ba27d4ca063b467b49"
+    }
+  },
+  "current_sources": {
+    "spot": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding-consumer-fix1/spotquant-current-source.json",
+      "sha256": "2cf94e416b95b6d7657696d7468378e61e44e4484cfeac7c3f046b49c2bd344f"
+    },
+    "perp": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding-consumer-fix1/coinquant-current-source.json",
+      "sha256": "717296acb7b2c1e3c2689d788f1f943cbcacd71b3c63df541677ab497da770e1"
+    }
+  },
+  "proof": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding-consumer-fix1/consumer-binding-proof.json",
+    "sha256": "abf4645bb45322587ee060e4cf4c670bd01bc3f1942b806b8abecb12cf419c03"
+  },
+  "report": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding-consumer-fix1/consumer-binding-review.md",
+    "sha256": "a919cc487a1b66b5bd70b4a53a181921420ac1d5b459e54cb0e0377542edb946"
+  },
+  "fix_review": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/final-export-proof-reader-fix/independent-review.md",
+    "sha256": "fb6d045c975e3a197923ba603ac90ceef5cadd61eec6a5a1d59f421a79b3305c"
+  },
+  "final_report": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json",
+    "sha256": "16ee432bd45c9783f9f38beb19aa7fef21ca3cc6305bee29469a371d388b2625"
+  },
+  "financial_review": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/independent-financial-review-proof.json",
+    "sha256": "50dc293c8225027f2bfa49508cdd058f2ccc4a44ebb4976f3b41b206d048aefc"
+  }
+}

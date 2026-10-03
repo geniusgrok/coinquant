@@ -1,0 +1,88 @@
+BASE 953caac5b244f10885e7a70b8fdb6f6e62edcde0
+New regression methods: ForwardTests.test_prior_unresolved_span_blocks_later_local_passive_fill, ForwardTests.test_entry_day_prefill_wick_does_not_tighten_owned_stop, ForwardTests.test_bearish_ordinary_full_exit_restores_then_requires_fresh_cross, ForwardTests.test_partial_ordinary_exit_and_later_passive_exit_restore
+FFEE
+======================================================================
+ERROR: test_bearish_ordinary_full_exit_restores_then_requires_fresh_cross (__main__.ForwardTests.test_bearish_ordinary_full_exit_restores_then_requires_fresh_cross)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/task6-complete-spotquant-kiuty5_q/spotquant/model.py", line 426, in restore
+    raise ValueError('streak')
+ValueError: streak
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<string>", line 355, in test_bearish_ordinary_full_exit_restores_then_requires_fresh_cross
+  File "<string>", line 298, in append_receipts
+  File "/tmp/task6-complete-spotquant-kiuty5_q/research/edge_forward.py", line 1008, in observe
+    result = seal(result); audit(result)
+                           ^^^^^^^^^^^^^
+  File "/tmp/task6-complete-spotquant-kiuty5_q/research/edge_forward.py", line 663, in audit
+    for saved in state['engine']['models'].values(): Model.restore(saved)
+                                                     ^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/task6-complete-spotquant-kiuty5_q/spotquant/model.py", line 435, in restore
+    raise Blocked('model checkpoint does not match this origin') from exc
+spotquant.types.Blocked: model checkpoint does not match this origin
+
+======================================================================
+ERROR: test_partial_ordinary_exit_and_later_passive_exit_restore (__main__.ForwardTests.test_partial_ordinary_exit_and_later_passive_exit_restore)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/task6-complete-spotquant-kiuty5_q/spotquant/model.py", line 426, in restore
+    raise ValueError('streak')
+ValueError: streak
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<string>", line 379, in test_partial_ordinary_exit_and_later_passive_exit_restore
+  File "<string>", line 298, in append_receipts
+  File "/tmp/task6-complete-spotquant-kiuty5_q/research/edge_forward.py", line 1008, in observe
+    result = seal(result); audit(result)
+                           ^^^^^^^^^^^^^
+  File "/tmp/task6-complete-spotquant-kiuty5_q/research/edge_forward.py", line 663, in audit
+    for saved in state['engine']['models'].values(): Model.restore(saved)
+                                                     ^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/task6-complete-spotquant-kiuty5_q/spotquant/model.py", line 435, in restore
+    raise Blocked('model checkpoint does not match this origin') from exc
+spotquant.types.Blocked: model checkpoint does not match this origin
+
+======================================================================
+FAIL: test_prior_unresolved_span_blocks_later_local_passive_fill (__main__.ForwardTests.test_prior_unresolved_span_blocks_later_local_passive_fill)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 311, in test_prior_unresolved_span_blocks_later_local_passive_fill
+AssertionError: Lists differ: [{'kind': 'sell', 'qty': '4.23816', 'price[988 chars]9']}] != []
+
+First list contains 3 additional elements.
+First extra element 0:
+{'kind': 'sell', 'qty': '4.23816', 'price': '79.9120', 'fee': '0.338679841920', 'modeled': True, 'time': 1582070409880, 'slippage_reserve': '0.0011', 'sleeves': ['30'], 'passive': True, 'trigger_stop': '100.91', 'trade_id': 101, 'public_print_price': '80', 'source_sha256': ['5ca72d67ffa74faa639e371160fe52c768cb49f13f48061702f7b9e934406e89']}
+
+Diff is 1193 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_entry_day_prefill_wick_does_not_tighten_owned_stop (__main__.ForwardTests.test_entry_day_prefill_wick_does_not_tighten_owned_stop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<string>", line 326, in test_entry_day_prefill_wick_does_not_tighten_owned_stop
+AssertionError: Lists differ: [{'kind': 'sell', 'qty': '12.71449', 'pric[180 chars]000}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{'kind': 'sell', 'qty': '12.71449', 'price': '111.866811', 'fee': '1.42232944979139', 'modeled': True, 'time': 1581984130000, 'slippage_reserve': '0.0011', 'sleeves': ['30', '40', '50'], 'opportunity_interval': 1581984000000}
+
++ []
+- [{'fee': '1.42232944979139',
+-   'kind': 'sell',
+-   'modeled': True,
+-   'opportunity_interval': 1581984000000,
+-   'price': '111.866811',
+-   'qty': '12.71449',
+-   'sleeves': ['30', '40', '50'],
+-   'slippage_reserve': '0.0011',
+-   'time': 1581984130000}]
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.641s
+
+FAILED (failures=2, errors=2)

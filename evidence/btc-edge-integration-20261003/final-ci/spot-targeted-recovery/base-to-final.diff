@@ -1,0 +1,41 @@
+diff --git a/tests/test_edge_spot.py b/tests/test_edge_spot.py
+index fd1625d..cfce6ce 100644
+--- a/tests/test_edge_spot.py
++++ b/tests/test_edge_spot.py
+@@ -184,7 +184,7 @@ class EdgeSpotTests(unittest.TestCase):
+     def test_crowding_strict_actual_clock_momentum_and_missing_safety(self):
+         # Unit reader records use the real availability lookup, without fabricating an artifact.
+         book = FeatureBook.__new__(FeatureBook)
+-        now = ORIGIN + 402 * DAY + 120000
++        now = ORIGIN + 402 * DAY + 60000  # Prior UTC completion + basis publication lag.
+         book.sha256 = 'a' * 64
+         book.source = dict(raw_sha256='b' * 64, market_identities={})
+         book.times = {'funding': [now], 'basis': [now]}
+@@ -364,7 +364,7 @@ class EdgeSpotTests(unittest.TestCase):
+                     model.Model, follow.Model, execution.decision_view, preview.decision_view, preview._position_decision,
+                     complete_spot.Policy, complete_spot.configured)
+         with self.assertRaises(RuntimeError):
+-            with policy('protected-participation-25') as p, patch.object(preview, 'decision', side_effect=RuntimeError('decision failure')):
++            with policy('protected-participation-25') as p, patch.object(preview, 'atr_decision', side_effect=RuntimeError('decision failure')):
+                 decide(p)
+         self.assertEqual(original, (session.portfolio, session.State, session.Model, session.RULE, session._guard_state,
+                                     model.Model, follow.Model, execution.decision_view, preview.decision_view, preview._position_decision,
+diff --git a/tests/test_session_account.py b/tests/test_session_account.py
+index 2fd6e44..1e3c9cc 100644
+--- a/tests/test_session_account.py
++++ b/tests/test_session_account.py
+@@ -44,11 +44,13 @@ class SessionAccountTests(unittest.TestCase):
+         self.assertEqual(venue.price, D(101))
+ 
+     def test_actual_bounded_sessions_enter_protect_and_independently_audit(self):
++        from crowding_fixtures import KnownFeatures
+         venue = HistoricalVenue(bars(), ORIGIN + 401 * DAY, D(1000), lambda t: D(7))
++        venue.crowding_features = KnownFeatures
+         with tempfile.TemporaryDirectory() as directory:
+             cfg = Config('1', directory, 10, 5, 'demo', '5000000')
+             for day in (401, 402, 403):
+-                venue.advance(ORIGIN + day * DAY)
++                venue.advance(ORIGIN + day * DAY + 60000)  # Causal basis is now published.
+                 report = run(cfg, venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+                 self.assertEqual(report['errors'], [])
+             self.assertGreater(venue.btc, 0)

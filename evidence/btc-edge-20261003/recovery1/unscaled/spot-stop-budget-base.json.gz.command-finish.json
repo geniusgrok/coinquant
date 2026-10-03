@@ -1,0 +1,13 @@
+{
+  "label": "spot-stop-budget-base",
+  "state": "exited",
+  "pid": 97168,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T07:41:16.492626+00:00",
+  "elapsed_seconds": 500.99304058399866,
+  "errors": [],
+  "command_start_sha256": "bc54606afcce6bf21bc457a1fc16fc148708c26c1ee32d4cabe49966d334ae4f",
+  "log_sha256": "27dd328f8ea22f8a82520df1abba589844121c39a3b06a4e6f8d56ff1387e06f",
+  "output_sha256": "c5422ef1b46832c46366180ceb633411ec4744b672e1334b55e43a2045c59aac"
+}

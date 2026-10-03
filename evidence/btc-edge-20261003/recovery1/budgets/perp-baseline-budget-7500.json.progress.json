@@ -1,0 +1,17 @@
+{
+  "source": {
+    "git_head": "37061a7f588f97cc16852551cab6cd2e51acb920",
+    "dirty": false,
+    "python_sources_sha256": "ba63895131db566e708a5c96cde4504beace39fa0bdd54881d039dd5b8ef4c50"
+  },
+  "complete": false,
+  "last_session": 794,
+  "accounts": {
+    "incumbent/base": {
+      "sessions": 795,
+      "wallet": "322060.0176035784297852654890",
+      "position": "0.000",
+      "failure": null
+    }
+  }
+}

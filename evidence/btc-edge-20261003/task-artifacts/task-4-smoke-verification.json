@@ -1,0 +1,183 @@
+{
+  "source": {
+    "git_head": "fa77a6e51aafd68ebcd99236ce9712d7085381ed",
+    "dirty": false,
+    "python_sources_sha256": "4eec1f151c611ba549641aff26a2ca5f742bd628c3ee5715417b2d36627ca15e"
+  },
+  "baseline_equality": {
+    "base": {
+      "all_original_row_fields_equal": true,
+      "differing_top_level_keys": [],
+      "excluded": [
+        "opportunity_ledger"
+      ],
+      "archive_hash_normalization_used": false
+    },
+    "fees-x1.5": {
+      "all_original_row_fields_equal": true,
+      "differing_top_level_keys": [],
+      "excluded": [
+        "opportunity_ledger"
+      ],
+      "archive_hash_normalization_used": false
+    },
+    "read-400ms": {
+      "all_original_row_fields_equal": true,
+      "differing_top_level_keys": [],
+      "excluded": [
+        "opportunity_ledger"
+      ],
+      "archive_hash_normalization_used": false
+    },
+    "trigger-slip": {
+      "all_original_row_fields_equal": true,
+      "differing_top_level_keys": [],
+      "excluded": [
+        "opportunity_ledger"
+      ],
+      "archive_hash_normalization_used": false
+    }
+  },
+  "print_restore_receipts_match_actual_loaded": true,
+  "print_restore_receipts": [
+    {
+      "name": "BTCUSDT-aggTrades-2020-01-01.zip",
+      "sha256": "638e72c179e4965c2a6521bb27295930d09126433efe0cc3acd4e925ada955ac",
+      "checksum_sha256": "54f9a3ec8d0ea0363fcd730c2eb43399fa425d2d1fd803a7261f761af78d8499",
+      "source": "/workspace/scratch/alpha-beta-next/public-print-vault/BTCUSDT-aggTrades-2020-01-01.zip",
+      "method": "verified_link_or_exclusive_copy"
+    }
+  ],
+  "decision_coverage": {
+    "incumbent": {
+      "base": {
+        "actual_decisions": 31,
+        "edge_evaluations": 0,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      },
+      "fees-x1.5": {
+        "actual_decisions": 31,
+        "edge_evaluations": 0,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      },
+      "read-400ms": {
+        "actual_decisions": 23,
+        "edge_evaluations": 0,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      },
+      "trigger-slip": {
+        "actual_decisions": 31,
+        "edge_evaluations": 0,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      }
+    },
+    "quality-budget": {
+      "base": {
+        "actual_decisions": 31,
+        "edge_evaluations": 31,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      },
+      "fees-x1.5": {
+        "actual_decisions": 31,
+        "edge_evaluations": 31,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      },
+      "read-400ms": {
+        "actual_decisions": 23,
+        "edge_evaluations": 23,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      },
+      "trigger-slip": {
+        "actual_decisions": 31,
+        "edge_evaluations": 31,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      }
+    },
+    "cost-horizon": {
+      "base": {
+        "actual_decisions": 31,
+        "edge_evaluations": 31,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {
+          "funding:known": 31
+        }
+      },
+      "fees-x1.5": {
+        "actual_decisions": 31,
+        "edge_evaluations": 31,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {
+          "funding:known": 31
+        }
+      },
+      "read-400ms": {
+        "actual_decisions": 23,
+        "edge_evaluations": 23,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {
+          "funding:known": 23
+        }
+      },
+      "trigger-slip": {
+        "actual_decisions": 31,
+        "edge_evaluations": 31,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {
+          "funding:known": 31
+        }
+      }
+    },
+    "crowding-interaction": {
+      "base": {
+        "actual_decisions": 31,
+        "edge_evaluations": 31,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      },
+      "fees-x1.5": {
+        "actual_decisions": 31,
+        "edge_evaluations": 31,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      },
+      "read-400ms": {
+        "actual_decisions": 23,
+        "edge_evaluations": 23,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      },
+      "trigger-slip": {
+        "actual_decisions": 31,
+        "edge_evaluations": 31,
+        "primary_new_risk_blocked": 0,
+        "missing_inputs": {},
+        "feature_lookups": {}
+      }
+    }
+  },
+  "all_final_smoke_accounts_audited": true,
+  "limitation": "One session each; complete=false, CAGR=null. No full-window financial or native qualification proof."
+}

@@ -1,0 +1,61 @@
+{
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T16:21:23.303806+00:00",
+  "job": {
+    "label": "complete-preliminary",
+    "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_assessment",
+      "--phase",
+      "preliminary",
+      "--spot",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary-spot-manifest.json",
+      "--perp",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary-perp-manifest.json",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--schedule",
+      "/workspace/btc-alpha-beta-improve/coinquant/research/session_schedule.json",
+      "--fx",
+      "/workspace/btc-alpha-beta-improve/starquant/data/usdcny_frankfurter.json",
+      "--market",
+      "/tmp/spotquant-market/klines",
+      "--coin-market",
+      "/tmp/coinquant-market",
+      "--coin-prints",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/public-print-inputs-v1",
+      "--references",
+      "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002",
+      "--spot-calibration",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/spot.json",
+      "--perp-calibration",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/perp.json",
+      "--out",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary.json",
+      "--csv",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary.csv",
+      "--markdown",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary.md"
+    ],
+    "status": "prepared_only",
+    "conditions": "All actual inputs/phase accounts and source freeze verified first; exclusive outputs; independent proof required for final. Applicable combo original calibration arguments are appended only after real all-eligible combo export exists."
+  },
+  "invocation_sha256": "598b90fb58e80d3d96f05245391db260992d8cb98987553c1b38a95899b167c9",
+  "source_before": {
+    "spot": {
+      "git_head": "74bd6e035e36531c517029077c1a9e2e5ec44516",
+      "dirty": false,
+      "python_sources_sha256": "f2d6c3e73c2acb7b328a7a0e2678bb95ceb77d8a17a46139abfe8b357befdbf6"
+    },
+    "perp": {
+      "git_head": "37061a7f588f97cc16852551cab6cd2e51acb920",
+      "dirty": false,
+      "python_sources_sha256": "ba63895131db566e708a5c96cde4504beace39fa0bdd54881d039dd5b8ef4c50"
+    }
+  },
+  "actual_accounts": 71,
+  "raw_files": 53,
+  "driver_sha256": "22964df5ab54d02f1532168ce514fd373f3d1a7aca7a4c3df7e40d342d53eec6"
+}

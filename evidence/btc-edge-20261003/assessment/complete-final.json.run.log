@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/btc-alpha-beta-improve/spotquant/research/edge_assessment.py", line 1258, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/workspace/btc-alpha-beta-improve/spotquant/research/edge_assessment.py", line 1241, in main
+    report = assess(args)
+             ^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/spotquant/research/edge_assessment.py", line 1181, in assess
+    report['financial_review'] = verify_financial_review(args.financial_review, report)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/spotquant/research/edge_assessment.py", line 1011, in verify_financial_review
+    require(inventory_binding(prior) == current and proof['inventory_sha256'] == old.checksum(current), 'financial review inventory/source mismatch')
+  File "/workspace/btc-alpha-beta-improve/spotquant/research/alpha_assessment.py", line 53, in require
+    raise ValueError(message)
+ValueError: financial review inventory/source mismatch

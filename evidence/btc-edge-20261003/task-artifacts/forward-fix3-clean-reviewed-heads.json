@@ -1,0 +1,14 @@
+{
+  "recorded_utc": "2026-10-03T05:35:04.763151+00:00",
+  "projects": [
+    {
+      "repo": "spotquant",
+      "head": "74bd6e035e36531c517029077c1a9e2e5ec44516"
+    },
+    {
+      "repo": "coinquant",
+      "head": "37061a7f588f97cc16852551cab6cd2e51acb920"
+    }
+  ],
+  "review_sha256": "6bc1084d1c7add852f8a67e646adb9455ad133a99d92224fd18db368c6f77b00"
+}

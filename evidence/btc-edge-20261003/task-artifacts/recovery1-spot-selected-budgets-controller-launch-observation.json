@@ -1,0 +1,33 @@
+{
+  "recorded_utc": "2026-10-03T13:35:18.316376+00:00",
+  "meaning": "Actual tool launch observation; actual child/start/finish/controller receipts authoritative",
+  "project_kind": "spot",
+  "phase": "spot-selected-budgets",
+  "tool_session_id": 50024,
+  "command": [
+    "python",
+    "-u",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/run-registered-recovery.py",
+    "--kind",
+    "spot",
+    "--phase",
+    "spot-selected-budgets",
+    "--approval-sha256",
+    "61b0fdd88a64f120db39c31d0a82f3ec9a115da2e37166b77596e9c0040c0963",
+    "--supplemental-registry",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-selected-budgets-registration.json",
+    "--supplemental-sha256",
+    "3b78016b0af50e3fa6b405703fd5871c9c659514f085365de403fc4e78f1af76"
+  ],
+  "preceding_spot_baseline_budgets_actual_tool_exit_code": 0,
+  "perp_baseline_budgets_active_session": 22404,
+  "original_initial_cny": [
+    2500,
+    5000,
+    7500
+  ],
+  "selection_preliminary_sha256": "2e6ea2aeee64ef8ad3aa37841799576a1b02c9c17a6cdaccf5e6d739111005f9",
+  "default_adopted": false,
+  "protected_measured_source_changed": false,
+  "new_software_tests": 0
+}
