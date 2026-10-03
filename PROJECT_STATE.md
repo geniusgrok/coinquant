@@ -1,6 +1,6 @@
 # PROJECT_STATE
 
-Updated: 2026-10-03T00:15:27.771712+00:00
+Updated: 2026-10-03T00:29:24.761405+00:00
 
 ## Active BTC alpha/beta improvement round
 
@@ -8,7 +8,8 @@ The user approved the full next-phase design and direct implementation. Worktree
 
 Task 1: complete (Spot commits0ca979e..fa81bf5, final independent scoped review APPROVE). Final17targeted tests pass; prior full222pass. Original I1/M1 fixed in round1/5, no remaining Critical/Important. Finalv3 diagnostic JSON SHA02948e9026ed77bb43af02da9cbe04bbfbce564b826a7ffbe8187c5008f81b96; all11immutable source inputs rechecked. Brief/report/diffs/reviews/v1/v2/v3 retained in external task-artifacts.
 Spot66SMA/30stop/2extended/26other sleeve exits; flat sleeve-days2054SMA/1306stop/136extended/620other/17never-entered. Initial valuation excluded; dust/ownership limits explicit. Coin121contexts; first price observations differ with initial wallet equal, no unnecessary same-observation dependency established,50fills/run remain unowned. Therefore no automatic timing fix; shifted schedules remain diagnostics.
-Task 2: active — after environment reconnect, replacement implementer /root/edge_features_resume resumes preserved315-line Spot edge_features.py; original agent no longer exists. Review bases Spot13de06c/Coin3bcd3f5; root852c347/2e49b90 only close plan/state. No financial producers; Coin lane reserved for affected feature tests.
+Task 2: active — implementation DONE_WITH_CONCERNS, independent reviewer /root/edge_features_review. Final own heads Spot1a229ac/Coin7828caa; exact scoped diff packages/report retained. Feature artifactbf920626…; affected22Spot/17Coin PASS,94714boundary lookups perrepo identical. No financial producers; Coin lane reserved for affected review tests.
+Feature coverage:7488funding/2485basis verified,180futures+111Spot archive CHECKSUMs. Nominal795×60pollprobes funding23stale/basis432date-mismatch; these are not adapter clocks. Ruling: implement registered cause-known missing-feature blocks, preserve exits, distinguish feature gaps from unknown fills; no zero/tolerance repair. Exact project kinds spot/perp; .01 only beta operands, not minimum scale; ordinary exit only after both closes below ownSMA.
 Baseline validation: Python3.12 and3.13 both pass Coin359/Spot209. Existing causal funding/basis input independently reconstructed with original official checksums: SHA1d87be0b4c8cd8a7eacd4970a1a194e5f1ed0b2f3aa3710a43417aa9ab066ef2; 7488funding/2485basis points.
 
 Ruling: funding staleness remains exactly age>=28800000ms from availability, no extra jitter tolerance — fixed registration takes precedence; missing gaps are reported. No partial-code discard or Task1 re-dispatch after reconnect.
