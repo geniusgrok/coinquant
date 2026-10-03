@@ -1,0 +1,27 @@
+INPUT 0 2084
+INPUT 300 2084
+INPUT 600 2084
+INPUT 900 2084
+INPUT 1200 2084
+INPUT 1500 2084
+INPUT 1800 2084
+ACCOUNT PASS perp|incumbent|base|2.5E+3|0|unscaled fills 932 days 2454
+ACCOUNT PASS perp|incumbent|base|5E+3|0|unscaled fills 1367 days 2454
+ACCOUNT PASS perp|incumbent|base|7.5E+3|0|unscaled fills 1751 days 2454
+Traceback (most recent call last):
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/recompute.py", line 254, in <module>
+    try:main()
+        ^^^^^^
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/recompute.py", line 252, in main
+    prov=provenance();bars,mr,cr=market();a=accounts(bars,mr,cr);put(OUT/'account-phase-complete.json',{'count':len(a),'account_paths':{k:str(OUT/'accounts'/(hashlib.sha256(k.encode()).hexdigest()+'.json')) for k in a},'market_returns':mr,'cny_market_returns':cr,'script_sha256':sha(__file__),'input_hashes_sha256':checksum(prov['input_hashes'])});print('ACCOUNT PHASE PASS',len(a),flush=True)
+                                            ^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/recompute.py", line 244, in accounts
+    proof,fees,funding=ledger(row,kind);eq(proof,a['monetary_audit'],'independent ledger');cur=curve(row,kind,bars);eq(cur,a['curve'],'independent daily curve');m=metrics(row,cur,kind,mr,cr);eq(m,a['metrics'],'independent all metrics');timing=clocks(row,kind,scenario,a['offset']);fp=groups(row,kind)
+                                                                                                                                                                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/recompute.py", line 218, in clocks
+    payload=json.loads(p);result=json.loads(res);require(status in ['settled','cancelled'],'allocation status '+status);require(payload['order']['symbol']=='BTCUSDT','allocation symbol')
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/recompute.py", line 25, in require
+    if not v:raise AssertionError(msg)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: allocation status resting

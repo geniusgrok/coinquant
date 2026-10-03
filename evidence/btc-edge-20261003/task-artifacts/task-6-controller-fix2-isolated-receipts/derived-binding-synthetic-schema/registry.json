@@ -1,0 +1,1 @@
+{"jobs": [{"project_kind": "spot", "phase": "risk", "command": ["synthetic", "--risk-calibration", "/tmp/controller-isolated-rf6uzu1x/spot-calibration.json"]}]}

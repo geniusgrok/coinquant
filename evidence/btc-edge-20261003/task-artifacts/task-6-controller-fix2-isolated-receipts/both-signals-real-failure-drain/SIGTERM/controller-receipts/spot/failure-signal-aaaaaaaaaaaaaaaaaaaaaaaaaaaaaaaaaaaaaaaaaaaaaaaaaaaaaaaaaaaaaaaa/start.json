@@ -1,0 +1,30 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "failure-signal",
+  "project_kind": "spot",
+  "owner_path": "/tmp/controller-isolated-w374w2rw/SIGTERM/controller-reservations/spot/8609d40cb5a74ab88fd5c02062ec5289.owner.json",
+  "created_utc": "2026-10-03T04:44:45.113767+00:00",
+  "jobs": [
+    {
+      "label": "first",
+      "project_kind": "spot",
+      "cwd": "/tmp/controller-isolated-w374w2rw/SIGTERM",
+      "output": "/tmp/controller-isolated-w374w2rw/SIGTERM/first.json",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-c",
+        "import sys,time;from pathlib import Path;time.sleep(.35);Path(sys.argv[1]).write_text(\"done\")",
+        "/tmp/controller-isolated-w374w2rw/SIGTERM/first.json"
+      ]
+    },
+    {
+      "label": "second",
+      "project_kind": "spot",
+      "cwd": "/tmp/controller-isolated-w374w2rw/SIGTERM",
+      "output": "/tmp/controller-isolated-w374w2rw/SIGTERM/second.json",
+      "command": [
+        "never-launched"
+      ]
+    }
+  ]
+}

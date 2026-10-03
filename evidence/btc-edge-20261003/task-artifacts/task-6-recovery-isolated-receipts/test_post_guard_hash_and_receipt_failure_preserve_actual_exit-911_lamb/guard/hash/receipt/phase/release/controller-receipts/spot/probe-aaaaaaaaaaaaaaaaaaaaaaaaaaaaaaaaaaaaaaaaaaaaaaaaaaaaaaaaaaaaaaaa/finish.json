@@ -1,0 +1,57 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "finished_utc": "2026-10-03T06:01:44.754830+00:00",
+  "status": "completed",
+  "all_children_reaped": true,
+  "pending_labels": [],
+  "results": [
+    {
+      "label": "first",
+      "state": "exited",
+      "pid": 94720,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T06:01:44.547364+00:00",
+      "elapsed_seconds": 0.10147082098410465,
+      "errors": [],
+      "command_start_sha256": "b13920071edc5b1d6bedc8b808b52d0b75e8c0522e257089cfa8166b809b35d9",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-911_lamb/guard/hash/receipt/phase/release/first.json.command-finish.json"
+    },
+    {
+      "label": "second",
+      "state": "exited",
+      "pid": 94721,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T06:01:44.650632+00:00",
+      "elapsed_seconds": 0.1013581609877292,
+      "errors": [],
+      "command_start_sha256": "57d23dd1a417baed62fe52e8ff81b3743ea33ed2dbed3187d42d4e86aedae57e",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-911_lamb/guard/hash/receipt/phase/release/second.json.command-finish.json"
+    },
+    {
+      "label": "third",
+      "state": "exited",
+      "pid": 94722,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T06:01:44.753911+00:00",
+      "elapsed_seconds": 0.10134831699542701,
+      "errors": [],
+      "command_start_sha256": "e60f673f3c2f705899a97f0b3c696e9bcd8242709fc5b61392056bfcc7fbcfa8",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-911_lamb/guard/hash/receipt/phase/release/third.json.command-finish.json"
+    }
+  ],
+  "errors": []
+}

@@ -16,7 +16,7 @@ funding结算+28800000ms才可用，自availability起age≥28800000ms即过期�
 
 ```sh
 python -m research.edge_forward init --diary /NEW/path/ledger.json \
-  --export /restored/forward-binding.json --export-sha PINNED_RAW_EXPORT_SHA \
+  --export /restored/forward-binding.json --export-sha d2bc7eca7f2dfdb9a1049c41f1f80f10f603cedc8ab2f9d8bcb260897fab3b31 \
   --review-sha 50dc293c8225027f2bfa49508cdd058f2ccc4a44ebb4976f3b41b206d048aefc \
   --defer-market-warmup
 ```
@@ -25,12 +25,12 @@ python -m research.edge_forward init --diary /NEW/path/ledger.json \
 
 ```sh
 python -m research.edge_forward observe --diary /existing/ledger.json \
-  --export /restored/forward-binding.json --export-sha PINNED_RAW_EXPORT_SHA \
+  --export /restored/forward-binding.json --export-sha d2bc7eca7f2dfdb9a1049c41f1f80f10f603cedc8ab2f9d8bcb260897fab3b31 \
   --review-sha 50dc293c8225027f2bfa49508cdd058f2ccc4a44ebb4976f3b41b206d048aefc \
   --url 'https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=4h&limit=150' \
   --url 'https://fapi.binance.com/fapi/v1/depth?symbol=BTCUSDT&limit=1000' \
   --url 'https://fapi.binance.com/fapi/v1/aggTrades?symbol=BTCUSDT&limit=1000' \
-  --url 'https://fapi.binance.com/fapi/v1/exchangeInfo?symbol=BTCUSDT' \
+  --url 'https://fapi.binance.com/fapi/v1/exchangeInfo' \
   --url 'https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT' \
   --url 'https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=100' \
   --url 'https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10' \

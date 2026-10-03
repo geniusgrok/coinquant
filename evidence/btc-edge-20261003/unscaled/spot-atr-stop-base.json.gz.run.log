@@ -1,0 +1,33 @@
+{"candidate": "atr-stop", "scenario": "base", "session": 0}
+{"candidate": "atr-stop", "scenario": "base", "session": 100}
+{"candidate": "atr-stop", "scenario": "base", "session": 200}
+{"candidate": "atr-stop", "scenario": "base", "session": 300}
+{"candidate": "atr-stop", "scenario": "base", "session": 400}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/btc-alpha-beta-improve/spotquant/research/edge_spot.py", line 435, in <module>
+    main()
+  File "/workspace/btc-alpha-beta-improve/spotquant/research/edge_spot.py", line 412, in main
+    row = measure(args.candidate, args.scenario, load_daily(market_root, END_MS, require_through=END_MS), starts,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/spotquant/research/edge_spot.py", line 355, in measure
+    return complete.measure('atr-stop', scenario, bars, starts, fx, {}, limit=limit,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/spotquant/research/complete_spot.py", line 165, in measure
+    report = session.run(config, venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/spotquant/spotquant/session.py", line 151, in run
+    current = cycle(venue, state, config, execute=execute)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/spotquant/spotquant/session.py", line 56, in cycle
+    current = _cycle(venue, state, config, lifecycle=lifecycle)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/spotquant/spotquant/session.py", line 83, in _cycle
+    lifecycle.verify(snapshot)
+  File "/workspace/btc-alpha-beta-improve/spotquant/spotquant/execution.py", line 91, in verify
+    for trade in self.state.trades(self.venue, anchor['at_ms']):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/btc-alpha-beta-improve/spotquant/spotquant/state.py", line 149, in trades
+    self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
+sqlite3.OperationalError: database or disk is full

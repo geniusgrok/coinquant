@@ -1,0 +1,15 @@
+{
+  "label": "first",
+  "project_kind": "spot",
+  "phase": "probe",
+  "cwd": "/tmp/controller-scoped-reap-lqq5bpyq",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-c",
+    "import time;from pathlib import Path;time.sleep(.6);Path('/tmp/controller-scoped-reap-lqq5bpyq/harmless-child.json').write_text(\"done\")"
+  ],
+  "output": "/tmp/controller-scoped-reap-lqq5bpyq/harmless-child.json",
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T04:31:49.227922+00:00"
+}

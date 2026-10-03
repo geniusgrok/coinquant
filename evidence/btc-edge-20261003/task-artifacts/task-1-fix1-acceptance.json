@@ -1,0 +1,26 @@
+{
+  "format": "task1-fix1-acceptance-v1",
+  "source": {
+    "git_head": "fa81bf5dca86e96bbdd265174e2e3e31370c79d0",
+    "module_sha256": "4f7d32f57dc44a5594d042b8dcd1ce529fd60831cab2397069c02fb98c4b369d",
+    "follow_sha256": "535c87e0ac3386492a64bd30c1ab07596667bc267603879da0457c1557037c54",
+    "preview_sha256": "fe22ed3ef27722f237ab101d32949116f55e88b4877f87952013abe9f27770bf"
+  },
+  "outputs": {
+    "attribution.json": "02948e9026ed77bb43af02da9cbe04bbfbce564b826a7ffbe8187c5008f81b96",
+    "attribution.md": "832c1f82c9552f0cbb02add9a96e7f7f8638b5c2ae021b4ad70d6559ae6b564d"
+  },
+  "all_11_inputs_reverified": true,
+  "all_v1_v2_output_hashes_unchanged": true,
+  "decision_trace_checks": 168,
+  "I1_both_reviewed_real_opportunities_verified": true,
+  "M1_reviewed_real_write_verified": true,
+  "overwrite_rejected": true,
+  "financial_producer_executed": false,
+  "tests": {
+    "command": "python3.13 -m unittest tests.test_edge_attribution -v",
+    "passed": 17,
+    "elapsed_seconds": 0.005,
+    "red_regressions_failed_before_fix": 4
+  }
+}

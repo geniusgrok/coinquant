@@ -1,0 +1,13 @@
+{
+  "label": "first",
+  "state": "exited",
+  "pid": 94461,
+  "exit_code": 7,
+  "reaped": true,
+  "finished_utc": "2026-10-03T05:53:56.903754+00:00",
+  "elapsed_seconds": 0.05252970100264065,
+  "errors": [],
+  "command_start_sha256": "7ac8c0a4dcf0d8b80700a6f824318726b9859e53bdf60ee469935c0ca0098988",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "output_sha256": "5d28a90f4498a81461efbaf6f628a19d9778390bb5c81a393dd936181cc3d826"
+}

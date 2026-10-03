@@ -1,0 +1,1 @@
+{"event": "controller_error", "stage": "launch_not_started", "label": "first", "error": "OSError('isolated Popen failure')", "recorded_utc": "2026-10-03T05:52:09.474422+00:00"}

@@ -1,0 +1,13 @@
+{
+  "label": "spot-risk-exit-confirm",
+  "state": "exited",
+  "pid": 111071,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T12:40:08.766172+00:00",
+  "elapsed_seconds": 654.0348062319972,
+  "errors": [],
+  "command_start_sha256": "01cfc760c640f7ee5cac32d4214ea1f583ab2bbcf8157980961ecb3e5d1bfb42",
+  "log_sha256": "b12cace2a731c81f758cb5954566ca9021703262c1d0a83ac829bbeb89950f2c",
+  "output_sha256": "2ed1e487ccd7b1efbff0d00ad5894fd2f70550e20e511327b22ea44d365ce66d"
+}

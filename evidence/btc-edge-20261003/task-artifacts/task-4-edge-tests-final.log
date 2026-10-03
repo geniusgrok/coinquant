@@ -1,0 +1,81 @@
+test_checkpoint_rejects_extension_tampering_and_source_mismatch (tests.test_edge_perp.EdgeTests.test_checkpoint_rejects_extension_tampering_and_source_mismatch) ... ok
+test_cli_rejects_nonregistered_or_overwrite_before_measure (tests.test_edge_perp.EdgeTests.test_cli_rejects_nonregistered_or_overwrite_before_measure) ... usage: python3.13 -m unittest [-h] [--market MARKET] [--prints PRINTS]
+                              [--fx FX] --features FEATURES --out OUT
+                              [--limit LIMIT]
+                              [--candidate {incumbent,quality-budget,cost-horizon,crowding-interaction}]
+                              [--scenario {base,fees-x1.5,read-400ms,trigger-slip}]
+                              [--combo COMBO]
+                              [--risk-calibration RISK_CALIBRATION]
+                              [--initial-cny INITIAL_CNY]
+                              [--start-offset-ms {-60000,0,60000}]
+                              [--restore-prints]
+python3.13 -m unittest: error: incomplete smoke limit must be 1..795 and output under /tmp
+usage: python3.13 -m unittest [-h] [--market MARKET] [--prints PRINTS]
+                              [--fx FX] --features FEATURES --out OUT
+                              [--limit LIMIT]
+                              [--candidate {incumbent,quality-budget,cost-horizon,crowding-interaction}]
+                              [--scenario {base,fees-x1.5,read-400ms,trigger-slip}]
+                              [--combo COMBO]
+                              [--risk-calibration RISK_CALIBRATION]
+                              [--initial-cny INITIAL_CNY]
+                              [--start-offset-ms {-60000,0,60000}]
+                              [--restore-prints]
+python3.13 -m unittest: error: initial CNY must be registered 2500, 5000, 7500 or 10000
+usage: python3.13 -m unittest [-h] [--market MARKET] [--prints PRINTS]
+                              [--fx FX] --features FEATURES --out OUT
+                              [--limit LIMIT]
+                              [--candidate {incumbent,quality-budget,cost-horizon,crowding-interaction}]
+                              [--scenario {base,fees-x1.5,read-400ms,trigger-slip}]
+                              [--combo COMBO]
+                              [--risk-calibration RISK_CALIBRATION]
+                              [--initial-cny INITIAL_CNY]
+                              [--start-offset-ms {-60000,0,60000}]
+                              [--restore-prints]
+python3.13 -m unittest: error: capital/start diagnostics require one fixed candidate and base
+usage: python3.13 -m unittest [-h] [--market MARKET] [--prints PRINTS]
+                              [--fx FX] --features FEATURES --out OUT
+                              [--limit LIMIT]
+                              [--candidate {incumbent,quality-budget,cost-horizon,crowding-interaction}]
+                              [--scenario {base,fees-x1.5,read-400ms,trigger-slip}]
+                              [--combo COMBO]
+                              [--risk-calibration RISK_CALIBRATION]
+                              [--initial-cny INITIAL_CNY]
+                              [--start-offset-ms {-60000,0,60000}]
+                              [--restore-prints]
+python3.13 -m unittest: error: choose candidate or fixed combo
+usage: python3.13 -m unittest [-h] [--market MARKET] [--prints PRINTS]
+                              [--fx FX] --features FEATURES --out OUT
+                              [--limit LIMIT]
+                              [--candidate {incumbent,quality-budget,cost-horizon,crowding-interaction}]
+                              [--scenario {base,fees-x1.5,read-400ms,trigger-slip}]
+                              [--combo COMBO]
+                              [--risk-calibration RISK_CALIBRATION]
+                              [--initial-cny INITIAL_CNY]
+                              [--start-offset-ms {-60000,0,60000}]
+                              [--restore-prints]
+python3.13 -m unittest: error: never overwrite results or progress
+ok
+test_combo_reductions_multiply_and_components_reject_duplicates (tests.test_edge_perp.EdgeTests.test_combo_reductions_multiply_and_components_reject_duplicates) ... ok
+test_cost_exit_requires_actual_legal_decision_original_exits_win (tests.test_edge_perp.EdgeTests.test_cost_exit_requires_actual_legal_decision_original_exits_win) ... ok
+test_crowding_conjunction_equality_missing_and_independence (tests.test_edge_perp.EdgeTests.test_crowding_conjunction_equality_missing_and_independence) ... ok
+test_exact_project_calibration_schema (tests.test_edge_perp.EdgeTests.test_exact_project_calibration_schema) ... ok
+test_extension_only_actual_five_to_seven_days_once_and_protection_unchanged (tests.test_edge_perp.EdgeTests.test_extension_only_actual_five_to_seven_days_once_and_protection_unchanged) ... ok
+test_fixed_feature_artifact_pin_rejects_before_account_meter (tests.test_edge_perp.EdgeTests.test_fixed_feature_artifact_pin_rejects_before_account_meter) ... ok
+test_history_catchup_expired_and_stopped_cannot_extend (tests.test_edge_perp.EdgeTests.test_history_catchup_expired_and_stopped_cannot_extend) ... ok
+test_hooks_restore_on_exception (tests.test_edge_perp.EdgeTests.test_hooks_restore_on_exception) ... ok
+test_identity_and_checkpoint_reject_before_recovery_or_cleanup (tests.test_edge_perp.EdgeTests.test_identity_and_checkpoint_reject_before_recovery_or_cleanup) ... ok
+test_incumbent_retains_original_report_calls_clock_cash_and_checkpoint (tests.test_edge_perp.EdgeTests.test_incumbent_retains_original_report_calls_clock_cash_and_checkpoint) ... ok
+test_macro_cost_exit_has_no_primary_extension (tests.test_edge_perp.EdgeTests.test_macro_cost_exit_has_no_primary_extension) ... ok
+test_missing_quality_inputs_macro_and_short_are_unchanged (tests.test_edge_perp.EdgeTests.test_missing_quality_inputs_macro_and_short_are_unchanged) ... ok
+test_momentum_is_six_completed_intervals_and_trend_twenty_bars (tests.test_edge_perp.EdgeTests.test_momentum_is_six_completed_intervals_and_trend_twenty_bars) ... ok
+test_new_risk_scale_cutoff_zero_and_held_committed_topup (tests.test_edge_perp.EdgeTests.test_new_risk_scale_cutoff_zero_and_held_committed_topup) ... ok
+test_owned_cost_exit_runs_through_real_lifecycle_with_protection (tests.test_edge_perp.EdgeTests.test_owned_cost_exit_runs_through_real_lifecycle_with_protection) ... ok
+test_quality_immutable_trigger_mark_and_completed_history_boundaries (tests.test_edge_perp.EdgeTests.test_quality_immutable_trigger_mark_and_completed_history_boundaries) ... ok
+test_real_decision_journal_has_distinct_completion_clocks (tests.test_edge_perp.EdgeTests.test_real_decision_journal_has_distinct_completion_clocks) ... ok
+test_corrupt_vault_and_orphan_destination_fail_without_overwrite (tests.test_edge_perp.PrintTests.test_corrupt_vault_and_orphan_destination_fail_without_overwrite) ... ok
+test_verified_vault_hash_receipt_and_eviction_leave_originals_unchanged (tests.test_edge_perp.PrintTests.test_verified_vault_hash_receipt_and_eviction_leave_originals_unchanged) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.340s
+
+OK

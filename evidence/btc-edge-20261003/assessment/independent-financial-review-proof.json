@@ -1,0 +1,57 @@
+{
+  "format": "btc-edge-financial-review-v1",
+  "preliminary": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary.json",
+    "sha256": "b54a0324570d2b2a21ed7450b3f4a905887408ae31a115a180cc8743911aa6b3"
+  },
+  "inventory_sha256": "c3f4e9d3bee09bac4242660aafaed51e767d849dae5549343af7176c62226e74",
+  "reviewer_source": {
+    "git_head": "74bd6e035e36531c517029077c1a9e2e5ec44516",
+    "dirty": false,
+    "python_sources_sha256": "f2d6c3e73c2acb7b328a7a0e2678bb95ceb77d8a17a46139abfe8b357befdbf6"
+  },
+  "checks": {
+    "source_and_inputs": {
+      "passed": true,
+      "artifact": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/source_and_inputs.json",
+        "sha256": "bf7ded83d571397b012a2439bff481a4f4c84c8356a49ce14da3cc04b5efcbcf"
+      }
+    },
+    "original_accounting": {
+      "passed": true,
+      "artifact": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/original_accounting.json",
+        "sha256": "423fda78a28a7e9e19cae2913033e338a1a4ba74ed49e993491352bae315272e"
+      }
+    },
+    "baseline_six_groups": {
+      "passed": true,
+      "artifact": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/baseline_six_groups.json",
+        "sha256": "1a2b3b606414ce1b2e5d17992c1779fba3dc72c10836868d3198235e5ac76984"
+      }
+    },
+    "calibration_and_actual_risk": {
+      "passed": true,
+      "artifact": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/calibration_and_actual_risk.json",
+        "sha256": "ca39c3917a222605f1062bc307533a35eefd8125b7760ec69e81206d9b7bb466"
+      }
+    },
+    "adoption_gates": {
+      "passed": true,
+      "artifact": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/adoption_gates.json",
+        "sha256": "9333ba00f7322a5d1c00848aff5cb0d394386736a6d2ec1281a0b12827bb977d"
+      }
+    },
+    "actual_budget_aggregation": {
+      "passed": true,
+      "artifact": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/actual_budget_aggregation.json",
+        "sha256": "2e68100a07bb3563e39f2a4a0e1dcb3be0f10284fb762cdd046aee1b8c93a159"
+      }
+    }
+  }
+}

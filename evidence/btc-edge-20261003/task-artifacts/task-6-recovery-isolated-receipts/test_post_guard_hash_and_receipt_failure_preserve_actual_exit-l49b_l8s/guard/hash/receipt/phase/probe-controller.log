@@ -1,0 +1,1 @@
+{"event": "controller_error", "stage": "phase_finish_receipt_write", "label": null, "error": "OSError('receipt unavailable')", "recorded_utc": "2026-10-03T05:52:10.106978+00:00"}

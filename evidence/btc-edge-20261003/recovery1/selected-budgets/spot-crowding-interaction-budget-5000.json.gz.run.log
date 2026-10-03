@@ -1,0 +1,9 @@
+{"candidate": "crowding-interaction", "scenario": "base", "session": 0}
+{"candidate": "crowding-interaction", "scenario": "base", "session": 100}
+{"candidate": "crowding-interaction", "scenario": "base", "session": 200}
+{"candidate": "crowding-interaction", "scenario": "base", "session": 300}
+{"candidate": "crowding-interaction", "scenario": "base", "session": 400}
+{"candidate": "crowding-interaction", "scenario": "base", "session": 500}
+{"candidate": "crowding-interaction", "scenario": "base", "session": 600}
+{"candidate": "crowding-interaction", "scenario": "base", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/selected-budgets/spot-crowding-interaction-budget-5000.json.gz", "complete": true, "sha256": "19b114d314d8992ccbd78d49267f988fb6ea3f05e0a29a812bc0304fd9c2f63c"}

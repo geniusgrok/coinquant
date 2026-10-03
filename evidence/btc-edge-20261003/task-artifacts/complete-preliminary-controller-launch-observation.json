@@ -1,0 +1,10 @@
+{
+  "format": "btc-edge-assessment-launch-observation-v1",
+  "session_id": 33601,
+  "invocation_path": "/workspace/btc-alpha-beta-improve/task-artifacts/complete-preliminary-actual-invocation.json",
+  "command": "python -u task-artifacts/run-complete-assessment.py --invocation task-artifacts/complete-preliminary-actual-invocation.json",
+  "actual_accounts": 71,
+  "actual_raw_files": 53,
+  "financial_sessions_idle": true,
+  "note": "Invocation launched once; root orchestration .then access failed after tool returned session33601; actual child preserved, not restarted."
+}

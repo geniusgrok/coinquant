@@ -1,0 +1,13 @@
+{
+  "label": "spot-protected-participation-50-slip2",
+  "state": "exited",
+  "pid": 102900,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T10:30:32.938594+00:00",
+  "elapsed_seconds": 586.2024302289938,
+  "errors": [],
+  "command_start_sha256": "ffaee0bebb9da32d16d9e4ef2d7cd7a29e274c9d74e72a011ce9ac8e0af15def",
+  "log_sha256": "72275359dd016baa533951f4889c4a9a270aee45d20e78adfaac178f779abe74",
+  "output_sha256": "108eafb3f91edfe00592a357a431829b63b39c5390065d8c7bfee4e7ad51e274"
+}

@@ -1,0 +1,58 @@
+{
+  "spotquant": {
+    "commit": "b20ba954c443aad4d04452a7dd0724c5f00d556a",
+    "python_sources_sha256": "727eb2bda0eace12a5cb0112d838b2857c8a21e1ec57c2e15669e7ba7e6497bd",
+    "protected_sha256": "5dcb95d92d4cfe4da5930517a8518b436ff8ccb56d36ea0aad89d34b39b10c9e",
+    "smoke": {
+      "actual_account_days": 0,
+      "actual_public_observations": 0,
+      "btc": "12.71449",
+      "diary_sha256": "2254927aa5671417f8970291368ae4fb7b4d29ad8662d71ce4f6a95199ebfdbc",
+      "events": 2,
+      "fees": "1.42571658992739",
+      "ledger_audit": "actual local implementation",
+      "mocked_boundaries": [
+        "clock",
+        "final reviewed export",
+        "HTTP acquisition"
+      ],
+      "qualification": "NOT_QUALIFIED",
+      "strategy_adapter": "actual local pure runtime",
+      "synthetic": true
+    },
+    "cli_audit": {
+      "audit": true,
+      "events": 2,
+      "qualification": "NOT_QUALIFIED"
+    },
+    "test_output": 0
+  },
+  "coinquant": {
+    "commit": "13ad4eabd048c4f92015498a25eb12dbd12c7b52",
+    "python_sources_sha256": "f776194638c19ffa9460dc71a9de54ed41e23d4605c16ec29738160892b5fbd4",
+    "protected_sha256": "9cbb6086dc82c660e13f6044d8bae0743638dba0ad01e9eb8a9f4d51bce68512",
+    "smoke": {
+      "actual_account_days": 0,
+      "actual_public_observations": 0,
+      "btc": "74.45505",
+      "diary_sha256": "e1ded9e18ef97486c101278c0a94f1fe0d7e6b0c1c34584460b12c4ffe36a31f",
+      "events": 1,
+      "fees": "6.2616628737491625",
+      "ledger_audit": "actual local implementation",
+      "mocked_boundaries": [
+        "clock",
+        "final reviewed export",
+        "HTTP acquisition"
+      ],
+      "qualification": "NOT_QUALIFIED",
+      "strategy_adapter": "actual local pure runtime",
+      "synthetic": true
+    },
+    "cli_audit": {
+      "audit": true,
+      "events": 1,
+      "qualification": "NOT_QUALIFIED"
+    },
+    "test_output": 0
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "label": "spot-selected-crowding-interaction-budget-5000",
+  "state": "exited",
+  "pid": 124816,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T13:56:10.761713+00:00",
+  "elapsed_seconds": 701.293459493987,
+  "errors": [],
+  "command_start_sha256": "55d31b0bb2dfdbb94928ff2cb04ea872302f76eae334a1d704a6359574351b0f",
+  "log_sha256": "518bd66ef0a86be31f00acbffd68edc507e4be70896a700e226bc354b61221b4",
+  "output_sha256": "19b114d314d8992ccbd78d49267f988fb6ea3f05e0a29a812bc0304fd9c2f63c"
+}

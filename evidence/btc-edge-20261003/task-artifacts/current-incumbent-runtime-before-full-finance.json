@@ -1,0 +1,22 @@
+{
+  "recorded_utc": "2026-10-03T05:37:40.710345+00:00",
+  "original_proof": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/current-incumbent-runtime-identity.json",
+    "sha256": "6f5da2063e682d7e99d87f917bf585981b06ebda7870150adb2b57c3a3fd9bb9"
+  },
+  "projects": {
+    "spotquant": {
+      "actual_head": "74bd6e035e36531c517029077c1a9e2e5ec44516",
+      "accepted_runtime_source": "0c52c812301de3712f3637a1ce1b1241de0c40f1",
+      "files": 14,
+      "runtime_bytes_equal_to_original_pre_adoption_proof": true
+    },
+    "coinquant": {
+      "actual_head": "37061a7f588f97cc16852551cab6cd2e51acb920",
+      "accepted_runtime_source": "acedaa43ca94223f24e2fe11851bbef74e032a69",
+      "files": 20,
+      "runtime_bytes_equal_to_original_pre_adoption_proof": true
+    }
+  },
+  "meaning": "Read-only actual current pre-finance incumbent runtime equality, not financial performance or adoption"
+}

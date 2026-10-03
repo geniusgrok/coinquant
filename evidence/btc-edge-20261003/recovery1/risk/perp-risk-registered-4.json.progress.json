@@ -1,0 +1,35 @@
+{
+  "source": {
+    "git_head": "37061a7f588f97cc16852551cab6cd2e51acb920",
+    "dirty": false,
+    "python_sources_sha256": "ba63895131db566e708a5c96cde4504beace39fa0bdd54881d039dd5b8ef4c50"
+  },
+  "complete": false,
+  "last_session": 794,
+  "accounts": {
+    "incumbent/base": {
+      "sessions": 795,
+      "wallet": "291702.6271814703536298592187",
+      "position": "0.000",
+      "failure": null
+    },
+    "quality-budget/base": {
+      "sessions": 795,
+      "wallet": "245819.0718991859095883497180",
+      "position": "0.000",
+      "failure": null
+    },
+    "cost-horizon/base": {
+      "sessions": 795,
+      "wallet": "296230.6842649439956714430182",
+      "position": "0.000",
+      "failure": null
+    },
+    "crowding-interaction/base": {
+      "sessions": 795,
+      "wallet": "288370.8966871785725818854188",
+      "position": "0.000",
+      "failure": null
+    }
+  }
+}

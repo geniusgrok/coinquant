@@ -1,0 +1,75 @@
+{
+  "attempt": "recovery1",
+  "registry_path": "/workspace/btc-alpha-beta-improve/task-artifacts/registered-financial-recovery1.json",
+  "registry_sha256": "d7bc23958cedc74626d9f082a18c52b18f2417e974931cac18ea618559a6d23b",
+  "parent_registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "freeze_path": "/workspace/btc-alpha-beta-improve/task-artifacts/reviewed-source-freeze.json",
+  "freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "first_failure": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/first-financial-attempt-storage-failure.json",
+    "bytes": 12545,
+    "sha256": "d2fc82347f44dc278b5700e0e144e247479fc78f787d1cf96ba10754ec288e40"
+  },
+  "approval_path": "/workspace/btc-alpha-beta-improve/task-artifacts/recovery-approval.json",
+  "approval_sha256": "61b0fdd88a64f120db39c31d0a82f3ec9a115da2e37166b77596e9c0040c0963",
+  "phase_input_path": null,
+  "phase_input_sha256": null,
+  "supplemental_path": null,
+  "supplemental_sha256": null,
+  "controller_sha256": "cdc8538d01b46963c12b8810b468cafd754b58303a69495cfb32f4e62d497185",
+  "concurrency": 1,
+  "tmpdir": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/tmp/perp",
+  "uid": 1000,
+  "home": "/home/agent",
+  "environment_overrides": {
+    "TMPDIR": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/tmp/perp"
+  },
+  "phase": "recovery1-unscaled",
+  "project_kind": "perp",
+  "owner_path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/perp/1a293dd6bf444d858ac3f391620d6046.owner.json",
+  "created_utc": "2026-10-03T06:05:47.499220+00:00",
+  "jobs": [
+    {
+      "label": "perp-registered-16",
+      "project_kind": "perp",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_perp",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--restore-prints",
+        "--prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/print-cache/perp-registered-16",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/perp-registered-16.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/perp-registered-16.json.gz",
+      "expected_accounts": 16,
+      "original_job": {
+        "label": "perp-registered-16",
+        "project_kind": "perp",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_perp",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--restore-prints",
+          "--prints",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz",
+        "expected_accounts": 16
+      }
+    }
+  ]
+}

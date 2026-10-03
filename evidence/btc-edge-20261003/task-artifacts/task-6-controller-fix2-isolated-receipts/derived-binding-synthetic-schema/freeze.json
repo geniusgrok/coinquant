@@ -1,0 +1,1 @@
+{"controller_root": "/tmp/controller-isolated-rf6uzu1x", "projects": {"spot": {"repository": "/workspace/btc-alpha-beta-improve/spotquant", "source": {"dirty": false, "git_head": "synthetic-spot"}}, "perp": {"repository": "/workspace/btc-alpha-beta-improve/coinquant", "source": {"dirty": false, "git_head": "synthetic-perp"}}}}

@@ -1,0 +1,48 @@
+{
+  "scope": "Prepared root helpers only; no complete financial producer or freeze created",
+  "files": {
+    "prepare-source-freeze.py": {
+      "sha256": "742f6b895cf18e691a64d1819099e6cdf15eda26babb04e4ef0fcd2fbb417af8",
+      "bytes": 5794
+    },
+    "run-registered-phase.py": {
+      "sha256": "57ce768b53b4277031d82f344506c7d4f3b8db569f350762f52cfa0944756a2a",
+      "bytes": 6285
+    },
+    "run-registered-phase-pre-freeze-hardening.py": {
+      "sha256": "c3e5cc9c3f23ee6fcb5089f9c5b36995c81de11ea41d2a58f0a1d5d8c0d91208",
+      "bytes": 5671
+    },
+    "registered-financial-commands.json": {
+      "sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+      "bytes": 42592
+    },
+    "source-freeze-preparation.json": {
+      "sha256": "1528c95988d7463da606265686137596ef2d3c9cf99eb047c4bfc846c11a4090",
+      "bytes": 1199
+    }
+  },
+  "checks": {
+    "source_guard_receipt": "source-freeze-preparation.json",
+    "guard_cases": [
+      "unchanged source/inputs accepted",
+      "unregistered ZIP addition rejected",
+      "tampered input rejected",
+      "changed source rejected"
+    ],
+    "parser_only": "prepare-source-freeze.py --help",
+    "producer_runs": 0,
+    "actual_financial_acceptance": false
+  },
+  "preflights": [
+    "market-before-financial-preflight.json",
+    "spot-public-input-load-preflight.json",
+    "perp-public-input-load-preflight.json",
+    "vault-before-task4.json"
+  ],
+  "notes": [
+    "Original unused runner retained separately",
+    "No account operations are authorized",
+    "No extra tests to mirror code; actual financial receipts remain future work"
+  ]
+}

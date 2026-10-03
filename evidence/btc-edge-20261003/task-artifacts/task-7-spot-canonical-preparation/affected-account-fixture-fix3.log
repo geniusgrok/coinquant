@@ -1,0 +1,18 @@
+test_real_session_partial_entry_restart_stop_amend_and_offline_trigger (test_p4_execution.P4ExecutionTests.test_real_session_partial_entry_restart_stop_amend_and_offline_trigger) ... /workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f3882f3ea70>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f3882f3d6c0>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f38825672e0>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-canonical-prepare/spotquant/spotquant/model.py:350: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f3882f3ea70>
+  model.closes = deque((D(item) for item in body['closes']), maxlen=limit)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.106s
+
+OK

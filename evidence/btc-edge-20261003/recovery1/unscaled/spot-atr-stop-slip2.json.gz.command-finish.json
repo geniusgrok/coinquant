@@ -1,0 +1,13 @@
+{
+  "label": "spot-atr-stop-slip2",
+  "state": "exited",
+  "pid": 95014,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T06:36:05.644554+00:00",
+  "elapsed_seconds": 591.4863393740088,
+  "errors": [],
+  "command_start_sha256": "983077c990cefb824e88e17fee3b94d80e2ad85087316ee08ff25c1e4bd7f9b8",
+  "log_sha256": "757d9f082eb4f3af1fc8089aa254f2b34461b37a57bf23ac12244f454a9f5ba5",
+  "output_sha256": "8b8b20f856264ec2cfcfe7d6e68bc3f1529e6548b8fb346f6621644eb98a4496"
+}

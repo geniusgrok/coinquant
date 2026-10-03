@@ -1,0 +1,6 @@
+{
+  "label": "second",
+  "state": "not_started",
+  "error": "ValueError('existing output/progress/invocation receipt: /tmp/controller-scoped-reap-lqq5bpyq/occupied.json')",
+  "recorded_utc": "2026-10-03T04:31:49.228683+00:00"
+}

@@ -1,0 +1,42 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "finished_utc": "2026-10-03T06:01:43.912184+00:00",
+  "status": "failed",
+  "all_children_reaped": true,
+  "pending_labels": [
+    "second",
+    "third"
+  ],
+  "results": [
+    {
+      "label": "first",
+      "state": "exited",
+      "pid": 94714,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T06:01:43.911663+00:00",
+      "elapsed_seconds": 0.10246944901882671,
+      "errors": [
+        {
+          "stage": "post_guard",
+          "error": "ValueError('source changed')"
+        }
+      ],
+      "command_start_sha256": "6873b513868770e50b057d82ff1d4c425ba1c4cd89b3e2bfdc2a798d9bb7c50f",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-911_lamb/guard/first.json.command-finish.json"
+    }
+  ],
+  "errors": [
+    {
+      "stage": "post_guard",
+      "label": "first",
+      "error": "ValueError('source changed')",
+      "recorded_utc": "2026-10-03T06:01:43.910384+00:00"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "label": "third",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-c",
+    "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-911_lamb/guard/hash/receipt/phase/release/third.json"
+  ],
+  "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-911_lamb/guard/hash/receipt/phase/release/third.json",
+  "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-911_lamb/guard/hash/receipt/phase/release",
+  "project_kind": "spot",
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T06:01:44.651806+00:00"
+}

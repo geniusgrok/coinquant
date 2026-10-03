@@ -1,0 +1,46 @@
+{
+  "attempt": "recovery1",
+  "registry_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/art/registered-financial-recovery1.json",
+  "registry_sha256": "2e9684179a2d5689ebd6eaf6d06cd60ed09b920a41d6950c1ba742222cbc1220",
+  "parent_registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "freeze_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/art/reviewed-source-freeze.json",
+  "freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "first_failure": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/art/first-financial-attempt-storage-failure.json",
+    "bytes": 6396,
+    "sha256": "2318ea9f9982e6dc7dac2601bd0cc6014e3f66694fdaffc4c82e969332e0f765"
+  },
+  "approval_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/art/recovery-approval.json",
+  "approval_sha256": "eb7d0fd68ff0a346d2f043a80b395aec5d6d04d9a837fb54dfd33979d5e48e19",
+  "phase_input_path": null,
+  "phase_input_sha256": null,
+  "supplemental_path": null,
+  "supplemental_sha256": null,
+  "controller_sha256": "960a0f9f1bda7b653339d17852ce55f725586b7ee2607993e82c509611e7d298",
+  "concurrency": 1,
+  "tmpdir": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/recovery1/tmp/perp",
+  "phase": "recovery1-unscaled",
+  "project_kind": "perp",
+  "finished_utc": "2026-10-03T05:53:03.632318+00:00",
+  "status": "completed",
+  "all_children_reaped": true,
+  "pending_labels": [],
+  "results": [
+    {
+      "label": "perp-registered-16",
+      "state": "exited",
+      "pid": 94397,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T05:53:03.631527+00:00",
+      "elapsed_seconds": 0.131279334978899,
+      "errors": [],
+      "command_start_sha256": "c7bdeceda990066c0d5194bc247b5ad265476a87488615f4921effe883e6914a",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/recovery1/unscaled/perp-registered-16.json.gz.command-finish.json"
+    }
+  ],
+  "errors": []
+}

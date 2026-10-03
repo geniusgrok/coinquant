@@ -1,0 +1,10 @@
+{
+  "spot|atr-stop|slip2|1E+4|0|unscaled": {
+    "raw_sha256": "8b8b20f856264ec2cfcfe7d6e68bc3f1529e6548b8fb346f6621644eb98a4496",
+    "events_scanned": 0,
+    "counts": {},
+    "sample_rule": "all feature exceptional/missing and sizing constraints; deterministic every997th Spot decision/every97th Coin sizing; all decision scales and committed targets checked",
+    "samples": [],
+    "passed": true
+  }
+}

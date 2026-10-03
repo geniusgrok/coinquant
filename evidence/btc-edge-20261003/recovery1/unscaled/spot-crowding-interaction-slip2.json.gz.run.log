@@ -1,0 +1,9 @@
+{"candidate": "crowding-interaction", "scenario": "slip2", "session": 0}
+{"candidate": "crowding-interaction", "scenario": "slip2", "session": 100}
+{"candidate": "crowding-interaction", "scenario": "slip2", "session": 200}
+{"candidate": "crowding-interaction", "scenario": "slip2", "session": 300}
+{"candidate": "crowding-interaction", "scenario": "slip2", "session": 400}
+{"candidate": "crowding-interaction", "scenario": "slip2", "session": 500}
+{"candidate": "crowding-interaction", "scenario": "slip2", "session": 600}
+{"candidate": "crowding-interaction", "scenario": "slip2", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-slip2.json.gz", "complete": true, "sha256": "29d80444fc598545a209be1cc8d840a30d264307f45700a81cac7974c877b42e"}

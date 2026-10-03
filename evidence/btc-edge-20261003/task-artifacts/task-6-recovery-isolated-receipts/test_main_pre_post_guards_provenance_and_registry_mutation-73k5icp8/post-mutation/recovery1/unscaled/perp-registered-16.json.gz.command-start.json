@@ -1,0 +1,70 @@
+{
+  "label": "perp-registered-16",
+  "project_kind": "perp",
+  "phase": "unscaled",
+  "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-c",
+    "from pathlib import Path; import sys; Path(sys.argv[1]).write_text(\"done\")",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-73k5icp8/post-mutation/recovery1/unscaled/perp-registered-16.json.gz"
+  ],
+  "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-73k5icp8/post-mutation/recovery1/unscaled/perp-registered-16.json.gz",
+  "expected_accounts": 16,
+  "original_job": {
+    "label": "perp-registered-16",
+    "project_kind": "perp",
+    "phase": "unscaled",
+    "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-u",
+      "-m",
+      "research.edge_perp",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--restore-prints",
+      "--prints",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16",
+      "--out",
+      "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz"
+    ],
+    "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz",
+    "expected_accounts": 16
+  },
+  "storage_launch": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-73k5icp8/post-mutation/recovery1/tmp/perp",
+    "filesystem": "overlayfs",
+    "device": 27,
+    "available_bytes": 11137732608,
+    "minimum_free_bytes": 4294967296,
+    "measured_utc": "2026-10-03T06:01:43.015762+00:00"
+  },
+  "attempt": "recovery1",
+  "registry_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-73k5icp8/post-mutation/art/registered-financial-recovery1.json",
+  "registry_sha256": "755a09683272f6472ea6b6e6d42eea67d6a8780dd607e4ae12a8ddb812d302d2",
+  "parent_registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "freeze_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-73k5icp8/post-mutation/art/reviewed-source-freeze.json",
+  "freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "first_failure": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-73k5icp8/post-mutation/art/first-financial-attempt-storage-failure.json",
+    "bytes": 6396,
+    "sha256": "2318ea9f9982e6dc7dac2601bd0cc6014e3f66694fdaffc4c82e969332e0f765"
+  },
+  "approval_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-73k5icp8/post-mutation/art/recovery-approval.json",
+  "approval_sha256": "79646933ca7d672fa4198675cb6a12b9d8d30a934a4e49cbbe0009b4770a9c44",
+  "phase_input_path": null,
+  "phase_input_sha256": null,
+  "supplemental_path": null,
+  "supplemental_sha256": null,
+  "controller_sha256": "cdc8538d01b46963c12b8810b468cafd754b58303a69495cfb32f4e62d497185",
+  "concurrency": 1,
+  "tmpdir": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-73k5icp8/post-mutation/recovery1/tmp/perp",
+  "uid": 1000,
+  "home": "/home/agent",
+  "environment_overrides": {
+    "TMPDIR": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-73k5icp8/post-mutation/recovery1/tmp/perp"
+  },
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T06:01:43.015862+00:00"
+}

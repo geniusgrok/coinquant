@@ -1,0 +1,1 @@
+{"event": "controller_error", "stage": "phase_controller", "label": null, "error": "FileExistsError(17, 'File exists')", "recorded_utc": "2026-10-03T06:01:42.511658+00:00"}

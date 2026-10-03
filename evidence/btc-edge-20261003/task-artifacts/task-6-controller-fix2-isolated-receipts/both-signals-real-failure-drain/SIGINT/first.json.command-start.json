@@ -1,0 +1,15 @@
+{
+  "label": "first",
+  "project_kind": "spot",
+  "cwd": "/tmp/controller-isolated-w374w2rw/SIGINT",
+  "output": "/tmp/controller-isolated-w374w2rw/SIGINT/first.json",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-c",
+    "import sys,time;from pathlib import Path;time.sleep(.35);Path(sys.argv[1]).write_text(\"done\")",
+    "/tmp/controller-isolated-w374w2rw/SIGINT/first.json"
+  ],
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T04:44:45.492748+00:00"
+}

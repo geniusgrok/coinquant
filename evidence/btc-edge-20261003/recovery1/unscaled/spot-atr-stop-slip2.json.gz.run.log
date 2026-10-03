@@ -1,0 +1,9 @@
+{"candidate": "atr-stop", "scenario": "slip2", "session": 0}
+{"candidate": "atr-stop", "scenario": "slip2", "session": 100}
+{"candidate": "atr-stop", "scenario": "slip2", "session": 200}
+{"candidate": "atr-stop", "scenario": "slip2", "session": 300}
+{"candidate": "atr-stop", "scenario": "slip2", "session": 400}
+{"candidate": "atr-stop", "scenario": "slip2", "session": 500}
+{"candidate": "atr-stop", "scenario": "slip2", "session": 600}
+{"candidate": "atr-stop", "scenario": "slip2", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-slip2.json.gz", "complete": true, "sha256": "8b8b20f856264ec2cfcfe7d6e68bc3f1529e6548b8fb346f6621644eb98a4496"}

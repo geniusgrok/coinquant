@@ -1,0 +1,13 @@
+{
+  "label": "spot-canonical-unity-risk-base",
+  "state": "exited",
+  "pid": 141116,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T15:23:56.599213+00:00",
+  "elapsed_seconds": 653.9323279779928,
+  "errors": [],
+  "command_start_sha256": "cf0cd30f118f7b4bd47e8f21172405e831f1f10c626a9b2d5b43d2fda2f2d910",
+  "log_sha256": "8570c29078760dc3e25cc5abee02acfab6c52bb4a79354ee34756ffd33b849ca",
+  "output_sha256": "81daffd65c915cb20f310822f5afeb6f064492a2c9b83c09694ab9adfe7dd118"
+}

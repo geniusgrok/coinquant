@@ -1,0 +1,2 @@
+$ python -m research.edge_forward audit --diary /workspace/btc-alpha-beta-improve/task-artifacts/spotquant-task6-final2-SYNTHETIC/SYNTHETIC-diary.json
+{"audit": true, "events": 2, "qualification": "NOT_QUALIFIED", "scope": "raw_ledger_reconstruction_only", "source_binding_verified": false}

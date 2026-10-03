@@ -1,0 +1,22 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "finished_utc": "2026-10-03T05:53:03.306879+00:00",
+  "status": "failed",
+  "all_children_reaped": true,
+  "pending_labels": [
+    "first",
+    "second",
+    "third"
+  ],
+  "results": [],
+  "errors": [
+    {
+      "stage": "phase_controller",
+      "label": null,
+      "error": "FileExistsError(17, 'File exists')",
+      "recorded_utc": "2026-10-03T05:53:03.306434+00:00"
+    }
+  ]
+}

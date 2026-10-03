@@ -1,0 +1,8 @@
+test_current_producer_mismatch_still_rejects_at_ingestion (tests.test_edge_proof_reader.RetrospectiveProofTests.test_current_producer_mismatch_still_rejects_at_ingestion) ... ok
+test_recorded_archive_validates_digest_objects_and_contracts (tests.test_edge_proof_reader.RetrospectiveProofTests.test_recorded_archive_validates_digest_objects_and_contracts) ... ok
+test_retrospective_export_preserves_sources_and_rejects_bad_bindings (tests.test_edge_proof_reader.RetrospectiveProofTests.test_retrospective_export_preserves_sources_and_rejects_bad_bindings) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.313s
+
+OK

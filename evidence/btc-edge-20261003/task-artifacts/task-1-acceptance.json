@@ -1,0 +1,40 @@
+{
+  "format": "task1-diagnostic-acceptance-v1",
+  "outputs": {
+    "attribution.json": "afc0d7ee88da72c855a699a3eb13c155dbdc89753d30531a6837fc5f3b506324",
+    "attribution.md": "247524e86057b1682e014141b8ec4f49b3c71f04218a71b7201e30549b729f33"
+  },
+  "overwrite_rejected": true,
+  "input_hashes_reverified": 11,
+  "financial_producer_executed": false,
+  "source": {
+    "git_head": "5e69b0cad8f2c105222f9041829de0fc13106609",
+    "module_sha256": "f5924d156e34ef1ad8b8008a2092c8ec804b15f2eb550318bd02fb38e151f222",
+    "follow_sha256": "535c87e0ac3386492a64bd30c1ab07596667bc267603879da0457c1557037c54",
+    "preview_sha256": "fe22ed3ef27722f237ab101d32949116f55e88b4877f87952013abe9f27770bf"
+  },
+  "spot_exit_counts": {
+    "sma": 66,
+    "stop": 30,
+    "other": 26,
+    "extended": 2
+  },
+  "spot_flat_day_counts": {
+    "never-entered": 17,
+    "sma": 2054,
+    "stop": 1306,
+    "other": 620,
+    "extended": 136
+  },
+  "coin_first_divergences": {
+    "-60000": {
+      "different_observations": 51,
+      "exit": 1,
+      "prior_equity_propagation": 1
+    },
+    "60000": {
+      "different_observations": 52,
+      "exit": 1
+    }
+  }
+}

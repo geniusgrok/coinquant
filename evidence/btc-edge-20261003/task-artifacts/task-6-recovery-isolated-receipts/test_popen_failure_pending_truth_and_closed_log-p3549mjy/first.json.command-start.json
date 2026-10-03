@@ -1,0 +1,15 @@
+{
+  "label": "first",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-c",
+    "from pathlib import Path; import sys,time; time.sleep(.06); Path(sys.argv[1]).write_text(\"done\")",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-p3549mjy/first.json"
+  ],
+  "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-p3549mjy/first.json",
+  "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_popen_failure_pending_truth_and_closed_log-p3549mjy",
+  "project_kind": "spot",
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T06:01:43.803557+00:00"
+}

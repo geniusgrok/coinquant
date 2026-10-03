@@ -1,0 +1,13 @@
+{
+  "label": "spot-canonical-slip2",
+  "state": "exited",
+  "pid": 137330,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T15:02:20.251249+00:00",
+  "elapsed_seconds": 643.3617089980107,
+  "errors": [],
+  "command_start_sha256": "c8e9d84eb55382b22158282754cecde91e137d795798c0628f71fac6009e0578",
+  "log_sha256": "344cbc3297b4e0a5ea9d135a04807b8b69b1fc236048f9f87d0d9db14baea2ca",
+  "output_sha256": "f9cc7d19e2ecb6ff5d3fe7128f730e71626c51aeaf8b1b58307578bc3f8e914d"
+}

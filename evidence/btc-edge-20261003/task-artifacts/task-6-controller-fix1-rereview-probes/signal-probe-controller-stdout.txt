@@ -1,0 +1,4 @@
+{"event": "controller_error", "stage": "launch_not_started", "label": "second", "error": "ValueError('existing output/progress/invocation receipt: /tmp/controller-scoped-reap-lqq5bpyq/occupied.json')", "recorded_utc": "2026-10-03T04:31:49.228591+00:00"}
+{"event": "controller_error", "stage": "wait", "label": "first", "error": "RuntimeError('controller received signal 15')", "recorded_utc": "2026-10-03T04:31:49.328758+00:00"}
+{"event": "controller_error", "stage": "output_hash", "label": "first", "error": "FileNotFoundError(2, 'No such file or directory')", "recorded_utc": "2026-10-03T04:31:49.329124+00:00"}
+{"event": "controller_error", "stage": "child_exit", "label": "first", "error": "ValueError('actual exit code: None')", "recorded_utc": "2026-10-03T04:31:49.329202+00:00"}

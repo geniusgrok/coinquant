@@ -1,0 +1,39 @@
+--- approved/run-registered-phase.py
++++ new/run-registered-recovery.py
+@@ -103,8 +103,9 @@
+             os.close(self.fd)
+ 
+ 
+-def run_jobs(jobs, check, root, kind, phase, provenance, popen=subprocess.Popen):
+-    """One reusable guarded core for original and conditional registries."""
++def run_jobs(jobs, check, root, kind, phase, provenance, popen=subprocess.Popen, environment=None,
++             before_launch=None):
++    """Approved drain core copied with cap1, child environment and launch hook."""
+     reservation = Reservation(root, kind, phase)
+     phase_dir = Path(root) / 'controller-receipts' / kind / (phase + '-' + provenance['registry_sha256'])
+     fallback = Path(root) / 'controller-diagnostics'
+@@ -210,12 +211,14 @@
+         write_new(phase_dir / 'start.json', dict(provenance, phase=phase, project_kind=kind,
+                   owner_path=str(reservation.owner), created_utc=now(), jobs=jobs))
+         while pending or active:
+-            while pending and len(active) < (2 if kind == 'spot' else 1) and not errors:
++            while pending and len(active) < 1 and not errors:
+                 job = pending[0]
+                 log = None
+                 started = False
+                 try:
+                     check(job)
++                    if before_launch is not None:
++                        before_launch(job)
+                     output = Path(job['output'])
+                     start = output.with_name(output.name + '.command-start.json')
+                     end = output.with_name(output.name + '.command-finish.json')
+@@ -229,7 +232,7 @@
+                     launching = True
+                     try:
+                         process = popen(job['command'], cwd=job['cwd'], stdout=log, stderr=subprocess.STDOUT,
+-                                        pass_fds=(reservation.fd,))
++                                        pass_fds=(reservation.fd,), env=environment)
+                         entry['process'] = process
+                         active.append(entry)
+                         started = True

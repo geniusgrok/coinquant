@@ -1,0 +1,26 @@
+{
+  "recorded_utc": "2026-10-03T05:33:30.276151+00:00",
+  "projects": [
+    {
+      "repo": "spotquant",
+      "pr": 10,
+      "state": "open",
+      "draft": true,
+      "head": "75c7d8efb07c98d21f1350d0f6186b48ed48a5a2",
+      "base": "ffd14d3aa53b191d15bd8377f0809a8846c53232",
+      "actual_remote_main": "ffd14d3aa53b191d15bd8377f0809a8846c53232",
+      "url": "https://github.com/geniusgrok/spotquant/pull/10"
+    },
+    {
+      "repo": "coinquant",
+      "pr": 59,
+      "state": "open",
+      "draft": true,
+      "head": "e9a1117a79f391346be9af85ad3636ea8d438b4d",
+      "base": "c363a582a064bd36d633f6439803f4c570d52333",
+      "actual_remote_main": "c363a582a064bd36d633f6439803f4c570d52333",
+      "url": "https://github.com/geniusgrok/coinquant/pull/59"
+    }
+  ],
+  "meaning": "Read-only current remote state; no acceptance/save mutation"
+}

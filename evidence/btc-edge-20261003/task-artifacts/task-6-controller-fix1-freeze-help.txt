@@ -1,0 +1,11 @@
+usage: prepare-source-freeze.py [-h] --review REVIEW --out OUT
+
+Capture reviewed clean source and actual input bytes before full replay.
+External controller helper. It performs no account operation or producer run.
+Review paths are controller-approved evidence; financial acceptance is
+separate.
+
+options:
+  -h, --help       show this help message and exit
+  --review REVIEW
+  --out OUT

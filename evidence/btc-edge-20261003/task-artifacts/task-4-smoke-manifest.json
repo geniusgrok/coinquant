@@ -1,0 +1,400 @@
+[
+  {
+    "path": "/tmp/coin-edge-task4-860f858-base.json.gz",
+    "sha256": "732e9f8852fcdf336d0053e83ecd8fc2550676f189d6db86d8b55c96bbb2d2d5",
+    "bytes": 30974,
+    "source": {
+      "git_head": "860f858113c8bd3a7032cf040ff5f62d9c543668",
+      "dirty": false,
+      "python_sources_sha256": "ac41d322115a38e71debf97b91ee5e9db909a2c8c3fb9125ed4b96fe70325ae1"
+    },
+    "rows": [
+      {
+        "candidate": "incumbent",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "quality-budget",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "cost-horizon",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "crowding-interaction",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      }
+    ]
+  },
+  {
+    "path": "/tmp/coin-alpha-task4-860f858-incumbent.json.gz",
+    "sha256": "a077113e4b744d8c79c0672965737e590829822ea54eaf320b012b7bb0911995",
+    "bytes": 11846,
+    "source": {
+      "git_head": "860f858113c8bd3a7032cf040ff5f62d9c543668",
+      "dirty": false,
+      "python_sources_sha256": "ac41d322115a38e71debf97b91ee5e9db909a2c8c3fb9125ed4b96fe70325ae1"
+    },
+    "rows": [
+      {
+        "candidate": "incumbent",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      }
+    ]
+  },
+  {
+    "path": "/tmp/coin-edge-task4-fa77a6e-all.json.gz",
+    "sha256": "7eb39113c6e6cf3bb6e398953aaaa293e63e7d632956565d92fe3d337ab8a4e6",
+    "bytes": 49344,
+    "source": {
+      "git_head": "fa77a6e51aafd68ebcd99236ce9712d7085381ed",
+      "dirty": false,
+      "python_sources_sha256": "4eec1f151c611ba549641aff26a2ca5f742bd628c3ee5715417b2d36627ca15e"
+    },
+    "rows": [
+      {
+        "candidate": "incumbent",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "incumbent",
+        "scenario": "fees-x1.5",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "incumbent",
+        "scenario": "read-400ms",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "incumbent",
+        "scenario": "trigger-slip",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "quality-budget",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "quality-budget",
+        "scenario": "fees-x1.5",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "quality-budget",
+        "scenario": "read-400ms",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "quality-budget",
+        "scenario": "trigger-slip",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "cost-horizon",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "cost-horizon",
+        "scenario": "fees-x1.5",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "cost-horizon",
+        "scenario": "read-400ms",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "cost-horizon",
+        "scenario": "trigger-slip",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "crowding-interaction",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "crowding-interaction",
+        "scenario": "fees-x1.5",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "crowding-interaction",
+        "scenario": "read-400ms",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "crowding-interaction",
+        "scenario": "trigger-slip",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      }
+    ]
+  },
+  {
+    "path": "/tmp/coin-alpha-task4-fa77a6e-all.json.gz",
+    "sha256": "c3c9810831cc5337c36ebd1982ab419c05f1e374dc281cb0ea40fd1c1b4f026d",
+    "bytes": 12705,
+    "source": {
+      "git_head": "fa77a6e51aafd68ebcd99236ce9712d7085381ed",
+      "dirty": false,
+      "python_sources_sha256": "4eec1f151c611ba549641aff26a2ca5f742bd628c3ee5715417b2d36627ca15e"
+    },
+    "rows": [
+      {
+        "candidate": "incumbent",
+        "scenario": "base",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "incumbent",
+        "scenario": "fees-x1.5",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "incumbent",
+        "scenario": "read-400ms",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      },
+      {
+        "candidate": "incumbent",
+        "scenario": "trigger-slip",
+        "complete": false,
+        "cagr": null,
+        "audit": true,
+        "failure": null,
+        "session_count": 1,
+        "cleanup": [
+          "verified"
+        ],
+        "execution_unresolved": 0,
+        "trades": 0
+      }
+    ]
+  }
+]

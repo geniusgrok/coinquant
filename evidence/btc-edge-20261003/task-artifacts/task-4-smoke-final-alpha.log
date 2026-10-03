@@ -1,0 +1,5 @@
+{"session": 0, "date": "2020-01-01T00:00:00Z", "failures": {}}
+{"finished": "incumbent/base", "complete": false, "audit": true, "cagr": null, "mdd": "0.0019990000000000000000000004"}
+{"finished": "incumbent/fees-x1.5", "complete": false, "audit": true, "cagr": null, "mdd": "0.0019990000000000000000000004"}
+{"finished": "incumbent/read-400ms", "complete": false, "audit": true, "cagr": null, "mdd": "0.0019990000000000000000000004"}
+{"finished": "incumbent/trigger-slip", "complete": false, "audit": true, "cagr": null, "mdd": "0.0019990000000000000000000004"}

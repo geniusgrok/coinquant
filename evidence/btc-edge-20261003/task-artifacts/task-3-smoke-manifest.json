@@ -1,0 +1,214 @@
+[
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "atr-stop",
+      "--scenario",
+      "base",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "2",
+      "--out",
+      "/tmp/spot-edge-task3-atr-stop-base-1790988538625617963.json.gz"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-atr-stop-base.log",
+    "output": "/tmp/spot-edge-task3-atr-stop-base-1790988538625617963.json.gz",
+    "sha256": "4d536851a0bcdb22259ea6f543807a982694f80c5adb1b26e1cb3cb81c631710"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "exit-confirm",
+      "--scenario",
+      "base",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "2",
+      "--out",
+      "/tmp/spot-edge-task3-exit-confirm-base-1790988538625617963.json.gz"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-exit-confirm-base.log",
+    "output": "/tmp/spot-edge-task3-exit-confirm-base-1790988538625617963.json.gz",
+    "sha256": "62662712195370cb0895289811506f621964ee0be9e1642b7974c74b4a4b1a25"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "stop-budget",
+      "--scenario",
+      "base",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "2",
+      "--out",
+      "/tmp/spot-edge-task3-stop-budget-base-1790988538625617963.json.gz"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-stop-budget-base.log",
+    "output": "/tmp/spot-edge-task3-stop-budget-base-1790988538625617963.json.gz",
+    "sha256": "526fb15daa3b5971461436f3652a58d7b02f3f9f0bd8c358fbe4f7d6a39fe812"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "crowding-interaction",
+      "--scenario",
+      "base",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "2",
+      "--out",
+      "/tmp/spot-edge-task3-crowding-interaction-base-1790988538625617963.json.gz"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-crowding-interaction-base.log",
+    "output": "/tmp/spot-edge-task3-crowding-interaction-base-1790988538625617963.json.gz",
+    "sha256": "4c001bd6212dbc0ecfc7098c2de46d500537b2739d1bed819654e59f0334f114"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "cash",
+      "--scenario",
+      "base",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "2",
+      "--out",
+      "/tmp/spot-edge-task3-cash-base-1790988538625617963.json.gz"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-cash-base.log",
+    "output": "/tmp/spot-edge-task3-cash-base-1790988538625617963.json.gz",
+    "sha256": "cfc8da0b0c22fe4af69e324cdecab9b2e8916e20ff2e596bd63372341cfdbf54"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "protected-participation-25",
+      "--scenario",
+      "base",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "2",
+      "--out",
+      "/tmp/spot-edge-task3-protected-participation-25-base-1790988538625617963.json.gz"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-protected-participation-25-base.log",
+    "output": "/tmp/spot-edge-task3-protected-participation-25-base-1790988538625617963.json.gz",
+    "sha256": "02af8d59605ce656578d2f928e82573e0b9c118582801a36a52140aa8e9e876c"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "protected-participation-100",
+      "--scenario",
+      "base",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "2",
+      "--out",
+      "/tmp/spot-edge-task3-protected-participation-100-base-1790988538625617963.json.gz"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-protected-participation-100-base.log",
+    "output": "/tmp/spot-edge-task3-protected-participation-100-base-1790988538625617963.json.gz",
+    "sha256": "a14bac27c6e2f0d8512b9158b7a8e363b8b76bebc920a4a9ca33d17c5eefd5fd"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "atr-stop",
+      "--scenario",
+      "fee150",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "1",
+      "--out",
+      "/tmp/spot-edge-task3-atr-stop-fee150-1790988538625617963.json.gz",
+      "--initial-cny",
+      "2500"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-atr-stop-fee150.log",
+    "output": "/tmp/spot-edge-task3-atr-stop-fee150-1790988538625617963.json.gz",
+    "sha256": "214487a640ac04018b0aa151510f29afc9ad790c7af96691171c88965490cd3d"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "atr-stop",
+      "--scenario",
+      "slip2",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "1",
+      "--out",
+      "/tmp/spot-edge-task3-atr-stop-slip2-1790988538625617963.json.gz"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-atr-stop-slip2.log",
+    "output": "/tmp/spot-edge-task3-atr-stop-slip2-1790988538625617963.json.gz",
+    "sha256": "880a87d93f921dd4797c7f0b0f2a892258ed8eaaa34473311d4cdb1445278987"
+  },
+  {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "research.edge_spot",
+      "--candidate",
+      "atr-stop",
+      "--scenario",
+      "outage",
+      "--features",
+      "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+      "--limit",
+      "1",
+      "--out",
+      "/tmp/spot-edge-task3-atr-stop-outage-1790988538625617963.json.gz"
+    ],
+    "exit_code": 0,
+    "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-3-smoke-atr-stop-outage.log",
+    "output": "/tmp/spot-edge-task3-atr-stop-outage-1790988538625617963.json.gz",
+    "sha256": "53ca759c4f15bf05870d93109d5a988abfa199f442cfcf35814c0b298c41c044"
+  }
+]

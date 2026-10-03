@@ -1,0 +1,9 @@
+{"candidate": "cash", "scenario": "fee150", "session": 0}
+{"candidate": "cash", "scenario": "fee150", "session": 100}
+{"candidate": "cash", "scenario": "fee150", "session": 200}
+{"candidate": "cash", "scenario": "fee150", "session": 300}
+{"candidate": "cash", "scenario": "fee150", "session": 400}
+{"candidate": "cash", "scenario": "fee150", "session": 500}
+{"candidate": "cash", "scenario": "fee150", "session": 600}
+{"candidate": "cash", "scenario": "fee150", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-fee150.json.gz", "complete": true, "sha256": "e2f13dba8b361edc50bea52c4f01a863b990b66b6b47ae795b3d0038ea249902"}

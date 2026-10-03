@@ -1,0 +1,13 @@
+{
+  "label": "spot-crowding-interaction-fee150",
+  "state": "exited",
+  "pid": 99036,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T08:31:26.534772+00:00",
+  "elapsed_seconds": 724.0266418560059,
+  "errors": [],
+  "command_start_sha256": "e3dc14cb416c16331f7611bc9f13e1cb2a80fd04d2ff31c2e93927cb13fc63d4",
+  "log_sha256": "5ce84d20d3317b3a1d87c892779c92ac1b0b18375968a296050d64151a34e7ea",
+  "output_sha256": "142c328c958f7459df93b1b4032ba61a66a9a550241937646adee212ba7647d0"
+}

@@ -1,0 +1,13 @@
+{
+  "label": "spot-protected-participation-50-fee150",
+  "state": "exited",
+  "pid": 102435,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T10:20:31.804764+00:00",
+  "elapsed_seconds": 565.6989250720071,
+  "errors": [],
+  "command_start_sha256": "a4d7c5ecaa7813ef648b1bc5c4ddffce436036c4ce4fa9e088699504f56b029c",
+  "log_sha256": "826c0e85b2c134311eb8b8d40e321e7eebd6f31d3f07972439c115e6fd15226c",
+  "output_sha256": "5f379132c11cfe626377978605409ea7c9146fb520a9c446f84bfcd2db735994"
+}

@@ -1,0 +1,9 @@
+{"candidate": "stop-budget", "scenario": "outage", "session": 0}
+{"candidate": "stop-budget", "scenario": "outage", "session": 100}
+{"candidate": "stop-budget", "scenario": "outage", "session": 200}
+{"candidate": "stop-budget", "scenario": "outage", "session": 300}
+{"candidate": "stop-budget", "scenario": "outage", "session": 400}
+{"candidate": "stop-budget", "scenario": "outage", "session": 500}
+{"candidate": "stop-budget", "scenario": "outage", "session": 600}
+{"candidate": "stop-budget", "scenario": "outage", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-outage.json.gz", "complete": true, "sha256": "3f24e37b337a8af287bea54effc3cf3dcfc378f4a6d916088204ffcf29bb41cd"}

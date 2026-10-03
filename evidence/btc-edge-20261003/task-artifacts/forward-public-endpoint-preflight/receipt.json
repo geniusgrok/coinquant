@@ -1,0 +1,24 @@
+[
+  {
+    "label": "current-fx",
+    "url": "https://fred.stlouisfed.org/graph/?id=DEXCHUS",
+    "request_utc": "2026-10-03T04:38:50.186808+00:00",
+    "scope": "PUBLIC_READ_ONLY_ENDPOINT_PREFLIGHT_NOT_FORWARD_OBSERVATION",
+    "status": 200,
+    "response_url": "https://fred.stlouisfed.org/graph/?id=DEXCHUS",
+    "content_type": "text/html; charset=UTF-8",
+    "raw_path": "/workspace/btc-alpha-beta-improve/task-artifacts/forward-public-endpoint-preflight/current-fx.raw",
+    "bytes": 76021,
+    "sha256": "9e58d644559addff0945b011c42f86a8c8db1805e9090aa4b22bc13c1b480853",
+    "first_line": "<!DOCTYPE html>",
+    "receipt_utc": "2026-10-03T04:38:51.016730+00:00"
+  },
+  {
+    "label": "official-csv-fx",
+    "url": "https://fred.stlouisfed.org/graph.csv?id=DEXCHUS",
+    "request_utc": "2026-10-03T04:38:51.016747+00:00",
+    "scope": "PUBLIC_READ_ONLY_ENDPOINT_PREFLIGHT_NOT_FORWARD_OBSERVATION",
+    "error": "<HTTPError 404: 'Not Found'>",
+    "receipt_utc": "2026-10-03T04:38:51.459275+00:00"
+  }
+]

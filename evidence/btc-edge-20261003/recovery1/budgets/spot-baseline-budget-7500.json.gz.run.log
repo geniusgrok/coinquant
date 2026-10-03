@@ -1,0 +1,9 @@
+{"candidate": "atr-stop", "scenario": "base", "session": 0}
+{"candidate": "atr-stop", "scenario": "base", "session": 100}
+{"candidate": "atr-stop", "scenario": "base", "session": 200}
+{"candidate": "atr-stop", "scenario": "base", "session": 300}
+{"candidate": "atr-stop", "scenario": "base", "session": 400}
+{"candidate": "atr-stop", "scenario": "base", "session": 500}
+{"candidate": "atr-stop", "scenario": "base", "session": 600}
+{"candidate": "atr-stop", "scenario": "base", "session": 700}
+{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-7500.json.gz", "complete": true, "sha256": "18864a07b696c02c81f5b35f7874ed95e1f6d5034bf02fac98faac7929aa75c7"}

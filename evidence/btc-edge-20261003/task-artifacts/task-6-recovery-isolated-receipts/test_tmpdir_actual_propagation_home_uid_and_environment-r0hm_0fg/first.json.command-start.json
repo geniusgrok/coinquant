@@ -1,0 +1,15 @@
+{
+  "label": "first",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "-c",
+    "import os,json,tempfile,sys; from pathlib import Path; t=tempfile.TemporaryDirectory(); Path(sys.argv[1]).write_text(json.dumps(dict(env=dict(os.environ),uid=os.getuid(),tmp=t.name))); t.cleanup()",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_tmpdir_actual_propagation_home_uid_and_environment-r0hm_0fg/first.json"
+  ],
+  "output": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_tmpdir_actual_propagation_home_uid_and_environment-r0hm_0fg/first.json",
+  "cwd": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_tmpdir_actual_propagation_home_uid_and_environment-r0hm_0fg",
+  "project_kind": "spot",
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "state": "launch_requested",
+  "requested_utc": "2026-10-03T05:52:10.690393+00:00"
+}

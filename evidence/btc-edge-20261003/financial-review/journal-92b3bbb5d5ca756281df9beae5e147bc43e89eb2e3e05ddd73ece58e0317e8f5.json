@@ -1,0 +1,10 @@
+{
+  "spot|atr-stop|outage|1E+4|0|unscaled": {
+    "raw_sha256": "41863d08944d564007903570be57f476cffc3c9d6c214bd9174c17bb512a7de2",
+    "events_scanned": 0,
+    "counts": {},
+    "sample_rule": "all feature exceptional/missing and sizing constraints; deterministic every997th Spot decision/every97th Coin sizing; all decision scales and committed targets checked",
+    "samples": [],
+    "passed": true
+  }
+}

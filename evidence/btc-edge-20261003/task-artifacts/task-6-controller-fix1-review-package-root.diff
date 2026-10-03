@@ -1,0 +1,1169 @@
+--- prepare-source-freeze-pre-controller-fix1.py
++++ prepare-source-freeze.py
+@@ -41,31 +41,58 @@
+ def binding(path):
+     path = Path(path).resolve(strict=True)
+     return {'path': str(path), 'sha256': sha(path), 'bytes': path.stat().st_size}
+ 
+ 
+ def market_files(root):
+     return sorted(p.resolve() for p in root.rglob('*') if p.is_file() and
+                   (p.name.endswith('.zip') or p.name.endswith('.zip.CHECKSUM')))
+ 
+ 
++def vault_binding(snapshot_path):
++    snapshot = json.loads(Path(snapshot_path).read_bytes())
++    if snapshot['format'] != 'immutable-public-vault-snapshot-v1':
++        raise ValueError('actual vault preflight schema required')
++    root = Path(snapshot['root']).resolve(strict=True)
++    expected = {}
++    for item in snapshot['files']:
++        relative = Path(item['path'])
++        if relative.is_absolute() or '..' in relative.parts or str(relative) in expected:
++            raise ValueError('invalid vault inventory entry')
++        expected[str(relative)] = item
++    actual = {str(p.relative_to(root)): p for p in root.rglob('*') if p.is_file()}
++    if set(actual) != set(expected):
++        raise ValueError('actual vault file-set differs from original preflight')
++    bound = []
++    for name, path in sorted(actual.items()):
++        if path.is_symlink():
++            raise ValueError('vault symlink refused: ' + str(path))
++        item = binding(path)
++        if item['sha256'] != expected[name]['sha256'] or item['bytes'] != expected[name]['size']:
++            raise ValueError('actual vault bytes differ from preflight: ' + str(path))
++        bound.append(item)
++    return bound, {'root': str(root), 'suffixes': None, 'files': sorted(actual_path['path'] for actual_path in bound)}
++
++
+ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('--review', action='append', required=True, type=Path)
+     parser.add_argument('--out', required=True, type=Path)
+     args = parser.parse_args()
++    if (ART/'controller-parent-freeze.json').exists():
++        raise ValueError('original parent freeze already anchored; no refreeze')
+     if args.out.exists():
+         raise ValueError('exclusive freeze output required')
+     references = json.loads((ART/'baseline-reference-bindings.json').read_bytes())
+     common = [ART/'edge-features-v1.json', ART/'baseline-reference-bindings.json',
+               ART/'registered-financial-commands.json', ART/'run-registered-phase.py',
+-              ART/'vault-before-task4.json', Path(__file__),
++              ART/'vault-before-task4.json', ART/'bind-phase-inputs.py', Path(__file__),
+               BASE/'coinquant/research/session_schedule.json',
+               BASE/'starquant/data/usdcny_frankfurter.json']
+     for entry in references['accepted_inputs']:
+         if sha(entry['path']) != entry['sha256']:
+             raise ValueError('approved reference mutated: ' + entry['path'])
+         common.append(Path(entry['path']))
+     for entry in references['references']:
+         if sha(entry['raw']) != entry['raw_sha256']:
+             raise ValueError('approved raw mutated: ' + entry['raw'])
+         common.append(Path(entry['raw']))
+@@ -100,29 +127,38 @@
+                 if not declared or sha(path) != declared[0]:
+                     raise ValueError('official CHECKSUM mismatch: ' + str(path))
+         paths.extend(originals)
+         paths.extend(Path(v['path']) for v in reviews)
+         projects[kind] = {
+             'repository': str(repo), 'source': identity,
+             'bound_files': [binding(p) for p in sorted(set(p.resolve(strict=True) for p in paths))],
+             'bound_trees': [{'root': str(market), 'suffixes': ['.zip', '.zip.CHECKSUM'],
+                              'files': [str(p) for p in originals]}],
+         }
++        if kind == 'perp':
++            vault_files, vault_tree = vault_binding(ART/'vault-before-task4.json')
++            projects[kind]['bound_files'].extend(vault_files)
++            projects[kind]['bound_trees'].append(vault_tree)
+         if source(repo) != identity:
+             raise ValueError('source changed while freezing: ' + kind)
+     document = {'format': 'btc-edge-reviewed-source-freeze-v1',
+         'recorded_utc': datetime.now(timezone.utc).isoformat(),
++        'controller_root': str(ART.resolve()),
+         'projects': projects, 'reviews': reviews,
+         'public_vault_preflight': binding(ART/'vault-before-task4.json'),
+         'original_market_vault': '/workspace/scratch/alpha-beta-next/public-print-vault',
+         'meaning': 'Reviewed producer/evaluator/input identity, not financial qualification.'}
+     args.out.parent.mkdir(parents=True, exist_ok=True)
+     with args.out.open('x') as stream:
+         json.dump(document, stream, indent=2, allow_nan=False)
+         stream.write('\n')
++    # Exclusive anchor fixes the one parent identity across all subsequent phases.
++    with (ART/'controller-parent-freeze.json').open('x') as stream:
++        json.dump(binding(args.out), stream, indent=2)
++        stream.write('\n')
+     print(json.dumps({'output': str(args.out), 'sha256': sha(args.out),
+         'sources': {k: v['source'] for k,v in projects.items()},
+         'bound_files': {k: len(v['bound_files']) for k,v in projects.items()}}))
+ 
+ 
+ if __name__ == '__main__':
+     main()
+--- run-registered-phase-pre-controller-fix1.py
++++ run-registered-phase.py
+@@ -1,140 +1,368 @@
+-"""Execute a root-registered phase with immutable argv/receipts; no retries.
+-
+-External delivery helper only. It cannot enable account access or change source.
+-At most two isolated Spot subprocesses; all Coin invocations are serialized.
++"""Run exact registered research jobs with immutable guards and exclusive receipts.
++
++Task-owned project reservation is inherited by children, never an account lock.
++A failed/unknown owner is never automatically cleared. No retries or subset runs.
+ """
+ import argparse
+ from datetime import datetime, timezone
++import fcntl
+ import hashlib
+ import json
++import os
+ from pathlib import Path
++import signal
+ import subprocess
+ import sys
+ import time
+-
+-
+-REGISTRY = Path(__file__).with_name('registered-financial-commands.json')
++import uuid
++
++ART = Path(__file__).resolve().parent
++REGISTRY = ART / 'registered-financial-commands.json'
+ REGISTRY_SHA = 'e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa'
+ 
+ 
+ def sha(path):
+     digest = hashlib.sha256()
+     with Path(path).open('rb') as stream:
+         for block in iter(lambda: stream.read(4194304), b''):
+             digest.update(block)
+     return digest.hexdigest()
+ 
+ 
+ def now():
+     return datetime.now(timezone.utc).isoformat()
+ 
+ 
+ def write_new(path, body):
+-    with path.open('x') as stream:
++    with Path(path).open('x') as stream:
+         json.dump(body, stream, indent=2, allow_nan=False)
+         stream.write('\n')
++        stream.flush()
++        os.fsync(stream.fileno())
+ 
+ 
+ def source_at(cwd):
+     code = ('import json; from research.rebuild import source_identity; '
+             'print(json.dumps(source_identity()))')
+     result = subprocess.run([sys.executable, '-c', code], cwd=cwd,
+                             check=True, capture_output=True, text=True)
+     return json.loads(result.stdout)
+ 
+ 
++def verify_files(items):
++    for item in items:
++        path = Path(item['path'])
++        if path.is_symlink() or path.stat().st_size != item['bytes'] or sha(path) != item['sha256']:
++            raise ValueError('registered input/source bytes changed: ' + str(path))
++
++
+ def guard(job, freeze):
+     kind = job['project_kind']
+     record = freeze['projects'][kind]
++    if str(Path(job['cwd']).resolve()) != record['repository']:
++        raise ValueError('job repository differs from frozen project')
+     if source_at(job['cwd']) != record['source'] or record['source']['dirty']:
+         raise ValueError('producer source changed: ' + kind)
+-    for tree in record.get('bound_trees', []):
+-        actual = sorted(str(p.resolve()) for p in Path(tree['root']).rglob('*')
+-                        if p.is_file() and any(p.name.endswith(s) for s in tree['suffixes']))
++    for tree in record['bound_trees']:
++        actual = sorted(str(p.absolute()) for p in Path(tree['root']).rglob('*')
++                        if p.is_file() and (tree['suffixes'] is None or
++                                           any(p.name.endswith(s) for s in tree['suffixes'])))
+         if actual != tree['files']:
+             raise ValueError('registered public input inventory changed: ' + tree['root'])
+-    for item in record['bound_files']:
+-        if sha(item['path']) != item['sha256']:
+-            raise ValueError('registered input/source bytes changed: ' + item['path'])
+-
+-
+-def main():
++    verify_files(record['bound_files'])
++
++
++class Reservation:
++    """flock covers live inherited children; durable owners cover unknown exits."""
++    def __init__(self, root, kind, phase):
++        self.root = Path(root) / 'controller-reservations' / kind
++        self.root.mkdir(parents=True, exist_ok=True)
++        self.fd = os.open(self.root / 'reservation.lock', os.O_CREAT | os.O_RDWR, 0o600)
++        try:
++            fcntl.flock(self.fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
++            for owner in self.root.glob('*.owner.json'):
++                released = owner.with_name(owner.name.replace('.owner.json', '.released.json'))
++                if not released.exists():
++                    raise ValueError('unknown/unfinished reservation owner: ' + str(owner))
++                body = json.loads(released.read_bytes())
++                if body.get('owner_sha256') != sha(owner) or body.get('all_children_reaped') is not True:
++                    raise ValueError('invalid reservation release evidence: ' + str(released))
++            self.owner = self.root / (uuid.uuid4().hex + '.owner.json')
++            write_new(self.owner, dict(pid=os.getpid(), project_kind=kind, phase=phase, created_utc=now()))
++        except BaseException:
++            os.close(self.fd)
++            raise
++
++    def close(self, reaped):
++        try:
++            if reaped:
++                write_new(self.owner.with_name(self.owner.name.replace('.owner.json', '.released.json')),
++                          dict(owner_sha256=sha(self.owner), all_children_reaped=True, released_utc=now()))
++        finally:
++            # Do not LOCK_UN: inherited child descriptors must retain ownership.
++            os.close(self.fd)
++
++
++def run_jobs(jobs, check, root, kind, phase, provenance, popen=subprocess.Popen):
++    """One reusable guarded core for original and conditional registries."""
++    reservation = Reservation(root, kind, phase)
++    phase_dir = Path(root) / 'controller-receipts' / kind / (phase + '-' + provenance['registry_sha256'])
++    fallback = Path(root) / 'controller-diagnostics'
++    active, pending, results, errors = [], list(jobs), [], []
++    all_reaped = True
++    phase_ready = False
++
++    def problem(stage, exc, label=None):
++        error = dict(stage=stage, label=label, error=repr(exc), recorded_utc=now())
++        errors.append(error)
++        # Every error is durable independently of the per-output destination.
++        try:
++            fallback.mkdir(parents=True, exist_ok=True)
++            write_new(fallback / (uuid.uuid4().hex + '.json'),
++                      dict(error=error, phase=phase, project_kind=kind, provenance=provenance,
++                           pending_labels=[j['label'] for j in pending],
++                           active_labels=[a['job']['label'] for a in active]))
++        except BaseException as diagnostic_error:
++            errors.append(dict(stage='diagnostic_write', error=repr(diagnostic_error), label=label))
++        print(json.dumps(dict(event='controller_error', **error)), flush=True)
++
++    def save(path, body, stage, label=None):
++        try:
++            write_new(path, body)
++            return True
++        except BaseException as exc:
++            problem(stage, exc, label)
++            return False
++
++    def finish(entry):
++        job, process = entry['job'], entry['process']
++        label = job['label']
++        local_errors = []
++        code = None
++        reaped = False
++        try:
++            code = process.wait()
++            reaped = True
++        except BaseException as exc:
++            local_errors.append(dict(stage='wait', error=repr(exc)))
++            problem('wait', exc, label)
++        try:
++            entry['log'].close()
++        except BaseException as exc:
++            local_errors.append(dict(stage='log_close', error=repr(exc)))
++            problem('log_close', exc, label)
++        try:
++            check(job)
++        except BaseException as exc:
++            local_errors.append(dict(stage='post_guard', error=repr(exc)))
++            problem('post_guard', exc, label)
++        hashes = {}
++        for name, path in (('command_start', entry['start']), ('log', entry['log_path']), ('output', Path(job['output']))):
++            try:
++                hashes[name + '_sha256'] = sha(path)
++            except BaseException as exc:
++                hashes[name + '_sha256'] = None
++                local_errors.append(dict(stage=name + '_hash', error=repr(exc)))
++                problem(name + '_hash', exc, label)
++        if code != 0:
++            problem('child_exit', ValueError('actual exit code: ' + str(code)), label)
++        body = dict(label=label, state='exited' if reaped else 'unknown', pid=process.pid,
++                    exit_code=code, reaped=reaped, finished_utc=now(),
++                    elapsed_seconds=time.monotonic()-entry['began'], errors=local_errors, **hashes)
++        saved = save(entry['finish'], body, 'finish_receipt_write', label)
++        results.append(dict(body, finish_receipt_saved=saved, finish_path=str(entry['finish'])))
++        return reaped
++
++    previous_signals = {}
++    launching = False
++    deferred_signal = None
++    def interrupted(signum, frame):
++        nonlocal deferred_signal
++        for handled in (signal.SIGTERM, signal.SIGINT):
++            signal.signal(handled, signal.SIG_IGN)
++        if launching:
++            deferred_signal = signum
++            return
++        raise RuntimeError('controller received signal ' + str(signum))
++
++    try:
++        for sig in (signal.SIGTERM, signal.SIGINT):
++            previous_signals[sig] = signal.signal(sig, interrupted)
++        phase_dir.mkdir(parents=True, exist_ok=False)
++        phase_ready = True
++        write_new(phase_dir / 'start.json', dict(provenance, phase=phase, project_kind=kind,
++                  owner_path=str(reservation.owner), created_utc=now(), jobs=jobs))
++        while pending or active:
++            while pending and len(active) < (2 if kind == 'spot' else 1) and not errors:
++                job = pending[0]
++                log = None
++                started = False
++                try:
++                    check(job)
++                    output = Path(job['output'])
++                    start = output.with_name(output.name + '.command-start.json')
++                    end = output.with_name(output.name + '.command-finish.json')
++                    log_path = output.with_name(output.name + '.run.log')
++                    if any(p.exists() for p in (output, output.with_suffix('.progress.json'), start, end, log_path)):
++                        raise ValueError('existing output/progress/invocation receipt: ' + str(output))
++                    output.parent.mkdir(parents=True, exist_ok=True)
++                    write_new(start, dict(job, **provenance, state='launch_requested', requested_utc=now()))
++                    log = log_path.open('xb')
++                    entry = dict(job=job, log=log, start=start, finish=end, log_path=log_path, began=time.monotonic())
++                    launching = True
++                    try:
++                        process = popen(job['command'], cwd=job['cwd'], stdout=log, stderr=subprocess.STDOUT,
++                                        pass_fds=(reservation.fd,))
++                        entry['process'] = process
++                        active.append(entry)
++                        started = True
++                        pending.pop(0)
++                    finally:
++                        launching = False
++                    if deferred_signal is not None:
++                        raise RuntimeError('controller received signal ' + str(deferred_signal))
++                    write_new(phase_dir / (job['label'] + '.launched.json'),
++                              dict(label=job['label'], pid=process.pid, launched_utc=now()))
++                except BaseException as exc:
++                    if not started and log is not None:
++                        try:
++                            log.close()
++                        except BaseException as close_error:
++                            problem('launch_log_close', close_error, job['label'])
++                    problem('launch_bookkeeping' if started else 'launch_not_started', exc, job['label'])
++                    if not started:
++                        save(phase_dir / (job['label'] + '.not-started.json'),
++                             dict(label=job['label'], state='not_started', error=repr(exc), recorded_utc=now()),
++                             'not_started_receipt_write', job['label'])
++                    break
++            for entry in list(active):
++                try:
++                    done = bool(errors) or entry['process'].poll() is not None
++                except BaseException as exc:
++                    problem('poll', exc, entry['job']['label'])
++                    done = True
++                if done:
++                    all_reaped = finish(entry) and all_reaped
++                    active.remove(entry)
++            if errors and not active:
++                break
++            if active:
++                time.sleep(0.05)
++    except BaseException as exc:
++        problem('phase_controller', exc)
++    finally:
++        # Ignore further handled signals while actually waiting/reaping all children.
++        for sig in previous_signals:
++            signal.signal(sig, signal.SIG_IGN)
++        for entry in list(active):
++            try:
++                all_reaped = finish(entry) and all_reaped
++            except BaseException as exc:
++                all_reaped = False
++                problem('unexpected_finish', exc, entry['job']['label'])
++            active.remove(entry)
++        summary = dict(provenance, phase=phase, project_kind=kind, finished_utc=now(),
++                       status='failed' if errors else 'completed', all_children_reaped=all_reaped,
++                       pending_labels=[j['label'] for j in pending], results=results, errors=list(errors))
++        if phase_ready:
++            save(phase_dir / 'finish.json', summary, 'phase_finish_receipt_write')
++        if errors:
++            # Contains exact completion receipts even when their normal location failed.
++            save(fallback / (uuid.uuid4().hex + '.phase-result.json'),
++                 dict(summary, status='failed', errors=list(errors)), 'phase_fallback_write')
++        try:
++            reservation.close(all_reaped)
++        except BaseException as exc:
++            problem('reservation_release', exc)
++            save(fallback / (uuid.uuid4().hex + '.phase-result.json'),
++                 dict(summary, status='failed', errors=list(errors)), 'release_failure_result_write')
++        for sig, handler in previous_signals.items():
++            signal.signal(sig, handler)
++    return 2 if errors else 0
++
++
++def main(argv=None):
+     parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('--phase', required=True, choices=('unscaled', 'risk', 'sensitivity', 'budgets'))
++    parser.add_argument('--phase', required=True)
+     parser.add_argument('--kind', required=True, choices=('spot', 'perp'))
+     parser.add_argument('--freeze', required=True, type=Path)
+-    args = parser.parse_args()
++    parser.add_argument('--phase-input', type=Path)
++    parser.add_argument('--supplemental-registry', type=Path)
++    parser.add_argument('--supplemental-sha256')
++    args = parser.parse_args(argv)
++    if not args.phase or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_' for c in args.phase):
++        raise ValueError('unsafe registered phase label')
+     if sha(REGISTRY) != REGISTRY_SHA:
+-        raise ValueError('registered argv bytes changed')
+-    registry = json.loads(REGISTRY.read_bytes())
+-    freeze = json.loads(args.freeze.read_bytes())
+-    if freeze['format'] != 'btc-edge-reviewed-source-freeze-v1':
+-        raise ValueError('reviewed freeze required')
+-    freeze_sha = sha(args.freeze)
+-    jobs = [v for v in registry['jobs'] if v['phase'] == args.phase and v['project_kind'] == args.kind]
++        raise ValueError('original registered argv bytes changed')
++    raw = args.freeze.read_bytes()
++    freeze_sha = hashlib.sha256(raw).hexdigest()
++    freeze = json.loads(raw)
++    parent_anchor = ART / 'controller-parent-freeze.json'
++    anchor = json.loads(parent_anchor.read_bytes())
++    if anchor['path'] != str(args.freeze.absolute()) or anchor['sha256'] != freeze_sha:
++        raise ValueError('parent freeze differs from exclusive original anchor')
++    anchor_sha = sha(parent_anchor)
++    if freeze['format'] != 'btc-edge-reviewed-source-freeze-v1' or freeze['controller_root'] != str(ART):
++        raise ValueError('reviewed freeze/controller root required')
++    registry_path = args.supplemental_registry or REGISTRY
++    registry_sha = args.supplemental_sha256 if args.supplemental_registry else REGISTRY_SHA
++    if not registry_sha or sha(registry_path) != registry_sha:
++        raise ValueError('exact registry SHA required')
++    registry = json.loads(registry_path.read_bytes())
++    if args.supplemental_registry:
++        import importlib.util
++        spec = importlib.util.spec_from_file_location('phase_inputs', ART / 'bind-phase-inputs.py')
++        helper = importlib.util.module_from_spec(spec)
++        spec.loader.exec_module(helper)
++        helper.validate_supplement(registry, freeze_sha, freeze)
++    elif args.phase not in ('unscaled', 'risk', 'sensitivity', 'budgets'):
++        raise ValueError('unknown original phase')
++    jobs = [j for j in registry['jobs'] if j['phase'] == args.phase and j['project_kind'] == args.kind]
+     if not jobs:
+         raise ValueError('no registered jobs in phase')
+-    max_running = 2 if args.kind == 'spot' else 1
+-    pending = list(jobs)
+-    active = []
+-    failed = False
+-    while pending or active:
+-        while pending and len(active) < max_running and not failed:
+-            job = pending.pop(0)
+-            try:
+-                guard(job, freeze)
+-            except Exception as exc:
+-                pending.insert(0, job)
+-                failed = True
+-                print(json.dumps(dict(event='launch_guard_failed', label=job['label'], error=str(exc))), flush=True)
+-                break
+-            output = Path(job['output'])
+-            if output.exists() or output.with_suffix('.progress.json').exists():
+-                raise ValueError('existing output/progress: ' + str(output))
+-            output.parent.mkdir(parents=True, exist_ok=True)
+-            start_path = output.with_name(output.name + '.command-start.json')
+-            finish_path = output.with_name(output.name + '.command-finish.json')
+-            log_path = output.with_name(output.name + '.run.log')
+-            if any(p.exists() for p in (start_path, finish_path, log_path)):
+-                raise ValueError('existing invocation receipt: ' + str(output))
+-            start = dict(job, registry_sha256=REGISTRY_SHA, freeze_path=str(args.freeze),
+-                         freeze_sha256=freeze_sha, source=freeze['projects'][args.kind]['source'],
+-                         started_utc=now(), controller_sha256=sha(__file__))
+-            write_new(start_path, start)
+-            log = log_path.open('xb')
+-            process = subprocess.Popen(job['command'], cwd=job['cwd'], stdout=log, stderr=subprocess.STDOUT)
+-            active.append((job, process, log, start_path, finish_path, log_path, time.monotonic()))
+-            print(json.dumps(dict(event='launch', label=job['label'], pid=process.pid)), flush=True)
+-        next_active = []
+-        for job, process, log, start_path, finish_path, log_path, started in active:
+-            code = process.poll()
+-            if code is None:
+-                next_active.append((job, process, log, start_path, finish_path, log_path, started))
+-                continue
+-            log.close()
+-            source_error = None
+-            try:
+-                guard(job, freeze)
+-                if sha(args.freeze) != freeze_sha:
+-                    raise ValueError('freeze bytes changed')
+-            except Exception as exc:
+-                source_error = str(exc)
+-            output = Path(job['output'])
+-            finish = dict(label=job['label'], command_start_sha256=sha(start_path),
+-                          finished_utc=now(), elapsed_seconds=time.monotonic()-started,
+-                          exit_code=code, source_guard_error=source_error,
+-                          log_sha256=sha(log_path), output_sha256=sha(output) if output.exists() else None)
+-            write_new(finish_path, finish)
+-            print(json.dumps(dict(event='finish', **finish)), flush=True)
+-            failed = failed or code != 0 or source_error is not None or not output.exists()
+-        active = next_active
+-        if failed and not active:
+-            print(json.dumps(dict(event='stopped_after_failure', pending_labels=[j['label'] for j in pending])), flush=True)
+-            return 2
+-        if active:
+-            time.sleep(1)
+-    return 0
++    if any(not j['label'] or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_' for c in j['label']) for j in jobs):
++        raise ValueError('unsafe registered receipt label')
++    if len({j['label'] for j in jobs}) != len(jobs) or len({j['output'] for j in jobs}) != len(jobs):
++        raise ValueError('duplicate job label/output')
++    phase_binding = None
++    if args.phase_input:
++        phase_binding = json.loads(args.phase_input.read_bytes())
++        phase_sha = sha(args.phase_input)
++        if (phase_binding['parent_freeze_sha256'] != freeze_sha or phase_binding['project_kind'] != args.kind or
++            phase_binding['phase'] != args.phase or phase_binding['registry_sha256'] != registry_sha):
++            raise ValueError('phase input parent/project/phase/registry mismatch')
++    profiles = {j['command'][j['command'].index('--risk-calibration')+1] for j in jobs if '--risk-calibration' in j['command']}
++    if phase_binding:
++        if phase_binding['format'] != 'btc-edge-phase-input-binding-v1':
++            raise ValueError('actual derived phase schema required')
++        for item in (phase_binding['assessor_report'], phase_binding['original_export'], phase_binding['production_profile']):
++            if item not in phase_binding['bound_files']:
++                raise ValueError('missing original derived input byte binding')
++        if not any(v['path'] == str(args.freeze.absolute()) and v['sha256'] == freeze_sha for v in phase_binding['bound_files']):
++            raise ValueError('missing original parent freeze binding')
++    if profiles and (phase_binding is None or profiles != {phase_binding['production_profile']['path']}):
++        raise ValueError('exact derived phase binding required for every risk profile')
++    provenance = dict(registry_path=str(registry_path), registry_sha256=registry_sha,
++                      parent_registry_sha256=REGISTRY_SHA, freeze_path=str(args.freeze), freeze_sha256=freeze_sha,
++                      phase_input_path=str(args.phase_input) if args.phase_input else None,
++                      phase_input_sha256=phase_sha if phase_binding else None, controller_sha256=sha(__file__))
++    def check(job):
++        if sha(parent_anchor) != anchor_sha or sha(args.freeze) != freeze_sha or sha(REGISTRY) != REGISTRY_SHA or sha(registry_path) != registry_sha:
++            raise ValueError('parent freeze/registry bytes changed')
++        guard(job, freeze)
++        for other_kind, record in freeze['projects'].items():
++            if other_kind != job['project_kind'] and source_at(record['repository']) != record['source']:
++                raise ValueError('other frozen producer/evaluator source changed: ' + other_kind)
++        if phase_binding:
++            if sha(args.phase_input) != phase_sha:
++                raise ValueError('phase binding bytes changed')
++            verify_files(phase_binding['bound_files'])
++            if phase_binding['original_export']['sha256'] != phase_binding['production_profile']['sha256']:
++                raise ValueError('production profile differs from original export')
++        if args.supplemental_registry:
++            verify_files(registry['bound_files'])
++    return run_jobs(jobs, check, ART, args.kind, args.phase, provenance)
+ 
+ 
+ if __name__ == '__main__':
+     raise SystemExit(main())
+--- /dev/null
++++ bind-phase-inputs.py
+@@ -0,0 +1,208 @@
++"""Bind an actual assessor export to one phase of an immutable parent freeze.
++
++No producer, source freeze, export generation, profile rewrite, or account action.
++The source-bound edge_assessment interface validates project/spec/profile/raw links.
++"""
++import argparse
++import hashlib
++import importlib.util
++import json
++from pathlib import Path
++import sys
++
++ART = Path(__file__).resolve().parent
++spec = importlib.util.spec_from_file_location('controller', ART / 'run-registered-phase.py')
++controller = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(controller)
++sha, write_new = controller.sha, controller.write_new
++
++
++def require(value, message):
++    if not value:
++        raise ValueError(message)
++
++
++def binding(path):
++    path = Path(path).absolute()
++    require(not path.is_symlink(), 'original binding cannot be a symlink')
++    return dict(path=str(path), sha256=sha(path), bytes=path.stat().st_size)
++
++
++def assessor(freeze):
++    repo = freeze['projects']['spot']['repository']
++    sys.path.insert(0, repo)
++    from research import edge_assessment
++    require(Path(edge_assessment.__file__).resolve() == Path(repo) / 'research/edge_assessment.py',
++            'assessor import differs from frozen source')
++    return edge_assessment
++
++
++def validate_report(report, freeze, interface):
++    require(report['format'] == 'btc-edge-assessment-v1' and not report['blocking'] and
++            not report['rejected_files'], 'actual nonblocking assessor report required')
++    require(report['analysis_source'] == freeze['projects']['spot']['source'], 'assessor source differs from parent')
++    for kind in ('spot', 'perp'):
++        require(report['contracts'][kind] == dict(spec_sha256=interface.SPEC_HASH[kind],
++                protocol_sha256=interface.PROTOCOL_HASH[kind]), 'assessor contract mismatch')
++    # Calibration begins only after the entire original unscaled inventory was audited.
++    unscaled = {key for key in interface.required_matrix() if key.endswith('|0|unscaled') and
++                key.split('|')[3] == '1E+4'}
++    require(unscaled, 'actual assessor unscaled inventory missing')
++    raw = {}
++    for key in unscaled | set(report['accounts']):
++        account = report['accounts'].get(key)
++        require(account is not None and account['status'] == 'complete' and not account['reasons'] and
++                bool(account.get('monetary_audit')), 'complete audited account required: ' + key)
++        kind = account['kind']
++        require(account['source'] == freeze['projects'][kind]['source'], 'raw account source differs from parent')
++        item = binding(account['path'])
++        require(item['sha256'] == account['raw_sha256'] == report['inputs'][account['path']], 'actual raw account byte mismatch')
++        raw[item['path']] = item
++    return list(raw.values())
++
++
++def validate_export(report, document, kind, label, freeze, interface):
++    names = [interface.BASE[kind], *interface.ORDER[kind]]
++    require(label in (kind, kind + '_combo'), 'unknown assessor export label')
++    if label.endswith('_combo'):
++        parts = report['combinations'][kind]
++        require(parts == [n for n in interface.ORDER[kind] if report['decisions'][kind][n]['eligible']] and len(parts) >= 2,
++                'combo must include ALL eligible singles in registered order')
++        names.append(interface.combo_name(kind, parts))
++    interface.validate_profile_document(document, kind, names)
++    require(document == report['calibration_documents'][label], 'export differs from actual assessor report')
++    for name, profile in document['profiles'].items():
++        account = report['accounts'][interface.account_id(kind, name)]
++        diagnostics = report['calibration_diagnostics'][label][name]
++        require(account['status'] == 'complete' and account['source'] == freeze['projects'][kind]['source'] and
++                profile['base_bundle_sha256'] == account['raw_sha256'] == diagnostics['raw_sha256'] and
++                diagnostics['source'] == account['source'] and diagnostics['training_days'] == 731,
++                'profile original audited raw/source/training mismatch')
++
++
++def validate_supplement(registry, freeze_sha, freeze):
++    require(registry['format'] == 'btc-edge-conditional-registration-v1' and
++            registry['parent_freeze_sha256'] == freeze_sha and
++            registry['parent_registry_sha256'] == controller.REGISTRY_SHA, 'supplement parent mismatch')
++    controller.verify_files(registry['bound_files'])
++    report_binding = registry['assessment_report']
++    require(report_binding in registry['bound_files'], 'supplement report must be bound')
++    report = json.loads(Path(report_binding['path']).read_bytes())
++    api = assessor(freeze)
++    raw_accounts = validate_report(report, freeze, api)
++    require(all(item in registry['bound_files'] for item in raw_accounts), 'supplement must retain original raw account bindings')
++    require(registry['condition'] in ('all-eligible-combination', 'selected-budgets'), 'unregistered condition')
++    kind = registry['project_kind']
++    parts = report['combinations'].get(kind, [])
++    selected = report['selected'][kind]
++    if registry['condition'] == 'all-eligible-combination':
++        require(parts == [n for n in api.ORDER[kind] if report['decisions'][kind][n]['eligible']] and len(parts) >= 2 and
++                all(report['decisions'][kind][n]['status'] == 'complete' for n in api.ORDER[kind]), 'inapplicable/subset combination')
++        candidate = api.combo_name(kind, parts)
++        role = registry['role']
++        require(role in ('unscaled', 'risk'), 'invalid combination role')
++        expected = {(s, '10000', role == 'risk') for s in (['base'] if role == 'risk' else api.STRESSES[kind])}
++    else:
++        best, eligible_parts = api.choose_singles(kind, {n: report['decisions'][kind][n] for n in api.ORDER[kind]})
++        expected_selected = api.combo_name(kind, eligible_parts) if eligible_parts and report['decisions'][kind].get(api.combo_name(kind, eligible_parts), {}).get('eligible') else best
++        require(all(report['decisions'][kind][n]['status'] == 'complete' for n in api.ORDER[kind]) and
++                (not eligible_parts or report['decisions'][kind].get(api.combo_name(kind, eligible_parts), {}).get('status') == 'complete') and
++                selected == expected_selected, 'selection must follow complete original ALL-eligible decision rule')
++        require(selected != api.BASE[kind] and report['decisions'][kind][selected]['eligible'] and
++                report['decisions'][kind][selected]['status'] == 'complete', 'selected-budget condition incomplete')
++        candidate = selected
++        expected = {('base', str(capital), False) for capital in (2500, 5000, 7500)}
++    original = json.loads(controller.REGISTRY.read_bytes())['jobs']
++    exemplar = next(j for j in original if j['project_kind'] == kind)
++    original_outputs = {j['output'] for j in original}
++    actual = set()
++    allowed = {'--candidate', '--combo', '--scenario', '--initial-cny', '--risk-calibration', '--features', '--out', '--prints'}
++    output_root = Path(exemplar['output']).parent.parent
++    for job in registry['jobs']:
++        require(job['project_kind'] == kind and job['cwd'] == freeze['projects'][kind]['repository'] and
++                job['phase'] == registry['phase'] and job['expected_accounts'] == 1, 'conditional project/phase/account mismatch')
++        command = job['command']
++        require(command[:4] == exemplar['command'][:4], 'only registered research entrypoint allowed')
++        values, i = {}, 4
++        while i < len(command):
++            option = command[i]
++            require(option not in values, 'duplicate option')
++            if option == '--restore-prints' and kind == 'perp':
++                values[option] = True
++                i += 1
++            else:
++                require(option in allowed and i + 1 < len(command), 'unregistered conditional option')
++                values[option] = command[i + 1]
++                i += 2
++        combo = candidate == api.combo_name(kind, parts) if len(parts) >= 2 else False
++        if combo:
++            require(values.get('--combo') == ','.join(parts), 'conditional combo differs from ALL eligible')
++            require(values.get('--candidate') == 'combo' if kind == 'spot' else '--candidate' not in values,
++                    'invalid combo CLI identity')
++        else:
++            require(values.get('--candidate') == candidate and '--combo' not in values, 'selected candidate mismatch')
++        feature = exemplar['command'][exemplar['command'].index('--features') + 1]
++        require(values.get('--features') == feature and values.get('--out') == job['output'], 'conditional feature/output mismatch')
++        output = Path(job['output'])
++        require(output.is_absolute() and output_root in output.parents and '..' not in output.parts and
++                job['output'] not in original_outputs, 'conditional output must be new within task output tree')
++        require('--prints' not in values if kind == 'spot' else values.get('--restore-prints') is True and
++                Path(values.get('--prints', '')).parent == output_root / 'print-cache', 'conditional print cache scope')
++        actual.add((values.get('--scenario'), values.get('--initial-cny', '10000'), '--risk-calibration' in values))
++    require(actual == expected and len(registry['jobs']) == len(expected), 'conditional complete inventory required')
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    for name in ('freeze', 'report', 'export', 'production-profile', 'out'):
++        parser.add_argument('--' + name, required=True, type=Path)
++    parser.add_argument('--kind', required=True, choices=('spot', 'perp'))
++    parser.add_argument('--phase', required=True)
++    parser.add_argument('--export-label', required=True)
++    parser.add_argument('--registry', type=Path, default=controller.REGISTRY)
++    parser.add_argument('--registry-sha256', default=controller.REGISTRY_SHA)
++    args = parser.parse_args(argv)
++    freeze_binding = binding(args.freeze)
++    freeze = json.loads(args.freeze.read_bytes())
++    require(json.loads((ART/'controller-parent-freeze.json').read_bytes()) == freeze_binding,
++            'phase requires the exclusive original parent anchor')
++    require(freeze['controller_root'] == str(ART), 'parent controller root mismatch')
++    require(sha(controller.REGISTRY) == controller.REGISTRY_SHA and sha(args.registry) == args.registry_sha256,
++            'registry SHA mismatch')
++    jobs = json.loads(args.registry.read_bytes())['jobs']
++    matching = [j for j in jobs if j['phase'] == args.phase and j['project_kind'] == args.kind]
++    profiles = {j['command'][j['command'].index('--risk-calibration')+1] for j in matching if '--risk-calibration' in j['command']}
++    require(matching and profiles == {str(args.production_profile.absolute())}, 'exact registered production profile required')
++    # Assessor lives in Spot even when exporting a Coin profile.
++    for kind in {'spot', args.kind}:
++        controller.guard(dict(project_kind=kind, cwd=freeze['projects'][kind]['repository']), freeze)
++    report_file, export_file, production = binding(args.report), binding(args.export), binding(args.production_profile)
++    report = json.loads(args.report.read_bytes())
++    document = json.loads(args.export.read_bytes())
++    api = assessor(freeze)
++    raw = validate_report(report, freeze, api)
++    validate_export(report, document, args.kind, args.export_label, freeze, api)
++    command = report['command']
++    require(command[1:3] == ['-m', 'research.edge_assessment'] and '--calibration-out-dir' in command,
++            'actual assessor export command required')
++    original_path = Path(command[command.index('--calibration-out-dir')+1]) / (args.export_label + '.json')
++    require(original_path.absolute() == args.export.absolute() and
++            Path(command[command.index('--out')+1]).absolute() == args.report.absolute(), 'original assessor report/export path mismatch')
++    require(export_file['sha256'] == production['sha256'] and export_file['bytes'] == production['bytes'],
++            'production profile must have identical ORIGINAL export bytes')
++    bound = list({item['path']: item for item in [freeze_binding, report_file, export_file, production, *raw]}.values())
++    body = dict(format='btc-edge-phase-input-binding-v1', created_utc=controller.now(),
++                parent_freeze_sha256=freeze_binding['sha256'], project_kind=args.kind, phase=args.phase,
++                registry_sha256=args.registry_sha256, analysis_source=report['analysis_source'],
++                export_label=args.export_label, assessor_report=report_file, original_export=export_file,
++                production_profile=production, bound_files=bound)
++    controller.verify_files(bound)
++    for kind in {'spot', args.kind}:
++        controller.guard(dict(project_kind=kind, cwd=freeze['projects'][kind]['repository']), freeze)
++    require(sha(args.freeze) == freeze_binding['sha256'], 'parent freeze mutated during phase binding')
++    write_new(args.out, body)
++    print(json.dumps(dict(output=str(args.out), sha256=sha(args.out))))
++
++
++if __name__ == '__main__':
++    main()
+--- /dev/null
++++ test-controller-fix1.py
+@@ -0,0 +1,397 @@
++"""Isolated controller tests: temporary paths, fake or harmless Python children only."""
++import contextlib
++import hashlib
++import importlib.util
++import io
++import json
++import os
++import shutil
++import signal
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++ART = Path(__file__).resolve().parent
++
++def load(name, path):
++    spec = importlib.util.spec_from_file_location(name, path)
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    return module
++
++r = load('runner', ART/'run-registered-phase.py')
++f = load('freeze', ART/'prepare-source-freeze.py')
++b = load('binding_helper', ART/'bind-phase-inputs.py')
++
++class FakeProcess:
++    pid = 918273
++    def __init__(self, command, **kwargs):
++        self.output = Path(command[-1])
++        self.log = kwargs['stdout']
++        self.waited = False
++    def poll(self):
++        return None
++    def wait(self):
++        self.waited = True
++        self.output.write_text('actual fake-process result')
++        return 0
++
++class ControllerTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory(prefix='controller-isolated-')
++        self.root = Path(self.temp.name)
++        self.jobs = [dict(label=name, command=['harmless',str(self.root/(name+'.json'))],
++                          cwd=str(self.root), project_kind='spot', output=str(self.root/(name+'.json')))
++                     for name in ('one','two','three')]
++        self.started = []
++        self.provenance = dict(registry_sha256='a'*64)
++    def retain_examples(self, name):
++        if os.environ.get('CONTROLLER_TEST_EXAMPLES'):
++            target=Path(os.environ['CONTROLLER_TEST_EXAMPLES'])/name
++            if not target.exists():  # Preserve original retained synthetic evidence across amended checks.
++                shutil.copytree(self.root,target,ignore=shutil.ignore_patterns('*.lock'))
++    def tearDown(self):
++        self.temp.cleanup()
++    def factory(self, command, **kwargs):
++        process = FakeProcess(command, **kwargs)
++        self.started.append(process)
++        return process
++    def run_core(self, **kwargs):
++        with contextlib.redirect_stdout(io.StringIO()):
++            return r.run_jobs(self.jobs, kwargs.pop('check', lambda job:None), self.root,
++                              'spot', 'isolated', self.provenance, popen=kwargs.pop('popen',self.factory), **kwargs)
++    def summary(self):
++        return json.loads(next((self.root/'controller-receipts').rglob('finish.json')).read_bytes())
++    def drained(self):
++        self.assertTrue(all(p.waited and p.log.closed for p in self.started))
++        self.assertTrue(self.summary()['all_children_reaped'])
++        self.assertEqual(self.summary()['status'],'failed')
++    def test_existing_output_drains_and_preserves_pending(self):
++        Path(self.jobs[1]['output']).write_text('original')
++        self.assertEqual(self.run_core(),2)
++        self.assertEqual(len(self.started),1)
++        self.drained()
++        self.assertEqual(self.summary()['pending_labels'],['two','three'])
++        record=json.loads(next((self.root/'controller-receipts').rglob('two.not-started.json')).read_bytes())
++        self.assertNotIn('exit_code',record)
++        self.assertEqual(Path(self.jobs[1]['output']).read_text(),'original')
++        self.retain_examples('launch-failure-drain')
++    def test_popen_failure_drains_active_and_closes_failed_log(self):
++        failed_logs=[]
++        def factory(command, **kwargs):
++            if self.started:
++                failed_logs.append(kwargs['stdout'])
++                raise OSError('isolated Popen failure')
++            return self.factory(command, **kwargs)
++        self.assertEqual(self.run_core(popen=factory),2)
++        self.drained()
++        self.assertTrue(failed_logs[0].closed)
++        self.assertEqual(self.summary()['pending_labels'],['two','three'])
++    def test_launch_receipt_write_failure_with_active_children(self):
++        original=r.write_new
++        def write(path, body):
++            if Path(path).name=='two.launched.json':raise PermissionError('isolated launched receipt')
++            return original(path,body)
++        with patch.object(r,'write_new',write):self.assertEqual(self.run_core(),2)
++        self.drained()
++        self.assertEqual(len(self.started),2)
++        self.assertEqual(self.summary()['pending_labels'],['three'])
++    def test_finish_receipt_failure_retains_truthful_fallback(self):
++        original=r.write_new
++        def write(path,body):
++            if Path(path).name.endswith('command-finish.json'):raise PermissionError('isolated finish unwritable')
++            return original(path,body)
++        def factory(command,**kwargs):
++            process=self.factory(command,**kwargs)
++            process.poll=lambda:0
++            return process
++        with patch.object(r,'write_new',write):self.assertEqual(self.run_core(popen=factory),2)
++        self.drained()
++        self.assertEqual(len(self.started),2)
++        self.assertTrue(all(not x['finish_receipt_saved'] and x['exit_code']==0 for x in self.summary()['results']))
++        self.assertTrue(list((self.root/'controller-diagnostics').glob('*.phase-result.json')))
++    def test_output_hash_failure_drains_other_active(self):
++        original=r.sha
++        def digest(path):
++            if str(path)==self.jobs[0]['output']:raise OSError('isolated output hash failure')
++            return original(path)
++        def factory(command,**kwargs):
++            process=self.factory(command,**kwargs)
++            process.poll=lambda:0
++            return process
++        with patch.object(r,'sha',digest):self.assertEqual(self.run_core(popen=factory),2)
++        self.drained()
++        self.assertEqual(len(self.started),2)
++        self.assertIsNone(self.summary()['results'][0]['output_sha256'])
++    def test_pre_guard_failure_no_launch_persistent_pending(self):
++        def check(job):raise ValueError('pre guard mutation')
++        self.assertEqual(self.run_core(check=check),2)
++        self.assertEqual(self.started,[])
++        self.assertEqual(self.summary()['pending_labels'],['one','two','three'])
++    def test_post_guard_failure_stops_next_and_drains(self):
++        calls=0
++        def check(job):
++            nonlocal calls
++            calls+=1
++            if calls>2:raise ValueError('post guard mutation')
++        def factory(command,**kwargs):
++            process=self.factory(command,**kwargs)
++            process.poll=lambda:0
++            return process
++        self.assertEqual(self.run_core(check=check,popen=factory),2)
++        self.drained()
++        self.assertEqual(len(self.started),2)
++    def test_harmless_actual_child_success_reaped(self):
++        self.jobs=self.jobs[:1]
++        output=self.jobs[0]['output']
++        self.jobs[0]['command']=[sys.executable,'-c','from pathlib import Path; import sys; Path(sys.argv[1]).write_text("ok")',output]
++        self.assertEqual(self.run_core(popen=subprocess.Popen),0)
++        result=self.summary()['results'][0]
++        self.assertTrue(result['reaped'])
++        self.assertEqual(result['exit_code'],0)
++    def test_actual_nonzero_is_failure(self):
++        self.jobs=self.jobs[:1]
++        self.jobs[0]['command']=[sys.executable,'-c','raise SystemExit(7)']
++        self.assertEqual(self.run_core(popen=subprocess.Popen),2)
++        self.assertEqual(self.summary()['results'][0]['exit_code'],7)
++    def test_different_phase_denied_before_popen_and_finished_release(self):
++        reservation=r.Reservation(self.root,'spot','first')
++        try:
++            with self.assertRaises(BlockingIOError):self.run_core()
++            self.assertEqual(self.started,[])
++        finally:reservation.close(True)
++        second=r.Reservation(self.root,'spot','second')
++        second.close(True)
++        self.assertEqual(len(list((self.root/'controller-reservations/spot').glob('*.released.json'))),2)
++    def test_unknown_owner_failclosed_even_without_live_process(self):
++        reservation=r.Reservation(self.root,'spot','first')
++        reservation.close(False)
++        with self.assertRaisesRegex(ValueError,'unfinished'):r.Reservation(self.root,'spot','second')
++    def test_parent_exit_inherits_reservation_then_unknown_stays_closed(self):
++        # Pipe keeps harmless child alive until explicit release, with no sleeps/accounts.
++        read_fd,write_fd=os.pipe()
++        ready_read,ready_write=os.pipe()
++        script='''import importlib.util, os, subprocess, sys
++spec=importlib.util.spec_from_file_location('r',sys.argv[1]); r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
++owner=r.Reservation(sys.argv[2],'perp','parent')
++subprocess.Popen([sys.executable,'-c','import os,sys; os.write(int(sys.argv[2]),b"R"); os.read(int(sys.argv[1]),1)',sys.argv[3],sys.argv[4]],pass_fds=(owner.fd,int(sys.argv[3]),int(sys.argv[4])))
++os._exit(0)
++'''
++        parent=subprocess.Popen([sys.executable,'-c',script,str(ART/'run-registered-phase.py'),str(self.root),str(read_fd),str(ready_write)],pass_fds=(read_fd,ready_write))
++        os.close(read_fd);os.close(ready_write)
++        try:
++            self.assertEqual(os.read(ready_read,1),b'R')
++            parent.wait(timeout=5)
++            with self.assertRaises(BlockingIOError):r.Reservation(self.root,'perp','second')
++        finally:
++            os.write(write_fd,b'X');os.close(write_fd)
++            # EOF proves child closed descriptors on exit; then owner remains unknown.
++            self.assertEqual(os.read(ready_read,1),b'')
++            os.close(ready_read)
++        with self.assertRaisesRegex(ValueError,'unfinished'):r.Reservation(self.root,'perp','third')
++    def test_vault_snapshot_binds_bytes_inventory_and_metadata(self):
++        root=self.root/'vault';root.mkdir()
++        for name,text in [('a.zip','zip'),('a.zip.CHECKSUM','official'),('metadata.json','meta')]: (root/name).write_text(text)
++        snapshot=self.root/'snapshot.json'
++        snapshot.write_text(json.dumps(dict(format='immutable-public-vault-snapshot-v1',root=str(root),files=[dict(path=p.name,size=p.stat().st_size,sha256=r.sha(p)) for p in root.iterdir()])))
++        bound,tree=f.vault_binding(snapshot)
++        self.assertEqual(len(bound),3)
++        job=dict(project_kind='perp',cwd=str(self.root))
++        freeze=dict(projects=dict(perp=dict(repository=str(self.root),source=dict(dirty=False),bound_files=bound,bound_trees=[tree])))
++        with patch.object(r,'source_at',lambda cwd:dict(dirty=False)):
++            r.guard(job,freeze)
++            for name in ('a.zip','a.zip.CHECKSUM','metadata.json'):
++                path=root/name;old=path.read_bytes();path.write_bytes(old+b'changed')
++                with self.assertRaises(ValueError):r.guard(job,freeze)
++                path.write_bytes(old)
++            extra=root/'new';extra.write_text('addition')
++            with self.assertRaises(ValueError):r.guard(job,freeze)
++            extra.unlink()
++            removed=root/'a.zip';data=removed.read_bytes();removed.unlink()
++            with self.assertRaises(ValueError):r.guard(job,freeze)
++            removed.write_bytes(data)
++            (root/'metadata.json').write_text('mutated metadata')
++            with self.assertRaises(ValueError):f.vault_binding(snapshot)
++    def test_profile_original_and_production_replacement_missing(self):
++        original=self.root/'original.json';production=self.root/'production.json'
++        original.write_text('{"actual":"export"}');production.write_bytes(original.read_bytes())
++        items=[b.binding(original),b.binding(production)]
++        r.verify_files(items)
++        for path in (original,production):
++            saved=path.read_bytes();path.write_text('{"actual":"replacement"}')
++            with self.assertRaises(ValueError):r.verify_files(items)
++            path.write_bytes(saved)
++            path.unlink()
++            with self.assertRaises(FileNotFoundError):r.verify_files(items)
++            path.write_bytes(saved)
++    def assessor_fixture(self):
++        # Actual reviewed schema/functions, synthetic account evidence only.
++        sys.dont_write_bytecode = True
++        sys.path.insert(0, str(ART.parent/'spotquant'))
++        from research import edge_assessment as api
++        freeze = dict(controller_root=str(self.root), projects={kind:dict(
++            repository=str(ART.parent/('spotquant' if kind=='spot' else 'coinquant')),
++            source=dict(dirty=False, git_head='synthetic-'+kind)) for kind in ('spot','perp')})
++        report = dict(format='btc-edge-assessment-v1', analysis_source=freeze['projects']['spot']['source'],
++                      blocking=[],rejected_files=[],pending=['spot individual eligibility remains pending'],
++                      contracts={k:dict(spec_sha256=api.SPEC_HASH[k],protocol_sha256=api.PROTOCOL_HASH[k]) for k in api.BASE},
++                      accounts={},inputs={},calibration_documents={},calibration_diagnostics={},combinations={},
++                      decisions={k:{n:dict(eligible=False,status='pending') for n in api.ORDER[k]} for k in api.BASE},selected=dict(api.BASE))
++        for key in api.required_matrix():
++            if not key.endswith('|0|unscaled') or key.split('|')[3]!='1E+4':continue
++            kind,name,scenario,*_=key.split('|')
++            path=self.root/(hashlib.sha256(key.encode()).hexdigest()+'.raw')
++            path.write_text('synthetic raw evidence '+key)
++            report['accounts'][key]=dict(kind=kind,status='complete',reasons=[],monetary_audit={'synthetic':True},
++                source=freeze['projects'][kind]['source'],path=str(path),raw_sha256=r.sha(path))
++            report['inputs'][str(path)]=r.sha(path)
++        for kind in api.BASE:
++            profiles={};diagnostics={}
++            for name in [api.BASE[kind],*api.ORDER[kind]]:
++                account=report['accounts'][api.account_id(kind,name)]
++                profiles[name]=dict(candidate=name,project_kind=kind,scale='1',base_bundle_sha256=account['raw_sha256'],
++                    baseline_candidate=api.BASE[kind],effective_from_ms=api.CUTOFF,calibration_end_ms=api.CUTOFF,
++                    training_end_day_exclusive='2022-01-01')
++                diagnostics[name]=dict(source=account['source'],raw_sha256=account['raw_sha256'],training_days=731)
++            report['calibration_documents'][kind]=dict(format=1,project_kind=kind,baseline_candidate=api.BASE[kind],
++                cutoff_ms=api.CUTOFF,spec_sha256=api.SPEC_HASH[kind],profiles=profiles)
++            report['calibration_diagnostics'][kind]=diagnostics
++        return api,freeze,report
++    def test_actual_assessor_interface_requires_all_audited_unscaled_bases(self):
++        api,freeze,report=self.assessor_fixture()
++        self.assertEqual(len(b.validate_report(report,freeze,api)),52)
++        document=report['calibration_documents']['spot']
++        b.validate_export(report,document,'spot','spot',freeze,api)
++        key=api.account_id('spot','exit-confirm')
++        report['accounts'][key]['status']='pending'
++        with self.assertRaisesRegex(ValueError,'audited'):b.validate_report(report,freeze,api)
++        report['accounts'][key]['status']='complete'
++        report['blocking']=['original rejection']
++        with self.assertRaisesRegex(ValueError,'nonblocking'):b.validate_report(report,freeze,api)
++    def test_actual_profile_schema_source_spec_and_raw_mismatch(self):
++        api,freeze,report=self.assessor_fixture()
++        original=json.dumps(report['calibration_documents']['spot'])
++        for mutate in (lambda d:d.update(project_kind='perp'),lambda d:d.update(spec_sha256='0'*64),
++                       lambda d:d['profiles']['exit-confirm'].update(base_bundle_sha256='0'*64)):
++            doc=json.loads(original);mutate(doc)
++            with self.assertRaises(ValueError):b.validate_export(report,doc,'spot','spot',freeze,api)
++        document=json.loads(original)
++        report['calibration_diagnostics']['spot']['exit-confirm']['source']={'changed':'source'}
++        with self.assertRaisesRegex(ValueError,'source'):b.validate_export(report,document,'spot','spot',freeze,api)
++    def test_exclusive_phase_binding_actual_export_paths_and_byte_identity(self):
++        api,freeze,report=self.assessor_fixture()
++        freeze_path=self.root/'freeze.json';freeze_path.write_text(json.dumps(freeze))
++        (self.root/'controller-parent-freeze.json').write_text(json.dumps(b.binding(freeze_path)))
++        export_dir=self.root/'original-assessor-exports';export_dir.mkdir()
++        export=export_dir/'spot.json';export.write_text(json.dumps(report['calibration_documents']['spot']))
++        production=self.root/'spot-calibration.json';production.write_bytes(export.read_bytes())
++        report_path=self.root/'assessment.json'
++        report['command']=[sys.executable,'-m','research.edge_assessment','--phase','calibration','--calibration-out-dir',str(export_dir),'--out',str(report_path)]
++        report_path.write_text(json.dumps(report))
++        registry=self.root/'registry.json';registry.write_text(json.dumps(dict(jobs=[dict(project_kind='spot',phase='risk',command=['synthetic','--risk-calibration',str(production)])])))
++        out=self.root/'binding.json'
++        argv=['--freeze',str(freeze_path),'--report',str(report_path),'--export',str(export),'--production-profile',str(production),
++              '--out',str(out),'--kind','spot','--phase','risk','--export-label','spot','--registry',str(registry),'--registry-sha256',r.sha(registry)]
++        with patch.object(b,'ART',self.root),patch.object(b.controller,'REGISTRY',registry),patch.object(b.controller,'REGISTRY_SHA',r.sha(registry)),patch.object(b.controller,'guard',lambda job,freeze:None),contextlib.redirect_stdout(io.StringIO()):
++            b.main(argv)
++            with self.assertRaises(FileExistsError):b.main(argv)
++            body=json.loads(out.read_bytes())
++            self.assertEqual(body['parent_freeze_sha256'],r.sha(freeze_path))
++            self.assertEqual(body['original_export']['sha256'],body['production_profile']['sha256'])
++            self.assertEqual(body['project_kind'],'spot')
++            self.assertTrue(body['created_utc'])
++            self.retain_examples('derived-binding-synthetic-schema')
++            production.write_text(json.dumps(report['calibration_documents']['spot'],indent=2))
++            with self.assertRaisesRegex(ValueError,'ORIGINAL export bytes'):b.main(argv)
++    def test_conditional_registry_rejects_subset_arbitrary_command_and_wrong_parent(self):
++        api,freeze,report=self.assessor_fixture()
++        kind='spot';parts=list(api.ORDER[kind][:2])
++        report['combinations'][kind]=parts
++        report['decisions'][kind]={n:dict(eligible=n in parts,status='complete') for n in api.ORDER[kind]}
++        report_file=self.root/'condition-report.json';report_file.write_text(json.dumps(report))
++        original=json.loads(r.REGISTRY.read_bytes())['jobs']
++        exemplar=next(j for j in original if j['project_kind']==kind)
++        output_root=Path(exemplar['output']).parent.parent
++        features=exemplar['command'][exemplar['command'].index('--features')+1]
++        jobs=[]
++        for scenario in api.STRESSES[kind]:
++            out=str(output_root/'conditional'/('combo-'+scenario+'.json.gz'))
++            jobs.append(dict(label='combo-'+scenario,project_kind=kind,phase='combo-unscaled',cwd=freeze['projects'][kind]['repository'],
++                expected_accounts=1,output=out,command=[*exemplar['command'][:4],'--candidate','combo','--combo',','.join(parts),
++                '--scenario',scenario,'--features',features,'--out',out]))
++        registry=dict(format='btc-edge-conditional-registration-v1',parent_freeze_sha256='f'*64,parent_registry_sha256=r.REGISTRY_SHA,
++            assessment_report=b.binding(report_file),bound_files=[b.binding(report_file),*b.validate_report(report,freeze,api)],
++            condition='all-eligible-combination',role='unscaled',project_kind=kind,phase='combo-unscaled',jobs=jobs)
++        b.validate_supplement(registry,'f'*64,freeze)
++        (self.root/'supplemental-registry.json').write_text(json.dumps(registry,indent=2))
++        self.retain_examples('conditional-registry-synthetic-schema')
++        with self.assertRaisesRegex(ValueError,'parent'):b.validate_supplement(registry,'e'*64,freeze)
++        registry['jobs']=jobs[:-1]
++        with self.assertRaisesRegex(ValueError,'inventory'):b.validate_supplement(registry,'f'*64,freeze)
++        registry['jobs']=jobs
++        command=jobs[0]['command'];old=command[0];command[0]='/bin/echo'
++        with self.assertRaisesRegex(ValueError,'entrypoint'):b.validate_supplement(registry,'f'*64,freeze)
++        command[0]=old
++        command[command.index('--combo')+1]=parts[0]
++        with self.assertRaisesRegex(ValueError,'ALL eligible'):b.validate_supplement(registry,'f'*64,freeze)
++    def test_phase_finish_unwritable_retains_fallback_and_release_error_stays_unknown(self):
++        self.jobs=self.jobs[:1]
++        def factory(command,**kwargs):
++            process=self.factory(command,**kwargs);process.poll=lambda:0;return process
++        original=r.write_new
++        def write(path,body):
++            if Path(path).name=='finish.json' or str(path).endswith('.released.json'):
++                raise PermissionError('isolated receipt destination unwritable')
++            return original(path,body)
++        with patch.object(r,'write_new',write):self.assertEqual(self.run_core(popen=factory),2)
++        self.assertTrue(self.started[0].waited and self.started[0].log.closed)
++        results=[json.loads(p.read_bytes()) for p in (self.root/'controller-diagnostics').glob('*.phase-result.json')]
++        self.assertTrue(any(any(e['stage']=='reservation_release' for e in result['errors']) for result in results))
++        self.assertTrue(all(result['status']=='failed' and result['results'][0]['reaped'] for result in results))
++        with self.assertRaisesRegex(ValueError,'unfinished'):r.Reservation(self.root,'spot','next-phase')
++    def test_main_rechecks_parent_and_phase_input_before_after(self):
++        # Synthetic immutable parent and registry; no source or producer execution.
++        source=dict(dirty=False)
++        freeze_path=self.root/'freeze.json'
++        freeze=dict(format='btc-edge-reviewed-source-freeze-v1',controller_root=str(self.root),projects=dict(spot=dict(
++            repository=str(self.root),source=source,bound_files=[],bound_trees=[])))
++        freeze_path.write_text(json.dumps(freeze))
++        (self.root/'controller-parent-freeze.json').write_text(json.dumps(b.binding(freeze_path)))
++        profile=self.root/'profile.json';profile.write_text('original export bytes')
++        report=self.root/'report.json';report.write_text('original report bytes')
++        job=self.jobs[0];job.update(phase='risk',command=['synthetic','--risk-calibration',str(profile)])
++        registry=self.root/'registry.json';registry.write_text(json.dumps(dict(jobs=[job])))
++        registry_sha=r.sha(registry)
++        derived=dict(format='btc-edge-phase-input-binding-v1',parent_freeze_sha256=r.sha(freeze_path),project_kind='spot',
++            phase='risk',registry_sha256=registry_sha,assessor_report=b.binding(report),original_export=b.binding(profile),
++            production_profile=b.binding(profile),bound_files=[b.binding(freeze_path),b.binding(report),b.binding(profile)])
++        phase_path=self.root/'phase-input.json';phase_path.write_text(json.dumps(derived))
++        argv=['--phase','risk','--kind','spot','--freeze',str(freeze_path),'--phase-input',str(phase_path)]
++        def inspect(jobs,check,*args,**kwargs):
++            check(jobs[0])
++            for path in (profile,report,phase_path,freeze_path,self.root/'controller-parent-freeze.json'):
++                previous=path.read_bytes();path.write_bytes(previous+b'changed')
++                with self.assertRaises(ValueError):check(jobs[0])
++                path.write_bytes(previous)
++            return 0
++        with patch.object(r,'ART',self.root),patch.object(r,'REGISTRY',registry),patch.object(r,'REGISTRY_SHA',registry_sha),patch.object(r,'source_at',lambda cwd:source),patch.object(r,'run_jobs',inspect):
++            self.assertEqual(r.main(argv),0)
++            anchor=self.root/'controller-parent-freeze.json';body=json.loads(anchor.read_bytes());body['sha256']='0'*64;anchor.write_text(json.dumps(body))
++            with self.assertRaisesRegex(ValueError,'original anchor'):r.main(argv)
++    def test_signal_during_launch_registers_then_drains_child(self):
++        def factory(command,**kwargs):
++            process=self.factory(command,**kwargs)
++            os.kill(os.getpid(),signal.SIGTERM)
++            return process
++        self.assertEqual(self.run_core(popen=factory),2)
++        self.drained()
++        self.assertEqual(len(self.started),1)
++        self.assertEqual(self.summary()['pending_labels'],['two','three'])
++    def test_original_registry_and_preserved_review_identity(self):
++        self.assertEqual(r.sha(r.REGISTRY),r.REGISTRY_SHA)
++        self.assertEqual(r.sha(ART/'task-6-controller-review.md'),'59c7fbfe0dee244874331bd50feee5a9b6d1c1554d61ee1aa424a4611805b57b')
++
++if __name__=='__main__':unittest.main(verbosity=2)

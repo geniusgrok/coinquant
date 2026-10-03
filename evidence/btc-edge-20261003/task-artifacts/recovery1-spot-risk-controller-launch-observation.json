@@ -1,0 +1,28 @@
+{
+  "recorded_utc": "2026-10-03T12:20:05.808989+00:00",
+  "meaning": "Actual tool launch observation; controller child/start/finish receipts are authoritative",
+  "project_kind": "spot",
+  "phase": "risk",
+  "tool_session_id": 76130,
+  "command": [
+    "python",
+    "-u",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/run-registered-recovery.py",
+    "--kind",
+    "spot",
+    "--phase",
+    "risk",
+    "--approval-sha256",
+    "61b0fdd88a64f120db39c31d0a82f3ec9a115da2e37166b77596e9c0040c0963",
+    "--phase-input",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-risk-phase-input-binding.json"
+  ],
+  "approval_sha256": "61b0fdd88a64f120db39c31d0a82f3ec9a115da2e37166b77596e9c0040c0963",
+  "recovery_registry_sha256": "d7bc23958cedc74626d9f082a18c52b18f2417e974931cac18ea618559a6d23b",
+  "source_freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "calibration_report_sha256": "e0bf8cdd5f7bbfb9907ae086181dfbb1db21594cc2d5da4c0edbc93844d19382",
+  "both_binding_tool_exit_code": 0,
+  "perp_budgets_session_still_active": 22404,
+  "parameter_changes": false,
+  "tests_launched": 0
+}

@@ -1,0 +1,2691 @@
+{
+  "format": "btc-edge-resource-recovery-v1",
+  "attempt": "recovery1",
+  "created_utc": "2026-10-03T05:54:26.667626+00:00",
+  "parent_freeze_sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9",
+  "parent_registry_sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa",
+  "root_output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1",
+  "concurrency": {
+    "spot": 1,
+    "perp": 1
+  },
+  "minimum_free_bytes": 4294967296,
+  "transformation": "Exact original jobs in order; only --out and --prints values gain recovery1/ under the original root. Calibration paths and all economic arguments unchanged. TMPDIR is the only child environment override.",
+  "first_failure": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/first-financial-attempt-storage-failure.json",
+    "bytes": 12545,
+    "sha256": "d2fc82347f44dc278b5700e0e144e247479fc78f787d1cf96ba10754ec288e40"
+  },
+  "first_attempt_outcomes": {
+    "spot": "Two launched children exit1, no output raw; remaining34 Spot jobs never launched.",
+    "perp": "One16-account child exit1 after28/795 sessions; output file is zero bytes (SHA e3b0c442...), no valid gzip/JSON/account raw."
+  },
+  "first_attempt_trees": [
+    {
+      "root": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled",
+      "files": [
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.command-finish.json",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.command-start.json",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.run.log",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.progress.json",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.command-finish.json",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.command-start.json",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.run.log",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.command-finish.json",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.command-start.json",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.run.log"
+      ]
+    },
+    {
+      "root": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache",
+      "files": [
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16-cache/.edge-print-owner",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16-cache/BTCUSDT-aggTrades-2020-03-16.zip.b7b43d2a3c8f54e24e8d9e5c454d925f0ccd365aadba6c0689de3b19b972aaac.bin",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16-cache/BTCUSDT-aggTrades-2020-03-20.zip.ff6307034d242d1883d10b6f22667c4b8150cbd014beb57c527f61f2df738b9a.bin",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16-cache/BTCUSDT-aggTrades-2020-03-21.zip.1ce690c40b37aca65f0a30fd25f6da3c722368e66f609d33a2f823a7dfa909bf.bin",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/.unified-perp-cache",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-16.zip",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-16.zip.CHECKSUM",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-20.zip",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-20.zip.CHECKSUM",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-21.zip",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-21.zip.CHECKSUM"
+      ]
+    }
+  ],
+  "first_attempt_absent_outputs": [
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-slip2.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-outage.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-base.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-fee150.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-slip2.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-outage.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-base.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-fee150.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-slip2.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-outage.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-base.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-fee150.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-slip2.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-outage.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-base.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-fee150.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-slip2.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-outage.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-base.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-fee150.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-slip2.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-outage.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-base.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-fee150.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-slip2.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-outage.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-base.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-fee150.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-slip2.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-outage.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-base.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-fee150.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-slip2.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-outage.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-atr-stop.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-exit-confirm.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-stop-budget.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-crowding-interaction.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/perp-risk-registered-4.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/sensitivity/perp-incumbent-offset--60000.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/sensitivity/perp-incumbent-offset-60000.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/spot-baseline-budget-2500.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/spot-baseline-budget-5000.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/spot-baseline-budget-7500.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/perp-baseline-budget-2500.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/perp-baseline-budget-5000.json.gz",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/perp-baseline-budget-7500.json.gz"
+  ],
+  "bound_files": [
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/bind-phase-inputs.py",
+      "bytes": 13263,
+      "sha256": "a07d5b63db39a9e0934dc9df887ccaaa059a7cab5c4d3a4d1337727eff3c9cf2"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-diagnostics/007572cb3b6f4463a2f27c7bfd3de202.json",
+      "bytes": 2283,
+      "sha256": "4195fd3f8ce3944839eded5aad84b268de45b05adfa7df2251e74615d09cfdee"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-diagnostics/1aed69100d1743dabe109c921500f9e1.json",
+      "bytes": 2259,
+      "sha256": "5ba16fb614de37e1c99cb7fee86e4857eb5385243c71efd64c95e3e90f76281c"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-diagnostics/265c5f2ead8a4329b1109d6a99ad5b34.json",
+      "bytes": 974,
+      "sha256": "aadc2d138e8f7ba1ea1ad2dfd9b00a15184f9c8b0d4d2e5a4644e24a7e0fe14a"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-diagnostics/2f9484b658ab451a910ee64909b13ce1.json",
+      "bytes": 2276,
+      "sha256": "a0686ed732c62cbf182cf321003dcf1b20f300386b9b701fce96f4081d182358"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-diagnostics/5abc87cde2954c4ba6dda52d64cdda27.phase-result.json",
+      "bytes": 4462,
+      "sha256": "650c53310d7a2e50e9552b7fbc161d5eb4abe10a8ba80940268599766faedbea"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-diagnostics/b1952f357f7345c1b249ea5c9c003f0c.phase-result.json",
+      "bytes": 1734,
+      "sha256": "ed03bb38823bcb2c7a394eb22199052adf1f6d74fceb139a780ff0940960ca3b"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-diagnostics/eef9e9f06a0d4a7b8e7fc3d1a7b710ae.json",
+      "bytes": 2300,
+      "sha256": "7b5fa7e13d5f3523b09ae0c47cad50d64baa3cc816ce141a37213ac61eafc36f"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-parent-freeze.json",
+      "bytes": 193,
+      "sha256": "318e381353a83cb56f0c1206f81e2cb3990b54c5a2939003475ecde4979ad7e9"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/perp/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/finish.json",
+      "bytes": 1734,
+      "sha256": "ed03bb38823bcb2c7a394eb22199052adf1f6d74fceb139a780ff0940960ca3b"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/perp/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/perp-registered-16.launched.json",
+      "bytes": 106,
+      "sha256": "75e051fb229d86d3c5c42325828b5086d290ed709024678e30003435cc82ef6a"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/perp/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/start.json",
+      "bytes": 1709,
+      "sha256": "71949af8fc230cf91182f7c140589093de090b2b7b74a863e9fbfcd7f5ab8c89"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/spot/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/finish.json",
+      "bytes": 4462,
+      "sha256": "650c53310d7a2e50e9552b7fbc161d5eb4abe10a8ba80940268599766faedbea"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/spot/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/spot-atr-stop-base.launched.json",
+      "bytes": 106,
+      "sha256": "c85e1e107f1a6ac957b9f4fba260b19dbecb1eba53dcaf877fe56de71a9ccafa"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/spot/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/spot-atr-stop-fee150.launched.json",
+      "bytes": 108,
+      "sha256": "342949fbb97c7ed0f0ff962907cb6fb1535e81f673568c18c00964b93822fe6f"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-receipts/spot/unscaled-e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa/start.json",
+      "bytes": 30014,
+      "sha256": "ce31fa588e556842a930b0812ab7cfb659c86af04939c2003f505e43b74dd5df"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/perp/fb4666cd2798433da00dd38123c3925e.owner.json",
+      "bytes": 121,
+      "sha256": "3b8c8447a20a617ba6b1001835c67d4854449ea7dd0330d98c13a9d93ba5311f"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/perp/fb4666cd2798433da00dd38123c3925e.released.json",
+      "bytes": 174,
+      "sha256": "0a3a881e12818bc3d76be18e6757f1a49226e257a5355d2773070b91bb8caee7"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/perp/reservation.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/spot/e89be99cd7204c46aa5e05d1baf41c31.owner.json",
+      "bytes": 121,
+      "sha256": "6dca160849f49de54048512592c109078a45802a0e68631a4acf2b76de451268"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/spot/e89be99cd7204c46aa5e05d1baf41c31.released.json",
+      "bytes": 174,
+      "sha256": "04902ca155656a2f4713dedc5c17e31affba423bfbe6307b245dc25dffefd786"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/controller-reservations/spot/reservation.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/first-failed-perp-empty-output-diagnostic.json",
+      "bytes": 627,
+      "sha256": "e585b3e0f667fc95a4748cb55b30156a8f31f5dd830cda41c73a46b782dafed1"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/first-financial-attempt-storage-failure.json",
+      "bytes": 12545,
+      "sha256": "d2fc82347f44dc278b5700e0e144e247479fc78f787d1cf96ba10754ec288e40"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/prepare-source-freeze.py",
+      "bytes": 7759,
+      "sha256": "3a78d0bb2c158cc0a5dc723ab149cb42b0f6456b416dd41fe6bd040cb876c2cf"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/registered-financial-commands.json",
+      "bytes": 42592,
+      "sha256": "e58114f25f316d237860d2d6e6859d48614a57d69065524f6c256140c575fbfa"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/reviewed-source-freeze.json",
+      "bytes": 1202697,
+      "sha256": "b15129a0984d3a6f2bc1be1e1bfc700f9cd30a2023d257efcd608a408efac1c9"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/run-registered-phase.py",
+      "bytes": 19301,
+      "sha256": "082d362d71977cec1e5f10afec47421cf8ab869c19ca0f064b5f8fba355977b1"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/run-registered-recovery.py",
+      "bytes": 27862,
+      "sha256": "cdc8538d01b46963c12b8810b468cafd754b58303a69495cfb32f4e62d497185"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-controller-fix2-rereview.md",
+      "bytes": 5816,
+      "sha256": "d7e8bc06d247e3c077d8208dc79a52e48db56340fce3be75443d3d25d7b563e3"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-brief.md",
+      "bytes": 6417,
+      "sha256": "19b91bbae23c0928e9f511277f76afc155272aa79ed995c7d15da95746d3484e"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-controller.diff",
+      "bytes": 21102,
+      "sha256": "96e4fbe898ba3fa3e73b585f80bc8d0386422213c9fe09c96a8cd5788ef8dddf"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-core.diff",
+      "bytes": 2053,
+      "sha256": "30688cc6488d611747bc948ef6624b425a6a6ffb71bb794464c204dff006325e"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-tests-final.log",
+      "bytes": 2884,
+      "sha256": "b4df9a48c62b83bb7a684d88899dc7948b8644cdfe259ad892513473bade5bbe"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/test-controller-recovery.py",
+      "bytes": 25523,
+      "sha256": "7ef32ced9536cf4380a4417341ebe305231849be09b56d242b6ef0d51a51e661"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/unscaled-controller-launch-observation.json",
+      "bytes": 480,
+      "sha256": "1f225e2113c177a890c741a23a88bef2067774d0180283c55ddb674926a834a5"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/.unified-perp-cache",
+      "bytes": 25,
+      "sha256": "b69ceae20bcae56ad107b8eaed8c5bd09a5f57b15a080fb576b287ca71129dc6"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-16.zip",
+      "bytes": 16939437,
+      "sha256": "b7b43d2a3c8f54e24e8d9e5c454d925f0ccd365aadba6c0689de3b19b972aaac"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-16.zip.CHECKSUM",
+      "bytes": 99,
+      "sha256": "84abc8904cdab1746fa46dfe60e2d6c82d0ac3b12cc9c4b4ca90b17180475bc5"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-20.zip",
+      "bytes": 14356187,
+      "sha256": "ff6307034d242d1883d10b6f22667c4b8150cbd014beb57c527f61f2df738b9a"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-20.zip.CHECKSUM",
+      "bytes": 99,
+      "sha256": "32d40be903487af8bd1b0f17f725251ca0020b8cf31f60d3b58ea36bdcf9ed77"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-21.zip",
+      "bytes": 11536357,
+      "sha256": "1ce690c40b37aca65f0a30fd25f6da3c722368e66f609d33a2f823a7dfa909bf"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16/BTCUSDT-aggTrades-2020-03-21.zip.CHECKSUM",
+      "bytes": 99,
+      "sha256": "a0737394011a5e17ce48dc917a7854e9efb8742ef8b7cdb9f2a6e1c45b7d48b7"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16-cache/.edge-print-owner",
+      "bytes": 169,
+      "sha256": "0d1ba832c101a3b6e2a4971bcb31005e318eeb27ca92cb59e162ef6fefc6932b"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16-cache/BTCUSDT-aggTrades-2020-03-16.zip.b7b43d2a3c8f54e24e8d9e5c454d925f0ccd365aadba6c0689de3b19b972aaac.bin",
+      "bytes": 38223688,
+      "sha256": "cd44dbf10884a2dbc5161b0e07f15e58eb8dfe3846c322730c9426747f8fbba2"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16-cache/BTCUSDT-aggTrades-2020-03-20.zip.ff6307034d242d1883d10b6f22667c4b8150cbd014beb57c527f61f2df738b9a.bin",
+      "bytes": 32306024,
+      "sha256": "e1abc3995a3a66ea37cd56df8dc90dc7d006e44d094237f92afa159137ac3468"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16-cache/BTCUSDT-aggTrades-2020-03-21.zip.1ce690c40b37aca65f0a30fd25f6da3c722368e66f609d33a2f823a7dfa909bf.bin",
+      "bytes": 25829128,
+      "sha256": "19c27631ec78c5b4b4a97c96e435ca11821b1d219e41189f3476deebafdd0c5f"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.command-finish.json",
+      "bytes": 485,
+      "sha256": "8455ab22e0f5450656090d1013e751a66ab90c272ea842d39ab390831c1733ea"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.command-start.json",
+      "bytes": 1448,
+      "sha256": "ed6d617abfa047725e487e1ccf7c515b6f38db6727e31dd94c20000698d288a9"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz.run.log",
+      "bytes": 2092,
+      "sha256": "b6ee3ad665d5a96c67dfcd7b829f84ca41c89c1674423f82fb04696f8b44389e"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.progress.json",
+      "bytes": 2829,
+      "sha256": "39d7f32c710f811aa13a20ddf917c09a936e20bde17335f8cd8cfbed7db4725a"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.command-finish.json",
+      "bytes": 534,
+      "sha256": "ffaa6ab37c1f32eb437e56fac060cd7116fd8bdd7aec7c0a02817e3d4f554fcb"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.command-start.json",
+      "bytes": 1386,
+      "sha256": "3e6d2638826af6b571fa7de7935ddb3db5860360161bd4a61898cb4a80d27072"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz.run.log",
+      "bytes": 2432,
+      "sha256": "0a9e3be4f358f85b69f11c085c61c59192fda408bcc0a2b9ea6f253bf522d64e"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.command-finish.json",
+      "bytes": 537,
+      "sha256": "d26063ccdffbb577b1b3134a048d9e4723119407a354471a75df3c066c34618a"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.command-start.json",
+      "bytes": 1394,
+      "sha256": "d0005e7608bc8fa4fb8dc05d4f6dcdbfb98958625ae3af6f0dfd9b9af77044ec"
+    },
+    {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz.run.log",
+      "bytes": 1735,
+      "sha256": "423298f150ea224c9dbbbff7bcb65e348f9d721439d2e28975ae0d19a9bf2661"
+    }
+  ],
+  "jobs": [
+    {
+      "label": "spot-atr-stop-base",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "atr-stop",
+        "--scenario",
+        "base",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-base.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-base.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-atr-stop-base",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "atr-stop",
+          "--scenario",
+          "base",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-base.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-atr-stop-fee150",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "atr-stop",
+        "--scenario",
+        "fee150",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-fee150.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-fee150.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-atr-stop-fee150",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "atr-stop",
+          "--scenario",
+          "fee150",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-fee150.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-atr-stop-slip2",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "atr-stop",
+        "--scenario",
+        "slip2",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-slip2.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-slip2.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-atr-stop-slip2",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "atr-stop",
+          "--scenario",
+          "slip2",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-slip2.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-slip2.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-atr-stop-outage",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "atr-stop",
+        "--scenario",
+        "outage",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-outage.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-outage.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-atr-stop-outage",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "atr-stop",
+          "--scenario",
+          "outage",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-outage.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-atr-stop-outage.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-exit-confirm-base",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "exit-confirm",
+        "--scenario",
+        "base",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-base.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-base.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-exit-confirm-base",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "exit-confirm",
+          "--scenario",
+          "base",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-base.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-base.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-exit-confirm-fee150",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "exit-confirm",
+        "--scenario",
+        "fee150",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-fee150.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-fee150.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-exit-confirm-fee150",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "exit-confirm",
+          "--scenario",
+          "fee150",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-fee150.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-fee150.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-exit-confirm-slip2",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "exit-confirm",
+        "--scenario",
+        "slip2",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-slip2.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-slip2.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-exit-confirm-slip2",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "exit-confirm",
+          "--scenario",
+          "slip2",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-slip2.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-slip2.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-exit-confirm-outage",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "exit-confirm",
+        "--scenario",
+        "outage",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-outage.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-outage.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-exit-confirm-outage",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "exit-confirm",
+          "--scenario",
+          "outage",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-outage.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-exit-confirm-outage.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-stop-budget-base",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "stop-budget",
+        "--scenario",
+        "base",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-base.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-base.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-stop-budget-base",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "stop-budget",
+          "--scenario",
+          "base",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-base.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-base.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-stop-budget-fee150",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "stop-budget",
+        "--scenario",
+        "fee150",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-fee150.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-fee150.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-stop-budget-fee150",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "stop-budget",
+          "--scenario",
+          "fee150",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-fee150.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-fee150.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-stop-budget-slip2",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "stop-budget",
+        "--scenario",
+        "slip2",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-slip2.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-slip2.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-stop-budget-slip2",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "stop-budget",
+          "--scenario",
+          "slip2",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-slip2.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-slip2.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-stop-budget-outage",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "stop-budget",
+        "--scenario",
+        "outage",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-outage.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-outage.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-stop-budget-outage",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "stop-budget",
+          "--scenario",
+          "outage",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-outage.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-stop-budget-outage.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-crowding-interaction-base",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "crowding-interaction",
+        "--scenario",
+        "base",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-base.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-base.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-crowding-interaction-base",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "crowding-interaction",
+          "--scenario",
+          "base",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-base.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-base.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-crowding-interaction-fee150",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "crowding-interaction",
+        "--scenario",
+        "fee150",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-fee150.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-fee150.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-crowding-interaction-fee150",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "crowding-interaction",
+          "--scenario",
+          "fee150",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-fee150.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-fee150.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-crowding-interaction-slip2",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "crowding-interaction",
+        "--scenario",
+        "slip2",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-slip2.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-slip2.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-crowding-interaction-slip2",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "crowding-interaction",
+          "--scenario",
+          "slip2",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-slip2.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-slip2.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-crowding-interaction-outage",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "crowding-interaction",
+        "--scenario",
+        "outage",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-outage.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-outage.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-crowding-interaction-outage",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "crowding-interaction",
+          "--scenario",
+          "outage",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-outage.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-crowding-interaction-outage.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-cash-base",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "cash",
+        "--scenario",
+        "base",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-base.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-base.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-cash-base",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "cash",
+          "--scenario",
+          "base",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-base.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-base.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-cash-fee150",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "cash",
+        "--scenario",
+        "fee150",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-fee150.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-fee150.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-cash-fee150",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "cash",
+          "--scenario",
+          "fee150",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-fee150.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-fee150.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-cash-slip2",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "cash",
+        "--scenario",
+        "slip2",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-slip2.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-slip2.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-cash-slip2",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "cash",
+          "--scenario",
+          "slip2",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-slip2.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-slip2.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-cash-outage",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "cash",
+        "--scenario",
+        "outage",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-outage.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-outage.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-cash-outage",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "cash",
+          "--scenario",
+          "outage",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-outage.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-cash-outage.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-25-base",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-25",
+        "--scenario",
+        "base",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-25-base.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-25-base.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-25-base",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-25",
+          "--scenario",
+          "base",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-base.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-base.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-25-fee150",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-25",
+        "--scenario",
+        "fee150",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-25-fee150.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-25-fee150.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-25-fee150",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-25",
+          "--scenario",
+          "fee150",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-fee150.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-fee150.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-25-slip2",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-25",
+        "--scenario",
+        "slip2",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-25-slip2.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-25-slip2.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-25-slip2",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-25",
+          "--scenario",
+          "slip2",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-slip2.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-slip2.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-25-outage",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-25",
+        "--scenario",
+        "outage",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-25-outage.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-25-outage.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-25-outage",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-25",
+          "--scenario",
+          "outage",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-outage.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-25-outage.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-50-base",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-50",
+        "--scenario",
+        "base",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-50-base.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-50-base.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-50-base",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-50",
+          "--scenario",
+          "base",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-base.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-base.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-50-fee150",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-50",
+        "--scenario",
+        "fee150",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-50-fee150.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-50-fee150.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-50-fee150",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-50",
+          "--scenario",
+          "fee150",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-fee150.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-fee150.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-50-slip2",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-50",
+        "--scenario",
+        "slip2",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-50-slip2.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-50-slip2.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-50-slip2",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-50",
+          "--scenario",
+          "slip2",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-slip2.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-slip2.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-50-outage",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-50",
+        "--scenario",
+        "outage",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-50-outage.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-50-outage.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-50-outage",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-50",
+          "--scenario",
+          "outage",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-outage.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-50-outage.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-75-base",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-75",
+        "--scenario",
+        "base",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-75-base.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-75-base.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-75-base",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-75",
+          "--scenario",
+          "base",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-base.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-base.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-75-fee150",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-75",
+        "--scenario",
+        "fee150",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-75-fee150.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-75-fee150.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-75-fee150",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-75",
+          "--scenario",
+          "fee150",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-fee150.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-fee150.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-75-slip2",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-75",
+        "--scenario",
+        "slip2",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-75-slip2.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-75-slip2.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-75-slip2",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-75",
+          "--scenario",
+          "slip2",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-slip2.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-slip2.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-75-outage",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-75",
+        "--scenario",
+        "outage",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-75-outage.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-75-outage.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-75-outage",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-75",
+          "--scenario",
+          "outage",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-outage.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-75-outage.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-100-base",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-100",
+        "--scenario",
+        "base",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-100-base.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-100-base.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-100-base",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-100",
+          "--scenario",
+          "base",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-base.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-base.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-100-fee150",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-100",
+        "--scenario",
+        "fee150",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-100-fee150.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-100-fee150.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-100-fee150",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-100",
+          "--scenario",
+          "fee150",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-fee150.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-fee150.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-100-slip2",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-100",
+        "--scenario",
+        "slip2",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-100-slip2.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-100-slip2.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-100-slip2",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-100",
+          "--scenario",
+          "slip2",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-slip2.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-slip2.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-protected-participation-100-outage",
+      "project_kind": "spot",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "protected-participation-100",
+        "--scenario",
+        "outage",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-100-outage.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-100-outage.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-protected-participation-100-outage",
+        "project_kind": "spot",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "protected-participation-100",
+          "--scenario",
+          "outage",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-outage.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/spot-protected-participation-100-outage.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "perp-registered-16",
+      "project_kind": "perp",
+      "phase": "unscaled",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_perp",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--restore-prints",
+        "--prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/print-cache/perp-registered-16",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/perp-registered-16.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/perp-registered-16.json.gz",
+      "expected_accounts": 16,
+      "original_job": {
+        "label": "perp-registered-16",
+        "project_kind": "perp",
+        "phase": "unscaled",
+        "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_perp",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--restore-prints",
+          "--prints",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-registered-16",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/unscaled/perp-registered-16.json.gz",
+        "expected_accounts": 16
+      }
+    },
+    {
+      "label": "spot-risk-atr-stop",
+      "project_kind": "spot",
+      "phase": "risk",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "atr-stop",
+        "--scenario",
+        "base",
+        "--risk-calibration",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-atr-stop.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-atr-stop.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-risk-atr-stop",
+        "project_kind": "spot",
+        "phase": "risk",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "atr-stop",
+          "--scenario",
+          "base",
+          "--risk-calibration",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-atr-stop.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-atr-stop.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-risk-exit-confirm",
+      "project_kind": "spot",
+      "phase": "risk",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "exit-confirm",
+        "--scenario",
+        "base",
+        "--risk-calibration",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-exit-confirm.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-exit-confirm.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-risk-exit-confirm",
+        "project_kind": "spot",
+        "phase": "risk",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "exit-confirm",
+          "--scenario",
+          "base",
+          "--risk-calibration",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-exit-confirm.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-exit-confirm.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-risk-stop-budget",
+      "project_kind": "spot",
+      "phase": "risk",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "stop-budget",
+        "--scenario",
+        "base",
+        "--risk-calibration",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-stop-budget.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-stop-budget.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-risk-stop-budget",
+        "project_kind": "spot",
+        "phase": "risk",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "stop-budget",
+          "--scenario",
+          "base",
+          "--risk-calibration",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-stop-budget.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-stop-budget.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-risk-crowding-interaction",
+      "project_kind": "spot",
+      "phase": "risk",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "crowding-interaction",
+        "--scenario",
+        "base",
+        "--risk-calibration",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-crowding-interaction.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/spot-risk-crowding-interaction.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-risk-crowding-interaction",
+        "project_kind": "spot",
+        "phase": "risk",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "crowding-interaction",
+          "--scenario",
+          "base",
+          "--risk-calibration",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-crowding-interaction.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/spot-risk-crowding-interaction.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "perp-risk-registered-4",
+      "project_kind": "perp",
+      "phase": "risk",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_perp",
+        "--scenario",
+        "base",
+        "--risk-calibration",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/perp-calibration.json",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--restore-prints",
+        "--prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/print-cache/perp-risk-registered-4",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/perp-risk-registered-4.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/risk/perp-risk-registered-4.json.gz",
+      "expected_accounts": 4,
+      "original_job": {
+        "label": "perp-risk-registered-4",
+        "project_kind": "perp",
+        "phase": "risk",
+        "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_perp",
+          "--scenario",
+          "base",
+          "--risk-calibration",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/perp-calibration.json",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--restore-prints",
+          "--prints",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-risk-registered-4",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/perp-risk-registered-4.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/risk/perp-risk-registered-4.json.gz",
+        "expected_accounts": 4
+      }
+    },
+    {
+      "label": "perp-incumbent-offset--60000",
+      "project_kind": "perp",
+      "phase": "sensitivity",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_perp",
+        "--candidate",
+        "incumbent",
+        "--scenario",
+        "base",
+        "--start-offset-ms",
+        "-60000",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--restore-prints",
+        "--prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/print-cache/perp-incumbent-offset--60000",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/sensitivity/perp-incumbent-offset--60000.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/sensitivity/perp-incumbent-offset--60000.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "perp-incumbent-offset--60000",
+        "project_kind": "perp",
+        "phase": "sensitivity",
+        "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_perp",
+          "--candidate",
+          "incumbent",
+          "--scenario",
+          "base",
+          "--start-offset-ms",
+          "-60000",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--restore-prints",
+          "--prints",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-incumbent-offset--60000",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/sensitivity/perp-incumbent-offset--60000.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/sensitivity/perp-incumbent-offset--60000.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "perp-incumbent-offset-60000",
+      "project_kind": "perp",
+      "phase": "sensitivity",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_perp",
+        "--candidate",
+        "incumbent",
+        "--scenario",
+        "base",
+        "--start-offset-ms",
+        "60000",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--restore-prints",
+        "--prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/print-cache/perp-incumbent-offset-60000",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/sensitivity/perp-incumbent-offset-60000.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/sensitivity/perp-incumbent-offset-60000.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "perp-incumbent-offset-60000",
+        "project_kind": "perp",
+        "phase": "sensitivity",
+        "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_perp",
+          "--candidate",
+          "incumbent",
+          "--scenario",
+          "base",
+          "--start-offset-ms",
+          "60000",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--restore-prints",
+          "--prints",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-incumbent-offset-60000",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/sensitivity/perp-incumbent-offset-60000.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/sensitivity/perp-incumbent-offset-60000.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-baseline-budget-2500",
+      "project_kind": "spot",
+      "phase": "budgets",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "atr-stop",
+        "--scenario",
+        "base",
+        "--initial-cny",
+        "2500",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-2500.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-2500.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-baseline-budget-2500",
+        "project_kind": "spot",
+        "phase": "budgets",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "atr-stop",
+          "--scenario",
+          "base",
+          "--initial-cny",
+          "2500",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/spot-baseline-budget-2500.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/spot-baseline-budget-2500.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-baseline-budget-5000",
+      "project_kind": "spot",
+      "phase": "budgets",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "atr-stop",
+        "--scenario",
+        "base",
+        "--initial-cny",
+        "5000",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-5000.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-5000.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-baseline-budget-5000",
+        "project_kind": "spot",
+        "phase": "budgets",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "atr-stop",
+          "--scenario",
+          "base",
+          "--initial-cny",
+          "5000",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/spot-baseline-budget-5000.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/spot-baseline-budget-5000.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "spot-baseline-budget-7500",
+      "project_kind": "spot",
+      "phase": "budgets",
+      "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_spot",
+        "--candidate",
+        "atr-stop",
+        "--scenario",
+        "base",
+        "--initial-cny",
+        "7500",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-7500.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/spot-baseline-budget-7500.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "spot-baseline-budget-7500",
+        "project_kind": "spot",
+        "phase": "budgets",
+        "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_spot",
+          "--candidate",
+          "atr-stop",
+          "--scenario",
+          "base",
+          "--initial-cny",
+          "7500",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/spot-baseline-budget-7500.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/spot-baseline-budget-7500.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "perp-baseline-budget-2500",
+      "project_kind": "perp",
+      "phase": "budgets",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_perp",
+        "--candidate",
+        "incumbent",
+        "--scenario",
+        "base",
+        "--initial-cny",
+        "2500",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--restore-prints",
+        "--prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/print-cache/perp-baseline-budget-2500",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/perp-baseline-budget-2500.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/perp-baseline-budget-2500.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "perp-baseline-budget-2500",
+        "project_kind": "perp",
+        "phase": "budgets",
+        "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_perp",
+          "--candidate",
+          "incumbent",
+          "--scenario",
+          "base",
+          "--initial-cny",
+          "2500",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--restore-prints",
+          "--prints",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-baseline-budget-2500",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/perp-baseline-budget-2500.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/perp-baseline-budget-2500.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "perp-baseline-budget-5000",
+      "project_kind": "perp",
+      "phase": "budgets",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_perp",
+        "--candidate",
+        "incumbent",
+        "--scenario",
+        "base",
+        "--initial-cny",
+        "5000",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--restore-prints",
+        "--prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/print-cache/perp-baseline-budget-5000",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/perp-baseline-budget-5000.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/perp-baseline-budget-5000.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "perp-baseline-budget-5000",
+        "project_kind": "perp",
+        "phase": "budgets",
+        "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_perp",
+          "--candidate",
+          "incumbent",
+          "--scenario",
+          "base",
+          "--initial-cny",
+          "5000",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--restore-prints",
+          "--prints",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-baseline-budget-5000",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/perp-baseline-budget-5000.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/perp-baseline-budget-5000.json.gz",
+        "expected_accounts": 1
+      }
+    },
+    {
+      "label": "perp-baseline-budget-7500",
+      "project_kind": "perp",
+      "phase": "budgets",
+      "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-u",
+        "-m",
+        "research.edge_perp",
+        "--candidate",
+        "incumbent",
+        "--scenario",
+        "base",
+        "--initial-cny",
+        "7500",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--restore-prints",
+        "--prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/print-cache/perp-baseline-budget-7500",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/perp-baseline-budget-7500.json.gz"
+      ],
+      "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/perp-baseline-budget-7500.json.gz",
+      "expected_accounts": 1,
+      "original_job": {
+        "label": "perp-baseline-budget-7500",
+        "project_kind": "perp",
+        "phase": "budgets",
+        "cwd": "/workspace/btc-alpha-beta-improve/coinquant",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-u",
+          "-m",
+          "research.edge_perp",
+          "--candidate",
+          "incumbent",
+          "--scenario",
+          "base",
+          "--initial-cny",
+          "7500",
+          "--features",
+          "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+          "--restore-prints",
+          "--prints",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/print-cache/perp-baseline-budget-7500",
+          "--out",
+          "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/perp-baseline-budget-7500.json.gz"
+        ],
+        "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/budgets/perp-baseline-budget-7500.json.gz",
+        "expected_accounts": 1
+      }
+    }
+  ],
+  "required_approval": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/recovery-approval.json",
+    "format": "btc-edge-recovery-approval-v1",
+    "review": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-rereview.md",
+    "meaning": "Root creates exclusive approval only after independent scoped review; approval binds this registry, current helper, report and review hashes. Exact approval SHA required at launch and checked before/after every child."
+  },
+  "conditional": "No speculative jobs. Later original conditional registry must pass unchanged validate_supplement before exact path transformation; original parent and all-eligible rules retained."
+}

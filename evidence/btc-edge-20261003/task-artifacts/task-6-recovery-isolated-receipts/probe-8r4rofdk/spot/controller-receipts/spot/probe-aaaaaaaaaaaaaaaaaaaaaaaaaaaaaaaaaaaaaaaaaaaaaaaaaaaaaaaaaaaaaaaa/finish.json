@@ -1,0 +1,42 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "finished_utc": "2026-10-03T05:50:47.479451+00:00",
+  "status": "completed",
+  "all_children_reaped": true,
+  "pending_labels": [],
+  "results": [
+    {
+      "label": "first",
+      "state": "exited",
+      "pid": 94301,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T05:50:47.375693+00:00",
+      "elapsed_seconds": 0.1515836850157939,
+      "errors": [],
+      "command_start_sha256": "acd806d2ef8914c87ca31aa9e652da1eda9ac7dcab5662f263c38aceeef7c4c9",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-8r4rofdk/spot/first.json.command-finish.json"
+    },
+    {
+      "label": "second",
+      "state": "exited",
+      "pid": 94302,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T05:50:47.478494+00:00",
+      "elapsed_seconds": 0.10145688301417977,
+      "errors": [],
+      "command_start_sha256": "056b3eeda8333b125b2306f8711e0f1cb08ffe73f0d84db7ed6bae5e640f15b9",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/probe-8r4rofdk/spot/second.json.command-finish.json"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,49 @@
+{
+  "format": 1,
+  "project_kind": "spot",
+  "baseline_candidate": "atr-stop",
+  "cutoff_ms": 1640995200000,
+  "spec_sha256": "af23d8afdce40c7cfc60387cc70e0332739a017c7b9a5460b9a5dbe9444b409f",
+  "profiles": {
+    "atr-stop": {
+      "candidate": "atr-stop",
+      "project_kind": "spot",
+      "scale": "1",
+      "effective_from_ms": 1640995200000,
+      "calibration_end_ms": 1640995200000,
+      "training_end_day_exclusive": "2022-01-01",
+      "baseline_candidate": "atr-stop",
+      "base_bundle_sha256": "4362d338f0fe123089df245e8814a909f86bc2e90ccfd6ebf0c2f95126b635f3"
+    },
+    "exit-confirm": {
+      "candidate": "exit-confirm",
+      "project_kind": "spot",
+      "scale": "0.914338712559913",
+      "effective_from_ms": 1640995200000,
+      "calibration_end_ms": 1640995200000,
+      "training_end_day_exclusive": "2022-01-01",
+      "baseline_candidate": "atr-stop",
+      "base_bundle_sha256": "a28f09443a1818c338b0a33cb8eeefb12b07fd2d71b1c932a885c2bf4507e6f3"
+    },
+    "stop-budget": {
+      "candidate": "stop-budget",
+      "project_kind": "spot",
+      "scale": "1.0",
+      "effective_from_ms": 1640995200000,
+      "calibration_end_ms": 1640995200000,
+      "training_end_day_exclusive": "2022-01-01",
+      "baseline_candidate": "atr-stop",
+      "base_bundle_sha256": "c5422ef1b46832c46366180ceb633411ec4744b672e1334b55e43a2045c59aac"
+    },
+    "crowding-interaction": {
+      "candidate": "crowding-interaction",
+      "project_kind": "spot",
+      "scale": "1.0",
+      "effective_from_ms": 1640995200000,
+      "calibration_end_ms": 1640995200000,
+      "training_end_day_exclusive": "2022-01-01",
+      "baseline_candidate": "atr-stop",
+      "base_bundle_sha256": "4c937ecf80f60d957486a752562c8ab8dfee4c06fa2e5b38b135cfb24ec38872"
+    }
+  }
+}

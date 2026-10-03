@@ -1,0 +1,32 @@
+{
+  "format": "btc-edge-recovery-approval-v1",
+  "attempt": "recovery1",
+  "approved": true,
+  "review": {
+    "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/art/task-6-recovery-rereview.md",
+    "bytes": 30,
+    "sha256": "3de22895f0389697c0c9a81f7ac7a9ceb12f94396c8a835c774d65ce4f56f660"
+  },
+  "bound_files": [
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/art/registered-financial-recovery1.json",
+      "bytes": 102811,
+      "sha256": "2e9684179a2d5689ebd6eaf6d06cd60ed09b920a41d6950c1ba742222cbc1220"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/art/run-registered-recovery.py",
+      "bytes": 27516,
+      "sha256": "960a0f9f1bda7b653339d17852ce55f725586b7ee2607993e82c509611e7d298"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/art/task-6-recovery-report.md",
+      "bytes": 31,
+      "sha256": "9f53d359c0cdcccbbcffee25b3386548dc370aa9b64dd4fa59b5b969bb40fa4c"
+    },
+    {
+      "path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_main_pre_post_guards_provenance_and_registry_mutation-0of5whrn/art/task-6-recovery-rereview.md",
+      "bytes": 30,
+      "sha256": "3de22895f0389697c0c9a81f7ac7a9ceb12f94396c8a835c774d65ce4f56f660"
+    }
+  ]
+}

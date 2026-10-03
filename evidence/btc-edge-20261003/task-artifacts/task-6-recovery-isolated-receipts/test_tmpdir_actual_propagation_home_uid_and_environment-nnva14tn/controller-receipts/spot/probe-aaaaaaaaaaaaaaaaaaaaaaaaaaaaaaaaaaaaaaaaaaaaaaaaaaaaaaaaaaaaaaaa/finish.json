@@ -1,0 +1,27 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "finished_utc": "2026-10-03T05:53:05.796382+00:00",
+  "status": "completed",
+  "all_children_reaped": true,
+  "pending_labels": [],
+  "results": [
+    {
+      "label": "first",
+      "state": "exited",
+      "pid": 94422,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T05:53:05.795666+00:00",
+      "elapsed_seconds": 0.0509194890037179,
+      "errors": [],
+      "command_start_sha256": "903aa81b7287b340ddaad32bf03d63e4767a5ad46148e85cf25968bcc02fb196",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "12c9e87bcf2cd2ec048287fdefa728bd1f27d7d1e06bf39cd891178e57cae192",
+      "finish_receipt_saved": true,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_tmpdir_actual_propagation_home_uid_and_environment-nnva14tn/first.json.command-finish.json"
+    }
+  ],
+  "errors": []
+}

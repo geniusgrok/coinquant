@@ -1,0 +1,13 @@
+{
+  "label": "spot-canonical-fee150",
+  "state": "exited",
+  "pid": 135281,
+  "exit_code": 0,
+  "reaped": true,
+  "finished_utc": "2026-10-03T14:51:35.439184+00:00",
+  "elapsed_seconds": 665.534912831994,
+  "errors": [],
+  "command_start_sha256": "4d4a917fbbfff0a15ef9f1e50570d1001e84cadd56212b4694bd102061529bc2",
+  "log_sha256": "fdfcea91b59c6517cf44f1bb4f210710723c1f59dd61c0d8a0218ab57672e4a4",
+  "output_sha256": "7bb8fc97b0c95e065e540582f355748fd49eb6eaf4d7b2d8fcbc2a9d72534a45"
+}

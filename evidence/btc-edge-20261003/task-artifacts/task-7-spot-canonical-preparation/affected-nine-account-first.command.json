@@ -1,0 +1,28 @@
+{
+  "source": "9797cfd9110286c5a9c10c00bb0a5dfd798d47c4",
+  "argv": [
+    "python3.13",
+    "-m",
+    "unittest",
+    "-v",
+    "test_adoption_spot.AdoptionTests.test_canonical_synthetic_account_matches_selected_research_all_six_groups",
+    "test_adoption_spot.AdoptionTests.test_canonical_meter_never_installs_research_decisions",
+    "test_adoption_spot.AdoptionTests.test_diagnostic_profile_cutoff_owned_sizes_and_rerun_binding",
+    "test_edge_spot.EdgeSpotTests.test_unity_baseline_all_six_original_groups_and_budget",
+    "test_session.SessionTests.test_cold_start_then_two_bullish_closes_preview_entry",
+    "test_p4_execution.P4ExecutionTests.test_real_session_partial_entry_restart_stop_amend_and_offline_trigger",
+    "test_p4_execution.P4ExecutionTests.test_query_outage_after_send_recovers_with_original_identity",
+    "test_edge_forward.ForwardTests.test_proposal_modeled_fill_fee_net_conservation_and_checkpoint",
+    "test_edge_forward.ForwardTests.test_size_minimum_rounding_depth_and_no_topup"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-canonical-prepare/spotquant",
+  "environment": {
+    "PYTHONPATH": "tests:."
+  },
+  "started_utc": "2026-10-03T14:13:42.058144+00:00",
+  "finished_utc": "2026-10-03T14:13:46.646694+00:00",
+  "exit_code": 1,
+  "log": "/workspace/btc-alpha-beta-improve/task-artifacts/task-7-spot-canonical-preparation/affected-nine-account-first.log",
+  "log_sha256": "3c4da9b005a8720a7501ebfb7706e2f6d8e048daf765463ed5e87a5705383ba8",
+  "scope": "Exact nine reserved Spot affected checks, once; no Coin or producers"
+}

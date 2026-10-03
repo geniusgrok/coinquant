@@ -1,0 +1,20 @@
+{
+  "error": {
+    "stage": "child_exit",
+    "label": "first",
+    "error": "ValueError('actual exit code: 7')",
+    "recorded_utc": "2026-10-03T05:53:56.902671+00:00"
+  },
+  "phase": "probe",
+  "project_kind": "spot",
+  "provenance": {
+    "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "pending_labels": [
+    "second",
+    "third"
+  ],
+  "active_labels": [
+    "first"
+  ]
+}

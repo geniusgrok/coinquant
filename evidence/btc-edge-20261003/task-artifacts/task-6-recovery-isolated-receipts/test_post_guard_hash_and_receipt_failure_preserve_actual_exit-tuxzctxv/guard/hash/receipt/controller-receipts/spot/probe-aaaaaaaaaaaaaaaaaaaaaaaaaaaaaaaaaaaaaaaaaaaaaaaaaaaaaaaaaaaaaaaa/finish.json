@@ -1,0 +1,37 @@
+{
+  "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "phase": "probe",
+  "project_kind": "spot",
+  "finished_utc": "2026-10-03T05:53:04.847035+00:00",
+  "status": "failed",
+  "all_children_reaped": true,
+  "pending_labels": [
+    "second",
+    "third"
+  ],
+  "results": [
+    {
+      "label": "first",
+      "state": "exited",
+      "pid": 94410,
+      "exit_code": 0,
+      "reaped": true,
+      "finished_utc": "2026-10-03T05:53:04.846005+00:00",
+      "elapsed_seconds": 0.10157315898686647,
+      "errors": [],
+      "command_start_sha256": "3fbf6e91b4a53d212f4adbf4d349b6e661b5e2cd715be78570400419c0c6008a",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211",
+      "finish_receipt_saved": false,
+      "finish_path": "/workspace/btc-alpha-beta-improve/task-artifacts/task-6-recovery-isolated-receipts/test_post_guard_hash_and_receipt_failure_preserve_actual_exit-tuxzctxv/guard/hash/receipt/first.json.command-finish.json"
+    }
+  ],
+  "errors": [
+    {
+      "stage": "finish_receipt_write",
+      "label": "first",
+      "error": "OSError('receipt unavailable')",
+      "recorded_utc": "2026-10-03T05:53:04.846046+00:00"
+    }
+  ]
+}

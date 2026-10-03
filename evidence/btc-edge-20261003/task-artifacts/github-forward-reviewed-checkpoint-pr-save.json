@@ -1,0 +1,24 @@
+[
+  {
+    "repository": "spotquant",
+    "pr": 10,
+    "url": "https://github.com/geniusgrok/spotquant/pull/10",
+    "draft": true,
+    "head": "75c7d8efb07c98d21f1350d0f6186b48ed48a5a2",
+    "body_sha256": "3d5a8e5c2aad883bc09c0d094a96c3c4d61a4a64217321d82310ec5b110c7785",
+    "read_before_retry": true,
+    "rest_patch_used": true,
+    "original_gh_pr_edit_failure": "GraphQL repository.pullRequest.projectCards classic projects deprecation"
+  },
+  {
+    "repository": "coinquant",
+    "pr": 59,
+    "url": "https://github.com/geniusgrok/coinquant/pull/59",
+    "draft": true,
+    "head": "e9a1117a79f391346be9af85ad3636ea8d438b4d",
+    "body_sha256": "ede59d77f7b4726293ee38dd6d17a3290fdd3da98f023166aff57ce5f8549701",
+    "read_before_retry": true,
+    "rest_patch_used": true,
+    "original_gh_pr_edit_failure": "GraphQL repository.pullRequest.projectCards classic projects deprecation"
+  }
+]

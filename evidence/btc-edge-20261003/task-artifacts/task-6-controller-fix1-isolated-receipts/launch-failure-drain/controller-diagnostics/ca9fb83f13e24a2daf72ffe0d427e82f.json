@@ -1,0 +1,20 @@
+{
+  "error": {
+    "stage": "launch_not_started",
+    "label": "two",
+    "error": "ValueError('existing output/progress/invocation receipt: /tmp/controller-isolated-t435oiqi/two.json')",
+    "recorded_utc": "2026-10-03T04:18:33.434372+00:00"
+  },
+  "phase": "isolated",
+  "project_kind": "spot",
+  "provenance": {
+    "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "pending_labels": [
+    "two",
+    "three"
+  ],
+  "active_labels": [
+    "one"
+  ]
+}

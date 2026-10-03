@@ -1,0 +1,9 @@
+{
+  "recorded_utc": "2026-10-03T06:56:27.034544+00:00",
+  "operation": "root four-stress diagnostic metadata assembly",
+  "error": "KeyError: session_audits; actual row key is sessions",
+  "exit_code": 1,
+  "diagnostic_output_created": false,
+  "financial_raw_changed": false,
+  "source_changed": false
+}

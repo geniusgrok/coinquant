@@ -1,0 +1,220 @@
+{
+  "status": "PASS",
+  "scope": "final binding only",
+  "bridges": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding/canonical-bridges.json",
+    "sha256": "cea1bb62d83b86f4222fa1c0f15714e8c9f75ae8ba7d5b817c27b0de9dd0932e"
+  },
+  "attestations": {
+    "spot": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding/spot-canonical-forward-attestation.json",
+      "sha256": "ce668d4c156a33d0006ac850e033db904cfd050f82ba02c3dbb9c419041c0e2e"
+    },
+    "perp": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding/perp-canonical-forward-attestation.json",
+      "sha256": "904bd93dbfc5af0bf372dd17957a8a8db6c126f5b0b1a454c7e9976d5f9bb3c8"
+    }
+  },
+  "final_report": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json",
+    "sha256": "16ee432bd45c9783f9f38beb19aa7fef21ca3cc6305bee29469a371d388b2625"
+  },
+  "financial_review": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/independent-financial-review-proof.json",
+    "sha256": "50dc293c8225027f2bfa49508cdd058f2ccc4a44ebb4976f3b41b206d048aefc"
+  },
+  "inventory_sha256": "c3f4e9d3bee09bac4242660aafaed51e767d849dae5549343af7176c62226e74",
+  "unchanged_final_evidence_fields": [
+    "accounts",
+    "actual_account_days",
+    "analysis_source",
+    "baseline_equality",
+    "blocking",
+    "calibration_diagnostics",
+    "calibration_documents",
+    "calibration_input_documents",
+    "combinations",
+    "contracts",
+    "decisions",
+    "environment",
+    "format",
+    "input_envelopes",
+    "inputs",
+    "inventory_sha256",
+    "limitations",
+    "native_cases",
+    "native_qualification",
+    "pending",
+    "portfolios",
+    "prospective_alpha_proven",
+    "rejected_files",
+    "required_accounts",
+    "selected",
+    "targets"
+  ],
+  "allowed_final_report_changes": [
+    "command",
+    "financial_review",
+    "phase",
+    "status"
+  ],
+  "corrected_argv": [
+    {
+      "option": "--spot",
+      "before": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-spot-manifest.json",
+      "after": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary-spot-manifest.json"
+    },
+    {
+      "option": "--perp",
+      "before": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-perp-manifest.json",
+      "after": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary-perp-manifest.json"
+    },
+    {
+      "option": "--out",
+      "before": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final.json",
+      "after": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json"
+    },
+    {
+      "option": "--csv",
+      "before": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final.csv",
+      "after": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.csv"
+    },
+    {
+      "option": "--markdown",
+      "before": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final.md",
+      "after": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.md"
+    }
+  ],
+  "actual_receipts": {
+    "complete-final": {
+      "start": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final.json.command-start.json",
+        "sha256": "5aa301bd8e54e73a82510d76231f64db5e5e60d77980c7bb78007fa6aaaeb5f2"
+      },
+      "finish": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final.json.command-finish.json",
+        "sha256": "d5a2708e126fc37aa2e15a3912439ea6bc8c67a07203557e003889d667e7a015"
+      },
+      "log": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final.json.run.log",
+        "sha256": "ae4668074e4103e0889dd381115eb537c8ba311ffddc2b6dfa2bd4f7e7db60e3"
+      },
+      "actual_exit": 1,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "research.edge_assessment",
+        "--phase",
+        "final",
+        "--spot",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-spot-manifest.json",
+        "--perp",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-perp-manifest.json",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--schedule",
+        "/workspace/btc-alpha-beta-improve/coinquant/research/session_schedule.json",
+        "--fx",
+        "/workspace/btc-alpha-beta-improve/starquant/data/usdcny_frankfurter.json",
+        "--market",
+        "/tmp/spotquant-market/klines",
+        "--coin-market",
+        "/tmp/coinquant-market",
+        "--coin-prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/public-print-inputs-v1",
+        "--references",
+        "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002",
+        "--spot-calibration",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/spot.json",
+        "--perp-calibration",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/perp.json",
+        "--financial-review",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/independent-financial-review-proof.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final.json",
+        "--csv",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final.csv",
+        "--markdown",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final.md"
+      ]
+    },
+    "complete-final-input-path-fix1": {
+      "start": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json.command-start.json",
+        "sha256": "57fc8f5b0ab079da4affde1a8d13f78a81c1193fa8d81346059606306042ffe0"
+      },
+      "finish": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json.command-finish.json",
+        "sha256": "c53e7b5f9a7ae03ece9c550164ea3d5213a10ac044a27a27635f2806ce38f368"
+      },
+      "log": {
+        "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json.run.log",
+        "sha256": "802d62a3f1d94f149c4368bc01819439ebc491500a4730e7c72562ac633de13d"
+      },
+      "actual_exit": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "research.edge_assessment",
+        "--phase",
+        "final",
+        "--spot",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary-spot-manifest.json",
+        "--perp",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-preliminary-perp-manifest.json",
+        "--features",
+        "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+        "--schedule",
+        "/workspace/btc-alpha-beta-improve/coinquant/research/session_schedule.json",
+        "--fx",
+        "/workspace/btc-alpha-beta-improve/starquant/data/usdcny_frankfurter.json",
+        "--market",
+        "/tmp/spotquant-market/klines",
+        "--coin-market",
+        "/tmp/coinquant-market",
+        "--coin-prints",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/public-print-inputs-v1",
+        "--references",
+        "/workspace/btc-alpha-beta-improve/spotquant/evidence/alpha-beta-next-20261002",
+        "--spot-calibration",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/spot.json",
+        "--perp-calibration",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/perp.json",
+        "--financial-review",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/independent-financial-review-proof.json",
+        "--out",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json",
+        "--csv",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.csv",
+        "--markdown",
+        "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.md"
+      ]
+    }
+  },
+  "sources": {
+    "spot": {
+      "accepted_head": "609606d9c0e0ad8d3c3038b329c9c4ab6d1b9629",
+      "current_head": "baf0939a8d0ae1f38b84d7579912d67b0db8c13c",
+      "python_sources_sha256": "b81f1bfee086e875cbf8ff22a67b2cfdff419130a7918a6ce8754b2e9e2936c5",
+      "protected_sha256": "eeb22cfe227c0d9ed60c937da330f515a6093dfcd82205114644e8bed8c7c7f6",
+      "protected_file_count": 54
+    },
+    "perp": {
+      "accepted_head": "37061a7f588f97cc16852551cab6cd2e51acb920",
+      "current_head": "73660c900e36decc651706a24cc8bf8c4f11383e",
+      "python_sources_sha256": "ba63895131db566e708a5c96cde4504beace39fa0bdd54881d039dd5b8ef4c50",
+      "protected_sha256": "b0cb0b7df265767f28e4fa7511865cbbb8f3150a3f2edfa1c5caf33138a1ebc9",
+      "protected_file_count": 59
+    }
+  },
+  "financial_calculations_rerun": 0,
+  "canonical_cases_rerun": 0,
+  "software_tests": 0,
+  "producers": 0,
+  "network_calls": 0,
+  "export_initialization": "not performed; resulting export bytes require subsequent independent approval",
+  "script": {
+    "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding/bind-fix1.py",
+    "sha256": "5f10a5f751c76f40338614806f1d981e2d2993f2ba62d5fb2865361c57e930f2"
+  }
+}

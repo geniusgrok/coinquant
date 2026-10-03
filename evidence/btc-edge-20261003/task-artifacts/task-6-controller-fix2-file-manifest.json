@@ -1,0 +1,662 @@
+{
+  "run-registered-phase.py": {
+    "bytes": 19301,
+    "sha256": "082d362d71977cec1e5f10afec47421cf8ab869c19ca0f064b5f8fba355977b1"
+  },
+  "bind-phase-inputs.py": {
+    "bytes": 13263,
+    "sha256": "a07d5b63db39a9e0934dc9df887ccaaa059a7cab5c4d3a4d1337727eff3c9cf2"
+  },
+  "test-controller-fix2.py": {
+    "bytes": 30787,
+    "sha256": "283e23c54634942392fe8bcdf69f12c90f667114cf07d30d89e1f1d12cabbb18"
+  },
+  "task-6-controller-fix2-report.md": {
+    "bytes": 6540,
+    "sha256": "3bb4e4266f822f6b34e515922852fef2d8a54a4ab2804433739ceea2ecda6934"
+  },
+  "task-6-controller-fix2-red-tests.txt": {
+    "bytes": 27850,
+    "sha256": "1479386527bdd2386f5a5919b8c212e415d177fc1bbdff79ad991da36e714350"
+  },
+  "task-6-controller-fix2-tests-final.txt": {
+    "bytes": 3649,
+    "sha256": "9fdbd76440f1a51e418e09985e8363e110de2e9e2f68af5ca91a961c2f08847f"
+  },
+  "task-6-controller-fix2-verification.json": {
+    "bytes": 4171,
+    "sha256": "ed11bd81075269e7110ad97721e03a929443bbfe8ab27b5da827be191b14c176"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-diagnostics/1111098a44344b8b9cd7c85772b23195.json": {
+    "bytes": 508,
+    "sha256": "a88d46c971b3943ad3bbbc683c38b8126fe8742f08e4814e3933ae30026307dd"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-diagnostics/8a386f27d44043cf8d4b8f9cae149d17.phase-result.json": {
+    "bytes": 1438,
+    "sha256": "770f584ac83bec5eaf72d577fb770329ea64a59dfb4d8804b4dd5d5201d26d80"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-diagnostics/e33e6c06dba849f381f3389ad8331631.json": {
+    "bytes": 433,
+    "sha256": "7987b9fe191db73c682fce2ffbf6c65e00be79e0bdf25542da6f262cf939a062"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-receipts/spot/failure-signal-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/finish.json": {
+    "bytes": 1438,
+    "sha256": "770f584ac83bec5eaf72d577fb770329ea64a59dfb4d8804b4dd5d5201d26d80"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-receipts/spot/failure-signal-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/first.launched.json": {
+    "bytes": 93,
+    "sha256": "d2fd5dd5066d3b9a38b1510be962d1c6ad0bf60e1cf361ec78cc91323f18e2bb"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-receipts/spot/failure-signal-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/second.not-started.json": {
+    "bytes": 230,
+    "sha256": "f9f5e93c5f710ba7eb5ad2494fe98c66503a0f273a3ed4d91c1897ce2156f288"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-receipts/spot/failure-signal-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/start.json": {
+    "bytes": 1087,
+    "sha256": "3a635e2df516372f3d5fd353dcbd6cd7ba70911e88947f01ae7dd91304d98c7a"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-reservations/spot/3a6456b7c45742b0b4e3a5932b2ad387.owner.json": {
+    "bytes": 138,
+    "sha256": "b9f5af95910e343423118addf5218e78da45e99ba426540e8a7eb304a190dfdc"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-reservations/spot/3a6456b7c45742b0b4e3a5932b2ad387.released.json": {
+    "bytes": 174,
+    "sha256": "d05fdcb0639dfa979bf219e355aa6595d4f9217c10da2787feac76a3d3ba645c"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-reservations/spot/9d5154ee2b1c4da8a8cafe23225c56a8.owner.json": {
+    "bytes": 127,
+    "sha256": "1f4cb6d31c88dae27ff38e494b7592cf258de9e56cbd6db9d21eb20c73eab803"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/controller-reservations/spot/9d5154ee2b1c4da8a8cafe23225c56a8.released.json": {
+    "bytes": 174,
+    "sha256": "9b8782cca83bcf42e170b733a81a59ee26fc0c683fdce5b928cb761d285ff0f6"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/first.json": {
+    "bytes": 4,
+    "sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/first.json.command-finish.json": {
+    "bytes": 473,
+    "sha256": "6f3125377529936e787c2e6bdbab8e7a6868ff64c013e5263c3f1c9c3824d2cf"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/first.json.command-start.json": {
+    "bytes": 615,
+    "sha256": "2a9cfe521c6ca9ad2f3e77c00209f2da75b327ea8bbf01a9bfe4abe14771245b"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/first.json.run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGINT/second.json": {
+    "bytes": 24,
+    "sha256": "522cc8c6d745d7c11d4eb33c281cce63985e8d1e541e7f5d8648753cdc349a2d"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-diagnostics/0166fc4b21e7455f8acf033db96d5fbd.phase-result.json": {
+    "bytes": 1441,
+    "sha256": "ba373392505d66c89de7e2012d5d2d553d30e3b26ab8cac2d10bf9bf4d3bccbc"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-diagnostics/b8a11137ae484d64b0108e1bfd9073b5.json": {
+    "bytes": 434,
+    "sha256": "7fccf21cf656f8fa889667b4e109420dc0846dfdc4c5046bbe2e4f6da737f2fe"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-diagnostics/bc03623d73144cac9e84b0bf05fbb173.json": {
+    "bytes": 509,
+    "sha256": "3dd2cd0422e1e413df6359447716149411a446a9592d45f6da089ccda01f3862"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-receipts/spot/failure-signal-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/finish.json": {
+    "bytes": 1441,
+    "sha256": "ba373392505d66c89de7e2012d5d2d553d30e3b26ab8cac2d10bf9bf4d3bccbc"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-receipts/spot/failure-signal-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/first.launched.json": {
+    "bytes": 93,
+    "sha256": "676a6823999d2703f526a4d774a9433b9a395d6ec3036abdf5b2bc0cdbc5058d"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-receipts/spot/failure-signal-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/second.not-started.json": {
+    "bytes": 231,
+    "sha256": "361176d9eb9d4331952f6784b035d8261efb970aa67a88d83e65a1eb99aa9dbb"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-receipts/spot/failure-signal-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/start.json": {
+    "bytes": 1093,
+    "sha256": "406fe9c8946b8daf97412920cda6f06ba53d7a2cb906026a5b68e161436dccca"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-reservations/spot/68804d78d6e04433995563c0172a74d7.owner.json": {
+    "bytes": 138,
+    "sha256": "afc5fbc37dcdea33c1532ef2d1e19a417debd6d15339132a80de2372777c2beb"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-reservations/spot/68804d78d6e04433995563c0172a74d7.released.json": {
+    "bytes": 174,
+    "sha256": "dccbf23b1e9272abe510eb5d25e3569b550abc45e3b991357104aad0b1cbdee7"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-reservations/spot/8609d40cb5a74ab88fd5c02062ec5289.owner.json": {
+    "bytes": 127,
+    "sha256": "60d72bb3bec9c52017f10454f8c2c9b36ecfded588e7bf15c524e0a5d79ca0cd"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/controller-reservations/spot/8609d40cb5a74ab88fd5c02062ec5289.released.json": {
+    "bytes": 174,
+    "sha256": "6a5f9c3362e0574cd42f354978cff2169a0719db989e81e9610881031ab81e38"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/first.json": {
+    "bytes": 4,
+    "sha256": "a4c3ed04a95a3da14a9d235c83d868bed7c0f45cf7f3faa751ee8f50598d2211"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/first.json.command-finish.json": {
+    "bytes": 473,
+    "sha256": "a46a213b33ef0c5fea5ce4da5943b3856f7f90bca8bc1a940f5ffcb2786e8352"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/first.json.command-start.json": {
+    "bytes": 618,
+    "sha256": "3470637e78277562c7b530d832926c6327e76f891168f935437ee2906eaac624"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/first.json.run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "task-6-controller-fix2-isolated-receipts/both-signals-real-failure-drain/SIGTERM/second.json": {
+    "bytes": 24,
+    "sha256": "522cc8c6d745d7c11d4eb33c281cce63985e8d1e541e7f5d8648753cdc349a2d"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/1f1eef777b3e9aa18fb5ef844e32139d47d0408dba4a7d5ab206d151e690827e.raw": {
+    "bytes": 63,
+    "sha256": "5ae0b0b1f5112b4181d317de125fa88fcb2559bbc7a829f6f4112ae02c5befaf"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/200e72ff72a5d4503154ea6d8fabac6bde770055728df251e18738a17c4257c1.raw": {
+    "bytes": 67,
+    "sha256": "d80ec35a66a42621f9be8152dc926b47ee954b86e03578226e6d0971814c9143"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/202c32bcb061e31efc192caad42f5218b2d235d681a45307039d4896df2fc594.raw": {
+    "bytes": 77,
+    "sha256": "9cdd7124adda42300f0b593cd3391b323fd2d61dd7b24b124bcc1cf90ff546a2"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/2aa843e388aca8e521b8dd7cef9a4f480ce2f58d76dbc0193f49de9985f79c73.raw": {
+    "bytes": 69,
+    "sha256": "007dbf8052e42e4239ecaff0467af4269cd93c2a50689e9f5b662d18883d557c"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/2ae3642d818b3a0170c8ba44428bdc3f1af4eb785f211e08f924c2e558b711ec.raw": {
+    "bytes": 63,
+    "sha256": "e8a51b9b4952d254cb876806786cd475244b13bfc52c6619dcde4eb9ae15431f"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/2fda9f3968dd3772fcd5d592aff9cdcf3e58d7d0e7f78110c8c17776c2a00cb6.raw": {
+    "bytes": 62,
+    "sha256": "a13c37e0e180c7ac9321bc8e6397b6567ded89bef3fd275a7e8f1fb5d83f566f"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/388f903dacc4c8a8a58dcb3789b7b6d814287a6c771a560839229e585b247f0e.raw": {
+    "bytes": 53,
+    "sha256": "641c1e93fef88173b306d481fd36e62ca4dec7d214b38b38f498232893582597"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/48ae7ea9015077b65c972743d50b0172063339f3df315b7ea1ec81f62b30bab2.raw": {
+    "bytes": 55,
+    "sha256": "a6fec0da0afdf4387597ae68c241df096af05c29409be606a4d2a49989f7ccc3"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/5064d030c0f5a9c443992b68502f5cbc0f531f7bd6bfd86e3a5bb12c5fda2734.raw": {
+    "bytes": 77,
+    "sha256": "c7fd06b4cad278e44ff6b3bbe6fd162c3197ef3b195b65f9fdc3c880ea8afd76"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/588d406100a6bdf5864e2bf1b56d3c2deaa769fdf9ae61731b5bd1235dee3cdb.raw": {
+    "bytes": 76,
+    "sha256": "434e5418472caef2f79ffe36ce6c4bceee2d14c40dd28be0747f9a197097264b"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/5a7f3c11a87092f8a5381458e7512b4434a6af273face20605b74ec81650cb5c.raw": {
+    "bytes": 68,
+    "sha256": "1b90987057c9d3b37e6069c092a8b1f64dae33c6087a15a3f4dc445840650c60"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/5cd8de3d2b042da004f127040d872dae136cedfc8b83461165dad18e2f912a94.raw": {
+    "bytes": 78,
+    "sha256": "f58ebccf7944d294f2ed3f7068333b31bef1580a8bcb55e9c88ab6068d398c20"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/6154aec340331b904f9c097299af602e8bf21c1aaff8116a6eacdc55a4fb6df5.raw": {
+    "bytes": 60,
+    "sha256": "9bbb21946d297aa4e63dee5803aab7d546dfa31a8a1020375aef24449f2b8d13"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/65710ccfe122b54bd65328f253c504973e32cb01b4a5dca47defc4a23686e6aa.raw": {
+    "bytes": 77,
+    "sha256": "5e20e52ba82e807a9127842dd7056075153d955a8f4cad50d520e787b8ea5284"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/698f671d2af089ad01ae1c616ec6bf64aae21a340b0c4fcccb2ca7e517672948.raw": {
+    "bytes": 69,
+    "sha256": "6994f024f33aec4c4314b3812b06283a8bcce8b603224d6e65e43f7b8051530c"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/7547463b2475f6fe8bfafbb0549e63bb145d3abe113ef2ff5478df6c731c0239.raw": {
+    "bytes": 71,
+    "sha256": "d63ba2ff30d502b0711b0c2d280665e65cd495aa8de4a1058ff89a4aa9cda7d4"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/7e30936e61cac8d61bcdbff1a671e8519c4e66458cde7569ec759ac6637cfed1.raw": {
+    "bytes": 54,
+    "sha256": "812a36ad8e95876b0c7e5aca949d99f89ba2db7731b418736e1d1daf301003e8"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/817c344e76e49891770a3d1135e49d00e12897ed6b35400d60782106b6443f69.raw": {
+    "bytes": 61,
+    "sha256": "c6ad80cde817fbcf4063f8b3e29113c15758ab3a8fae111f3bb9cebc7a389d57"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/820b849e0b4dbcf710204b3df88fc321b0dd21c6c1dd48780b0595bf92a8e381.raw": {
+    "bytes": 58,
+    "sha256": "91b99d9a2f3ac73fb89f8ad0efa381c25b843ac5e0ab4ea81f348d955e0633db"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/825b7abaed50643711af28127f3f562fa842aa4b7071c2072b29f5d03098538b.raw": {
+    "bytes": 71,
+    "sha256": "69a93137dbaa39040d955a3a3dbc1a876ec9c6e3b6f73d8ed6898b6e6a2846f9"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/828db496b0c14884052683a04344be5128b9dbc1f8e6414110038defd03299a7.raw": {
+    "bytes": 59,
+    "sha256": "c74097cfb9b9f0d0fddaca36fca44edd999e03e32f21f4cb18dc01c58b647aab"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/886a1586ee554f8e7b26771ba59d61616dc62308f41adaf2db3eba810710e47b.raw": {
+    "bytes": 70,
+    "sha256": "06a2be890c760a3c5c20ca7987acb018ae09e5a34f49a6252af5548a18f4db7e"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/9355566ecc7bd9e4b1fdebeb793e0538f848fb2bebad8eacfa26bf543e900a34.raw": {
+    "bytes": 76,
+    "sha256": "85d4c75c91cd4e7c11d171acaa9db2fa476211cd131073fa2fb97718e66bee5d"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/957e6a42f68c9f1df8e79c0a7daf2bdd028a1da18424baac8afc4638b260cb44.raw": {
+    "bytes": 77,
+    "sha256": "6dae2de9ffd4499a28d983ee8efb5935b11ffe205e509ac7cda364b355b14cca"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/9a0230cda27a43896304fc04a674c5524c5dd0540fde6e89660f3c421d0328cc.raw": {
+    "bytes": 77,
+    "sha256": "599347aef6fb2d57ae5db32d8ea151c9e14b9c151aa947511d89f2951a694171"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/9c089f40117d654d0899f327296dd51d4ed1d0db86d01ea0157f55d99474bedd.raw": {
+    "bytes": 78,
+    "sha256": "6518bdf04092823f8cef5d117b50152ade3e758efb35612aebdd9ecfe837dd90"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/a05626c9f02aaf0258949621aaaaecba021c399699ef8d36a64953bea66e4896.raw": {
+    "bytes": 55,
+    "sha256": "d6edcc7aac9c4ffe1152f4ae58258a0ce7c7c17e137df0f5cd1f9d1641e880f5"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/a083f984f854acfa1e40a7b25cfde7bda3fbe4004d4fa2b24a268d83d3426e76.raw": {
+    "bytes": 59,
+    "sha256": "b4e473bf18bb43e035963532ee86fbac3717940d6dc250a08db4baef39f173ad"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/a218c4d484cbe59a0f331c0973d9a4dda0c249babd12b6935e131ecedaaebae1.raw": {
+    "bytes": 75,
+    "sha256": "0497948968878856c107f788ccb1c48699c3c46b5e62a341f60586e12a5b178e"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/a362f71f29045f7ac61fa8cb7ddc187a0b3784808852392d24d55824c05b04c7.raw": {
+    "bytes": 77,
+    "sha256": "754e18f959ff70cf0f77f31bea6adc32f0aeb753d0f7617fa9049add0a651df3"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/ac0d055cd5076ad954b48240ee45a5bfd5f5516c1d4163c4915214346f61a75f.raw": {
+    "bytes": 76,
+    "sha256": "841df7436ad9ab01aca8ed3401c1187ff3c5690967193eabfa13f3c76d6f84c7"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/adc49d0232b71eba5ea443d80eec664c26da634debddbe454cc14f4133c21999.raw": {
+    "bytes": 63,
+    "sha256": "5b14d20eaf1d6796b97af69a8f007e2744f1876dcd7a272b384a663668729744"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/b0b39f9bb8e2fca8af8ba70cf70683f74fe871fd615785e084bd2cc33d05cff9.raw": {
+    "bytes": 77,
+    "sha256": "580be825a70031e6de9bbe5728739feecefdfb394953ba8a53afd957241c1ed1"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/b1bf659749f97cb2f429eace2afca4d5be978198744d392b8d4060f7368a4a97.raw": {
+    "bytes": 61,
+    "sha256": "423563f7418c75749702e5ed8dd319b554faa2db564edf2f95e178da0ffe6c40"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/c31aaf1d753369bd4ddbabe8f30e151911bd2706ad5e9cab9ac8c3f5dc25e0a3.raw": {
+    "bytes": 61,
+    "sha256": "20fcad008996fab95aabdc3ff2caf7605f5a4ce1030e556da78025332354190d"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/c616f45aa886300fb08a4b8f5f1612e59c771806c0c8f071af9472b4f82a410b.raw": {
+    "bytes": 74,
+    "sha256": "4f13e2cb97864e0376edd1d32530b329ae0676fa40e380a1edc5eae7629fb1f7"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/c727eb875dba63725df6c07b4780f59f5ba9a4a4bf5146cf417f558b0a3b889e.raw": {
+    "bytes": 64,
+    "sha256": "8ebccbdd558e3cd12d1c754c776db854782174d8689b9caf57bc55abe709b8cf"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/c996f64f8bab4cbfc1bc3336f049564d6691845a33cd83897abf1aafab8d8cfd.raw": {
+    "bytes": 75,
+    "sha256": "fb8cf3ef4d358c2e098acf4f796acd3b471f86a9ff176648ee59a606f8c32b70"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/condition-report.json": {
+    "bytes": 35217,
+    "sha256": "4e1f2037c7bdf2deee4f18feedacdf3c5ab84be598231abd95360e854172f2a2"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/d0d5070085fe2ee28eb96d230b0d4c92d3a06a0afadde0a6ada48435f8e0d705.raw": {
+    "bytes": 77,
+    "sha256": "cc3c538d356f844905d737fa8ec093ae1cfc89e485f743d11c0d9f0f3ef7c73f"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/d5cb7c392ac9a2c837daf32d5bffe9c39831bec3a5a2a3cc4ab242f996fe8ecb.raw": {
+    "bytes": 71,
+    "sha256": "15bd9f8f0a0c7ede193dd02f9d79c0676e7c39bf29000b091dcc171b0f0e06be"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/d90cc44f43036cf6cc99b4245c8a5cafbd39c47410234831192ff3db5e5af0a2.raw": {
+    "bytes": 58,
+    "sha256": "975f56da2ca5a750a861290d8c04047f26c9edb8489f7702728b131468f357f9"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/daf7ad24a717f7a8b448a1e81691c15ee971abdd0b66ae660d88f40f884a0dc7.raw": {
+    "bytes": 69,
+    "sha256": "15f8d80fed40f300792313456ff2b27d878630dfdc1ffe8600062c3da7fa729d"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/dec1ab4eb1e67b2a543dc6b0c482df9e034ca344af4b03cc0794071a9b5e3052.raw": {
+    "bytes": 69,
+    "sha256": "ab755e1a644c4f5e6cd6a00a9d904e984df4e3906a40fdb122ad146d2cc457cf"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/e28bf1bdd235c6f8e42b12b385cac2b6a01c3a928443d8ff3f8d9e6dba6945c2.raw": {
+    "bytes": 62,
+    "sha256": "ff9c7146b04aaa36328ccedba19ad42c3c725f21b5cedcf7a252dfe2256e660b"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/ebabb76baff641edc5c2464f286e602bb4d1e0fe500ef8a45c58cc79a615aed4.raw": {
+    "bytes": 63,
+    "sha256": "c58cfbc43bd35645f127e9266874a538f5541b9769a68a1a2fcf59c0ce00b241"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/ee062b7bb9819ef035d1f4dd7ef3b133add58799f2e8fac0936006ebbabcf98e.raw": {
+    "bytes": 75,
+    "sha256": "1422f02f625ab74a4ecac29e9f2ca2ed12861caff9f75ddc5ce2f449a526e6bb"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/eeca9b51978928a654a11a47cb6c598e4477b2da1bc7636b76e1445cffea0e28.raw": {
+    "bytes": 66,
+    "sha256": "4511087caa022501a929a96ce4b2dd169a05ea264f907bc28c2fed5adfce3655"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/f39b0acad9d326228c9bbadb69f6897c0d24dee7a98ae3a8d562a5024f41f943.raw": {
+    "bytes": 75,
+    "sha256": "c2e4ada2fb6a5e3838ddfaabf07ad041fb8dd0fad971ff7c41f418d3ec16d8cb"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/f50df24598841082518850d9d084381c7856e6051cd0c641cca2f97269f9a653.raw": {
+    "bytes": 57,
+    "sha256": "fb41ca4e0f97b8bdbb4b813e2362d6561a94dc6dc433352921aa4aaccb20e96f"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/f979b1ab8d3b16cfb9345258cde7ef0df990c10fb6402fbe28a2b24c03f605da.raw": {
+    "bytes": 66,
+    "sha256": "80c0c7c44e5f0f58923a019cfdc6bfd57521095ebb8ea8d7f8d3a2e80faeb71c"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/f98cfe9778ccca424031a5d1bef5e6c86f471b0a691d8c09177e7c0900a3e44e.raw": {
+    "bytes": 62,
+    "sha256": "7211d8a9fd3d497a4c7984ec78b13f5a992eafb58a500747ebd53f84e22e29c7"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/faf95e88f4cc737928f7f2504791407c3c6ea2241610cb94b07cda5e8f704bf4.raw": {
+    "bytes": 76,
+    "sha256": "d2453fb184af66f6af8f43fa3664b5204cf0e2b4546b7cf4854423237f1b38e0"
+  },
+  "task-6-controller-fix2-isolated-receipts/conditional-registry-synthetic-schema/supplemental-registry.json": {
+    "bytes": 16256,
+    "sha256": "e43cdde8ab0a8231f5353cd836d1b9199b0a4eefcbe177360e2eb17df6b558df"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/1f1eef777b3e9aa18fb5ef844e32139d47d0408dba4a7d5ab206d151e690827e.raw": {
+    "bytes": 63,
+    "sha256": "5ae0b0b1f5112b4181d317de125fa88fcb2559bbc7a829f6f4112ae02c5befaf"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/200e72ff72a5d4503154ea6d8fabac6bde770055728df251e18738a17c4257c1.raw": {
+    "bytes": 67,
+    "sha256": "d80ec35a66a42621f9be8152dc926b47ee954b86e03578226e6d0971814c9143"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/202c32bcb061e31efc192caad42f5218b2d235d681a45307039d4896df2fc594.raw": {
+    "bytes": 77,
+    "sha256": "9cdd7124adda42300f0b593cd3391b323fd2d61dd7b24b124bcc1cf90ff546a2"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/2aa843e388aca8e521b8dd7cef9a4f480ce2f58d76dbc0193f49de9985f79c73.raw": {
+    "bytes": 69,
+    "sha256": "007dbf8052e42e4239ecaff0467af4269cd93c2a50689e9f5b662d18883d557c"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/2ae3642d818b3a0170c8ba44428bdc3f1af4eb785f211e08f924c2e558b711ec.raw": {
+    "bytes": 63,
+    "sha256": "e8a51b9b4952d254cb876806786cd475244b13bfc52c6619dcde4eb9ae15431f"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/2fda9f3968dd3772fcd5d592aff9cdcf3e58d7d0e7f78110c8c17776c2a00cb6.raw": {
+    "bytes": 62,
+    "sha256": "a13c37e0e180c7ac9321bc8e6397b6567ded89bef3fd275a7e8f1fb5d83f566f"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/388f903dacc4c8a8a58dcb3789b7b6d814287a6c771a560839229e585b247f0e.raw": {
+    "bytes": 53,
+    "sha256": "641c1e93fef88173b306d481fd36e62ca4dec7d214b38b38f498232893582597"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/48ae7ea9015077b65c972743d50b0172063339f3df315b7ea1ec81f62b30bab2.raw": {
+    "bytes": 55,
+    "sha256": "a6fec0da0afdf4387597ae68c241df096af05c29409be606a4d2a49989f7ccc3"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/5064d030c0f5a9c443992b68502f5cbc0f531f7bd6bfd86e3a5bb12c5fda2734.raw": {
+    "bytes": 77,
+    "sha256": "c7fd06b4cad278e44ff6b3bbe6fd162c3197ef3b195b65f9fdc3c880ea8afd76"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/588d406100a6bdf5864e2bf1b56d3c2deaa769fdf9ae61731b5bd1235dee3cdb.raw": {
+    "bytes": 76,
+    "sha256": "434e5418472caef2f79ffe36ce6c4bceee2d14c40dd28be0747f9a197097264b"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/5a7f3c11a87092f8a5381458e7512b4434a6af273face20605b74ec81650cb5c.raw": {
+    "bytes": 68,
+    "sha256": "1b90987057c9d3b37e6069c092a8b1f64dae33c6087a15a3f4dc445840650c60"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/5cd8de3d2b042da004f127040d872dae136cedfc8b83461165dad18e2f912a94.raw": {
+    "bytes": 78,
+    "sha256": "f58ebccf7944d294f2ed3f7068333b31bef1580a8bcb55e9c88ab6068d398c20"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/6154aec340331b904f9c097299af602e8bf21c1aaff8116a6eacdc55a4fb6df5.raw": {
+    "bytes": 60,
+    "sha256": "9bbb21946d297aa4e63dee5803aab7d546dfa31a8a1020375aef24449f2b8d13"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/65710ccfe122b54bd65328f253c504973e32cb01b4a5dca47defc4a23686e6aa.raw": {
+    "bytes": 77,
+    "sha256": "5e20e52ba82e807a9127842dd7056075153d955a8f4cad50d520e787b8ea5284"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/698f671d2af089ad01ae1c616ec6bf64aae21a340b0c4fcccb2ca7e517672948.raw": {
+    "bytes": 69,
+    "sha256": "6994f024f33aec4c4314b3812b06283a8bcce8b603224d6e65e43f7b8051530c"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/7547463b2475f6fe8bfafbb0549e63bb145d3abe113ef2ff5478df6c731c0239.raw": {
+    "bytes": 71,
+    "sha256": "d63ba2ff30d502b0711b0c2d280665e65cd495aa8de4a1058ff89a4aa9cda7d4"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/7e30936e61cac8d61bcdbff1a671e8519c4e66458cde7569ec759ac6637cfed1.raw": {
+    "bytes": 54,
+    "sha256": "812a36ad8e95876b0c7e5aca949d99f89ba2db7731b418736e1d1daf301003e8"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/817c344e76e49891770a3d1135e49d00e12897ed6b35400d60782106b6443f69.raw": {
+    "bytes": 61,
+    "sha256": "c6ad80cde817fbcf4063f8b3e29113c15758ab3a8fae111f3bb9cebc7a389d57"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/820b849e0b4dbcf710204b3df88fc321b0dd21c6c1dd48780b0595bf92a8e381.raw": {
+    "bytes": 58,
+    "sha256": "91b99d9a2f3ac73fb89f8ad0efa381c25b843ac5e0ab4ea81f348d955e0633db"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/825b7abaed50643711af28127f3f562fa842aa4b7071c2072b29f5d03098538b.raw": {
+    "bytes": 71,
+    "sha256": "69a93137dbaa39040d955a3a3dbc1a876ec9c6e3b6f73d8ed6898b6e6a2846f9"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/828db496b0c14884052683a04344be5128b9dbc1f8e6414110038defd03299a7.raw": {
+    "bytes": 59,
+    "sha256": "c74097cfb9b9f0d0fddaca36fca44edd999e03e32f21f4cb18dc01c58b647aab"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/886a1586ee554f8e7b26771ba59d61616dc62308f41adaf2db3eba810710e47b.raw": {
+    "bytes": 70,
+    "sha256": "06a2be890c760a3c5c20ca7987acb018ae09e5a34f49a6252af5548a18f4db7e"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/9355566ecc7bd9e4b1fdebeb793e0538f848fb2bebad8eacfa26bf543e900a34.raw": {
+    "bytes": 76,
+    "sha256": "85d4c75c91cd4e7c11d171acaa9db2fa476211cd131073fa2fb97718e66bee5d"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/957e6a42f68c9f1df8e79c0a7daf2bdd028a1da18424baac8afc4638b260cb44.raw": {
+    "bytes": 77,
+    "sha256": "6dae2de9ffd4499a28d983ee8efb5935b11ffe205e509ac7cda364b355b14cca"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/9a0230cda27a43896304fc04a674c5524c5dd0540fde6e89660f3c421d0328cc.raw": {
+    "bytes": 77,
+    "sha256": "599347aef6fb2d57ae5db32d8ea151c9e14b9c151aa947511d89f2951a694171"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/9c089f40117d654d0899f327296dd51d4ed1d0db86d01ea0157f55d99474bedd.raw": {
+    "bytes": 78,
+    "sha256": "6518bdf04092823f8cef5d117b50152ade3e758efb35612aebdd9ecfe837dd90"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/a05626c9f02aaf0258949621aaaaecba021c399699ef8d36a64953bea66e4896.raw": {
+    "bytes": 55,
+    "sha256": "d6edcc7aac9c4ffe1152f4ae58258a0ce7c7c17e137df0f5cd1f9d1641e880f5"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/a083f984f854acfa1e40a7b25cfde7bda3fbe4004d4fa2b24a268d83d3426e76.raw": {
+    "bytes": 59,
+    "sha256": "b4e473bf18bb43e035963532ee86fbac3717940d6dc250a08db4baef39f173ad"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/a218c4d484cbe59a0f331c0973d9a4dda0c249babd12b6935e131ecedaaebae1.raw": {
+    "bytes": 75,
+    "sha256": "0497948968878856c107f788ccb1c48699c3c46b5e62a341f60586e12a5b178e"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/a362f71f29045f7ac61fa8cb7ddc187a0b3784808852392d24d55824c05b04c7.raw": {
+    "bytes": 77,
+    "sha256": "754e18f959ff70cf0f77f31bea6adc32f0aeb753d0f7617fa9049add0a651df3"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/ac0d055cd5076ad954b48240ee45a5bfd5f5516c1d4163c4915214346f61a75f.raw": {
+    "bytes": 76,
+    "sha256": "841df7436ad9ab01aca8ed3401c1187ff3c5690967193eabfa13f3c76d6f84c7"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/adc49d0232b71eba5ea443d80eec664c26da634debddbe454cc14f4133c21999.raw": {
+    "bytes": 63,
+    "sha256": "5b14d20eaf1d6796b97af69a8f007e2744f1876dcd7a272b384a663668729744"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/assessment.json": {
+    "bytes": 35476,
+    "sha256": "09594dbad6e81d9a22106c1ac9ec79dd7cdb2cf2e6bf02dcac45ad3ae5c8572d"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/b0b39f9bb8e2fca8af8ba70cf70683f74fe871fd615785e084bd2cc33d05cff9.raw": {
+    "bytes": 77,
+    "sha256": "580be825a70031e6de9bbe5728739feecefdfb394953ba8a53afd957241c1ed1"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/b1bf659749f97cb2f429eace2afca4d5be978198744d392b8d4060f7368a4a97.raw": {
+    "bytes": 61,
+    "sha256": "423563f7418c75749702e5ed8dd319b554faa2db564edf2f95e178da0ffe6c40"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/binding.json": {
+    "bytes": 14048,
+    "sha256": "8fa2db1916665d72e0a5002de08ee5647acdf2d33501ce7bbc96c3aabb9f31be"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/c31aaf1d753369bd4ddbabe8f30e151911bd2706ad5e9cab9ac8c3f5dc25e0a3.raw": {
+    "bytes": 61,
+    "sha256": "20fcad008996fab95aabdc3ff2caf7605f5a4ce1030e556da78025332354190d"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/c616f45aa886300fb08a4b8f5f1612e59c771806c0c8f071af9472b4f82a410b.raw": {
+    "bytes": 74,
+    "sha256": "4f13e2cb97864e0376edd1d32530b329ae0676fa40e380a1edc5eae7629fb1f7"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/c727eb875dba63725df6c07b4780f59f5ba9a4a4bf5146cf417f558b0a3b889e.raw": {
+    "bytes": 64,
+    "sha256": "8ebccbdd558e3cd12d1c754c776db854782174d8689b9caf57bc55abe709b8cf"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/c996f64f8bab4cbfc1bc3336f049564d6691845a33cd83897abf1aafab8d8cfd.raw": {
+    "bytes": 75,
+    "sha256": "fb8cf3ef4d358c2e098acf4f796acd3b471f86a9ff176648ee59a606f8c32b70"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/controller-parent-freeze.json": {
+    "bytes": 149,
+    "sha256": "956a7f25cbb3df64e5b5874e0104aafb787d34bfc78e1ebb9972dabc5a0b047c"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/d0d5070085fe2ee28eb96d230b0d4c92d3a06a0afadde0a6ada48435f8e0d705.raw": {
+    "bytes": 77,
+    "sha256": "cc3c538d356f844905d737fa8ec093ae1cfc89e485f743d11c0d9f0f3ef7c73f"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/d5cb7c392ac9a2c837daf32d5bffe9c39831bec3a5a2a3cc4ab242f996fe8ecb.raw": {
+    "bytes": 71,
+    "sha256": "15bd9f8f0a0c7ede193dd02f9d79c0676e7c39bf29000b091dcc171b0f0e06be"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/d90cc44f43036cf6cc99b4245c8a5cafbd39c47410234831192ff3db5e5af0a2.raw": {
+    "bytes": 58,
+    "sha256": "975f56da2ca5a750a861290d8c04047f26c9edb8489f7702728b131468f357f9"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/daf7ad24a717f7a8b448a1e81691c15ee971abdd0b66ae660d88f40f884a0dc7.raw": {
+    "bytes": 69,
+    "sha256": "15f8d80fed40f300792313456ff2b27d878630dfdc1ffe8600062c3da7fa729d"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/dec1ab4eb1e67b2a543dc6b0c482df9e034ca344af4b03cc0794071a9b5e3052.raw": {
+    "bytes": 69,
+    "sha256": "ab755e1a644c4f5e6cd6a00a9d904e984df4e3906a40fdb122ad146d2cc457cf"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/e28bf1bdd235c6f8e42b12b385cac2b6a01c3a928443d8ff3f8d9e6dba6945c2.raw": {
+    "bytes": 62,
+    "sha256": "ff9c7146b04aaa36328ccedba19ad42c3c725f21b5cedcf7a252dfe2256e660b"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/ebabb76baff641edc5c2464f286e602bb4d1e0fe500ef8a45c58cc79a615aed4.raw": {
+    "bytes": 63,
+    "sha256": "c58cfbc43bd35645f127e9266874a538f5541b9769a68a1a2fcf59c0ce00b241"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/ee062b7bb9819ef035d1f4dd7ef3b133add58799f2e8fac0936006ebbabcf98e.raw": {
+    "bytes": 75,
+    "sha256": "1422f02f625ab74a4ecac29e9f2ca2ed12861caff9f75ddc5ce2f449a526e6bb"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/eeca9b51978928a654a11a47cb6c598e4477b2da1bc7636b76e1445cffea0e28.raw": {
+    "bytes": 66,
+    "sha256": "4511087caa022501a929a96ce4b2dd169a05ea264f907bc28c2fed5adfce3655"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/f39b0acad9d326228c9bbadb69f6897c0d24dee7a98ae3a8d562a5024f41f943.raw": {
+    "bytes": 75,
+    "sha256": "c2e4ada2fb6a5e3838ddfaabf07ad041fb8dd0fad971ff7c41f418d3ec16d8cb"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/f50df24598841082518850d9d084381c7856e6051cd0c641cca2f97269f9a653.raw": {
+    "bytes": 57,
+    "sha256": "fb41ca4e0f97b8bdbb4b813e2362d6561a94dc6dc433352921aa4aaccb20e96f"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/f979b1ab8d3b16cfb9345258cde7ef0df990c10fb6402fbe28a2b24c03f605da.raw": {
+    "bytes": 66,
+    "sha256": "80c0c7c44e5f0f58923a019cfdc6bfd57521095ebb8ea8d7f8d3a2e80faeb71c"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/f98cfe9778ccca424031a5d1bef5e6c86f471b0a691d8c09177e7c0900a3e44e.raw": {
+    "bytes": 62,
+    "sha256": "7211d8a9fd3d497a4c7984ec78b13f5a992eafb58a500747ebd53f84e22e29c7"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/faf95e88f4cc737928f7f2504791407c3c6ea2241610cb94b07cda5e8f704bf4.raw": {
+    "bytes": 76,
+    "sha256": "d2453fb184af66f6af8f43fa3664b5204cf0e2b4546b7cf4854423237f1b38e0"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/freeze.json": {
+    "bytes": 328,
+    "sha256": "ffcccc18583c3e2c0fdaca774470be1fd09fec460a8df82a7a0b794ee6899a89"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/original-assessor-exports/spot.json": {
+    "bytes": 1506,
+    "sha256": "98d0e83e1fd04c9b7c2e10d17cb84f4350ccad2640d6af901a7588fd94193757"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/registry.json": {
+    "bytes": 160,
+    "sha256": "17717241a9a51ced44f58b193481872d24eaaa9697ed8ae90e592bcfa1e651fa"
+  },
+  "task-6-controller-fix2-isolated-receipts/derived-binding-synthetic-schema/spot-calibration.json": {
+    "bytes": 1506,
+    "sha256": "98d0e83e1fd04c9b7c2e10d17cb84f4350ccad2640d6af901a7588fd94193757"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/controller-diagnostics/74034366006745fca9549ee6ea4f9f8a.phase-result.json": {
+    "bytes": 1235,
+    "sha256": "e6d44c73aa321ca3aac84e4642ab469210d6c22376ab1d0bd82208ca6a67bcaa"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/controller-diagnostics/ccd8e26172aa4cc89c5bd5d1a78375cc.json": {
+    "bytes": 497,
+    "sha256": "1c94caab498546034b3a2fa770b8df82c9080acbed5f6cc8e2a1f26180a2afd0"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/controller-receipts/spot/isolated-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/finish.json": {
+    "bytes": 1235,
+    "sha256": "e6d44c73aa321ca3aac84e4642ab469210d6c22376ab1d0bd82208ca6a67bcaa"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/controller-receipts/spot/isolated-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/one.launched.json": {
+    "bytes": 92,
+    "sha256": "71c2b19d2f1282f8fdfc7544b87a2f678ab1cddc23fd2bcedda5d98b0d72e179"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/controller-receipts/spot/isolated-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/start.json": {
+    "bytes": 1173,
+    "sha256": "e08fbc33f424718f04a55fef78528b2428e4443aef694ca407447c408ee2e50b"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/controller-receipts/spot/isolated-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/two.not-started.json": {
+    "bytes": 217,
+    "sha256": "e6044dcbf35f238a6bafc5f14a939c79f82015ce362e578ceb43747f743660d2"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/controller-reservations/spot/514da09a41ac4bc6bb1dde45bd630921.owner.json": {
+    "bytes": 121,
+    "sha256": "aea34544f764ccc17d5d8cbd2b1283e0710f72f5ea7f16312dfee47544fe18cb"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/controller-reservations/spot/514da09a41ac4bc6bb1dde45bd630921.released.json": {
+    "bytes": 174,
+    "sha256": "75e53367aabbb3c24b837efd778f197c7bbeae8d2b65edc1d1d34b99014b943b"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/one.json": {
+    "bytes": 26,
+    "sha256": "eddd4f12445d74cdf9a333196fea2c02bf6236fe933f18a5e4476b3484310bb4"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/one.json.command-finish.json": {
+    "bytes": 475,
+    "sha256": "aaedd5ed654cc5251312ab802b39d604d6efb08bd077bc0c43d28bb8c67d363b"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/one.json.command-start.json": {
+    "bytes": 411,
+    "sha256": "c5fc0a5cfcab647e670a7946bc46574f3a32470ac83ccfacd28575674ae378d2"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/one.json.run.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "task-6-controller-fix2-isolated-receipts/launch-failure-drain/two.json": {
+    "bytes": 8,
+    "sha256": "0682c5f2076f099c34cfdd15a9e063849ed437a49677e6fcc5b4198c76575be5"
+  }
+}

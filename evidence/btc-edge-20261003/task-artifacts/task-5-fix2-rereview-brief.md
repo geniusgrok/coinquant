@@ -1,0 +1,7 @@
+# Task5 fix2 scoped rereview
+
+Read task-5-fix1-rereview.md T5-R3, task-5-fix2-brief.md, appended fix2 report and root's exact FIX_BASE73a0baf5702fce5bed23205c245aab53fad951b9..finalHEAD diff package. Review only T5-R3 and new Critical/Important breakage in this fix; R1/R2 already addressed, do not expand into whole-task review. No subagents/edits/commits/Coin tests/full producers/private/native/accounts/credentials/orders/settings/HOME or lock changes. Root maintains reviewed source/HEAD, only root-doc ledger edits may be present.
+
+Verify unscaled stress and actual calibrated risk-only MDD are retained from exact SHA-bound raw Decimal inputs and used by both main decision and proof comparison. No comparison on display float MDD, threshold/tolerance change or earlier typed/day guard weakening. Focus on reported .31 versus.30000000000000001 correct-negative proof roundtrip, exact equality/just-fail actual risk-only and Coin strict<.50. Independently check concrete precision concern with minimal pure probe; do not rerun unchanged suites. Inspect final covering test command/output and exact current-source receipts. Actual full68+ financial inventory remains later work, not missing scoped implementation.
+
+Write task-artifacts/task-5-fix2-rereview.md with T5-R3 ADDRESSED/NOT ADDRESSED, SPEC PASS/FAIL and QUALITY APPROVE/CHANGES REQUIRED separately, fix-new breakage only and any scoped limitations. Short returnverdict/reportpath.

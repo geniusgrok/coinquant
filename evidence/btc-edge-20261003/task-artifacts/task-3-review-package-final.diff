@@ -1,0 +1,826 @@
+diff --git a/research/edge_spot.py b/research/edge_spot.py
+new file mode 100644
+index 0000000..3e4c5ab
+--- /dev/null
++++ b/research/edge_spot.py
+@@ -0,0 +1,435 @@
++"""Frozen edge mechanisms and protected controls through the actual Spot Lifecycle."""
++import argparse
++import copy
++from contextlib import contextmanager
++from decimal import Decimal as D
++import gzip
++import hashlib
++import json
++from pathlib import Path
++
++from research import complete_spot as complete
++from research.alpha_spot import cached_fills, signal_key
++from research.edge_features import FeatureBook
++from research.market import file_digest, load_daily
++from research.rebuild import END_MS, source_identity
++from spotquant import execution, follow, model, preview, session
++from spotquant.model import DAY, Model
++from spotquant.state import State
++from spotquant.types import Blocked, floor_step, serial
++
++SPEC = Path(__file__).with_name('edge_spec.json')
++PROTOCOL = SPEC.with_name('edge-PROTOCOL.md')
++FEATURE_SHA256 = 'bf920626cc13653b8bbeafd171650cc1a76888e15aad0c20bbd1061fb41da512'
++CUTOFF = 1640995200000
++MECHANISMS = ('exit-confirm', 'stop-budget', 'crowding-interaction')
++CONTROLS = {'cash': D(0), **{f'protected-participation-{n}': D(n) / 100 for n in (25, 50, 75, 100)}}
++CANDIDATES = ('atr-stop', *MECHANISMS, *CONTROLS, 'combo')
++
++
++def digest(raw):
++    return hashlib.sha256(raw).hexdigest()
++
++
++def components_for(candidate, combo=()):
++    if candidate not in CANDIDATES or (candidate != 'combo' and combo):
++        raise ValueError('unregistered candidate or components')
++    parts = tuple(combo) if candidate == 'combo' else ((candidate,) if candidate in MECHANISMS else ())
++    if (any(p not in MECHANISMS for p in parts) or len(set(parts)) != len(parts)
++            or (candidate == 'combo' and len(parts) < 2)):
++        raise ValueError('unregistered or duplicate combination components')
++    return tuple(p for p in MECHANISMS if p in parts)
++
++
++def unique_object(pairs):
++    result = {}
++    for key, value in pairs:
++        if key in result:
++            raise ValueError('duplicate JSON key')
++        result[key] = value
++    return result
++
++
++def calibration(path, candidate):
++    if path is None:
++        return {'scale': '1', 'sha256': None}
++    raw = Path(path).read_bytes()
++    try:
++        data = json.loads(raw, object_pairs_hook=unique_object)
++        if (set(data) != {'format', 'project_kind', 'baseline_candidate', 'cutoff_ms', 'spec_sha256', 'profiles'}
++                or type(data['format']) is not int or data['format'] != 1 or data['project_kind'] != 'spot'
++                or data['baseline_candidate'] != 'atr-stop' or type(data['cutoff_ms']) is not int
++                or data['cutoff_ms'] != CUTOFF or data['spec_sha256'] != digest(SPEC.read_bytes())
++                or type(data['profiles']) is not dict or candidate not in data['profiles']):
++            raise ValueError('edge risk document identity')
++        keys = {'candidate', 'project_kind', 'scale', 'base_bundle_sha256', 'baseline_candidate',
++                'effective_from_ms', 'calibration_end_ms', 'training_end_day_exclusive'}
++        for name, profile in data['profiles'].items():
++            if name not in ('atr-stop', *MECHANISMS, 'combo') or set(profile) != keys:
++                raise ValueError('unregistered profile or fields')
++            scale, source = D(profile['scale']), profile['base_bundle_sha256']
++            if (profile['candidate'] != name or profile['project_kind'] != 'spot'
++                    or profile['baseline_candidate'] != 'atr-stop'
++                    or type(profile['effective_from_ms']) is not int or profile['effective_from_ms'] != CUTOFF
++                    or type(profile['calibration_end_ms']) is not int or profile['calibration_end_ms'] != CUTOFF
++                    or profile['training_end_day_exclusive'] != '2022-01-01'
++                    or type(profile['scale']) is not str or not scale.is_finite() or not 0 <= scale <= 1
++                    or type(source) is not str or len(source) != 64 or any(c not in '0123456789abcdef' for c in source)
++                    or (name == 'atr-stop' and scale != 1)):
++                raise ValueError('edge risk profile identity or training boundary')
++    except (KeyError, TypeError, ArithmeticError, json.JSONDecodeError) as exc:
++        raise ValueError('invalid edge risk profile') from exc
++    return dict(data['profiles'][candidate], sha256=digest(raw))
++
++
++def previous_sma(view):
++    closes = list(view.closes)
++    if len(closes) < view.sma_window + 1:
++        return None
++    return sum(closes[-view.sma_window - 1:-1], D(0)) / view.sma_window
++
++
++def resize(decision, order, quote):
++    quote = floor_step(max(D(0), quote), preview.QUOTE_STEP)
++    if quote < preview.MIN_NOTIONAL:
++        decision['orders'].remove(order)
++        for w in order['sleeves']:
++            decision['sleeves'][str(w)].update(action='flat', order=None, protection=None)
++    else:
++        order['quoteOrderQty'] = str(quote)
++        for w in order['sleeves']:
++            decision['sleeves'][str(w)]['order']['quoteOrderQty'] = str(quote / len(order['sleeves']))
++    return quote
++
++
++def existing_risk(owned, snapshot, positions, owners):
++    """Risk of every owned coin; only active allocated native quantities count."""
++    mark = D(snapshot['avg_price'])
++    quantities = {w: D(q) for w, q in owned.items()}
++    if (not mark.is_finite() or mark <= 0 or any(not q.is_finite() or q < 0 for q in quantities.values())
++            or abs(sum(quantities.values(), D(0)) - D(snapshot['btc'])) > D('1e-8')):
++        raise ValueError('missing account ownership')
++    for w, qty in quantities.items():
++        if qty > 0 and (positions.get(w) is None or D(positions[w]['qty']) != qty):
++            raise ValueError('owned coins lack current position attribution')
++    coverage = {w: [] for w in quantities}
++    for owner in owners.values():
++        order = owner['order']
++        if order['type'] != 'STOP_LOSS' or owner.get('native_status') not in ('NEW', 'PARTIALLY_FILLED'):
++            continue
++        group, weights = owner['sleeves'], owner['weights']
++        qty = D(order['quantity']) - D(owner['native_executed_qty'])
++        stop = D(order['stopPrice'])
++        values = [D(weights[str(w)]) for w in group]
++        if (order['side'] != 'SELL' or not group or group != sorted(set(group))
++                or any(w not in quantities for w in group) or set(weights) != {str(w) for w in group}
++                or any(not v.is_finite() or v <= 0 for v in values)
++                or not qty.is_finite() or qty < 0 or not stop.is_finite() or stop <= 0):
++            raise ValueError('malformed allocated protection')
++        total = sum(values, D(0))
++        for w, weight in zip(group, values):
++            position = positions.get(w)
++            if (position is None or D(position['qty']) != quantities[w]
++                    or type(owner['signal_ms']) is not int
++                    or owner['signal_ms'] < int(position['first_ms']) // DAY * DAY - DAY):
++                raise ValueError('protection lacks current sleeve ownership')
++            coverage[w].append((qty * weight / total, stop))
++    risk = D(0)
++    for w, qty in quantities.items():
++        if not qty:
++            continue
++        covered = sum((q for q, _ in coverage[w]), D(0))
++        # Unprotected rounding dust is risk too, conservatively charged at full mark.
++        if covered == 0 or covered + preview.BASE_STEP < qty or covered > qty + preview.BASE_STEP:
++            raise ValueError('missing or excessive allocated protection')
++        risk += sum((q * max(D(0), mark - stop) for q, stop in coverage[w]), D(0))
++        risk += max(D(0), qty - covered) * mark
++    return risk
++
++
++class Policy:
++    def __init__(self, candidate, venue, features=None, *, combo=(), risk=None):
++        self.parts = components_for(candidate, combo)
++        self.candidate, self.venue, self.features = candidate, venue, features
++        self.risk = risk or {'scale': '1', 'sha256': None}
++        scale = D(self.risk['scale'])
++        if not scale.is_finite() or not 0 <= scale <= 1:
++            raise ValueError('invalid edge scale')
++        self.identity = dict(candidate=candidate, components=list(self.parts), project_kind='spot',
++                             spec_sha256=digest(SPEC.read_bytes()), risk_calibration=self.risk,
++                             execution_source_sha256=source_identity()['python_sources_sha256'],
++                             features_sha256=features.sha256 if 'crowding-interaction' in self.parts and features else None)
++        self.state = None
++        self.filters = {'blocked': 0, 'missing': 0}
++        self.journal, self.signals = [], {}
++
++    def __call__(self, views, owned, snapshot, **kwargs):
++        last = next(iter(views.values())).last
++        diagnostics = []
++        positions, owners = kwargs['positions'], kwargs['owners']
++        working = {w: copy.copy(v) for w, v in views.items()}
++        control = self.candidate in CONTROLS
++        if control:
++            fills = cached_fills(self.state)
++            for w, v in working.items():
++                stops = [f['time'] for f in fills if not f['buyer'] and str(f['order_id']) in owners
++                         and owners[str(f['order_id'])]['order']['type'] == 'STOP_LOSS'
++                         and w in owners[str(f['order_id'])]['sleeves']]
++                allowed = not stops or last >= max(stops) // DAY * DAY + DAY
++                v.bull = True
++                v.enter = allowed and self.candidate != 'cash'
++                v.cap_enter = v.repair = v.adverse = v.extended = False
++        original = preview._position_decision
++        def position_decision(v, snap, quantity, price):
++            result = original(v, snap, quantity, price)
++            prior = previous_sma(v)
++            if ('exit-confirm' in self.parts and result['action'] == 'exit' and not v.bull
++                    and not v.repair and not v.adverse and not v.extended
++                    and getattr(v, 'protection', 'resting') not in ('breached', 'through_close')
++                    and not (v.position_peak is not None and v.stop_price(v.position_peak) >= price)
++                    and prior is not None and v.prev_close > prior):
++                diagnostics.append(dict(mechanism='exit-confirm', sleeve=v.sma_window,
++                                        previous_close=v.prev_close, previous_sma=prior, current_close=v.close, current_sma=v.sma))
++                return dict(action='hold', reason='ordinary exit awaits a second below-SMA completed close',
++                            order=None, protection=preview._protection(v, quantity, snap))
++            return result
++        try:
++            preview._position_decision = position_decision
++            if control:
++                old_view = preview.decision_view
++                preview.decision_view = self.static_view_bound
++            decision = preview.decision(working, owned, snapshot, **dict(kwargs, allocation_scale=D(1)))
++        finally:
++            preview._position_decision = original
++            if control:
++                preview.decision_view = old_view
++        desired = copy.deepcopy(decision['orders'])
++        scale = D(self.risk['scale']) if self.venue.now_ms >= CUTOFF else D(1)
++        for order in list(decision['orders']):
++            if order['side'] != 'BUY':
++                continue
++            quote = D(order['quoteOrderQty'])
++            cause = None
++            # Only the original follow's proven closed dust may start a new campaign.
++            # A small active partial fill is still held, even below the venue step.
++            def held(w):
++                position = positions.get(w) or {}
++                closed_dust = (position.get('dust') is True and bool(position.get('sell_applied'))
++                               and getattr(views[w], '_owned_dust', False))
++                return D(owned[w]) >= preview.BASE_STEP or (D(owned[w]) > 0 and not closed_dust)
++            if any(held(w) for w in order['sleeves']):
++                quote, cause = D(0), 'held_sleeve_no_topup'
++            if control and cause is None:
++                cap = kwargs['capital_limit']
++                quote = min(D(snapshot['usdt_free']) * CONTROLS[self.candidate],
++                            max(D(0), cap - D(snapshot['btc']) * D(snapshot['avg_price'])) if cap is not None else D(snapshot['usdt_free']))
++            if 'stop-budget' in self.parts and cause is None:
++                budget = D('.12') * (D(snapshot['usdt_free']) + D(snapshot.get('usdt_locked', 0)) + D(snapshot['btc']) * D(snapshot['avg_price']))
++                used, loss, entry = None, None, None
++                try:
++                    used = existing_risk(owned, snapshot, positions, owners)
++                    entry = D(snapshot['avg_price']) * (1 + self.venue.slip)
++                    stops = [D(decision['sleeves'][str(w)]['protection']['stopPrice']) for w in order['sleeves']]
++                    trails = [preview.decision_view(views[w], positions.get(w), owners).trail for w in order['sleeves']]
++                    loss = max(max(trails), max(D(0), 1 - min(stops) / entry))
++                    loss += self.venue.fee * 2 + self.venue.slip + self.venue.stop_slip + preview.PRICE_STEP / entry
++                    quote = min(quote, max(D(0), budget - used) / loss)
++                except (KeyError, TypeError, ArithmeticError, ValueError):
++                    quote, cause = D(0), 'unproven_ownership_or_protection'
++                diagnostics.append(dict(mechanism='stop-budget', budget=budget, existing_risk=used,
++                                        proposed_loss_per_quote=loss, entry_estimate=entry,
++                                        fee_reserve_fraction=2 * self.venue.fee,
++                                        slip_reserve_fraction=self.venue.slip + self.venue.stop_slip,
++                                        quote=quote, blocked_reason=cause, gap_loss_capped=False))
++            if 'crowding-interaction' in self.parts and cause is None:
++                inputs = []
++                values = []
++                for name in ('funding', 'basis'):
++                    value = self.features.value(name, self.venue.now_ms) if self.features else None
++                    values.append(value)
++                    inputs.append(copy.deepcopy(self.features.last_lookup) if self.features else dict(name=name, cause='missing_feature_book', value=None, now_ms=self.venue.now_ms))
++                closes = list(views[30].closes)
++                momentum = dict(current_completed_bar_ms=last, current_close=views[30].close,
++                                prior_completed_bar_ms=last - 5 * DAY if len(closes) >= 6 else None,
++                                prior_close=closes[-6] if len(closes) >= 6 else None,
++                                causal_completed=last + DAY <= self.venue.now_ms)
++                if any(v is None for v in values) or len(closes) < 6 or last + DAY > self.venue.now_ms:
++                    quote, cause = D(0), 'missing_causal_crowding_or_momentum'
++                    self.filters['missing'] += 1
++                elif values[0] > D('.0003') and values[1] > D('.01') and closes[-1] <= closes[-6]:
++                    quote /= 2
++                diagnostics.append(dict(mechanism='crowding-interaction', inputs=inputs, momentum=momentum, quote=quote, blocked_reason=cause))
++            quote *= scale
++            final = resize(decision, order, quote)
++            if final < preview.MIN_NOTIONAL:
++                self.filters['blocked'] += 1
++                cause = cause or 'below_minimum_after_rounding_or_risk_scale'
++            for diagnostic in diagnostics:
++                if diagnostic['mechanism'] in ('stop-budget', 'crowding-interaction'):
++                    diagnostic.update(resulting_quote=final, blocked_reason=cause)
++            diagnostics.append(dict(mechanism='new-buy', sleeves=order['sleeves'], quote=final, blocked_reason=cause, risk_scale=scale))
++        protection_views = {w: self.static_view_bound(v, positions.get(w), owners) if control else preview.decision_view(v, positions.get(w), owners) for w, v in working.items()}
++        decision['protections'] = preview._merge_protections({w: decision['sleeves'][str(w)] for w in working}, protection_views, snapshot, next(iter(protection_views.values())))
++        decision['order'] = decision['orders'][0] if decision['orders'] else None
++        for order in decision['orders']:
++            key = signal_key(order['side'], last, order['sleeves'])
++            self.signals.setdefault(key, dict(decision_ms=self.venue.now_ms, decision_price=snapshot['avg_price'], mechanism=self.candidate))
++        self.journal.append(serial(dict(event='decision', decision_ms=self.venue.now_ms, completed_bar_ms=last,
++                                       opportunity_id=f'{self.candidate}:{last}', trigger_close=views[30].close,
++                                       opportunity_age_ms=self.venue.now_ms - last - DAY,
++                                       entries_enabled=kwargs['entries_enabled'],
++                                       sleeves={str(w): dict(action=decision['sleeves'][str(w)]['action'], owned_btc=owned[w]) for w in views},
++                                       bullish_votes={str(w): v.bull for w, v in views.items()},
++                                       desired_orders=desired, accepted_orders=decision['orders'], diagnostics=diagnostics)))
++        return decision
++
++
++@contextmanager
++def configured(policy):
++    originals = [(module, name, getattr(module, name)) for module, names in (
++        (model, ('Model',)), (follow, ('Model',)),
++        (session, ('Model', 'State', 'RULE', 'RECORDED_LIMITS', 'portfolio', '_guard_state')),
++        (execution, ('decision_view',))) for name in names]
++    base_guard = session._guard_state
++    base_view = preview.decision_view
++    def static_view(v, p, o):
++        result = base_view(v, p, o)
++        result.trail = D('.28')
++        result.protection = getattr(v, 'protection', 'resting')
++        return result
++    policy.static_view_bound = static_view
++    class EdgeModel(Model):
++        def checkpoint(self):
++            body = dict(model=super().checkpoint(), identity=policy.identity)
++            return dict(body, sha256=digest(json.dumps(body, sort_keys=True).encode()))
++        @classmethod
++        def restore(cls, saved):
++            try:
++                body = dict(model=saved['model'], identity=saved['identity'])
++                if saved['identity'] != policy.identity or saved['sha256'] != digest(json.dumps(body, sort_keys=True).encode()):
++                    raise ValueError('identity')
++                return Model.restore.__func__(cls, saved['model'])
++            except (KeyError, TypeError, ValueError) as exc:
++                raise Blocked('edge checkpoint mechanism/profile mismatch') from exc
++    def guard(state):
++        prior = state.get('edge_identity')
++        if (prior is not None and prior != policy.identity) or (state.get('models') is not None and prior is None):
++            raise Blocked('unbound or mismatched edge account')
++        return base_guard(state)
++    class EdgeState(State):
++        def __enter__(self):
++            result = super().__enter__()
++            try:
++                guard(result)
++            except BaseException:
++                super().__exit__(None, None, None)
++                raise
++            policy.state = result
++            return result
++        def set_many(self, values):
++            if 'models' in values:
++                values = dict(values, edge_identity=policy.identity)
++            return super().set_many(values)
++    try:
++        model.Model = session.Model = follow.Model = EdgeModel
++        session.State, session.portfolio, session._guard_state = EdgeState, policy, guard
++        session.RULE = 'edge-spot:' + digest(json.dumps(policy.identity, sort_keys=True).encode())
++        session.RECORDED_LIMITS = dict(session.RECORDED_LIMITS, research_identity=policy.identity)
++        if policy.candidate in CONTROLS:
++            execution.decision_view = static_view
++        yield
++    finally:
++        for module, name, value in originals:
++            setattr(module, name, value)
++
++
++def measure(candidate, scenario, bars, starts, fx, features=None, *, limit=None, initial_cny=D(10000), risk=None, combo=()):
++    parts = components_for(candidate, combo)
++    if scenario not in complete.SCENARIOS or (limit is not None and (type(limit) is not int or not 1 <= limit <= 795)):
++        raise ValueError('unregistered scenario or partial limit')
++    risk = risk or {'scale': '1', 'sha256': None}
++    if candidate == 'atr-stop':
++        if D(risk['scale']) != 1:
++            raise ValueError('edge baseline must remain unity')
++        # New edge profiles never enter the old alpha calibration validator.
++        return complete.measure('atr-stop', scenario, bars, starts, fx, {}, limit=limit,
++                                initial_cny=initial_cny, canonical=True)
++    policies = []
++    old_policy, old_configured = complete.Policy, complete.configured
++    def make_policy(c, venue, unused):
++        result = Policy(c, venue, features, combo=parts if c == 'combo' else (), risk=risk)
++        policies.append(result)
++        return result
++    try:
++        complete.Policy, complete.configured = make_policy, configured
++        result = complete.measure(candidate, scenario, bars, starts, fx, {}, limit=limit, initial_cny=initial_cny)
++    finally:
++        complete.Policy, complete.configured = old_policy, old_configured
++    policy = policies[0]
++    owners = execution.allocation_owners((json.loads(r[1]), json.loads(r[3])) for r in result['allocations'])
++    ledger = policy.journal
++    for fill in result['fills']:
++        owner = owners.get(str(fill['order_id']))
++        meta = policy.signals.get(signal_key(owner['order']['side'], owner['signal_ms'], owner['sleeves']), {}) if owner else {}
++        ledger.append(dict(event='fill', **fill, sleeves=owner['sleeves'] if owner else None,
++                           signal_ms=owner['signal_ms'] if owner else None,
++                           exit_type='stop' if owner and owner['order']['type'] == 'STOP_LOSS' else None, **meta))
++    result.update(research_identity=policy.identity, opportunity_ledger=ledger, risk_calibration=risk)
++    return serial(result)
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--candidate', choices=CANDIDATES, required=True)
++    parser.add_argument('--scenario', choices=complete.SCENARIOS, required=True)
++    parser.add_argument('--out', type=Path, required=True)
++    parser.add_argument('--risk-calibration', type=Path)
++    parser.add_argument('--initial-cny', type=int, choices=(2500, 5000, 7500, 10000), default=10000)
++    parser.add_argument('--features', type=Path)
++    parser.add_argument('--limit', type=int)
++    parser.add_argument('--combo', help='comma-separated registered components')
++    args = parser.parse_args(argv)
++    source = source_identity()
++    if source['dirty'] or args.out.exists() or (args.limit is not None and (
++            not 1 <= args.limit <= 795 or not args.out.resolve().is_relative_to('/tmp'))):
++        parser.error('clean committed source, exclusive output, and partial limits 1..795 only in /tmp required')
++    parts = tuple(args.combo.split(',')) if args.combo else ()
++    components_for(args.candidate, parts)
++    risk = calibration(args.risk_calibration, args.candidate)
++    if 'crowding-interaction' in components_for(args.candidate, parts) and args.features is None:
++        parser.error('crowding-interaction requires the pinned FeatureBook')
++    features = FeatureBook(args.features, expected_sha256=FEATURE_SHA256) if args.features else None
++    market_root = Path('/tmp/spotquant-market/klines')
++    schedule_path = Path('../coinquant/research/session_schedule.json').resolve()
++    fx_path = Path('../starquant/data/usdcny_frankfurter.json').resolve()
++    bindings = dict(spec_sha256=digest(SPEC.read_bytes()), protocol_sha256=digest(PROTOCOL.read_bytes()),
++                    feature_sha256=features.sha256 if features else None,
++                    feature_consumed='crowding-interaction' in parts or args.candidate == 'crowding-interaction',
++                    risk_calibration_sha256=risk['sha256'], risk_calibration=risk,
++                    market_sha256=file_digest(market_root), schedule_sha256=digest(schedule_path.read_bytes()),
++                    fx_sha256=digest(fx_path.read_bytes()))
++    starts = json.loads(schedule_path.read_text())['primary']['starts_ms']
++    row = measure(args.candidate, args.scenario, load_daily(market_root, END_MS, require_through=END_MS), starts,
++                  complete.PriorFX(fx_path), features, limit=args.limit, initial_cny=D(args.initial_cny), risk=risk, combo=parts)
++    if (source_identity() != source or calibration(args.risk_calibration, args.candidate) != risk
++            or digest(SPEC.read_bytes()) != bindings['spec_sha256'] or digest(PROTOCOL.read_bytes()) != bindings['protocol_sha256']
++            or (args.features and digest(args.features.read_bytes()) != bindings['feature_sha256'])):
++        raise ValueError('source or registered inputs changed during replay')
++    report = dict(format='btc-alpha-beta-edge-spot-v1', source=source, **bindings,
++                  edge=dict(candidate=args.candidate, scenario=args.scenario, components=list(components_for(args.candidate, parts)),
++                            complete_known_original_audits=bool(row['complete']), partial_limit=args.limit,
++                            original_candidate=row['candidate'], execution='actual_finite_session_lifecycle'),
++                  results={args.candidate + '-' + args.scenario: row}, native_execution_verified=False,
++                  limitations=['Partial accounts are incomplete; no CAGR evidence.' if args.limit is not None else 'Original completeness/audits required.',
++                               'Daily OHLC proxy; gap loss is not capped; native qualification NOT_QUALIFIED; actual account-days zero.',
++                               'Protected controls use static28% stops and unconditional legal entry, no ATR/adverse/SMA/repair exits; no held topups/rebalance; not pure buyhold.',
++                               'Funding/basis contain genuine unavailable intervals; missing consumed features block new risk only.'])
++    args.out.parent.mkdir(parents=True, exist_ok=True)
++    encoded = json.dumps(serial(report), separators=(',', ':'), allow_nan=False).encode() + b'\n'
++    with args.out.open('xb') as stream:
++        stream.write(gzip.compress(encoded, mtime=0) if args.out.suffix == '.gz' else encoded)
++    print(json.dumps(dict(output=str(args.out), complete=row['complete'], sha256=digest(args.out.read_bytes()))))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/tests/test_edge_spot.py b/tests/test_edge_spot.py
+new file mode 100644
+index 0000000..afdb45d
+--- /dev/null
++++ b/tests/test_edge_spot.py
+@@ -0,0 +1,379 @@
++"""Registered mechanisms, real protected fills, and pre-recovery identity gates."""
++import copy
++from contextlib import contextmanager
++from decimal import Decimal as D
++import json
++from pathlib import Path
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from research import adoption_spot, complete_spot, edge_spot as edge
++from research.alpha_assessment import evidence_fingerprints
++from research.edge_features import FeatureBook
++from research.session_account import HistoricalVenue
++from spotquant import execution, follow, model, preview, session
++from spotquant.config import Config
++from spotquant.model import DAY, ORIGIN, Model, SLEEVES
++from spotquant.offline import P4Venue
++from spotquant.state import State
++from spotquant.types import Blocked
++from test_alpha_spot import bars, views_at
++
++
++def snap(cash='1000', btc='0', mark='100'):
++    return dict(usdt_free=cash, usdt_locked='0', btc=btc, avg_price=mark, open_orders=0)
++
++
++def position(qty='1'):
++    return dict(qty=qty, first_ms=ORIGIN + 400 * DAY, entry_fill='100', peak='100',
++                repair=False, repair_peak=None, adverse=False, through=ORIGIN + 401 * DAY,
++                protection='resting', entry_open_ms=ORIGIN + 400 * DAY)
++
++
++def protection(group=(30,), quantity='1', stop='90'):
++    return dict(sleeves=list(group), weights={str(w): '1' for w in group},
++                order=dict(type='STOP_LOSS', side='SELL', quantity=quantity, stopPrice=stop),
++                native_status='NEW', native_executed_qty='0', signal_ms=ORIGIN + 400 * DAY)
++
++
++@contextmanager
++def policy(candidate, *, features=None, risk=None, now=None):
++    venue = HistoricalVenue(bars(), ORIGIN + 402 * DAY, D(1000), lambda t: D(7))
++    if now is not None:
++        venue.now_ms = now
++    p = edge.Policy(candidate, venue, features, risk=risk)
++    with tempfile.TemporaryDirectory() as directory, edge.configured(p), session.State(directory, 'test') as state:
++        p.state = state
++        yield p
++
++
++def decide(p, views=None, owned=None, snapshot=None, positions=None, owners=None, **kwargs):
++    return p(views or views_at(), owned or {30: D(0), 40: D(0), 50: D(0)}, snapshot or snap(),
++             positions=positions or {}, owners=owners or {}, entries_enabled=True, capital_limit=D(10000), **kwargs)
++
++
++def risk_document():
++    profiles = {name: dict(candidate=name, project_kind='spot', scale='1' if name == 'atr-stop' else '.4',
++                          baseline_candidate='atr-stop', effective_from_ms=edge.CUTOFF, calibration_end_ms=edge.CUTOFF,
++                          training_end_day_exclusive='2022-01-01', base_bundle_sha256='a' * 64)
++                for name in ('atr-stop', *edge.MECHANISMS)}
++    return dict(format=1, project_kind='spot', cutoff_ms=edge.CUTOFF, baseline_candidate='atr-stop',
++                spec_sha256=edge.digest(edge.SPEC.read_bytes()), profiles=profiles)
++
++
++class EdgeSpotTests(unittest.TestCase):
++    def test_registered_components_and_minimum_rounding(self):
++        self.assertEqual(edge.components_for('combo', ('stop-budget', 'exit-confirm')), ('exit-confirm', 'stop-budget'))
++        for candidate, parts in [('combo', ()), ('combo', ('exit-confirm',)),
++                                 ('combo', ('stop-budget', 'stop-budget')), ('atr-stop', ('exit-confirm',))]:
++            with self.assertRaises(ValueError):
++                edge.components_for(candidate, parts)
++        with policy('exit-confirm', risk=dict(scale='.004999', sha256=None), now=edge.CUTOFF) as p:
++            self.assertEqual(decide(p)['orders'], [])
++            self.assertEqual(p.journal[-1]['diagnostics'][-1]['blocked_reason'], 'below_minimum_after_rounding_or_risk_scale')
++        with policy('exit-confirm', risk=dict(scale='.005001', sha256=None), now=edge.CUTOFF) as p:
++            self.assertEqual(D(decide(p)['orders'][0]['quoteOrderQty']), D(5))
++
++    def test_previous_sma_uses_its_own_completed_window_and_equality_is_below(self):
++        v = Model(30)
++        for i, price in enumerate([D(100)] * 400 + [D(101), D(99)]):
++            v.update(ORIGIN + i * DAY, price, price, price)
++        self.assertEqual(edge.previous_sma(v), (29 * D(100) + D(101)) / 30)
++        self.assertNotEqual(edge.previous_sma(v), v.sma)
++        v.closes = [D(100)] * 30
++        self.assertIsNone(edge.previous_sma(v))
++        v.closes = [D(100)] * 31
++        v.prev_close = D(100)
++        self.assertEqual(v.prev_close > edge.previous_sma(v), False)
++
++    def test_exit_confirmation_preserves_bearish_vote_and_safety_priority(self):
++        views = views_at()
++        v = views[30]
++        v.closes = [D(100)] * 400 + [D(101), D(99)]
++        v.close, v.prev_close, v.sma, v.bull = D(99), D(101), D(100), False
++        v.note_entry(100, 100)
++        views[50].bull = views[50].enter = False
++        owned = {30: D(1), 40: D(0), 50: D(0)}
++        kw = dict(views=views, owned=owned, snapshot=snap(btc='1', mark='99'), positions={30: position()})
++        with policy('exit-confirm') as p:
++            result = decide(p, **kw)
++            self.assertEqual(result['sleeves']['30']['action'], 'hold')
++            self.assertFalse(views[30].bull)
++            self.assertFalse(p.journal[-1]['bullish_votes']['30'])
++            # One true bullish voter receives only its own original flat-sleeve share.
++            self.assertEqual(D(result['orders'][0]['quoteOrderQty']), D(500))
++            for safety in ('adverse', 'extended', 'protection', 'native'):
++                altered = copy.deepcopy(views)
++                if safety == 'protection':
++                    altered[30].true_ranges.clear()  # Preserve breach without ATR overriding it.
++                    altered[30].protection = 'breached'
++                elif safety != 'native':
++                    setattr(altered[30], safety, True)
++                result = decide(p, **dict(kw, views=altered), owners={'1': protection(stop='99')} if safety == 'native' else {})
++                self.assertTrue(any(o['side'] == 'SELL' for o in result['orders']), safety)
++                self.assertFalse(any(o['side'] == 'BUY' for o in result['orders']), safety)
++            v.repair = True
++            self.assertEqual(decide(p, **kw)['sleeves']['30']['action'], 'hold')
++            v.repair = False
++            v.closes = [D(100)] * 30
++            self.assertEqual(decide(p, **kw)['sleeves']['30']['action'], 'exit')
++            v.closes = [D(100)] * 31
++            v.prev_close = D(100)
++            self.assertEqual(decide(p, **kw)['sleeves']['30']['action'], 'exit')
++
++    def test_stop_risk_aggregates_allocated_sleeves_and_rounding_dust(self):
++        owned = {30: D(1), 40: D(2), 50: D(0)}
++        owners = {'1': protection((30, 40), '3', '90')}
++        owners['1']['weights'] = {'30': '1', '40': '2'}
++        self.assertEqual(edge.existing_risk(owned, snap(btc='3'), {30: position(), 40: position('2')}, owners), D(30))
++        for bad in ('missing', 'terminal', 'quantity', 'weights', 'ownership', 'nonfinite'):
++            altered = copy.deepcopy(owners)
++            if bad == 'missing':
++                altered = {}
++            elif bad == 'terminal':
++                altered['1']['native_status'] = 'CANCELED'
++            elif bad == 'quantity':
++                altered['1']['order']['quantity'] = '2'
++            elif bad == 'weights':
++                altered['1']['weights'] = {'30': '1'}
++            elif bad == 'ownership':
++                altered['1']['signal_ms'] = ORIGIN
++            else:
++                altered['1']['order']['stopPrice'] = 'NaN'
++            with self.subTest(bad=bad), self.assertRaises((ValueError, KeyError)):
++                edge.existing_risk(owned, snap(btc='3'), {30: position(), 40: position('2')}, altered)
++        with self.assertRaises(ValueError):
++            edge.existing_risk(owned, snap(btc='3.1'), {30: position(), 40: position('2')}, owners)
++        with self.assertRaises(ValueError):
++            edge.existing_risk({30: D('.000001'), 40: D(0), 50: D(0)}, snap(btc='.000001'),
++                               {30: dict(position('.000001'), dust=True, sell_applied={'2': '1'})}, {})
++        owners['1']['order']['quantity'] = '2.99999'
++        self.assertGreater(edge.existing_risk(owned, snap(btc='3'), {30: position(), 40: position('2')}, owners), D('29.9999'))
++
++    def test_stop_budget_caps_original_proposal_accounts_fees_and_blocks_missing(self):
++        views = views_at()
++        # High completed ATR forces 30% stop; remaining budget is then binding.
++        for v in views.values():
++            v.true_ranges = [(v.last - i * DAY, D(20)) for i in range(14)]
++        owned = {30: D(1), 40: D(0), 50: D(0)}
++        views[30].note_entry(100, 100)
++        with policy('stop-budget') as p:
++            result = decide(p, views, owned, snap(btc='1'), {30: position()}, {'1': protection()})
++            diagnostic = next(d for d in p.journal[-1]['diagnostics'] if d['mechanism'] == 'stop-budget')
++            self.assertEqual(D(diagnostic['budget']), D(132))
++            self.assertEqual(D(diagnostic['existing_risk']), D(10))
++            self.assertGreater(D(diagnostic['proposed_loss_per_quote']), D('.3035'))
++            quote = D(result['orders'][0]['quoteOrderQty'])
++            self.assertLess(quote, D(500))
++            self.assertLessEqual(D(10) + quote * D(diagnostic['proposed_loss_per_quote']), D(132))
++            self.assertNotIn(30, result['orders'][0]['sleeves'])
++            self.assertEqual(result['protections'][0]['stopPrice'], '90.00')
++            p.venue.fee = D('.0015')
++            stressed = decide(p, views, owned, snap(btc='1'), {30: position()}, {'1': protection()})
++            self.assertLess(D(stressed['orders'][0]['quoteOrderQty']), quote)
++            blocked = decide(p, views, owned, snap(btc='1'), {30: position()}, {})
++            self.assertFalse(any(o['side'] == 'BUY' for o in blocked['orders']))
++            views[30].adverse = True
++            exit_result = decide(p, views, owned, snap(btc='1'), {30: position()}, {})
++            self.assertEqual(exit_result['orders'][0]['side'], 'SELL')
++        with policy('stop-budget') as p:
++            result = decide(p, snapshot=snap(cash='5'))
++            self.assertEqual(result['orders'], [])
++
++    def test_crowding_strict_actual_clock_momentum_and_missing_safety(self):
++        # Unit reader records use the real availability lookup, without fabricating an artifact.
++        book = FeatureBook.__new__(FeatureBook)
++        now = ORIGIN + 402 * DAY + 120000
++        book.sha256 = 'a' * 64
++        book.source = dict(raw_sha256='b' * 64, market_identities={})
++        book.times = {'funding': [now], 'basis': [now]}
++        book.records = {'funding': [(now - 28800000, now, D('.0004'), None)],
++                        'basis': [(now - 60000, now, D('.02'), None)]}
++        views = views_at()
++        for v in views.values():
++            v.closes = [D(101)] * 400 + [D(100), D(100)]
++        with policy('crowding-interaction', features=book, now=now - 1) as p:
++            missing = decide(p, views=views)
++            self.assertEqual(missing['orders'], [])
++            inputs = p.journal[-1]['diagnostics'][0]['inputs']
++            self.assertEqual(inputs[0]['cause'], 'not_yet_available')
++            p.venue.now_ms = now
++            result = decide(p, views=views)
++            self.assertEqual(D(result['orders'][0]['quoteOrderQty']), D('499.99'))
++            self.assertEqual(book.last_lookup['now_ms'], now)
++            views[30].last += DAY
++            self.assertEqual(decide(p, views=views)['orders'], [])
++            self.assertFalse(p.journal[-1]['diagnostics'][0]['momentum']['causal_completed'])
++            views[30].last -= DAY
++            views[30].closes[-6] = D(99)
++            self.assertEqual(D(decide(p, views=views)['orders'][0]['quoteOrderQty']), D('999.99'))
++            p.venue.now_ms = now + 28800000
++            self.assertEqual(decide(p, views=views)['orders'], [])
++            self.assertEqual(p.journal[-1]['diagnostics'][0]['inputs'][0]['cause'], 'stale_funding')
++            views[30].note_entry(100, 100)
++            views[30].adverse = True
++            self.assertEqual(decide(p, views, {30: D(1), 40: D(0), 50: D(0)}, snap(btc='1'), {30: position()})['orders'][0]['side'], 'SELL')
++
++    def test_unity_baseline_all_six_original_groups_and_budget(self):
++        rows, starts = bars(), [ORIGIN + i * DAY for i in (401, 402, 403)]
++        direct = adoption_spot.measure('base', rows, starts, lambda t: D(7), limit=3)
++        noop = edge.measure('atr-stop', 'base', rows, starts, lambda t: D(7), limit=3)
++        self.assertEqual(evidence_fingerprints(direct, 'spot'), evidence_fingerprints(noop, 'spot'))
++        self.assertEqual(direct['research_identity'], noop['research_identity'])
++        self.assertEqual(noop['candidate'], 'atr-stop')
++        smaller = edge.measure('atr-stop', 'base', rows, starts, lambda t: D(7), limit=3, initial_cny=D(2500))
++        self.assertEqual(smaller['initial_cny'], '2500')
++        self.assertTrue(smaller['audit']['passed'])
++        self.assertLess(D(smaller['fills'][0]['quote']), D(noop['fills'][0]['quote']))
++
++    def test_real_cash_and_two_protected_controls_fees_stop_no_same_day_reentry(self):
++        rows = bars([D(100)] * 410)
++        t = ORIGIN + 403 * DAY
++        rows[403] = (t, D(100), D(100), D(60), D(100), D(100000))
++        starts = [ORIGIN + 401 * DAY, ORIGIN + 402 * DAY, t + 2 * DAY // 3 + 60000,
++                  t + DAY, t + 2 * DAY]
++        cash = edge.measure('cash', 'base', rows, starts, lambda stamp: D(7), limit=5)
++        self.assertEqual(cash['fills'], [])
++        self.assertEqual(cash['btc'], '0')
++        for candidate, fraction in [('protected-participation-25', D('.25')), ('protected-participation-100', D(1))]:
++            with self.subTest(candidate=candidate):
++                result = edge.measure(candidate, 'base', rows, starts, lambda stamp: D(7), limit=5)
++                self.assertTrue(result['audit']['passed'])
++                self.assertFalse(result['complete'])
++                self.assertIsNone(result['cagr'])
++                self.assertEqual(result['pending_intents'], [])
++                self.assertEqual(result['execution_unresolved_sessions'], 0)
++                self.assertTrue(all(s['archive_verified'] for s in result['sessions']))
++                buys = [f for f in result['fills'] if f['buyer']]
++                self.assertEqual(len(buys), 2)
++                self.assertAlmostEqual(float(D(buys[0]['quote']) / (D(10000) / 7 * D('.999'))), float(fraction), places=4)
++                self.assertGreater(D(result['audit']['fees_usdt']), 0)
++                self.assertGreater(buys[1]['time'], t + 2 * DAY)
++                owners = execution.allocation_owners((json.loads(r[1]), json.loads(r[3])) for r in result['allocations'])
++                stops = [o for o in owners.values() if o['order']['type'] == 'STOP_LOSS']
++                self.assertTrue(any(o['native_status'] == 'FILLED' for o in stops))
++                self.assertTrue(any(o['native_status'] == 'NEW' for o in stops))
++                first_stop = next(o for o in stops if o['native_status'] == 'FILLED')
++                self.assertEqual(D(first_stop['order']['stopPrice']), D('72.03'))
++
++    def test_calibration_all_profiles_strict_fields_kind_boundaries_duplicate(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'risk.json'
++            data = risk_document()
++            path.write_text(json.dumps(data))
++            self.assertEqual(edge.calibration(path, 'stop-budget')['scale'], '.4')
++            for corrupt in ('extra', 'foreign', 'nonfinite', 'cutoff', 'kind', 'hash', 'name', 'baseline', 'missing'):
++                changed = copy.deepcopy(data)
++                if corrupt == 'extra':
++                    changed['profiles']['exit-confirm']['unknown'] = 'bad'
++                elif corrupt == 'foreign':
++                    changed['profiles']['perp'] = changed['profiles']['exit-confirm']
++                elif corrupt == 'nonfinite':
++                    changed['profiles']['exit-confirm']['scale'] = 'NaN'
++                elif corrupt == 'cutoff':
++                    changed['profiles']['exit-confirm']['calibration_end_ms'] += 1
++                elif corrupt == 'kind':
++                    changed['project_kind'] = 'perp'
++                elif corrupt == 'hash':
++                    changed['profiles']['exit-confirm']['base_bundle_sha256'] = 'x' * 64
++                elif corrupt == 'name':
++                    changed['profiles']['exit-confirm']['candidate'] = 'stop-budget'
++                elif corrupt == 'baseline':
++                    changed['profiles']['atr-stop']['scale'] = '.9'
++                else:
++                    del changed['profiles']['stop-budget']
++                path.write_text(json.dumps(changed))
++                with self.subTest(corrupt=corrupt), self.assertRaises(ValueError):
++                    edge.calibration(path, 'stop-budget')
++            path.write_text(json.dumps(data).replace('"format": 1', '"format": 1, "format": 1'))
++            with self.assertRaises(ValueError):
++                edge.calibration(path, 'stop-budget')
++
++    def test_risk_cutoff_and_held_protections_untouched(self):
++        risk = dict(scale='0', sha256='a' * 64)
++        for now, expected in [(edge.CUTOFF - 1, True), (edge.CUTOFF, False)]:
++            with policy('exit-confirm', risk=risk, now=now) as p:
++                self.assertEqual(bool(decide(p)['orders']), expected)
++                views = views_at()
++                views[30].note_entry(100, 100)
++                result = decide(p, views, {30: D(1), 40: D(0), 50: D(0)}, snap(btc='1'), {30: position()})
++                self.assertEqual(result['sleeves']['30']['action'], 'hold')
++                self.assertEqual(result['protections'][0]['quantity'], '1.00000')
++                self.assertEqual(D(result['protections'][0]['stopPrice']), D(90))
++        with policy('exit-confirm') as p:
++            views = views_at()
++            views[30]._owned_dust = True
++            result = decide(p, views, {30: D('.00001'), 40: D(0), 50: D(0)}, snap(btc='.00001'))
++            self.assertFalse(any(30 in o['sleeves'] for o in result['orders'] if o['side'] == 'BUY'))
++
++    def test_state_rule_checkpoint_profile_reject_before_recover_spy(self):
++        for corruption in ('unbound', 'rule', 'profile', 'checkpoint', 'source'):
++            with self.subTest(corruption=corruption), tempfile.TemporaryDirectory() as directory:
++                venue = P4Venue([(ORIGIN, D(100), D(100), D(100))])
++                cfg = Config('1', directory, 2, 1, 'demo', '1000')
++                p = edge.Policy('exit-confirm', venue)
++                with edge.configured(p), State(directory, cfg.scope) as state:
++                    views = views_at()
++                    # Convert genuine canonical model checkpoints into valid bound wrappers.
++                    wrapped = {}
++                    for w, view in views.items():
++                        body = dict(model=view.checkpoint(), identity=p.identity)
++                        wrapped[str(w)] = dict(body, sha256=edge.digest(json.dumps(body, sort_keys=True).encode()))
++                    identity = copy.deepcopy(p.identity)
++                    if corruption == 'profile':
++                        identity['risk_calibration'] = dict(scale='.5', sha256=None)
++                    if corruption == 'source':
++                        identity['execution_source_sha256'] = 'f' * 64
++                    if corruption == 'checkpoint':
++                        wrapped['30']['identity'] = dict(p.identity, candidate='stop-budget')
++                        body = {k: wrapped['30'][k] for k in ('model', 'identity')}
++                        wrapped['30']['sha256'] = edge.digest(json.dumps(body, sort_keys=True).encode())
++                    state.set_many(dict(models=wrapped, rule='old' if corruption == 'rule' else session.RULE,
++                                        positions={str(w): None for w in SLEEVES}, follows={str(w): None for w in SLEEVES},
++                                        entries_after=views[30].last, **({} if corruption == 'unbound' else dict(edge_identity=identity))))
++                    before = list(state.db.iterdump())
++                    with patch.object(execution.Lifecycle, 'recover') as recover:
++                        with self.assertRaises(Blocked):
++                            session.cycle(venue, state, cfg, execute=True)
++                        recover.assert_not_called()
++                    self.assertEqual(list(state.db.iterdump()), before)
++                    self.assertEqual(venue.sent, [])
++
++    def test_active_substep_partial_fill_does_not_authorize_a_topup(self):
++        views = views_at()
++        owned = {30: D('.000001'), 40: D(0), 50: D(0)}
++        for candidate in ('exit-confirm', 'protected-participation-25'):
++            with self.subTest(candidate=candidate), policy(candidate) as p:
++                for flag in (None, False):
++                    active = position('.000001')
++                    if flag is not None:
++                        active['dust'] = flag
++                    result = decide(p, views, owned, snap(btc='.000001'), {30: active})
++                    self.assertFalse(any(30 in o['sleeves'] for o in result['orders'] if o['side'] == 'BUY'))
++                    self.assertEqual(p.journal[-1]['diagnostics'][-1]['blocked_reason'], 'held_sleeve_no_topup')
++                # Flag alone has no applied-close proof and cannot authorize a new campaign.
++                flagged = dict(position('.000001'), dust=True)
++                views[30]._owned_dust = True
++                result = decide(p, views, owned, snap(btc='.000001'), {30: flagged})
++                self.assertFalse(any(o['side'] == 'BUY' for o in result['orders']))
++                del views[30]._owned_dust
++
++    def test_hooks_restored_on_decision_and_measurement_failure(self):
++        original = (session.portfolio, session.State, session.Model, session.RULE, session._guard_state,
++                    model.Model, follow.Model, execution.decision_view, preview.decision_view, preview._position_decision,
++                    complete_spot.Policy, complete_spot.configured)
++        with self.assertRaises(RuntimeError):
++            with policy('protected-participation-25') as p, patch.object(preview, 'decision', side_effect=RuntimeError('decision failure')):
++                decide(p)
++        self.assertEqual(original, (session.portfolio, session.State, session.Model, session.RULE, session._guard_state,
++                                    model.Model, follow.Model, execution.decision_view, preview.decision_view, preview._position_decision,
++                                    complete_spot.Policy, complete_spot.configured))
++        with patch.object(complete_spot, 'measure', side_effect=RuntimeError('meter failure')), self.assertRaises(RuntimeError):
++            edge.measure('exit-confirm', 'base', [], [], lambda t: D(7), limit=1)
++        self.assertIs(complete_spot.Policy, original[-2])
++        self.assertIs(complete_spot.configured, original[-1])
++
++
++if __name__ == '__main__':
++    unittest.main()

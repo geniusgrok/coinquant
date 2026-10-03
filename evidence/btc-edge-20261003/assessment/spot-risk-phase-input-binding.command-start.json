@@ -1,0 +1,25 @@
+{
+  "started_utc": "2026-10-03T12:10:20.785991+00:00",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/bind-phase-inputs.py",
+    "--freeze",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/reviewed-source-freeze.json",
+    "--report",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration.json",
+    "--export",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/unscaled-calibration-exports/spot.json",
+    "--production-profile",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-calibration.json",
+    "--kind",
+    "spot",
+    "--phase",
+    "risk",
+    "--export-label",
+    "spot",
+    "--out",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-risk-phase-input-binding.json"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-improve/spotquant",
+  "production_profile_is_exclusive_byte_copy_of_original_export": true
+}

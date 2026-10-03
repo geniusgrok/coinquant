@@ -1,0 +1,18 @@
+{
+  "label": "spot-atr-stop-base",
+  "state": "exited",
+  "pid": 93983,
+  "exit_code": 1,
+  "reaped": true,
+  "finished_utc": "2026-10-03T05:41:34.858791+00:00",
+  "elapsed_seconds": 147.1902181689802,
+  "errors": [
+    {
+      "stage": "output_hash",
+      "error": "FileNotFoundError(2, 'No such file or directory')"
+    }
+  ],
+  "command_start_sha256": "3e6d2638826af6b571fa7de7935ddb3db5860360161bd4a61898cb4a80d27072",
+  "log_sha256": "0a9e3be4f358f85b69f11c085c61c59192fda408bcc0a2b9ea6f253bf522d64e",
+  "output_sha256": null
+}

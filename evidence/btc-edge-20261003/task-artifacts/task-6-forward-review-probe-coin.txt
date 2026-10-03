@@ -1,0 +1,2 @@
+T6-F2: action= enter macro_identity= -1578196810000 qty= 56.55910 entry= 112.133211 stop= 99.9 stop_loss= 691.89940427010 canonical_3pct_budget= 42.81428571428571428571428574 ratio= 16.16047991288188188188188187
+T6-F2 target: {'quantity': '56.55910', 'opportunity': -1578196810000, 'created_ms': 1578196810000, 'expires': None} sizing= [{'requested': '80.59446586042664494221568059', 'accepted': '56.55910', 'reason': 'funding_cap', 'event': 'entry', 'amount': '56.55910'}]
