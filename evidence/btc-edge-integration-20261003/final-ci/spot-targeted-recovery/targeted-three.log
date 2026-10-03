@@ -1,0 +1,14 @@
+test_crowding_strict_actual_clock_momentum_and_missing_safety (test_edge_spot.EdgeSpotTests.test_crowding_strict_actual_clock_momentum_and_missing_safety) ... ok
+test_hooks_restored_on_decision_and_measurement_failure (test_edge_spot.EdgeSpotTests.test_hooks_restored_on_decision_and_measurement_failure) ... ok
+test_actual_bounded_sessions_enter_protect_and_independently_audit (test_session_account.SessionAccountTests.test_actual_bounded_sessions_enter_protect_and_independently_audit) ... /workspace/btc-alpha-beta-improve/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7fd71949be20>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/workspace/btc-alpha-beta-improve/spotquant/spotquant/model.py:233: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7fd71949bd30>
+  self.true_ranges.append((open_time, max(high - low, abs(high - self.close), abs(low - self.close))))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.110s
+
+OK
