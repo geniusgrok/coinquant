@@ -35,9 +35,9 @@ Missing causal feature data must not become zero; future bars/rates cannot influ
 
 ### Task 2: Registered protocol and point-in-time features
 
-- [ ] Freeze exact candidate rules, parameter values, compatibility, stress/risk/tail adoption gates and controls in edge_spec.json/edge-PROTOCOL.md in both repositories.
-- [ ] Reuse verified public inputs to build source-bound completed-bar trend/funding/basis features with explicit availability/staleness and coverage reports; preserve missing data rather than manufacture history.
-- [ ] Test temporal boundaries and prior-result immutability; commit and independently review before candidate measurement.
+- [x] Freeze exact candidate rules, parameter values, compatibility, stress/risk/tail adoption gates and controls in edge_spec.json/edge-PROTOCOL.md in both repositories.
+- [x] Reuse verified public inputs to build source-bound completed-bar trend/funding/basis features with explicit availability/staleness and coverage reports; preserve missing data rather than manufacture history.
+- [x] Test temporal boundaries and prior-result immutability; commit and independently review before candidate measurement.
 
 ### Task 3: Spot mechanisms and executable controls
 
