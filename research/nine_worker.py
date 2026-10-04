@@ -69,7 +69,11 @@ class Worker:
                     name=f'BTCUSDT-aggTrades-{datetime.fromtimestamp(day/1000,timezone.utc):%Y-%m-%d}.zip'
                     for suffix in ('','.CHECKSUM'):
                         origin=own.originals/(name+suffix);target=own.root/(name+suffix)
-                        if not origin.exists():raise ValueError('selected original print input missing; no download')
+                        if not origin.exists():
+                            if suffix=='':
+                                own._day_ms,own._rows=day,None
+                                return None
+                            raise ValueError('selected original print input missing; no download')
                         if not target.exists():target.symlink_to(origin)
                     rows=super()._load(day);own.days[day]=rows
                     while len(own.days)>3:own.days.popitem(last=False)

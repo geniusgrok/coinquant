@@ -67,4 +67,16 @@ class NineRouteTests(unittest.TestCase):
         self.assertEqual(r.alpha_expression('oi-deleveraging',0,dict(ready,release=True),proposal,owned=True)['status'],'NO_ACTION')
 
 
+    def test_joint_metrics_ignore_session_ticks_and_nonclosing_daily_samples(self):
+        from research.nine_joint import daily_metrics
+        spot={str(i*r.DAY):dict(timestamp_ms=(i+1)*r.DAY,equity_usdt=str(100+i)) for i in range(5)}
+        coin=[dict(date='1970-01-0'+str(i+1),stamp_ms=(i+1)*r.DAY,equity_usdt='100') for i in range(5)]
+        coin[2]['stamp_ms']-=1
+        raw=dict(window=[r.DAY,5*r.DAY],accounts=dict(spot=dict(daily=spot),coin=dict(daily=coin)),daily={})
+        result=daily_metrics(raw,{i*r.DAY:(0,0,0,str(100+i*i)) for i in range(5)})
+        self.assertEqual(result['matched_closes'],4)
+        self.assertEqual(result['days'],2)
+        self.assertEqual(result['status'],'INSUFFICIENT_DAILY_SUPPORT')
+
+
 if __name__=='__main__':unittest.main()

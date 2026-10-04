@@ -44,6 +44,40 @@ def windows(spec):
         independent_new_campaigns=len(entries),selector='Earliest timestamp per registered era, no economic outcome selection.')
 
 
+def daily_metrics(raw,bars):
+    """Derive matching actual UTC closes, never session-tick pseudo closes."""
+    spot={int(day):row for day,row in raw['accounts']['spot']['daily'].items()
+          if row['timestamp_ms']==int(day)+f.DAY}
+    coin={int(datetime.fromisoformat(row['date']).replace(tzinfo=timezone.utc).timestamp()*1000):row
+          for row in raw['accounts']['coin']['daily']
+          if row['stamp_ms']==int(datetime.fromisoformat(row['date']).replace(tzinfo=timezone.utc).timestamp()*1000)+f.DAY}
+    begin,end=raw['window'];days=sorted(set(spot)&set(coin))
+    curve={day:dict(equity_usdt=str(D(spot[day]['equity_usdt'])+D(coin[day]['equity_usdt'])))
+           for day in days if begin-f.DAY<=day<end}
+    metrics=r.portfolio_metrics(curve,{day:bar[3] for day,bar in bars.items()})
+    metrics.update(basis='Matched original account ledgers at actual UTC midnight; no forward filling.',
+                   matched_closes=len(curve),expected_closes=(end-begin)//f.DAY+1,
+                   synchronized_continuous_mdd_proven=False)
+    return metrics
+
+
+def reuse_dependency(root,kind,source):
+    """A completed old case proves the fatal missing-file branch was not taken."""
+    paths=[kind+'quant','research/nine_worker.py','research/nine_routes.py',
+           'research/session_account.py','research/session_exchange.py','research/session_market.py',
+           'research/complete_perp.py','research/edge_spot.py']
+    changed=subprocess.check_output(['git','-C',str(root),'diff','--name-only',source,'HEAD','--',*paths],text=True).splitlines()
+    if not changed:return 'Identical economic dependencies.'
+    if changed!=['research/nine_worker.py']:raise ValueError('completed baseline economic dependencies changed')
+    old=subprocess.check_output(['git','-C',str(root),'show',source+':research/nine_worker.py'],text=True)
+    new=(root/'research/nine_worker.py').read_text()
+    fatal="                        if not origin.exists():raise ValueError('selected original print input missing; no download')"
+    unknown="                        if not origin.exists():\n                            if suffix=='':\n                                own._day_ms,own._rows=day,None\n                                return None\n                            raise ValueError('selected original print input missing; no download')"
+    if old.count(fatal)!=1 or old.replace(fatal,unknown)!=new:
+        raise ValueError('completed-account reuse requires identical or exactly unreachable missing-ZIP handling')
+    return 'Only fatal missing-ZIP branch returns original TradePrints unknown. Completed old accounts could not have taken fatal branch; all reached dependencies unchanged.'
+
+
 class Peer:
     def __init__(self,root,kind,args,scratch):
         self.log=(scratch/(kind+'-worker.log')).open('w')
@@ -225,22 +259,19 @@ def main(argv=None):
                     if old and old.get('raw_file'):
                         old_path=args.reuse_completed.parent/old['raw_file'];old_bytes=old_path.read_bytes()
                         if r.sha(old_bytes)!=old['raw_sha256']:raise ValueError('completed account bytes changed')
-                        # Reuse is strict: all worker/economic dependencies must be identical.
-                        for kind,root in (('spot',args.spot_repo),('coin',args.coin_repo)):
-                            source=previous['sources'][kind]['git_head']
-                            changed=subprocess.check_output(['git','-C',str(root),'diff','--name-only',source,'HEAD','--',kind+'quant','research/nine_worker.py','research/nine_routes.py','research/session_account.py','research/session_exchange.py','research/session_market.py','research/complete_perp.py','research/edge_spot.py'],text=True)
-                            if changed:raise ValueError('completed baseline economic dependencies changed')
+                        reuse_notes={kind:reuse_dependency(root,kind,previous['sources'][kind]['git_head'])
+                            for kind,root in (('spot',args.spot_repo),('coin',args.coin_repo))}
                         raw=json.loads(gzip.decompress(old_bytes));path.write_bytes(old_bytes)
                     else:raw=coordinator.case(scenario,begin,end,subset,path)
-                    closes={day:bars[day][3] for day in bars}
-                    metrics=r.portfolio_metrics(raw['daily'],closes)
+                    metrics=daily_metrics(raw,bars)
                     row={key:raw[key] for key in ('final_cny','synchronized_observed_mdd','finished','changed_commitments','census')}
                     row.update(raw_file=path.name,raw_sha256=r.sha(path.read_bytes()),metrics=metrics)
                     if scenario in r.RULES:
                         row['gates']=r.pair_gate(row,cases['baseline'],cases['uniform'])
                         row['status']='WINDOW_PASS' if all(row['gates'][key] for key in ('audits','actual_action','risk_wealth','beats_simple')) else 'WINDOW_REJECT' if row['changed_commitments'] else 'SUPPORT_PENDING'
                     cases[scenario]=row
-                    if old and old.get('raw_file'):row['reused_original_producer']=previous['sources']
+                    if old and old.get('raw_file'):
+                        row['reused_original_producer']=previous['sources'];row['reuse_dependency']=reuse_notes
                     else:report['new_accounts']+=2;report['new_sessions']+=2*len(subset)
                     (args.out/'summary.json').write_text(json.dumps(r.serial(report),indent=2)+'\n')
                     print(json.dumps(dict(window=index,scenario=scenario,**row)),flush=True)
