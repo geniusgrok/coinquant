@@ -1,1 +1,1 @@
-继续唯一已授权BTC loop交付，先读PROJECT_STATE.md、loop-RESULT.md/GUIDE.md。代码/所有有限筛选/一次最终软件完成，候选0入围。只剩正常PR/main整合并保存实际远程SHA；不得重跑795/金融派生/软件全量。保留原source/consumer/失败和独立资金。研究全部可用实施与新实测收益未达标区别清楚。无私人账户/交易授权。
+本轮已完成并合入main：https://github.com/geniusgrok/coinquant/pull/65，合并SHA bbe0d91812da780d934d10f90780e1053a2ef17d。先读PROJECT_STATE.md和research/loop-RESULT.md/GUIDE.md、evidence/btc-loop-20261004/integration.json。软件各全量一次成功，全部当前机制0入围；工程交付不等于新增收益或目标达标。无需再重跑795、六组联合风险、小数据解析或软件；复用source-bound证据及失败。未来只由真实新证据/成熟时间/不同机制触发固定失败路线，仍维持BTC、两个独立runtime、原日期/启动/总资金与旧消费者，无私人账户授权。

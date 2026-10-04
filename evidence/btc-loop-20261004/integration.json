@@ -1,0 +1,24 @@
+{
+  "format": "btc-loop-main-integration-v1",
+  "observed_at_shanghai": "2026-10-04T20:40:55.946641+08:00",
+  "repo": "geniusgrok/coinquant",
+  "pr": {
+    "mergeCommit": {
+      "oid": "bbe0d91812da780d934d10f90780e1053a2ef17d"
+    },
+    "mergedAt": "2026-10-04T12:38:58Z",
+    "state": "MERGED",
+    "url": "https://github.com/geniusgrok/coinquant/pull/65"
+  },
+  "actual_integrated_main": "bbe0d91812da780d934d10f90780e1053a2ef17d",
+  "local_fullsuite_source": "ff49756a2e967ea0cb4c5ebe67e0a9dbe3baae8d",
+  "python_bytes_modes_equal_to_tested": true,
+  "runtime_tree_equal_to_baseline": "7535b5b734780a7c53874206294d7f79834d18cd",
+  "remote_ci": "NOT_RUN_SKIP_CI",
+  "new_accounts": 0,
+  "new_sessions": 0,
+  "complete795": 0,
+  "large_vault_scans": 0,
+  "native_qualified": false,
+  "economic_default_adopted": false
+}
