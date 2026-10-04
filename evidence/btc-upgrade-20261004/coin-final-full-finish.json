@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "python3.13",
+    "/workspace/btc-alpha-beta-upgrade-20261004/task-artifacts/final-offline-check.py",
+    "coinquant"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-upgrade-20261004/coinquant",
+  "head": "bb502481f03d42f69846ef1029f2216071341b98",
+  "started_utc": "2026-10-04T01:55:11.617903+00:00",
+  "pid": 180414,
+  "exit_code": 0,
+  "finished_utc": "2026-10-04T01:55:18.707108+00:00"
+}
