@@ -12,10 +12,10 @@ class PersistentCampaignTests(unittest.TestCase):
         with p.variant('state-trend',{},[]):
             model=p.StateCampaign()
             model.update(ORIGIN+FOUR_HOURS,101,99,100)
-            model.primary_consumed=ORIGIN
+            model.primary_consumed=ORIGIN+FOUR_HOURS
             saved=model.checkpoint()
             restored=p.StateCampaign.restore(saved)
-            self.assertEqual(restored.primary_consumed,ORIGIN)
+            self.assertEqual(restored.primary_consumed,ORIGIN+FOUR_HOURS)
             foreign=copy.deepcopy(saved)
             foreign['body']['persistent']['name']='state-range'
             foreign['sha256']=meter.checksum(foreign['body'])
