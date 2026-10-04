@@ -225,8 +225,8 @@ def spot_screen(row, spot, coin):
                     record = by_cohort[lot['cohort']['id']]
                     record['quantity'] += lot['left']
                     record['reduction'] += reduction
-                    record['quantities'][w] = lot['left']
-                    record['reductions'][w] = reduction
+                    record['quantities'][int(w)] = lot['left']
+                    record['reductions'][int(w)] = reduction
             for identity, values in by_cohort.items():
                 base = dict(id=identity, time_ms=stamp, mark=mark, quantity=values['quantity'], quantities=values['quantities'])
                 if identity not in seen_control:
@@ -273,7 +273,7 @@ def target_fraction(closes, day, risk):
         return None
     returns = [closes[b]/closes[a]-1 for a, b in zip(keys, keys[1:])]
     rms = (sum(r*r for r in returns)/20).sqrt()
-    return risk*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+D('.0011'))
+    return risk*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+D('.0011')))
 
 
 def coin_screen(row, spot, coin):
@@ -375,6 +375,8 @@ def main(argv=None):
     p.add_argument('--warmup', required=True)
     p.add_argument('--projections', required=True, help='directory containing pinned spot/coin-baseline-projection.json.gz')
     p.add_argument('--output', required=True)
+    p.add_argument('--kind', choices=('both', 'spot', 'coin'), default='both')
+    p.add_argument('--reuse-results', help='retain unaffected original project result, with its original screen source binding')
     args = p.parse_args(argv)
     began, manifest = time.monotonic(), []
     spot = market(args.spot_root, DAY, manifest)
@@ -392,7 +394,17 @@ def main(argv=None):
     expected = (END-START)//DAY
     paired = sum(day in spot and day in coin for day in range(START, END, DAY))
     rows, bindings = {}, {}
+    if args.kind != 'both':
+        if not args.reuse_results:
+            raise ValueError('scoped recovery needs original unaffected result')
+        previous = json.loads(Path(args.reuse_results).read_text())
+        other = 'coin' if args.kind == 'spot' else 'spot'
+        rows[other], bindings[other] = previous['results'][other], previous['original_bindings'][other]
+        bindings[other]['screen_source_sha256'] = previous['screen_source_sha256']
+        bindings[other]['retained_result_sha256'] = sha(Path(args.reuse_results).read_bytes())
     for kind in ('spot', 'coin'):
+        if args.kind != 'both' and args.kind != kind:
+            continue
         raw = (Path(args.projections)/f'{kind}-baseline-projection.json.gz').read_bytes()
         if sha(raw) != PROJECTIONS[kind]:
             raise ValueError('ledger projection identity mismatch')
