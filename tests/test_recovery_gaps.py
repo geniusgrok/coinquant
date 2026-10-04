@@ -81,3 +81,8 @@ class RecoveryGapTests(TestCase):
         self.venue.send=cancel_stop
         self.session()
         self.assertEqual(len(self.entries()),1)
+
+
+# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
+from tests.legacy_policy import legacy_policy
+setUpModule, tearDownModule = legacy_policy()

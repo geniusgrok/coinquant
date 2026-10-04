@@ -144,7 +144,10 @@ class Campaign(Legacy):
 def restore_campaign(saved):
     """Internal recovery of an already selected campaign, never a default migration."""
     if 'core' not in saved.get('body', {}):
-        return Legacy.restore(saved)
+        # Explicit historical research may scope its own strict checkpoint
+        # class. Default session.advance still rejects foreign core identities.
+        from .campaign import Campaign as SelectedHistorical
+        return SelectedHistorical.restore(saved)
     from .target import MODES
     mode = saved['body']['core'].get('mode')
     if mode not in MODES:

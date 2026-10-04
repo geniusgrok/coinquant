@@ -69,3 +69,8 @@ class SharedPeerTests(TestCase):
         self.assertEqual(e.q, 0)
         self.assertEqual(len(e.sent), sent)
         self.assertEqual(e.algos['stop']['algoStatus'], 'FINISHED')
+
+
+# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
+from tests.legacy_policy import legacy_policy
+setUpModule, tearDownModule = legacy_policy()

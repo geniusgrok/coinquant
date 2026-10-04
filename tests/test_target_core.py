@@ -42,6 +42,12 @@ class CoreTests(unittest.TestCase):
             state.set('linear_campaign',Legacy().checkpoint())
             with self.assertRaises(Blocked):cycle(object(),state,'123',execute=True)
 
+    def test_missing_checkpoint_cannot_recover_an_old_entry(self):
+        with tempfile.TemporaryDirectory() as folder,State(folder,'binance:BTCUSDT:live:123') as state:
+            state.set('entry_plan',dict(campaign=10))
+            with self.assertRaisesRegex(Blocked,'lacks its BTC core checkpoint'):
+                cycle(object(),state,'123',execute=True)
+
     def test_trim_target_is_synced_before_unknown_reduction(self):
         with tempfile.TemporaryDirectory() as folder,State(folder,'binance:BTCUSDT:live:123') as state:
             state.set('entry_fill',dict(campaign=10,requested='9',session=1))

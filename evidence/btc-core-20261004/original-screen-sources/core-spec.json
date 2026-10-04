@@ -1,0 +1,93 @@
+{
+  "version": "btc-core-rebuild-20261004-v1",
+  "authorization": "Latest user mandates actual strategy/risk replacement, allows interim lower economics and main changes. Supersedes old default-preservation and promotion gates; never waives ownership/money/causality.",
+  "baselines": {
+    "spot": "38e05f3b98b59595d00ec14eb7e7f27ab78e1b53",
+    "coin": "113a792efc1531e1f00d5629f45e09756dce6e9c"
+  },
+  "forecast": {
+    "horizons": [
+      20,
+      60
+    ],
+    "normalization": "completed horizon return / completed20-day RMS / sqrt(horizon), clip each to [-1,1], average",
+    "volatility_target_annual": ".60",
+    "spot_cap": ".95",
+    "coin_cap": "2",
+    "rebalance_deadband_equity": ".05",
+    "spot_catastrophe_trail": ".20",
+    "coin_catastrophe_trail": ".25",
+    "history": "completed candles only; no macro/crowding dependency"
+  },
+  "families": {
+    "trend": "continuous signed forecast; spot long/cash, coin bidirectional",
+    "shock": "prior20-day 2sigma downward shock followed by completed close recovery, or upward shock failure for coin; at most3days, decays to zero",
+    "downside": "standalone negative trend for coin; no old primary/macro priority",
+    "carry": "independent spot-long/perp-short legs, positive lagged seven-day settled funding; two fully funded wallets and costs; daily basis is non-executable proxy",
+    "state": "trend outside abs forecast>=.35, otherwise shock; admitted only with complementary net daily changes in disjoint eras"
+  },
+  "fallbacks": [
+    "trend",
+    "shock",
+    "downside",
+    "carry",
+    "state"
+  ],
+  "screen": {
+    "type": "independent coarse daily wallet proxy, not native/manual-session proof",
+    "start": "2020-01-01",
+    "end": "2026-09-19",
+    "eras": [
+      [
+        "2020-01-01",
+        "2022-01-01"
+      ],
+      [
+        "2022-01-01",
+        "2024-01-01"
+      ],
+      [
+        "2024-01-01",
+        "2026-09-19"
+      ]
+    ],
+    "entry": "net positive in2of3eras; state also net improvement over components in2eras and correlation<.8; carry includes matched spot+perp fees and liquidation funding constraint",
+    "stress": "fee/slip doubled; retain all negatives",
+    "max_variants_per_family": 2,
+    "repair": "only one observed cause-specific alteration; no grid search"
+  },
+  "finite_accounts": {
+    "windows": [
+      [
+        "2020-01-01",
+        "2020-04-01"
+      ],
+      [
+        "2021-04-01",
+        "2021-07-01"
+      ],
+      [
+        "2022-04-01",
+        "2022-07-01"
+      ],
+      [
+        "2023-01-01",
+        "2023-04-01"
+      ]
+    ],
+    "starts": "unchanged original primary starts strictly inside window",
+    "wallet_cny": "10000",
+    "budget": "max baseline+one selected new core per repo per window; additional actual entrant only if distinct mechanism has demonstrated improvement",
+    "proxy_warning": "Spot OHLC stops; Coin actual historical prints where present, unknown coverage preserved",
+    "estimate": "8 Spot quarter wallets seconds/minutes; max8 Coin quarters ~30-90minutes serial; no795/full vault scan"
+  },
+  "development_adoption": "Actual core replacement required even when old economic targets are unmet. Prefer positive cross-era net signal, lower costs/drawdown or explicit BTC role differentiation; phase loss permitted and disclosed. Reject financial/ownership failure. If all mechanisms lack edge, install simplest continuous beta/risk core as development and record alpha unproven, not profitability qualification.",
+  "verification": "Necessary targeted new money/causality checks during development; full software once each at end, failures scope-only; actual account source frozen; no private-account writes.",
+  "old_evidence": "All original failures/results remain development-contaminated historical evidence, never fresh OOS. Old forward consumers remain source-bound, no reset/rebind.",
+  "carry": {
+    "forecast": "lagged preceding7day settled funding total *30/7",
+    "threshold": "2*(spotfee+perpfee+2*slip), inclusive two-leg round trip",
+    "wallets": "equal independently cold-funded halves; shared BTC quantity bounded by actual cash and37% perpetual collateral+reserve",
+    "proxy": "daily synchronous fill assumption and daily open funding mark; cannot admit native without executable paired evidence"
+  }
+}
