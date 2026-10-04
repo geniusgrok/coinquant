@@ -235,7 +235,7 @@ def main(argv=None):
         original795_replays=0,large_vault_scans=0,new_accounts=0,new_sessions=0,
         native_qualified=False,runtime_promoted=False)
     previous=json.loads(args.reuse_completed.read_text()) if args.reuse_completed else None
-    if previous and (previous['spec_sha256']!=report['spec_sha256'] or previous['selected_windows']!=chosen):
+    if previous and (previous['spec_sha256']!=report['spec_sha256'] or previous['selected_windows']!=[list(window) for window in chosen]):
         raise ValueError('completed-case reuse contract changed')
     peers={};scratch=Path(tempfile.mkdtemp(prefix='btc-nine-pair-',dir='/tmp'))
     report['scratch_path']=str(scratch)
