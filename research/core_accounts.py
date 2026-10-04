@@ -167,10 +167,12 @@ def main():
                 row=dict(fills=venue.fills,daily=venue.daily,cash_usdt=venue.cash,btc=venue.btc,mdd=venue.mdd,
                     audit=audit(venue),price_model='high-before-low daily OHLC proxy, not actual minute/native')
             else:
-                try:mark=venue._mark_state()[1] if venue.q else D(0)
+                from research.rebuild import _final_mark
+                try:mark=_final_mark(venue) if venue.q else D(0)
                 except Exception:mark=None
                 final=venue.wallet+venue.q*(mark-venue.entry) if mark is not None else None
                 row=dict(trades=venue.trades,funding_ledger=venue.income,position=venue.q,fees=venue.fees,
+                    wallet_usdt=venue.wallet,entry=venue.entry,
                     funding=venue.funding_paid,final_mark=mark,final_usdt=final,daily=[v for _,v in sorted(venue.daily.items())],
                     mdd=venue.mdd_envelope,mdd_close=venue.mdd_close,known_path=venue.known_path,
                     unknown_from=venue.unknown_from,hindsight_bounded=venue.hindsight_bounded,
