@@ -1,0 +1,95 @@
+{
+  "format": 1,
+  "symbol": "BTCUSDT",
+  "window": [
+    "2020-01-01",
+    "2026-09-20"
+  ],
+  "initial_cny": "10000",
+  "added_cash": "0",
+  "candidate_order": [
+    "trend-reentry",
+    "slow-participation",
+    "pullback-recovery",
+    "joint-risk-budget"
+  ],
+  "spot": {
+    "baseline": "crowding-interaction",
+    "reentry": {
+      "cooldown_completed_days": 7,
+      "confirmation": 2,
+      "close_above_previous_completed_closes": 5,
+      "preserve_crash_atr_exit_ownership": true
+    },
+    "slow_participation": {
+      "original_sleeve": 50,
+      "replacement_sma": 120,
+      "sleeves_kept": [
+        30,
+        40
+      ],
+      "same_pool": true,
+      "post_exit_cooldown_days": 7
+    }
+  },
+  "perp": {
+    "baseline": "incumbent",
+    "pullback_recovery": {
+      "trend_completed_4h_bars": 360,
+      "preceding_peak_slice": [
+        -7,
+        -2
+      ],
+      "drawdown_atr": 2,
+      "bounce": "close > previous completed close",
+      "stop": "minimum of six completed lows",
+      "take_risk_multiple": 2,
+      "expires_bars": 14,
+      "primary_fraction_multiple": ".5",
+      "preserve_owned_and_incumbent_long": true
+    },
+    "joint_risk_budget": {
+      "scope_gate": "must demonstrate concurrent primary and macro risk before implementing a new budget"
+    }
+  },
+  "screen": {
+    "purpose": "rejection only; no native or financial acceptance",
+    "spot_cagr_gain_min": ".01",
+    "spot_proxy_mdd_upper_additive": ".02",
+    "perp_recovery_mean_net_return_min": "0",
+    "perp_trade_count_min": 10,
+    "no_parameter_search": true
+  },
+  "execution_diagnostic": {
+    "reuse_existing_journal": true,
+    "no_timestamp_optimization": true,
+    "change_requires_specific_defect_or_cost_evidence": true
+  },
+  "adoption": {
+    "annualization": "each original producer year convention, explicitly retained",
+    "base_improvement": "CAGR >= baseline + .01 OR (continuous MDD <= baseline - .01 AND CAGR >= baseline - .01)",
+    "base_worst_cny_day_min": "baseline - .005",
+    "combination": "all individually eligible compatible mechanisms, no subset search; all four stresses and actual calibrated base; adopt only own gates pass",
+    "complete_known_audited_original_matched_stresses": true,
+    "each_scenario_cagr_min": "baseline - .01",
+    "historical_es99_loss_max_multiple": "1.05",
+    "longest_underwater_max": "baseline",
+    "ranking": "highest worst-stress CAGR, then registered candidate order",
+    "return_increasing": "both actual risk upper bands AND validation cumulative USDT return gain > 0",
+    "risk_only_alternative": "both actual risk upper bands AND actual calibrated candidate continuous MDD reduction >= .01 versus actual unity baseline AND validation gain >= -.01; retain unscaled all-stress gates",
+    "targets": "NOT_MET unless exact original goals pass; selection is separate from targets"
+  },
+  "compute_budget": {
+    "diagnostics_and_screen_seconds": 900,
+    "full_replay_per_project_estimated_seconds": 7200,
+    "full_replay_condition": "screen survives and unanswered adoption question remains",
+    "baseline_replay": false,
+    "capital_offset_grid": false,
+    "full_software_validation_runs_per_repo": 1,
+    "repeat_policy": "affected failed checks only"
+  },
+  "limitations": [
+    "All known history is contaminated research data. Screening approximations cannot authorize adoption.",
+    "No private account operations; no state reset or lock bypass; immutable previous evidence stays intact."
+  ]
+}

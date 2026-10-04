@@ -1,6 +1,10 @@
 # PROJECT_STATE
 
-Updated: 2026-10-03T18:31:54.024132+00:00
+Updated: 2026-10-04T09:28:37.609696+08:00
+
+## Active BTC alpha/beta upgrade (2026-10-04)
+
+User approved all four proposed directions. Worktree: /workspace/btc-alpha-beta-upgrade-20261004/coinquant, branch codex/btc-alpha-beta-upgrade-20261004. See research/upgrade-PLAN.md and pre-result upgrade-spec.json. Current: implementation/readonly diagnostics; no producer launched. Reuse all prior evidence, no repeated old795 or interim fullsuite. Only necessary new-candidate adoption measurements after screening. No native/account authority.
 
 ## Completed BTC alpha/beta improvement round (2026-10-03)
 
