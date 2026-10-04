@@ -32,3 +32,5 @@
 软件全量最终每仓库一次，受影响失败才补测；本机通过与远端CI跳过分开记录。证据在evidence/btc-continuous-20261004，旧flow证据在evidence/btc-flow-risk-20261004。正常PR合并收据在最终软件/整合记录中，main仍是开发基线。
 
 最终本机完整workflow验证：Spot364项/11skip，53.943秒；Coin462项/5skip，7.243秒；compile及unittest均PASS，每仓库fullsuite_invocations=1。测试HEAD9c2de7275dc6f41550f9ce0a078eee1ea8eb6060/11184b3d014971778c95ae89f32c0ea3eedc5e8c。后续只改metadata/evidence，不重跑；跳过项不是已验证原生能力，远端[skip ci]不算通过。
+
+正常 PR 整合完成：[Spotquant #13](https://github.com/geniusgrok/spotquant/pull/13)、[Coinquant #62](https://github.com/geniusgrok/coinquant/pull/62)。实际远端合并树与接受 PR 树相同，原 main/活动工作树均正常快进；见 evidence/btc-continuous-20261004/GITHUB-INTEGRATION.json。最终检查后仅文档/证据提交，没有重复软件或财务测量。

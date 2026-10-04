@@ -1,6 +1,6 @@
 {
   "format": "continuous-evidence-v1",
-  "recorded_utc": "2026-10-04T06:03:37.577446+00:00",
+  "recorded_utc": "2026-10-04T06:09:48.620300+00:00",
   "files": {
     "coinquant-final-suite.log": {
       "sha256": "665b0cce90bf89a3ad402e8026f4c07b0ccb1e4ab2d99b049771a648706b6378",
@@ -97,6 +97,10 @@
     "spotquant-final-suite.log": {
       "sha256": "d14b4f6a16ae3a082a37efb1583389e544ff248c35fc4d4ff3787a9c6367de85",
       "bytes": 95759
+    },
+    "GITHUB-INTEGRATION.json": {
+      "sha256": "a7f3f35fa4a0ed2f5e89cfc99974f1002763d4fa6261e7356d07ac8d08bfa569",
+      "bytes": 2421
     }
   }
 }
