@@ -388,3 +388,8 @@ class IntraminuteEventTests(TestCase):
                 results.append((exchange.mdd_envelope, exchange.wallet, exchange.trades[-1]['time']))
             self.assertEqual(results[0], results[1])
             self.assertAlmostEqual(float(results[0][0]), 0.10, places=3)
+
+
+# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
+from tests.legacy_policy import legacy_policy
+setUpModule, tearDownModule = legacy_policy()

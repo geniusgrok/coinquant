@@ -189,7 +189,7 @@ class SessionTests(TestCase):
         self.assertTrue(r['write_attempted'])
 
     def test_complete_native_tape_replays_identical_requests_and_decisions(self):
-        self.risk.stop()  # the subprocess replay imports the production default
+        self.risk.stop()  # both processes use the explicit historical risk scale
         from copy import deepcopy
         from research.session_replay import replay
         with State(self.directory,'binance:BTCUSDT:live:123') as s:checkpoint=s.get('linear_campaign')
@@ -218,7 +218,11 @@ class SessionTests(TestCase):
             payload={**tape,'checkpoint':checkpoint,'execute':True,
                      'config':dict(account_uid='123',session_seconds=2,poll_seconds=1)}
             path=Path(temporary)/'tape.json';path.write_text(json.dumps(payload))
-            completed=subprocess.run([sys.executable,'-m','research.session_replay',str(path),
+            legacy_replay = ('from coinquant import linear_preview; '
+                             'from coinquant.campaign import Campaign; '
+                             'linear_preview.Campaign=Campaign; '
+                             'from research.session_replay import main; main()')
+            completed=subprocess.run([sys.executable,'-c',legacy_replay,str(path),
                 '--state-dir',str(Path(temporary)/'state')],capture_output=True,text=True,timeout=10)
             self.assertEqual(completed.returncode,0,completed.stderr)
             self.assertTrue(json.loads(completed.stdout)['tape_complete'])
@@ -359,3 +363,8 @@ class SessionTests(TestCase):
         self.assertEqual(self.venue.q,0)
         self.assertEqual(self.venue.sent,[])
         self.assertEqual(result['cleanup'],'verified')
+
+
+# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
+from tests.legacy_policy import legacy_policy
+setUpModule, tearDownModule = legacy_policy()

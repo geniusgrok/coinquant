@@ -1,5 +1,5 @@
 """Read-only shared model evaluation. A preview never consumes an opportunity."""
-from .campaign import Campaign
+from .core import Campaign
 from .types import Blocked
 from decimal import Decimal as D
 
@@ -21,7 +21,7 @@ def advance(state, venue):
             model.update(bar['time']+model.model.interval,bar['high'],bar['low'],bar['close'])
     if model.last!=market['complete_through']:
         raise Blocked('market and checkpoint boundaries differ')
-    if bootstrap:
+    if bootstrap and not getattr(model, 'continuous_entry', False):
         # Price reconstruction cannot establish historical fill ownership, so a
         # cold start consumes a still-active impulse. The flag clears only when
         # the macro step of the same cold start has completed (session.cycle).
@@ -39,8 +39,8 @@ def preview(model,snapshot):
                 consumed_campaign=(model.macro_consumed if model.macro_opportunity is not None and
                                    model.active is model.macro_opportunity
                                    else model.primary_consumed),position_campaign=model.position_campaign,
-                target_fraction=str(model.entry_fraction('.0011')) if action=='enter' else None,
+                target_fraction=str(model.entry_fraction('.0011')) if action=='enter' or action=='hold' and getattr(model,'continuous_entry',False) else None,
                 quantity_btc=str(quantity) if action=='hold' else '0' if action in ('exit','flat','consumed') else None,
                 quantity_status='native preflight required' if action=='enter' else 'shared inventory decision',
-                model='SX60+DFII10',macro_observation=model.macro_observation,
+                model=getattr(model, 'core_rule', 'SX60+DFII10'),macro_observation=model.macro_observation,
                 qualification='NOT_QUALIFIED')

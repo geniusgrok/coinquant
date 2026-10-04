@@ -14,6 +14,15 @@ from .audit import allows_new_risk, income
 
 
 def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None):
+    from . import linear_preview
+    saved = state.get('linear_campaign')
+    if getattr(linear_preview.Campaign, 'continuous_entry', False):
+        # Reject an incompatible strategy before any exposure recovery or write.
+        if saved is not None:
+            linear_preview.Campaign.restore(saved)
+        elif (state.get('entry_plan') or state.get('entry_fill') or state.get('entry_campaigns')
+              or state.db.execute('SELECT 1 FROM intents LIMIT 1').fetchone()):
+            raise Blocked('durable execution state lacks its BTC core checkpoint')
     engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter,session=session)
     if execute:
         snapshot=engine.recover_exposure(engine.settle())

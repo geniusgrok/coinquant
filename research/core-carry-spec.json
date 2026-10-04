@@ -1,0 +1,8 @@
+{
+ "mechanism": "carry_holding_economics_v2",
+ "registered_after": "screen-recovery.json",
+ "cause": "Positive pre-fee funding/gross residual but 60-108 entries per era and two-leg churn dominate cost-net returns.",
+ "change": "Keep same opening forecast and cost hurdle; held pair exits only when seven-day settled funding forecast is nonpositive, required feature stale, 30-day time exhausted, margin reserve fails or native catastrophe proxy fires.",
+ "budget": "Only one carry repair, six coarse wallets (three eras/base and doubled costs); no full history sessions/native execution without paired executable receipts.",
+ "scope": "No changes to currently measured runtime or source-bound accounts. Preserve initial failed-clock and corrected-base carry results."
+}
