@@ -1,5 +1,9 @@
-# BTC core replacement: ready for main integration
+# BTC core replacement: completed on main
 
-2026-10-04: all five routes implemented/screened, actual strategy/risk defaults replaced. Spot continuous target, Coin independently sized uptrend; interim deterioration explicitly authorized and disclosed.16 finite10000-CNY wallets/444 accepted sessions, ledger audits pass. No new795/native/private writes/old diary rebind.
+2026-10-04: Spot PR17 and Coin PR66 merged. Both actual strategy/risk defaults use btc-target-core-20261004-v1: Spot continuous positive target; Coin independently sized positive trend. Interim economic deterioration is authorized and fully disclosed; alpha improvement, new full-history CAGR and native qualification remain unproven.
 
-Evidence evidence/btc-core-20261004 and research/core-RESULT.md/GUIDE.md/roadmap.json. Full Python3.13 software once each: Spot393/11skip, Coin495/5skip; initial historical fixture failures retained, scoped10/72 repairs pass. One new missing-checkpoint funds guard passes, Coin final test inventory496. No repeated fullsuite. Main integration remains; use normal PR/merge, [skip ci] avoids duplicate remote fullsuite and is not remotePASS. Preserve measured source heads and all original negative/failure results. No further account or full validation rerun for docs/HEAD.
+All A–E routes implemented and screened, including cause-specific Coin direction/carry revisions.16 independent10000-CNY wallets,444 accepted historical sessions, all wallet ledger audits pass. Original failures, negative results, source heads and old immutable forward consumers preserved. No795/private-account writes/old diary rebinding.
+
+Final Python3.13 fullsuite once each: Spot393/11skip, Coin495/5skip; initial legacy-fixture failures retained and only affected10/72 tests repaired/pass. One new money/checkpoint guard passes, Coin current inventory496. Fullsuite was not rerun; remote CI intentionally skipped, never reported PASS. See evidence/btc-core-20261004/verification.json and research/core-RESULT.md/GUIDE.md/core-roadmap.json.
+
+No engineering delivery remains pending. Future core replacement may follow the distinct failure routes; do not restore obsolete immediate-promotion/default-preservation gates or replay old data for documentation/HEAD changes. Old durable states reject; no automatic migration/reset. New source-bound forward observations need their own rule identity; no fabricated observations/native days.
