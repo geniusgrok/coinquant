@@ -2,6 +2,11 @@
   "format": 1,
   "files": [
     {
+      "path": "GITHUB-INTEGRATION.json",
+      "bytes": 2048,
+      "sha256": "28754cebb6f6cd115c5f02a96631520a4cd1d24d40966bbe92ce65a66bba2f35"
+    },
+    {
       "path": "README.md",
       "bytes": 1111,
       "sha256": "795652d23e5150ee111078455f76979f26e22242b0263d10df6dcf05b955d2d9"
@@ -165,5 +170,5 @@
   "excludes": [
     "MANIFEST.json"
   ],
-  "scope": "New compact result packet only; original market archives and previous accepted packets are referenced, not rescanned."
+  "scope": "New compact result packet and final integration receipt; prior retained entries reused without rescan. Original market archives and accepted packets are referenced."
 }

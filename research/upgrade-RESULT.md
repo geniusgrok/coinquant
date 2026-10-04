@@ -60,3 +60,5 @@ Coin筛选一次成功（约0.76秒）；Spot首次归因因旧diagnostics没有
 最终软件验证及GitHub交付回执随证据包保留；软件通过不等于经济采用。唯一最终全量验证按每仓库一次执行，失败才补测受影响部分；CI状态按实际回执说明。
 
 最终本地验证实绩：Coin唯一一次全量447项，5跳过，PASS（Python3.13.5）；Spot唯一一次全量353项，11跳过、1个新checkpoint错误，保留FAILED原日志。修正仅检查点序列化标志，失败的1项单独通过，最终为PASS_COMPOSITE；没有第二次全量。筛选模拟不调用checkpoint，决策/规模代码未改，不需要重跑原筛选。GitHub CI按用户避免重复全量要求使用[skip ci]，不是“GitHub CI通过”。实际日志/PID/提交见证据final-validation.json。最终审查是根代理源码/来源自审，不冒充独立新财务复核。
+
+正常GitHub集成完成：Spot PR11 https://github.com/geniusgrok/spotquant/pull/11 merged d1fbc9537a12301daedac7e49a9c7e60b78d7562; Coin PR60 https://github.com/geniusgrok/coinquant/pull/60 merged ec93cd1d71f102d4b2f9903e8c46dd8889e2df52. 主工作树及新隔离工作树已安全快进，原Git对象/证据保留，合并树等于接受特性树。合约首次CLI合并401由现有GitHub连接恢复，无凭据设置修改。回执见evidence/btc-upgrade-20261004/GITHUB-INTEGRATION.json；闭环仅文档/证据，不再跑测试或财务。
