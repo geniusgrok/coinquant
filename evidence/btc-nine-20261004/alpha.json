@@ -1,0 +1,144 @@
+{
+  "format": "btc-nine-alpha-screen-v1",
+  "at_ms": 1791106542988,
+  "feature_book_sha256": "09855b31e9a1b88790ad2d73f6ccda0cd02579a217fedac5ef130764d7be1f8f",
+  "receipt_bindings": [
+    [
+      "/workspace/btc-nine-routes-20261004/artifacts/public",
+      "b3e7fb30482030c6b0ba8d063c14c2dd6d8997295c787490f59abb098dedce0c"
+    ],
+    [
+      "evidence/btc-persistent-20261004/public",
+      "3412c339ddaecd5f84cb1c2d6c178df3e862d1b891ec4774c75d012b36e0eed3"
+    ],
+    [
+      "evidence/btc-continuous-20261004/public",
+      "ca16db480494e7743a703b7185e6c693e0b4e59647d85d7c1caff2543318054a"
+    ]
+  ],
+  "spec_sha256": "374cd602162030a88cfa5a47673b9b1f01d38d5ec0f90ca7565e06c6d83330a0",
+  "routes": {
+    "etf-demand": {
+      "feature": {
+        "status": "WAIT_QUALIFIED_DATA",
+        "weak": null,
+        "release": null
+      },
+      "expressions": [
+        {
+          "status": "WAIT_QUALIFIED_DATA",
+          "factor": null,
+          "action": null
+        },
+        {
+          "status": "WAIT_QUALIFIED_DATA",
+          "factor": null,
+          "action": null
+        }
+      ],
+      "status": "WAIT_QUALIFIED_DATA",
+      "failure_route": "WAIT_NEW_EVIDENCE_AND_ADVANCE_NEXT_FAMILY"
+    },
+    "oi-deleveraging": {
+      "feature": {
+        "status": "WAIT_NEW_INTERVAL",
+        "weak": null,
+        "release": null,
+        "independent_receipt_days": 1
+      },
+      "expressions": [
+        {
+          "status": "WAIT_QUALIFIED_DATA",
+          "factor": null,
+          "action": null
+        },
+        {
+          "status": "WAIT_QUALIFIED_DATA",
+          "factor": null,
+          "action": null
+        }
+      ],
+      "status": "WAIT_NEW_INTERVAL",
+      "failure_route": "WAIT_NEW_EVIDENCE_AND_ADVANCE_NEXT_FAMILY"
+    },
+    "option-insurance": {
+      "feature": {
+        "status": "WAIT_NEW_INTERVAL",
+        "weak": null,
+        "release": null,
+        "independent_receipt_days": 1
+      },
+      "expressions": [
+        {
+          "status": "WAIT_QUALIFIED_DATA",
+          "factor": null,
+          "action": null
+        },
+        {
+          "status": "WAIT_QUALIFIED_DATA",
+          "factor": null,
+          "action": null
+        }
+      ],
+      "status": "WAIT_NEW_INTERVAL",
+      "failure_route": "WAIT_NEW_EVIDENCE_AND_ADVANCE_NEXT_FAMILY"
+    },
+    "old-coin-supply": {
+      "feature": {
+        "status": "WAIT_QUALIFIED_DATA",
+        "weak": null,
+        "release": null
+      },
+      "expressions": [
+        {
+          "status": "WAIT_QUALIFIED_DATA",
+          "factor": null,
+          "action": null
+        },
+        {
+          "status": "WAIT_QUALIFIED_DATA",
+          "factor": null,
+          "action": null
+        }
+      ],
+      "status": "WAIT_QUALIFIED_DATA",
+      "failure_route": "WAIT_NEW_EVIDENCE_AND_ADVANCE_NEXT_FAMILY"
+    },
+    "dollar-financing": {
+      "feature": {
+        "status": "FEATURE_READY",
+        "weak": false,
+        "release": false,
+        "spread_previous5": "-0.00036",
+        "spread_latest5": "-0.0001",
+        "available_ms": 1791106527952,
+        "meaning": "Secured financing spread proxy. Not directional BTC alpha or old-vintage proof."
+      },
+      "expressions": [
+        {
+          "status": "NO_ACTION",
+          "factor": "1",
+          "action": "new-budget",
+          "held_changed": false
+        },
+        {
+          "status": "CHANGE_NEW_BUDGET",
+          "factor": "0",
+          "action": "new-budget",
+          "held_changed": false
+        }
+      ],
+      "status": "INFORMATION_AND_ACCOUNT_EFFECT_PENDING",
+      "failure_route": "ADVANCE_NEXT_MECHANISM"
+    }
+  },
+  "all_families_evaluated": true,
+  "new_accounts": 0,
+  "new_sessions": 0,
+  "reason": "Received values are forward research; no qualified completed new BTC intervals or historical publication vintages.",
+  "historical_backfill": false,
+  "orders": 0,
+  "account_days": 0,
+  "native_qualified": false,
+  "runtime_promoted": false
+}

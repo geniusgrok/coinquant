@@ -1,0 +1,167 @@
+{
+  "format": "btc-nine-evidence-manifest-v1",
+  "files": [
+    {
+      "path": "alpha.json",
+      "bytes": 3962,
+      "sha256": "51c0d060c137842d0acc92d2579552a29bfdd9be9ebd8440256f1fbf8106fe96"
+    },
+    {
+      "path": "decisions.json",
+      "bytes": 9015,
+      "sha256": "dc74b1435b5efbc1068ef8059fc46182ae97dbb4da9d9640c3336020d16ef334"
+    },
+    {
+      "path": "failures/joint/coin-worker-failed.log",
+      "bytes": 1717,
+      "sha256": "93c4d7bcf60c8e553fb3c61cae8b502879a4844539f09f4717b91cae2e99cc84"
+    },
+    {
+      "path": "failures/joint/spot-worker-failed.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failures/joint/summary-failed.json",
+      "bytes": 22595,
+      "sha256": "14ff58fbfefe8f76d284bd789190e917e760aa387fb2de346141fd18289419a5"
+    },
+    {
+      "path": "failures/joint-recovery1/coin-worker-failed.log",
+      "bytes": 2667,
+      "sha256": "0612d5132d3a9ea01b2450944a7b364bbabea13bd5d2c7d8c32628d71ce2084e"
+    },
+    {
+      "path": "failures/joint-recovery1/spot-worker-failed.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "failures/joint-recovery1/summary-failed.json",
+      "bytes": 29787,
+      "sha256": "424134411c4ce0e85e42084dfa195c6cf39427fc74cd39c20c2c4c687b76ea58"
+    },
+    {
+      "path": "failures/joint-recovery1/summary.json",
+      "bytes": 29608,
+      "sha256": "9828db01b7be8a8401f5da98d5a983fe07bd708393476d54d0e75f0f9a357917"
+    },
+    {
+      "path": "failures/joint-recovery1.log",
+      "bytes": 6607,
+      "sha256": "a7bca2000153eaaccb31f1e1313e42fe17a01c8c99f743414a766ccfcb864b87"
+    },
+    {
+      "path": "failures/joint-recovery2.log",
+      "bytes": 545,
+      "sha256": "d9bea3f0acbc3e33a79db4799b80492f6d7d29b049e1ee0aacb208d92a10ee2a"
+    },
+    {
+      "path": "failures/joint-recovery3.log",
+      "bytes": 470,
+      "sha256": "9b2c779372eb4c3aea6535ec0c7ecfb9b03c7156b8bd76646e38eef3bc0ada50"
+    },
+    {
+      "path": "failures/joint-recovery4.log",
+      "bytes": 11129,
+      "sha256": "b4994eeff3faf136599616dba947152d9f8e0c781910d95afaaf0fe432686269"
+    },
+    {
+      "path": "failures/joint.log",
+      "bytes": 937,
+      "sha256": "1cb589f151f29f7b520aa69ad2acc3edde239a3706163423a92ff27dcf9f3d19"
+    },
+    {
+      "path": "features.json",
+      "bytes": 1371330,
+      "sha256": "edbf580ca4aef5bb17b91a38c79603058d50e1035b41081cd96f7edead33fb3b"
+    },
+    {
+      "path": "joint/coin-worker.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "joint/spot-worker.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "joint/summary.json",
+      "bytes": 39318,
+      "sha256": "6bd82cd99350ad0b584570f1ac76e141081c51c1b3c2ef7ac447389f77114f10"
+    },
+    {
+      "path": "joint/window-0-baseline.json.gz",
+      "bytes": 1117966,
+      "sha256": "5c7c0ab37f2447c2d06cabc603da9617d0e76d397d378d078f5e8bea58b63a51"
+    },
+    {
+      "path": "joint/window-0-state-exposure.json.gz",
+      "bytes": 1200066,
+      "sha256": "d90285411394f2b119c6f33e352b817edbdf30de5c3b48e171016406fb47190e"
+    },
+    {
+      "path": "joint/window-0-stress-entry-cap.json.gz",
+      "bytes": 1046931,
+      "sha256": "57ba539470022cef9c4cf57e240b7cb1a694b536ef875a7e4e5e777ca2b96e02"
+    },
+    {
+      "path": "joint/window-0-uniform.json.gz",
+      "bytes": 1118843,
+      "sha256": "9d7b4dffa067d403ba54fc9dab34ac9b9ef83f13b4cf075d57d3722869a757ce"
+    },
+    {
+      "path": "joint/window-1-baseline.json.gz",
+      "bytes": 708866,
+      "sha256": "0baa56925361b8411a223bcde0c27ac4075646d29e666b616c0dfc8c302f4f17"
+    },
+    {
+      "path": "joint/window-1-uniform.json.gz",
+      "bytes": 707284,
+      "sha256": "9f365104a1b53c067a36e2ae6451a325651e6800a5a18873a60d7a0b78018443"
+    },
+    {
+      "path": "public/iorb.json",
+      "bytes": 30342,
+      "sha256": "3f25c5b636a1fb10201c426283e552c85f3689e329591ca7cdec094c71ba054d"
+    },
+    {
+      "path": "public/old-coin-supply-error.bin",
+      "bytes": 153,
+      "sha256": "dd47da9baf32faa4b36f97aab47d6895013494f6d545034e3122c7785cff5dda"
+    },
+    {
+      "path": "public/receipts.json",
+      "bytes": 1797,
+      "sha256": "b3e7fb30482030c6b0ba8d063c14c2dd6d8997295c787490f59abb098dedce0c"
+    },
+    {
+      "path": "public/sofr.json",
+      "bytes": 35130,
+      "sha256": "26f1eb2dc8dfa89693ce7a7652fd7cc4f4c2d2e85802b7bcf79044230c4df29d"
+    },
+    {
+      "path": "software/compile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "software/receipt.json",
+      "bytes": 670,
+      "sha256": "3da275a2124f4de122b1cb76e4b8ac38dbe3c105db7f19b1714e31bacab7b46a"
+    },
+    {
+      "path": "software/unittest.log",
+      "bytes": 79226,
+      "sha256": "c3766110c094e5996a0bb37b24847db7d1c1817ba762538e6443f94aceb27538"
+    },
+    {
+      "path": "software/validation.json",
+      "bytes": 385,
+      "sha256": "725c5e4ca75299a5df51c5fb2dc2e8203aaf77e2a00df331f660f617ccb4175d"
+    }
+  ],
+  "old_producers_preserved": true,
+  "original795_replays": 0
+}
