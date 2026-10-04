@@ -1,1 +1,1 @@
-继续本轮唯一已授权任务，先读PROJECT_STATE.md与research/loop-spec.json。全部推进alpha成熟收益准入/跨市场/事件/执行和beta联合风险/回撤/IV/保护后备。保留原nine/oldconsumer来源，不重跑795/大库全扫描，不改原经济窗口/启动/资金比例。先低成本资格/可作用检查，入围才有限独立账户；最终每仓库fullsuite仅一次。无私人账户授权，Coin全串行，不改HOME/UID/锁。
+本轮唯一任务：全部完成loop-spec.json登记的alpha成熟收益/三个后备机制和beta共同时间风险/三个后备机制。实现已完成，正冻结producer并有限公开接收、复用小行情缓存和原六账户对做一次筛选；尚未跑新账户/软件全量。旧nine/source/consumer/负结果不变，不重跑795/大库，不调经济窗口/启动/资金/门槛。最终每仓库Python3.13全量仅一次，Coin严格串行，无私人账户/交易授权。后续读research/loop-GUIDE.md和/workspace/btc-decision-loop-20261004/artifacts，继续筛选、实际入围才账户、最终测试和PR整合。

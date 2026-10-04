@@ -93,7 +93,8 @@
         "coin": ".0037"
       },
       "stop": "min ten completed4h lows for Coin; Spot existing ATR/ownership geometry.",
-      "gate": "At least10 nonoverlapping events,3 each original era; net signal return positive each era and coefficient positive after prior20day momentum/RMS. Original full history is development only."
+      "gate": "At least10 nonoverlapping events,3 each original era; net signal return positive each era and coefficient positive after prior20day momentum/RMS. Original full history is development only.",
+      "inverse_definition": "Exact sign mirror on both completed days: spot imbalance<-.10, perp>=0, spot close falls, completed basis>=0. Applied only to original actual feasible owned protected new BUY."
     },
     "macro_event": {
       "name": "post-announcement-repair",
@@ -143,7 +144,8 @@
       "existing_funding_reserve": ".01",
       "gate": "Show a real joint execution gap beyond existing reserve/protection; otherwise ALREADY_COVERED_OR_SUPPORT_PENDING.",
       "size": "Deny only new risk with unknown/uncovered current executable protection; actual reduction requires confirmed ownership."
-    }
+    },
+    "joint_valuation": "Reconstruct same actual fills/cash/funding on common minute clocks; accepted Spot daily high-before-low path and official Coin minute mark envelope. Missing held marks keep upper bound unknown. New real Spot minute months only fixed-fill valuation sensitivity, never new account/native execution."
   },
   "account": {
     "max_new_accounts": 24,
@@ -153,7 +155,8 @@
     "selector": "Earliest actual eligible event per registered original era, timestamps/causal support only; no profit selection.",
     "no_entrant": "No account process/market vault loading; report0 explicitly.",
     "gate": "Each window audited/archived/settled; >=1 independent commitment changed each window; net wealth>=baseline and observed synchronized joint MDD<=baseline+.01 OR observed joint MDD<=baseline*.8 and wealth>=baseline*.95; outperform uniform risk/wealth tradeoff. Window results cannot adopt original full-window default.",
-    "no_default_promotion_from_screen": true
+    "no_default_promotion_from_screen": true,
+    "intake": "Source-bound entrant screen and earliest windows produce a bounded actual-account plan. Consume actual separately financed candidate/baseline/uniform raw receipts, never synthetic curve scaling. Unsupported mechanisms or zero entrants create no worker."
   },
   "budget": {
     "full_software_each_repo": 1,

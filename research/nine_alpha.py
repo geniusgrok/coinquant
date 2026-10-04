@@ -34,7 +34,7 @@ class FeatureBook:
         return data.features(self.sources,self.persistent,now,context)['families'][family]
 
 
-def screen(book,opportunities,family,expression,context_provider):
+def screen(book,opportunities,family,expression,context_provider,*,completed_pair=None,completed_bars=None,market_sha=None,asof_ms=None):
     """Eligibility at real owned decision clocks precedes any wallet creation."""
     events=[];pending={}
     for proposal in opportunities:
@@ -45,11 +45,23 @@ def screen(book,opportunities,family,expression,context_provider):
         elif effect['status']=='WAIT_QUALIFIED_DATA':pending[feature['status']]=pending.get(feature['status'],0)+1
     # Coverage/action screen is not net economic information validation.
     independent={e['id'] for e in events}
-    return dict(status='INFORMATION_EFFECT_PENDING' if independent else 'WAIT_QUALIFIED_DATA' if pending else 'SUPPORT_PENDING',
+    result=dict(status='INFORMATION_EFFECT_PENDING' if independent else 'WAIT_QUALIFIED_DATA' if pending else 'SUPPORT_PENDING',
         family=family,expression=expression,independent_actionable_signals=len(independent),events=events,
         pending_reasons=pending,account_entrant=False,account_days=0,
         feature_book_sha256=book.sha256,spec_sha256=r.sha(r.SPEC.read_bytes()),
         failure_route=r.failure_route('SUPPORT_PENDING' if independent else 'WAIT_QUALIFIED_DATA'))
+    if completed_pair is not None:
+        from research.loop_alpha import evaluate
+        if completed_bars is None or market_sha is None or type(asof_ms) is not int:
+            raise ValueError('matured account evaluation requires original completed market/clock')
+        kind=opportunities[0]['kind'] if opportunities else None
+        evaluations=evaluate(book,completed_pair,completed_bars,market_sha,asof_ms)
+        key=f'{kind}:{family}:{expression}'
+        if key in evaluations:
+            result['economic_evaluation']=evaluations[key]
+            result['account_entrant']=evaluations[key]['account_entrant']
+            result['status']=evaluations[key]['status']
+    return result
 
 
 def main(argv=None):
