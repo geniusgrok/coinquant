@@ -1,0 +1,17 @@
+{
+  "spot": {
+    "entry-chase": "SUPPORT_PENDING",
+    "entry-chase-soft": "SUPPORT_PENDING",
+    "repair-stall": "SUPPORT_PENDING",
+    "repair-rebreak": "SUPPORT_PENDING",
+    "state-trend": "REJECT_MECHANISM",
+    "state-range": "SUPPORT_PENDING"
+  },
+  "coin": {
+    "macro-handoff": "SUPPORT_PENDING",
+    "macro-restart": "SUPPORT_PENDING",
+    "state-trend": "REJECT_MECHANISM",
+    "state-range": "SUPPORT_PENDING"
+  }
+}
+elapsed seconds 1.5709423110238276

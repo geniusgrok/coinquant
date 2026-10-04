@@ -1,0 +1,110 @@
+{
+  "source": {
+    "git_head": "1d6627a67db92a6acad12c6ee871b9c36dd51ffd",
+    "program_sha256": "796fb778ea41828fdcb4608b27af1a623a2b1dffbaf1165317247a8c9499ca8a"
+  },
+  "receipts": [
+    {
+      "name": "btc-oi",
+      "url": "https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT",
+      "request_ms": 1791100304384,
+      "symbol": "BTCUSDT",
+      "status": 451,
+      "error": "HTTPError: HTTP Error 451: Unknown",
+      "raw_file": "btc-oi-error.bin",
+      "sha256": "79c1db471a4cdc1c8565b5dfc52e0ed2d29962738ee4d28597696fcd0920e348",
+      "bytes": 224,
+      "receipt_ms": 1791100304674,
+      "qualification": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "name": "spot-book",
+      "url": "https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5",
+      "request_ms": 1791100304674,
+      "symbol": "BTCUSDT",
+      "status": 451,
+      "error": "HTTPError: HTTP Error 451: Unknown",
+      "raw_file": "spot-book-error.bin",
+      "sha256": "79c1db471a4cdc1c8565b5dfc52e0ed2d29962738ee4d28597696fcd0920e348",
+      "bytes": 224,
+      "receipt_ms": 1791100304913,
+      "qualification": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "name": "perp-book",
+      "url": "https://fapi.binance.com/fapi/v1/depth?symbol=BTCUSDT&limit=5",
+      "request_ms": 1791100304913,
+      "symbol": "BTCUSDT",
+      "status": 451,
+      "error": "HTTPError: HTTP Error 451: Unknown",
+      "raw_file": "perp-book-error.bin",
+      "sha256": "79c1db471a4cdc1c8565b5dfc52e0ed2d29962738ee4d28597696fcd0920e348",
+      "bytes": 224,
+      "receipt_ms": 1791100305091,
+      "qualification": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "name": "option-summary",
+      "url": "https://www.deribit.com/api/v2/public/get_book_summary_by_currency?currency=BTC&kind=option",
+      "request_ms": 1791100305091,
+      "symbol": "BTCUSDT",
+      "status": 200,
+      "raw_file": "option-summary.json",
+      "sha256": "8cfca2b10b7ab4154569b4e149a3995dec4a153cf91b359e19d37cfd67403f2d",
+      "bytes": 444706,
+      "receipt_ms": 1791100305533,
+      "qualification": "FORWARD_RECEIPT_ONLY"
+    },
+    {
+      "name": "option-30-C",
+      "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-30OCT26-91000-C",
+      "request_ms": 1791100305544,
+      "symbol": "BTCUSDT",
+      "status": 200,
+      "raw_file": "option-30-C.json",
+      "sha256": "1f5ccb119a37db4790b6387e05d7e6d40e45ce1ba50aacb0c985c89652a8d51b",
+      "bytes": 778,
+      "receipt_ms": 1791100305795,
+      "qualification": "FORWARD_RECEIPT_ONLY"
+    },
+    {
+      "name": "option-30-P",
+      "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-30OCT26-80000-P",
+      "request_ms": 1791100305795,
+      "symbol": "BTCUSDT",
+      "status": 200,
+      "raw_file": "option-30-P.json",
+      "sha256": "ec402cc84ded1d6b3348bd2ec73e88551c8a45e9ef3af2f446975d9fb0c2cf6b",
+      "bytes": 782,
+      "receipt_ms": 1791100306114,
+      "qualification": "FORWARD_RECEIPT_ONLY"
+    },
+    {
+      "name": "option-90-C",
+      "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-25DEC26-98000-C",
+      "request_ms": 1791100306114,
+      "symbol": "BTCUSDT",
+      "status": 200,
+      "raw_file": "option-90-C.json",
+      "sha256": "c4384e1291fdb80335124e968d04af1f3c8d88f8ca3bba4e2970002ac9b88763",
+      "bytes": 774,
+      "receipt_ms": 1791100306402,
+      "qualification": "FORWARD_RECEIPT_ONLY"
+    },
+    {
+      "name": "option-90-P",
+      "url": "https://www.deribit.com/api/v2/public/ticker?instrument_name=BTC-25DEC26-78000-P",
+      "request_ms": 1791100306402,
+      "symbol": "BTCUSDT",
+      "status": 200,
+      "raw_file": "option-90-P.json",
+      "sha256": "ea590a9b9e04c3d312ba4223bf1e12d5c7bf6e907d40a7d29dd1b3b4e9e81885",
+      "bytes": 775,
+      "receipt_ms": 1791100306677,
+      "qualification": "FORWARD_RECEIPT_ONLY"
+    }
+  ],
+  "finite_requests": 8,
+  "orders": 0,
+  "retries": 0
+}

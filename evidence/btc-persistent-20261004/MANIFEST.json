@@ -1,0 +1,106 @@
+{
+  "format": "btc-persistent-evidence-v1",
+  "recorded_utc": "2026-10-04T08:07:36.520156+00:00",
+  "files": {
+    "coin-accounts/summary.json": {
+      "sha256": "a878867d6d7b1bdc28ef8e17920a9fa48653bcd9116c381d7f94a6e86a3ee742",
+      "bytes": 600
+    },
+    "coin-accounts.log": {
+      "sha256": "331eab7c64e0299c95b87cd13429864c41975c7ba18f6537f213be0f473bca78",
+      "bytes": 373
+    },
+    "forward-features.json": {
+      "sha256": "01585163d4fc6939a02107404b6633b15d68af1e21ddb8d721daf8e2410c6cff",
+      "bytes": 330
+    },
+    "public/btc-oi-error.bin": {
+      "sha256": "79c1db471a4cdc1c8565b5dfc52e0ed2d29962738ee4d28597696fcd0920e348",
+      "bytes": 224
+    },
+    "public/option-30-C.json": {
+      "sha256": "1f5ccb119a37db4790b6387e05d7e6d40e45ce1ba50aacb0c985c89652a8d51b",
+      "bytes": 778
+    },
+    "public/option-30-P.json": {
+      "sha256": "ec402cc84ded1d6b3348bd2ec73e88551c8a45e9ef3af2f446975d9fb0c2cf6b",
+      "bytes": 782
+    },
+    "public/option-90-C.json": {
+      "sha256": "c4384e1291fdb80335124e968d04af1f3c8d88f8ca3bba4e2970002ac9b88763",
+      "bytes": 774
+    },
+    "public/option-90-P.json": {
+      "sha256": "ea590a9b9e04c3d312ba4223bf1e12d5c7bf6e907d40a7d29dd1b3b4e9e81885",
+      "bytes": 775
+    },
+    "public/option-summary.json": {
+      "sha256": "8cfca2b10b7ab4154569b4e149a3995dec4a153cf91b359e19d37cfd67403f2d",
+      "bytes": 444706
+    },
+    "public/perp-book-error.bin": {
+      "sha256": "79c1db471a4cdc1c8565b5dfc52e0ed2d29962738ee4d28597696fcd0920e348",
+      "bytes": 224
+    },
+    "public/qualification-summary-fix1.json": {
+      "sha256": "34db0ccca89770778e827a1d967b1f07e0398d6c3f845fcdc1a3e106726c32cd",
+      "bytes": 2655
+    },
+    "public/qualification.json": {
+      "sha256": "3bf5d6d5e94a278b1b2ef52407a444c2c837be3a2f792dbe6982af139638b85e",
+      "bytes": 2659
+    },
+    "public/receipts.json": {
+      "sha256": "3412c339ddaecd5f84cb1c2d6c178df3e862d1b891ec4774c75d012b36e0eed3",
+      "bytes": 3916
+    },
+    "public/recovery.json": {
+      "sha256": "e5f8a51fb47338338488b2f9818893ad933921e3256df8703cb027e648aba7ff",
+      "bytes": 357
+    },
+    "public/spot-book-error.bin": {
+      "sha256": "79c1db471a4cdc1c8565b5dfc52e0ed2d29962738ee4d28597696fcd0920e348",
+      "bytes": 224
+    },
+    "public.log": {
+      "sha256": "c392705f45355adf70d598d2a445704421fd7d81c4f8ac768d349dfb50741275",
+      "bytes": 77
+    },
+    "screen.json": {
+      "sha256": "0ce934be17900ef956f2b3c318767a8910a9c472afcd394c132be3a954657b4d",
+      "bytes": 88579
+    },
+    "screen.log": {
+      "sha256": "b76d29288a65cfddadd09666bf6380c33baf11e998c1c396e49be8fa09aac7ae",
+      "bytes": 465
+    },
+    "spot-accounts/summary.json": {
+      "sha256": "cdcf69853c47913020fb0afebf311717df55e9e63a883418de2816ace13297bf",
+      "bytes": 600
+    },
+    "spot-accounts.log": {
+      "sha256": "331eab7c64e0299c95b87cd13429864c41975c7ba18f6537f213be0f473bca78",
+      "bytes": 373
+    },
+    "final-software.json": {
+      "sha256": "b0b9fde4487e13d4262a812a86a232cd4c6960b331bd268e4693f12e80021d19",
+      "bytes": 2672
+    },
+    "final-validation.json": {
+      "sha256": "3a2eea22043718f35ebbb9ad10a45952cf86fecc18586448ddd4f848f4216aa7",
+      "bytes": 3577
+    },
+    "spotquant-final-suite.log": {
+      "sha256": "0ac66c534f8742dd9a27fc0a5e35cb33f43102550ab4b7061db1e5d56acabd58",
+      "bytes": 94308
+    },
+    "coinquant-final-suite.log": {
+      "sha256": "89dab814f61a3a90d9d7764ebcda5026e33121698d7382aa8e9b100530e15201",
+      "bytes": 79254
+    },
+    "coinquant-restore-recovery.log": {
+      "sha256": "7df12041c6740c5392e24a430cffdadd706a3d55e5ffdee832e89d7843edceef",
+      "bytes": 273
+    }
+  }
+}

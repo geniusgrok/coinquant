@@ -1,17 +1,11 @@
 # PROJECT_STATE
 
-Updated: 2026-10-04T06:09:48.620300+00:00
+Updated: 2026-10-04T08:07:36.520156+00:00
 
-## 持续 alpha/beta 六路线交付已完成
+## 持续多次失败换向交付 — 正常整合待办
 
-全部六条路线及预登记的失败替代分支已实施、归档并正常合并到 main。Spotquant PR #13、Coinquant PR #62 已合并；实际远端合并提交分别为 57ed91cfb4a5b53897dcd94f6f1811cb20831e82、aae3621e524460dc99f08339be27d10f55a72a65，合并树与接受的 PR 源码树一致。原 main 和本轮活动工作树均正常快进；本记录所在提交仅更新文档及整合回执。
+全部可用六阶段和三共同beta分支已实现、一次低成本筛选1.570942秒、8有限公共请求。所有交易机制拒绝或支持不足，两账户准入实际返回NO_ACCOUNT_ENTRANT，新增账户/会话0，没有795/14GB扫描。四真实option Greeks/IV形成附近期限近似25delta研究特征，但只有1真实接收日；OI/books451，新时期WAIT_NEW_INTERVAL/accountdays0。默认未改、goalsNOT_MET/nativeNOT_QUALIFIED。
 
-Spot 的弱流信息通过廉价筛选，继硬否决失败后实际检验新 BUY *.75 与统一降预算对照。两个固定季度候选实际调整事件均为 0，结论 SCREEN_REJECTED / ACCOUNT_SUPPORT_MISSING，未采用。新增 5 个独立冷资金账户共 144 会话、28.5466 秒，另复用 1 个原基线；30 项资金/归档一致性检查通过。风险权衡拒绝 Spot 持仓减仓；Coin 支持不足；继续检查入场尾部准备金，Spot 0 / Coin 2 次，仍不足。五次有限公共请求保留原始响应和真实时间，但历史发布身份未证明，DATA_NOT_QUALIFIED。执行费用线性、没有证据支持新执行机制；三个真实资金配对复用，5000/5000 日收盘 MDD 24.6339%、最大日收盘总名义敞口/权益 5.8863，联合连续 MDD 未验证。
+接受原screen.json绑定Spot1d6627a和原程序SHA；后来仅收紧未调用的joint_admission时钟，不重算/重标原项目结果。option-summary解析错误原件保留，仅修正这一项，其他响应/特征原样复用且没有再次请求。research/persistent-RESULT.md/GUIDE.md和evidence/btc-persistent-20261004保留全部结论及后续触发。
 
-完整本机 workflow 最终各运行一次：Spot 364 项、11 跳过，Coin 462 项、5 跳过，compile 和 unittest 均通过。测试提交分别为 9c2de7275dc6f41550f9ce0a078eee1ea8eb6060、11184b3d014971778c95ae89f32c0ea3eedc5e8c；之后仅文档/证据变化。远端 [skip ci] 是跳过，不是 CI 通过。没有待执行的测试、测量或整合任务。
-
-接受结果 continuous-results-risk-fix1.json 修正晚售 dust 错误延长大部分已售币风险的问题；原错误结果保留，未受影响路线和全部账户结果原样复用。诊断 producer Spot59b6e41 / Coinfaa4156、实际账户 producer Spotd7d1f2614f8cc0f53c5bc6c77f347ca478203e2f 保持原身份，不能重标为当前 HEAD。报告与操作说明见 research/continuous-RESULT.md、continuous-GUIDE.md，整合/测试回执在 evidence/btc-continuous-20261004；旧 flow 证据保持。
-
-没有证明提高收益的新默认策略，收益天花板也未被证明。后续只有新时间区间、合格的新信息或不同机制才重开；每个信息家族最多两种有经济含义的表达，不降低阈值或反复搜索已看过的历史。原 Spot56.5981% / 36.4122%、Coin119.2284% / 44.1051% 指标和原目标保持，goals NOT_MET，native NOT_QUALIFIED，实际前瞻账户日 0。
-
-约束保持：BTC only，两独立现货/合约运行时，manual300/5；本轮795重放0、14GB库重扫0、私人请求/订单0。工程授权不包含私人账户、订单、转账、设置；不重置/重绑旧纸面账本，不改 HOME/UID/锁。旧消费者 Spotf1383f1034e3f72df68bbda30793d22835e74557 / Coin762d75c22d19686dbd364a6b58b59dbc23340430 不变；新的公共历史响应不是前瞻交易观察。
+最终软件已完成：Spot371/11skip PASS；Coin471/5skip原全量1fixture边界错误，只修fixture并单测失败1项PASS，PASS_COMPOSITE。每仓库fullsuite一次，未修改运行时/研究或重算经济。下一步正常PR合并、本地主分支快进与实际远端闭环。不再跑廉价诊断、公共请求、账户或旧完整经济验证。原Git对象/旧证据/保护源码保持，旧消费者Spotf1383f1034e3f72df68bbda30793d22835e74557/Coin762d75c22d19686dbd364a6b58b59dbc23340430不重绑/重置。BTC-only、300/5、原CNY10000无追加和目标窗口、无私人交易/转账/设置；HOME/UID/锁不变。
