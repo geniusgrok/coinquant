@@ -13,6 +13,14 @@ import time
 import types
 
 from research.core_screen import inputs, stamp, serial
+from dataclasses import is_dataclass, asdict
+
+_base_serial=serial
+def serial(value):
+    if is_dataclass(value):return serial(asdict(value))
+    if isinstance(value,dict):return {str(k):serial(v) for k,v in value.items()}
+    if isinstance(value,(tuple,list)):return [serial(v) for v in value]
+    return _base_serial(value)
 
 ROOT=Path(__file__).resolve().parents[1]
 PACKAGE=ROOT.name
@@ -23,7 +31,7 @@ BASE={'spotquant':'38e05f3b98b59595d00ec14eb7e7f27ab78e1b53','coinquant':'113a79
 @contextmanager
 def baseline():
     if PACKAGE=='spotquant':
-        module=types.ModuleType('spotquant.historical_session');module.__package__='spotquant'
+        module=types.ModuleType('spotquant.historical_session');module.__package__='spotquant';module.__file__=str(ROOT/'spotquant/session.py')
         source=subprocess.check_output(['git','show',BASE[PACKAGE]+':spotquant/session.py'],cwd=ROOT,text=True)
         exec(compile(source,BASE[PACKAGE]+':spotquant/session.py','exec'),module.__dict__)
         yield module
@@ -47,6 +55,8 @@ def optimize_market(market_root,prints_root,scratch):
     class Prints(sm.TradePrints):
         def __init__(self):
             root=scratch/'selected-prints';root.mkdir();super().__init__(root);self.days=OrderedDict()
+            self.cache_dir=scratch.parent/'parsed-prints-cache';self.cache_dir.mkdir(exist_ok=True)
+            (scratch/'selected-prints-cache').symlink_to(self.cache_dir)
         def _load(self,day):
             if day in self.days:
                 self.days.move_to_end(day);self._day_ms=day;self._rows=self.days[day];return self._rows
@@ -58,8 +68,21 @@ def optimize_market(market_root,prints_root,scratch):
                     if suffix=='':self._day_ms,self._rows=day,None;return None
                     raise ValueError('selected print checksum missing')
                 if not path.exists():path.symlink_to(origin)
+            digest=check(self.root/name)
+            cache=self.cache_dir/(name+'.'+digest+'.bin')
+            import gzip,shutil
+            packed=Path(str(cache)+'.gz')
+            if not cache.exists() and packed.exists():
+                with gzip.open(packed,'rb') as src,cache.open('wb') as dst:shutil.copyfileobj(src,dst)
             rows=super()._load(day);self.days[day]=rows
-            while len(self.days)>3:self.days.popitem(last=False)
+            while len(self.days)>3:
+                expired,_=self.days.popitem(last=False)
+                prefix=datetime.fromtimestamp(expired/1000,timezone.utc).strftime('BTCUSDT-aggTrades-%Y-%m-%d.zip.')
+                for cached in self.cache_dir.glob(prefix+'*.bin'):
+                    zipped=Path(str(cached)+'.gz')
+                    if not zipped.exists():
+                        with cached.open('rb') as src,gzip.open(zipped,'wb',compresslevel=1) as dst:shutil.copyfileobj(src,dst)
+                    cached.unlink()
             return rows
     return market,Prints()
 
@@ -70,6 +93,7 @@ def main():
     p.add_argument('--out',type=Path,required=True);p.add_argument('--scratch',type=Path,required=True)
     p.add_argument('--market',type=Path,default=Path('/tmp/coinquant-market'))
     p.add_argument('--prints',type=Path,default=Path('/workspace/scratch/alpha-beta-next/public-print-vault'))
+    p.add_argument('--policy',choices=('baseline','core'),help='Restrict recovery to one policy; reuse other completed wallets')
     p.add_argument('--case',help='One absent/failed case only; never overwrites a prior receipt')
     a=p.parse_args()
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip():raise ValueError('freeze source first')
@@ -105,6 +129,7 @@ def main():
         b,e=stamp(begin),stamp(end);schedule=[s for s in starts if b<=s<e]
         for policy in ('baseline','core'):
             key=begin+'-'+policy
+            if a.policy and a.policy!=policy:continue
             if a.case and a.case!=key:continue
             directory=a.scratch/key;directory.mkdir();initial=D(10000)/fx(b)*D('.999')
             if PACKAGE=='spotquant':
