@@ -1,6 +1,12 @@
 # PROJECT_STATE
 
-Updated: 2026-10-03T18:31:54.024132+00:00
+Updated: 2026-10-04T09:58:16.018650+08:00
+
+## Active BTC alpha/beta upgrade (2026-10-04)
+
+All four directions have implementation or architectural disposition. Spot trend-reentry/slow-participation and Coin pullback-recovery screen-rejected under the frozen spec; joint-risk-budget ALREADY_COVERED by single position ownership. All8 accepted Spot accounts explain200 blocked proposals as basis_availability_date_mismatch across4 completed days,689 unchanged/0halving; repeated poll/account proposals are not independent missed trades. IOC attribution finds tradeoffs, no justified execution fix. Defaults/economic71+5/native/forward evidence remain unchanged. No new795 or historical financial acceptance. See research/upgrade-RESULT.md and upgrade-GUIDE.md and evidence/btc-upgrade-20261004.
+
+Current: final code/evidence/self-review complete. Sole local full checks: Coin447/5skips PASS at bb502481; Spot353/11skips initially1checkpoint error at07740a32, fixed8f28b083 and only the failed1case rerun PASS; final PASS_COMPOSITE, no second fullsuite. Original failures and actual receipts retained. GitHub CI intentionally skipped with [skip ci], not mislabeled green. Remaining: normal expected-head GitHub PR merges and clean main fast-forwards. Do not repeat screens/accepted attribution/economic matrices. Original failed Spot diagnostic retained, sole successful schema-fix screen retained. No private operations, no new native qualification, no source relabeling/reset. Existing forward ledgers retain original consumer/source binding; new research HEAD cannot substitute for that consumer.
 
 ## Completed BTC alpha/beta improvement round (2026-10-03)
 

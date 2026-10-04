@@ -1,0 +1,1444 @@
+{
+  "format": "btc-upgrade-readonly-and-spot-screen-v1",
+  "source": {
+    "git_head": "fe8aa7e6d8c7d303a6ee15cd252265ef4b07648b",
+    "dirty": false,
+    "python_sources_sha256": "0907e3afc35825c96f60f6a762dc679e4c3aa16fb50c9fc481532923127300e2"
+  },
+  "accepted_inputs": {
+    "spot-crowding-interaction-base.json.gz": "4c937ecf80f60d957486a752562c8ab8dfee4c06fa2e5b38b135cfb24ec38872",
+    "perp-registered-16.json.gz": "a071749cb6498a0e9612241bca23b57f8de9bae002b93fe189b7e1a3777a416d"
+  },
+  "missing_input_attribution": {
+    "blocked_proposals": 20,
+    "unique_blocked_completed_days": 2,
+    "causes": {
+      "basis_availability_date_mismatch": 20
+    },
+    "actual_halving_proposals": 0,
+    "unchanged_proposals": 84,
+    "blocked": [
+      {
+        "decision_ms": 1715904001600,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1715904007800,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1715904014000,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1715904020200,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1715904026400,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1715904032600,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1715904038800,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1715904045000,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1715904051200,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1715904057400,
+        "completed_bar_ms": 1715817600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352001400,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352007800,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352014200,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352020600,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352027000,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352033400,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352039800,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352046200,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352052600,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      },
+      {
+        "decision_ms": 1754352059000,
+        "completed_bar_ms": 1754265600000,
+        "causes": [
+          "basis_availability_date_mismatch"
+        ]
+      }
+    ],
+    "conclusion": "Observed gain comes from missing-input exclusions; halving has no historical treatment sample. No fill or profitability counterfactual is invented."
+  },
+  "execution_attribution": {
+    "entry_and_topup_constraints": {
+      "entry_sizing:target": 39,
+      "topup_sizing:stop_budget": 304,
+      "topup_sizing:target": 71,
+      "topup_sizing:minimum_or_unchanged": 273,
+      "entry_sizing:funding_cap": 7,
+      "topup_sizing:insufficient_funded_minimum": 89,
+      "topup_sizing:funding_cap": 42,
+      "entry_sizing:liquidity_cap": 7,
+      "topup_sizing:liquidity_cap": 26,
+      "entry_sizing:protection": 29
+    },
+    "owned_decision_regimes": {
+      "primary": 1183,
+      "unknown": 35,
+      "macro": 1193
+    },
+    "ioc_order_count": 192,
+    "zero_fill_ioc_orders": 12,
+    "partial_fill_ioc_orders": 134,
+    "unlinked_buy_fill_rows": 0,
+    "ioc_outcomes": [
+      {
+        "client_id": "cq-2e9ee5b4d01a21dca7b7a725719665",
+        "requested_btc": "0.966",
+        "filled_btc": "0.966",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-892cdcf4de274a4da18bf551dce0ee",
+        "requested_btc": "1.678",
+        "filled_btc": "0.602",
+        "fill_fraction": "0.3587604290822407628128724672"
+      },
+      {
+        "client_id": "cq-b1247b52f19bffbf7d561bb690071b",
+        "requested_btc": "1.073",
+        "filled_btc": "0.809",
+        "fill_fraction": "0.7539608574091332712022367195"
+      },
+      {
+        "client_id": "cq-e71ffc4a8140585551372036c90278",
+        "requested_btc": "0.261",
+        "filled_btc": "0.261",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-3f35d876c3529f6b34b24f744bbc02",
+        "requested_btc": "0.323",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-f3c214477b059176aa9ad854c5bca1",
+        "requested_btc": "0.332",
+        "filled_btc": "0.332",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-ffee4ccf4b155b195a0e5485410eca",
+        "requested_btc": "1.144",
+        "filled_btc": "0.912",
+        "fill_fraction": "0.7972027972027972027972027972"
+      },
+      {
+        "client_id": "cq-4e31d1fbb69d2e52ccd15dc5e1e913",
+        "requested_btc": "0.229",
+        "filled_btc": "0.229",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-dde2fe4f627bd7d356e31104dc385a",
+        "requested_btc": "0.337",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-5fddb2f97d59711119ebbc996ef660",
+        "requested_btc": "0.319",
+        "filled_btc": "0.319",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-5140e1dccf80fc2c99dfac9ff59088",
+        "requested_btc": "1.350",
+        "filled_btc": "1.350",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-79b1b5bb2bc89c76c0908acb476a10",
+        "requested_btc": "0.047",
+        "filled_btc": "0.047",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-a4525380102db79009a0aa1f740e0d",
+        "requested_btc": "0.189",
+        "filled_btc": "0.189",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-f3e0a67b4baa1accc92f8258ff42ec",
+        "requested_btc": "2.552",
+        "filled_btc": "0.351",
+        "fill_fraction": "0.1375391849529780564263322884"
+      },
+      {
+        "client_id": "cq-06b160c6239b44d05ad4d6e83d16c0",
+        "requested_btc": "2.208",
+        "filled_btc": "0.036",
+        "fill_fraction": "0.01630434782608695652173913043"
+      },
+      {
+        "client_id": "cq-4d8a0c6ae5ddf6de21955d785a88ff",
+        "requested_btc": "2.173",
+        "filled_btc": "2.173",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-d3769c23230292aaa8ef4add8da791",
+        "requested_btc": "0.099",
+        "filled_btc": "0.099",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-cffbaae059b24ee81f6d1b7b57e3c6",
+        "requested_btc": "3.844",
+        "filled_btc": "0.415",
+        "fill_fraction": "0.1079604578563995837669094693"
+      },
+      {
+        "client_id": "cq-dc4c577274efb8aecf8844e0a9ac88",
+        "requested_btc": "3.427",
+        "filled_btc": "1.003",
+        "fill_fraction": "0.2926758097461336445871024219"
+      },
+      {
+        "client_id": "cq-0a2c8e4b795e7af5abbddc92cde3e2",
+        "requested_btc": "2.419",
+        "filled_btc": "0.027",
+        "fill_fraction": "0.01116163704009921455146754857"
+      },
+      {
+        "client_id": "cq-53eff60e07811393d5f14eaf77a1f3",
+        "requested_btc": "2.392",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-d21cf18e4a69bf4248af144921ef5b",
+        "requested_btc": "2.392",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-043be06699db64c5f293bf9e51b672",
+        "requested_btc": "2.392",
+        "filled_btc": "0.092",
+        "fill_fraction": "0.03846153846153846153846153846"
+      },
+      {
+        "client_id": "cq-d27322d497a63260244421e8879eb6",
+        "requested_btc": "2.299",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-5b66e10e3cae6ba6d06609d25747f3",
+        "requested_btc": "2.299",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-36e7cc4123fb691d7e9baffc25d902",
+        "requested_btc": "2.299",
+        "filled_btc": "0.01",
+        "fill_fraction": "0.004349717268377555458895171814"
+      },
+      {
+        "client_id": "cq-6d76afa70917383cc8d8575ee28eca",
+        "requested_btc": "2.289",
+        "filled_btc": "0.007",
+        "fill_fraction": "0.003058103975535168195718654434"
+      },
+      {
+        "client_id": "cq-25ad416e209cb8b5cb83defd59dd63",
+        "requested_btc": "2.282",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-514cefffe43444669b82be7515224f",
+        "requested_btc": "2.282",
+        "filled_btc": "0.04",
+        "fill_fraction": "0.01752848378615249780893952673"
+      },
+      {
+        "client_id": "cq-b675c42ba78ab2e46cf1481b53427d",
+        "requested_btc": "4.760",
+        "filled_btc": "4.760",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-2a7917232451a730e9a4d7d51b1663",
+        "requested_btc": "2.839",
+        "filled_btc": "0.159",
+        "fill_fraction": "0.05600563578724903134906657274"
+      },
+      {
+        "client_id": "cq-4841daa6fd526d7f15ab958b450d60",
+        "requested_btc": "2.680",
+        "filled_btc": "0.563",
+        "fill_fraction": "0.2100746268656716417910447761"
+      },
+      {
+        "client_id": "cq-3150abf971baa3f5d9f377144b0736",
+        "requested_btc": "2.115",
+        "filled_btc": "0.428",
+        "fill_fraction": "0.2023640661938534278959810875"
+      },
+      {
+        "client_id": "cq-48574a345c4c40d8e2adbd452df493",
+        "requested_btc": "1.685",
+        "filled_btc": "1.685",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-1c1f6f8531d8626fa674a731f19c28",
+        "requested_btc": "1.277",
+        "filled_btc": "1.277",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-3566805ab1846702bf7bd0c84227ad",
+        "requested_btc": "0.323",
+        "filled_btc": "0.323",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-7c3bb09d9e9062d1ac3d7363088813",
+        "requested_btc": "0.247",
+        "filled_btc": "0.247",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-bee189521f207a06938d302b3f83fa",
+        "requested_btc": "3.626",
+        "filled_btc": "3.626",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-9a04667c1c8c541f2e2e6e5c68ed1c",
+        "requested_btc": "1.420",
+        "filled_btc": "1.420",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-408bd1786118ba6c636db35aea1fd7",
+        "requested_btc": "0.188",
+        "filled_btc": "0.188",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-31721079a4ccf5b0bb62944b459b26",
+        "requested_btc": "3.080",
+        "filled_btc": "0.410",
+        "fill_fraction": "0.1331168831168831168831168831"
+      },
+      {
+        "client_id": "cq-ece86c17d25c16bbd716750ce9587a",
+        "requested_btc": "2.668",
+        "filled_btc": "2.668",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-6353c349090274fc0de116e8b60673",
+        "requested_btc": "0.158",
+        "filled_btc": "0.158",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-606b7beb7360c48810cadedf8f1689",
+        "requested_btc": "5.011",
+        "filled_btc": "0.396",
+        "fill_fraction": "0.07902614248652963480343244861"
+      },
+      {
+        "client_id": "cq-4fd5be6cf619ecee7cbf4c34337113",
+        "requested_btc": "4.614",
+        "filled_btc": "0.020",
+        "fill_fraction": "0.004334633723450368443866493281"
+      },
+      {
+        "client_id": "cq-fefd7d0bb0c59b1cb7c950872c33ee",
+        "requested_btc": "4.593",
+        "filled_btc": "2.924",
+        "fill_fraction": "0.6366209449161767907685608535"
+      },
+      {
+        "client_id": "cq-ab670bc51ab1773e6374097e3ee33d",
+        "requested_btc": "1.659",
+        "filled_btc": "1.659",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-149d01afcfd0494dceb8fc84b5ed6d",
+        "requested_btc": "0.312",
+        "filled_btc": "0.312",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-bab753ca3c530b7ca793c99a5c9a39",
+        "requested_btc": "0.613",
+        "filled_btc": "0.613",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-90c52a2569127f63b5c5c24c181798",
+        "requested_btc": "6.729",
+        "filled_btc": "2.262",
+        "fill_fraction": "0.3361569326794471689701292911"
+      },
+      {
+        "client_id": "cq-83033ea01902a3b3278f325c3c4006",
+        "requested_btc": "4.471",
+        "filled_btc": "1.066",
+        "fill_fraction": "0.2384254081860881234623126817"
+      },
+      {
+        "client_id": "cq-d990e64fc7c1ec2504fbda4f64e0fc",
+        "requested_btc": "3.406",
+        "filled_btc": "0.013",
+        "fill_fraction": "0.003816793893129770992366412214"
+      },
+      {
+        "client_id": "cq-8ba612252d69cdef51461d32185f20",
+        "requested_btc": "3.386",
+        "filled_btc": "0.181",
+        "fill_fraction": "0.05345540460720614294152392203"
+      },
+      {
+        "client_id": "cq-11d898d5fa6d15884a33dad0db211a",
+        "requested_btc": "3.210",
+        "filled_btc": "1.041",
+        "fill_fraction": "0.3242990654205607476635514019"
+      },
+      {
+        "client_id": "cq-20646aade8cefbf8aaf77c4df959cd",
+        "requested_btc": "2.178",
+        "filled_btc": "0.237",
+        "fill_fraction": "0.1088154269972451790633608815"
+      },
+      {
+        "client_id": "cq-45d562873ca4b3fe3b60707c40c1b8",
+        "requested_btc": "1.942",
+        "filled_btc": "0.424",
+        "fill_fraction": "0.2183316168898043254376930999"
+      },
+      {
+        "client_id": "cq-d13ceb7322d203b9cf6614d00de8cd",
+        "requested_btc": "1.518",
+        "filled_btc": "0.422",
+        "fill_fraction": "0.2779973649538866930171277997"
+      },
+      {
+        "client_id": "cq-367e45e069f74890def3ba7b8620e1",
+        "requested_btc": "1.093",
+        "filled_btc": "1.093",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-f05a16acd67d9ccb828abe5d53394a",
+        "requested_btc": "7.975",
+        "filled_btc": "2.308",
+        "fill_fraction": "0.2894043887147335423197492163"
+      },
+      {
+        "client_id": "cq-07d713f1d6dafc1e9d5cb3f3109b0c",
+        "requested_btc": "5.658",
+        "filled_btc": "0.859",
+        "fill_fraction": "0.1518204312477907387769529869"
+      },
+      {
+        "client_id": "cq-6f0c0f99a94e2bc2f8222810b7f40a",
+        "requested_btc": "4.796",
+        "filled_btc": "4.796",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-53c1536a53b61e45eb806e3b0c7cbd",
+        "requested_btc": "0.890",
+        "filled_btc": "0.89",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-61d19393fbc897959aaffcf616e4e6",
+        "requested_btc": "7.906",
+        "filled_btc": "1.609",
+        "fill_fraction": "0.2035163167214773589678725019"
+      },
+      {
+        "client_id": "cq-839d2d552dd21bcc317915227170ee",
+        "requested_btc": "6.292",
+        "filled_btc": "4.075",
+        "fill_fraction": "0.6476478067387158296249205340"
+      },
+      {
+        "client_id": "cq-f6a9b7cd3230bb423b446e94ed6cad",
+        "requested_btc": "2.203",
+        "filled_btc": "2.203",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-7da5c30a49489a120588e1146e46e1",
+        "requested_btc": "1.068",
+        "filled_btc": "1.068",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-8ff1a3dfdbdb875b6482c0275c2725",
+        "requested_btc": "14.456",
+        "filled_btc": "1.080",
+        "fill_fraction": "0.07470946319867183176535694521"
+      },
+      {
+        "client_id": "cq-960639f1f53c47c60f7c7e0a9f1e84",
+        "requested_btc": "13.415",
+        "filled_btc": "1.335",
+        "fill_fraction": "0.09951546775997018263138278047"
+      },
+      {
+        "client_id": "cq-27aea0aeb6546e4874c938a15e19c7",
+        "requested_btc": "12.066",
+        "filled_btc": "0.280",
+        "fill_fraction": "0.02320570197248466766119675120"
+      },
+      {
+        "client_id": "cq-188e9e34fe0af493c43e7132d59e4b",
+        "requested_btc": "11.756",
+        "filled_btc": "0.173",
+        "fill_fraction": "0.01471588975842123171146648520"
+      },
+      {
+        "client_id": "cq-cd3ed2a6411780831a8929edb327ec",
+        "requested_btc": "11.591",
+        "filled_btc": "11.591",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-17a27e77d29fceb0ab02dbbfc52152",
+        "requested_btc": "9.667",
+        "filled_btc": "0.246",
+        "fill_fraction": "0.02544739836557360091031343747"
+      },
+      {
+        "client_id": "cq-4b8e51ef2b0a1199f51b60d32b3872",
+        "requested_btc": "9.615",
+        "filled_btc": "0.457",
+        "fill_fraction": "0.04752990119604784191367654706"
+      },
+      {
+        "client_id": "cq-be185f0192528eaf8da17e76dd4ec7",
+        "requested_btc": "9.162",
+        "filled_btc": "0.291",
+        "fill_fraction": "0.03176162409954158480681074001"
+      },
+      {
+        "client_id": "cq-af06e49628e833ca0698cd78e94502",
+        "requested_btc": "8.877",
+        "filled_btc": "0.769",
+        "fill_fraction": "0.08662836543877436070744620930"
+      },
+      {
+        "client_id": "cq-bc6c545dee9c6c606b9643d7ae6f6a",
+        "requested_btc": "8.114",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-4d6e1ee5d9625ffc24be2d5c776597",
+        "requested_btc": "8.094",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-74c254b05013f5ee12b17a9af6ebd5",
+        "requested_btc": "8.093",
+        "filled_btc": "0.003",
+        "fill_fraction": "0.0003706907203756332633139750402"
+      },
+      {
+        "client_id": "cq-9caa3833ff5601219d37182bd47f3d",
+        "requested_btc": "8.090",
+        "filled_btc": "0.052",
+        "fill_fraction": "0.006427688504326328800988875155"
+      },
+      {
+        "client_id": "cq-78e01bbdc6315fa3b70c0d301d100e",
+        "requested_btc": "8.044",
+        "filled_btc": "0.026",
+        "fill_fraction": "0.003232222774738935852809547489"
+      },
+      {
+        "client_id": "cq-46451ce228a67859dabad33db6eb2a",
+        "requested_btc": "7.969",
+        "filled_btc": "0.117",
+        "fill_fraction": "0.01468189233278955954323001631"
+      },
+      {
+        "client_id": "cq-c1f9006707e0d6c597428d9530133a",
+        "requested_btc": "7.895",
+        "filled_btc": "0.013",
+        "fill_fraction": "0.001646611779607346421785940469"
+      },
+      {
+        "client_id": "cq-30509ea8e2f891d5003d6ce7871a02",
+        "requested_btc": "12.979",
+        "filled_btc": "4.549",
+        "fill_fraction": "0.3504892518684028045303952539"
+      },
+      {
+        "client_id": "cq-d8bf1afb9f5d9fdb74a0f98c5a87d1",
+        "requested_btc": "9.705",
+        "filled_btc": "0.471",
+        "fill_fraction": "0.04853168469860896445131375580"
+      },
+      {
+        "client_id": "cq-4a769865a9398d22097bac10331ce9",
+        "requested_btc": "9.231",
+        "filled_btc": "0.308",
+        "fill_fraction": "0.03336583252085364532553352833"
+      },
+      {
+        "client_id": "cq-cb326d70ca0e77fb9f74c6a1ccd826",
+        "requested_btc": "8.922",
+        "filled_btc": "0.898",
+        "fill_fraction": "0.1006500784577449002465814840"
+      },
+      {
+        "client_id": "cq-ee78da37f2d07349a6c4103a552a8a",
+        "requested_btc": "8.019",
+        "filled_btc": "0.319",
+        "fill_fraction": "0.03978052126200274348422496571"
+      },
+      {
+        "client_id": "cq-959ec327737b8333bafcdc6fffe12d",
+        "requested_btc": "7.699",
+        "filled_btc": "0.105",
+        "fill_fraction": "0.01363813482270424730484478504"
+      },
+      {
+        "client_id": "cq-9720a301e272a1c355379f0123a2e6",
+        "requested_btc": "7.593",
+        "filled_btc": "0.574",
+        "fill_fraction": "0.07559594363229290135651257737"
+      },
+      {
+        "client_id": "cq-1a1071c4388252f2b0844d7b3f169d",
+        "requested_btc": "7.016",
+        "filled_btc": "0.426",
+        "fill_fraction": "0.06071835803876852907639680730"
+      },
+      {
+        "client_id": "cq-d0a46771235dd12bf2a6c7de7a3626",
+        "requested_btc": "6.588",
+        "filled_btc": "0.338",
+        "fill_fraction": "0.05130540376442015786278081360"
+      },
+      {
+        "client_id": "cq-68bb7714f469a43615fc6b01c57c12",
+        "requested_btc": "6.248",
+        "filled_btc": "0.106",
+        "fill_fraction": "0.01696542893725992317541613316"
+      },
+      {
+        "client_id": "cq-9dedb0ff79dd92fbe78664e042f5e9",
+        "requested_btc": "6.142",
+        "filled_btc": "0.117",
+        "fill_fraction": "0.01904916965157929013350700098"
+      },
+      {
+        "client_id": "cq-c814040f56277c4c870f7e15d131cc",
+        "requested_btc": "6.024",
+        "filled_btc": "0.068",
+        "fill_fraction": "0.01128818061088977423638778220"
+      },
+      {
+        "client_id": "cq-8bf336b5088fa6e1a3ade0b3333160",
+        "requested_btc": "17.287",
+        "filled_btc": "0.048",
+        "fill_fraction": "0.002776652976224908891074217620"
+      },
+      {
+        "client_id": "cq-71ac6d2aaa5f1e3a9983cfe9ce00ea",
+        "requested_btc": "17.239",
+        "filled_btc": "0.089",
+        "fill_fraction": "0.005162712454318695980045246244"
+      },
+      {
+        "client_id": "cq-28cd2bd79aa0ddb622a59770e77c0c",
+        "requested_btc": "17.149",
+        "filled_btc": "0.421",
+        "fill_fraction": "0.02454953641611755787509475771"
+      },
+      {
+        "client_id": "cq-c3b6ad43b9c9bb0fd40f1db874c439",
+        "requested_btc": "16.719",
+        "filled_btc": "0.040",
+        "fill_fraction": "0.002392487588970632214845385490"
+      },
+      {
+        "client_id": "cq-c2b31110da5fa96410efe6994648d7",
+        "requested_btc": "16.686",
+        "filled_btc": "0.078",
+        "fill_fraction": "0.004674577490111470693994965840"
+      },
+      {
+        "client_id": "cq-71d8c12dd396ccd07cea4e42eea26a",
+        "requested_btc": "16.608",
+        "filled_btc": "0.047",
+        "fill_fraction": "0.002829961464354527938342967245"
+      },
+      {
+        "client_id": "cq-c5adb78505bb7e53854eeaab6ba780",
+        "requested_btc": "10.607",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-c8c47b9f9f8da7e07a8444075f8d4a",
+        "requested_btc": "10.607",
+        "filled_btc": "0.109",
+        "fill_fraction": "0.01027623267653436409917978693"
+      },
+      {
+        "client_id": "cq-c63d18f3fa03641ecf97d509b38537",
+        "requested_btc": "5.020",
+        "filled_btc": "0.319",
+        "fill_fraction": "0.06354581673306772908366533865"
+      },
+      {
+        "client_id": "cq-76a9e737ea350d7c71936df63d6245",
+        "requested_btc": "5.020",
+        "filled_btc": "0.190",
+        "fill_fraction": "0.03784860557768924302788844622"
+      },
+      {
+        "client_id": "cq-dc22292b74b609c068a856a6e1b73e",
+        "requested_btc": "5.020",
+        "filled_btc": "0.164",
+        "fill_fraction": "0.03266932270916334661354581673"
+      },
+      {
+        "client_id": "cq-074cde263a6d58b6a6278479935ce6",
+        "requested_btc": "1.606",
+        "filled_btc": "1.606",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-f0f3507d61049bdd2f3bf9f9340131",
+        "requested_btc": "1.781",
+        "filled_btc": "0.536",
+        "fill_fraction": "0.3009545199326221224031443010"
+      },
+      {
+        "client_id": "cq-bec69c94b6e22a7623a90aeaee3828",
+        "requested_btc": "1.245",
+        "filled_btc": "0.365",
+        "fill_fraction": "0.2931726907630522088353413655"
+      },
+      {
+        "client_id": "cq-2492e429c9dae509cf6629228ed2e7",
+        "requested_btc": "0.880",
+        "filled_btc": "0.259",
+        "fill_fraction": "0.2943181818181818181818181818"
+      },
+      {
+        "client_id": "cq-8406894190a6570de2cf4c9ac006e3",
+        "requested_btc": "0.621",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-1367fdbc78bef8edee3fd0f21fd59f",
+        "requested_btc": "0.621",
+        "filled_btc": "0.621",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-12d08b60b616701037fad0205479d0",
+        "requested_btc": "2.506",
+        "filled_btc": "0.600",
+        "fill_fraction": "0.2394253790901835594573024741"
+      },
+      {
+        "client_id": "cq-337f5dc67582efe81b91738307cef8",
+        "requested_btc": "1.898",
+        "filled_btc": "0.044",
+        "fill_fraction": "0.02318229715489989462592202318"
+      },
+      {
+        "client_id": "cq-5256f2072500cf03365673ff5d7131",
+        "requested_btc": "1.862",
+        "filled_btc": "1.862",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-0e6a22d8b495b081504aa4c15eadd4",
+        "requested_btc": "15.012",
+        "filled_btc": "12.117",
+        "fill_fraction": "0.8071542765787370103916866507"
+      },
+      {
+        "client_id": "cq-105b58051cb4a96f3cf8782976f17c",
+        "requested_btc": "2.837",
+        "filled_btc": "2.837",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-7014169e08d349e41bacee156dca05",
+        "requested_btc": "7.471",
+        "filled_btc": "7.471",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-4c523e9efaaf02d64b8f33ff2ffc1c",
+        "requested_btc": "0.001",
+        "filled_btc": "0.001",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-d78c9f67a68f21cdb7b5ffa7edad9f",
+        "requested_btc": "0.001",
+        "filled_btc": "0.001",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-b31000ca17fd7558db7c1c768043dd",
+        "requested_btc": "11.726",
+        "filled_btc": "0.743",
+        "fill_fraction": "0.06336346580249019273409517312"
+      },
+      {
+        "client_id": "cq-1cce94c7291930d625eccb7ee6918d",
+        "requested_btc": "10.981",
+        "filled_btc": "0.004",
+        "fill_fraction": "0.0003642655495856479373463254713"
+      },
+      {
+        "client_id": "cq-0c1006590acf29ce804578a3c78693",
+        "requested_btc": "10.977",
+        "filled_btc": "0.305",
+        "fill_fraction": "0.02778536940876377881023959187"
+      },
+      {
+        "client_id": "cq-3bcb21864d7f2c0e72f509d4ee56bf",
+        "requested_btc": "10.671",
+        "filled_btc": "2.570",
+        "fill_fraction": "0.2408396588885765157904601256"
+      },
+      {
+        "client_id": "cq-59a0f6ecd8b25371746f36b8a9a9f6",
+        "requested_btc": "8.092",
+        "filled_btc": "6.895",
+        "fill_fraction": "0.8520761245674740484429065744"
+      },
+      {
+        "client_id": "cq-9a8c266a0ed9f9c1a220058ed6a907",
+        "requested_btc": "1.172",
+        "filled_btc": "1.172",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-8d60c2e51160386b4009acd59fca35",
+        "requested_btc": "3.419",
+        "filled_btc": "2.183",
+        "fill_fraction": "0.6384907867797601637905820415"
+      },
+      {
+        "client_id": "cq-f3b3bdc2757e58ed732967179c42ef",
+        "requested_btc": "1.234",
+        "filled_btc": "0.720",
+        "fill_fraction": "0.5834683954619124797406807131"
+      },
+      {
+        "client_id": "cq-a47f3e87059a074ecbdf44b149703d",
+        "requested_btc": "0.513",
+        "filled_btc": "0.513",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-3cf3f16ada810fe8e713bfde85d97d",
+        "requested_btc": "0.594",
+        "filled_btc": "0.390",
+        "fill_fraction": "0.6565656565656565656565656566"
+      },
+      {
+        "client_id": "cq-47884c6c6d182ea3fd06bf862ee373",
+        "requested_btc": "0.204",
+        "filled_btc": "0.204",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-7440f277248dd2f508155376042ef7",
+        "requested_btc": "4.213",
+        "filled_btc": "0.035",
+        "fill_fraction": "0.008307619273676714929978637550"
+      },
+      {
+        "client_id": "cq-d12c53b23a3353af3f8f77987930ac",
+        "requested_btc": "10.887",
+        "filled_btc": "0.102",
+        "fill_fraction": "0.009368972168641499035546982640"
+      },
+      {
+        "client_id": "cq-f05dabc3cb7707c1f1e130c4b6144f",
+        "requested_btc": "10.784",
+        "filled_btc": "0.271",
+        "fill_fraction": "0.02512982195845697329376854599"
+      },
+      {
+        "client_id": "cq-845f69307b7b93036ec68d65f6655e",
+        "requested_btc": "8.270",
+        "filled_btc": "0.014",
+        "fill_fraction": "0.001692865779927448609431680774"
+      },
+      {
+        "client_id": "cq-7dad430fbcc7881f8945bbe440dc1a",
+        "requested_btc": "8.270",
+        "filled_btc": "0.086",
+        "fill_fraction": "0.01039903264812575574365175333"
+      },
+      {
+        "client_id": "cq-3dafbe8c8a5a9d14770a822dfc2060",
+        "requested_btc": "8.270",
+        "filled_btc": "0.186",
+        "fill_fraction": "0.02249093107617896009673518742"
+      },
+      {
+        "client_id": "cq-2cca90d0f3bb8ef1ce15d9a45a57c8",
+        "requested_btc": "10.225",
+        "filled_btc": "0.203",
+        "fill_fraction": "0.01985330073349633251833740831"
+      },
+      {
+        "client_id": "cq-ccad664dbbe9cd0e2728409f1fda25",
+        "requested_btc": "10.021",
+        "filled_btc": "0.801",
+        "fill_fraction": "0.07993214250074842830056880551"
+      },
+      {
+        "client_id": "cq-d2ad1d58c152380e5eb3d991357f45",
+        "requested_btc": "9.217",
+        "filled_btc": "0.168",
+        "fill_fraction": "0.01822718889009439079960941738"
+      },
+      {
+        "client_id": "cq-7c563f01652ff5f106014337822009",
+        "requested_btc": "9.048",
+        "filled_btc": "0.063",
+        "fill_fraction": "0.006962864721485411140583554377"
+      },
+      {
+        "client_id": "cq-08ab023dc708a73b00fdbbc1637552",
+        "requested_btc": "8.985",
+        "filled_btc": "0.191",
+        "fill_fraction": "0.02125765164162493043962159154"
+      },
+      {
+        "client_id": "cq-c261fa124dd37e7073c22a9ba32922",
+        "requested_btc": "1.039",
+        "filled_btc": "0.134",
+        "fill_fraction": "0.1289701636188642925890279115"
+      },
+      {
+        "client_id": "cq-646abc1419ac41e8c8ca8a092affa3",
+        "requested_btc": "0.904",
+        "filled_btc": "0.01",
+        "fill_fraction": "0.01106194690265486725663716814"
+      },
+      {
+        "client_id": "cq-8d26d74685a40daa6d18428ee2febf",
+        "requested_btc": "0.895",
+        "filled_btc": "0.895",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-7347a2b5c5631e8cab0d5e9d9ecb22",
+        "requested_btc": "0.426",
+        "filled_btc": "0.426",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-3d24e7177cabc7128f393e73c77cbe",
+        "requested_btc": "6.124",
+        "filled_btc": "0.203",
+        "fill_fraction": "0.03314826910516002612671456564"
+      },
+      {
+        "client_id": "cq-8a11b08148d74a964d40129687deb7",
+        "requested_btc": "6.938",
+        "filled_btc": "1.051",
+        "fill_fraction": "0.1514845776880945517440184491"
+      },
+      {
+        "client_id": "cq-64ab011a3b898b449387ae51df881d",
+        "requested_btc": "6.938",
+        "filled_btc": "0.545",
+        "fill_fraction": "0.07855289708849812626117036610"
+      },
+      {
+        "client_id": "cq-d1f0a457cd266bac9eb205db8fae0a",
+        "requested_btc": "7.569",
+        "filled_btc": "0.026",
+        "fill_fraction": "0.003435064077156823886907121152"
+      },
+      {
+        "client_id": "cq-1f3588e1dab152897baf663c8b7b0f",
+        "requested_btc": "7.569",
+        "filled_btc": "0.003",
+        "fill_fraction": "0.0003963535473642489100277447483"
+      },
+      {
+        "client_id": "cq-59fb08c536a4a79d5cf49f67acb120",
+        "requested_btc": "7.709",
+        "filled_btc": "0.284",
+        "fill_fraction": "0.03684005707614476585808794915"
+      },
+      {
+        "client_id": "cq-4cfa376d833704bf8f2a555fae3c01",
+        "requested_btc": "7.433",
+        "filled_btc": "0.019",
+        "fill_fraction": "0.002556168438046549172608637159"
+      },
+      {
+        "client_id": "cq-fdb210edf1ac638d38153994066028",
+        "requested_btc": "7.406",
+        "filled_btc": "0.031",
+        "fill_fraction": "0.004185795301107210369970294356"
+      },
+      {
+        "client_id": "cq-926db3440d63901657743d8ea80ebb",
+        "requested_btc": "4.949",
+        "filled_btc": "0.060",
+        "fill_fraction": "0.01212366134572640937563144070"
+      },
+      {
+        "client_id": "cq-f9cad94cee0c1e5e3e3e4d450f4de7",
+        "requested_btc": "4.949",
+        "filled_btc": "0.066",
+        "fill_fraction": "0.01333602748029905031319458476"
+      },
+      {
+        "client_id": "cq-f974bd45cc7e00c58afb5e5625ef71",
+        "requested_btc": "2.241",
+        "filled_btc": "0.421",
+        "fill_fraction": "0.1878625613565372601517179830"
+      },
+      {
+        "client_id": "cq-e76035a5715f4b8eac66db89db3732",
+        "requested_btc": "8.191",
+        "filled_btc": "8.167",
+        "fill_fraction": "0.9970699548284702722500305213"
+      },
+      {
+        "client_id": "cq-08e2bb22bc22d6e6664e9c9c04c5a0",
+        "requested_btc": "0.024",
+        "filled_btc": "0.002",
+        "fill_fraction": "0.08333333333333333333333333333"
+      },
+      {
+        "client_id": "cq-def592fd7248e440102245c0ca0496",
+        "requested_btc": "0.022",
+        "filled_btc": "0.022",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-c0fac70a2177d61d084a813abc8477",
+        "requested_btc": "0.001",
+        "filled_btc": "0.001",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-5c0887c31b5e57c0575f302ab4ee7e",
+        "requested_btc": "8.850",
+        "filled_btc": "8.850",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-b82d11ca5636575caf82be368c1736",
+        "requested_btc": "20.156",
+        "filled_btc": "9.200",
+        "fill_fraction": "0.4564397697955943639611033935"
+      },
+      {
+        "client_id": "cq-7abd1f657796b50d448a2eb2084745",
+        "requested_btc": "10.913",
+        "filled_btc": "3.233",
+        "fill_fraction": "0.2962521763034912489691193989"
+      },
+      {
+        "client_id": "cq-0d3be6afca90546555a3eb50181dd0",
+        "requested_btc": "7.665",
+        "filled_btc": "0.821",
+        "fill_fraction": "0.1071102413568166992824527071"
+      },
+      {
+        "client_id": "cq-d7462780b635cec3031a841206e4a9",
+        "requested_btc": "6.841",
+        "filled_btc": "0.568",
+        "fill_fraction": "0.08302879695950884373629586318"
+      },
+      {
+        "client_id": "cq-31635f93e604dedbb3f1054c613310",
+        "requested_btc": "6.270",
+        "filled_btc": "0.106",
+        "fill_fraction": "0.01690590111642743221690590112"
+      },
+      {
+        "client_id": "cq-03e2aa3000bca51e696acb14a9288b",
+        "requested_btc": "6.164",
+        "filled_btc": "1.227",
+        "fill_fraction": "0.1990590525632706035042180402"
+      },
+      {
+        "client_id": "cq-2e44de148ec1d76093d728ae9afaba",
+        "requested_btc": "4.931",
+        "filled_btc": "0.574",
+        "fill_fraction": "0.1164064084364226323261001825"
+      },
+      {
+        "client_id": "cq-afc7f5522bc4582f34254ced8413db",
+        "requested_btc": "4.354",
+        "filled_btc": "4.354",
+        "fill_fraction": "1"
+      },
+      {
+        "client_id": "cq-bfad612a2f6e745e1ba7f548e7acaa",
+        "requested_btc": "2.555",
+        "filled_btc": "0",
+        "fill_fraction": "0"
+      },
+      {
+        "client_id": "cq-62c52d4900f68ef49018a718d47040",
+        "requested_btc": "2.555",
+        "filled_btc": "0.002",
+        "fill_fraction": "0.0007827788649706457925636007828"
+      },
+      {
+        "client_id": "cq-71e18d8d7fbe050f06bdffc857e493",
+        "requested_btc": "2.555",
+        "filled_btc": "0.062",
+        "fill_fraction": "0.02426614481409001956947162427"
+      },
+      {
+        "client_id": "cq-9de37cca8fb49eed1f86cefa4c2dbf",
+        "requested_btc": "6.287",
+        "filled_btc": "0.153",
+        "fill_fraction": "0.02433593128678224908541434707"
+      },
+      {
+        "client_id": "cq-a4dc268ff90464c2638b6224339f49",
+        "requested_btc": "6.287",
+        "filled_btc": "1.420",
+        "fill_fraction": "0.2258628916812470176554795610"
+      },
+      {
+        "client_id": "cq-00cfa37dcb2f9338af4b965c449e81",
+        "requested_btc": "6.365",
+        "filled_btc": "0.001",
+        "fill_fraction": "0.0001571091908876669285153181461"
+      },
+      {
+        "client_id": "cq-4e74c1c74c33c2893128220f18db9c",
+        "requested_btc": "6.365",
+        "filled_btc": "0.001",
+        "fill_fraction": "0.0001571091908876669285153181461"
+      },
+      {
+        "client_id": "cq-d9ab131f98da3c3b1a3eb1f56dd70b",
+        "requested_btc": "8.002",
+        "filled_btc": "0.239",
+        "fill_fraction": "0.02986753311672081979505123719"
+      },
+      {
+        "client_id": "cq-72f5bbe44789489f2b76ea3159f742",
+        "requested_btc": "8.002",
+        "filled_btc": "0.039",
+        "fill_fraction": "0.004873781554611347163209197701"
+      },
+      {
+        "client_id": "cq-4d241452c33c91b92fcfcbc0879239",
+        "requested_btc": "4.524",
+        "filled_btc": "0.046",
+        "fill_fraction": "0.01016799292661361626878868258"
+      },
+      {
+        "client_id": "cq-9ff6819bad7e09d984946847f3c64b",
+        "requested_btc": "4.524",
+        "filled_btc": "0.212",
+        "fill_fraction": "0.04686118479221927497789566755"
+      },
+      {
+        "client_id": "cq-99d093693c1063c76424ea1319ce45",
+        "requested_btc": "4.524",
+        "filled_btc": "4.015",
+        "fill_fraction": "0.8874889478337754199823165340"
+      },
+      {
+        "client_id": "cq-3b391c99389371703fef830e682647",
+        "requested_btc": "14.305",
+        "filled_btc": "0.177",
+        "fill_fraction": "0.01237329605033205173016427822"
+      },
+      {
+        "client_id": "cq-535fee3c0ab7fa2bbe0b415ee82744",
+        "requested_btc": "14.165",
+        "filled_btc": "2.729",
+        "fill_fraction": "0.1926579597599717613836921991"
+      },
+      {
+        "client_id": "cq-3a11ce39964f99daf7c6d6b1a8993f",
+        "requested_btc": "11.420",
+        "filled_btc": "0.664",
+        "fill_fraction": "0.05814360770577933450087565674"
+      },
+      {
+        "client_id": "cq-091418833fa422020133200dc2b9a2",
+        "requested_btc": "10.717",
+        "filled_btc": "0.291",
+        "fill_fraction": "0.02715312120929364560977885602"
+      },
+      {
+        "client_id": "cq-c1ce8db283f38d37e387c2b1835ef6",
+        "requested_btc": "10.416",
+        "filled_btc": "0.390",
+        "fill_fraction": "0.03744239631336405529953917051"
+      },
+      {
+        "client_id": "cq-95068c78585498f045047857ae0137",
+        "requested_btc": "10.053",
+        "filled_btc": "0.074",
+        "fill_fraction": "0.007360986770118372625087038695"
+      },
+      {
+        "client_id": "cq-d97a1a07d935739b4e6b74409e15da",
+        "requested_btc": "9.977",
+        "filled_btc": "3.804",
+        "fill_fraction": "0.3812769369549964919314423173"
+      },
+      {
+        "client_id": "cq-895897633373670cfcbaaba6c419d0",
+        "requested_btc": "6.206",
+        "filled_btc": "0.205",
+        "fill_fraction": "0.03303254914598775378665807283"
+      },
+      {
+        "client_id": "cq-247647703d64d7ecb10289a3cb64ed",
+        "requested_btc": "6.029",
+        "filled_btc": "0.804",
+        "fill_fraction": "0.1333554486647868634931166031"
+      },
+      {
+        "client_id": "cq-260f66cfc86642103c5a9d3d85b6da",
+        "requested_btc": "5.246",
+        "filled_btc": "2.285",
+        "fill_fraction": "0.4355699580632863133816240945"
+      },
+      {
+        "client_id": "cq-ddfb7ea51595c6a76142f1ca281517",
+        "requested_btc": "2.948",
+        "filled_btc": "2.948",
+        "fill_fraction": "1"
+      }
+    ],
+    "joint_budget": {
+      "status": "ALREADY_COVERED",
+      "concurrent_component_positions": 0,
+      "source": "coinquant/campaign.py: Campaign.active, select_macro and position_campaign",
+      "conclusion": "One campaign owns the single net position; macro ownership has priority, primary ownership clears macro geometry. An overlap-specific extra budget has no treatment opportunity."
+    },
+    "execution_change": {
+      "status": "NO_JUSTIFIED_FIX",
+      "conclusion": "Existing IOC limits, committed targets and stop-budget constraints are visible. Incomplete fills are evidence of an execution tradeoff, not a proven defect. Preserve current execution until a new policy shows net benefit."
+    }
+  },
+  "spot_screen": {
+    "baseline": {
+      "daily_mdd": 0.3129241201411105,
+      "longest_daily_underwater_days": 517,
+      "daily_es5_loss": 0.04099365075006857,
+      "worst_day": -0.15893117280970326,
+      "daily_volatility_annualized": 0.3640671706045873,
+      "final_usdt": 50673.99672623703,
+      "usdt_cagr": 0.6997719777737115,
+      "beta_btc": 0.39548077756034594,
+      "intercept_daily": 0.001040762831423256,
+      "residual_arithmetic_annualized": 0.38013862417734423,
+      "intercept_hac7_t_descriptive": 3.787451205047872,
+      "intercept_hac7_standard_error_daily": 0.0002747924065757307,
+      "residual_arithmetic_annualized_normal95_descriptive": [
+        0.18341748823384438,
+        0.5768597601208441
+      ],
+      "uncertainty_limit": "Descriptive fixed seven-lag normal approximation; no selection adjustment or prospective claim.",
+      "residual_volatility_annualized": 0.27503427315233897,
+      "days": 2454,
+      "prospective_alpha_proven": false,
+      "up_capture": 0.48732434803264424,
+      "down_capture": 0.39501808950435663,
+      "cny_cagr": 0.689501543821974,
+      "continuous_ohlc_proxy_mdd": "0.3145902608420059026069792070",
+      "closed_sleeve_trades": 141
+    },
+    "trend-reentry": {
+      "daily_mdd": 0.3133864945510024,
+      "longest_daily_underwater_days": 517,
+      "daily_es5_loss": 0.043586043501266,
+      "worst_day": -0.15893117280970315,
+      "daily_volatility_annualized": 0.3851089635016001,
+      "final_usdt": 59297.9849164793,
+      "usdt_cagr": 0.7400014599648173,
+      "beta_btc": 0.42610187462520205,
+      "intercept_daily": 0.0010800863925319061,
+      "residual_arithmetic_annualized": 0.3945015548722787,
+      "intercept_hac7_t_descriptive": 3.7808156300221385,
+      "intercept_hac7_standard_error_daily": 0.00028567549921115347,
+      "residual_arithmetic_annualized_normal95_descriptive": [
+        0.18998932174200606,
+        0.5990137880025513
+      ],
+      "uncertainty_limit": "Descriptive fixed seven-lag normal approximation; no selection adjustment or prospective claim.",
+      "residual_volatility_annualized": 0.28680188665945144,
+      "days": 2454,
+      "prospective_alpha_proven": false,
+      "up_capture": 0.5214326717543063,
+      "down_capture": 0.42564137746356867,
+      "cny_cagr": 0.7294871190220615,
+      "continuous_ohlc_proxy_mdd": "0.3406560328697796219517367227",
+      "closed_sleeve_trades": 151,
+      "survives_screen": false
+    },
+    "slow-participation": {
+      "daily_mdd": 0.29623273546164786,
+      "longest_daily_underwater_days": 517,
+      "daily_es5_loss": 0.04077237962313013,
+      "worst_day": -0.15893117280970304,
+      "daily_volatility_annualized": 0.35855381929445695,
+      "final_usdt": 37579.01262888264,
+      "usdt_cagr": 0.6257938937631975,
+      "beta_btc": 0.4074761132689925,
+      "intercept_daily": 0.0008956890718094335,
+      "residual_arithmetic_annualized": 0.32715043347839556,
+      "intercept_hac7_t_descriptive": 3.493707666445004,
+      "intercept_hac7_standard_error_daily": 0.00025637207154221783,
+      "residual_arithmetic_annualized_normal95_descriptive": [
+        0.14361623118203726,
+        0.5106846357747539
+      ],
+      "uncertainty_limit": "Descriptive fixed seven-lag normal approximation; no selection adjustment or prospective claim.",
+      "residual_volatility_annualized": 0.2610664793690737,
+      "days": 2454,
+      "prospective_alpha_proven": false,
+      "up_capture": 0.4949448238977923,
+      "down_capture": 0.41679368258100613,
+      "cny_cagr": 0.6159719298468245,
+      "continuous_ohlc_proxy_mdd": "0.3062004177177613026522115122",
+      "closed_sleeve_trades": 143,
+      "survives_screen": false
+    }
+  },
+  "full_replays_run": 0,
+  "native_cases": 0,
+  "prospective_alpha_proven": false,
+  "limitations": [
+    "Daily screening trades at proxy daily opens, without finite-session latency, partial fills or native order rules.",
+    "Screening metrics are not current-runtime financial results. Capture uses arithmetic conditional daily sums.",
+    "Known history remains contaminated. Source ownership exclusivity is established by current production call paths."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "python3.13",
+    "/workspace/btc-alpha-beta-upgrade-20261004/task-artifacts/final-offline-check.py",
+    "spotquant"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-upgrade-20261004/spotquant",
+  "head": "07740a32d72abe420802bd372dc6291a131d82cc",
+  "started_utc": "2026-10-04T01:53:36.556674+00:00",
+  "pid": 179478
+}

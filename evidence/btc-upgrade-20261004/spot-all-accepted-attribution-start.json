@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "python3.13",
+    "-m",
+    "research.upgrade_assessment",
+    "--features",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+    "--accepted-attribution",
+    "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/complete-final-input-path-fix1.json",
+    "--out",
+    "/workspace/btc-alpha-beta-upgrade-20261004/task-artifacts/spot-all-accepted-attribution.json"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-upgrade-20261004/spotquant",
+  "head": "7d0ed74cf20e3630b8f5c926ac7dcd6c995f20b0",
+  "started_utc": "2026-10-04T01:40:04.379395+00:00",
+  "pid": 177678
+}

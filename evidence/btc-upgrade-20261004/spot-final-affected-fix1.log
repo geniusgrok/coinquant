@@ -1,0 +1,6 @@
+test_reentry_state_roundtrip_and_foreign_rule_rejection (test_upgrade_spot.ParticipationTests.test_reentry_state_roundtrip_and_foreign_rule_rejection) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.006s
+
+OK
