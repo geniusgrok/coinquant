@@ -84,7 +84,19 @@
     "maximum_new_accounts": 12,
     "maximum_sessions_per_account": 40,
     "maximum_total_wall_seconds": 1800,
-    "complete795": "Only separately recorded entrant question and budget; not automatic."
+    "complete795": "Only separately recorded entrant question and budget; not automatic.",
+    "uniform_control": "Fixed .75 genuine new-order budget for baseline, all periods. No held scaling or curve multiplication.",
+    "entrant_order": [
+      "entry-chase",
+      "entry-chase-soft",
+      "repair-stall",
+      "repair-rebreak",
+      "macro-handoff",
+      "macro-restart",
+      "state-trend",
+      "state-range"
+    ],
+    "selection_limit": "At most one first-registered entrant per project,12 accounts total; quarter selection uses eligible event clocks only, never outcomes. No unregistered extension if a cold wallet has0treatment."
   },
   "failure_routes": {
     "NO_ACTION_OR_TOO_FEW": "SUPPORT_PENDING; retain frozen rule, proceed to different mechanism",
