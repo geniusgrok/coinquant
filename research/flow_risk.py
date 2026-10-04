@@ -161,7 +161,7 @@ def gate(rows, controls, total_affected, coverage):
                 coverage=coverage)
 
 
-def spot_screen(row, spot, coin):
+def spot_screen(row, spot, coin, *, details=False):
     owners = {str(json.loads(a[3])['orderId']): json.loads(a[1])
               for a in row['allocations'] if 'orderId' in json.loads(a[3])}
     metadata = {e['id']: e for e in row['opportunity_ledger'] if e['event'] == 'fill'}
@@ -260,11 +260,14 @@ def spot_screen(row, spot, coin):
             basket = sum((s['proceeds'] for s in future), D(0))/sold if sold else D(0)
             r['gain'] += removed*(r['mark']*D('.9995')*D('.999')-basket)
         r['notional'] = r['removed']*r['mark']
-    return dict(actual_buy_cohorts=len(buys), actual_fills=len(row['fills']), decision_polls=len(decisions),
+    result = dict(actual_buy_cohorts=len(buys), actual_fills=len(row['fills']), decision_polls=len(decisions),
                 final_inventory_btc=sum((c['left'] for c in buys), D(0)),
                 alpha=gate(alpha, alpha_controls, len(alpha), D(covered)/len(buys)),
                 beta=gate(trim, controls, len(trim), D(1)),
                 alpha_events=alpha_controls, beta_events=trim, beta_controls=controls)
+    if details:
+        result['cohort_details'] = list(cohorts.values())
+    return result
 
 
 def target_fraction(closes, day, risk):
@@ -276,7 +279,7 @@ def target_fraction(closes, day, risk):
     return risk*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+D('.0011')))
 
 
-def coin_screen(row, spot, coin):
+def coin_screen(row, spot, coin, *, details=False):
     writes = {e['identity']: e for e in row['opportunity_ledger']
               if e['event'] == 'write_attempt' and e['method'] == 'POST'
               and e['payload'].get('side') == 'BUY'}
@@ -361,11 +364,14 @@ def coin_screen(row, spot, coin):
         r['notional'] = r['removed']*r['mark']
         r['gain'] = r['removed']*(r['mark']*D('.9989')*D('.99925')-(proceeds+future_costs)/r['quantity'])
     coverage = D(covered)/eligible if eligible else D(0)
-    return dict(actual_campaigns=len(campaigns), actual_fills=len(row['trades']), decision_polls=len(decisions),
+    result = dict(actual_campaigns=len(campaigns), actual_fills=len(row['trades']), decision_polls=len(decisions),
                 held_polls=eligible, risk_missing_polls=missing, quantity_mismatch_polls=mismatch,
                 alpha=gate(alpha, all_alpha, len(alpha), D(sum(c['flow']['available'] for c in campaigns.values()))/len(campaigns)),
                 beta=gate(trims, controls, len(trims), coverage),
                 alpha_events=all_alpha, beta_events=trims, beta_controls=controls)
+    if details:
+        result['cohort_details'] = list(campaigns.values())
+    return result
 
 
 def main(argv=None):
