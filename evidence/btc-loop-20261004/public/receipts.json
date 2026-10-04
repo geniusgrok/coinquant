@@ -1,0 +1,66 @@
+{
+  "format": "btc-loop-public-v1",
+  "source": {
+    "git_head": "102a49c0cb9b9aa333421edfbb2a39cd403d1e52",
+    "dirty": false,
+    "python_sources_sha256": "22b7be2be6398b32d2122a074ffbfd039bd7109ae373a4f5493dd0f3b631ab3d"
+  },
+  "receipts": [
+    {
+      "name": "BTCUSDT-1m-2020-01.zip",
+      "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2020-01.zip",
+      "request_ms": 1791116679189,
+      "status": 200,
+      "raw_file": "BTCUSDT-1m-2020-01.zip",
+      "bytes": 2224194,
+      "sha256": "02df6da44ed8145fbb9ed819858185d9e2f15eb025c5bec8a4ea2d8738cd0d19",
+      "receipt_ms": 1791116680922
+    },
+    {
+      "name": "BTCUSDT-1m-2020-01.zip.CHECKSUM",
+      "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2020-01.zip.CHECKSUM",
+      "request_ms": 1791116680922,
+      "status": 200,
+      "raw_file": "BTCUSDT-1m-2020-01.zip.CHECKSUM",
+      "bytes": 88,
+      "sha256": "f9534a5fa863e3fd3458c8b8e8254bc61974a9ed8f094d9b77c705895b7a9c7d",
+      "receipt_ms": 1791116681710
+    },
+    {
+      "name": "BTCUSDT-1m-2022-01.zip",
+      "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01.zip",
+      "request_ms": 1791116681710,
+      "status": 200,
+      "raw_file": "BTCUSDT-1m-2022-01.zip",
+      "bytes": 2229634,
+      "sha256": "ce0e16e834331e70b3041677c7f409818d5904bb59cb7b880695e4cacd34fc09",
+      "receipt_ms": 1791116683176
+    },
+    {
+      "name": "BTCUSDT-1m-2022-01.zip.CHECKSUM",
+      "url": "https://data.binance.vision/data/spot/monthly/klines/BTCUSDT/1m/BTCUSDT-1m-2022-01.zip.CHECKSUM",
+      "request_ms": 1791116683176,
+      "status": 200,
+      "raw_file": "BTCUSDT-1m-2022-01.zip.CHECKSUM",
+      "bytes": 88,
+      "sha256": "9bcdba1856458c4a53e5fb844f245fe3e1a99f467feb585d5ca9445845927c78",
+      "receipt_ms": 1791116684074
+    },
+    {
+      "name": "cpi.ics",
+      "url": "https://www.bls.gov/schedule/news_release/cpi.ics",
+      "request_ms": 1791116684074,
+      "status": 404,
+      "error": "HTTP Error 404: Not Found",
+      "raw_file": "cpi.ics-error.bin",
+      "bytes": 45723,
+      "sha256": "90c45667fb112ac71f3c02cda786afc3fe763261de8c35bc02627f25e03868ad",
+      "receipt_ms": 1791116684517
+    }
+  ],
+  "requests": 5,
+  "retries": 0,
+  "private_requests": 0,
+  "orders": 0,
+  "spec_sha256": "6b41e20301510bc520f7c63d66e5dc63e064c357ddf7dbc4027d15f55b77e85b"
+}

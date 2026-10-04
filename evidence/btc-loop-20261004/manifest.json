@@ -1,0 +1,209 @@
+{
+  "format": "btc-loop-delivery-v1",
+  "generated_at_shanghai": "2026-10-04T20:36:41.049874+08:00",
+  "source_before_metadata": {
+    "spot": "8191027aca105db8071d2935bf6a1f532ee5c642",
+    "coin": "ff49756a2e967ea0cb4c5ebe67e0a9dbe3baae8d"
+  },
+  "actual_screen_source": {
+    "git_head": "8191027aca105db8071d2935bf6a1f532ee5c642",
+    "dirty": false,
+    "python_sources_sha256": "966331c4c405028813c7370535f1af54bc2821e61fbdf968d1bbe91a4f5394cc"
+  },
+  "reused_sections_source": {
+    "git_head": "1b74251fc526bd4817daa0eee7f8c0e172e8f39a",
+    "dirty": false,
+    "python_sources_sha256": "91a19444977f76b9c0aabdf858be243e0742f8a4eecb30158cdecb948b55c9a4"
+  },
+  "shared_evaluator_files": {
+    "research/loop_alpha.py": "ba9a3a39105b5aed2312672418a4ca45eacd200801e3d0c3c244b9de916191b6",
+    "research/loop_risk.py": "b4c3369f7d24c78efe78073898cf9502cfa65fdcea7273352f4d088698f1dbc5",
+    "research/loop_data.py": "dcd7aaf661e8be8dbb1d141b6376c29dbf6f5581051d28a67c5a44d0fa754eab",
+    "research/loop_routes.py": "de4d6e8c045544f15acc394569a3fe565c08af75ff50b5d4d55a70e71395635b",
+    "research/loop_admission.py": "ed2fc6f21e635baaa908a1684daea14d554f1d2fd4fd5515b371a46f854dac64",
+    "research/loop_accounts.py": "3bd9c1e5dd785ae2f18a93d0d78f25343205e3600326953eaa4a82351fe4b0d6",
+    "research/nine_alpha.py": "c7f89ac93fc71c476b1b3cded524e02e41ceaf253ffd3b16705512f27e9aa740",
+    "research/flow_risk.py": "29fbb9f2729243fb129649a27104ecf4be9dafe85869d5a32c5dfb712ccf4ca9",
+    "research/nine_routes.py": "243cf43b128607bd739a48a12e77e7e74c3463ecc108566f40c0ed93d82fb03d",
+    "research/nine_data.py": "ed2c4f2656e8b61b24fa99b8dc52647bece6d508e12f3f5a125cc95c8551c7ac",
+    "research/continuous_routes.py": "51874709c76a8ff431fcd28dace8413e216afc44cbbf5279e31cfb2b19c0a3f7",
+    "research/persistent_data.py": "0a736893ffb61558641f899969c1c7715d92a5f876ad02cff173d58a9b583cb3",
+    "research/loop-spec.json": "6b41e20301510bc520f7c63d66e5dc63e064c357ddf7dbc4027d15f55b77e85b",
+    "tests/test_loop_routes.py": "78758cd68823037f8dfb2d73aa3a836875e8abe861ada82423359d9788d119c2"
+  },
+  "original_account_bindings": [
+    {
+      "file": "window-0-baseline.json.gz",
+      "sha256": "5c7c0ab37f2447c2d06cabc603da9617d0e76d397d378d078f5e8bea58b63a51",
+      "sources": {
+        "spot": {
+          "git_head": "091b7833b0a451fbe5f6928e8313ddf943f80ec8",
+          "dirty": false,
+          "python_sources_sha256": "37c23479c5db1af584edb6545312d8fcffa0cc79dff7f232df3988dbb85adb7a"
+        },
+        "coin": {
+          "git_head": "8cf83ad6abce981088a9fcd701bae7ee4db58cb9",
+          "dirty": false,
+          "python_sources_sha256": "739b65ff0e8a158bd3bb03da374c4af420dcea95446b2101a54ce529dad22395"
+        }
+      }
+    },
+    {
+      "file": "window-0-state-exposure.json.gz",
+      "sha256": "d90285411394f2b119c6f33e352b817edbdf30de5c3b48e171016406fb47190e",
+      "sources": {
+        "spot": {
+          "git_head": "091b7833b0a451fbe5f6928e8313ddf943f80ec8",
+          "dirty": false,
+          "python_sources_sha256": "37c23479c5db1af584edb6545312d8fcffa0cc79dff7f232df3988dbb85adb7a"
+        },
+        "coin": {
+          "git_head": "8cf83ad6abce981088a9fcd701bae7ee4db58cb9",
+          "dirty": false,
+          "python_sources_sha256": "739b65ff0e8a158bd3bb03da374c4af420dcea95446b2101a54ce529dad22395"
+        }
+      }
+    },
+    {
+      "file": "window-0-stress-entry-cap.json.gz",
+      "sha256": "57ba539470022cef9c4cf57e240b7cb1a694b536ef875a7e4e5e777ca2b96e02",
+      "sources": {
+        "spot": {
+          "git_head": "091b7833b0a451fbe5f6928e8313ddf943f80ec8",
+          "dirty": false,
+          "python_sources_sha256": "37c23479c5db1af584edb6545312d8fcffa0cc79dff7f232df3988dbb85adb7a"
+        },
+        "coin": {
+          "git_head": "8cf83ad6abce981088a9fcd701bae7ee4db58cb9",
+          "dirty": false,
+          "python_sources_sha256": "739b65ff0e8a158bd3bb03da374c4af420dcea95446b2101a54ce529dad22395"
+        }
+      }
+    },
+    {
+      "file": "window-0-uniform.json.gz",
+      "sha256": "9d7b4dffa067d403ba54fc9dab34ac9b9ef83f13b4cf075d57d3722869a757ce",
+      "sources": {
+        "spot": {
+          "git_head": "091b7833b0a451fbe5f6928e8313ddf943f80ec8",
+          "dirty": false,
+          "python_sources_sha256": "37c23479c5db1af584edb6545312d8fcffa0cc79dff7f232df3988dbb85adb7a"
+        },
+        "coin": {
+          "git_head": "8cf83ad6abce981088a9fcd701bae7ee4db58cb9",
+          "dirty": false,
+          "python_sources_sha256": "739b65ff0e8a158bd3bb03da374c4af420dcea95446b2101a54ce529dad22395"
+        }
+      }
+    },
+    {
+      "file": "window-1-baseline.json.gz",
+      "sha256": "0baa56925361b8411a223bcde0c27ac4075646d29e666b616c0dfc8c302f4f17",
+      "sources": {
+        "spot": {
+          "git_head": "34086adf6f1e78c765855ddb9dddd152203f42b6",
+          "dirty": false,
+          "python_sources_sha256": "d7029dfae40e8e7bf5f502e40c70387c989e7ffdb4a6e7d82ff994cbc0a654d1"
+        },
+        "coin": {
+          "git_head": "81d0d4b20af9fa5c039591e98bfd020f88c2e740",
+          "dirty": false,
+          "python_sources_sha256": "586e3544a5cac486090436899a5b57ed018284c80fdee751909e7dbbae75e7e7"
+        }
+      }
+    },
+    {
+      "file": "window-1-uniform.json.gz",
+      "sha256": "9f365104a1b53c067a36e2ae6451a325651e6800a5a18873a60d7a0b78018443",
+      "sources": {
+        "spot": {
+          "git_head": "34086adf6f1e78c765855ddb9dddd152203f42b6",
+          "dirty": false,
+          "python_sources_sha256": "d7029dfae40e8e7bf5f502e40c70387c989e7ffdb4a6e7d82ff994cbc0a654d1"
+        },
+        "coin": {
+          "git_head": "81d0d4b20af9fa5c039591e98bfd020f88c2e740",
+          "dirty": false,
+          "python_sources_sha256": "586e3544a5cac486090436899a5b57ed018284c80fdee751909e7dbbae75e7e7"
+        }
+      }
+    }
+  ],
+  "files": {
+    "account-admission-recovered.json": {
+      "sha256": "3316aacc06bf1887cffeb29610a844aa619565fde3e19b8583fe5f68478640bf",
+      "bytes": 724
+    },
+    "account-admission.json": {
+      "sha256": "277a1a961da29e2c86d9817c7e218980db8776fe8f04b067c9befa6bd01fcfbf",
+      "bytes": 724
+    },
+    "coin-final-compile.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "coin-final-tests.log": {
+      "sha256": "e97cb59d60221b12f64bdc8313e247827ac32cda5e1f22df8d0c85b2859de55d",
+      "bytes": 81036
+    },
+    "market.json.gz.receipt.json": {
+      "sha256": "d5b18c946048d35d55f50ffeaf79697db8d11dc9d00ccc5ec85545fcb7f3f07d",
+      "bytes": 98200
+    },
+    "public/BTCUSDT-1m-2020-01.zip": {
+      "sha256": "02df6da44ed8145fbb9ed819858185d9e2f15eb025c5bec8a4ea2d8738cd0d19",
+      "bytes": 2224194
+    },
+    "public/BTCUSDT-1m-2020-01.zip.CHECKSUM": {
+      "sha256": "f9534a5fa863e3fd3458c8b8e8254bc61974a9ed8f094d9b77c705895b7a9c7d",
+      "bytes": 88
+    },
+    "public/BTCUSDT-1m-2022-01.zip": {
+      "sha256": "ce0e16e834331e70b3041677c7f409818d5904bb59cb7b880695e4cacd34fc09",
+      "bytes": 2229634
+    },
+    "public/BTCUSDT-1m-2022-01.zip.CHECKSUM": {
+      "sha256": "9bcdba1856458c4a53e5fb844f245fe3e1a99f467feb585d5ca9445845927c78",
+      "bytes": 88
+    },
+    "public/cpi.ics-error.bin": {
+      "sha256": "90c45667fb112ac71f3c02cda786afc3fe763261de8c35bc02627f25e03868ad",
+      "bytes": 45723
+    },
+    "public/receipts.json": {
+      "sha256": "b788807b2c8664002e07d888f520215f65c24966b5d357a5d8516ced069af5fd",
+      "bytes": 2429
+    },
+    "screen-recovered.json": {
+      "sha256": "79014e68ebee39a932a274b8d7c4ac6f87910a1821b275ab407f1ba8e3109419",
+      "bytes": 693590
+    },
+    "screen-recovery-run.log": {
+      "sha256": "ea75129b6b4f5ab49ac68a8c736c3fae2d35ddb1024f1af5a64258fa1c1601ee",
+      "bytes": 181
+    },
+    "screen-run.log": {
+      "sha256": "4630bdf8432333f438da0e21c71e1e55857b32ccf50ce3087b9336349b7bc0ad",
+      "bytes": 338
+    },
+    "screen.json": {
+      "sha256": "3926dd5ae84063d3c09b997b112d21f246a6d2ff5eb01b91b7de29da5ec5de0c",
+      "bytes": 177525
+    },
+    "spot-final-compile.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "spot-final-tests.log": {
+      "sha256": "6b6f39932a09181d0f4d166e0497af1a8df78ffe5b8e8ef2501bc19359bda23d",
+      "bytes": 99064
+    }
+  },
+  "new_accounts": 0,
+  "new_sessions": 0,
+  "full795_replays": 0,
+  "large_vault_scans": 0,
+  "native_qualified": false,
+  "actual_remote_ci": "NOT_RUN_SKIP_CI",
+  "full_software_each_repo": 1
+}

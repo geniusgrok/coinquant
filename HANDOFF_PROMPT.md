@@ -1,1 +1,1 @@
-本轮唯一任务：全部完成loop-spec.json登记的alpha成熟收益/三个后备机制和beta共同时间风险/三个后备机制。实现已完成，正冻结producer并有限公开接收、复用小行情缓存和原六账户对做一次筛选；尚未跑新账户/软件全量。旧nine/source/consumer/负结果不变，不重跑795/大库，不调经济窗口/启动/资金/门槛。最终每仓库Python3.13全量仅一次，Coin严格串行，无私人账户/交易授权。后续读research/loop-GUIDE.md和/workspace/btc-decision-loop-20261004/artifacts，继续筛选、实际入围才账户、最终测试和PR整合。
+继续唯一已授权BTC loop交付，先读PROJECT_STATE.md、loop-RESULT.md/GUIDE.md。代码/所有有限筛选/一次最终软件完成，候选0入围。只剩正常PR/main整合并保存实际远程SHA；不得重跑795/金融派生/软件全量。保留原source/consumer/失败和独立资金。研究全部可用实施与新实测收益未达标区别清楚。无私人账户/交易授权。
