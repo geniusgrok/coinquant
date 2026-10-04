@@ -12,6 +12,7 @@ import math
 from pathlib import Path
 import tempfile
 import time
+import subprocess
 
 from coinquant.config import Config
 from coinquant.session import run
@@ -54,9 +55,11 @@ class BoundedPrints(TradePrints):
         return self._rows
 
 
-def window(market, tape, fx, starts, begin, end, scratch):
+def window(market, tape, fx, starts, begin, end, scratch, baseline=None):
     accounts = []
     for i, name in enumerate(('baseline', 'candidate')):
+        if name == 'baseline' and baseline is not None:
+            continue
         initial = D(10000)/fx(begin)*D('.999')
         e = ResearchExchange(market, begin, initial, fx=fx, matcher='trade_print', prints=tape,
                              uid=12000+i, terminal_ms=end)
@@ -76,7 +79,7 @@ def window(market, tape, fx, starts, begin, end, scratch):
                     'observations': rebuild._harvest(c['state'])})
         if index % 10 == 0:
             print(json.dumps({'session': index, 'date': rebuild.iso(start)}), flush=True)
-    results = {}
+    results = {'baseline': baseline} if baseline is not None else {}
     for c in accounts:
         e = c['exchange']
         e.advance_unattended(max(e.now_ms, end))
@@ -109,6 +112,8 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     for name in ('market', 'prints', 'fx', 'out'):
         p.add_argument('--'+name, type=Path, required=True)
+    p.add_argument('--baseline-summary', type=Path)
+    p.add_argument('--baseline-summary-sha')
     args = p.parse_args(argv)
     source = rebuild.source_identity()
     if source['dirty']:
@@ -116,27 +121,58 @@ def main(argv=None):
     spec = json.loads(candidate.SPEC.read_text())
     schedule = session_schedule.load()['primary']
     fx, market = PriorFX(args.fx), load_base(args.market)
+    previous = None
+    if args.baseline_summary:
+        if hashlib.sha256(args.baseline_summary.read_bytes()).hexdigest() != args.baseline_summary_sha:
+            raise ValueError('baseline summary bytes changed')
+        previous = json.loads(args.baseline_summary.read_text())
+        old_head = previous['source']['git_head']
+        subprocess.run(['git', 'merge-base', '--is-ancestor', old_head, source['git_head']], check=True)
+        unchanged = ['coinquant', 'research/session_exchange.py', 'research/session_market.py',
+                     'research/complete_perp.py', 'research/unified_perp.py', 'research/rebuild.py',
+                     'research/comparison_report.py', 'research/session_schedule.py', 'research/session_schedule.json']
+        changed = subprocess.check_output(['git', 'diff', '--name-only', old_head, source['git_head'], '--', *unchanged], text=True)
+        if (changed or previous['spec_sha256'] != hashlib.sha256(candidate.SPEC.read_bytes()).hexdigest()
+                or previous['fx_sha256'] != fx.sha256 or previous['schedule_sha256'] != schedule['sha256']
+                or previous['market_identity'] != market.identity):
+            raise ValueError('baseline economic dependencies changed')
     # Share verified parsed months only inside this invocation, then release them.
     market._load_month = lru_cache(maxsize=8)(market._load_month)
     args.out.mkdir(parents=True, exist_ok=True)
     started, rows, rejected = time.monotonic(), [], []
+    remaining_budget = spec['screen']['max_wall_seconds']-(previous['wall_seconds'] if previous else 0)
     with tempfile.TemporaryDirectory(prefix='cash-short-screen-') as directory:
         tape = BoundedPrints(Path(directory)/'prints', args.prints)
         for index, dates in enumerate(spec['windows']):
-            if time.monotonic()-started >= spec['screen']['max_wall_seconds']:
+            if time.monotonic()-started >= remaining_budget:
                 rejected.append('RESOURCE_BUDGET_EXHAUSTED'); break
             begin, end = map(rebuild.timestamp, dates)
             starts = [s for s in schedule['starts_ms'] if begin <= s < end]
             if not starts:
                 raise ValueError('empty registered session window')
-            pair, short = {}, window(market, tape, fx, starts, begin, end, Path(directory)/str(index))
+            baseline = None
+            if previous:
+                saved = previous['rows'][index]
+                info = saved['baseline']
+                path = args.baseline_summary.parent/info['raw_file']
+                if saved['window'] != dates or hashlib.sha256(path.read_bytes()).hexdigest() != info['raw_sha256']:
+                    raise ValueError('baseline account/window bytes changed')
+                with gzip.open(path, 'rt') as handle:
+                    baseline = json.load(handle)
+                if [r['start_ms'] for r in baseline['sessions']] != starts:
+                    raise ValueError('baseline sessions changed')
+            pair, short = {}, window(market, tape, fx, starts, begin, end, Path(directory)/str(index), baseline)
             for name, raw in short.items():
                 path = args.out/f'window-{index}-{name}.json.gz'
-                with gzip.open(path, 'wt') as handle:
-                    json.dump(raw, handle, separators=(',', ':'))
+                if name == 'baseline' and previous:
+                    path = args.baseline_summary.parent/previous['rows'][index]['baseline']['raw_file']
+                else:
+                    with gzip.open(path, 'wt') as handle:
+                        json.dump(raw, handle, separators=(',', ':'))
                 pair[name] = {k: raw[k] for k in ('final_cny', 'mdd', 'audit', 'execution_unresolved', 'component_fill_events')}
                 pair[name].update(finished=raw['window_account_finished'], sessions=len(raw['sessions']),
-                    fills=len(raw['trades']), raw_file=path.name, raw_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+                    fills=len(raw['trades']), raw_file=str(path.relative_to(args.out.parent)) if previous and name == 'baseline' else path.name,
+                    raw_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
             row = {'window': dates, **pair,
                 'paired_log_wealth_gain': math.log(float(pair['candidate']['final_cny'])/float(pair['baseline']['final_cny'])),
                 'mdd_increase': float(pair['candidate']['mdd'])-float(pair['baseline']['mdd'])}
@@ -162,6 +198,8 @@ def main(argv=None):
         'rows': rows, 'sum_paired_log_wealth_gain': gain, 'component_fill_events': events,
         'decision': 'SCREEN_REJECTED' if rejected else 'FULL_MEASUREMENT_ENTRANT',
         'reasons': rejected, 'wall_seconds': time.monotonic()-started,
+        'baseline_reuse': {'summary_sha256': args.baseline_summary_sha, 'source': previous['source'],
+                          'previous_screen_wall_seconds': previous['wall_seconds']} if previous else None,
         'historical_screen_only': True, 'production_promoted': False, 'native_qualified': False}
     (args.out/'summary.json').write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps({k: v for k, v in result.items() if k not in ('rows', 'loaded_minute_files', 'loaded_print_files')}), flush=True)

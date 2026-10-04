@@ -36,6 +36,16 @@ class CashShortTests(unittest.TestCase):
         with self.assertRaises(Unknown):
             value.select_macro(None, D(100), value.last)
 
+    def test_consumed_macro_does_not_block_a_fresh_cash_short(self):
+        value = self.bearish()
+        macro = Opportunity(-ORIGIN, 1, D(90), D(200), None)
+        value.macro_opportunity = macro
+        value.macro_consumed = macro.identity
+        self.assertIs(value.active, value.model.active)
+        self.assertEqual(value.action(D(0)), 'enter')
+        value.position_campaign = macro.identity
+        self.assertIs(value.active, macro)
+
     def test_consumed_short_cannot_reenter_and_owned_short_can_hold(self):
         value = self.bearish()
         identity = value.model.active.identity

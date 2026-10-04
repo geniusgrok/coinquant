@@ -5,6 +5,7 @@ import hashlib
 from pathlib import Path
 
 from coinquant import campaign, linear_preview
+from coinquant.campaign import disposition
 from coinquant.linear_account import FEE
 from coinquant.linear_sizing import GAP, FUNDING_RESERVE
 from coinquant.types import Blocked
@@ -26,7 +27,10 @@ class CashShort(ResearchCampaign):
             return False
         if self.position_campaign is not None:
             return self.position_campaign == primary.identity
-        return (BaseCampaign.active.fget(self) is None and
+        incumbent = BaseCampaign.active.fget(self)
+        consumed = self.macro_consumed if incumbent is self.macro_opportunity else self.primary_consumed
+        # An already-consumed macro is not an incumbent BUY opportunity.
+        return (disposition(incumbent, D(0), consumed) in ('flat', 'consumed') and
                 primary.identity != self.primary_consumed)
 
     @property
