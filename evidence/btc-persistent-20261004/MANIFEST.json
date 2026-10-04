@@ -101,6 +101,11 @@
     "coinquant-restore-recovery.log": {
       "sha256": "7df12041c6740c5392e24a430cffdadd706a3d55e5ffdee832e89d7843edceef",
       "bytes": 273
+    },
+    "GITHUB-INTEGRATION.json": {
+      "sha256": "c420ccbbd8ba44b40e3deecab80856510c84edace8f65a988598f47240dfecef",
+      "bytes": 2939
     }
-  }
+  },
+  "integration_recorded_utc": "2026-10-04T08:19:05.762854+00:00"
 }

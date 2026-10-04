@@ -1,0 +1,63 @@
+{
+  "format": "btc-persistent-github-integration-v1",
+  "recorded_utc": "2026-10-04T08:19:05.762854+00:00",
+  "repositories": [
+    {
+      "repository": "spotquant",
+      "pr": 14,
+      "accepted_head": "c9782be5ed17246d84fc1645e77dec634a423ee6",
+      "merge": "12e7b63c42929c082b1adaaec5a4917bf809dfa8",
+      "tree": "4bd4cee1a0c628a5dc949f06ab8832432c10caca",
+      "tested_head": "66f375003ae1995dcfbeda9790cb8158478e70b9",
+      "software": "PASS",
+      "tests": 371,
+      "skipped": 11,
+      "pr_url": "https://github.com/geniusgrok/spotquant/pull/14",
+      "main_fast_forward_verified": true,
+      "merged_tree_equals_accepted_head": true
+    },
+    {
+      "repository": "coinquant",
+      "pr": 63,
+      "accepted_head": "d9bdc15c4445d8250873207c4054b54c5f7c2b1e",
+      "merge": "cf8705c756545fadc61cbddea06efef49fe1f823",
+      "tree": "9dc21c68eeb2677c87cbe5842e96fcd43ff0084d",
+      "tested_head": "fc41badcc86423e9787346189f0ad8f16b8f3287",
+      "software": "PASS_COMPOSITE",
+      "tests": 471,
+      "skipped": 5,
+      "targeted_recovery_head": "d783ae81e9893f2a6f011c705568a55d1ff4ef74",
+      "targeted_tests": 1,
+      "pr_url": "https://github.com/geniusgrok/coinquant/pull/63",
+      "main_fast_forward_verified": true,
+      "merged_tree_equals_accepted_head": true
+    }
+  ],
+  "merge_method": "normal merge; local main fast-forward",
+  "verification_basis": "Actual fetched origin/main SHA and accepted-head/merged Git tree equality. Evidence-only closure commit follows; no code or financial changes.",
+  "fullsuite_invocations_each_repository": 1,
+  "coin_recovery": "Only failing test fixture identity corrected to first completed 4h bar; one affected test passed. Original failed fullsuite retained. No fullsuite rerun.",
+  "remote_ci": "SKIPPED via [skip ci]; not remote PASS",
+  "new_financial_accounts": 0,
+  "new_sessions": 0,
+  "new_795_batches": 0,
+  "large_vault_scans": 0,
+  "repeat_public_requests": 0,
+  "financial_reruns_during_integration": 0,
+  "new_default_adopted": false,
+  "economic_goal": "NOT_MET",
+  "native_qualification": "NOT_QUALIFIED",
+  "pending_evidence": [
+    "Rare-event lifecycle/range families need new independent legal events at frozen gates.",
+    "Option 7-day signal needs genuinely new receipt days; OI and books returned HTTP451.",
+    "Joint admission account effects require confirmed separately financed ownership/protection/causal context.",
+    "Coin macro rotation/restart actual execution bridge and native quote-volume bridge are not implemented or enabled; existing samples did not qualify."
+  ],
+  "original_screen": "Retain screen.json original producer and program SHA; do not relabel as merged code.",
+  "original_forward_consumers": {
+    "spotquant": "f1383f1034e3f72df68bbda30793d22835e74557",
+    "coinquant": "762d75c22d19686dbd364a6b58b59dbc23340430"
+  },
+  "private_orders_transfers_settings": 0,
+  "old_ledgers_rebound_or_reset": false
+}
