@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 189, in _run_module_as_main
+  File "<frozen runpy>", line 159, in _get_module_details
+  File "<frozen importlib._bootstrap_external>", line 1160, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1090, in source_to_code
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/workspace/btc-flow-risk-20261004/spotquant/research/flow_risk.py", line 276
+    return risk*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+D('.0011'))
+                         ^
+SyntaxError: '(' was never closed

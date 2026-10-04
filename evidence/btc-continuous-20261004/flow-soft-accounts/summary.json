@@ -1,0 +1,181 @@
+{
+  "source": {
+    "git_head": "d7d1f2614f8cc0f53c5bc6c77f347ca478203e2f",
+    "dirty": false,
+    "python_sources_sha256": "d6d94e06caab663d870b5aab1eb1146f32e8df1c66c0603bdca0d052c289b664"
+  },
+  "spec_sha256": "30fe9eefa0db47f5ff0a62b5f39662915be5f92fe9db85bc72863eb0cf02d04c",
+  "rows": [
+    {
+      "window": [
+        "2021-04-01",
+        "2021-07-01"
+      ],
+      "baseline": {
+        "final_cny": "9551.860261761371266919411308",
+        "mdd": "0.1211337818028369984242918350",
+        "finished": true,
+        "audit": {
+          "passed": true,
+          "cash_from_fills": "1480.110386840251635190684674",
+          "btc_from_fills": "0.00001529274668767546813240144",
+          "fees_usdt": "3.937983196253017910416666683",
+          "no_deposits": true
+        },
+        "sessions": 24,
+        "fills": 4,
+        "treatment_events": 0,
+        "producer": {
+          "git_head": "8d6a8ba8a614c5872a51c089577ec599fdf76fa6",
+          "dirty": false,
+          "python_sources_sha256": "75f1046ff633854f005cdfd9206895457458420a49747191a00ad2da8666d9ec"
+        },
+        "reused": true,
+        "raw_path": "/workspace/btc-structure-20261004/artifacts/spot/window-1-baseline.json.gz",
+        "raw_sha256": "1c5cea49102040b93a55b60410e29732c880fbf358ec4e3ae803babeed38ce83"
+      },
+      "candidate": {
+        "final_cny": "9551.860261761371266919411308",
+        "mdd": "0.1211337818028369984242918350",
+        "finished": true,
+        "audit": {
+          "passed": true,
+          "cash_from_fills": "1480.110386840251635190684674",
+          "btc_from_fills": "0.00001529274668767546813240144",
+          "fees_usdt": "3.937983196253017910416666683",
+          "no_deposits": true
+        },
+        "sessions": 24,
+        "fills": 4,
+        "treatment_events": 0,
+        "producer": {
+          "git_head": "d7d1f2614f8cc0f53c5bc6c77f347ca478203e2f",
+          "dirty": false,
+          "python_sources_sha256": "d6d94e06caab663d870b5aab1eb1146f32e8df1c66c0603bdca0d052c289b664"
+        },
+        "reused": false,
+        "raw_path": "/workspace/btc-flow-risk-20261004/artifacts/flow-soft-accounts/window-0-candidate.json.gz",
+        "raw_sha256": "b50119559bff4c797637e31780abe3728d3ca7205c2f32fd57752f222a9fdc38"
+      },
+      "uniform": {
+        "final_cny": "9567.539672784205389006032308",
+        "mdd": "0.1154491041351657785909395026",
+        "finished": true,
+        "audit": {
+          "passed": true,
+          "cash_from_fills": "1482.634844073579058178184675",
+          "btc_from_fills": "0.00001261130070941566776261276",
+          "fees_usdt": "3.729704725015107422916666730",
+          "no_deposits": true
+        },
+        "sessions": 24,
+        "fills": 4,
+        "treatment_events": 2,
+        "producer": {
+          "git_head": "d7d1f2614f8cc0f53c5bc6c77f347ca478203e2f",
+          "dirty": false,
+          "python_sources_sha256": "d6d94e06caab663d870b5aab1eb1146f32e8df1c66c0603bdca0d052c289b664"
+        },
+        "reused": false,
+        "raw_path": "/workspace/btc-flow-risk-20261004/artifacts/flow-soft-accounts/window-0-uniform.json.gz",
+        "raw_sha256": "efe740de9bc515e3ffded242c1aaade7429de1216ef5ad00eb01e2d08d85080a"
+      },
+      "baseline_tradeoff_pass": true,
+      "logwealth_over_uniform": -0.0016401575981951396,
+      "uniform_risk_pass": true
+    },
+    {
+      "window": [
+        "2022-05-01",
+        "2022-08-01"
+      ],
+      "baseline": {
+        "final_cny": "10205.41344064477938163107327",
+        "mdd": "0.0223498233215547703180212014",
+        "finished": true,
+        "audit": {
+          "passed": true,
+          "cash_from_fills": "1516.324393242566367651746278",
+          "btc_from_fills": "0",
+          "fees_usdt": "0",
+          "no_deposits": true
+        },
+        "sessions": 32,
+        "fills": 0,
+        "treatment_events": 0,
+        "producer": {
+          "git_head": "d7d1f2614f8cc0f53c5bc6c77f347ca478203e2f",
+          "dirty": false,
+          "python_sources_sha256": "d6d94e06caab663d870b5aab1eb1146f32e8df1c66c0603bdca0d052c289b664"
+        },
+        "reused": false,
+        "raw_path": "/workspace/btc-flow-risk-20261004/artifacts/flow-soft-accounts/window-1-baseline.json.gz",
+        "raw_sha256": "169baf2fb8eac881d918a50bb5345e12ff022dfc03318a6f18af3687a56addfe"
+      },
+      "candidate": {
+        "final_cny": "10205.41344064477938163107327",
+        "mdd": "0.0223498233215547703180212014",
+        "finished": true,
+        "audit": {
+          "passed": true,
+          "cash_from_fills": "1516.324393242566367651746278",
+          "btc_from_fills": "0",
+          "fees_usdt": "0",
+          "no_deposits": true
+        },
+        "sessions": 32,
+        "fills": 0,
+        "treatment_events": 0,
+        "producer": {
+          "git_head": "d7d1f2614f8cc0f53c5bc6c77f347ca478203e2f",
+          "dirty": false,
+          "python_sources_sha256": "d6d94e06caab663d870b5aab1eb1146f32e8df1c66c0603bdca0d052c289b664"
+        },
+        "reused": false,
+        "raw_path": "/workspace/btc-flow-risk-20261004/artifacts/flow-soft-accounts/window-1-candidate.json.gz",
+        "raw_sha256": "ca10957780ab12bb40a1acbe2aad3f626cd6e38dd3e87714b7bb0d22fa6d42db"
+      },
+      "uniform": {
+        "final_cny": "10205.41344064477938163107327",
+        "mdd": "0.0223498233215547703180212014",
+        "finished": true,
+        "audit": {
+          "passed": true,
+          "cash_from_fills": "1516.324393242566367651746278",
+          "btc_from_fills": "0",
+          "fees_usdt": "0",
+          "no_deposits": true
+        },
+        "sessions": 32,
+        "fills": 0,
+        "treatment_events": 0,
+        "producer": {
+          "git_head": "d7d1f2614f8cc0f53c5bc6c77f347ca478203e2f",
+          "dirty": false,
+          "python_sources_sha256": "d6d94e06caab663d870b5aab1eb1146f32e8df1c66c0603bdca0d052c289b664"
+        },
+        "reused": false,
+        "raw_path": "/workspace/btc-flow-risk-20261004/artifacts/flow-soft-accounts/window-1-uniform.json.gz",
+        "raw_sha256": "35d52dfc87daa2f1e81efdcb0bf3b7e2caa880b5079daf89c96249a78aad19ad"
+      },
+      "baseline_tradeoff_pass": true,
+      "logwealth_over_uniform": 0.0,
+      "uniform_risk_pass": true
+    }
+  ],
+  "gates": {
+    "windows": true,
+    "operating": true,
+    "treatments": false,
+    "baseline_tradeoff": true,
+    "uniform_wealth": false,
+    "uniform_risk": true
+  },
+  "decision": "SCREEN_REJECTED",
+  "failures": [],
+  "wall_seconds": 28.546631388977403,
+  "runtime_promoted": false,
+  "new_accounts": 5,
+  "new_sessions": 144,
+  "original_795_replays": 0
+}

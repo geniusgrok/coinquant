@@ -1,0 +1,28 @@
+{
+  "format": "continuous-final-software-v1",
+  "recorded_utc": "2026-10-04T06:02:19.674810+00:00",
+  "rows": [
+    {
+      "repository": "spotquant",
+      "head": "9c2de7275dc6f41550f9ce0a078eee1ea8eb6060",
+      "compile_exit": 0,
+      "test_exit": 0,
+      "elapsed_wall_seconds": 53.94303111798945,
+      "log": "spotquant-final-suite.log",
+      "tail": "test_reentry_state_roundtrip_and_foreign_rule_rejection (test_upgrade_spot.ParticipationTests.test_reentry_state_roundtrip_and_foreign_rule_rejection) ... ok\ntest_slow_sleeve_preserves_other_two_windows (test_upgrade_spot.ParticipationTests.test_slow_sleeve_preserves_other_two_windows) ... ok\n\n----------------------------------------------------------------------\nRan 364 tests in 53.623s\n\nOK (skipped=11)",
+      "fullsuite_invocations": 1
+    },
+    {
+      "repository": "coinquant",
+      "head": "11184b3d014971778c95ae89f32c0ea3eedc5e8c",
+      "compile_exit": 0,
+      "test_exit": 0,
+      "elapsed_wall_seconds": 7.243003412004327,
+      "log": "coinquant-final-suite.log",
+      "tail": "test_positive_submillisecond_wait_advances_virtual_venues (test_virtual_clock.VirtualClockTests.test_positive_submillisecond_wait_advances_virtual_venues) ... ok\ntest_rate_limit_cooldown_stays_on_the_injected_clock (test_virtual_clock.VirtualClockTests.test_rate_limit_cooldown_stays_on_the_injected_clock) ... ok\n\n----------------------------------------------------------------------\nRan 462 tests in 6.896s\n\nOK (skipped=5)",
+      "fullsuite_invocations": 1
+    }
+  ],
+  "strictly_serial": true,
+  "passed": true
+}

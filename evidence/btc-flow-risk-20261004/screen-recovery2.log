@@ -1,0 +1,204 @@
+{
+  "coin": {
+    "actual_fills": 1561,
+    "alpha": {
+      "decision": "REJECT_FIXED_RULE",
+      "gates": {
+        "coverage": true,
+        "count": false,
+        "era_count": true,
+        "positive_net": false,
+        "positive_each_era": false,
+        "beats_uniform": true
+      },
+      "affected_independent": 7,
+      "closed": {
+        "count": 7,
+        "notional": "2907789.7706",
+        "avoided_net_usdt": "-10739.41925305210818996079989",
+        "avoided_net_per_notional": "-0.003693327269266825926140012637",
+        "positive_count": 3
+      },
+      "censored_count": 0,
+      "eras": {
+        "early": {
+          "count": 3,
+          "notional": "10339.3068",
+          "avoided_net_usdt": "-7.45684360446046944589999996",
+          "avoided_net_per_notional": "-0.0007212131092251242071567118948",
+          "positive_count": 1
+        },
+        "late": {
+          "count": 4,
+          "notional": "2897450.4638",
+          "avoided_net_usdt": "-10731.96240944764772051489989",
+          "avoided_net_per_notional": "-0.003703933007148878843419176280",
+          "positive_count": 2
+        }
+      },
+      "lower_exposure_control": {
+        "eligible": {
+          "count": 50,
+          "notional": "10030051.0193",
+          "avoided_net_usdt": "-290267.5916287877421237183008",
+          "avoided_net_per_notional": "-0.02893979213767205708790988191",
+          "positive_count": 20
+        },
+        "removed_fraction": "0.2899077746468866359019598133",
+        "avoided_net_usdt": "-84150.83154121311449768357957",
+        "excess_avoided_net_usdt": "73411.41228816100630772277968"
+      },
+      "coverage": "1"
+    },
+    "beta": {
+      "decision": "REJECT_FIXED_RULE",
+      "gates": {
+        "coverage": true,
+        "count": false,
+        "era_count": false,
+        "positive_net": false,
+        "positive_each_era": false,
+        "beats_uniform": true
+      },
+      "affected_independent": 1,
+      "closed": {
+        "count": 1,
+        "notional": "3038.12771485977",
+        "avoided_net_usdt": "-4.21322764768384162905",
+        "avoided_net_per_notional": "-0.001386784244479436040974120575",
+        "positive_count": 0
+      },
+      "censored_count": 0,
+      "eras": {
+        "early": {
+          "count": 1,
+          "notional": "3038.12771485977",
+          "avoided_net_usdt": "-4.21322764768384162905",
+          "avoided_net_per_notional": "-0.001386784244479436040974120575",
+          "positive_count": 0
+        },
+        "late": {
+          "count": 0,
+          "notional": "0",
+          "avoided_net_usdt": "0",
+          "avoided_net_per_notional": null,
+          "positive_count": 0
+        }
+      },
+      "lower_exposure_control": {
+        "eligible": {
+          "count": 29,
+          "notional": "5237824.89750127716",
+          "avoided_net_usdt": "-203269.11509870056743559000",
+          "avoided_net_per_notional": "-0.03880792486890327618216535302",
+          "positive_count": 7
+        },
+        "removed_fraction": "0.0005800361360512680638057700100",
+        "avoided_net_usdt": "-117.9034321004107497189696413",
+        "excess_avoided_net_usdt": "113.6902044527269080899196413"
+      },
+      "coverage": "1"
+    }
+  },
+  "spot": {
+    "actual_fills": 129,
+    "alpha": {
+      "decision": "REJECT_FIXED_RULE",
+      "gates": {
+        "coverage": true,
+        "count": true,
+        "era_count": true,
+        "positive_net": false,
+        "positive_each_era": false,
+        "beats_uniform": true
+      },
+      "affected_independent": 13,
+      "closed": {
+        "count": 13,
+        "notional": "125820.6985357802760759963154",
+        "avoided_net_usdt": "-3326.433407717700534718278329",
+        "avoided_net_per_notional": "-0.02643788698066833287914052326",
+        "positive_count": 7
+      },
+      "censored_count": 0,
+      "eras": {
+        "early": {
+          "count": 5,
+          "notional": "16466.78000000000000000000000",
+          "avoided_net_usdt": "-1529.547084777147235026986918",
+          "avoided_net_per_notional": "-0.09288683548193072568085484339",
+          "positive_count": 2
+        },
+        "late": {
+          "count": 8,
+          "notional": "109353.9185357802760759963154",
+          "avoided_net_usdt": "-1796.886322940553299691291411",
+          "avoided_net_per_notional": "-0.01643184210497786096927110222",
+          "positive_count": 5
+        }
+      },
+      "lower_exposure_control": {
+        "eligible": {
+          "count": 62,
+          "notional": "539223.0232238134107244341045",
+          "avoided_net_usdt": "-28989.93265772641762399402050",
+          "avoided_net_per_notional": "-0.05376241630857380483396974148",
+          "positive_count": 32
+        },
+        "removed_fraction": "0.2333370296089088162523026484",
+        "avoided_net_usdt": "-6764.424774916181761046166851",
+        "excess_avoided_net_usdt": "3437.991367198481226327888522"
+      },
+      "coverage": "1"
+    },
+    "beta": {
+      "decision": "REJECT_FIXED_RULE",
+      "gates": {
+        "coverage": true,
+        "count": true,
+        "era_count": true,
+        "positive_net": false,
+        "positive_each_era": false,
+        "beats_uniform": false
+      },
+      "affected_independent": 16,
+      "closed": {
+        "count": 16,
+        "notional": "26931.73051625384305555555555",
+        "avoided_net_usdt": "-3584.061088593505424715177743",
+        "avoided_net_per_notional": "-0.1330794947034856228006620524",
+        "positive_count": 2
+      },
+      "censored_count": 0,
+      "eras": {
+        "early": {
+          "count": 8,
+          "notional": "4658.763572878309722222222222",
+          "avoided_net_usdt": "-1688.929360601867265897939990",
+          "avoided_net_per_notional": "-0.3625273818216967765609926514",
+          "positive_count": 2
+        },
+        "late": {
+          "count": 8,
+          "notional": "22272.96694337553333333333334",
+          "avoided_net_usdt": "-1895.131727991638158817237753",
+          "avoided_net_per_notional": "-0.08508663137738332216919433167",
+          "positive_count": 0
+        }
+      },
+      "lower_exposure_control": {
+        "eligible": {
+          "count": 62,
+          "notional": "538416.0232601105455200081626",
+          "avoided_net_usdt": "-30605.85094230117764265670533",
+          "avoided_net_per_notional": "-0.05684424240753955188358131447",
+          "positive_count": 31
+        },
+        "removed_fraction": "0.05002029908616414963783392607",
+        "avoided_net_usdt": "-1530.913817920463774123482695",
+        "excess_avoided_net_usdt": "-2053.147270673041650591695048"
+      },
+      "coverage": "1"
+    }
+  }
+}

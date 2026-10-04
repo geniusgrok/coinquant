@@ -1,0 +1,13 @@
+{
+  "checks": {
+    "spot/info_unchanged": true,
+    "coin/info_unchanged": true,
+    "spot/execution_unchanged": true,
+    "coin/execution_unchanged": true,
+    "public_unchanged": true,
+    "joint_unchanged": true
+  },
+  "passed": true,
+  "original_sha256": "f3ecf054bbd667a7c51efa2cfa27cea51a97e90e9aab6e266338f27d0be46316",
+  "risk_fixed_sha256": "4b1d6cd9ba47f51521c0b6909be4878aaf284c9310959c0bd9029f32470ee93a"
+}
