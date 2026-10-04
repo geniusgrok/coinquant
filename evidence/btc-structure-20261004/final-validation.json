@@ -1,0 +1,15 @@
+{
+  "command": [
+    "bash",
+    "-c",
+    "python3.13 -m compileall -q coinquant research tests && python3.13 -m unittest discover -s tests -v"
+  ],
+  "cwd": "/workspace/btc-structure-20261004/coinquant",
+  "producer_head": "1cdcc3e142f820a05c89074cd92fd1bf6c2c97b4",
+  "started_utc": "2026-10-04T04:00:31.794432+00:00",
+  "wrapper_pid": 197819,
+  "pid": 197858,
+  "exit_code": 0,
+  "wall_seconds": 7.525399302016012,
+  "ended_utc": "2026-10-04T04:00:39.318229+00:00"
+}

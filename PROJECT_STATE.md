@@ -1,6 +1,8 @@
 # PROJECT_STATE
 
-Updated: 2026-10-04T10:08:00.255667+08:00
+## Structural BTC research (2026-10-04)
+
+Coin implementation/financial screen CLOSED: corrected cash-only-short SCREEN_REJECTED after4/4 windows, zero added shorts/paired gains/beta improvement. Final8 independent window accounts use4 original baselines+4 corrected candidates. First stricter consumed-macro bug and all negative original8 accounts retained; only4 affected candidates remeasured, total333 actual finite sessions, no new795/full matrix/default adoption. Source52433bc/c5febb2 remain distinct. See structure-RESULT.md, structure-GUIDE.md and evidence/btc-structure-20261004. Only final full software suite453/5skips PASS; normal GitHub integration pending; no further economic run needed. Old core/conditional-short evidence reused. Public marketHTTP451, old ledgers untouched/pending/nativecases0/accountdays0/NOT_QUALIFIED.
 
 ## Completed BTC alpha/beta upgrade (2026-10-04)
 

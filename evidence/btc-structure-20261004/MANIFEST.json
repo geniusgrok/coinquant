@@ -1,0 +1,131 @@
+{
+  "format": 1,
+  "scope": "this small research output packet only; no scan of original public vault or old economic matrices",
+  "files": [
+    {
+      "path": "SOURCE-REVIEW.json",
+      "bytes": 1153,
+      "sha256": "b94cd984ab6e4a3525eb8626a1814cb85d4c128f37dba5e330d0f17d2a31e703"
+    },
+    {
+      "path": "coin/summary.json",
+      "bytes": 57508,
+      "sha256": "2d6e8d2184220ebae70c44b52056a2df9d828d873975ac21c9069d5603ab20be"
+    },
+    {
+      "path": "coin/window-0-baseline.json.gz",
+      "bytes": 6705,
+      "sha256": "2dca28eaa487423db1f2fc0f7f23ee4f73e7fa7b1c2454f4843ac6ca05a4b732"
+    },
+    {
+      "path": "coin/window-0-candidate.json.gz",
+      "bytes": 6718,
+      "sha256": "e6dd78668fee1ac68d48d16d38053ef357ab3e3afc410a6d2bdf439a95a4e721"
+    },
+    {
+      "path": "coin/window-1-baseline.json.gz",
+      "bytes": 3406,
+      "sha256": "9a607c1963406b8f3e60d3c13e45e7da80f86795784fbdb4df6b7905c1bbfbe8"
+    },
+    {
+      "path": "coin/window-1-candidate.json.gz",
+      "bytes": 3413,
+      "sha256": "66d2c09abf46000c1a8fcd944e7d65acc9411618085975b8d030d93ab54e804d"
+    },
+    {
+      "path": "coin/window-2-baseline.json.gz",
+      "bytes": 3542,
+      "sha256": "320c6ef42796f301b5c055c88666375438c24a3df3cd8534c5865c16533168e7"
+    },
+    {
+      "path": "coin/window-2-candidate.json.gz",
+      "bytes": 3561,
+      "sha256": "89da9e5997d8bc3603829425a832515b107a462b5e5bbc79d9fcc6ffd5aa5aea"
+    },
+    {
+      "path": "coin/window-3-baseline.json.gz",
+      "bytes": 8363,
+      "sha256": "3684787fcd88d754f5b5025bebdfe2472c92d0154ca96f8026ccfc9fddfcd8a7"
+    },
+    {
+      "path": "coin/window-3-candidate.json.gz",
+      "bytes": 8364,
+      "sha256": "ec1923a2f56bf749636bde275e9fab613485c5bfc5414c4af9bb12e172afc37c"
+    },
+    {
+      "path": "coin-candidate-recovery-run.json",
+      "bytes": 880,
+      "sha256": "d4a2dbf454d683015ee01bb60bcb6f3f4bdd94379c05208a1ec382732aad77e6"
+    },
+    {
+      "path": "coin-candidate-recovery-run.log",
+      "bytes": 34865,
+      "sha256": "454ea60b56ecc8c237c44538919744f6a73345ac9bf0415029156613daa5bdf4"
+    },
+    {
+      "path": "coin-recovery/summary.json",
+      "bytes": 57905,
+      "sha256": "2c523c7c4084d9011047d10f8a52771ddecaaa0cf663f7dd0f20a867acdcaca2"
+    },
+    {
+      "path": "coin-recovery/window-0-candidate.json.gz",
+      "bytes": 6718,
+      "sha256": "bc8fc0f3df27fa1386052d9c33060405d1ff41b6ff7abbe3ae6d8c6cb38fb521"
+    },
+    {
+      "path": "coin-recovery/window-1-candidate.json.gz",
+      "bytes": 3413,
+      "sha256": "12fbd784ae8e908c4202dc1b47cfee9fa9936bebcb07436f126b6abbdcb40541"
+    },
+    {
+      "path": "coin-recovery/window-2-candidate.json.gz",
+      "bytes": 3561,
+      "sha256": "f18ca9dfbb0f904db6af409595ea4507599b5ecfb32af5ad177c60bbf534e03c"
+    },
+    {
+      "path": "coin-recovery/window-3-candidate.json.gz",
+      "bytes": 8364,
+      "sha256": "535ca07b5ff969b7b37bb0053e44afe1b8e774be4fab1d00f26d7a5f627fbe4a"
+    },
+    {
+      "path": "coin-screen-run.json",
+      "bytes": 672,
+      "sha256": "3ede313f569a61d2e731525599af0b28fbea808023c69cf771f1ef1eea515250"
+    },
+    {
+      "path": "coin-screen-run.log",
+      "bytes": 34510,
+      "sha256": "2732939461dde71e31509304f924ef8a9320e61128a62d7f9cd20648e03f8629"
+    },
+    {
+      "path": "final-validation.json",
+      "bytes": 471,
+      "sha256": "85c5e252db36f48912c6a28610c61f24a83a9421b350efead1a7545b3f1fd08e"
+    },
+    {
+      "path": "final-validation.log",
+      "bytes": 74945,
+      "sha256": "addd2286ef47f5b8dc6e597777c00c7d7b0acd777935fc72fd59be1c04b97820"
+    },
+    {
+      "path": "forward-perp-response.bin",
+      "bytes": 224,
+      "sha256": "79c1db471a4cdc1c8565b5dfc52e0ed2d29962738ee4d28597696fcd0920e348"
+    },
+    {
+      "path": "forward-readiness.json",
+      "bytes": 1199,
+      "sha256": "6004159584ca29cd8526345b1e2c214446cec5ebebf9154632ec7c3c635474dd"
+    },
+    {
+      "path": "forward-spot-response.bin",
+      "bytes": 224,
+      "sha256": "79c1db471a4cdc1c8565b5dfc52e0ed2d29962738ee4d28597696fcd0920e348"
+    },
+    {
+      "path": "original-public-input-preflight.json",
+      "bytes": 33621,
+      "sha256": "ecc1868e86007eecd75ff329c660e5fb63cdbad5f26e9a3f8bc91a1b577318a9"
+    }
+  ]
+}
