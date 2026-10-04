@@ -58,7 +58,7 @@ def discovery(bars,coin,starts,source_sha):
         for stamp in starts:
             flag=signal(bars,coin,stamp);ctx=alpha.context(bars,stamp,source_sha)
             if flag is None or ctx is None:continue
-            total+=1;entry_day=stamp//r.DAY;end_day=entry_day+7*r.DAY
+            total+=1;entry_day=stamp//r.DAY*r.DAY;end_day=entry_day+7*r.DAY
             if end_day+r.DAY>f.END or entry_day not in bars or end_day not in bars:continue
             # Entry uses the actual known completed close, never forming-day OHLC.
             entry=bars[ctx['completed_through_ms']-r.DAY][3]
@@ -211,7 +211,7 @@ def main(argv=None):
     for name in ('joint','spot-market','coin-market','fx','schedule','cache','public','out'):p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--receipt-history',type=Path,nargs='*',default=[])
     p.add_argument('--inherited',type=Path,nargs='*',default=[]);p.add_argument('--etf',type=Path)
-    p.add_argument('--at-ms',type=int,required=True);args=p.parse_args(argv)
+    p.add_argument('--at-ms',type=int,required=True);p.add_argument('--recover-screen',type=Path);args=p.parse_args(argv)
     if args.out.exists():raise ValueError('preserve prior evidence')
     if args.at_ms>int(time.time()*1000):raise ValueError('future economic observation time')
     identity=data.source();spec=json.loads(SPEC.read_text());began=time.monotonic()
@@ -225,6 +225,30 @@ def main(argv=None):
         path=args.joint/item['file'];raw=path.read_bytes()
         if r.sha(raw)!=item['sha256']:raise ValueError('original accepted wallet changed')
         pair=json.loads(gzip.decompress(raw));pairs.append(pair);bindings.append(dict(item,sources={k:a['source'] for k,a in pair['accounts'].items()}))
+    if args.recover_screen:
+        import ast
+        import subprocess
+        original_raw=args.recover_screen.read_bytes();original=json.loads(original_raw);head=original['source']['git_head']
+        dependencies=['research/loop_alpha.py','research/loop_risk.py','research/loop_data.py','research/nine_alpha.py',
+            'research/nine_data.py','research/nine_routes.py','research/flow_risk.py','research/continuous_routes.py',
+            'research/persistent_data.py','research/complete_spot.py','research/unified_perp.py']
+        if subprocess.check_output(['git','diff','--name-only',head,'HEAD','--',*dependencies],text=True).strip():
+            raise ValueError('recovery dependencies changed; recover only truly affected work')
+        old=subprocess.check_output(['git','show',head+':research/loop_routes.py'],text=True)
+        def unaffected(text):
+            tree=ast.parse(text);tree.body=[n for n in tree.body if not isinstance(n,ast.FunctionDef) or n.name not in ('main','discovery')]
+            return ast.dump(tree)
+        if unaffected(old)!=unaffected(Path(__file__).read_text()):raise ValueError('non-discovery route changed')
+        if (original['spec_sha256']!=r.sha(SPEC.read_bytes()) or original['original_inputs']!=bindings
+                or original['feature_book_sha256']!=book.sha256 or original['market_cache']!=cache_receipt
+                or original['at_ms']!=args.at_ms):raise ValueError('recovery evidence/input/clock identity changed')
+        original['routes']['price_discovery']=discovery(bars,coin,starts,market_sha)
+        original.update(source=identity,reuse_parent_sha256=r.sha(original_raw),reused_sections_source=original['source'],
+            recovered_sections=['routes.price_discovery'],recovery_wall_seconds=time.monotonic()-began,
+            failure_preserved=str(args.recover_screen))
+        data.new_json(args.out,original)
+        print(json.dumps(dict(out=str(args.out),recovered=['price_discovery'],status={k:v['status'] for k,v in original['routes']['price_discovery'].items()})))
+        return
     evaluated={}
     for pair in pairs:
         if pair['scenario']=='baseline':evaluated[str(pair['window'][0])]=alpha.evaluate(book,pair,bars,market_sha,args.at_ms)

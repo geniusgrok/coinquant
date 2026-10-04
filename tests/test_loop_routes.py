@@ -7,6 +7,7 @@ import unittest
 
 from research import nine_routes as r, loop_alpha as alpha, loop_risk as risk
 from research import loop_admission as admission, loop_accounts as accounts, loop_data as data
+from research import loop_routes as routes
 
 
 class LoopRoutesTests(unittest.TestCase):
@@ -81,6 +82,14 @@ class LoopRoutesTests(unittest.TestCase):
         screen=dict(spec_sha256=r.sha(data.SPEC.read_bytes()),routes={'a':dict(account_entrant=False,status='SUPPORT_PENDING')})
         result=accounts.plan(screen,[])
         self.assertEqual(result['new_accounts'],0);self.assertEqual(result['jobs'],[])
+
+    def test_original_session_milliseconds_produce_completed_opportunity_periods(self):
+        bars={i*r.DAY:(D(100),D(101),D(99),D(100+i),D(1000),D(600)) for i in range(40)}
+        coin={t:(*b[:5],D(400)) for t,b in bars.items()}
+        stamp=22*r.DAY+60000
+        result=routes.discovery(bars,coin,[stamp],'a'*64)
+        self.assertEqual(len(result['spot']['events']),1)
+        self.assertEqual(result['spot']['events'][0]['end_ms'],30*r.DAY)
 
     def test_today_calendar_cannot_backfill_an_old_release(self):
         with tempfile.TemporaryDirectory() as directory:
