@@ -30,3 +30,5 @@
 采用仍需真实账户收益/风险/操作门槛及必要最终比较；本轮已执行全部可用分支，但未采用不合格策略。原Spot56.5981%/36.4122%、Coin119.2284%/44.1051%历史指标与原目标保持，NOT_MET/nativeNOT_QUALIFIED。收益天花板没有被证明。官方鲜活市场访问及旧冷现金前瞻账本保持其原状态，旧消费者Spotf1383f…/Coin762d75c…不重置、不重绑；新的公共响应不等于账户交易观察。
 
 软件全量最终每仓库一次，受影响失败才补测；本机通过与远端CI跳过分开记录。证据在evidence/btc-continuous-20261004，旧flow证据在evidence/btc-flow-risk-20261004。正常PR合并收据在最终软件/整合记录中，main仍是开发基线。
+
+最终本机完整workflow验证：Spot364项/11skip，53.943秒；Coin462项/5skip，7.243秒；compile及unittest均PASS，每仓库fullsuite_invocations=1。测试HEAD9c2de7275dc6f41550f9ce0a078eee1ea8eb6060/11184b3d014971778c95ae89f32c0ea3eedc5e8c。后续只改metadata/evidence，不重跑；跳过项不是已验证原生能力，远端[skip ci]不算通过。

@@ -1,1 +1,1 @@
-继续已授权六路线交付，读取PROJECT_STATE.md及research/continuous-RESULT.md。全部研究/账户工作已闭环：Spot信息入围但两固定季度0治疗事件，其他风险/数据/执行/联合风险路线也有明确结论。不要重跑795、廉价诊断或已完成账户。仅完成末尾每仓库一次软件全suite、必要受影响修正、正常PR和main/实际remote闭环；保留原错结果和源码身份、旧账本消费者。
+六路线、账户和末尾唯一全量软件检查均已完成：Spot364/11skip、Coin462/5skip，compile PASS。读取PROJECT_STATE.md及continuous-RESULT.md，只完成正常expected-headPR合并、main快进及实际远端闭环。不得重复测试、廉价诊断、已有账户或795；metadata合并不改变原源码身份和旧账本消费者。
