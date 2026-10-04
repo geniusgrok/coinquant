@@ -1,1 +1,1 @@
-从 PROJECT_STATE.md 继续当前恢复任务；本轮用户授权及采用门槛以 replacement-spec.json 为准。新默认目标是恢复经济上更有依据的旧策略。三条路线当前 WAIT，不能为文档/HEAD变化重跑795或声称收益提升。先完成最终软件检查，再正常PR合并；保留全部旧失败、账户状态和来源绑定消费者。
+当前工程交付已完成，见 PROJECT_STATE.md 和 evidence/btc-replacement-20261005/GITHUB-INTEGRATION.json。旧默认已正常恢复并合入main；502/398项软件各全量一次PASS，没有新795或账户操作。新alpha/beta改善仍未证明。三条路线WAIT，只有合格新信息/成熟期间/可成交定期合约证据才有后续测量价值。不得重跑旧筛选、放宽门槛、重绑旧前向账本或把代码完成当盈利。

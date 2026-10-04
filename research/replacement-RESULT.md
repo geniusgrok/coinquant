@@ -15,3 +15,5 @@
 原完整历史经济结果作为其原生产源码绑定证据复用，不能把新提交身份改成旧生产者。资金/策略/执行条件匹配且新增保护只拒绝不兼容状态，不为恢复旧默认重新运行795。最新软件验证与实际GitHub集成记录见 evidence/btc-replacement-20261005。
 
 最终本机Python3.13 compile和唯一fullsuite PASS：502项/5skip；零失败、零复测。远端CI将明确跳过以避免重复全量，不称远端PASS。
+
+正常集成完成：[PR67](https://github.com/geniusgrok/coinquant/pull/67) 合并 df0f1eb8258de7a22651b86e2a12f34da7ee8a56，合并树与本机已验证接受树完全一致。收尾只更新状态/回执，没有再次测试或历史账户测量。
