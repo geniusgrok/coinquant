@@ -115,7 +115,8 @@
     "control": "Uniform .75 genuine NEW BUY sizing in both separately financed accounts, once; no curve scaling.",
     "gate": "Each window audited/archived/settled; >=1 independent commitment changed each window; net wealth>=baseline and observed synchronized joint MDD<=baseline+.01 OR observed joint MDD<=baseline*.8 and wealth>=baseline*.95; outperform uniform risk/wealth tradeoff. Window results cannot adopt original full-window default.",
     "coupled_clock": "Two separate offline workers, immutable original venue/cost engines, unmodified production finite run. Coordinator advances both to each causal virtual API tick, obtains actual independently financed wallet/protection/ownership/commitment state. One Coin worker only, UID12000 unchanged through strictly serial cases. Coordinator timing is a research execution bridge, not canonical old-account equality/native proof.",
-    "all_fails": "Retain simplest accepted independent-budget baseline; next alpha family/new evidence rather than threshold search."
+    "all_fails": "Retain simplest accepted independent-budget baseline; next alpha family/new evidence rather than threshold search.",
+    "resource_read_timeout_seconds": 60
   },
   "inputs": {
     "neutral_spot": {
@@ -137,7 +138,8 @@
     "public_new_requests_max": 4,
     "public_timeout_seconds": 5,
     "public_response_bytes_max": 2097152,
-    "same_day_existing_receipts": "Reuse option/OI/ETF original bytes, no duplicate requests or manufactured independent dates."
+    "same_day_existing_receipts": "Reuse option/OI/ETF original bytes, no duplicate requests or manufactured independent dates.",
+    "future_finite_manual_capture_cap": 9
   },
   "failure_edges": {
     "NO_ACTION": "SUPPORT_PENDING -> next distinct mechanism",
