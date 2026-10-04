@@ -1,1 +1,1 @@
-继续本轮BTC flow/risk交付，读取PROJECT_STATE.md和research/flow-risk-RESULT.md。四个固定候选已淘汰，财务恒等式通过；不能重跑795或重新开始研究。唯一待办是最终一次软件全量检查、正常PR集成、实际远端HEAD闭环。保留失败与负结果和旧源码/前瞻消费者；工程权限不含任何私人交易。
+继续已授权六路线交付，读取PROJECT_STATE.md及research/continuous-RESULT.md。全部研究/账户工作已闭环：Spot信息入围但两固定季度0治疗事件，其他风险/数据/执行/联合风险路线也有明确结论。不要重跑795、廉价诊断或已完成账户。仅完成末尾每仓库一次软件全suite、必要受影响修正、正常PR和main/实际remote闭环；保留原错结果和源码身份、旧账本消费者。
