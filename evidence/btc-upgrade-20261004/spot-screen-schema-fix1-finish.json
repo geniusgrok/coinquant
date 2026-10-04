@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "python3.13",
+    "-m",
+    "research.upgrade_assessment",
+    "--features",
+    "/workspace/btc-alpha-beta-improve/task-artifacts/edge-features-v1.json",
+    "--out",
+    "/workspace/btc-alpha-beta-upgrade-20261004/task-artifacts/spot-screen.json"
+  ],
+  "cwd": "/workspace/btc-alpha-beta-upgrade-20261004/spotquant",
+  "head": "fe8aa7e6d8c7d303a6ee15cd252265ef4b07648b",
+  "started_utc": "2026-10-04T01:35:52.489573+00:00",
+  "pid": 177156,
+  "exit_code": 0,
+  "finished_utc": "2026-10-04T01:36:00.273247+00:00"
+}

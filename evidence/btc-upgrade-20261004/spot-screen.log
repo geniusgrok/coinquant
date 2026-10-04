@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/btc-alpha-beta-upgrade-20261004/spotquant/research/upgrade_assessment.py", line 158, in <module>
+    main()
+    ~~~~^^
+  File "/workspace/btc-alpha-beta-upgrade-20261004/spotquant/research/upgrade_assessment.py", line 127, in main
+    missing = missing_attribution(spot)
+  File "/workspace/btc-alpha-beta-upgrade-20261004/spotquant/research/upgrade_assessment.py", line 40, in missing_attribution
+    factor = D(str(item['scale']))
+                   ~~~~^^^^^^^^^
+KeyError: 'scale'

@@ -1,0 +1,2916 @@
+{
+  "format": "btc-pullback-recovery-screen-v1",
+  "source": {
+    "git_head": "edc4e7eec353382e5afcb5f02feef8629c5e746c",
+    "dirty": false,
+    "python_sources_sha256": "c249c04c8f11755b573d6f0a01493bf561381cdd67fff80137a39f75eaec8e14"
+  },
+  "input_receipts": {
+    "warmup_trade_sha256": "62e9a9ecddccac737f99032a224f7a2a1932756cf200db34fb5c5641b72c4094",
+    "vision": [
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-01.zip",
+        "sha256": "f9b28212bf6f8a3a21c17274090ddcb9ce1deb3b9c9e10ba1c7f8829e5914cb4",
+        "bytes": 10197
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-02.zip",
+        "sha256": "6a960e937e872b91bd5bd0eb5bb0ce6d524cb298279a602940844e2c0a46fff8",
+        "bytes": 9593
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-03.zip",
+        "sha256": "78ee62b77557cac23f765653a901e5f12a01231e96f1f31cff84d1771465ec46",
+        "bytes": 10420
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-04.zip",
+        "sha256": "ecc3b3ba4af97ee49eeda70a4061533889fad5a8c43c05668db9b36232c5b3cb",
+        "bytes": 10066
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-05.zip",
+        "sha256": "f44ea339dd8b93c64805a5edac440260514d1ad4cd28c9a9e2af30460f44027c",
+        "bytes": 10405
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-06.zip",
+        "sha256": "ce267c20880ac4d39c25559f17d2f80d82e5fee98cf6c1cf74cc3a87cf14c749",
+        "bytes": 9885
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-07.zip",
+        "sha256": "cd1efbb9e0a8b9cc7b82a86a446afcd00d3e1bd618a62297653eb3763f9cd07a",
+        "bytes": 10146
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-08.zip",
+        "sha256": "b360d15cbce58125c3cbb0d8e34a034482983339d9860f19eb1acc92bc1d4899",
+        "bytes": 10368
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-09.zip",
+        "sha256": "f481189a2ef9cd1e79adbd42b59b9633b60289c552bcf93cee191b618240f352",
+        "bytes": 10042
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-10.zip",
+        "sha256": "1791e2dd8b1d4dbbb588f2a851102424787037ddb3e13f4ef91b076558c83dca",
+        "bytes": 10391
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-11.zip",
+        "sha256": "66b146e2ece8779b8b4dd0256ea89fd46956347431535c5229161de8f7e007b0",
+        "bytes": 10326
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2020-12.zip",
+        "sha256": "e6802fc8b7a750cab7388bc3b0c3638d1649220a67810252d9ec3c02c8933671",
+        "bytes": 10667
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-01.zip",
+        "sha256": "0013f302159ee46ad4f81dbd44b595df8f4d764de88b64273b79d01b4f333e23",
+        "bytes": 10935
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-02.zip",
+        "sha256": "e52a119613bf8d2d7fed60f6a80ddbf0b0f9127d966e7ad1b15ffeca8ecb280a",
+        "bytes": 9827
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-03.zip",
+        "sha256": "ca4eacc180f975d3c7413bf868a1655dbaea006092e07ba28ea9ea43aad0403c",
+        "bytes": 10893
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-04.zip",
+        "sha256": "8f2f40d6d567cb2081de7edfcbb8e5c8c33759866b4f75cb178ca7292f84985b",
+        "bytes": 10522
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-05.zip",
+        "sha256": "529ae82f647603ef517e5de807d14d3c90f072a4543e804239b67c6b588ad8b5",
+        "bytes": 11057
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-06.zip",
+        "sha256": "5f4a6687e046483d22d2e0db89b6f04ad4d49987344d5a4d7665b46a1eca5b9f",
+        "bytes": 10664
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-07.zip",
+        "sha256": "951590c2ff4f4c69d4ad0d72f53e6a3d287ba667dcec099ac9afcb7d5635fd22",
+        "bytes": 10837
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-08.zip",
+        "sha256": "750efc433242daf5424b2aff49f3c3ea6fcca41eb3f2893f3cbc832fdd43cb34",
+        "bytes": 10865
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-09.zip",
+        "sha256": "c05ab152bd0c4b544d61a22a9ae7a3b65cbfebb3ed54511a350e7fd36bcc83a8",
+        "bytes": 10510
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-10.zip",
+        "sha256": "d9a13fcd9a6a0b9a506ea1fbe06975bcf0f9ebbcd2de4639df65cbfb0d01333d",
+        "bytes": 10855
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-11.zip",
+        "sha256": "06ff7fbaf5edf3d77e9a070bca341e2a7781d9e30bb199051d1442df1a79fc0b",
+        "bytes": 10480
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2021-12.zip",
+        "sha256": "30124fe8c2de7114781371e867b63fb7e57c8f7590f8f05c03b8e9f3e3a43993",
+        "bytes": 10813
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-01.zip",
+        "sha256": "600262e137d855af1fb005a605477dda53ae784e682c00ad8ec5a86066c565f6",
+        "bytes": 10902
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-02.zip",
+        "sha256": "0e072f3d2ab245b0b3327b50ab2b8b664cd2d8d51c3b51876aeb7d6ca0f6b566",
+        "bytes": 9840
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-03.zip",
+        "sha256": "49000ed74b217b0d5a7b478b0aeb252c3d2987f8a014dad23dca1c0e89cd5bae",
+        "bytes": 10692
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-04.zip",
+        "sha256": "8e2c9c80707ff1f5965c98761dcfbadfdb583e62d24c8c5d9ff63423cc7c2bfd",
+        "bytes": 10295
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-05.zip",
+        "sha256": "409dfc24ea1e06de9a00b9e39d68fc23699ca3cb8919f58ec8f6e8af17358322",
+        "bytes": 10748
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-06.zip",
+        "sha256": "8bafe0fe001a2b764779e7c418f03eb5ca1162ef0315655177c917e6e670b3ad",
+        "bytes": 10424
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-07.zip",
+        "sha256": "1f66bb3de104e5ce6b568bcc16e466060446a6fb8d6fd46f9b9490be8259f134",
+        "bytes": 10715
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-08.zip",
+        "sha256": "c7c451a4a9f09f14339286ff654fed40b294fc37328126e43531bd3a1c98fe3d",
+        "bytes": 10582
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-09.zip",
+        "sha256": "d7bb4d9961577057bbfd54ea8d6aafd81a5df889b011837c989f7b9f120629d2",
+        "bytes": 10305
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-10.zip",
+        "sha256": "baa731766e96b40c1727dea96e24cb204b6f17012b434a0d196b4736c5e91e58",
+        "bytes": 10395
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-11.zip",
+        "sha256": "155d3052a60386e20f8dda75bbf814098c0174f7f9e59c2b1022aacd563d5dc6",
+        "bytes": 10155
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2022-12.zip",
+        "sha256": "94a9a1ae61658c9b5d35589e400cd6f5516ee330b11ea53879fc126a3b1651c6",
+        "bytes": 10201
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-01.zip",
+        "sha256": "4475545f9db058f7722538ced9a1c135cd41889abb9eb252bedaac1aaee1916b",
+        "bytes": 10465
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-02.zip",
+        "sha256": "d9590a2bffb078b0c142f7280a3a280e6225cf71341e8f30ebf02c9ecc0f228c",
+        "bytes": 9573
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-03.zip",
+        "sha256": "57a2e2e607b58f7bb7e92e57b3ccc03a79e9fd275dced372dd9a8dd10a9017ff",
+        "bytes": 10719
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-04.zip",
+        "sha256": "b71c07d7dab22741cd41706dda7d93c7b08826b9019d542948696a356b8dd91d",
+        "bytes": 10239
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-05.zip",
+        "sha256": "c402551012cb8cab3db8f4b2e983edc57b8f2d5da3e878c483f702fec5058138",
+        "bytes": 10548
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-06.zip",
+        "sha256": "9620b1bae1d2964a3365d70df0c6dcb7322efeaa8336fb91c456a446b02e7ec0",
+        "bytes": 10269
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-07.zip",
+        "sha256": "30cc6dbc5ef4eac56021a27c2323b4359a143ca36dc7cce5574616e185caf9ad",
+        "bytes": 10401
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-08.zip",
+        "sha256": "6df3c520bde3fcc94fa09d574040fc70b4020c1058886938add513813059093f",
+        "bytes": 10357
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-09.zip",
+        "sha256": "a6453bb8c555256f6edad4073d7c4b7af0443a7699cad0cf3c4d5a2323433a41",
+        "bytes": 9962
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-10.zip",
+        "sha256": "00621f34fd85de12927d044c61df0573ac359b4e14b89fd694cb8906e16ac414",
+        "bytes": 10407
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-11.zip",
+        "sha256": "22c096eb32612b29d251d4c8146e4561a65de1df15f27169ac8e28818a3b147c",
+        "bytes": 10105
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2023-12.zip",
+        "sha256": "c3ce7bd7d7348add8464e3272a422e5d12109c927e6f0152641f89feb1177b94",
+        "bytes": 10584
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-01.zip",
+        "sha256": "4f971989eb615ec46d21b7f1730eccf95e133c24c9a9d81faabbc12f89f01dee",
+        "bytes": 10664
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-02.zip",
+        "sha256": "72c0d4432b5369cc53a8e077cb3763b9aa74c6988b285c9983212d765f327597",
+        "bytes": 9998
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-03.zip",
+        "sha256": "2979a6fe55b2fff6c6c5a851d6f047110f1f304ff884b1cc3dd750aff851f2cc",
+        "bytes": 10812
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-04.zip",
+        "sha256": "ef0120818c28d50facb94c61ef96dace2c15d9dcbb37595d11042a1e3484b3de",
+        "bytes": 10419
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-05.zip",
+        "sha256": "e6c04ffbfb59f6403ddf2e1e6018113ef4e1fc6c9782e705eb72ec00c8cdff9e",
+        "bytes": 10595
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-06.zip",
+        "sha256": "8b48ccc0a2f81c683cfadd32f2b616af401dc275c02eb30c718fdeef4e828510",
+        "bytes": 10156
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-07.zip",
+        "sha256": "a3245611dcc9b6a7dc4a3a134907e8a9dd3ae422c34cb1a5bda475cdae3f4d91",
+        "bytes": 10639
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-08.zip",
+        "sha256": "3bc8467576e2f0257754aa8e0517ca82ebaae59000490027878852a79808e255",
+        "bytes": 10688
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-09.zip",
+        "sha256": "66b9440bc484f8c31dd9c1b6cfe29715dc8303b9bc4c57f37a08a0c2d9cbc929",
+        "bytes": 10247
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-10.zip",
+        "sha256": "c8f2fd616e8ea6ff8de0e2f5bb01676c6cda17bd0e18914903b333945c195434",
+        "bytes": 10552
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-11.zip",
+        "sha256": "28f91a142cc2da46ab308862f68ba5c7a6c1ae726d21af2356f774ee0db636f5",
+        "bytes": 10349
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2024-12.zip",
+        "sha256": "5a3f9a42a41556fff257dc08c8f1ec33eb3bd7a803e805289ed20e2ad13a755e",
+        "bytes": 10680
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-01.zip",
+        "sha256": "083b54f2b4d9aeece598eaa98a90ee7a6338492dac9703243ff76e3ca2855d1e",
+        "bytes": 10695
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-02.zip",
+        "sha256": "abd8c4db055c7d72ba1b3f1ad44338b24c752d9dda78d4b64ea718c27940addd",
+        "bytes": 9586
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-03.zip",
+        "sha256": "0b72737b4e28f27417b4738a98d5ec0be2665f137d39cbd8bf15c67d39a152bc",
+        "bytes": 10663
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-04.zip",
+        "sha256": "e30dedb8e3faab67cf63cbec104aa7f65156bae47939e60e07b2e3adf22f65c2",
+        "bytes": 10272
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-05.zip",
+        "sha256": "dee60341a0ea548e0611af52f1a15e2748748a0d4c73f0d93cb50d53273e71c4",
+        "bytes": 10683
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-06.zip",
+        "sha256": "36da42e7bef46276cf5020614a5f6e211faa77d021cb0f09e6e988ef3ed8a2d4",
+        "bytes": 10274
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-07.zip",
+        "sha256": "5677e7817f6fde164d19e7f9870edc740ba96af4e341a4fff53dff2660e8bf73",
+        "bytes": 10630
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-08.zip",
+        "sha256": "c6aabd1f8586921521facfd029629d0a990f4a4a0ef09648cd1929349a02fba3",
+        "bytes": 10630
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-09.zip",
+        "sha256": "289171608f6af47e8040b7cba1a1288eda535f4c027d9c0a1111246625a3c1fc",
+        "bytes": 10221
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-10.zip",
+        "sha256": "f69c52a2f467424279b23991c7cc07c36fbdf2afa37c0e9aa115e8c171368d2b",
+        "bytes": 10708
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-11.zip",
+        "sha256": "c8a7c379d06a48c26620fd352efabc4106847958f0c4cd500b2c2392ed546848",
+        "bytes": 10304
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2025-12.zip",
+        "sha256": "2c028e8568c65bfc5e4052574eb456f76173d0a0ae204c3c65727e7971a113a3",
+        "bytes": 10515
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2026-01.zip",
+        "sha256": "3d3709c48cb4fe637e797baeef36334cc6faded93d5c0f54e727e9e2bd2d1b3b",
+        "bytes": 10478
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2026-02.zip",
+        "sha256": "e53365a8190cdece74c5f4e680209d1b84edb95c2f1ca76b1876a97d5c1fbde9",
+        "bytes": 9622
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2026-03.zip",
+        "sha256": "3bf4f515d5a0e445ef94b0a73892edae438ebac84311853992cd46aa1e3768e2",
+        "bytes": 10598
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2026-04.zip",
+        "sha256": "eab8688878cebc3a940ab7af83a122ef6d7d0176a28208b104bd50fa111cf5e4",
+        "bytes": 10162
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2026-05.zip",
+        "sha256": "88a85f864a664d39be622718b30c83e5a8ffa4729bf3b56efdfad8eb3eae9326",
+        "bytes": 10453
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2026-06.zip",
+        "sha256": "51da327f0c3a278399ffc983c419b2f946720e904c2a603cf1a1b6f58699783d",
+        "bytes": 10263
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2026-07.zip",
+        "sha256": "2fff352c045efe78b52785b2dc6d6107ce63c435c5eec9e28f2c247e110afde0",
+        "bytes": 10453
+      },
+      {
+        "path": "klines/4h/BTCUSDT-4h-2026-08.zip",
+        "sha256": "49dce8e4d82b20a288632c245a267ca5715f53ef170ac62915aa00a75491c3aa",
+        "bytes": 10424
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-01.zip",
+        "sha256": "e1788076514b145ae062baa6657b8232c56307375000f056060743a976340ca8",
+        "bytes": 629
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-02.zip",
+        "sha256": "4f46f5eb78503d666f82f184c945467d1baa844d08e0504e04e0a4b67bc9357c",
+        "bytes": 632
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-03.zip",
+        "sha256": "2a831109072731fcba4a1d612fbdd6e68dc590ffb1a11f20a4d5f6f547e2b24d",
+        "bytes": 629
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-04.zip",
+        "sha256": "3cff61464a2d1bbed04c58ce9f0ef8378632237aa64d0706d16b049608899b82",
+        "bytes": 628
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-05.zip",
+        "sha256": "c32daec1c30579fe035b710bf0d885a6384da538fa83e017364b6ab498231112",
+        "bytes": 619
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-06.zip",
+        "sha256": "5c6a84310909c8fed6afa2a1f913ae4e5be03c215805fd99b239012d854a4281",
+        "bytes": 620
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-07.zip",
+        "sha256": "f1a634bbecedea5d3829d96edf4f324acf0b302eb48a69fec21ad484752e3d3c",
+        "bytes": 625
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-08.zip",
+        "sha256": "d3ab6ebb5ca233ceeb7a6ee1277ed13c1bc914bc25269ef170d62f1b465a519c",
+        "bytes": 628
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-09.zip",
+        "sha256": "f365722fd5589fc8fa7723ac084a779d20b6e58cc4be33fe477a26cc60c2f93f",
+        "bytes": 625
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-10.zip",
+        "sha256": "59456b45adf7b5adbd051d44d48c0ab4d42a0a126c9b33360c6baec16a9e7d0f",
+        "bytes": 633
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-11.zip",
+        "sha256": "cf916221f47410966f8bd37c5cdd867c35e1b23065011575005ed537be1c4eea",
+        "bytes": 628
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-12.zip",
+        "sha256": "6eb277c6c2b00f0e9d0b370496a6e68b0dd0d3c5cbc8762994e7ff78daadcd28",
+        "bytes": 608
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-13.zip",
+        "sha256": "60f53394098c27b687286d1621fb7139adf88ceb0767368bb846b46d50a9b943",
+        "bytes": 623
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-14.zip",
+        "sha256": "787bead186b0ba3c41cfc1eafc9ebd908f2952e6a1bb1f663ffcbb9a323575a6",
+        "bytes": 629
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-15.zip",
+        "sha256": "aabd20f4d4877fb6d55fe1d904cb647572622cab642a3a3a6314a985379e4ec8",
+        "bytes": 633
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-16.zip",
+        "sha256": "48b39e63d503872b8dc449e3d38b3c3f5f6f56e3fb01bc34ec773cb48054846d",
+        "bytes": 633
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-17.zip",
+        "sha256": "6747cbd41609928381cbe94c9eb1f9057431e3a7adbd0df372d6db75781cb907",
+        "bytes": 625
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-18.zip",
+        "sha256": "7063f424ee03096196b51c62fbde2aa9dea24e94fa28819a29e5824af3582655",
+        "bytes": 629
+      },
+      {
+        "path": "klines/4h/daily/BTCUSDT-4h-2026-09-19.zip",
+        "sha256": "c3b6b46d1fbb6df31d7e7799b0061cbfb4b6e85137a994127ad265bbb89dfa79",
+        "bytes": 617
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-01.zip",
+        "sha256": "7f81b2f3694d13779e7e896b69d60cd61e9444d7b9f9e90df761935e1c1b76e2",
+        "bytes": 825
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-02.zip",
+        "sha256": "6599466d108d120c64a078824326c063ed2d4335b3292e52c5e572f79166533a",
+        "bytes": 885
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-03.zip",
+        "sha256": "eee845fde6336e29d25889563cba3d2cff2d4d640e51fb1f82ae9b28cedaee77",
+        "bytes": 928
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-04.zip",
+        "sha256": "d009ce034d08c3dcf3e7f874b0f8b0ec76ba507bc6bb4e007e541df537bafbce",
+        "bytes": 867
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-05.zip",
+        "sha256": "3f2b56dd6b9a42457009bb367d0adadd3cf7e2216cd325172d0089e3883125a8",
+        "bytes": 839
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-06.zip",
+        "sha256": "30b3470ff98576578973d75e3c157a5cbf1778b11e4c26b4b4ff70a3cbb348ec",
+        "bytes": 791
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-07.zip",
+        "sha256": "18dae7b11075fc0fba79ad47df46683415cba5d027caa69c66bc2a5c9d9b459a",
+        "bytes": 712
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-08.zip",
+        "sha256": "e6f6d1749f674c85d4766e0eb36af6ea40d91a0674234d30df80eb9876b094e3",
+        "bytes": 854
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-09.zip",
+        "sha256": "7ae9a3b6afb2dc06e46080582908ec8c27063b707a14c7f1e679dc991ff48032",
+        "bytes": 838
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-10.zip",
+        "sha256": "4c55b191c101f39c7fb193a6529665dd9e83302ca21876521e4c93b3902e9fb1",
+        "bytes": 828
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-11.zip",
+        "sha256": "676356a2d075caa51b4f8ada026e9430dc320ffd23d2343b13b7aa25324ed6d1",
+        "bytes": 854
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2020-12.zip",
+        "sha256": "d7390f90edf54cc4ad9bbe78e2f6b291ae06ad9539f591a2d0fce445873bbd63",
+        "bytes": 852
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-01.zip",
+        "sha256": "cff916dc4b638ec3de97828e8911cd91cf7d7a3d0836ec0175869c374e66823d",
+        "bytes": 981
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-02.zip",
+        "sha256": "819a7b107443686adb313fc5fc223302a29f3981e1d1bd9828ad0ade65a8a8af",
+        "bytes": 956
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-03.zip",
+        "sha256": "2125fd300848938c7b992b8f7b7b5007d5b277a4ff1ebda7da083b40242729da",
+        "bytes": 918
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-04.zip",
+        "sha256": "9cd888e3b0a1954813d0062c2e60426fdc8e34a7f258f6838371ec67f535b028",
+        "bytes": 914
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-05.zip",
+        "sha256": "ed934afb9cf84df6ecae742e755147333a84244836a66b51523abc66dd5f63af",
+        "bytes": 960
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-06.zip",
+        "sha256": "7b8d9bfb8816636b800764dafb2aa2307d19166c695bfa245adbf7d01d61f766",
+        "bytes": 883
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-07.zip",
+        "sha256": "8ab3df641d3bcf40527491f8e26d046ad2b662d1950ead9555ad32975571b7fe",
+        "bytes": 973
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-08.zip",
+        "sha256": "7eb681cc45b94176f4b9192a62c3a1925d79031ba001cea2d8dec6ff6e5b9c35",
+        "bytes": 781
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-09.zip",
+        "sha256": "03f25a7c25eef18d5f5b5b7bb0b664cab7a210b409f37e95a54e141808a0752d",
+        "bytes": 828
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-10.zip",
+        "sha256": "f25820d6add687addbca3ef43bee58f70853a6da53832a0c1bc22d00dc8ec64a",
+        "bytes": 951
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-11.zip",
+        "sha256": "e2e6b2d7218607e7e4a38137d50f553c2cfb901275c19edf567024c1cc6de85f",
+        "bytes": 919
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2021-12.zip",
+        "sha256": "bf3ce484faf41d7dccfd38c5cc3d8de34d8297df30ab10784e874cc10fd1b310",
+        "bytes": 815
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-01.zip",
+        "sha256": "22ee19079b620f5c6d820e7d7f8bafa7fde866d89bd664863b8bd527749c12cb",
+        "bytes": 906
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-02.zip",
+        "sha256": "fa95088258a905c79ab79e8984d2f6f66933ec2e814dbab4ef9da89b01ab484a",
+        "bytes": 890
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-03.zip",
+        "sha256": "4cf0883bc07f4ed4cdd3b0d8c0d166b4d15d21e666ab752f9f44401af4d6172f",
+        "bytes": 904
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-04.zip",
+        "sha256": "57e2776cc68b3169fc9f8632dad67278f470cd453407a8ebe6c87963c8a31357",
+        "bytes": 926
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-05.zip",
+        "sha256": "bced8a5013d09742b96682e6fd01ad4456213515a03d7586ec2b1f2689af5255",
+        "bytes": 915
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-06.zip",
+        "sha256": "0cd0708f8903829eb46f98cf60f4b2516c986e1ccddf6620a5912b48e16baf93",
+        "bytes": 966
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-07.zip",
+        "sha256": "29d58cce0cd45f74c6a112039835c6d9ee5a7e60e7c38c2503beb7930453a4fe",
+        "bytes": 917
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-08.zip",
+        "sha256": "6f4f0c6c84c05694b4b4a5c085776730fd4059723eecd98ee6ffeb3fde4da811",
+        "bytes": 997
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-09.zip",
+        "sha256": "d62cd4e13009de37add446dc4f63ead4c56dcc4955a1e60f6726bcadc5a68fa9",
+        "bytes": 960
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-10.zip",
+        "sha256": "ad9efed10d4ca1567b865d7a158790977cec1b925395634217069df6696c8bc9",
+        "bytes": 950
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-11.zip",
+        "sha256": "8febe5bec1a029e993bbf27490761f8c47c32849bf7dd13441b2b2f6ec1ffb51",
+        "bytes": 1000
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2022-12.zip",
+        "sha256": "4218c78331bcc4dbeb5768fa112242a880971c1f2cfd1d3f32aaa26ca34069af",
+        "bytes": 982
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-01.zip",
+        "sha256": "05e3df32f28d0d50f4c5a280adee9368b4a66fc68c6ddca1b3277087ac0d19f5",
+        "bytes": 863
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-02.zip",
+        "sha256": "5227accd9aaa59f71f5e682abffb58be5f99573ed208ab968b1704c81ac11345",
+        "bytes": 808
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-03.zip",
+        "sha256": "ab022adff9b853d2f33cf80154e77c770f57c3392f0bbc36564b2e2cdbd0e872",
+        "bytes": 956
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-04.zip",
+        "sha256": "2931039d26818edc65d4faefba84945fd1ba52989dd58fb127dc3cd7a12c7fbf",
+        "bytes": 952
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-05.zip",
+        "sha256": "5d026fece46df86293054c8c56c2c8de575d30161b82979b11831831217a246e",
+        "bytes": 983
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-06.zip",
+        "sha256": "3ffdde6f1dc9c3c065d77ae43f3ba64d19d4cb76512d4bc1d541933d4fb2e6f7",
+        "bytes": 845
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-07.zip",
+        "sha256": "0304baed9fd407293a8a8040b30a1b68bd344803b630d33530375b421733a930",
+        "bytes": 861
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-08.zip",
+        "sha256": "516a8f50631c6ede6a9642f6d1590b6a22c33ba09935501d2ace8dc1396501fd",
+        "bytes": 846
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-09.zip",
+        "sha256": "3fd9df6fd1eef33cf5fe625c27012359bc6d64a68c109305d7b44a0354f533c2",
+        "bytes": 914
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-10.zip",
+        "sha256": "03105cc140150bffca834bcccbddc6cfee245e079d2df1759653243bd6e92448",
+        "bytes": 865
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-11.zip",
+        "sha256": "8015d2997f8d5e757ff3707ee87800ca30a74da0129daa747b64117f07bcc186",
+        "bytes": 696
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2023-12.zip",
+        "sha256": "8f02fdd2a2da261bbf13ab301c74bdb57fae005f19d5088e9ece5f8824c1a2a7",
+        "bytes": 810
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-01.zip",
+        "sha256": "3e0d30870672aa8f0f937881056e3cfd55913ae5c780cd50b33f2763aa0ba58e",
+        "bytes": 696
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-02.zip",
+        "sha256": "daf1e4901e3d6436d82ad60f90d007eb5300be8047cfef121007203a7212cde6",
+        "bytes": 776
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-03.zip",
+        "sha256": "711dcaf2a341aedfd06447b4117b540f60adb0784c5e64a313c718e4cf092bc3",
+        "bytes": 939
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-04.zip",
+        "sha256": "6d220b8e2815362a11d294d35dbca28568370d8295351937eceec10f2b359b85",
+        "bytes": 842
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-05.zip",
+        "sha256": "aef8c5fdce1493fd570b5829a72f2f17c7e459483390f25544d16c2a30be592e",
+        "bytes": 830
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-06.zip",
+        "sha256": "43fc4473820d1fb4fe340d1b1951a87555f6841aa352e684fa95d6adffce04c6",
+        "bytes": 721
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-07.zip",
+        "sha256": "acab0593c1452660ce74a6c239fb215c1192b0a9c6e8c1689e6495de40a0174b",
+        "bytes": 847
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-08.zip",
+        "sha256": "7003d29a43dd5f9357f838da8766834954939e22c1d80af682d9f33984f67b71",
+        "bytes": 904
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-09.zip",
+        "sha256": "6ef23b02392b481ef9c3855434bf3644289fb6e228b4f7d9a0dfc6d3cdff1116",
+        "bytes": 924
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-10.zip",
+        "sha256": "26db65ac8020d80ece35df79c254c5f7e24427529bcceeb2972748c4fe2d2707",
+        "bytes": 801
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-11.zip",
+        "sha256": "e1b19cccfe2cdcba48b022790789b7b01edd86c075f39bc152e44c267d43bd51",
+        "bytes": 746
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2024-12.zip",
+        "sha256": "069409f525ebf6370ee1c7defe475167de4b97284c5ac8e68768652968cd3dc9",
+        "bytes": 808
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-01.zip",
+        "sha256": "df725010d55458866eb5a47e9ee708c6796c9d7e77b14c38342cea11f381815e",
+        "bytes": 825
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-02.zip",
+        "sha256": "e918b90fb33df3a3317feea13807a892047f1ec86eeac100bdb7b3dd83285d46",
+        "bytes": 854
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-03.zip",
+        "sha256": "a3b95cfb315641fbfddc61eb32adf2a2588afb7a3973a61f464aca007ad43e3f",
+        "bytes": 938
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-04.zip",
+        "sha256": "01dbb7bd0135f98bd63bdde6b943cde1accc1770cabf92f68a1ec0653ced3888",
+        "bytes": 929
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-05.zip",
+        "sha256": "e7355e2775b88009c984db1783bb8ed6b5f24ede2b52bb764151b5722d6a5e42",
+        "bytes": 943
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-06.zip",
+        "sha256": "a1f4a40953740fa83ee9ad97776ff8325d1958654a67f1325614071a983819d4",
+        "bytes": 946
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-07.zip",
+        "sha256": "b097dff828f6e43fece23db0d3cb98042a9d7bc19693b8cbfd051d88eb973b7b",
+        "bytes": 796
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-08.zip",
+        "sha256": "1180129860b6e196e8d70bb9719e81573aa6b4acb423ba5ee7f82f10c836f7ab",
+        "bytes": 927
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-09.zip",
+        "sha256": "21dc6570fc6bffad0e7b5f9e99211b82ad07c95ab4f18c3a2daa3b95ec98344c",
+        "bytes": 941
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-10.zip",
+        "sha256": "9ecdedab6344fc4cdb154763266b8e09627a71c3cc5574cf868158b541c259c2",
+        "bytes": 944
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-11.zip",
+        "sha256": "23735400405627d610123e3a43db3e98ae7addb93459cd670e65a7659a5f081b",
+        "bytes": 941
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2025-12.zip",
+        "sha256": "35318b789f020b0e04c9043112480743855554e52e1d188437cbdaa67246d51d",
+        "bytes": 963
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2026-01.zip",
+        "sha256": "fcdc796484f395830d418588a34a26baed8849dbef0ff2b56173247e493ff51f",
+        "bytes": 965
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2026-02.zip",
+        "sha256": "80df1dd669dc1e3afc360c9da8b9a949a127fce088eedbf5bf708bd37b0a1f58",
+        "bytes": 937
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2026-03.zip",
+        "sha256": "5c069d5e9597a44fd0e213395082e59ff223fb99c9eab3a2a5a2a5622ba7867c",
+        "bytes": 1008
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2026-04.zip",
+        "sha256": "51cdeb4de7d5ef1d4eece80b6115e391bdf7a2d0803bf9ad8371ab23340b22d3",
+        "bytes": 960
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2026-05.zip",
+        "sha256": "445b65fd6b17bfcfb5e4d035db29fad34f729fa078f0449024db42621be84e6e",
+        "bytes": 980
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2026-06.zip",
+        "sha256": "cff97ce688329592bccbbf5873b5c7021649e093f5f5806e332c5b4fb7fd6a00",
+        "bytes": 964
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2026-07.zip",
+        "sha256": "e36fcc66f493d7d9ec348c852fc22e9f318c79cf7adae17398a3994ae0adc41e",
+        "bytes": 914
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2026-08.zip",
+        "sha256": "7c108b3a02bd6dc7345ca7323e3a49664edcea0afdcf780ffb3b44762c45a964",
+        "bytes": 896
+      },
+      {
+        "path": "funding/BTCUSDT-fundingRate-2026-09.zip",
+        "sha256": "913cd31b8f924a06717a2fac17f3df6132c24ccded209eb3e4ae7d83e1b247f2",
+        "bytes": 924
+      }
+    ],
+    "warmup_funding_sha256": "25a949a83bc5305727fb86f0d6e3e297235a03990d6404a3f160a2ce82bd82b3",
+    "four_hour_bars": 14910,
+    "funding_points": 7488,
+    "funding_covered_through": 1790784000000,
+    "funding_uncovered": 0,
+    "funding_uncovered_first": null
+  },
+  "screen": {
+    "candidate": "pullback-recovery",
+    "signals": 198,
+    "mean_cost_and_funding_net_return": -0.0012232133616806226,
+    "positive_fraction": 0.3939393939393939,
+    "survives_screen": false,
+    "trades": [
+      {
+        "signal_ms": 1581350400000,
+        "entry_ms": 1581350400000,
+        "exit_ms": 1581393600000,
+        "entry": "9877.036050",
+        "exit": "9740.25000",
+        "net_return": "-0.01675657937928656238933136224",
+        "funding_return": "0.001418069549963827458137099743",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1581811200000,
+        "entry_ms": 1581811200000,
+        "exit_ms": 1581883200000,
+        "entry": "9919.267155",
+        "exit": "9742.54770",
+        "net_return": "-0.02027953113433912749575500269",
+        "funding_return": "0.0009771156282966349846235187926",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1582185600000,
+        "entry_ms": 1582185600000,
+        "exit_ms": 1582387200000,
+        "entry": "9612.743970",
+        "exit": "9632.901140",
+        "net_return": "-0.0001293051142711335523066046072",
+        "funding_return": "0.0007246539746340503022884526072",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1582588800000,
+        "entry_ms": 1582588800000,
+        "exit_ms": 1582646400000,
+        "entry": "9667.711440",
+        "exit": "9477.89262",
+        "net_return": "-0.02171305811967842515580916013",
+        "funding_return": "0.0005934762711535792383972933309",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1582718400000,
+        "entry_ms": 1582718400000,
+        "exit_ms": 1582732800000,
+        "entry": "9174.585000",
+        "exit": "9106.88400",
+        "net_return": "-0.009253070201867441415606264404",
+        "funding_return": "0.0003794152354575166070181921035",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1588305600000,
+        "entry_ms": 1588305600000,
+        "exit_ms": 1588507200000,
+        "entry": "8685.250455",
+        "exit": "9047.394040",
+        "net_return": "0.03923247382551733218843600911",
+        "funding_return": "0.0009326432814884208195237358874",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1588593600000,
+        "entry_ms": 1588593600000,
+        "exit_ms": 1588665600000,
+        "entry": "8681.838750",
+        "exit": "8975.979765",
+        "net_return": "0.03204659233203910865080280336",
+        "funding_return": "0.0003080342859397152475332486450",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1589097600000,
+        "entry_ms": 1589097600000,
+        "exit_ms": 1589299200000,
+        "entry": "8810.072835",
+        "exit": "8859.068250",
+        "net_return": "0.003364857787381731674412428192",
+        "funding_return": "0.0006922663540045523358037028078",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1590134400000,
+        "entry_ms": 1590134400000,
+        "exit_ms": 1590336000000,
+        "entry": "9081.818640",
+        "exit": "9045.475000",
+        "net_return": "-0.005856185573763010092436728081",
+        "funding_return": "0.0003573849249537535358666884808",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1590379200000,
+        "entry_ms": 1590379200000,
+        "exit_ms": 1590580800000,
+        "entry": "8784.390000",
+        "exit": "9088.663395",
+        "net_return": "0.03292841154152422649722974495",
+        "funding_return": "0.0001835751705582288582360300488",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1591128000000,
+        "entry_ms": 1591128000000,
+        "exit_ms": 1591329600000,
+        "entry": "9510.542895",
+        "exit": "9790.982060",
+        "net_return": "0.02726888646704852488865200563",
+        "funding_return": "0.0006961860025341907676659503673",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1591934400000,
+        "entry_ms": 1591934400000,
+        "exit_ms": 1592136000000,
+        "entry": "9364.409865",
+        "exit": "9417.338975",
+        "net_return": "0.003762550206627462690624125850",
+        "funding_return": "0.0003853671667007924156040771502",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1592236800000,
+        "entry_ms": 1592236800000,
+        "exit_ms": 1592438400000,
+        "entry": "9294.655005",
+        "exit": "9453.720775",
+        "net_return": "0.01548091637386168912463039815",
+        "funding_return": "0.0001199303586954382068535958533",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1593028800000,
+        "entry_ms": 1593028800000,
+        "exit_ms": 1593057600000,
+        "entry": "9306.440895",
+        "exit": "9200.79000",
+        "net_return": "-0.01294385227718678806480508996",
+        "funding_return": "0.00009991768179601166424213345848",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1596398400000,
+        "entry_ms": 1596398400000,
+        "exit_ms": 1596600000000,
+        "entry": "11218.716555",
+        "exit": "11243.205585",
+        "net_return": "-0.001621965862992605039569965493",
+        "funding_return": "0.002303201399832496258303051493",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1598083200000,
+        "entry_ms": 1598083200000,
+        "exit_ms": 1598284800000,
+        "entry": "11590.562385",
+        "exit": "11762.116000",
+        "net_return": "0.01258500194951929418392928135",
+        "funding_return": "0.0007050439597802138916661376480",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1598356800000,
+        "entry_ms": 1598356800000,
+        "exit_ms": 1598371200000,
+        "entry": "11627.821005",
+        "exit": "11507.40108",
+        "net_return": "-0.01226701923622791439762105276",
+        "funding_return": "0.0004185962596007470962957087591",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1598400000000,
+        "entry_ms": 1598400000000,
+        "exit_ms": 1598601600000,
+        "entry": "11332.843590",
+        "exit": "11376.828740",
+        "net_return": "0.001744127443295985698854950957",
+        "funding_return": "0.0006341720133631527513210830433",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1599076800000,
+        "entry_ms": 1599076800000,
+        "exit_ms": 1599148800000,
+        "entry": "11403.959130",
+        "exit": "11144.84400",
+        "net_return": "-0.02481809952748401335247507161",
+        "funding_return": "0.0006136342886209554488292874126",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1603929600000,
+        "entry_ms": 1603929600000,
+        "exit_ms": 1604131200000,
+        "entry": "13262.417895",
+        "exit": "13558.217500",
+        "net_return": "0.02162505072238564082737343178",
+        "funding_return": "-0.0008381828498475315160471347823",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1604793600000,
+        "entry_ms": 1604793600000,
+        "exit_ms": 1604923200000,
+        "entry": "14831.742165",
+        "exit": "15765.133490",
+        "net_return": "0.06097311402788601537154620536",
+        "funding_return": "0.0004116955332738552902156656389",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1606060800000,
+        "entry_ms": 1606060800000,
+        "exit_ms": 1606262400000,
+        "entry": "18319.155000",
+        "exit": "19170.050180",
+        "net_return": "0.04007131060638441019795945830",
+        "funding_return": "0.004842238960448776158070609698",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1606435200000,
+        "entry_ms": 1606435200000,
+        "exit_ms": 1606636800000,
+        "entry": "17163.947685",
+        "exit": "17810.390350",
+        "net_return": "0.03532286159281951924686258483",
+        "funding_return": "0.0008117108759470097394438661737",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1607515200000,
+        "entry_ms": 1607515200000,
+        "exit_ms": 1607688000000,
+        "entry": "18245.898390",
+        "exit": "17632.35000",
+        "net_return": "-0.03570108664254706506671497470",
+        "funding_return": "0.0005996593188306141827637350994",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1610323200000,
+        "entry_ms": 1610323200000,
+        "exit_ms": 1610337600000,
+        "entry": "38219.110005",
+        "exit": "35232.73200",
+        "net_return": "-0.0795797412892621333556351609",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1610395200000,
+        "entry_ms": 1610395200000,
+        "exit_ms": 1610438400000,
+        "entry": "32300.882370",
+        "exit": "35932.264880",
+        "net_return": "0.1098979870641317096626422589",
+        "funding_return": "0.0009413271240057458529421591154",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1610755200000,
+        "entry_ms": 1610755200000,
+        "exit_ms": 1610884800000,
+        "entry": "36773.627625",
+        "exit": "34443.52200",
+        "net_return": "-0.06644967563964258203911695264",
+        "funding_return": "0.001633701770413791206708560344",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1611259200000,
+        "entry_ms": 1611259200000,
+        "exit_ms": 1611273600000,
+        "entry": "32489.886825",
+        "exit": "31001.62734",
+        "net_return": "-0.0472724983283702158602394577",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1611288000000,
+        "entry_ms": 1611288000000,
+        "exit_ms": 1611489600000,
+        "entry": "30959.512020",
+        "exit": "32850.436565",
+        "net_return": "0.05873178664857554172780530765",
+        "funding_return": "0.0007997422195351514458398753533",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1611648000000,
+        "entry_ms": 1611648000000,
+        "exit_ms": 1611676800000,
+        "entry": "31656.530355",
+        "exit": "31081.46742",
+        "net_return": "-0.01975242533907345513323549449",
+        "funding_return": "0.0001003527223095766838658651857",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1612728000000,
+        "entry_ms": 1612728000000,
+        "exit_ms": 1612785600000,
+        "entry": "38127.414180",
+        "exit": "39499.950145",
+        "net_return": "0.03327098289260512342460670876",
+        "funding_return": "0.001200681919263584321049280243",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1614024000000,
+        "entry_ms": 1614024000000,
+        "exit_ms": 1614081600000,
+        "entry": "53672.792985",
+        "exit": "47703.66858",
+        "net_return": "-0.1131555548046397235573262575",
+        "funding_return": "0.0005257396790658182290976971039",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1614096000000,
+        "entry_ms": 1614096000000,
+        "exit_ms": 1614297600000,
+        "entry": "48656.766225",
+        "exit": "47065.825315",
+        "net_return": "-0.03601194264694889307761430457",
+        "funding_return": "0.001839247199698175173991435967",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1614340800000,
+        "entry_ms": 1614340800000,
+        "exit_ms": 1614499200000,
+        "entry": "46457.006895",
+        "exit": "44055.90000",
+        "net_return": "-0.05420159178865347778018965288",
+        "funding_return": "0.001055861140281065022753442282",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1614542400000,
+        "entry_ms": 1614542400000,
+        "exit_ms": 1614600000000,
+        "entry": "44452.545165",
+        "exit": "47263.246555",
+        "net_return": "0.06140573138756519612210600460",
+        "funding_return": "0.0002761033877552554307156733980",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1615824000000,
+        "entry_ms": 1615824000000,
+        "exit_ms": 1615867200000,
+        "entry": "56283.167520",
+        "exit": "54462.76272",
+        "net_return": "-0.03420028112990787836171165092",
+        "funding_return": "0.0003808581735930700156159228190",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1616342400000,
+        "entry_ms": 1616342400000,
+        "exit_ms": 1616457600000,
+        "entry": "57229.510455",
+        "exit": "55348.14645",
+        "net_return": "-0.03604698621928042491063450768",
+        "funding_return": "0.001697622891693141952108630876",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1616472000000,
+        "entry_ms": 1616472000000,
+        "exit_ms": 1616486400000,
+        "entry": "54742.357500",
+        "exit": "53582.17419",
+        "net_return": "-0.0226776259821747720674981891",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1616500800000,
+        "entry_ms": 1616500800000,
+        "exit_ms": 1616601600000,
+        "entry": "54349.801320",
+        "exit": "56976.617440",
+        "net_return": "0.04538806749830083831482164447",
+        "funding_return": "0.001407343784906406351514515527",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1616659200000,
+        "entry_ms": 1616659200000,
+        "exit_ms": 1616688000000,
+        "entry": "52324.479165",
+        "exit": "51448.50000",
+        "net_return": "-0.01832624705828259150718676824",
+        "funding_return": "0.00009751521814311785132892683997",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1616702400000,
+        "entry_ms": 1616702400000,
+        "exit_ms": 1616875200000,
+        "entry": "52246.099995",
+        "exit": "55727.962080",
+        "net_return": "0.06441595784500335506812980834",
+        "funding_return": "0.0006775426989457148666547086641",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1617508800000,
+        "entry_ms": 1617508800000,
+        "exit_ms": 1617681600000,
+        "entry": "57573.892560",
+        "exit": "59571.069565",
+        "net_return": "0.03019685444833765118625149272",
+        "funding_return": "0.002966063647159798708597166285",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1618732800000,
+        "entry_ms": 1618732800000,
+        "exit_ms": 1618934400000,
+        "entry": "56245.068480",
+        "exit": "55321.195565",
+        "net_return": "-0.01909079963510696040315319745",
+        "funding_return": "0.001177271564783416190446426851",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1628179200000,
+        "entry_ms": 1628179200000,
+        "exit_ms": 1628265600000,
+        "entry": "38741.150895",
+        "exit": "41567.076065",
+        "net_return": "0.07107845219268878924718377233",
+        "funding_return": "0.0003105988779892699158286066710",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1628798400000,
+        "entry_ms": 1628798400000,
+        "exit_ms": 1628841600000,
+        "entry": "44392.455135",
+        "exit": "45488.024610",
+        "net_return": "0.02295682268737061145199037634",
+        "funding_return": "0.0002038498202561735832230176562",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1629259200000,
+        "entry_ms": 1629259200000,
+        "exit_ms": 1629345600000,
+        "entry": "45105.921690",
+        "exit": "44183.09268",
+        "net_return": "-0.02224421298101845749025420256",
+        "funding_return": "0.0003004030843915563052093792610",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1629864000000,
+        "entry_ms": 1629864000000,
+        "exit_ms": 1629892800000,
+        "entry": "48029.022510",
+        "exit": "47552.40000",
+        "net_return": "-0.01151646417054053844828082053",
+        "funding_return": "0.0001002714556390833364057985281",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1630008000000,
+        "entry_ms": 1630008000000,
+        "exit_ms": 1630080000000,
+        "entry": "46969.623075",
+        "exit": "48257.249305",
+        "net_return": "0.02569261513527698242019584268",
+        "funding_return": "0.0002008452779136976287093613216",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1631044800000,
+        "entry_ms": 1631044800000,
+        "exit_ms": 1631246400000,
+        "entry": "46736.486565",
+        "exit": "46708.793920",
+        "net_return": "-0.002784924197986725577474952780",
+        "funding_return": "0.0006928412762684956440306607802",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1631534400000,
+        "entry_ms": 1631534400000,
+        "exit_ms": 1631548800000,
+        "entry": "44886.572070",
+        "exit": "44135.82000",
+        "net_return": "-0.0182129939167016457801875536",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1635307200000,
+        "entry_ms": 1635307200000,
+        "exit_ms": 1635336000000,
+        "entry": "60782.195910",
+        "exit": "59778.21195",
+        "net_return": "-0.01830452722408231927269308825",
+        "funding_return": "0.0002991845491404524019277078468",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1635350400000,
+        "entry_ms": 1635350400000,
+        "exit_ms": 1635422400000,
+        "entry": "58887.038805",
+        "exit": "60812.408585",
+        "net_return": "0.03068658862302933556381940744",
+        "funding_return": "0.0004848751100331372826618395623",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1636617600000,
+        "entry_ms": 1636617600000,
+        "exit_ms": 1636747200000,
+        "entry": "65291.769570",
+        "exit": "62338.10949",
+        "net_return": "-0.04790758278641336569919527757",
+        "funding_return": "0.001203648900447468757431626768",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1637078400000,
+        "entry_ms": 1637078400000,
+        "exit_ms": 1637150400000,
+        "entry": "60730.360005",
+        "exit": "58338.74286",
+        "net_return": "-0.04117967349026667440385116485",
+        "funding_return": "0.0003282941810629564701194792465",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1637323200000,
+        "entry_ms": 1637323200000,
+        "exit_ms": 1637452800000,
+        "entry": "57047.419455",
+        "exit": "59818.565755",
+        "net_return": "0.04652841296679998967360827846",
+        "funding_return": "0.0005113451279423871356250815359",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1637596800000,
+        "entry_ms": 1637596800000,
+        "exit_ms": 1637611200000,
+        "entry": "58235.813355",
+        "exit": "56520.42300",
+        "net_return": "-0.0309338434286945660535971062",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1647849600000,
+        "entry_ms": 1647849600000,
+        "exit_ms": 1647921600000,
+        "entry": "41097.038250",
+        "exit": "42348.015400",
+        "net_return": "0.02882751152977550638944157960",
+        "funding_return": "0.00008925255753679524582285439998",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1648800000000,
+        "entry_ms": 1648800000000,
+        "exit_ms": 1648828800000,
+        "entry": "45016.196850",
+        "exit": "46545.715500",
+        "net_return": "0.032451591159627248697709567",
+        "funding_return": "0",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1648828800000,
+        "entry_ms": 1648828800000,
+        "exit_ms": 1649030400000,
+        "entry": "46546.861800",
+        "exit": "46369.203800",
+        "net_return": "-0.006002341789409313089287578999",
+        "funding_return": "0.0006884486581649635507758333990",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1649304000000,
+        "entry_ms": 1649304000000,
+        "exit_ms": 1649448000000,
+        "entry": "43314.146250",
+        "exit": "42642.31500",
+        "net_return": "-0.01736836912290519866820646393",
+        "funding_return": "0.0003693362506481355383981509274",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1649664000000,
+        "entry_ms": 1649664000000,
+        "exit_ms": 1649678400000,
+        "entry": "42303.641250",
+        "exit": "41608.35000",
+        "net_return": "-0.0179234037788059201641418988",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1660089600000,
+        "entry_ms": 1660089600000,
+        "exit_ms": 1660104000000,
+        "entry": "23151.670050",
+        "exit": "22827.15000",
+        "net_return": "-0.0155066206568324862594523715",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1660118400000,
+        "entry_ms": 1660118400000,
+        "exit_ms": 1660147200000,
+        "entry": "22962.675600",
+        "exit": "23625.781200",
+        "net_return": "0.02735007548197040243864264676",
+        "funding_return": "0.000005807096451774112943528235882",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1660608000000,
+        "entry_ms": 1660608000000,
+        "exit_ms": 1660665600000,
+        "entry": "24097.242600",
+        "exit": "23738.23800",
+        "net_return": "-0.01644940704917001582579410967",
+        "funding_return": "0.00006241966622355372726338406869",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1660780800000,
+        "entry_ms": 1660780800000,
+        "exit_ms": 1660867200000,
+        "entry": "23344.766550",
+        "exit": "23146.83000",
+        "net_return": "-0.01032791327607000636294647371",
+        "funding_return": "0.0003554319957849396442133194088",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1667822400000,
+        "entry_ms": 1667822400000,
+        "exit_ms": 1667865600000,
+        "entry": "20734.762200",
+        "exit": "20542.63680",
+        "net_return": "-0.01092367331442074604549841418",
+        "funding_return": "0.0001647628866946928380977525751",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1675094400000,
+        "entry_ms": 1675094400000,
+        "exit_ms": 1675108800000,
+        "entry": "23190.189300",
+        "exit": "22907.07000",
+        "net_return": "-0.0136994243714517673212783994",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1675123200000,
+        "entry_ms": 1675123200000,
+        "exit_ms": 1675281600000,
+        "entry": "22831.309950",
+        "exit": "23479.554350",
+        "net_return": "0.02626675793409742571516357490",
+        "funding_return": "0.0006047292087154202030357001044",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1675641600000,
+        "entry_ms": 1675641600000,
+        "exit_ms": 1675670400000,
+        "entry": "22940.764650",
+        "exit": "22718.25900",
+        "net_return": "-0.01139151905895604050844050665",
+        "funding_return": "0.0001996550712183867855511956529",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1675684800000,
+        "entry_ms": 1675684800000,
+        "exit_ms": 1675828800000,
+        "entry": "22887.538050",
+        "exit": "23416.585850",
+        "net_return": "0.02109602291081718157973744983",
+        "funding_return": "0.0005017437862872280402391291711",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1675929600000,
+        "entry_ms": 1675929600000,
+        "exit_ms": 1675972800000,
+        "entry": "22680.134400",
+        "exit": "22318.75890",
+        "net_return": "-0.01762123287836424814131612899",
+        "funding_return": "0.0001996134555534203536289449854",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1676001600000,
+        "entry_ms": 1676001600000,
+        "exit_ms": 1676016000000,
+        "entry": "21828.408750",
+        "exit": "21663.01530",
+        "net_return": "-0.0090712987971466312220307859",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1676016000000,
+        "entry_ms": 1676016000000,
+        "exit_ms": 1676044800000,
+        "entry": "21912.951000",
+        "exit": "21574.20420",
+        "net_return": "-0.01704710453649077205530190802",
+        "funding_return": "0.00009995002498750624687656171914",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1676318400000,
+        "entry_ms": 1676318400000,
+        "exit_ms": 1676390400000,
+        "entry": "21608.698950",
+        "exit": "22106.341300",
+        "net_return": "0.02131102205079774134203484753",
+        "funding_return": "0.0002014286010495786929365314704",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1676606400000,
+        "entry_ms": 1676606400000,
+        "exit_ms": 1676678400000,
+        "entry": "23850.919500",
+        "exit": "24804.891350",
+        "net_return": "0.03826700567508518906367530150",
+        "funding_return": "0.0002002740397492851376233104975",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1677096000000,
+        "entry_ms": 1677096000000,
+        "exit_ms": 1677110400000,
+        "entry": "23793.590850",
+        "exit": "24188.999450",
+        "net_return": "0.015105818181915992726251321",
+        "funding_return": "0",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1677830400000,
+        "entry_ms": 1677830400000,
+        "exit_ms": 1678032000000,
+        "entry": "22358.973900",
+        "exit": "22413.187800",
+        "net_return": "0.0008786037242523012203167342752",
+        "funding_return": "0.00004428204042046849028255272484",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1679529600000,
+        "entry_ms": 1679529600000,
+        "exit_ms": 1679587200000,
+        "entry": "27247.416900",
+        "exit": "28507.139300",
+        "net_return": "0.04470662173837109674789025625",
+        "funding_return": "-0.000008568806608600024760512252445",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1679947200000,
+        "entry_ms": 1679947200000,
+        "exit_ms": 1680076800000,
+        "entry": "26970.378450",
+        "exit": "27896.444800",
+        "net_return": "0.03267707684615378469040355667",
+        "funding_return": "0.0001335948395636991886556193282",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1680508800000,
+        "entry_ms": 1680508800000,
+        "exit_ms": 1680566400000,
+        "entry": "27960.473250",
+        "exit": "27524.84760",
+        "net_return": "-0.01711300375237747451216692118",
+        "funding_return": "0.00004463597582347788051119628313",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1681761600000,
+        "entry_ms": 1681761600000,
+        "exit_ms": 1681790400000,
+        "entry": "29474.329800",
+        "exit": "29190.68010",
+        "net_return": "-0.01116314443587450120748801550",
+        "funding_return": "0.00004674383751382194278086689523",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1681790400000,
+        "entry_ms": 1681790400000,
+        "exit_ms": 1681819200000,
+        "entry": "29446.315800",
+        "exit": "30123.830550",
+        "net_return": "0.02149637001167731821989085607",
+        "funding_return": "-0.000005153774789034898552572067437",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1681963200000,
+        "entry_ms": 1681963200000,
+        "exit_ms": 1682006400000,
+        "entry": "28864.425000",
+        "exit": "28491.67980",
+        "net_return": "-0.01444064030501213864471577037",
+        "funding_return": "0.00003667145408231759336969296981",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1682136000000,
+        "entry_ms": 1682136000000,
+        "exit_ms": 1682193600000,
+        "entry": "27323.554950",
+        "exit": "27715.835150",
+        "net_return": "0.01275662408500033045663408543",
+        "funding_return": "0.00008945901316548855587329056536",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1682553600000,
+        "entry_ms": 1682553600000,
+        "exit_ms": 1682755200000,
+        "entry": "28410.198000",
+        "exit": "29319.233050",
+        "net_return": "0.03010177555374658071724808145",
+        "funding_return": "0.0003710137141247660435171905524",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1682928000000,
+        "entry_ms": 1682928000000,
+        "exit_ms": 1682956800000,
+        "entry": "28624.204950",
+        "exit": "28171.80000",
+        "net_return": "-0.01722945681614468736536907728",
+        "funding_return": "-0.00006366816591704147926036981509",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1682985600000,
+        "entry_ms": 1682985600000,
+        "exit_ms": 1683057600000,
+        "entry": "28068.527250",
+        "exit": "28848.768400",
+        "net_return": "0.02619366682224127024690973103",
+        "funding_return": "0.00008320804523151459612117696699",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1683403200000,
+        "entry_ms": 1683403200000,
+        "exit_ms": 1683518400000,
+        "entry": "28846.315950",
+        "exit": "28304.66700",
+        "net_return": "-0.02041444185331056113597064032",
+        "funding_return": "0.0001514665664264833097343926166",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1688702400000,
+        "entry_ms": 1688702400000,
+        "exit_ms": 1688904000000,
+        "entry": "30137.161050",
+        "exit": "30242.171350",
+        "net_return": "0.001739593698093205099688711548",
+        "funding_return": "0.0002422054700802682275210524516",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1689379200000,
+        "entry_ms": 1689379200000,
+        "exit_ms": 1689580800000,
+        "entry": "30308.446650",
+        "exit": "30250.167350",
+        "net_return": "-0.003715192451078650050183287696",
+        "funding_return": "0.0002937613992830609152976831957",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1690185600000,
+        "entry_ms": 1690185600000,
+        "exit_ms": 1690200000000,
+        "entry": "29831.308200",
+        "exit": "29610.06030",
+        "net_return": "-0.0089110717033522519136455437",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1690228800000,
+        "entry_ms": 1690228800000,
+        "exit_ms": 1690416000000,
+        "entry": "29121.353400",
+        "exit": "29645.869650",
+        "net_return": "0.01597205572531872780335820520",
+        "funding_return": "0.0005258324776553825963322157960",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1696305600000,
+        "entry_ms": 1696305600000,
+        "exit_ms": 1696348800000,
+        "entry": "27599.592900",
+        "exit": "27227.745",
+        "net_return": "-0.01500422847487000433256390529",
+        "funding_return": "0.00004138446042079120667029838690",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1696881600000,
+        "entry_ms": 1696881600000,
+        "exit_ms": 1696996800000,
+        "entry": "27621.503850",
+        "exit": "27222.750",
+        "net_return": "-0.01611164177186898533042761902",
+        "funding_return": "0.0001861135031574321758009566159",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1697011200000,
+        "entry_ms": 1697011200000,
+        "exit_ms": 1697025600000,
+        "entry": "27026.206350",
+        "exit": "27121.432500",
+        "net_return": "0.002020831934575234973738739",
+        "funding_return": "0",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1697068800000,
+        "entry_ms": 1697068800000,
+        "exit_ms": 1697270400000,
+        "entry": "26877.932250",
+        "exit": "26847.069750",
+        "net_return": "-0.002835825070323257474540289383",
+        "funding_return": "0.0001884394441466009722529901831",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1700006400000,
+        "entry_ms": 1700006400000,
+        "exit_ms": 1700078400000,
+        "entry": "35576.879550",
+        "exit": "37765.507800",
+        "net_return": "0.05976972928440824990790964402",
+        "funding_return": "0.0002024067341229200074687269755",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1700179200000,
+        "entry_ms": 1700179200000,
+        "exit_ms": 1700380800000,
+        "entry": "36194.0880",
+        "exit": "36605.6880",
+        "net_return": "0.009158299222790197117275064082",
+        "funding_return": "0.0007051947268294203185890469184",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1700625600000,
+        "entry_ms": 1700625600000,
+        "exit_ms": 1700827200000,
+        "entry": "36396.989400",
+        "exit": "37896.042500",
+        "net_return": "0.03894237021908740616881900651",
+        "funding_return": "0.0007129240749785750136795654862",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1701115200000,
+        "entry_ms": 1701115200000,
+        "exit_ms": 1701129600000,
+        "entry": "36886.934250",
+        "exit": "37187.197100",
+        "net_return": "0.006533039852383503516560202711",
+        "funding_return": "0.0001009419751385275397344792892",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1702296000000,
+        "entry_ms": 1702296000000,
+        "exit_ms": 1702324800000,
+        "entry": "42367.773300",
+        "exit": "40231.82790",
+        "net_return": "-0.05197529606541772163419312864",
+        "funding_return": "0.00009871795646149758830965043896",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1702339200000,
+        "entry_ms": 1702339200000,
+        "exit_ms": 1702512000000,
+        "entry": "41291.735550",
+        "exit": "43334.721800",
+        "net_return": "0.04728514156485970229459149013",
+        "funding_return": "0.0006546309010012053126209658679",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1702886400000,
+        "entry_ms": 1702886400000,
+        "exit_ms": 1702900800000,
+        "entry": "41180.5800",
+        "exit": "40769.78940",
+        "net_return": "-0.01156781611745147834246142232",
+        "funding_return": "0.00009995002498750624687656171914",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1702915200000,
+        "entry_ms": 1702915200000,
+        "exit_ms": 1702944000000,
+        "entry": "41308.644000",
+        "exit": "42735.021800",
+        "net_return": "0.03290056847787112063034555203",
+        "funding_return": "0.0001032999291867338952108909699",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1703476800000,
+        "entry_ms": 1703476800000,
+        "exit_ms": 1703592000000,
+        "entry": "43204.191300",
+        "exit": "42507.45000",
+        "net_return": "-0.01877111167089476339764285790",
+        "funding_return": "0.001156500493691684954649295796",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1703635200000,
+        "entry_ms": 1703635200000,
+        "exit_ms": 1703836800000,
+        "entry": "42559.869300",
+        "exit": "42293.342750",
+        "net_return": "-0.01052854305641629402278263104",
+        "funding_return": "0.002770848672766013405027068539",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1704326400000,
+        "entry_ms": 1704326400000,
+        "exit_ms": 1704528000000,
+        "entry": "42870.924750",
+        "exit": "43623.477350",
+        "net_return": "0.01532692220325851496823613611",
+        "funding_return": "0.0007138280822832029066506198936",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1705132800000,
+        "entry_ms": 1705132800000,
+        "exit_ms": 1705334400000,
+        "entry": "43123.651050",
+        "exit": "42257.560650",
+        "net_return": "-0.02226137410447764023449957865",
+        "funding_return": "0.0006925531413231301527285686540",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1709683200000,
+        "entry_ms": 1709683200000,
+        "exit_ms": 1709884800000,
+        "entry": "63779.373750",
+        "exit": "67274.845750",
+        "net_return": "0.05025747257990284045396416307",
+        "funding_return": "0.003007103969423970708084915933",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1710460800000,
+        "entry_ms": 1710460800000,
+        "exit_ms": 1710475200000,
+        "entry": "71491.327800",
+        "exit": "68531.40000",
+        "net_return": "-0.0428715613511097775414376903",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1710489600000,
+        "entry_ms": 1710489600000,
+        "exit_ms": 1710504000000,
+        "entry": "68521.643700",
+        "exit": "66593.43990",
+        "net_return": "-0.0296189642149521290599162903",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1710864000000,
+        "entry_ms": 1710864000000,
+        "exit_ms": 1710892800000,
+        "entry": "64116.142050",
+        "exit": "62349.68790",
+        "net_return": "-0.02942342157387337686828273528",
+        "funding_return": "0.0003932356807329145905777404771",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1712001600000,
+        "entry_ms": 1712001600000,
+        "exit_ms": 1712030400000,
+        "entry": "69717.041100",
+        "exit": "68035.19670",
+        "net_return": "-0.02571500413763257086939107057",
+        "funding_return": "0.0001092332933217385211146030694",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1712088000000,
+        "entry_ms": 1712088000000,
+        "exit_ms": 1712116800000,
+        "entry": "65979.773400",
+        "exit": "64538.59680",
+        "net_return": "-0.02342559754304945824503240863",
+        "funding_return": "0.00009927648523873226881982592562",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1712707200000,
+        "entry_ms": 1712707200000,
+        "exit_ms": 1712764800000,
+        "entry": "69223.794600",
+        "exit": "68147.78400",
+        "net_return": "-0.01725636331791034177141164692",
+        "funding_return": "0.0002240799713686888814384642242",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1712966400000,
+        "entry_ms": 1712966400000,
+        "exit_ms": 1713038400000,
+        "entry": "67169.968200",
+        "exit": "65036.89800",
+        "net_return": "-0.03343369573978747246153973911",
+        "funding_return": "0.0002012049486127343439772538109",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1713081600000,
+        "entry_ms": 1713081600000,
+        "exit_ms": 1713283200000,
+        "entry": "64482.124950",
+        "exit": "61718.325400",
+        "net_return": "-0.04483472312327232013776866078",
+        "funding_return": "0.0005053854970857315086046958816",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1716508800000,
+        "entry_ms": 1716508800000,
+        "exit_ms": 1716710400000,
+        "entry": "68033.899950",
+        "exit": "69324.520400",
+        "net_return": "0.01674974248977329132224765245",
+        "funding_return": "0.0007062851025049902346513945508",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1716897600000,
+        "entry_ms": 1716897600000,
+        "exit_ms": 1716926400000,
+        "entry": "68445.505650",
+        "exit": "67432.50000",
+        "net_return": "-0.01638901084278131854227889686",
+        "funding_return": "0.00009993322329995819089985786379",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1717804800000,
+        "entry_ms": 1717804800000,
+        "exit_ms": 1718006400000,
+        "entry": "69411.688500",
+        "exit": "69290.637350",
+        "net_return": "-0.003943218358497358841803711459",
+        "funding_return": "0.0007005671674447164615509965586",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1718136000000,
+        "entry_ms": 1718136000000,
+        "exit_ms": 1718337600000,
+        "entry": "67454.210250",
+        "exit": "66716.325150",
+        "net_return": "-0.01313318232126214834751549117",
+        "funding_return": "0.0007023348108949211216952910660",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1718654400000,
+        "entry_ms": 1718654400000,
+        "exit_ms": 1718683200000,
+        "entry": "66694.730700",
+        "exit": "65029.80510",
+        "net_return": "-0.02654431906792300759676056385",
+        "funding_return": "0.00009966619446894325641230904618",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1721923200000,
+        "entry_ms": 1721923200000,
+        "exit_ms": 1721966400000,
+        "entry": "64805.686650",
+        "exit": "67372.796750",
+        "net_return": "0.03798121838818600034075867636",
+        "funding_return": "0.0001014926365262113922837356434",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1722326400000,
+        "entry_ms": 1722326400000,
+        "exit_ms": 1722355200000,
+        "entry": "66947.457000",
+        "exit": "65754.18000",
+        "net_return": "-0.01942236570106016125451934644",
+        "funding_return": "0.0001116512141753196092272780428",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1722499200000,
+        "entry_ms": 1722499200000,
+        "exit_ms": 1722528000000,
+        "entry": "64329.648750",
+        "exit": "63495.94050",
+        "net_return": "-0.01454798401860541792558753872",
+        "funding_return": "0.00009776611752446417640357472028",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1724788800000,
+        "entry_ms": 1724788800000,
+        "exit_ms": 1724803200000,
+        "entry": "62102.835900",
+        "exit": "61364.67390",
+        "net_return": "-0.01331215716057179282532571106",
+        "funding_return": "-0.00006505211353802282642619223770",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1727841600000,
+        "entry_ms": 1727841600000,
+        "exit_ms": 1727899200000,
+        "entry": "61748.959050",
+        "exit": "60068.07180",
+        "net_return": "-0.02886693846398532932030050150",
+        "funding_return": "0.0001660494060425784618955451039",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1728532800000,
+        "entry_ms": 1728532800000,
+        "exit_ms": 1728590400000,
+        "entry": "60869.119350",
+        "exit": "60191.64810",
+        "net_return": "-0.01273677653165356662910221657",
+        "funding_return": "0.0001151576583800205744228497697",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1729540800000,
+        "entry_ms": 1729540800000,
+        "exit_ms": 1729569600000,
+        "entry": "67789.477800",
+        "exit": "66799.03410",
+        "net_return": "-0.01619900299519640199972155568",
+        "funding_return": "0.00009937928744451841757659918130",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1729569600000,
+        "entry_ms": 1729569600000,
+        "exit_ms": 1729684800000,
+        "entry": "67423.995150",
+        "exit": "66469.96350",
+        "net_return": "-0.01603793970650669756403481237",
+        "funding_return": "0.0003988172154464804063157031714",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1730419200000,
+        "entry_ms": 1730419200000,
+        "exit_ms": 1730433600000,
+        "entry": "70357.060950",
+        "exit": "69635.29500",
+        "net_return": "-0.0117509203170104847877389909",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1730462400000,
+        "entry_ms": 1730462400000,
+        "exit_ms": 1730491200000,
+        "entry": "70059.712350",
+        "exit": "68801.52960",
+        "net_return": "-0.01954428223487417729884527568",
+        "funding_return": "0.00009903138005104869660516098308",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1732478400000,
+        "entry_ms": 1732478400000,
+        "exit_ms": 1732492800000,
+        "entry": "96444.998400",
+        "exit": "97497.426900",
+        "net_return": "0.009190374872254650791720060047",
+        "funding_return": "0.0002136553633350467244136529531",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1732492800000,
+        "entry_ms": 1732492800000,
+        "exit_ms": 1732550400000,
+        "entry": "98009.480250",
+        "exit": "95726.27790",
+        "net_return": "-0.02512562393416528703609771456",
+        "funding_return": "0.0003473661327981585740528401588",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1732593600000,
+        "entry_ms": 1732593600000,
+        "exit_ms": 1732622400000,
+        "entry": "94584.968850",
+        "exit": "92573.33400",
+        "net_return": "-0.02293001861250282581237008033",
+        "funding_return": "0.0001779513093956048810391927300",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1732636800000,
+        "entry_ms": 1732636800000,
+        "exit_ms": 1732665600000,
+        "entry": "92923.838700",
+        "exit": "91461.44700",
+        "net_return": "-0.01753474669304637755994899507",
+        "funding_return": "0.0003090198325502452580018091741",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1733155200000,
+        "entry_ms": 1733155200000,
+        "exit_ms": 1733169600000,
+        "entry": "97155.153300",
+        "exit": "94731.17400",
+        "net_return": "-0.0264308578418454309618180593",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1733457600000,
+        "entry_ms": 1733457600000,
+        "exit_ms": 1733659200000,
+        "entry": "97851.601350",
+        "exit": "99705.422350",
+        "net_return": "0.01624471110079589923849519106",
+        "funding_return": "0.001186309022463432582342710941",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1733788800000,
+        "entry_ms": 1733788800000,
+        "exit_ms": 1733990400000,
+        "entry": "97397.774550",
+        "exit": "100431.359200",
+        "net_return": "0.02881585008132508711411825548",
+        "funding_return": "0.0008071347663045756932030435186",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1734580800000,
+        "entry_ms": 1734580800000,
+        "exit_ms": 1734638400000,
+        "entry": "101213.981700",
+        "exit": "98645.25600",
+        "net_return": "-0.02705994470598917264016696616",
+        "funding_return": "0.0001998204167082975256569715604",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1734652800000,
+        "entry_ms": 1734652800000,
+        "exit_ms": 1734696000000,
+        "entry": "97483.017150",
+        "exit": "95585.51880",
+        "net_return": "-0.02105066525387596705094390893",
+        "funding_return": "0.0001003519411483459608943792319",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1734710400000,
+        "entry_ms": 1734710400000,
+        "exit_ms": 1734912000000,
+        "entry": "97009.880700",
+        "exit": "95105.923250",
+        "net_return": "-0.02181736992005701951141560360",
+        "funding_return": "0.0007056616261770127091806639032",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1735228800000,
+        "entry_ms": 1735228800000,
+        "exit_ms": 1735286400000,
+        "entry": "96041.096550",
+        "exit": "95057.84700",
+        "net_return": "-0.01192881900370701254764047158",
+        "funding_return": "0.0001986972315550889032409740849",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1735545600000,
+        "entry_ms": 1735545600000,
+        "exit_ms": 1735574400000,
+        "entry": "93735.744450",
+        "exit": "92868.83820",
+        "net_return": "-0.01092757127173485631819719327",
+        "funding_return": "0.0001861012711997509505030660692",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1736294400000,
+        "entry_ms": 1736294400000,
+        "exit_ms": 1736323200000,
+        "entry": "96968.660100",
+        "exit": "96056.84700",
+        "net_return": "-0.01109468852323556031068640078",
+        "funding_return": "0.0001985677638542517099295259830",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1737345600000,
+        "entry_ms": 1737345600000,
+        "exit_ms": 1737360000000,
+        "entry": "101924.736900",
+        "exit": "106568.189250",
+        "net_return": "0.044023490193453714963673358",
+        "funding_return": "0",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1737360000000,
+        "entry_ms": 1737360000000,
+        "exit_ms": 1737561600000,
+        "entry": "107232.389400",
+        "exit": "104085.931000",
+        "net_return": "-0.03159971207635889907718497596",
+        "funding_return": "0.0007792933689865163071709003623",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1737993600000,
+        "entry_ms": 1737993600000,
+        "exit_ms": 1738195200000,
+        "entry": "101121.335400",
+        "exit": "103646.350900",
+        "net_return": "0.02283288667622757679681512618",
+        "funding_return": "0.0006185415104595226696343648168",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1738368000000,
+        "entry_ms": 1738368000000,
+        "exit_ms": 1738411200000,
+        "entry": "102430.989900",
+        "exit": "101407.49100",
+        "net_return": "-0.01153811908348061371219844085",
+        "funding_return": "0.00005353066132967245687039875029",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1738425600000,
+        "entry_ms": 1738425600000,
+        "exit_ms": 1738454400000,
+        "entry": "102082.615800",
+        "exit": "101242.65600",
+        "net_return": "-0.0097220642914794900857154564",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1738483200000,
+        "entry_ms": 1738483200000,
+        "exit_ms": 1738497600000,
+        "entry": "99635.993100",
+        "exit": "98890.01100",
+        "net_return": "-0.0089814591618197058950175707",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1746432000000,
+        "entry_ms": 1746432000000,
+        "exit_ms": 1746547200000,
+        "entry": "94743.748200",
+        "exit": "93351.65490",
+        "net_return": "-0.01623153573688780870926109291",
+        "funding_return": "0.00004930860894523909072028881374",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1747670400000,
+        "entry_ms": 1747670400000,
+        "exit_ms": 1747872000000,
+        "entry": "104792.870250",
+        "exit": "110088.528200",
+        "net_return": "0.04859207396576199801150116877",
+        "funding_return": "0.0004045504125315242999558932301",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1748059200000,
+        "entry_ms": 1748059200000,
+        "exit_ms": 1748174400000,
+        "entry": "108360.853350",
+        "exit": "106615.17810",
+        "net_return": "-0.01787018978350911999347040941",
+        "funding_return": "0.0002724391693801662000292839149",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1748577600000,
+        "entry_ms": 1748577600000,
+        "exit_ms": 1748635200000,
+        "entry": "106031.789400",
+        "exit": "104416.47900",
+        "net_return": "-0.01683444956324579390716195907",
+        "funding_return": "0.0001116666003846578486583571700",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1749182400000,
+        "entry_ms": 1749182400000,
+        "exit_ms": 1749384000000,
+        "entry": "102496.222500",
+        "exit": "105566.390400",
+        "net_return": "0.02844412275593863959230302415",
+        "funding_return": "-0.00001262675300058009454933814754",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1749744000000,
+        "entry_ms": 1749744000000,
+        "exit_ms": 1749758400000,
+        "entry": "107014.080300",
+        "exit": "107749.698200",
+        "net_return": "0.005356899545647919753228958906",
+        "funding_return": "0.00001197401299350324837581209395",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1749801600000,
+        "entry_ms": 1749801600000,
+        "exit_ms": 1750003200000,
+        "entry": "104883.815700",
+        "exit": "105473.237000",
+        "net_return": "0.003957693800798667930232443242",
+        "funding_return": "0.0001578459285115425105572317579",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1750190400000,
+        "entry_ms": 1750190400000,
+        "exit_ms": 1750392000000,
+        "entry": "104682.815250",
+        "exit": "104502.822450",
+        "net_return": "-0.003378682751790055627110200339",
+        "funding_return": "0.0001605611578066534659804155391",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1750478400000,
+        "entry_ms": 1750478400000,
+        "exit_ms": 1750536000000,
+        "entry": "103486.317300",
+        "exit": "102153.04470",
+        "net_return": "-0.01446763751610474982087317935",
+        "funding_return": "0.00009373611242614003039800895495",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1751414400000,
+        "entry_ms": 1751414400000,
+        "exit_ms": 1751428800000,
+        "entry": "105690.718950",
+        "exit": "105077.41740",
+        "net_return": "-0.007316503632464882575197961603",
+        "funding_return": "0.00001806096951524237881059470265",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1751673600000,
+        "entry_ms": 1751673600000,
+        "exit_ms": 1751846400000,
+        "entry": "107989.267650",
+        "exit": "109351.496900",
+        "net_return": "0.01095345472630862868899176213",
+        "funding_return": "0.0001515717516397102818948508722",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1751932800000,
+        "entry_ms": 1751932800000,
+        "exit_ms": 1751947200000,
+        "entry": "108258.001950",
+        "exit": "107348.54400",
+        "net_return": "-0.009905262132999305738618428272",
+        "funding_return": "0.00001072463768115942028985507246",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1753142400000,
+        "entry_ms": 1753142400000,
+        "exit_ms": 1753156800000,
+        "entry": "117388.865100",
+        "exit": "116337.64590",
+        "net_return": "-0.0104483000342934570205671066",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1753444800000,
+        "entry_ms": 1753444800000,
+        "exit_ms": 1753646400000,
+        "entry": "116562.852300",
+        "exit": "118893.823350",
+        "net_return": "0.01777629958753591687803953967",
+        "funding_return": "0.0007062486750763905251484653314",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1754049600000,
+        "entry_ms": 1754049600000,
+        "exit_ms": 1754064000000,
+        "entry": "115304.123250",
+        "exit": "113941.54440",
+        "net_return": "-0.01336520803761022483643055675",
+        "funding_return": "0.00005681057978123952301939904825",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1754064000000,
+        "entry_ms": 1754064000000,
+        "exit_ms": 1754078400000,
+        "entry": "115362.952650",
+        "exit": "113757.22890",
+        "net_return": "-0.0154084465188356983336972522",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1754424000000,
+        "entry_ms": 1754424000000,
+        "exit_ms": 1754510400000,
+        "entry": "113630.586900",
+        "exit": "115496.722750",
+        "net_return": "0.01468124967146939905491238798",
+        "funding_return": "0.0002292635449549015750089380204",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1754971200000,
+        "entry_ms": 1754971200000,
+        "exit_ms": 1755086400000,
+        "entry": "118872.606600",
+        "exit": "120279.130350",
+        "net_return": "0.009984724628462046360140975058",
+        "funding_return": "0.0003385952884371259341090279415",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1755216000000,
+        "entry_ms": 1755216000000,
+        "exit_ms": 1755273600000,
+        "entry": "118301.321100",
+        "exit": "116886.99600",
+        "net_return": "-0.01356349965800170595051791019",
+        "funding_return": "0.0001171888050538431392039627865",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1755532800000,
+        "entry_ms": 1755532800000,
+        "exit_ms": 1755590400000,
+        "entry": "116157.449700",
+        "exit": "114490.39500",
+        "net_return": "-0.01596523715069994344064873181",
+        "funding_return": "0.0001243196006222233716964948138",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1759896000000,
+        "entry_ms": 1759896000000,
+        "exit_ms": 1759924800000,
+        "entry": "121393.766550",
+        "exit": "122905.816350",
+        "net_return": "0.01084627407357597967207979315",
+        "funding_return": "0.0001001291116129389100003998517",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1759924800000,
+        "entry_ms": 1759924800000,
+        "exit_ms": 1760040000000,
+        "entry": "122887.212900",
+        "exit": "120395.48400",
+        "net_return": "-0.02189583775397838809639078406",
+        "funding_return": "0.0001344936762090077477865884612",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1767830400000,
+        "entry_ms": 1767830400000,
+        "exit_ms": 1767844800000,
+        "entry": "91373.764050",
+        "exit": "90543.46590",
+        "net_return": "-0.01066690460143630254662798910",
+        "funding_return": "0.00008688655672163918040979510245",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1768233600000,
+        "entry_ms": 1768233600000,
+        "exit_ms": 1768348800000,
+        "entry": "91664.409300",
+        "exit": "94676.737950",
+        "net_return": "0.03118049139857927388618430776",
+        "funding_return": "0.0001574380278911588426065382390",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1768809600000,
+        "entry_ms": 1768809600000,
+        "exit_ms": 1768896000000,
+        "entry": "92834.193900",
+        "exit": "91708.20000",
+        "net_return": "-0.01376232868220122499496384380",
+        "funding_return": "0.0001423397287020553317908435030",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1768910400000,
+        "entry_ms": 1768910400000,
+        "exit_ms": 1768924800000,
+        "entry": "91231.392900",
+        "exit": "90531.57780",
+        "net_return": "-0.0091650176704141935774390659",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1775980800000,
+        "entry_ms": 1775980800000,
+        "exit_ms": 1776009600000,
+        "entry": "71664.014100",
+        "exit": "71187.74100",
+        "net_return": "-0.008137620474011376931787023624",
+        "funding_return": "-0.000003312233315158381562106775707",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1776024000000,
+        "entry_ms": 1776024000000,
+        "exit_ms": 1776038400000,
+        "entry": "71090.727600",
+        "exit": "70495.93350",
+        "net_return": "-0.0098604152677852181667641280",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1776657600000,
+        "entry_ms": 1776657600000,
+        "exit_ms": 1776715200000,
+        "entry": "74631.196950",
+        "exit": "76405.478150",
+        "net_return": "0.02233187433837613132372520559",
+        "funding_return": "-0.00007571657116508299549656358553",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1777291200000,
+        "entry_ms": 1777291200000,
+        "exit_ms": 1777305600000,
+        "entry": "77843.202150",
+        "exit": "77331.19140",
+        "net_return": "-0.0080725294927053562890976216",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1777320000000,
+        "entry_ms": 1777320000000,
+        "exit_ms": 1777363200000,
+        "entry": "76882.722150",
+        "exit": "76323.60000",
+        "net_return": "-0.008695191045189858694408884172",
+        "funding_return": "-0.00007175779277477104782768152805",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1777507200000,
+        "entry_ms": 1777507200000,
+        "exit_ms": 1777636800000,
+        "entry": "75787.774950",
+        "exit": "77474.943150",
+        "net_return": "0.02089109420228466543732459828",
+        "funding_return": "-0.0001460444569629102166958392806",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1777910400000,
+        "entry_ms": 1777910400000,
+        "exit_ms": 1778112000000,
+        "entry": "80016.588300",
+        "exit": "81349.404950",
+        "net_return": "0.01556320870986822616129960661",
+        "funding_return": "-0.0004189469910453555291109556092",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1778486400000,
+        "entry_ms": 1778486400000,
+        "exit_ms": 1778529600000,
+        "entry": "80749.154400",
+        "exit": "81635.661750",
+        "net_return": "0.009424381204634633300878256574",
+        "funding_return": "0.00004591905509786985459751142608",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1778702400000,
+        "entry_ms": 1778702400000,
+        "exit_ms": 1778788800000,
+        "entry": "79644.602400",
+        "exit": "81346.106600",
+        "net_return": "0.01973751980071407827129789212",
+        "funding_return": "0.0001101675580717068153761038802",
+        "reason": "take_proxy"
+      },
+      {
+        "signal_ms": 1779091200000,
+        "entry_ms": 1779091200000,
+        "exit_ms": 1779120000000,
+        "entry": "77078.019750",
+        "exit": "76457.96550",
+        "net_return": "-0.009596219306704490160439027161",
+        "funding_return": "0.00005775112443778110944527736132",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1779134400000,
+        "entry_ms": 1779134400000,
+        "exit_ms": 1779336000000,
+        "entry": "76936.949250",
+        "exit": "78000.080450",
+        "net_return": "0.01195158867422859244708094510",
+        "funding_return": "0.0003562612854577152342702228995",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1779508800000,
+        "entry_ms": 1779508800000,
+        "exit_ms": 1779523200000,
+        "entry": "75636.799500",
+        "exit": "75109.71510",
+        "net_return": "-0.0084633973169369758962368576",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1779552000000,
+        "entry_ms": 1779552000000,
+        "exit_ms": 1779753600000,
+        "entry": "75524.743500",
+        "exit": "77242.859250",
+        "net_return": "0.02073844228353453461248762784",
+        "funding_return": "0.0004935404233977967763637621623",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1784851200000,
+        "entry_ms": 1784851200000,
+        "exit_ms": 1784908800000,
+        "entry": "65102.134800",
+        "exit": "64571.36400",
+        "net_return": "-0.009698560292818539031994999985",
+        "funding_return": "0.00005178102775517585638374488451",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1785254400000,
+        "entry_ms": 1785254400000,
+        "exit_ms": 1785456000000,
+        "entry": "63931.449750",
+        "exit": "64717.625000",
+        "net_return": "0.01030151395072188238621946728",
+        "funding_return": "0.0004864229196992361337778047180",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1785772800000,
+        "entry_ms": 1785772800000,
+        "exit_ms": 1785974400000,
+        "entry": "63691.329750",
+        "exit": "64601.583050",
+        "net_return": "0.01255632573485404424296856465",
+        "funding_return": "0.0002245915202139424636522053458",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1786420800000,
+        "entry_ms": 1786420800000,
+        "exit_ms": 1786464000000,
+        "entry": "64142.755350",
+        "exit": "63724.21200",
+        "net_return": "-0.008121977441876450354264365064",
+        "funding_return": "0.0001016862538007575628726089641",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1787961600000,
+        "entry_ms": 1787961600000,
+        "exit_ms": 1788163200000,
+        "entry": "77844.802950",
+        "exit": "78129.115900",
+        "net_return": "0.001622457578621181415682419940",
+        "funding_return": "0.0005271080252634899887045060598",
+        "reason": "expiry"
+      },
+      {
+        "signal_ms": 1788811200000,
+        "entry_ms": 1788811200000,
+        "exit_ms": 1788854400000,
+        "entry": "79364.962650",
+        "exit": "78557.36400",
+        "net_return": "-0.01171338070762010243319883923",
+        "funding_return": "0.00004525457151462541512328173445",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1789099200000,
+        "entry_ms": 1789099200000,
+        "exit_ms": 1789142400000,
+        "entry": "76899.330450",
+        "exit": "76326.49710",
+        "net_return": "-0.009041292359698302158624321264",
+        "funding_return": "0.00009774608123392314919693816398",
+        "reason": "stop_proxy"
+      },
+      {
+        "signal_ms": 1789473600000,
+        "entry_ms": 1789473600000,
+        "exit_ms": 1789488000000,
+        "entry": "76938.349950",
+        "exit": "76590.63270",
+        "net_return": "-0.0060160373505319761539804117",
+        "funding_return": "0",
+        "reason": "stop_proxy"
+      }
+    ],
+    "financial_account_complete": false,
+    "limitations": [
+      "Standalone 4h event study, not account CAGR/alpha/beta or acceptance.",
+      "Next-open proxy ignores session timing, macro competition, depth, rounding and margin.",
+      "Intrabar barriers use adverse-first ordering; funding uses proxy open marks."
+    ]
+  },
+  "native_cases": 0,
+  "prospective_alpha_proven": false
+}

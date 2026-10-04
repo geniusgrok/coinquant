@@ -71,3 +71,7 @@ Keep one lightweight CI workflow, one Python environment and timeout-minutes: 10
 Keep current code, configuration, reports and the complete originals of the current economic results; superseded material lives in Git history, not the working tree. Prefer native Git and file-backed/programmatic transfers, then authorized connectors. Do not route full archives/Base64/huge JSON through model context. Use verified parts when needed, with fixed source versions and length/hash checks; verify remote bytes, Git objects, tree, commit and target ref. Inspect remote state before retrying an unknown write.
 
 Use PROJECT_STATE.md as the current recovery entry and HANDOFF_PROMPT.md for continuation; do not create duplicate progress systems. Historical source snapshots are not current code and must not overwrite main. A merge, PR or checkpoint does not complete the 150%/<50% objective.
+
+## Additional BTC research delivery (2026-10-04)
+
+All four new directions are closed: three fixed candidates screen-rejected, overlap budget already covered by single-position campaign ownership. See research/upgrade-RESULT.md and upgrade-GUIDE.md. No new795/full economic matrix or default adoption. Research source additions change whole-source identity; preserve original measured/forward bindings and use the original approved consumer commits for old ledgers. Do not observe old source-bound diaries from this new HEAD or reset/rebind them. Workspace minimum-verification rules apply: reuse accepted results, final fullsuite once per repo, affected failure recovery only.

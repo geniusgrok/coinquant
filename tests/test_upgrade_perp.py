@@ -1,13 +1,26 @@
 from decimal import Decimal as D
 import unittest
+from unittest.mock import patch
 
 from coinquant.campaign import ORIGIN
 from coinquant.opportunities import FOUR_HOURS, Opportunity
 from coinquant.types import Blocked
-from research.upgrade_perp import PullbackCampaign, recovery
+from research.upgrade_perp import BASE, PullbackCampaign, recovery
 
 
 class RecoveryTests(unittest.TestCase):
+    def test_half_risk_applies_only_to_new_recovery_primary(self):
+        value = PullbackCampaign()
+        value.model.active = Opportunity(ORIGIN+FOUR_HOURS, 1, D(90), D(120), None)
+        with patch.object(BASE, 'entry_fraction', return_value=D('.4')):
+            self.assertEqual(value.entry_fraction(D(0)), D('.4'))
+            value.trigger = {'signal_family': 'pullback-recovery'}
+            self.assertEqual(value.entry_fraction(D(0)), D('.2'))
+            value.model.active = None
+            value.macro_opportunity = Opportunity(-ORIGIN, 1, D(90), D(120), None)
+            value.position_campaign = -ORIGIN
+            self.assertEqual(value.entry_fraction(D(0)), D('.4'))
+
     def test_recovery_needs_completed_trend_drawdown_and_bounce(self):
         prices = [D(90)]*354+[D(110), D(111), D(112), D(111), D(105), D(106)]
         self.assertEqual(recovery(prices, [D(103)]*6, D(2)), (D(103), D(112)))

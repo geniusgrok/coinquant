@@ -2,6 +2,7 @@
 from collections import deque
 from contextlib import contextmanager
 from decimal import Decimal as D
+from pathlib import Path
 from unittest.mock import patch
 
 from coinquant.opportunities import FOUR_HOURS, Opportunity
@@ -9,6 +10,7 @@ from coinquant.types import Blocked
 from research import alpha_perp as alpha, complete_perp as meter
 
 BASE = alpha.AlphaCampaign
+SPEC = Path(__file__).with_name('upgrade-spec.json')
 
 
 def recovery(closes, lows, prior_atr):
@@ -84,6 +86,8 @@ class PullbackCampaign(BASE):
 
 @contextmanager
 def variant(binding, journal=None):
+    binding = dict(candidate='pullback-recovery', spec_sha256=alpha.file_hash(SPEC),
+                   inputs=binding)
     with patch.object(alpha, 'AlphaCampaign', PullbackCampaign), alpha.variant(
             'incumbent', binding=binding, journal=journal):
         yield
@@ -152,7 +156,6 @@ def screen(market):
 def main(argv=None):
     import argparse
     import json
-    from pathlib import Path
     from research.session_market import load_base
     from research.rebuild import source_identity
     parser = argparse.ArgumentParser(description=__doc__)

@@ -1,10 +1,12 @@
 # PROJECT_STATE
 
-Updated: 2026-10-04T09:28:37.609696+08:00
+Updated: 2026-10-04T09:52:25.211050+08:00
 
 ## Active BTC alpha/beta upgrade (2026-10-04)
 
-User approved all four proposed directions. Worktree: /workspace/btc-alpha-beta-upgrade-20261004/coinquant, branch codex/btc-alpha-beta-upgrade-20261004. See research/upgrade-PLAN.md and pre-result upgrade-spec.json. Current: implementation/readonly diagnostics; no producer launched. Reuse all prior evidence, no repeated old795 or interim fullsuite. Only necessary new-candidate adoption measurements after screening. No native/account authority.
+All four directions have implementation or architectural disposition. Spot trend-reentry/slow-participation and Coin pullback-recovery screen-rejected under the frozen spec; joint-risk-budget ALREADY_COVERED by single position ownership. All8 accepted Spot accounts explain200 blocked proposals as basis_availability_date_mismatch across4 completed days,689 unchanged/0halving; repeated poll/account proposals are not independent missed trades. IOC attribution finds tradeoffs, no justified execution fix. Defaults/economic71+5/native/forward evidence remain unchanged. No new795 or historical financial acceptance. See research/upgrade-RESULT.md and upgrade-GUIDE.md and evidence/btc-upgrade-20261004.
+
+Current: final code and research evidence ready; run workflow-equivalent compile+full offline suite exactly once per repo on Python3.13, fix only affected failures, then retain actual receipts and normally integrate GitHub. Do not repeat screens/accepted attribution/economic matrices. Original failed Spot diagnostic retained, sole successful schema-fix screen retained. No private operations, no new native qualification, no source relabeling/reset. Existing forward ledgers retain original consumer/source binding; new research HEAD cannot substitute for that consumer.
 
 ## Completed BTC alpha/beta improvement round (2026-10-03)
 
