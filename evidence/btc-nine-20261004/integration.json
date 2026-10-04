@@ -1,0 +1,12 @@
+{
+  "format": "btc-nine-integration-v1",
+  "pull_request": "https://github.com/geniusgrok/coinquant/pull/64",
+  "state": "MERGED",
+  "verified_remote_main_merge": "f45d49cfe262e0b5caf8229180ce50b904cd700c",
+  "tested_head": "d1cbaa3ddd6b0f597bd2b3bcf0aabe03a547be23",
+  "compiled_source_bytes_and_modes_equal_to_tested": true,
+  "ci": "NOT_RUN_SKIP_CI_NOT_PASS",
+  "local_fullsuite_runs": 1,
+  "default_promoted": false,
+  "post_merge_change": "Evidence and PROJECT_STATE/HANDOFF only; no program or test changes."
+}
