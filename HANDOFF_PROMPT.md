@@ -1,1 +1,1 @@
-本轮所有可用持续换向研究分支和新证据入口已完成，没有入围账户。读PROJECT_STATE.md/persistent-RESULT.md，只完成最终一次软件全量、正常PR/main整合和远端闭环；失败只补测受影响项，不重复诊断/公开请求/账户/795/大库。新时期待证不能伪造，旧ledger不重绑。
+全部本轮可用研究分支/真实新数据入口和最终软件完成。Spot371/11skip PASS、Coin471/5skip一次full1fixture错误+失败1项targetPASS，PASS_COMPOSITE。只做正常PR/main闭环，不再测试/测量/公开请求；保留未来证据待证和所有原绑定。

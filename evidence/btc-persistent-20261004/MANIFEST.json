@@ -81,6 +81,26 @@
     "spot-accounts.log": {
       "sha256": "331eab7c64e0299c95b87cd13429864c41975c7ba18f6537f213be0f473bca78",
       "bytes": 373
+    },
+    "final-software.json": {
+      "sha256": "b0b9fde4487e13d4262a812a86a232cd4c6960b331bd268e4693f12e80021d19",
+      "bytes": 2672
+    },
+    "final-validation.json": {
+      "sha256": "3a2eea22043718f35ebbb9ad10a45952cf86fecc18586448ddd4f848f4216aa7",
+      "bytes": 3577
+    },
+    "spotquant-final-suite.log": {
+      "sha256": "0ac66c534f8742dd9a27fc0a5e35cb33f43102550ab4b7061db1e5d56acabd58",
+      "bytes": 94308
+    },
+    "coinquant-final-suite.log": {
+      "sha256": "89dab814f61a3a90d9d7764ebcda5026e33121698d7382aa8e9b100530e15201",
+      "bytes": 79254
+    },
+    "coinquant-restore-recovery.log": {
+      "sha256": "7df12041c6740c5392e24a430cffdadd706a3d55e5ffdee832e89d7843edceef",
+      "bytes": 273
     }
   }
 }

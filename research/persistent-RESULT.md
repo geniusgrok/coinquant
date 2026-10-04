@@ -62,3 +62,5 @@ persistent_data.capture有限手动采集，无后台任务；evaluate验证原�
 规则先登记Spot a67e83d/Coin8f41eb9，补充具体对照/选择限制仍在结果前。第一次新筛选Spot1d6627a、persistent_routes.py原SHA见screen.json，耗时1.570942秒。后续只收紧未在该测量中调用的joint_admission输入时钟，原各项目结果不重算、不重标当前源码；无行为变化的新账户准入输出绑定各自真实source。原负结果、旧研究证据和Git对象保留。
 
 最终软件每仓库一次；失败只补受影响项。本机与远端跳过CI分开记录；软件通过不证明盈利或原生资格。证据在evidence/btc-persistent-20261004，最终测试/正常PR回执补入同目录。
+
+最终软件：Spot371项/11skip、compile和唯一fullsuite PASS，54.052秒；Coin471项/5skip唯一fullsuite1个新增fixture边界错误，compile PASS，7.183秒。原fixture把primary_consumed设为ORIGIN而真实契约严格要求>ORIGIN；仅改为第一根完成4h身份，失败的1项单独0.001秒PASS，接受PASS_COMPOSITE。原错误日志保留，没有第二次全量，没有研究/运行时修改或经济重算。tested HEAD Spot66f375003ae1995dcfbeda9790cb8158478e70b9、Coinfc41badcc86423e9787346189f0ad8f16b8f3287，目标恢复d783ae81e9893f2a6f011c705568a55d1ff4ef74；之后仅文档/证据。远端skip不算通过。
