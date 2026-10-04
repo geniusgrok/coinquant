@@ -1,0 +1,418 @@
+"""Fixed BTC flow/risk opportunity screen. Attribution, never an account replay.
+
+Consumes hash-bound original ledger projections and small public kline archives.
+The same standalone research file is retained in both runtime repositories.
+"""
+import argparse
+import bisect
+from collections import defaultdict, deque
+from decimal import Decimal as D
+import gzip
+import hashlib
+import io
+import json
+from pathlib import Path
+import time
+import zipfile
+
+DAY = 86400000
+FOUR = DAY // 6
+START = 1577836800000
+END = 1789862400000
+CUT = 1640995200000
+PROJECTIONS = {'spot': 'ef32a84a7e89cfd7ea3d76a8c6fa56a1da95546500269a8a0b688047f94a2118',
+               'coin': 'df118eb7eb89140e0a4a415c2ba0f521b14f8603ec148355109d07d35384436d'}
+WARMUP = '62e9a9ecddccac737f99032a224f7a2a1932756cf200db34fb5c5641b72c4094'
+
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def serial(value):
+    if isinstance(value, D):
+        return str(value)
+    if isinstance(value, dict):
+        return {str(k): serial(v) for k, v in value.items()}
+    if isinstance(value, (tuple, list)):
+        return [serial(v) for v in value]
+    return value
+
+
+def millis(value):
+    value = int(value)
+    return value // 1000 if value > 10**14 else value
+
+
+def kline(row, interval):
+    stamp, end = millis(row[0]), millis(row[6])
+    prices = tuple(D(x) for x in row[1:5])
+    quote, taker = D(row[7]), D(row[10])
+    if (stamp % interval or end != stamp + interval - 1
+            or not all(x.is_finite() and x > 0 for x in prices)
+            or not quote.is_finite() or not taker.is_finite()
+            or quote <= 0 or not 0 <= taker <= quote
+            or not prices[2] <= min(prices[0], prices[3]) <= max(prices[0], prices[3]) <= prices[1]):
+        raise ValueError(f'invalid completed kline at {stamp}')
+    return stamp, (*prices, quote, taker)
+
+
+def market(root, interval, manifest):
+    folder = Path(root) / 'klines' / ('1d' if interval == DAY else '4h')
+    bars = {}
+    for path in sorted(folder.glob('**/BTCUSDT-*.zip')):
+        raw = path.read_bytes()
+        digest = sha(raw)
+        if Path(str(path) + '.CHECKSUM').read_text().split()[0] != digest:
+            raise ValueError(f'checksum mismatch {path}')
+        manifest.append({'path': str(path), 'sha256': digest, 'bytes': len(raw)})
+        with zipfile.ZipFile(io.BytesIO(raw)) as z:
+            members = [n for n in z.namelist() if not n.endswith('/')]
+            if len(members) != 1:
+                raise ValueError('ambiguous archive')
+            for line in z.read(members[0]).decode().splitlines():
+                row = line.split(',')
+                if not row[0].isdigit():
+                    continue
+                stamp, bar = kline(row, interval)
+                if stamp >= END:
+                    continue
+                if stamp in bars and bars[stamp] != bar:
+                    raise ValueError('conflicting archive bars')
+                bars[stamp] = bar
+    if not bars:
+        raise ValueError('no market data')
+    return bars
+
+
+def aggregate(bars, interval):
+    result = {}
+    for day in sorted({t // DAY * DAY for t in bars}):
+        rows = [bars.get(t) for t in range(day, day + DAY, interval)]
+        if not all(rows):
+            continue
+        result[day] = (rows[0][0], max(r[1] for r in rows), min(r[2] for r in rows),
+                       rows[-1][3], sum((r[4] for r in rows), D(0)),
+                       sum((r[5] for r in rows), D(0)))
+    return result
+
+
+def flow_at(spot, coin, stamp):
+    day = (stamp - 60000) // DAY * DAY - DAY
+    if day not in spot or day not in coin:
+        return {'day_ms': day, 'available': False, 'veto': False}
+    a, b = spot[day], coin[day]
+    si, pi = 2 * a[5] / a[4] - 1, 2 * b[5] / b[4] - 1
+    return dict(day_ms=day, available_ms=day + DAY + 60000,
+                available=True, spot_imbalance=si, perp_imbalance=pi, veto=pi > 0 and si <= 0)
+
+
+def atr_trail(bars):
+    result, tr, prior = {}, deque(maxlen=14), None
+    for stamp, row in sorted(bars.items()):
+        o, high, low, close, *_ = row
+        tr.append(max(high-low, abs(high-prior), abs(low-prior)) if prior is not None else high-low)
+        if len(tr) == 14:
+            result[stamp] = min(D('.30'), max(D('.10'), 4 * sum(tr) / 14 / close)) + D('.0035')
+        prior = close
+    return result
+
+
+def price_at(bars, stamp):
+    # The accepted account uses this explicit high-before-low daily price proxy.
+    # Future OHLC path envelopes are NOT observed LOB or prospective evidence.
+    day = stamp // DAY * DAY
+    o, high, low, close, *_ = bars[day]
+    offset = D(stamp-day)
+    section = min(2, int(offset // (DAY//3)))
+    part = (offset-section*(DAY//3)) / (DAY//3)
+    nodes = (o, high, low, close)
+    return nodes[section] + (nodes[section+1]-nodes[section])*part
+
+
+def summary(rows):
+    notional = sum((r['notional'] for r in rows), D(0))
+    gain = sum((r['gain'] for r in rows), D(0))
+    return dict(count=len(rows), notional=notional, avoided_net_usdt=gain,
+                avoided_net_per_notional=gain/notional if notional else None,
+                positive_count=sum(r['gain'] > 0 for r in rows))
+
+
+def gate(rows, controls, total_affected, coverage):
+    closed = [r for r in rows if r['closed']]
+    eligible = [r for r in controls if r['closed']]
+    overall = summary(closed)
+    eras = {name: summary([r for r in closed if (r['time_ms'] < CUT) == early])
+            for name, early in [('early', True), ('late', False)]}
+    denominator = sum((r['notional'] for r in eligible), D(0))
+    fraction = overall['notional']/denominator if denominator else D(0)
+    uniform = fraction * sum((r['gain'] for r in eligible), D(0))
+    checks = dict(coverage=coverage >= D('.9'), count=overall['count'] >= 10,
+                  era_count=all(v['count'] >= 3 for v in eras.values()),
+                  positive_net=overall['avoided_net_usdt'] > 0,
+                  positive_each_era=all(v['avoided_net_usdt'] > 0 for v in eras.values()),
+                  beats_uniform=overall['avoided_net_usdt'] > uniform)
+    return dict(decision='ENTRANT' if all(checks.values()) else 'REJECT_FIXED_RULE',
+                gates=checks, affected_independent=total_affected, closed=overall,
+                censored_count=len(rows)-len(closed), eras=eras,
+                lower_exposure_control=dict(eligible=summary(eligible), removed_fraction=fraction,
+                                            avoided_net_usdt=uniform,
+                                            excess_avoided_net_usdt=overall['avoided_net_usdt']-uniform),
+                coverage=coverage)
+
+
+def spot_screen(row, spot, coin):
+    owners = {str(json.loads(a[3])['orderId']): json.loads(a[1])
+              for a in row['allocations'] if 'orderId' in json.loads(a[3])}
+    metadata = {e['id']: e for e in row['opportunity_ledger'] if e['event'] == 'fill'}
+    trail = atr_trail(spot)
+    books, cohorts, buys, cash = defaultdict(deque), {}, [], D(next(iter(row['daily'].values()))['cash_usdt'])
+    decisions = [e for e in row['opportunity_ledger'] if e['event'] == 'decision']
+    events = [(f['time'], 0, f) for f in row['fills']] + [(e['decision_ms'], 1, e) for e in decisions]
+    trim, controls, seen_trim, seen_control = [], [], set(), set()
+    for stamp, kind, item in sorted(events, key=lambda e: e[:2]):
+        if kind == 0:
+            q, quote, fee = D(item['qty']), D(item['quote']), D(item['commission'])
+            owner = owners[str(item['order_id'])]
+            weights = {int(w): D(v) for w, v in owner['weights'].items()}
+            denominator = sum(weights.values())
+            if item['buyer']:
+                net = q - (fee if item['commission_asset'] == 'BTC' else D(0))
+                spend = quote + (fee if item['commission_asset'] == 'USDT' else D(0))
+                cash -= spend
+                mark = price_at(spot, stamp)
+                equity = cash + (sum((x['left'] for b in books.values() for x in b), D(0))+net)*mark
+                cohort = dict(id=item['order_id'], time_ms=stamp, quantity=net, notional=spend,
+                              left=net, settlements=[], flow=flow_at(spot, coin, metadata[item['id']]['decision_ms']))
+                cohorts[cohort['id']] = cohort
+                buys.append(cohort)
+                for w, weight in weights.items():
+                    amount = net * weight/denominator
+                    books[w].append(dict(cohort=cohort, left=amount,
+                        commitment=amount*D(item['price'])*trail[metadata[item['id']]['signal_ms']]/equity))
+            else:
+                net = q + (fee if item['commission_asset'] == 'BTC' else D(0))
+                proceeds = quote - (fee if item['commission_asset'] == 'USDT' else D(0))
+                cash += proceeds
+                for w, weight in weights.items():
+                    amount = net*weight/denominator
+                    while amount > D('1e-24'):
+                        if not books[w]:
+                            raise ValueError('SELL exceeds owned FIFO inventory')
+                        lot = books[w][0]
+                        take = min(amount, lot['left'])
+                        lot['left'] -= take
+                        lot['cohort']['left'] -= take
+                        lot['cohort']['settlements'].append(dict(time_ms=stamp, sleeve=w, quantity=take, proceeds=proceeds*take/net))
+                        amount -= take
+                        if lot['left'] <= D('1e-24'):
+                            books[w].popleft()
+        else:
+            mark = price_at(spot, stamp)
+            equity = cash + sum((x['left'] for b in books.values() for x in b), D(0))*mark
+            by_cohort = defaultdict(lambda: dict(quantity=D(0), reduction=D(0), quantities={}, reductions={}))
+            for w, sleeve in item['sleeves'].items():
+                if sleeve['action'] != 'hold':
+                    continue
+                for lot in books[int(w)]:
+                    if lot['left'] < D('.00001'):
+                        continue
+                    risk = lot['left']*mark*trail[item['completed_bar_ms']]/equity
+                    reduction = D(0)
+                    if risk > D('1.25')*lot['commitment']:
+                        target = lot['commitment']*equity/(mark*trail[item['completed_bar_ms']])
+                        reduction = ((lot['left']-target)/D('.00001')).to_integral_value(rounding='ROUND_FLOOR')*D('.00001')
+                    record = by_cohort[lot['cohort']['id']]
+                    record['quantity'] += lot['left']
+                    record['reduction'] += reduction
+                    record['quantities'][w] = lot['left']
+                    record['reductions'][w] = reduction
+            for identity, values in by_cohort.items():
+                base = dict(id=identity, time_ms=stamp, mark=mark, quantity=values['quantity'], quantities=values['quantities'])
+                if identity not in seen_control:
+                    controls.append(dict(base, removed=values['quantity'], reductions=values['quantities']))
+                    seen_control.add(identity)
+                if identity not in seen_trim and values['reduction']*mark >= 5:
+                    trim.append(dict(base, removed=values['reduction'], reductions=values['reductions']))
+                    seen_trim.add(identity)
+    alpha, alpha_controls = [], []
+    covered = 0
+    for c in buys:
+        closed = c['left'] <= c['quantity']*D('.001')
+        proceeds = sum((v['proceeds'] for v in c['settlements']), D(0))
+        # Costs of unsold residual stay excluded, rather than fabricating its exit.
+        sold = c['quantity']-c['left']
+        gain = c['notional']*sold/c['quantity']-proceeds
+        rec = dict(id=c['id'], time_ms=c['time_ms'], notional=c['notional']*sold/c['quantity'],
+                   gain=gain, closed=closed, flow=c['flow'], residue_btc=c['left'])
+        alpha_controls.append(rec)
+        covered += c['flow']['available']
+        if c['flow']['veto']:
+            alpha.append(rec)
+    for r in trim + controls:
+        r['closed'], r['gain'] = True, D(0)
+        for w, removed in r['reductions'].items():
+            if not removed:
+                continue
+            future = [s for s in cohorts[r['id']]['settlements'] if s['time_ms'] > r['time_ms'] and s['sleeve'] == w]
+            sold = sum((s['quantity'] for s in future), D(0))
+            r['closed'] &= sold >= r['quantities'][w]*D('.999')
+            basket = sum((s['proceeds'] for s in future), D(0))/sold if sold else D(0)
+            r['gain'] += removed*(r['mark']*D('.9995')*D('.999')-basket)
+        r['notional'] = r['removed']*r['mark']
+    return dict(actual_buy_cohorts=len(buys), actual_fills=len(row['fills']), decision_polls=len(decisions),
+                final_inventory_btc=sum((c['left'] for c in buys), D(0)),
+                alpha=gate(alpha, alpha_controls, len(alpha), D(covered)/len(buys)),
+                beta=gate(trim, controls, len(trim), D(1)),
+                alpha_events=alpha_controls, beta_events=trim, beta_controls=controls)
+
+
+def target_fraction(closes, day, risk):
+    keys = list(range(day-20*DAY, day+DAY, DAY))
+    if not all(k in closes for k in keys):
+        return None
+    returns = [closes[b]/closes[a]-1 for a, b in zip(keys, keys[1:])]
+    rms = (sum(r*r for r in returns)/20).sqrt()
+    return risk*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+D('.0011'))
+
+
+def coin_screen(row, spot, coin):
+    writes = {e['identity']: e for e in row['opportunity_ledger']
+              if e['event'] == 'write_attempt' and e['method'] == 'POST'
+              and e['payload'].get('side') == 'BUY'}
+    fills = {e['trade']['id']: e for e in row['opportunity_ledger'] if e['event'] == 'fill'}
+    decisions = [e for e in row['opportunity_ledger'] if e['event'] == 'decision']
+    entries = [e for e in decisions if e.get('action') == 'enter']
+    entry_stamps = [e['at_ms'] for e in entries]
+    events = [(t['time'], 0, t) for t in row['trades']] + [(e['at_ms'], 1, e) for e in decisions]
+    campaigns, controls, trims = {}, [], []
+    q, entry, current = D(0), D(0), None
+    covered, eligible, missing, mismatch = 0, 0, 0, 0
+    closes = {k: v[3] for k, v in coin.items()}
+    starts = [s['start_ms'] for s in row['sessions']]
+    for stamp, kind, item in sorted(events, key=lambda e: e[:2]):
+        if kind == 0:
+            amount, price = D(item['qty']), D(item['price'])
+            if item['side'] == 'BUY':
+                write = writes[fills[item['id']]['client_order_id']]
+                identity = write['opportunity']
+                if q and current['id'] != identity:
+                    raise ValueError('overlapping campaign inventory')
+                if not q:
+                    decision = entries[bisect.bisect_right(entry_stamps, write['at_ms'])-1]
+                    if decision['opportunity'] != identity:
+                        raise ValueError('entry decision ownership mismatch')
+                    current = dict(id=identity, time_ms=stamp, trades=[], notional=D(0), closed=False,
+                                   flow=flow_at(spot, coin, decision['at_ms']),
+                                   session_end_ms=starts[bisect.bisect_right(starts, stamp)-1]+300000)
+                    campaigns[identity] = current
+                entry = (q*entry+amount*price)/(q+amount)
+                q += amount
+                current['notional'] += amount*price
+            else:
+                q -= amount
+                if q < 0 or current is None:
+                    raise ValueError('unowned Coin reduction')
+                if not q:
+                    current['closed'], current['end_ms'] = True, stamp
+            current['trades'].append(item)
+        elif item.get('action') == 'hold' and D(item['quantity_before']) > 0:
+            eligible += 1
+            if current is None or not q or q != D(item['quantity_before']):
+                mismatch += 1
+                continue
+            day = (stamp//DAY-1)*DAY
+            fraction = target_fraction(closes, day, D('7.5') if current['id'] > 0 else D('3.6'))
+            if fraction is None:
+                missing += 1
+                continue
+            covered += 1
+            if stamp <= current['session_end_ms']:
+                continue
+            mark = D(item['decision_mark'])
+            equity = D(item['wallet_usdt'])+q*(mark-entry)
+            if equity <= 0:
+                raise ValueError('nonpositive held equity')
+            base = dict(id=current['id'], time_ms=stamp, mark=mark, quantity=q, equity=equity,
+                        current_fraction=q*mark/equity, target_fraction=fraction)
+            if not any(r['id'] == current['id'] for r in controls):
+                controls.append(dict(base, removed=q))
+            if base['current_fraction'] > D('1.25')*fraction and not any(r['id'] == current['id'] for r in trims):
+                amount = ((q-fraction*equity/mark)/D('.001')).to_integral_value(rounding='ROUND_FLOOR')*D('.001')
+                if amount*mark >= 5:
+                    trims.append(dict(base, removed=amount))
+    alpha, all_alpha = [], []
+    for c in campaigns.values():
+        upper = c.get('end_ms', END)
+        income = sum((D(x['income']) for x in row['funding_ledger'] if c['time_ms'] <= x['time'] <= upper), D(0))
+        rec = dict(id=c['id'], time_ms=c['time_ms'], notional=c['notional'], gain=-income,
+                   closed=c['closed'], flow=c['flow'])
+        all_alpha.append(rec)
+        if c['flow']['veto']:
+            alpha.append(rec)
+    for r in trims + controls:
+        c = campaigns[r['id']]
+        future = [t for t in c['trades'] if t['time'] > r['time_ms']]
+        r['closed'] = c['closed'] and not any(t['side'] == 'BUY' for t in future)
+        proceeds = sum((D(t['qty'])*D(t['price']) for t in future if t['side'] == 'SELL'), D(0))
+        upper = c.get('end_ms', END)
+        future_costs = sum((D(x['income']) for x in row['funding_ledger']
+                           if r['time_ms'] < x['time'] <= upper and x['incomeType'] != 'REALIZED_PNL'), D(0))
+        r['notional'] = r['removed']*r['mark']
+        r['gain'] = r['removed']*(r['mark']*D('.9989')*D('.99925')-(proceeds+future_costs)/r['quantity'])
+    coverage = D(covered)/eligible if eligible else D(0)
+    return dict(actual_campaigns=len(campaigns), actual_fills=len(row['trades']), decision_polls=len(decisions),
+                held_polls=eligible, risk_missing_polls=missing, quantity_mismatch_polls=mismatch,
+                alpha=gate(alpha, all_alpha, len(alpha), D(sum(c['flow']['available'] for c in campaigns.values()))/len(campaigns)),
+                beta=gate(trims, controls, len(trims), coverage),
+                alpha_events=all_alpha, beta_events=trims, beta_controls=controls)
+
+
+def main(argv=None):
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--spot-root', required=True)
+    p.add_argument('--coin-root', required=True)
+    p.add_argument('--warmup', required=True)
+    p.add_argument('--projections', required=True, help='directory containing pinned spot/coin-baseline-projection.json.gz')
+    p.add_argument('--output', required=True)
+    args = p.parse_args(argv)
+    began, manifest = time.monotonic(), []
+    spot = market(args.spot_root, DAY, manifest)
+    coin4 = market(args.coin_root, FOUR, manifest)
+    coin = aggregate(coin4, FOUR)
+    raw = Path(args.warmup).read_bytes()
+    if sha(raw) != WARMUP:
+        raise ValueError('warmup identity mismatch')
+    manifest.append(dict(path=args.warmup, sha256=WARMUP, bytes=len(raw)))
+    warm = dict(kline(r, 3600000) for r in json.loads(raw))
+    for day, values in aggregate(warm, 3600000).items():
+        if day in coin and coin[day] != values:
+            raise ValueError('conflicting warmup')
+        coin[day] = values
+    expected = (END-START)//DAY
+    paired = sum(day in spot and day in coin for day in range(START, END, DAY))
+    rows, bindings = {}, {}
+    for kind in ('spot', 'coin'):
+        raw = (Path(args.projections)/f'{kind}-baseline-projection.json.gz').read_bytes()
+        if sha(raw) != PROJECTIONS[kind]:
+            raise ValueError('ledger projection identity mismatch')
+        row = json.loads(gzip.decompress(raw))
+        bindings[kind] = dict(projection_sha256=sha(raw), parent=row['parent_binding'])
+        rows[kind] = (spot_screen if kind == 'spot' else coin_screen)(row, spot, coin)
+    result = dict(format='btc-flow-risk-screen-v1', spec_sha256=sha(Path(__file__).with_name('flow-risk-spec.json').read_bytes()),
+                  screen_source_sha256=sha(Path(__file__).read_bytes()), original_bindings=bindings,
+                  inputs=manifest, paired_days=paired, expected_days=expected, coverage=D(paired)/expected,
+                  features=[dict(day_ms=day, **{k:v for k,v in flow_at(spot,coin,day+DAY+60000).items() if k!='day_ms'})
+                            for day in range(START-DAY, END, DAY)], results=rows,
+                  elapsed_wall_seconds=time.monotonic()-began,
+                  limitations=['Fixed-rule event attribution, no independently financed counterfactual account or CAGR/MDD.',
+                               'All history already inspected; early/late splits descriptive, not prospective proof.',
+                               'Spot FIFO attribution and daily OHLC simulated mark proxy; no observed book/native execution.',
+                               'First legal trim only, no reinvestment; quantity change requires entrant-only actual account work.',
+                               'Whole Python source changed; originals retain original producer and approved forward consumers.'])
+    Path(args.output).write_text(json.dumps(serial(result),indent=2)+'\n')
+    print(json.dumps(serial({k:{a:v[a] for a in ('actual_fills','alpha','beta')} for k,v in rows.items()}),indent=2))
+
+
+if __name__ == '__main__':
+    main()
