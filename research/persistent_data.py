@@ -70,7 +70,10 @@ def option_candidates(packet,now):
 
 def parse_receipt(receipt,folder):
     if not receipt.get('raw_file'):return dict(status='SOURCE_UNAVAILABLE',name=receipt['name'])
-    raw=(folder/receipt['raw_file']).read_bytes()
+    filename=receipt['raw_file']
+    if Path(filename).name!=filename or (folder/filename).stat().st_size>MAX_BYTES:
+        raise ValueError('receipt file outside finite raw bound')
+    raw=(folder/filename).read_bytes()
     if digest(raw)!=receipt['sha256']:raise ValueError('public receipt bytes changed')
     if receipt.get('status')!=200:return dict(status='SOURCE_UNAVAILABLE',name=receipt['name'])
     if not 0<=receipt['receipt_ms']-receipt['request_ms']<=30000:
@@ -81,6 +84,9 @@ def parse_receipt(receipt,folder):
         if packet['symbol']!='BTCUSDT' or not value.is_finite() or value<0 or not 0<=receipt['receipt_ms']-stamp<=30000:
             raise ValueError('invalid BTC OI observation')
         result.update(status='FORWARD_RESEARCH_OBSERVATION',oi_btc=str(value),observation_ms=stamp)
+    elif name=='option-summary':
+        if not isinstance(packet.get('result'),list):raise ValueError('invalid option selection summary')
+        result.update(status='SELECTION_INPUT_ONLY',contracts=len(packet['result']))
     elif name.startswith('option-'):
         row=packet['result'];delta=D(str(row['greeks']['delta']));iv=D(str(row['mark_iv']))/100
         pieces=name.split('-');term=int(pieces[1]);side=pieces[2]
@@ -144,7 +150,7 @@ def features(history,at,context=None):
     if at-last[0]>DAY:return dict(status='STALE_RESEARCH_RECEIPTS',oi_deleveraging=None,option_skew=None)
     oi_signal=None;skew_signal=None
     prior=daily.get(days[-1]-1)
-    if prior and prior[1]['oi'] and now_packet['oi'] and context is not None:
+    if prior and prior[1]['oi'] and now_packet['oi'] and context is not None and D(prior[1]['oi']['oi_btc'])>0:
         # Price context must identify a complete UTC day available before this call.
         if (context['completed_day_ms']+DAY<=at and context['available_ms']<=at
                 and context['completed_day_ms']//DAY==days[-1]-1 and context['source_sha256']):

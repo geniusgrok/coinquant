@@ -342,7 +342,7 @@ def new_opportunities(bars,starts,kind,funding):
     return result
 
 
-def joint_admission(accounts,proposal,now,returns,rule='gross-entry-cap'):
+def joint_admission(accounts,proposal,now,returns,rule='gross-entry-cap',context=None):
     """Read-only proposed new risk. Never transfers, reduces or submits orders."""
     if rule not in ('gross-entry-cap','stress-entry-cap','state-exposure'):
         raise ValueError('unregistered joint rule')
@@ -351,8 +351,8 @@ def joint_admission(accounts,proposal,now,returns,rule='gross-entry-cap'):
             raise ValueError('two separately financed accounts required')
         equity=gross=risk=D(0)
         for a in accounts:
-            if (a['symbol']!='BTCUSDT' or a['receipt_ms']>now or now-a['receipt_ms']>60000
-                    or not a['owned'] or not a['protected'] or a['pending']):
+            if (a['symbol']!='BTCUSDT' or type(a['receipt_ms']) is not int or a['receipt_ms']>now or now-a['receipt_ms']>60000
+                    or a['owned'] is not True or a['protected'] is not True or a['pending'] is not False):
                 raise ValueError('unknown/stale ownership or protection')
             e,n,r=(D(a[k]) for k in ('equity_usdt','gross_notional_usdt','stop_risk_usdt'))
             if not all(x.is_finite() for x in (e,n,r)) or e<=0 or n<0 or r<0:
@@ -364,7 +364,18 @@ def joint_admission(accounts,proposal,now,returns,rule='gross-entry-cap'):
             raise ValueError('invalid new-risk proposal')
         if rule!='gross-entry-cap' and (len(returns)!=20 or any(not D(r).is_finite() for r in returns)):
             raise ValueError('twenty causal completed returns required')
-        cap=D(2) if rule=='state-exposure' and sum(map(D,returns))<0 else D(4)
+        if rule!='gross-entry-cap':
+            if (not context or type(context['completed_through_ms']) is not int
+                    or context['completed_through_ms']%f.DAY or context['completed_through_ms']>now
+                    or type(context['available_ms']) is not int or context['available_ms']>now
+                    or len(context['source_sha256'])!=64):raise ValueError('causal completed risk context required')
+        negative=False
+        if rule=='state-exposure':
+            for a in accounts:
+                if type(a['momentum_available_ms']) is not int or a['momentum_available_ms']>now or not D(a['momentum20']).is_finite():
+                    raise ValueError('causal direction required for both accounts')
+            negative=all(D(a['momentum20'])<0 for a in accounts)
+        cap=D(2) if negative else D(4)
         admitted=gross+amount<=cap*equity
         if rule=='stress-entry-cap':
             shock=max(D(0),-min(map(D,returns)))

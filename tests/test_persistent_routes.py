@@ -36,9 +36,12 @@ class PersistentMoneyTests(unittest.TestCase):
                        equity_usdt='100',gross_notional_usdt='100',stop_risk_usdt='5') for k in ('spot','coin')]
         proposal=dict(symbol='BTCUSDT',side='BUY',gross_notional_usdt='200',stop_risk_usdt='2')
         self.assertEqual(r.joint_admission(accounts,proposal,1,[])['status'],'ADMIT_RESEARCH_PROPOSAL')
-        result=r.joint_admission(accounts,proposal,1,['-.1']+['0']*19,'stress-entry-cap')
+        context=dict(completed_through_ms=0,available_ms=1,source_sha256='0'*64)
+        result=r.joint_admission(accounts,proposal,1,['-.1']+['0']*19,'stress-entry-cap',context)
         self.assertEqual(result['status'],'BLOCK_NEW_RISK')
         self.assertEqual(result['orders'],0)
+        context['available_ms']=2
+        self.assertEqual(r.joint_admission(accounts,proposal,1,['-.1']+['0']*19,'stress-entry-cap',context)['status'],'BLOCK_UNKNOWN')
 
     def test_future_bar_cannot_change_completed_signal(self):
         bars={i*r.f.DAY:(D(i+100),D(i+101),D(i+99),D(i+100),D(100),D(50)) for i in range(25)}
