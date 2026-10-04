@@ -1,0 +1,55 @@
+{
+  "format": "btc-flow-risk-registration-v1",
+  "registered_utc": "2026-10-04T04:52:47.036679+00:00",
+  "starting_heads": {
+    "spot": "62ffdf9672e2924dc69bc0fdde07a908819b6a11",
+    "coin": "1480113be7ac95f463d8ae3af3fa790da3ddd595"
+  },
+  "scope": {
+    "symbol": "BTCUSDT",
+    "start_ms": 1577836800000,
+    "end_ms_exclusive": 1789862400000,
+    "initial_cny": "10000",
+    "schedule": "original 795; census only, no replay of those sessions",
+    "independent_unit": "Spot filled BUY order/cohort (not sleeves/polls); Coin filled campaign (not IOC fragments/polls)",
+    "default_changes": "Only after qualified actual-account evidence; cheap screen cannot promote"
+  },
+  "alpha": {
+    "name": "perp-chasing-veto",
+    "rule": "Veto genuine NEW BUY if completed paired UTC-day perp imbalance > 0 and spot imbalance <= 0; no held changes",
+    "imbalance": "2 * sum(taker-buy quote volume) / sum(total quote volume) - 1",
+    "availability": "day end + 60000 ms; same UTC day, six distinct complete perp4h bins, no forming bars; historical availability is an assumption, forward must record real receipt",
+    "missing": "retain incumbent for this optional feature; mandatory incumbent crowding safety stays",
+    "diagnostic": "Avoided settled cost-net entry P/L; open residue separately marked/excluded from closed gate; no account curve scaling",
+    "control": "Uniform removal of the same aggregate entry notional fraction from all settled entry cohorts, diagnostic only"
+  },
+  "beta": {
+    "name": "held-risk-trim",
+    "coin": "During HOLD after entry session, long notional/equity > 1.25 times current existing target_fraction(20 completed daily returns, friction .0011) * primary7.5 or macro3.6: reduce to that target; one first legal opportunity per campaign for census",
+    "spot": "Per filled owned sleeve record entry equity fraction q*entryPrice*(clip(4*ATR14/completedClose,.10,.30)+.0035)/equity after entry; during HOLD, if current owned q*mark*(current clipped ATR fraction+.0035)/equity > 1.25 times committed fraction, trim to committed fraction. Aggregate siblings by original BUY order. No ordinary-exit override, no dust top-up",
+    "execution_limits": "market precision Spot .00001 and notional5; Coin .001 and notional5; no private actions. Persist reduced requested Coin quantity before any subsequent add; preserve protection and reconcile unknown replies",
+    "diagnostic": "First trigger: pro-rata remaining baseline cash proceeds / P&L + future actual funding, minus conservative immediate trim proceeds/costs. Entry costs already sunk. No hypothetical reinvestment. Uniform same removed inventory fraction at first eligible HOLD is lower-exposure control",
+    "continuity": "Trim only; Spot held no-topup and consumed campaign stay. Coin never increase previous commitment; no background/offline client changes"
+  },
+  "gates": {
+    "data_coverage_min": 0.9,
+    "closed_independent_opportunities_min": 10,
+    "closed_opportunities_min_each_era": 3,
+    "eras": {
+      "early": "2020-2021",
+      "late": "2022-2026 known history; contaminated, descriptive only"
+    },
+    "economic": "Avoided net P/L divided by affected notional strictly positive overall and each era; improvement versus equal aggregate fraction lower-exposure control strictly positive overall. Closed cohort requires >=99.9% original net quantity sold; residual is separately disclosed. Risk trim uses remaining quantity closure >=99.9%.",
+    "rejection": "Coverage/count/cost/control/era gate failure closes fixed mechanism with diagnostic evidence; no parameter grid or execution scaffolding",
+    "entrant": "Only entrants implement execution adapter and run actual independent accounts in fixed 2021Q1 and 2022Q2 windows, same starts/capital/costs; reject if either loses return AND worsens MDD, or no legal action; pass then preregister additional full comparison before any795"
+  },
+  "budget": {
+    "census_wall_seconds": 120,
+    "archives": "small existing spot1d/perp4h ZIPs only; hash/parse once, save input+feature cache; no14GB aggTrade scan",
+    "census_disk_mb": 60,
+    "screen_accounts_max": 8,
+    "actual_screen_wall_minutes_max": 30,
+    "full_software": "exact workflow once per repository at end; affected fixes only; [skip ci] integration avoids duplicate remote suite",
+    "accounts": "strict serial, no UID/HOME/lock changes; original evidence source kept"
+  }
+}

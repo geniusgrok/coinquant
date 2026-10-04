@@ -1,5 +1,12 @@
 # PROJECT_STATE
 
+Updated: 2026-10-04T04:52:47.036679+00:00
+
+## Active flow/risk delivery
+
+User authorized both directions through adopt/reject closure. Frozen research/flow-risk-spec.json before economic census. Small existing klines and accepted original raw ledgers only; no795/aggTrade rescan. Current development default and old measured/forward bindings preserved. Next: independent opportunity census, cost-aware screen, entrant-only account work, final sole fullsuite and normal PR integration.
+
+
 Updated: 2026-10-04T04:09:53.937110+00:00
 
 ## Completed structural BTC alpha/beta delivery (2026-10-04)
