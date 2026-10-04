@@ -1,5 +1,10 @@
 # PROJECT_STATE
 
+## Active structural BTC research (2026-10-04)
+
+User authorized both directions. Isolated current-main branch codex/btc-structure-20261004. Existing core/conditional-short were already measured and rejected; do not repeat them as new. New exact candidates and early rejection/resource rules are in research/structure-spec.json. Implement actual session screens, preserve source-bound evidence, then final full software suite once per repo and normal integration. No new measurement/fullsuite yet. No private/native actions or old-ledger rebind.
+
+
 Updated: 2026-10-04T10:08:00.255667+08:00
 
 ## Completed BTC alpha/beta upgrade (2026-10-04)
