@@ -15,7 +15,7 @@ class RouteCampaign(BASE):
     family='oi-deleveraging';expression=0;book=None;context=None
 
     def __init__(self):
-        super().__init__();self.route_lows=deque(maxlen=10)
+        super().__init__();self.route_lows=deque(maxlen=10);self.route_signal_ms=None
 
     def update(self,end,high,low,close):
         result=super().update(end,high,low,close);self.route_lows.append(D(low))
@@ -24,7 +24,10 @@ class RouteCampaign(BASE):
             feature=self.book.at(self.family,end,self.context(end))
             effect=r.alpha_expression(self.family,0,feature,dict(symbol='BTCUSDT',side='BUY'))
             stop=min(self.route_lows);price=D(close)
-            if effect['status']=='PROPOSE_NEW_PRIMARY_RESEARCH' and 0<stop<price:
+            signal_ms=feature.get('available_ms')
+            if (effect['status']=='PROPOSE_NEW_PRIMARY_RESEARCH' and type(signal_ms) is int
+                    and 0<=signal_ms<=end and signal_ms!=self.route_signal_ms and 0<stop<price):
+                self.route_signal_ms=signal_ms
                 self.model.active=Opportunity(end,1,stop,price*(price/stop)**20,end+7*r.DAY)
                 atr=sum(self.model.tr)/14 if len(self.model.tr)==14 else None
                 self.trigger=dict(identity=end,direction=1,kind='impulse',signal_family=self.family,
@@ -44,7 +47,7 @@ class RouteCampaign(BASE):
         saved=super().checkpoint()
         saved['body']['nine']=dict(family=self.family,expression=self.expression,
             spec_sha256=r.sha(r.SPEC.read_bytes()),feature_book=self.book.sha256 if self.book else None,
-            lows=list(map(str,self.route_lows)))
+            lows=list(map(str,self.route_lows)),signal_ms=self.route_signal_ms)
         saved['sha256']=meter.checksum(saved['body']);return saved
 
     @classmethod
@@ -52,11 +55,13 @@ class RouteCampaign(BASE):
         try:
             body=dict(saved['body'])
             if saved['sha256']!=meter.checksum(body):raise ValueError('digest')
-            extra=body.pop('nine');lows=list(map(D,extra.pop('lows')))
+            extra=dict(body.pop('nine'));lows=list(map(D,extra.pop('lows')));signal_ms=extra.pop('signal_ms')
+            if signal_ms is not None and (type(signal_ms) is not int or not 0<=signal_ms<=body['last']):
+                raise ValueError('future information identity')
             expected=dict(family=cls.family,expression=cls.expression,spec_sha256=r.sha(r.SPEC.read_bytes()),feature_book=cls.book.sha256 if cls.book else None)
             if extra!=expected or len(lows)>10 or any(not v.is_finite() or v<=0 for v in lows):raise ValueError('foreign information checkpoint')
             model=BASE.restore.__func__(cls,dict(body=body,sha256=meter.checksum(body)))
-            model.route_lows=deque(lows,maxlen=10);return model
+            model.route_lows=deque(lows,maxlen=10);model.route_signal_ms=signal_ms;return model
         except (KeyError,TypeError,ValueError,ArithmeticError) as error:raise Blocked('invalid information campaign') from error
 
 

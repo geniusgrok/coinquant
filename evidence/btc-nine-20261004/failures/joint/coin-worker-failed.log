@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/workspace/coinquant/research/nine_worker.py", line 282, in <module>
+    try:main()
+        ~~~~^^
+  File "/workspace/coinquant/research/nine_worker.py", line 273, in main
+    worker.reset(command);worker.last_report={};emit(dict(event='ready',snapshot=worker.snapshot()))
+                                                                                 ~~~~~~~~~~~~~~~^^
+  File "/workspace/coinquant/research/nine_worker.py", line 154, in snapshot
+    q=e.q;mark=e._mark_state()[1];equity=e.wallet+(q*(mark-e.entry) if q else D(0))
+               ~~~~~~~~~~~~~^^
+  File "/workspace/coinquant/research/session_exchange.py", line 165, in _mark_state
+    raise Unknown('completed mark minute unavailable')
+coinquant.types.Unknown: completed mark minute unavailable
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/coinquant/research/nine_worker.py", line 282, in <module>
+    try:main()
+        ~~~~^^
+  File "/workspace/coinquant/research/nine_worker.py", line 273, in main
+    worker.reset(command);worker.last_report={};emit(dict(event='ready',snapshot=worker.snapshot()))
+                                                                                 ~~~~~~~~~~~~~~~^^
+  File "/workspace/coinquant/research/nine_worker.py", line 154, in snapshot
+    q=e.q;mark=e._mark_state()[1];equity=e.wallet+(q*(mark-e.entry) if q else D(0))
+               ~~~~~~~~~~~~~^^
+  File "/workspace/coinquant/research/session_exchange.py", line 165, in _mark_state
+    raise Unknown('completed mark minute unavailable')
+coinquant.types.Unknown: completed mark minute unavailable

@@ -1,1 +1,1 @@
-继续完成research/nine-spec.json登记的九条路线。当前仅规则/预算冻结；联合beta必须来自实际干预后两账户同步状态，不能把日收盘超限当BUY或缩放曲线。保留旧来源/消费者/ledger，最终fullsuite一次，Coin账户严格串行。
+继续唯一已授权任务：BTC五类alpha/四层beta全部实施与整合。先读PROJECT_STATE.md及research/nine-RESULT.md/GUIDE.md。所有金融测量完整，12账户372有限会话、0新增795；无需重跑账户/公开请求/市场扫描。证据原producer及旧forward消费者保留。只剩末尾每仓库fullsuite一次和普通PR/main整合；失败仅受影响恢复。无私人账户/交易授权；Coin账户生产与测试严格串行，不改HOME/UID/锁。研究成果不等于收益目标/native资格。

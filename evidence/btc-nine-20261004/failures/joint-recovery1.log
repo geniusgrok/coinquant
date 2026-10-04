@@ -1,0 +1,35 @@
+{"case": "baseline", "session": 0, "date": "2020-01-01T00:00:00+00:00"}
+{"case": "baseline", "session": 10, "date": "2020-01-28T04:00:00+00:00"}
+{"case": "baseline", "session": 20, "date": "2020-02-20T10:00:00+00:00"}
+{"case": "baseline", "session": 30, "date": "2020-03-28T06:00:00+00:00"}
+{"window": 0, "scenario": "baseline", "final_cny": "14848.07150347695463409201144", "synchronized_observed_mdd": "0.0620224046550679997676087867", "finished": true, "changed_commitments": 0, "census": {"gross-entry-cap": {"blocked_independent_proposals": 0, "unknown_proposals": 5, "actual_competitions": 0}, "stress-entry-cap": {"blocked_independent_proposals": 1, "unknown_proposals": 5, "actual_competitions": 0}, "state-exposure": {"blocked_independent_proposals": 1, "unknown_proposals": 5, "actual_competitions": 0}, "risk-capacity": {"blocked_independent_proposals": 0, "unknown_proposals": 5, "actual_competitions": 0}}, "raw_file": "window-0-baseline.json.gz", "raw_sha256": "5c7c0ab37f2447c2d06cabc603da9617d0e76d397d378d078f5e8bea58b63a51", "metrics": {"status": "DESCRIPTIVE", "days": 12, "beta": -0.021497216112375303, "upside_capture": -0.22639909716853543, "downside_capture": 0.08197864615244159, "daily_volatility": 0.21254607147204566, "prospective_alpha_proven": false}}
+{"case": "uniform", "session": 0, "date": "2020-01-01T00:00:00+00:00"}
+{"case": "uniform", "session": 10, "date": "2020-01-28T04:00:00+00:00"}
+{"case": "uniform", "session": 20, "date": "2020-02-20T10:00:00+00:00"}
+{"case": "uniform", "session": 30, "date": "2020-03-28T06:00:00+00:00"}
+{"window": 0, "scenario": "uniform", "final_cny": "13835.23574369651271710886171", "synchronized_observed_mdd": "0.0590618749671383829001259954", "finished": true, "changed_commitments": 0, "census": {"gross-entry-cap": {"blocked_independent_proposals": 0, "unknown_proposals": 5, "actual_competitions": 0}, "stress-entry-cap": {"blocked_independent_proposals": 1, "unknown_proposals": 5, "actual_competitions": 0}, "state-exposure": {"blocked_independent_proposals": 0, "unknown_proposals": 5, "actual_competitions": 0}, "risk-capacity": {"blocked_independent_proposals": 0, "unknown_proposals": 5, "actual_competitions": 0}}, "raw_file": "window-0-uniform.json.gz", "raw_sha256": "9d7b4dffa067d403ba54fc9dab34ac9b9ef83f13b4cf075d57d3722869a757ce", "metrics": {"status": "DESCRIPTIVE", "days": 12, "beta": -0.010945121035867554, "upside_capture": -0.19884253682817954, "downside_capture": 0.0794584261451533, "daily_volatility": 0.2050748658658378, "prospective_alpha_proven": false}}
+{"case": "stress-entry-cap", "session": 0, "date": "2020-01-01T00:00:00+00:00"}
+{"case": "stress-entry-cap", "session": 10, "date": "2020-01-28T04:00:00+00:00"}
+{"case": "stress-entry-cap", "session": 20, "date": "2020-02-20T10:00:00+00:00"}
+{"case": "stress-entry-cap", "session": 30, "date": "2020-03-28T06:00:00+00:00"}
+{"window": 0, "scenario": "stress-entry-cap", "final_cny": "15432.79803564232151101693651", "synchronized_observed_mdd": "0.0472316488698548937550742217", "finished": true, "changed_commitments": 3, "census": {"gross-entry-cap": {"blocked_independent_proposals": 0, "unknown_proposals": 81, "actual_competitions": 0}, "stress-entry-cap": {"blocked_independent_proposals": 3, "unknown_proposals": 81, "actual_competitions": 0}, "state-exposure": {"blocked_independent_proposals": 1, "unknown_proposals": 81, "actual_competitions": 0}, "risk-capacity": {"blocked_independent_proposals": 0, "unknown_proposals": 81, "actual_competitions": 0}}, "raw_file": "window-0-stress-entry-cap.json.gz", "raw_sha256": "57ba539470022cef9c4cf57e240b7cb1a694b536ef875a7e4e5e777ca2b96e02", "metrics": {"status": "DESCRIPTIVE", "days": 12, "beta": -0.024614727738853117, "upside_capture": -0.20872435857234098, "downside_capture": 0.07098344457117715, "daily_volatility": 0.1849843942948517, "prospective_alpha_proven": false}, "gates": {"audits": true, "actual_action": true, "risk_wealth": true, "beats_simple": true, "meaning": "Finite research pair. Observed synchronized MDD is not continuous/native joint MDD."}, "status": "WINDOW_PASS"}
+{"case": "state-exposure", "session": 0, "date": "2020-01-01T00:00:00+00:00"}
+{"case": "state-exposure", "session": 10, "date": "2020-01-28T04:00:00+00:00"}
+{"case": "state-exposure", "session": 20, "date": "2020-02-20T10:00:00+00:00"}
+{"case": "state-exposure", "session": 30, "date": "2020-03-28T06:00:00+00:00"}
+{"window": 0, "scenario": "state-exposure", "final_cny": "11435.73065499447850225945150", "synchronized_observed_mdd": "0.0572319864771479058781904630", "finished": true, "changed_commitments": 1, "census": {"gross-entry-cap": {"blocked_independent_proposals": 0, "unknown_proposals": 1032, "actual_competitions": 0}, "stress-entry-cap": {"blocked_independent_proposals": 0, "unknown_proposals": 1032, "actual_competitions": 0}, "state-exposure": {"blocked_independent_proposals": 1, "unknown_proposals": 1032, "actual_competitions": 0}, "risk-capacity": {"blocked_independent_proposals": 0, "unknown_proposals": 1032, "actual_competitions": 0}}, "raw_file": "window-0-state-exposure.json.gz", "raw_sha256": "d90285411394f2b119c6f33e352b817edbdf30de5c3b48e171016406fb47190e", "metrics": {"status": "DESCRIPTIVE", "days": 12, "beta": 0.027991552252669385, "upside_capture": -0.15865452466397725, "downside_capture": 0.09826539361018281, "daily_volatility": 0.25260577679730767, "prospective_alpha_proven": false}, "gates": {"audits": true, "actual_action": true, "risk_wealth": false, "beats_simple": false, "meaning": "Finite research pair. Observed synchronized MDD is not continuous/native joint MDD."}, "status": "WINDOW_REJECT"}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/spotquant/research/nine_joint.py", line 264, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/workspace/spotquant/research/nine_joint.py", line 234, in main
+    else:raw=coordinator.case(scenario,begin,end,subset,path)
+             ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/spotquant/research/nine_joint.py", line 153, in case
+    message=peer.read()
+  File "/workspace/spotquant/research/nine_joint.py", line 72, in read
+    if message['event']=='fatal':raise ValueError('offline worker '+message['error']+': '+message['reason'])
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: offline worker ValueError: selected original print input missing; no download

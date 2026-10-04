@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/workspace/spotquant/research/nine_joint.py", line 295, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/workspace/spotquant/research/nine_joint.py", line 239, in main
+    raise ValueError('completed-case reuse contract changed')
+ValueError: completed-case reuse contract changed

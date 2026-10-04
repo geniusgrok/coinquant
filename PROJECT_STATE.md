@@ -1,5 +1,7 @@
 # PROJECT_STATE
 
-Updated: 2026-10-04T09:11:50.924676+00:00
+本轮唯一任务：全部实施五类BTC alpha信息各两表达与四层联合beta，失败持续换向。实现与全部现有数据筛选完成；联合12账户372有限会话完成，全部financial/archive通过，恢复复用8账户。原规则先冻结、负结果和故障均保留，0新增795/大库全扫描/私人账户操作。
 
-本轮唯一任务：全部实施五信息alpha路线与四层beta改造。规则/预算先冻结research/nine-spec.json；旧persistent完整结果/producer/前向消费者继续保留。先真实可作用机会，再独立有限资金比较；全部可用分支持续推进，未来数据如实待证。全量软件仅末尾每仓库一次，失败只补受影响项；不重跑795/大库扫描/旧矩阵、不调用私人账户。
+结果：alpha无合格账户；压力预算第一窗口PASS但第二无作用；弱势cap2第一窗口REJECT/第二待支持；gross/capacity待支持。没有默认采用，目标NOT_MET/nativeNOT_QUALIFIED；见research/nine-RESULT.md、nine-GUIDE.md和evidence/btc-nine-20261004。原账户/forward消费者保留。
+
+当前：源码已完成，准备最后一次每仓库全量compile/unittest（Coin严格串行），仅失败范围补测；之后正常PR合并并核对实际remote main。远程本轮尚未提交/整合，不能冒充完成。
