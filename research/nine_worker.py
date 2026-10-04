@@ -151,7 +151,15 @@ class Worker:
             owned=q==0 or abs(sum((D(p['qty']) for p in positions.values() if p),D(0))-q)<=D('1e-8')
             costs=2*e.fee*q*mark
         else:
-            q=e.q;mark=e._mark_state()[1];equity=e.wallet+(q*(mark-e.entry) if q else D(0))
+            q=e.q
+            from coinquant.types import Unknown
+            try:mark=e._mark_state()[1]
+            except Unknown:
+                if q:raise
+                # Explicit offline cold cash has no BTC to value. A missing initial
+                # pre-2020 mark remains0/unknown, never a fabricated market quote.
+                mark=D(0)
+            equity=e.wallet+(q*(mark-e.entry) if q else D(0))
             algos=e._working_algos()
             stops=[a for a in algos if a['orderType']=='STOP_MARKET' and a.get('closePosition') is True and a['side']==('SELL' if q>0 else 'BUY')]
             takes=[a for a in algos if a['orderType']=='TAKE_PROFIT_MARKET' and a.get('closePosition') is True]
