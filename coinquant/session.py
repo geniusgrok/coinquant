@@ -14,6 +14,11 @@ from .audit import allows_new_risk, income
 
 
 def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None):
+    from . import linear_preview
+    saved = state.get('linear_campaign')
+    if saved is not None and getattr(linear_preview.Campaign, 'continuous_entry', False):
+        # Reject an incompatible strategy before any exposure recovery or write.
+        linear_preview.Campaign.restore(saved)
     engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter,session=session)
     if execute:
         snapshot=engine.recover_exposure(engine.settle())
