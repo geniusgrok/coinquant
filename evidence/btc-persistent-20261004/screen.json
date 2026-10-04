@@ -1,0 +1,2352 @@
+{
+  "format": "btc-persistent-screen-v1",
+  "spec_sha256": "4d252e9e9a2e90161bc4be4fe797bc2ae60145d010121705db1876d4ffd7ba71",
+  "source_sha256": "f0104815548c2449079c999fbe9ff6b509ee0866b03eff1b5c5cb027dc7617d2",
+  "git_head": "1d6627a67db92a6acad12c6ee871b9c36dd51ffd",
+  "original_bindings": {
+    "spot": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-base.json.gz",
+      "sha256": "4c937ecf80f60d957486a752562c8ab8dfee4c06fa2e5b38b135cfb24ec38872",
+      "source": {
+        "git_head": "74bd6e035e36531c517029077c1a9e2e5ec44516",
+        "dirty": false,
+        "python_sources_sha256": "f2d6c3e73c2acb7b328a7a0e2678bb95ceb77d8a17a46139abfe8b357befdbf6"
+      },
+      "candidate": "crowding-interaction-base"
+    },
+    "coin": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/perp-registered-16.json.gz",
+      "sha256": "a071749cb6498a0e9612241bca23b57f8de9bae002b93fe189b7e1a3777a416d",
+      "source": {
+        "git_head": "37061a7f588f97cc16852551cab6cd2e51acb920",
+        "dirty": false,
+        "python_sources_sha256": "ba63895131db566e708a5c96cde4504beace39fa0bdd54881d039dd5b8ef4c50"
+      },
+      "candidate": "incumbent/base"
+    }
+  },
+  "inputs": [
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-01.zip",
+      "sha256": "445904985d35f847c5c0cb4dc582c10e07967aaa6a424ee30373194b2f815519",
+      "bytes": 2149
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-02.zip",
+      "sha256": "9bcdcbc003cce89ba5917367cd617bdd5abf17e427e4f7625b62f9ab9cc7439c",
+      "bytes": 1955
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-03.zip",
+      "sha256": "385bd09eea4a950b5a509cc2dac8812b5945d4b7edc180a26e43287a5812a7b4",
+      "bytes": 2119
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-04.zip",
+      "sha256": "73774cf609ff32f08ca86e999f72aa6451cf76aaf55dc51a4c7922f20c805bd3",
+      "bytes": 2074
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-05.zip",
+      "sha256": "924f9b192e6817ebc627581d826b1272747e1d36e2725a805e616558a231919e",
+      "bytes": 2190
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-06.zip",
+      "sha256": "a027352795179a3255ecf05cf3be4f8030e836deee0dc6a5f14ebdc173b345e2",
+      "bytes": 2147
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-07.zip",
+      "sha256": "52afd0bad5ac94a8cfec04d8922e2ec19806783c3a905d4e1149246561c4a331",
+      "bytes": 2217
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-08.zip",
+      "sha256": "b33dc2c6b606598d8daa5db45d60b568b42d2d4ec33b8f4cd9303da1ee6a58c4",
+      "bytes": 2212
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-09.zip",
+      "sha256": "9d1d72fb97ea4324615b096af10a78c0511ba99569e729e483acd983fd2d0677",
+      "bytes": 2120
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-10.zip",
+      "sha256": "f117e45966cefc57a57ba5c9296bee5b989b125b145bca5459da7201c7191db7",
+      "bytes": 2184
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-11.zip",
+      "sha256": "d8e85503c78a4e8a0289046607f3a9e2b304d511812167ad97b3be82923df39e",
+      "bytes": 2123
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2019-12.zip",
+      "sha256": "1d0cf3ae0ab25953a733b51cc84c21b4685089ed86f278ad9fc7ea3acdd4be17",
+      "bytes": 2168
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-01.zip",
+      "sha256": "b77d84cc335299783f64e6ef845ffbab6cc6198a2c396cc1c2c6f8dd1a9db5a5",
+      "bytes": 2192
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-02.zip",
+      "sha256": "808ebfc66e77113d4d5f4ead3a5e0eab4404b62548fa786b07830a4d73972152",
+      "bytes": 2045
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-03.zip",
+      "sha256": "26a062af0efb4dbba71fa3db7a041629ee7cc4cf636ed13a98bf90f8fe0e1d0d",
+      "bytes": 2222
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-04.zip",
+      "sha256": "bf4674f7aaf5baafea9e1d73c95344558b381dfe0c117110a156a0d64d8d5cf5",
+      "bytes": 2126
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-05.zip",
+      "sha256": "7ae5d56d12ce599fbceac80ae04bde51c7421b39f22f924f1f46a53e560a1f75",
+      "bytes": 2183
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-06.zip",
+      "sha256": "19e9ffb7c77e0b8c7bc17d6c47fdc52eb50fcb61ac8d94d32b9c13eb17c700d6",
+      "bytes": 2103
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-07.zip",
+      "sha256": "76fab627ce54ba1457c63e3906e2afd3162cf053283709672fb3eb676b3dde3b",
+      "bytes": 2174
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-08.zip",
+      "sha256": "ff20895a43680f991fa26ee2c9b34376c17487404d57a22f088af8c7ed1fd9ec",
+      "bytes": 2197
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-09.zip",
+      "sha256": "d6f9590a181d58a992e6a3ce2346a4dbc96ecf5310c12df66c57be4818bfc28a",
+      "bytes": 2148
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-10.zip",
+      "sha256": "e240ecb14f1120af34290ed9c7e8937e7cd8a80f0d0bbc88a924f7e520e78cec",
+      "bytes": 2210
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-11.zip",
+      "sha256": "4a7b8bd36409c7ae92916489621e298d750e5dda7be5b7389dc814dffb16a29e",
+      "bytes": 2161
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2020-12.zip",
+      "sha256": "77e2c7fa9a940828b3f36f7212f6def777acfc1402d173bdfad958d2e37ea469",
+      "bytes": 2231
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-01.zip",
+      "sha256": "6ff53d94f600e2a208882bfd5c00e2133cff8f07e57b7f373af29f85f86e0284",
+      "bytes": 2295
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-02.zip",
+      "sha256": "f18254dc4a70f396494be83a6081cfafd1935aaef42aef5a12f18b0244edeb27",
+      "bytes": 2103
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-03.zip",
+      "sha256": "f43e48b5efc8e0b06e0520b91aad4e5668844c766933c0c5cf403115dba03303",
+      "bytes": 2282
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-04.zip",
+      "sha256": "3dd852f06608173dec98b7210f6a38728ef221f08717b362b4f3f09436e0a5fe",
+      "bytes": 2189
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-05.zip",
+      "sha256": "3122e1ebaa1376937d479964563dced19f850636a700bb7cb97d7872ea8c8f28",
+      "bytes": 2283
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-06.zip",
+      "sha256": "9875e11e890f75ef6eb0188ef7f952e5c0ba6919bd6d72d3da4d6847b84c5ccf",
+      "bytes": 2204
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-07.zip",
+      "sha256": "636f588a6abb568f977aea3ae798f34ced4135f2f96fbc1493a2f9ab54a844eb",
+      "bytes": 2264
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-08.zip",
+      "sha256": "68612e3fb74c184f97e4d3b2e061dd3743156401a6813ab897014b0b35caedd7",
+      "bytes": 2246
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-09.zip",
+      "sha256": "9f6535a0fe8a417b0909d230e4a02f6a9933eb23c770f54c9f6bf140e8d02257",
+      "bytes": 2156
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-10.zip",
+      "sha256": "ba50ff3dab5726ca8b9fa26065fe3a8f612aed4baa978ecdd9d39647cd108684",
+      "bytes": 2210
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-11.zip",
+      "sha256": "64162d8ec11458e9d02f49d8569e47765517852bcf0a908cd4d71211e3912e62",
+      "bytes": 2166
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2021-12.zip",
+      "sha256": "6231b57d3a3b71fb76a1a34078a01a01275a59870857bf60408ccd3ba4618e75",
+      "bytes": 2196
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-01.zip",
+      "sha256": "a4a2e0432a8f0b42e2da71ac26599b2e6385b579ca4feba692a95cb897decdcd",
+      "bytes": 2183
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-02.zip",
+      "sha256": "faffa5eadb9ebf0b32742773777596d0dbf3f282e94a16dd05cf1eb7b53a3763",
+      "bytes": 2011
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-03.zip",
+      "sha256": "452129b478585b18931f728f89daed9d2a19d4824b932af7a099366efd4db639",
+      "bytes": 2206
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-04.zip",
+      "sha256": "70413f67212d012ebfd600a6ebf20c03a9c8311bf764ab6d21d1bfd2d21d1b19",
+      "bytes": 2117
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-05.zip",
+      "sha256": "53eee1be2d5b461dabc67645ad706610b0465d8bbacd5f9cd99fc790c68f18f5",
+      "bytes": 2212
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-06.zip",
+      "sha256": "dd5047ce33c16231bcb01f534951a709937bbfe0c0667c61f20f188cf9b94de4",
+      "bytes": 2169
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-07.zip",
+      "sha256": "216567f1a8bc1dbeaada097f7eddff12dafde177c16b26507c762a613a57eb5f",
+      "bytes": 2245
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-08.zip",
+      "sha256": "fc8bd69e95141afb6f83c5a4450c3f6b49c4a1cb16e42d90eb960c3ffa9e766e",
+      "bytes": 2237
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-09.zip",
+      "sha256": "68a8357e23277ebd98842fd88d492b012d53dd578b5061cafb8c070c440b235e",
+      "bytes": 2213
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-10.zip",
+      "sha256": "5b086535cba596ef1b465f247a26385b4ccfd12673a76f225e2dd9e00dddadfd",
+      "bytes": 2219
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-11.zip",
+      "sha256": "142202b226078f54342c4a1d74c8c6081a98c655d7d6f6fba06314f9c101e2d9",
+      "bytes": 2191
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2022-12.zip",
+      "sha256": "aff24746afa9a3dbd355dd3462bcef80e59e96ed9aa55f79007532f9e07991bf",
+      "bytes": 2222
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-01.zip",
+      "sha256": "a9fd53b75add7cc42fb4779a545811606260f79810f3826215d6ebecda11bb36",
+      "bytes": 2250
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-02.zip",
+      "sha256": "13df1e3633f15be3eeba4768d0cc323ef221191002657b53936a6d0fb5e6556f",
+      "bytes": 2072
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-03.zip",
+      "sha256": "1cb1209700ec74fa4592048de2e4ea4a38ab2bd622dfe03f1d6195c249501381",
+      "bytes": 2265
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-04.zip",
+      "sha256": "999e86be73731ebc347c6ada94abceb5e291b65e7f1b4df2ce390af1aa2a4a08",
+      "bytes": 2108
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-05.zip",
+      "sha256": "c343e4689784c29f83d25147a096dd44b6ae5c1063c909f8adda82b56414469d",
+      "bytes": 2168
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-06.zip",
+      "sha256": "634919565c55a29729543d730927ca4b547c0e52d118a38de730f37fdd7617ef",
+      "bytes": 2099
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-07.zip",
+      "sha256": "32363d37de02e6ad8d334ac332c685f8cdf5684733a9f2cfbca40e15e591396b",
+      "bytes": 2132
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-08.zip",
+      "sha256": "8c5e47bfe3f0b0273534379e8ba5c93e69c84d67e8b9a03f293d6621bead2a5f",
+      "bytes": 2160
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-09.zip",
+      "sha256": "2fe68ecad48d6927a9280d89700e991cb6481dc2767698c785f2b2d1c0b14744",
+      "bytes": 2080
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-10.zip",
+      "sha256": "358b83bf0c2a5d5390a4bc4d4ae14fa9df0f56139642ad996c0df0f7bc712400",
+      "bytes": 2154
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-11.zip",
+      "sha256": "fac9823cac7bf56a3a6038c3b79417e949b00c172939e62000451c8c25edd7c1",
+      "bytes": 2102
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2023-12.zip",
+      "sha256": "056dad65795c9264ef90ee668a4c245e8fec73ebcbb272d28f5596c389913979",
+      "bytes": 2177
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-01.zip",
+      "sha256": "474c1ce6fbb09e42cfc7231fee249aecc58af2fb5918570ffeba37998926b4a4",
+      "bytes": 2190
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-02.zip",
+      "sha256": "4dae0b3d6b8ea59e39e6493b7964040c52459ea7b0a50b9c2793dcbfae53800d",
+      "bytes": 2053
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-03.zip",
+      "sha256": "f7cd4fcafe79d1fac0c830d5fe152f7b3b9100e7c97e40352188766388af0ae0",
+      "bytes": 2224
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-04.zip",
+      "sha256": "b4a8542c33e5251fb53f8a3352dd4e6f3cde4ac25f2c24935db8089aa1a2c3a0",
+      "bytes": 2141
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-05.zip",
+      "sha256": "0175f696039b9e30f06c6398d218c99e577661ac30424869c648fe9770507248",
+      "bytes": 2185
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-06.zip",
+      "sha256": "8a0f6416c2a83cfa15ba26c688d716fdafe35bb1748dd244f0550e8b2f7e38f7",
+      "bytes": 2095
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-07.zip",
+      "sha256": "9a2963ef6541b4d7630eff8df7b2eaee48ece33180af03c34b0bf92675692899",
+      "bytes": 2203
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-08.zip",
+      "sha256": "df41fe3260920b85da86855b4880f34618982e689081317d3d63b9b3bbcb1d53",
+      "bytes": 2190
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-09.zip",
+      "sha256": "89e459b2a8f4b138dc742d9358c0084fcabf719d40468e156c3149a3635f3359",
+      "bytes": 2106
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-10.zip",
+      "sha256": "d442a5f158d45d9ff7b1584b35023a4161cf915a3857f5e71a2a2e6aa68c69c5",
+      "bytes": 2203
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-11.zip",
+      "sha256": "b197219d9e8b5e933226e1cd24fe2b7bfc3a2e8a3e74e6f7dc08a48f314da8c3",
+      "bytes": 2157
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2024-12.zip",
+      "sha256": "82ec90210f492694b9d01722f97f579108ee787968b8485b53d736ea735700da",
+      "bytes": 2218
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-01.zip",
+      "sha256": "3a3eb1b723d944deb4dbef5ae361bbe39340a17fe987fe22e397ef03dca268d2",
+      "bytes": 2254
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-02.zip",
+      "sha256": "27cfde08c9eb8e3801fb049e3be351a3e50ab46abd8553c24023fa98ea5e919e",
+      "bytes": 2039
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-03.zip",
+      "sha256": "5874e405f55c46f040de1a8ea9daae583dc12b5bcaef6078b21aae9c627cedcc",
+      "bytes": 2249
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-04.zip",
+      "sha256": "8068a571425857cb0f5f71f75e733d3bc1e731362a09f84f835bbea6e087aeb2",
+      "bytes": 2165
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-05.zip",
+      "sha256": "2b87aa0c63641ba1e954855bcfed96d7fc4eb21efe7936f354ff74e8e06cfcea",
+      "bytes": 2253
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-06.zip",
+      "sha256": "dc4bbe2c75f04372b909febe8e6b379b053f88423d78cdb3ad8b0be3a66d6ede",
+      "bytes": 2170
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-07.zip",
+      "sha256": "1ea64a346f6be0aaf455eb1ce107e6d38367164d97d0dd3719b9f9bb239796f4",
+      "bytes": 2232
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-08.zip",
+      "sha256": "6720b573210cfbb98765f4a0de6826033d203fda42a6c8364455144b703ceace",
+      "bytes": 2237
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-09.zip",
+      "sha256": "9934e6d98a90139039bb070a90ba409ff1832ad80116920adcf088090ce4c996",
+      "bytes": 2154
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-10.zip",
+      "sha256": "3597639a18f343c768e374157e8bd08dd046bb33693495ff4e13380abac1260e",
+      "bytes": 2262
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-11.zip",
+      "sha256": "9eded1225f9e3f3d4f127fad46111eb403553c1125cf6d11995e69d91d037290",
+      "bytes": 2185
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2025-12.zip",
+      "sha256": "b12a106198f3be3ba5916195f75c1c6d34d8e5302ab77b8fd7c4b1b58b6144f4",
+      "bytes": 2230
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-01.zip",
+      "sha256": "b7775ddec3ddd3edafc6ad5abcc94d6ab8b8f063a0911d8a3f3daae6a8bbad2e",
+      "bytes": 2237
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-02.zip",
+      "sha256": "f8806308002477a1a28d6cc55ec9ea7bd91bfd4b44c04500d9fc4aec50fd9464",
+      "bytes": 2030
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-03.zip",
+      "sha256": "b81fb1942f9653564f355e3bd62dc06e0552d1c64bc966f7dce5a9c1f8780c47",
+      "bytes": 2242
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-04.zip",
+      "sha256": "1f7da05da9f9a8f30945bde41872ca649c61d6e6e324e916f4c3cbafa0a9276a",
+      "bytes": 2151
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-05.zip",
+      "sha256": "978936e8f1f80b570248f8d4478d6fe08d94b98bc1c7d372feb27573ff466cde",
+      "bytes": 2223
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-06.zip",
+      "sha256": "7020d4d850a875b93f0b0fa6df4a4c36ab615273e2ab03f9e896852330dad77e",
+      "bytes": 2144
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-07.zip",
+      "sha256": "74ddc3e39aae9445b9f9dae00d53fe2ce6ff503ee469417e207a8f5970bad11a",
+      "bytes": 2193
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/BTCUSDT-1d-2026-08.zip",
+      "sha256": "fd8374a811ac7d3f4144d9c857c4f10796402c178316a25ed0c2f0ca6e16a8c1",
+      "bytes": 2185
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-01.zip",
+      "sha256": "db633d61a2e20aeb57e02d252ba86923cf0b6c39b792a6ddfa513145423921e4",
+      "bytes": 238
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-02.zip",
+      "sha256": "150b08c662088a3e915ac4716effd829b8a3bb194bb508ca91b969a207d9fef5",
+      "bytes": 237
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-03.zip",
+      "sha256": "23f688ec229d54e2601dac93a31c63c18cdd96ea30da19212c1358068ee07db7",
+      "bytes": 238
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-04.zip",
+      "sha256": "c7415ae628903620fbbd7e8144576f88ca14b0b9dec7d604701ad3bc2db3b50b",
+      "bytes": 236
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-05.zip",
+      "sha256": "029f78c5b79503b0e8de2c3f803e2814a0ab31317151b01fd9ba7d7a3090822b",
+      "bytes": 236
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-06.zip",
+      "sha256": "6bbca760351e51af46ebd51f4aa922559ecd2a06309386406653caec4f50d516",
+      "bytes": 237
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-07.zip",
+      "sha256": "a7598dffcc806825f1827908439fb642d34b20b48ec41787c09ff073d92b91bd",
+      "bytes": 239
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-08.zip",
+      "sha256": "7063ce73461b1b67273e83226d1eba70beece694191f578c8c9547ff214c5950",
+      "bytes": 237
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-09.zip",
+      "sha256": "599b82289bc11c4f60605b5a3fbd496b04a583d7d9c38896d96fbc3afe2e434d",
+      "bytes": 236
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-10.zip",
+      "sha256": "85b8513b50601307edfcaa3f844e07fc989f9295f31da90cbe3b3e7e81d74cd5",
+      "bytes": 239
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-11.zip",
+      "sha256": "13c557327fe53160855f076ade665f78cd723d8029c48831c1a6d46bd583a47c",
+      "bytes": 238
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-12.zip",
+      "sha256": "be579a6b89278f47b140d1a74d86b5cdb0997b2556e979efa11a6002db81ca09",
+      "bytes": 236
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-13.zip",
+      "sha256": "fdd0dcd40c71da0706d9920b7b695cab5bbe63238bbefa1ddcbb4c0df718b432",
+      "bytes": 238
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-14.zip",
+      "sha256": "d05aa36ea18406a69dee5ae4e45f0776e65566212c9deebf30183c1828cb81de",
+      "bytes": 237
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-15.zip",
+      "sha256": "10b83a73daadc66b0fcf04e7946c385e15f144a79491d3072e54bd170ee066b5",
+      "bytes": 240
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-16.zip",
+      "sha256": "d409bed943d24c474e07e342e2fe28c31915a7abddb4a42fd3e896975590fcaa",
+      "bytes": 239
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-17.zip",
+      "sha256": "6cebcc584b01111722da8031bff655b9979a03d1cfa684ec8689bb5397080a9c",
+      "bytes": 239
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-18.zip",
+      "sha256": "b7442e87ee1453b17df35619706984a435f4ec88723ac3341401efa255f81217",
+      "bytes": 238
+    },
+    {
+      "path": "/tmp/spotquant-market/klines/1d/daily/BTCUSDT-1d-2026-09-19.zip",
+      "sha256": "c1cf7e0edcb47aa6524c7aca8188acef8636d22bab2b68c7a2c9e3741304d99d",
+      "bytes": 238
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-01.zip",
+      "sha256": "f9b28212bf6f8a3a21c17274090ddcb9ce1deb3b9c9e10ba1c7f8829e5914cb4",
+      "bytes": 10197
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-02.zip",
+      "sha256": "6a960e937e872b91bd5bd0eb5bb0ce6d524cb298279a602940844e2c0a46fff8",
+      "bytes": 9593
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-03.zip",
+      "sha256": "78ee62b77557cac23f765653a901e5f12a01231e96f1f31cff84d1771465ec46",
+      "bytes": 10420
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-04.zip",
+      "sha256": "ecc3b3ba4af97ee49eeda70a4061533889fad5a8c43c05668db9b36232c5b3cb",
+      "bytes": 10066
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-05.zip",
+      "sha256": "f44ea339dd8b93c64805a5edac440260514d1ad4cd28c9a9e2af30460f44027c",
+      "bytes": 10405
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-06.zip",
+      "sha256": "ce267c20880ac4d39c25559f17d2f80d82e5fee98cf6c1cf74cc3a87cf14c749",
+      "bytes": 9885
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-07.zip",
+      "sha256": "cd1efbb9e0a8b9cc7b82a86a446afcd00d3e1bd618a62297653eb3763f9cd07a",
+      "bytes": 10146
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-08.zip",
+      "sha256": "b360d15cbce58125c3cbb0d8e34a034482983339d9860f19eb1acc92bc1d4899",
+      "bytes": 10368
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-09.zip",
+      "sha256": "f481189a2ef9cd1e79adbd42b59b9633b60289c552bcf93cee191b618240f352",
+      "bytes": 10042
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-10.zip",
+      "sha256": "1791e2dd8b1d4dbbb588f2a851102424787037ddb3e13f4ef91b076558c83dca",
+      "bytes": 10391
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-11.zip",
+      "sha256": "66b146e2ece8779b8b4dd0256ea89fd46956347431535c5229161de8f7e007b0",
+      "bytes": 10326
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2020-12.zip",
+      "sha256": "e6802fc8b7a750cab7388bc3b0c3638d1649220a67810252d9ec3c02c8933671",
+      "bytes": 10667
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-01.zip",
+      "sha256": "0013f302159ee46ad4f81dbd44b595df8f4d764de88b64273b79d01b4f333e23",
+      "bytes": 10935
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-02.zip",
+      "sha256": "e52a119613bf8d2d7fed60f6a80ddbf0b0f9127d966e7ad1b15ffeca8ecb280a",
+      "bytes": 9827
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-03.zip",
+      "sha256": "ca4eacc180f975d3c7413bf868a1655dbaea006092e07ba28ea9ea43aad0403c",
+      "bytes": 10893
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-04.zip",
+      "sha256": "8f2f40d6d567cb2081de7edfcbb8e5c8c33759866b4f75cb178ca7292f84985b",
+      "bytes": 10522
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-05.zip",
+      "sha256": "529ae82f647603ef517e5de807d14d3c90f072a4543e804239b67c6b588ad8b5",
+      "bytes": 11057
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-06.zip",
+      "sha256": "5f4a6687e046483d22d2e0db89b6f04ad4d49987344d5a4d7665b46a1eca5b9f",
+      "bytes": 10664
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-07.zip",
+      "sha256": "951590c2ff4f4c69d4ad0d72f53e6a3d287ba667dcec099ac9afcb7d5635fd22",
+      "bytes": 10837
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-08.zip",
+      "sha256": "750efc433242daf5424b2aff49f3c3ea6fcca41eb3f2893f3cbc832fdd43cb34",
+      "bytes": 10865
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-09.zip",
+      "sha256": "c05ab152bd0c4b544d61a22a9ae7a3b65cbfebb3ed54511a350e7fd36bcc83a8",
+      "bytes": 10510
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-10.zip",
+      "sha256": "d9a13fcd9a6a0b9a506ea1fbe06975bcf0f9ebbcd2de4639df65cbfb0d01333d",
+      "bytes": 10855
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-11.zip",
+      "sha256": "06ff7fbaf5edf3d77e9a070bca341e2a7781d9e30bb199051d1442df1a79fc0b",
+      "bytes": 10480
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2021-12.zip",
+      "sha256": "30124fe8c2de7114781371e867b63fb7e57c8f7590f8f05c03b8e9f3e3a43993",
+      "bytes": 10813
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-01.zip",
+      "sha256": "600262e137d855af1fb005a605477dda53ae784e682c00ad8ec5a86066c565f6",
+      "bytes": 10902
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-02.zip",
+      "sha256": "0e072f3d2ab245b0b3327b50ab2b8b664cd2d8d51c3b51876aeb7d6ca0f6b566",
+      "bytes": 9840
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-03.zip",
+      "sha256": "49000ed74b217b0d5a7b478b0aeb252c3d2987f8a014dad23dca1c0e89cd5bae",
+      "bytes": 10692
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-04.zip",
+      "sha256": "8e2c9c80707ff1f5965c98761dcfbadfdb583e62d24c8c5d9ff63423cc7c2bfd",
+      "bytes": 10295
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-05.zip",
+      "sha256": "409dfc24ea1e06de9a00b9e39d68fc23699ca3cb8919f58ec8f6e8af17358322",
+      "bytes": 10748
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-06.zip",
+      "sha256": "8bafe0fe001a2b764779e7c418f03eb5ca1162ef0315655177c917e6e670b3ad",
+      "bytes": 10424
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-07.zip",
+      "sha256": "1f66bb3de104e5ce6b568bcc16e466060446a6fb8d6fd46f9b9490be8259f134",
+      "bytes": 10715
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-08.zip",
+      "sha256": "c7c451a4a9f09f14339286ff654fed40b294fc37328126e43531bd3a1c98fe3d",
+      "bytes": 10582
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-09.zip",
+      "sha256": "d7bb4d9961577057bbfd54ea8d6aafd81a5df889b011837c989f7b9f120629d2",
+      "bytes": 10305
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-10.zip",
+      "sha256": "baa731766e96b40c1727dea96e24cb204b6f17012b434a0d196b4736c5e91e58",
+      "bytes": 10395
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-11.zip",
+      "sha256": "155d3052a60386e20f8dda75bbf814098c0174f7f9e59c2b1022aacd563d5dc6",
+      "bytes": 10155
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2022-12.zip",
+      "sha256": "94a9a1ae61658c9b5d35589e400cd6f5516ee330b11ea53879fc126a3b1651c6",
+      "bytes": 10201
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-01.zip",
+      "sha256": "4475545f9db058f7722538ced9a1c135cd41889abb9eb252bedaac1aaee1916b",
+      "bytes": 10465
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-02.zip",
+      "sha256": "d9590a2bffb078b0c142f7280a3a280e6225cf71341e8f30ebf02c9ecc0f228c",
+      "bytes": 9573
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-03.zip",
+      "sha256": "57a2e2e607b58f7bb7e92e57b3ccc03a79e9fd275dced372dd9a8dd10a9017ff",
+      "bytes": 10719
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-04.zip",
+      "sha256": "b71c07d7dab22741cd41706dda7d93c7b08826b9019d542948696a356b8dd91d",
+      "bytes": 10239
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-05.zip",
+      "sha256": "c402551012cb8cab3db8f4b2e983edc57b8f2d5da3e878c483f702fec5058138",
+      "bytes": 10548
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-06.zip",
+      "sha256": "9620b1bae1d2964a3365d70df0c6dcb7322efeaa8336fb91c456a446b02e7ec0",
+      "bytes": 10269
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-07.zip",
+      "sha256": "30cc6dbc5ef4eac56021a27c2323b4359a143ca36dc7cce5574616e185caf9ad",
+      "bytes": 10401
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-08.zip",
+      "sha256": "6df3c520bde3fcc94fa09d574040fc70b4020c1058886938add513813059093f",
+      "bytes": 10357
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-09.zip",
+      "sha256": "a6453bb8c555256f6edad4073d7c4b7af0443a7699cad0cf3c4d5a2323433a41",
+      "bytes": 9962
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-10.zip",
+      "sha256": "00621f34fd85de12927d044c61df0573ac359b4e14b89fd694cb8906e16ac414",
+      "bytes": 10407
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-11.zip",
+      "sha256": "22c096eb32612b29d251d4c8146e4561a65de1df15f27169ac8e28818a3b147c",
+      "bytes": 10105
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2023-12.zip",
+      "sha256": "c3ce7bd7d7348add8464e3272a422e5d12109c927e6f0152641f89feb1177b94",
+      "bytes": 10584
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-01.zip",
+      "sha256": "4f971989eb615ec46d21b7f1730eccf95e133c24c9a9d81faabbc12f89f01dee",
+      "bytes": 10664
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-02.zip",
+      "sha256": "72c0d4432b5369cc53a8e077cb3763b9aa74c6988b285c9983212d765f327597",
+      "bytes": 9998
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-03.zip",
+      "sha256": "2979a6fe55b2fff6c6c5a851d6f047110f1f304ff884b1cc3dd750aff851f2cc",
+      "bytes": 10812
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-04.zip",
+      "sha256": "ef0120818c28d50facb94c61ef96dace2c15d9dcbb37595d11042a1e3484b3de",
+      "bytes": 10419
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-05.zip",
+      "sha256": "e6c04ffbfb59f6403ddf2e1e6018113ef4e1fc6c9782e705eb72ec00c8cdff9e",
+      "bytes": 10595
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-06.zip",
+      "sha256": "8b48ccc0a2f81c683cfadd32f2b616af401dc275c02eb30c718fdeef4e828510",
+      "bytes": 10156
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-07.zip",
+      "sha256": "a3245611dcc9b6a7dc4a3a134907e8a9dd3ae422c34cb1a5bda475cdae3f4d91",
+      "bytes": 10639
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-08.zip",
+      "sha256": "3bc8467576e2f0257754aa8e0517ca82ebaae59000490027878852a79808e255",
+      "bytes": 10688
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-09.zip",
+      "sha256": "66b9440bc484f8c31dd9c1b6cfe29715dc8303b9bc4c57f37a08a0c2d9cbc929",
+      "bytes": 10247
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-10.zip",
+      "sha256": "c8f2fd616e8ea6ff8de0e2f5bb01676c6cda17bd0e18914903b333945c195434",
+      "bytes": 10552
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-11.zip",
+      "sha256": "28f91a142cc2da46ab308862f68ba5c7a6c1ae726d21af2356f774ee0db636f5",
+      "bytes": 10349
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2024-12.zip",
+      "sha256": "5a3f9a42a41556fff257dc08c8f1ec33eb3bd7a803e805289ed20e2ad13a755e",
+      "bytes": 10680
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-01.zip",
+      "sha256": "083b54f2b4d9aeece598eaa98a90ee7a6338492dac9703243ff76e3ca2855d1e",
+      "bytes": 10695
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-02.zip",
+      "sha256": "abd8c4db055c7d72ba1b3f1ad44338b24c752d9dda78d4b64ea718c27940addd",
+      "bytes": 9586
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-03.zip",
+      "sha256": "0b72737b4e28f27417b4738a98d5ec0be2665f137d39cbd8bf15c67d39a152bc",
+      "bytes": 10663
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-04.zip",
+      "sha256": "e30dedb8e3faab67cf63cbec104aa7f65156bae47939e60e07b2e3adf22f65c2",
+      "bytes": 10272
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-05.zip",
+      "sha256": "dee60341a0ea548e0611af52f1a15e2748748a0d4c73f0d93cb50d53273e71c4",
+      "bytes": 10683
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-06.zip",
+      "sha256": "36da42e7bef46276cf5020614a5f6e211faa77d021cb0f09e6e988ef3ed8a2d4",
+      "bytes": 10274
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-07.zip",
+      "sha256": "5677e7817f6fde164d19e7f9870edc740ba96af4e341a4fff53dff2660e8bf73",
+      "bytes": 10630
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-08.zip",
+      "sha256": "c6aabd1f8586921521facfd029629d0a990f4a4a0ef09648cd1929349a02fba3",
+      "bytes": 10630
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-09.zip",
+      "sha256": "289171608f6af47e8040b7cba1a1288eda535f4c027d9c0a1111246625a3c1fc",
+      "bytes": 10221
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-10.zip",
+      "sha256": "f69c52a2f467424279b23991c7cc07c36fbdf2afa37c0e9aa115e8c171368d2b",
+      "bytes": 10708
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-11.zip",
+      "sha256": "c8a7c379d06a48c26620fd352efabc4106847958f0c4cd500b2c2392ed546848",
+      "bytes": 10304
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2025-12.zip",
+      "sha256": "2c028e8568c65bfc5e4052574eb456f76173d0a0ae204c3c65727e7971a113a3",
+      "bytes": 10515
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2026-01.zip",
+      "sha256": "3d3709c48cb4fe637e797baeef36334cc6faded93d5c0f54e727e9e2bd2d1b3b",
+      "bytes": 10478
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2026-02.zip",
+      "sha256": "e53365a8190cdece74c5f4e680209d1b84edb95c2f1ca76b1876a97d5c1fbde9",
+      "bytes": 9622
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2026-03.zip",
+      "sha256": "3bf4f515d5a0e445ef94b0a73892edae438ebac84311853992cd46aa1e3768e2",
+      "bytes": 10598
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2026-04.zip",
+      "sha256": "eab8688878cebc3a940ab7af83a122ef6d7d0176a28208b104bd50fa111cf5e4",
+      "bytes": 10162
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2026-05.zip",
+      "sha256": "88a85f864a664d39be622718b30c83e5a8ffa4729bf3b56efdfad8eb3eae9326",
+      "bytes": 10453
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2026-06.zip",
+      "sha256": "51da327f0c3a278399ffc983c419b2f946720e904c2a603cf1a1b6f58699783d",
+      "bytes": 10263
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2026-07.zip",
+      "sha256": "2fff352c045efe78b52785b2dc6d6107ce63c435c5eec9e28f2c247e110afde0",
+      "bytes": 10453
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/BTCUSDT-4h-2026-08.zip",
+      "sha256": "49dce8e4d82b20a288632c245a267ca5715f53ef170ac62915aa00a75491c3aa",
+      "bytes": 10424
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-01.zip",
+      "sha256": "e1788076514b145ae062baa6657b8232c56307375000f056060743a976340ca8",
+      "bytes": 629
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-02.zip",
+      "sha256": "4f46f5eb78503d666f82f184c945467d1baa844d08e0504e04e0a4b67bc9357c",
+      "bytes": 632
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-03.zip",
+      "sha256": "2a831109072731fcba4a1d612fbdd6e68dc590ffb1a11f20a4d5f6f547e2b24d",
+      "bytes": 629
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-04.zip",
+      "sha256": "3cff61464a2d1bbed04c58ce9f0ef8378632237aa64d0706d16b049608899b82",
+      "bytes": 628
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-05.zip",
+      "sha256": "c32daec1c30579fe035b710bf0d885a6384da538fa83e017364b6ab498231112",
+      "bytes": 619
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-06.zip",
+      "sha256": "5c6a84310909c8fed6afa2a1f913ae4e5be03c215805fd99b239012d854a4281",
+      "bytes": 620
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-07.zip",
+      "sha256": "f1a634bbecedea5d3829d96edf4f324acf0b302eb48a69fec21ad484752e3d3c",
+      "bytes": 625
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-08.zip",
+      "sha256": "d3ab6ebb5ca233ceeb7a6ee1277ed13c1bc914bc25269ef170d62f1b465a519c",
+      "bytes": 628
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-09.zip",
+      "sha256": "f365722fd5589fc8fa7723ac084a779d20b6e58cc4be33fe477a26cc60c2f93f",
+      "bytes": 625
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-10.zip",
+      "sha256": "59456b45adf7b5adbd051d44d48c0ab4d42a0a126c9b33360c6baec16a9e7d0f",
+      "bytes": 633
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-11.zip",
+      "sha256": "cf916221f47410966f8bd37c5cdd867c35e1b23065011575005ed537be1c4eea",
+      "bytes": 628
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-12.zip",
+      "sha256": "6eb277c6c2b00f0e9d0b370496a6e68b0dd0d3c5cbc8762994e7ff78daadcd28",
+      "bytes": 608
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-13.zip",
+      "sha256": "60f53394098c27b687286d1621fb7139adf88ceb0767368bb846b46d50a9b943",
+      "bytes": 623
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-14.zip",
+      "sha256": "787bead186b0ba3c41cfc1eafc9ebd908f2952e6a1bb1f663ffcbb9a323575a6",
+      "bytes": 629
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-15.zip",
+      "sha256": "aabd20f4d4877fb6d55fe1d904cb647572622cab642a3a3a6314a985379e4ec8",
+      "bytes": 633
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-16.zip",
+      "sha256": "48b39e63d503872b8dc449e3d38b3c3f5f6f56e3fb01bc34ec773cb48054846d",
+      "bytes": 633
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-17.zip",
+      "sha256": "6747cbd41609928381cbe94c9eb1f9057431e3a7adbd0df372d6db75781cb907",
+      "bytes": 625
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-18.zip",
+      "sha256": "7063f424ee03096196b51c62fbde2aa9dea24e94fa28819a29e5824af3582655",
+      "bytes": 629
+    },
+    {
+      "path": "/tmp/coinquant-market/klines/4h/daily/BTCUSDT-4h-2026-09-19.zip",
+      "sha256": "c3b6b46d1fbb6df31d7e7799b0061cbfb4b6e85137a994127ad265bbb89dfa79",
+      "bytes": 617
+    }
+  ],
+  "projects": {
+    "spot": {
+      "lifecycle": {
+        "entry-chase": {
+          "decision": "REJECT_FIXED_RULE",
+          "gates": {
+            "coverage": true,
+            "count": false,
+            "era_count": true,
+            "positive_net": false,
+            "positive_each_era": false,
+            "beats_uniform": false
+          },
+          "affected_independent": 6,
+          "closed": {
+            "count": 6,
+            "notional": "32375.84000000000000000000000",
+            "avoided_net_usdt": "-2680.375088735863754084544917",
+            "avoided_net_per_notional": "-0.08278936048410987187002854341",
+            "positive_count": 1
+          },
+          "censored_count": 0,
+          "eras": {
+            "early": {
+              "count": 3,
+              "notional": "11003.67000000000000000000000",
+              "avoided_net_usdt": "-1528.841641902714647542592516",
+              "avoided_net_per_notional": "-0.1389392486236605284911845335",
+              "positive_count": 0
+            },
+            "late": {
+              "count": 3,
+              "notional": "21372.17000000000000000000000",
+              "avoided_net_usdt": "-1151.533446833149106541952401",
+              "avoided_net_per_notional": "-0.05388004338507269531086232240",
+              "positive_count": 1
+            }
+          },
+          "lower_exposure_control": {
+            "eligible": {
+              "count": 62,
+              "notional": "539223.0232238134107244341045",
+              "avoided_net_usdt": "-28989.93265772641762399402050",
+              "avoided_net_per_notional": "-0.05376241630857380483396974148",
+              "positive_count": 32
+            },
+            "removed_fraction": "0.06004164994001354712445772862",
+            "avoided_net_usdt": "-1740.603388419776133495830915",
+            "excess_avoided_net_usdt": "-939.771700316087620588714002"
+          },
+          "coverage": "1",
+          "status": "SUPPORT_PENDING",
+          "events": [
+            {
+              "id": 4,
+              "time_ms": 1578636007200,
+              "notional": "143.5000000000000000000000000",
+              "gain": "-16.5368283690178056123100985",
+              "closed": true,
+              "flow": {
+                "day_ms": 1578528000000,
+                "available_ms": 1578614460000,
+                "available": true,
+                "spot_imbalance": "-0.0147043282176185284508935469",
+                "perp_imbalance": "-0.0234225392537686992010814421",
+                "veto": false
+              },
+              "residue_btc": "0E-29",
+              "signal_ms": 1578528000000,
+              "signal_close": "7817.76000000",
+              "prior_atr": "283.0964285714285714285714286",
+              "decision_price": "8103.706181111111111111111111"
+            },
+            {
+              "id": 42,
+              "time_ms": 1595739603200,
+              "notional": "2295.150000000000000000000000",
+              "gain": "-249.642335405989847423765234",
+              "closed": true,
+              "flow": {
+                "day_ms": 1595635200000,
+                "available_ms": 1595721660000,
+                "available": true,
+                "spot_imbalance": "-0.0347855586594594090580413504",
+                "perp_imbalance": "-0.0092160280943937427783678209",
+                "veto": false
+              },
+              "residue_btc": "-1E-29",
+              "signal_ms": 1595635200000,
+              "signal_close": "9700.42000000",
+              "prior_atr": "170.96500000",
+              "decision_price": "9957.052458750000000000000000"
+            },
+            {
+              "id": 116,
+              "time_ms": 1627297202800,
+              "notional": "8565.019999999999999999999997",
+              "gain": "-1262.662478127706994506517184",
+              "closed": true,
+              "flow": {
+                "day_ms": 1627171200000,
+                "available_ms": 1627257660000,
+                "available": true,
+                "spot_imbalance": "0.030180900496173961990318207",
+                "perp_imbalance": "0.026987615445762382835474627",
+                "veto": false
+              },
+              "residue_btc": "1E-28",
+              "signal_ms": 1627171200000,
+              "signal_close": "35381.02000000",
+              "prior_atr": "1573.409285714285714285714286",
+              "decision_price": "38545.73193680555555555555556"
+            },
+            {
+              "id": 165,
+              "time_ms": 1673582402600,
+              "notional": "9599.940000000000000000000000",
+              "gain": "-1396.714606330096634168329020",
+              "closed": true,
+              "flow": {
+                "day_ms": 1673481600000,
+                "available_ms": 1673568060000,
+                "available": true,
+                "spot_imbalance": "0.000143307034570412656294312",
+                "perp_imbalance": "0.028734755083931600130467973",
+                "veto": false
+              },
+              "residue_btc": "0E-28",
+              "signal_ms": 1673481600000,
+              "signal_close": "18846.62000000",
+              "prior_atr": "342.5142857142857142857142857",
+              "decision_price": "19423.34203833333333333333333"
+            },
+            {
+              "id": 202,
+              "time_ms": 1687500003200,
+              "notional": "11075.07000000000000000000000",
+              "gain": "617.93175492660637674634680",
+              "closed": true,
+              "flow": {
+                "day_ms": 1687392000000,
+                "available_ms": 1687478460000,
+                "available": true,
+                "spot_imbalance": "-0.0547653862385813077943081017",
+                "perp_imbalance": "-0.0115339469860725682228117023",
+                "veto": false
+              },
+              "residue_btc": "-1E-28",
+              "signal_ms": 1687392000000,
+              "signal_close": "29884.92000000",
+              "prior_atr": "1017.652142857142857142857143",
+              "decision_price": "31045.26020236111111111111111"
+            },
+            {
+              "id": 220,
+              "time_ms": 1696140008600,
+              "notional": "697.1600000000000000000000000",
+              "gain": "-372.7505954296588491199701810",
+              "closed": true,
+              "flow": {
+                "day_ms": 1696032000000,
+                "available_ms": 1696118460000,
+                "available": true,
+                "spot_imbalance": "-0.0282823371849874166802791521",
+                "perp_imbalance": "0.014289852317517580001971331",
+                "veto": true
+              },
+              "residue_btc": "0E-29",
+              "signal_ms": 1696032000000,
+              "signal_close": "26962.56000000",
+              "prior_atr": "551.0235714285714285714285714",
+              "decision_price": "27789.85925236111111111111111"
+            }
+          ],
+          "meaning": "Owned basket attribution; no reinvestment, wallet or prospective alpha proof."
+        },
+        "entry-chase-soft": {
+          "decision": "REJECT_FIXED_RULE",
+          "gates": {
+            "coverage": true,
+            "count": false,
+            "era_count": true,
+            "positive_net": false,
+            "positive_each_era": false,
+            "beats_uniform": false
+          },
+          "affected_independent": 6,
+          "closed": {
+            "count": 6,
+            "notional": "16187.92000000000000000000000",
+            "avoided_net_usdt": "-1340.187544367931877042272458",
+            "avoided_net_per_notional": "-0.08278936048410987187002854338",
+            "positive_count": 1
+          },
+          "censored_count": 0,
+          "eras": {
+            "early": {
+              "count": 3,
+              "notional": "5501.834999999999999999999998",
+              "avoided_net_usdt": "-764.4208209513573237712962582",
+              "avoided_net_per_notional": "-0.1389392486236605284911845336",
+              "positive_count": 0
+            },
+            "late": {
+              "count": 3,
+              "notional": "10686.08500000000000000000000",
+              "avoided_net_usdt": "-575.7667234165745532709762005",
+              "avoided_net_per_notional": "-0.05388004338507269531086232240",
+              "positive_count": 1
+            }
+          },
+          "lower_exposure_control": {
+            "eligible": {
+              "count": 62,
+              "notional": "539223.0232238134107244341045",
+              "avoided_net_usdt": "-28989.93265772641762399402050",
+              "avoided_net_per_notional": "-0.05376241630857380483396974148",
+              "positive_count": 32
+            },
+            "removed_fraction": "0.03002082497000677356222886431",
+            "avoided_net_usdt": "-870.3016942098880667479154574",
+            "excess_avoided_net_usdt": "-469.8858501580438102943570006"
+          },
+          "coverage": "1",
+          "status": "SUPPORT_PENDING",
+          "events": [
+            {
+              "id": 4,
+              "time_ms": 1578636007200,
+              "notional": "71.7500000000000000000000000",
+              "gain": "-8.26841418450890280615504925",
+              "closed": true,
+              "flow": {
+                "day_ms": 1578528000000,
+                "available_ms": 1578614460000,
+                "available": true,
+                "spot_imbalance": "-0.0147043282176185284508935469",
+                "perp_imbalance": "-0.0234225392537686992010814421",
+                "veto": false
+              },
+              "residue_btc": "0E-29",
+              "signal_ms": 1578528000000,
+              "signal_close": "7817.76000000",
+              "prior_atr": "283.0964285714285714285714286",
+              "decision_price": "8103.706181111111111111111111"
+            },
+            {
+              "id": 42,
+              "time_ms": 1595739603200,
+              "notional": "1147.575000000000000000000000",
+              "gain": "-124.821167702994923711882617",
+              "closed": true,
+              "flow": {
+                "day_ms": 1595635200000,
+                "available_ms": 1595721660000,
+                "available": true,
+                "spot_imbalance": "-0.0347855586594594090580413504",
+                "perp_imbalance": "-0.0092160280943937427783678209",
+                "veto": false
+              },
+              "residue_btc": "-1E-29",
+              "signal_ms": 1595635200000,
+              "signal_close": "9700.42000000",
+              "prior_atr": "170.96500000",
+              "decision_price": "9957.052458750000000000000000"
+            },
+            {
+              "id": 116,
+              "time_ms": 1627297202800,
+              "notional": "4282.509999999999999999999998",
+              "gain": "-631.331239063853497253258592",
+              "closed": true,
+              "flow": {
+                "day_ms": 1627171200000,
+                "available_ms": 1627257660000,
+                "available": true,
+                "spot_imbalance": "0.030180900496173961990318207",
+                "perp_imbalance": "0.026987615445762382835474627",
+                "veto": false
+              },
+              "residue_btc": "1E-28",
+              "signal_ms": 1627171200000,
+              "signal_close": "35381.02000000",
+              "prior_atr": "1573.409285714285714285714286",
+              "decision_price": "38545.73193680555555555555556"
+            },
+            {
+              "id": 165,
+              "time_ms": 1673582402600,
+              "notional": "4799.970000000000000000000000",
+              "gain": "-698.357303165048317084164510",
+              "closed": true,
+              "flow": {
+                "day_ms": 1673481600000,
+                "available_ms": 1673568060000,
+                "available": true,
+                "spot_imbalance": "0.000143307034570412656294312",
+                "perp_imbalance": "0.028734755083931600130467973",
+                "veto": false
+              },
+              "residue_btc": "0E-28",
+              "signal_ms": 1673481600000,
+              "signal_close": "18846.62000000",
+              "prior_atr": "342.5142857142857142857142857",
+              "decision_price": "19423.34203833333333333333333"
+            },
+            {
+              "id": 202,
+              "time_ms": 1687500003200,
+              "notional": "5537.53500000000000000000000",
+              "gain": "308.96587746330318837317340",
+              "closed": true,
+              "flow": {
+                "day_ms": 1687392000000,
+                "available_ms": 1687478460000,
+                "available": true,
+                "spot_imbalance": "-0.0547653862385813077943081017",
+                "perp_imbalance": "-0.0115339469860725682228117023",
+                "veto": false
+              },
+              "residue_btc": "-1E-28",
+              "signal_ms": 1687392000000,
+              "signal_close": "29884.92000000",
+              "prior_atr": "1017.652142857142857142857143",
+              "decision_price": "31045.26020236111111111111111"
+            },
+            {
+              "id": 220,
+              "time_ms": 1696140008600,
+              "notional": "348.5800000000000000000000000",
+              "gain": "-186.3752977148294245599850905",
+              "closed": true,
+              "flow": {
+                "day_ms": 1696032000000,
+                "available_ms": 1696118460000,
+                "available": true,
+                "spot_imbalance": "-0.0282823371849874166802791521",
+                "perp_imbalance": "0.014289852317517580001971331",
+                "veto": true
+              },
+              "residue_btc": "0E-29",
+              "signal_ms": 1696032000000,
+              "signal_close": "26962.56000000",
+              "prior_atr": "551.0235714285714285714285714",
+              "decision_price": "27789.85925236111111111111111"
+            }
+          ],
+          "meaning": "Owned basket attribution; no reinvestment, wallet or prospective alpha proof."
+        },
+        "repair-stall": {
+          "decision": "REJECT_FIXED_RULE",
+          "gates": {
+            "coverage": true,
+            "count": false,
+            "era_count": false,
+            "positive_net": false,
+            "positive_each_era": false,
+            "beats_uniform": false
+          },
+          "affected_independent": 0,
+          "closed": {
+            "count": 0,
+            "notional": "0",
+            "avoided_net_usdt": "0",
+            "avoided_net_per_notional": null,
+            "positive_count": 0
+          },
+          "censored_count": 0,
+          "eras": {
+            "early": {
+              "count": 0,
+              "notional": "0",
+              "avoided_net_usdt": "0",
+              "avoided_net_per_notional": null,
+              "positive_count": 0
+            },
+            "late": {
+              "count": 0,
+              "notional": "0",
+              "avoided_net_usdt": "0",
+              "avoided_net_per_notional": null,
+              "positive_count": 0
+            }
+          },
+          "lower_exposure_control": {
+            "eligible": {
+              "count": 0,
+              "notional": "0",
+              "avoided_net_usdt": "0",
+              "avoided_net_per_notional": null,
+              "positive_count": 0
+            },
+            "removed_fraction": "0",
+            "avoided_net_usdt": "0",
+            "excess_avoided_net_usdt": "0"
+          },
+          "coverage": "1",
+          "status": "SUPPORT_PENDING",
+          "events": [],
+          "meaning": "Owned basket attribution; no reinvestment, wallet or prospective alpha proof.",
+          "risk_tradeoff": {
+            "status": "INSUFFICIENT_SUPPORT",
+            "gates": {
+              "count": false,
+              "eras": false,
+              "risk_removed": false,
+              "beats_simple": false,
+              "affordable": true
+            },
+            "closed_count": 0,
+            "eras": {
+              "early": 0,
+              "late": 0
+            },
+            "removed_downside_usdt": "0",
+            "uniform_removed_downside_usdt": "0",
+            "net_avoidance_usdt": "0",
+            "foregone_profit_usdt": "0",
+            "sacrifice_per_removed_downside": null,
+            "metric": "Completed-day-low attributed basket stress, not account risk reduction or MDD.",
+            "events": []
+          },
+          "owned_repair_cohorts": 0
+        },
+        "repair-rebreak": {
+          "decision": "REJECT_FIXED_RULE",
+          "gates": {
+            "coverage": true,
+            "count": false,
+            "era_count": false,
+            "positive_net": false,
+            "positive_each_era": false,
+            "beats_uniform": false
+          },
+          "affected_independent": 0,
+          "closed": {
+            "count": 0,
+            "notional": "0",
+            "avoided_net_usdt": "0",
+            "avoided_net_per_notional": null,
+            "positive_count": 0
+          },
+          "censored_count": 0,
+          "eras": {
+            "early": {
+              "count": 0,
+              "notional": "0",
+              "avoided_net_usdt": "0",
+              "avoided_net_per_notional": null,
+              "positive_count": 0
+            },
+            "late": {
+              "count": 0,
+              "notional": "0",
+              "avoided_net_usdt": "0",
+              "avoided_net_per_notional": null,
+              "positive_count": 0
+            }
+          },
+          "lower_exposure_control": {
+            "eligible": {
+              "count": 0,
+              "notional": "0",
+              "avoided_net_usdt": "0",
+              "avoided_net_per_notional": null,
+              "positive_count": 0
+            },
+            "removed_fraction": "0",
+            "avoided_net_usdt": "0",
+            "excess_avoided_net_usdt": "0"
+          },
+          "coverage": "1",
+          "status": "SUPPORT_PENDING",
+          "events": [],
+          "meaning": "Owned basket attribution; no reinvestment, wallet or prospective alpha proof.",
+          "risk_tradeoff": {
+            "status": "INSUFFICIENT_SUPPORT",
+            "gates": {
+              "count": false,
+              "eras": false,
+              "risk_removed": false,
+              "beats_simple": false,
+              "affordable": true
+            },
+            "closed_count": 0,
+            "eras": {
+              "early": 0,
+              "late": 0
+            },
+            "removed_downside_usdt": "0",
+            "uniform_removed_downside_usdt": "0",
+            "net_avoidance_usdt": "0",
+            "foregone_profit_usdt": "0",
+            "sacrifice_per_removed_downside": null,
+            "metric": "Completed-day-low attributed basket stress, not account risk reduction or MDD.",
+            "events": []
+          },
+          "owned_repair_cohorts": 0
+        }
+      },
+      "opportunities": {
+        "state-trend": {
+          "status": "REJECT_MECHANISM",
+          "gates": {
+            "count": true,
+            "eras": true,
+            "positive": false,
+            "both_eras": false
+          },
+          "raw_signals": 136,
+          "independent_schedule_visible_events": 33,
+          "events": [
+            {
+              "time_ms": 1581552000000,
+              "signal_ms": 1581465600000,
+              "price": "10325.33000000",
+              "net_return": "-0.0738490672937329848053282559",
+              "exit_ms": 1582156800000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1588816800000,
+              "signal_ms": 1588723200000,
+              "price": "9374.3000000000",
+              "net_return": "-0.0099263838366598039320269247",
+              "exit_ms": 1589414400000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1595808000000,
+              "signal_ms": 1595721600000,
+              "price": "9931.54000000",
+              "net_return": "0.111766692778763414334534221",
+              "exit_ms": 1596412800000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1605261600000,
+              "signal_ms": 1605139200000,
+              "price": "16348.0875000000",
+              "net_return": "0.085984873612892027890112528",
+              "exit_ms": 1605830400000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1605916800000,
+              "signal_ms": 1605830400000,
+              "price": "18655.66000000",
+              "net_return": "-0.0842697058158221151114460705",
+              "exit_ms": 1606521600000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1608274800000,
+              "signal_ms": 1608163200000,
+              "price": "23224.17625000000",
+              "net_return": "0.018745604432363882012822737",
+              "exit_ms": 1608854400000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1609977600000,
+              "signal_ms": 1609891200000,
+              "price": "36769.36000000",
+              "net_return": "0.013372871325473165701007578",
+              "exit_ms": 1610582400000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1612710000000,
+              "signal_ms": 1612569600000,
+              "price": "37644.62500000000",
+              "net_return": "0.249600869314012292591571838",
+              "exit_ms": 1613260800000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1627466400000,
+              "signal_ms": 1627344000000,
+              "price": "40368.0000000000",
+              "net_return": "-0.0565312623860483551327784384",
+              "exit_ms": 1628035200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1628442000000,
+              "signal_ms": 1628294400000,
+              "price": "43327.67125000000",
+              "net_return": "0.083338329341898337081755807",
+              "exit_ms": 1628985600000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1630983600000,
+              "signal_ms": 1630886400000,
+              "price": "52761.37500000000",
+              "net_return": "-0.1245543567619304841846900313",
+              "exit_ms": 1631145600000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1633510800000,
+              "signal_ms": 1633392000000,
+              "price": "55079.05125000000",
+              "net_return": "0.013664752372618255656682176",
+              "exit_ms": 1634083200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1648573200000,
+              "signal_ms": 1648425600000,
+              "price": "47011.34375000000",
+              "net_return": "-0.0121644636301211875059410528",
+              "exit_ms": 1649116800000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1658325600000,
+              "signal_ms": 1658188800000,
+              "price": "23248.8275000000",
+              "net_return": "-0.0887745406730726528036736476",
+              "exit_ms": 1658880000000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1660453200000,
+              "signal_ms": 1660348800000,
+              "price": "24820.87250000000",
+              "net_return": "-0.1005337389932606116082341586",
+              "exit_ms": 1660953600000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1662966000000,
+              "signal_ms": 1662854400000,
+              "price": "22405.35875000000",
+              "net_return": "-0.1364135633958550206209039166",
+              "exit_ms": 1663545600000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1671102000000,
+              "signal_ms": 1670976000000,
+              "price": "17637.57875000000",
+              "net_return": "-0.0573582973371557589785389335",
+              "exit_ms": 1671235200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1673470800000,
+              "signal_ms": 1673308800000,
+              "price": "17707.88750000000",
+              "net_return": "0.190525201693313219885771242",
+              "exit_ms": 1674000000000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1697911200000,
+              "signal_ms": 1697760000000,
+              "price": "29576.0275000000",
+              "net_return": "0.142928742458736218040100213",
+              "exit_ms": 1698451200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1707832800000,
+              "signal_ms": 1707696000000,
+              "price": "48817.8650000000",
+              "net_return": "0.057569322316737940096315150",
+              "exit_ms": 1708387200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1709118000000,
+              "signal_ms": 1708992000000,
+              "price": "61259.44375000000",
+              "net_return": "0.037231613268607258615533870",
+              "exit_ms": 1709683200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1721210400000,
+              "signal_ms": 1721088000000,
+              "price": "65559.9725000000",
+              "net_return": "0.002735778793988969412700715",
+              "exit_ms": 1721779200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1726822800000,
+              "signal_ms": 1726704000000,
+              "price": "63910.40500000000",
+              "net_return": "0.016771193751627767027919789",
+              "exit_ms": 1727395200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1731164400000,
+              "signal_ms": 1731024000000,
+              "price": "75862.82750000000",
+              "net_return": "0.196956197256159480741737447",
+              "exit_ms": 1731715200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1732186800000,
+              "signal_ms": 1732060800000,
+              "price": "97132.50000000000",
+              "net_return": "-0.0160686433480040151339664891",
+              "exit_ms": 1732752000000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1734415200000,
+              "signal_ms": 1734307200000,
+              "price": "107779.4125000000",
+              "net_return": "-0.1294560845513979768631602070",
+              "exit_ms": 1734739200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1746820800000,
+              "signal_ms": 1746662400000,
+              "price": "102643.565000000",
+              "net_return": "0.007912958839650590857790257",
+              "exit_ms": 1747353600000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1755133200000,
+              "signal_ms": 1755043200000,
+              "price": "123452.38500000000",
+              "net_return": "-0.0773699281305905916681966088",
+              "exit_ms": 1755734400000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1759737600000,
+              "signal_ms": 1759622400000,
+              "price": "126199.63000000",
+              "net_return": "-0.1422996160131372809888586837",
+              "exit_ms": 1760140800000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1768514400000,
+              "signal_ms": 1768348800000,
+              "price": "95487.2200000000",
+              "net_return": "-0.0676811164886777518499334256",
+              "exit_ms": 1768953600000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1773759600000,
+              "signal_ms": 1773619200000,
+              "price": "73724.29125000000",
+              "net_return": "-0.0412213406493751813449952969",
+              "exit_ms": 1774310400000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1784692800000,
+              "signal_ms": 1784592000000,
+              "price": "66648.020000000",
+              "net_return": "-0.0440067695934552894444576148",
+              "exit_ms": 1785283200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1787295600000,
+              "signal_ms": 1787184000000,
+              "price": "78690.87750000000",
+              "net_return": "0.016807918649782498613006317",
+              "exit_ms": 1787875200000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            }
+          ],
+          "average_net_return": "-0.0005019987482324770732656930545",
+          "limitations": "Completed-bar proxy, omitted partial entry bar, no wallet/macro competition/depth/native qualification. All historical periods are development data."
+        },
+        "state-range": {
+          "status": "SUPPORT_PENDING",
+          "gates": {
+            "count": false,
+            "eras": false,
+            "positive": true,
+            "both_eras": false
+          },
+          "raw_signals": 2,
+          "independent_schedule_visible_events": 1,
+          "events": [
+            {
+              "time_ms": 1710990000000,
+              "signal_ms": 1710892800000,
+              "price": "67990.49500000000",
+              "net_return": "0.018760321056641814418324208",
+              "exit_ms": 1711584000000,
+              "cost": "0.003",
+              "funding": "0",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            }
+          ],
+          "average_net_return": "0.018760321056641814418324208",
+          "limitations": "Completed-bar proxy, omitted partial entry bar, no wallet/macro competition/depth/native qualification. All historical periods are development data."
+        }
+      }
+    },
+    "coin": {
+      "lifecycle": {
+        "macro-handoff": {
+          "status": "SUPPORT_PENDING",
+          "gates": {
+            "count": false,
+            "eras": false,
+            "positive": false,
+            "both_eras": false
+          },
+          "events": [
+            {
+              "id": -1680339602800,
+              "time_ms": 1681387205600,
+              "primary_id": 1681156800000,
+              "price": "30149.1",
+              "net_return": "-0.04975617197558136063763097403",
+              "exit_ms": 1681948800000,
+              "cost": "0.0037",
+              "funding": "0.001185844171434636523146627926",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            }
+          ],
+          "meaning": "Schedule-visible owned macro branch census and gross-per-old-budget event proxy; incumbent alternative profit and full rotation costs require paired accounts.",
+          "rotation_close_cost_unmodeled": true
+        },
+        "macro-restart": {
+          "status": "SUPPORT_PENDING",
+          "gates": {
+            "count": false,
+            "eras": false,
+            "positive": false,
+            "both_eras": false
+          },
+          "events": [],
+          "meaning": "Schedule-visible owned macro branch census and gross-per-old-budget event proxy; incumbent alternative profit and full rotation costs require paired accounts.",
+          "rotation_close_cost_unmodeled": false
+        }
+      },
+      "opportunities": {
+        "state-trend": {
+          "status": "REJECT_MECHANISM",
+          "gates": {
+            "count": true,
+            "eras": true,
+            "positive": true,
+            "both_eras": false
+          },
+          "raw_signals": 406,
+          "independent_schedule_visible_events": 20,
+          "events": [
+            {
+              "time_ms": 1579028400000,
+              "signal_ms": 1579003200000,
+              "price": "8377.51250",
+              "net_return": "0.02304890661229093958379650248",
+              "exit_ms": 1579622400000,
+              "cost": "0.0037",
+              "funding": "0.005870262860747745825506079518",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1581008400000,
+              "signal_ms": 1580990400000,
+              "price": "9578.51500",
+              "net_return": "0.04915112378320647824845500590",
+              "exit_ms": 1581609600000,
+              "cost": "0.0037",
+              "funding": "0.01876175149025710144004576910",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1588161600000,
+              "signal_ms": 1588147200000,
+              "price": "8349.330",
+              "net_return": "0.1090922969165430040494267204",
+              "exit_ms": 1588766400000,
+              "cost": "0.0037",
+              "funding": "0.003637404628371378302211075620",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1588885200000,
+              "signal_ms": 1588867200000,
+              "price": "9630.12500",
+              "net_return": "-0.08110631763997871263353279421",
+              "exit_ms": 1589083200000,
+              "cost": "0.0037",
+              "funding": "0.003252036153497488350358899808",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1608537600000,
+              "signal_ms": 1608523200000,
+              "price": "24145.00",
+              "net_return": "-0.06530588094084075377925036237",
+              "exit_ms": 1608566400000,
+              "cost": "0.0037",
+              "funding": "0.0002271275757548146614205839718",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1610046000000,
+              "signal_ms": 1610020800000,
+              "price": "37522.94500",
+              "net_return": "-0.1266768072786984070679953293",
+              "exit_ms": 1610352000000,
+              "cost": "0.0037",
+              "funding": "0.01193848126244355287144972229",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1613772000000,
+              "signal_ms": 1613750400000,
+              "price": "54703.0750",
+              "net_return": "-0.08538661332225656418766221090",
+              "exit_ms": 1614009600000,
+              "cost": "0.0037",
+              "funding": "0.01033641957172243059462379400",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1627466400000,
+              "signal_ms": 1627444800000,
+              "price": "40358.7500",
+              "net_return": "-0.06826626232176665531018676243",
+              "exit_ms": 1628064000000,
+              "cost": "0.0037",
+              "funding": "0.001859166586641062966519032427",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1633442400000,
+              "signal_ms": 1633420800000,
+              "price": "49728.9075",
+              "net_return": "0.1444510459427386374816297746",
+              "exit_ms": 1634040000000,
+              "cost": "0.0037",
+              "funding": "0.003291703930662462271064370357",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1634317200000,
+              "signal_ms": 1634299200000,
+              "price": "57500.29125",
+              "net_return": "0.04538212392655315463293414185",
+              "exit_ms": 1634918400000,
+              "cost": "0.0037",
+              "funding": "0.007345916340112451169540815153",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1662728400000,
+              "signal_ms": 1662710400000,
+              "price": "20176.62500",
+              "net_return": "-0.02110826886741464442145304285",
+              "exit_ms": 1663329600000,
+              "cost": "0.0037",
+              "funding": "0.001517355496124847441036347753",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1679065200000,
+              "signal_ms": 1679040000000,
+              "price": "25236.31250",
+              "net_return": "0.08674237686543943375245492033",
+              "exit_ms": 1679659200000,
+              "cost": "0.0037",
+              "funding": "0.001571363256062073252579987667",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1706565600000,
+              "signal_ms": 1706544000000,
+              "price": "42907.8500",
+              "net_return": "-0.009094622314331759806189310373",
+              "exit_ms": 1707163200000,
+              "cost": "0.0037",
+              "funding": "0.001888270912432107411580864573",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1730170800000,
+              "signal_ms": 1730145600000,
+              "price": "71334.93750",
+              "net_return": "-0.06637834635728110086309390825",
+              "exit_ms": 1730764800000,
+              "cost": "0.0037",
+              "funding": "0.002065165053239164890275539948",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1732118400000,
+              "signal_ms": 1732104000000,
+              "price": "91500.00",
+              "net_return": "0.03794708800774863387978142112",
+              "exit_ms": 1732723200000,
+              "cost": "0.0037",
+              "funding": "0.003276409260010928961748633880",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1746709200000,
+              "signal_ms": 1746691200000,
+              "price": "99634.17500",
+              "net_return": "0.02187456596934736499800394825",
+              "exit_ms": 1747310400000,
+              "cost": "0.0037",
+              "funding": "0.001535860749195745335373128748",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1754895600000,
+              "signal_ms": 1754870400000,
+              "price": "122050.66250",
+              "net_return": "-0.05198264419781416590016461398",
+              "exit_ms": 1755489600000,
+              "cost": "0.0037",
+              "funding": "0.001575298385578202002795355577",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1759363200000,
+              "signal_ms": 1759348800000,
+              "price": "118552.00",
+              "net_return": "0.03405144341268810311087117911",
+              "exit_ms": 1759968000000,
+              "cost": "0.0037",
+              "funding": "0.001771297662958026857412780890",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1761559200000,
+              "signal_ms": 1761537600000,
+              "price": "115733.2500",
+              "net_return": "-0.04410415755205180879306508720",
+              "exit_ms": 1761768000000,
+              "cost": "0.0037",
+              "funding": "0.0003218994283060399669066581988",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            },
+            {
+              "time_ms": 1787227200000,
+              "signal_ms": 1787212800000,
+              "price": "71140.900",
+              "net_return": "0.1109820546415353193451305786",
+              "exit_ms": 1787832000000,
+              "cost": "0.0037",
+              "funding": "0.001976576328834749068398066371",
+              "partial_entry_bar": "OMITTED_UNCERTAIN",
+              "account": false
+            }
+          ],
+          "average_net_return": "0.002165655264282824815994538540",
+          "limitations": "Completed-bar proxy, omitted partial entry bar, no wallet/macro competition/depth/native qualification. All historical periods are development data."
+        },
+        "state-range": {
+          "status": "SUPPORT_PENDING",
+          "gates": {
+            "count": false,
+            "eras": false,
+            "positive": false,
+            "both_eras": false
+          },
+          "raw_signals": 0,
+          "independent_schedule_visible_events": 0,
+          "events": [],
+          "average_net_return": null,
+          "limitations": "Completed-bar proxy, omitted partial entry bar, no wallet/macro competition/depth/native qualification. All historical periods are development data."
+        }
+      }
+    }
+  },
+  "joint": {
+    "status": "CAUSAL_ADMISSION_IMPLEMENTED_ACCOUNT_PATH_PENDING",
+    "rows": [
+      {
+        "budgets": [
+          2500,
+          7500
+        ],
+        "closing_peak": 6.556897280040373,
+        "closing_days_over4": 71,
+        "actual_raw_sha256": [
+          "d7171429468b487abbca951c62107a582ed366e4e6bae3d2d01a09eb662fe033",
+          "56b2ad43098d9965b97f24ddefdd4ae9ddbf954c58122e95b1239840efa7db6d"
+        ]
+      },
+      {
+        "budgets": [
+          5000,
+          5000
+        ],
+        "closing_peak": 5.886256219183456,
+        "closing_days_over4": 51,
+        "actual_raw_sha256": [
+          "19b114d314d8992ccbd78d49267f988fb6ea3f05e0a29a812bc0304fd9c2f63c",
+          "4df6b5baafc3bb9a6d349c5216aa6b4548a9c81d9ba055c5bd6efe71556385d7"
+        ]
+      },
+      {
+        "budgets": [
+          7500,
+          2500
+        ],
+        "closing_peak": 5.242298574542704,
+        "closing_days_over4": 24,
+        "actual_raw_sha256": [
+          "84b3e6d699a0acdf620d046cdaab5e94d36fa2d613fc0ab0ec7e5c8889d312de",
+          "ebc5dbe70628b03bf4fffd1601313b5977c92521cb76fe53c6872000321add04"
+        ]
+      }
+    ],
+    "rules": [
+      "gross-entry-cap",
+      "stress-entry-cap",
+      "state-exposure"
+    ],
+    "curve_rescaled": false,
+    "closing_exceedance_is_not_buy_event": true,
+    "continuous_joint_mdd": false
+  },
+  "execution": {
+    "status": "PRIOR_COST_EVIDENCE_REUSED_WAIT_RECORDED_BOOK",
+    "source": "evidence/btc-continuous-20261004/continuous-results-risk-fix1.json",
+    "action": "Finite new public book receipts; no invented missed/maker fills or duplicate IOC account replay."
+  },
+  "information": {
+    "status": "WAIT_QUALIFIED_FORWARD_RECEIPTS",
+    "families": [
+      "oi-deleveraging",
+      "option-skew"
+    ],
+    "prior_retrospective_publication_rejection_retained": true
+  },
+  "forward": {
+    "status": "WAIT_NEW_INTERVAL",
+    "frozen_after": 1789862400000,
+    "old_ledgers_modified": false
+  },
+  "wall_seconds": 1.5709423110238276,
+  "original795_replays": 0,
+  "large_vault_scans": 0,
+  "runtime_promoted": false,
+  "prospective_alpha_proven": false
+}
