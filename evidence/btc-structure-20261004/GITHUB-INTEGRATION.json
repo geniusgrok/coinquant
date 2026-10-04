@@ -1,0 +1,17 @@
+{
+  "repo": "geniusgrok/coinquant",
+  "pr_number": 61,
+  "pr_url": "https://github.com/geniusgrok/coinquant/pull/61",
+  "accepted_head": "85f867e77e8dc411eaef427f2ce42602f683632d",
+  "merge_sha": "7a950c295cf4c444a8d691049ba17c4c053543e9",
+  "merge_tree": "461a079d039ddf6b783bba39438174620b3a8931",
+  "accepted_tree": "461a079d039ddf6b783bba39438174620b3a8931",
+  "normal_merge": true,
+  "expected_head_merge": true,
+  "original_and_feature_fast_forwarded": true,
+  "force_or_history_deletion": false,
+  "ci": "intentionally skipped; not GitHub CI PASS",
+  "native_cases": 0,
+  "observed_account_days": 0,
+  "new_795_replay": 0
+}

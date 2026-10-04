@@ -1,8 +1,14 @@
 # PROJECT_STATE
 
-## Structural BTC research (2026-10-04)
+Updated: 2026-10-04T04:09:53.937110+00:00
 
-Coin implementation/financial screen CLOSED: corrected cash-only-short SCREEN_REJECTED after4/4 windows, zero added shorts/paired gains/beta improvement. Final8 independent window accounts use4 original baselines+4 corrected candidates. First stricter consumed-macro bug and all negative original8 accounts retained; only4 affected candidates remeasured, total333 actual finite sessions, no new795/full matrix/default adoption. Source52433bc/c5febb2 remain distinct. See structure-RESULT.md, structure-GUIDE.md and evidence/btc-structure-20261004. Only final full software suite453/5skips PASS; normal GitHub integration pending; no further economic run needed. Old core/conditional-short evidence reused. Public marketHTTP451, old ledgers untouched/pending/nativecases0/accountdays0/NOT_QUALIFIED.
+## Completed structural BTC alpha/beta delivery (2026-10-04)
+
+User-authorized two-direction implementation and screening are CLOSED; normally merged PR61 https://github.com/geniusgrok/coinquant/pull/61 at7a950c295cf4c444a8d691049ba17c4c053543e9. Accepted feature/merge trees equal; original main and new isolated worktree fast-forwarded. This final closure changes documentation/evidence only with[skip ci], no repeated verification or finance. See research/structure-RESULT.md, structure-GUIDE.md and evidence/btc-structure-20261004 (MANIFEST plus separate GITHUB-INTEGRATION).
+
+Coin corrected cash-only-short rejected after4/4 preregistered windows:0 incremental short entries/wealth gain/beta improvement. Final8 accounts use4 original baselines and4 corrected candidates, all window cash audits/operating gates pass. Original consumed-macro overblocking implementation and negative8 accounts retained; only4 affected candidates replayed with SHA-bound baseline reuse. Actual333 finite sessions total; child financial screening373.64s+352.53s, no795. One final full453/5skips PASS, no repeated full/focused tests. Preserve52433bc/c5febb2 identities; default SX60+DFII10/7.5/3.6 unchanged, no entrant/adoption.
+
+Prior complete core/conditional-short failures reused, not rerun as new. Whole research source changes do not rebind original measured economic evidence or old forward ledgers. Public Spot/perp fresh market endpoints actuallyHTTP451 this round; ledgers untouched/events0/accountdays0/nativecases0/pending. Use approved immutable old consumers Spotf1383f1/Coin762d75c only, no reset/migration/backfill/HOME/UID/lock bypass/private operations. Spot56.5981%/36.4122%, Coin119.2284%/44.1051% original full proxies remain; goalsNOT_MET/nativeNOT_QUALIFIED/prospectivefalse. No reliable new alpha/beta gain or ceiling claim. Engineering/integration complete with no running task; do not restart closed screens/795/tests. Future work requires a distinct registered mechanism with real decision value or genuinely new public forward intervals.
 
 ## Completed BTC alpha/beta upgrade (2026-10-04)
 

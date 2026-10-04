@@ -24,3 +24,5 @@
 本次公开Spot/perp市场端点实际HTTP451，原响应保留；旧账本未改动，fresh_public_market_pending，账户日/原生案例0/NOT_QUALIFIED。老Coin账本只用批准不可变消费者762d75c22d19686dbd364a6b58b59dbc23340430，不用当前研究HEAD重绑或回填。最终全量软件验证只一次；源代码/财务审查是根代理自审，不冒充新独立金融验收。正常GitHub集成与原始检查回执随证据交付。
 
 最终软件结果：Python3.13唯一全量453项/5跳过PASS（1cdcc3e），包括6项新增空头资金/因果/归属/检查点反例，无失败或复测。GitHub CI按用户偏好跳过，不写成远程CI绿色。
+
+正常集成完成：PR61 https://github.com/geniusgrok/coinquant/pull/61 合并7a950c295cf4c444a8d691049ba17c4c053543e9，接受特性树与合并树相等，原main/新隔离工作树安全快进。无强推、历史删除或新增测试。合并/本次收尾均[skip ci]，不是GitHub CI通过；闭环只改文档/证据，不重算财务。回执为evidence/btc-structure-20261004/GITHUB-INTEGRATION.json（独立于原MANIFEST的后续集成回执）。
