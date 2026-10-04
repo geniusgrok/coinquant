@@ -1,0 +1,28 @@
+{
+  "command": [
+    "python3.13",
+    "-u",
+    "-m",
+    "research.structure_screen",
+    "--market",
+    "/tmp/coinquant-market",
+    "--prints",
+    "/workspace/scratch/alpha-beta-next/public-print-vault",
+    "--fx",
+    "/workspace/starquant/data/usdcny_frankfurter.json",
+    "--baseline-summary",
+    "/workspace/btc-structure-20261004/artifacts/coin/summary.json",
+    "--baseline-summary-sha",
+    "2d6e8d2184220ebae70c44b52056a2df9d828d873975ac21c9069d5603ab20be",
+    "--out",
+    "/workspace/btc-structure-20261004/artifacts/coin-recovery"
+  ],
+  "cwd": "/workspace/btc-structure-20261004/coinquant",
+  "producer_head": "c5febb2dacf3404110f335d2c962ab071b49137c",
+  "started_utc": "2026-10-04T03:51:09.107782+00:00",
+  "wrapper_pid": 196065,
+  "pid": 196069,
+  "exit_code": 0,
+  "wall_seconds": 353.19515243699425,
+  "ended_utc": "2026-10-04T03:57:02.300839+00:00"
+}

@@ -1,11 +1,8 @@
 # PROJECT_STATE
 
-## Active structural BTC research (2026-10-04)
+## Structural BTC research (2026-10-04)
 
-User authorized both directions. Isolated current-main branch codex/btc-structure-20261004. Existing core/conditional-short were already measured and rejected; do not repeat them as new. New exact candidates and early rejection/resource rules are in research/structure-spec.json. Implement actual session screens, preserve source-bound evidence, then final full software suite once per repo and normal integration. No new measurement/fullsuite yet. No private/native actions or old-ledger rebind.
-
-
-Updated: 2026-10-04T10:08:00.255667+08:00
+Coin implementation/financial screen CLOSED: corrected cash-only-short SCREEN_REJECTED after4/4 windows, zero added shorts/paired gains/beta improvement. Final8 independent window accounts use4 original baselines+4 corrected candidates. First stricter consumed-macro bug and all negative original8 accounts retained; only4 affected candidates remeasured, total333 actual finite sessions, no new795/full matrix/default adoption. Source52433bc/c5febb2 remain distinct. See structure-RESULT.md, structure-GUIDE.md and evidence/btc-structure-20261004. Only one final full software suite and normal GitHub integration pending; no further economic run needed. Old core/conditional-short evidence reused. Public marketHTTP451, old ledgers untouched/pending/nativecases0/accountdays0/NOT_QUALIFIED.
 
 ## Completed BTC alpha/beta upgrade (2026-10-04)
 
