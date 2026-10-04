@@ -4,4 +4,6 @@
 
 结果：alpha无合格账户；压力预算第一窗口PASS但第二无作用；弱势cap2第一窗口REJECT/第二待支持；gross/capacity待支持。没有默认采用，目标NOT_MET/nativeNOT_QUALIFIED；见research/nine-RESULT.md、nine-GUIDE.md和evidence/btc-nine-20261004。原账户/forward消费者保留。
 
-当前：源码已完成，准备最后一次每仓库全量compile/unittest（Coin严格串行），仅失败范围补测；之后正常PR合并并核对实际remote main。远程本轮尚未提交/整合，不能冒充完成。
+本地最终软件：Python3.13 compile PASS；unittest 480项PASS（5项原条件skip），fullsuite仅1次、无补测。实际tested HEAD d1cbaa3ddd6b0f597bd2b3bcf0aabe03a547be23，完整命令/耗时在evidence/btc-nine-20261004/software。后续仅证据/文档元数据变更，源码未改，不重复fullsuite。GitHub CI计划skip，不能称CI PASS。
+
+当前：已完成全部现有工作及最终本地检查，正在普通PR整合；实际remote main/PR尚待核对。

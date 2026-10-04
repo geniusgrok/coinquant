@@ -140,6 +140,26 @@
       "path": "public/sofr.json",
       "bytes": 35130,
       "sha256": "26f1eb2dc8dfa89693ce7a7652fd7cc4f4c2d2e85802b7bcf79044230c4df29d"
+    },
+    {
+      "path": "software/compile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "software/receipt.json",
+      "bytes": 670,
+      "sha256": "3da275a2124f4de122b1cb76e4b8ac38dbe3c105db7f19b1714e31bacab7b46a"
+    },
+    {
+      "path": "software/unittest.log",
+      "bytes": 79226,
+      "sha256": "c3766110c094e5996a0bb37b24847db7d1c1817ba762538e6443f94aceb27538"
+    },
+    {
+      "path": "software/validation.json",
+      "bytes": 385,
+      "sha256": "725c5e4ca75299a5df51c5fb2dc2e8203aaf77e2a00df331f660f617ccb4175d"
     }
   ],
   "old_producers_preserved": true,
