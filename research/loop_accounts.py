@@ -31,7 +31,7 @@ def plan(screen,starts):
         if identity in seen:continue
         seen.add(identity)
         events=item.get('selected_events',item.get('events',item.get('rows',[])))
-        hits=[e for e in events if e.get('signal',e.get('selected',False)) is True]
+        hits=[e for e in events if e.get('signal',e.get('selected',float(e.get('factor',1))<1)) is True]
         selected=[]
         for early in (True,False):
             eligible=[e['at_ms'] for e in hits if (e['at_ms']<1640995200000)==early]

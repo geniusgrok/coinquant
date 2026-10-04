@@ -59,7 +59,7 @@ def discovery(bars,coin,starts,source_sha):
             flag=signal(bars,coin,stamp);ctx=alpha.context(bars,stamp,source_sha)
             if flag is None or ctx is None:continue
             total+=1;entry_day=stamp//r.DAY;end_day=entry_day+7*r.DAY
-            if entry_day not in bars or end_day not in bars:continue
+            if end_day+r.DAY>f.END or entry_day not in bars or end_day not in bars:continue
             # Entry uses the actual known completed close, never forming-day OHLC.
             entry=bars[ctx['completed_through_ms']-r.DAY][3]
             events.append(dict(id=str(stamp),at_ms=stamp,end_ms=end_day+r.DAY,signal=flag,
