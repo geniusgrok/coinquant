@@ -198,8 +198,3 @@ class ReauditTests(TestCase):
                 later=self.session(seconds=2)
                 self.assertEqual((later['cleanup'],later['pending_intents']),('verified',0))
                 self.assertEqual(len([p for _,_,path,p in log if p.get('timeInForce')=='IOC']),1)
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()

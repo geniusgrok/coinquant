@@ -1,0 +1,48 @@
+{
+  "baseline_source": "113a792efc1531e1f00d5629f45e09756dce6e9c",
+  "files": [
+    {
+      "path": "coinquant/campaign.py",
+      "baseline_sha256": "2115a36353f078227a5015afa7d5221c42030e106f46d7e5bee5a1ab4f68c320",
+      "current_sha256": "dc1a46b9b1564317cc19a3188a5625e87d06648c2532ad5e074cffcbdc5ca2c0",
+      "exact_equal": false
+    },
+    {
+      "path": "coinquant/opportunities.py",
+      "baseline_sha256": "d3f2df939be7d7c8971a26d95cc5ae68f58b4de6402d14fb940ea0bf0f940c4e",
+      "current_sha256": "d3f2df939be7d7c8971a26d95cc5ae68f58b4de6402d14fb940ea0bf0f940c4e",
+      "exact_equal": true
+    },
+    {
+      "path": "coinquant/native_preview.py",
+      "baseline_sha256": "19c01ea446279cbf82d56e50649764b462fcc4b754d805617f8b82546155dbcb",
+      "current_sha256": "19c01ea446279cbf82d56e50649764b462fcc4b754d805617f8b82546155dbcb",
+      "exact_equal": true
+    },
+    {
+      "path": "coinquant/linear_preview.py",
+      "baseline_sha256": "d3887340de46801b9e0db213d4b9e8e7707bbb328428ac194438af248f914a18",
+      "current_sha256": "132e404ed5d226ef5015c75b59f809476531caebbb0de651bb24b8a26d2aded1",
+      "exact_equal": false
+    },
+    {
+      "path": "coinquant/session.py",
+      "baseline_sha256": "a5cd4607cb426e7d3a009d329b636735ae1a7f86b88f4d5f3f603d1b7e8639fc",
+      "current_sha256": "d5322305cde3ab42bf3ef341f45961573d3abadc776ee39d19a0655521b89278",
+      "exact_equal": false
+    },
+    {
+      "path": "coinquant/lifecycle.py",
+      "baseline_sha256": "a314f2be494b9d09d623813d6f5c927f10fc2c9ff5c7905cda35452cb30b5278",
+      "current_sha256": "37f8140c46643dd578aeb1fdb0e6188a3999c8ed41fac24484613b834daf35ef",
+      "exact_equal": false
+    }
+  ],
+  "case": "valid fully identified incumbent state",
+  "interpretation": "Spot active runtime exact equality. Coin differences are strict state checks, selected strategy recovery, and inactive target-only branches; no new market reads/default sizing or order change for valid incumbent state.",
+  "prospective_native": false,
+  "new_full_account_measurement": false,
+  "old_results_relabelled": false,
+  "predicate_sha256": "bf9f79ef9f9c215969a7f042b1a4f5f523a614ee5ccf7e20b5a6fe87dcf7db12",
+  "copied_screen_from": "spotquant"
+}

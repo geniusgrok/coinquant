@@ -1,6 +1,6 @@
 {
   "version": "btc-core-rebuild-20261004-v1",
-  "authorization": "Latest user mandates actual strategy/risk replacement, allows interim lower economics and main changes. Supersedes old default-preservation and promotion gates; never waives ownership/money/causality.",
+  "authorization": "Historical 2026-10-04 authorization. Superseded by 2026-10-05 user-approved restoration and material-improvement gates; historical results retain original identities.",
   "baselines": {
     "spot": "38e05f3b98b59595d00ec14eb7e7f27ab78e1b53",
     "coin": "113a792efc1531e1f00d5629f45e09756dce6e9c"
@@ -81,7 +81,7 @@
     "proxy_warning": "Spot OHLC stops; Coin actual historical prints where present, unknown coverage preserved",
     "estimate": "8 Spot quarter wallets seconds/minutes; max8 Coin quarters ~30-90minutes serial; no795/full vault scan"
   },
-  "development_adoption": "Actual core replacement required even when old economic targets are unmet. Prefer positive cross-era net signal, lower costs/drawdown or explicit BTC role differentiation; phase loss permitted and disclosed. Reject financial/ownership failure. If all mechanisms lack edge, install simplest continuous beta/risk core as development and record alpha unproven, not profitability qualification.",
+  "development_adoption": "RETIRED 2026-10-05: never install a core merely because replacement is implemented; current adoption policy is replacement-spec.json. Original preregistration retained in evidence/btc-core-20261004/original-screen-sources/core-spec.json.",
   "verification": "Necessary targeted new money/causality checks during development; full software once each at end, failures scope-only; actual account source frozen; no private-account writes.",
   "old_evidence": "All original failures/results remain development-contaminated historical evidence, never fresh OOS. Old forward consumers remain source-bound, no reset/rebind.",
   "carry": {

@@ -1,3 +1,5 @@
+> 当前默认已于2026-10-05恢复改造前版本；target-core仅留研究。恢复依据、采用门槛和三条后续路线见 [恢复结果](research/replacement-RESULT.md) 与 [研究入口](research/replacement-GUIDE.md)。
+
 # Coinquant
 
 2026-10-04核心替换：当前开发默认是 **BTC连续目标持仓**。永续采用独立正向趋势，20/60日预测、60%年化波动预算、最多2倍敞口、5%再平衡死区和25%灾难保护；旧SX60/DFII10不再决定默认入场。策略与风控已实际修改，允许已有仓位减持/恢复。16个有限独立账户核算通过，结果有明显阶段性退步，**尚未证明alpha提升/新全历史收益达标**；保持默认只读与NOT_QUALIFIED。见 [结果](research/core-RESULT.md)、[当前指南](research/core-GUIDE.md)及 [持续换方向路线](research/core-roadmap.json)。

@@ -39,14 +39,27 @@ class CoreTests(unittest.TestCase):
 
     def test_foreign_strategy_rejects_before_exchange_access(self):
         with tempfile.TemporaryDirectory() as folder,State(folder,'binance:BTCUSDT:live:123') as state:
-            state.set('linear_campaign',Legacy().checkpoint())
+            state.set('linear_campaign',Campaign().checkpoint())
             with self.assertRaises(Blocked):cycle(object(),state,'123',execute=True)
 
     def test_missing_checkpoint_cannot_recover_an_old_entry(self):
         with tempfile.TemporaryDirectory() as folder,State(folder,'binance:BTCUSDT:live:123') as state:
             state.set('entry_plan',dict(campaign=10))
-            with self.assertRaisesRegex(Blocked,'lacks its BTC core checkpoint'):
+            with self.assertRaisesRegex(Blocked,'lacks its strategy checkpoint'):
                 cycle(object(),state,'123',execute=True)
+
+    def test_retired_core_blocks_run_before_cleanup_can_recover_orders(self):
+        from coinquant.config import Config
+        from coinquant.session import run
+        with tempfile.TemporaryDirectory() as folder:
+            config=Config('123',folder,300,5)
+            with State(folder,config.scope) as state:
+                state.set('linear_campaign',Campaign().checkpoint())
+            reader=SimpleNamespace(environment='live',capital_limit=None,clock=lambda:0)
+            with patch('coinquant.session.Lifecycle') as engine:
+                with self.assertRaises(Blocked):
+                    run(config,reader,execute=True,monotonic=lambda:0)
+                engine.assert_not_called()
 
     def test_trim_target_is_synced_before_unknown_reduction(self):
         with tempfile.TemporaryDirectory() as folder,State(folder,'binance:BTCUSDT:live:123') as state:

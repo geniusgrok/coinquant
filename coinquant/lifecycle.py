@@ -407,14 +407,14 @@ class Lifecycle:
         # only protection of the journaled entry's own verified fill precedes it.
         # A stored plan alone cannot authorize changes to external/manual trades.
         if number(snapshot['quantity_btc']) or self.state.get('entry_campaigns'):
-            from .core import restore_campaign
+            from .linear_preview import Campaign
             from .ownership import reconcile
             checkpoint=self.state.get('linear_campaign')
             if checkpoint is None:
                 raise Unknown('position recovery lacks its model/ownership checkpoint')
             try:
                 self.reconciled=(snapshot,len(self.actions),
-                                 reconcile(self.state,self.reader,restore_campaign(checkpoint),snapshot))
+                                 reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot))
             except (Blocked,Unknown):
                 # A fill of the journaled entry, sent from a verified flat account,
                 # is protected when every fill since that flat boundary is its own,

@@ -1,9 +1,9 @@
 {
   "active": {
-    "spot": "continuous positive target,95%cap",
-    "coin": "independent positive trend,2x gross cap"
+    "spot": "incumbent SMA/ATR/crowding",
+    "coin": "incumbent SX60/DFII10"
   },
-  "status": "development core adopted despite disclosed interim losses; alpha unproven",
+  "status": "target core retired 2026-10-05; prior defaults restored; successor research in replacement-spec.json",
   "switches": [
     {
       "route": "trend",

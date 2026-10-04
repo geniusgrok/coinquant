@@ -521,8 +521,3 @@ class ReplacementFallback(TestCase):
             run(Config('123', tmp, 2, 1), venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
             self.assertFalse([p for _, _, p in venue.sent[before:] if p.get('reduceOnly') == 'true'])
             self.assertGreater(venue.q, 0)
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()

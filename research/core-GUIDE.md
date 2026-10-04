@@ -1,3 +1,5 @@
+> 2026-10-05：下文保留本轮历史交付记录。target-core默认已撤回；当前状态及后续路线见 replacement-RESULT.md / replacement-GUIDE.md。旧core账户复现必须使用原冻结生产源码，当前入口只允许显式 --policy baseline。
+
 # BTC核心使用与复现
 
 当前两个仓库分别运行一个价格目标核心：Spot现货多头/现金，Coin有资金预检的正向永续。无守护进程；手动有限会话；默认只读。CLI命令与凭据/执行门禁沿用README。工程改造授权没有启动私人账户写入。

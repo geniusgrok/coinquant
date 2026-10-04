@@ -1,0 +1,20 @@
+{
+  "routes": {
+    "absorption": {
+      "status": "WAIT_INFORMATION",
+      "reason": "OI, sell liquidations and signed spot flow absent"
+    },
+    "option-risk": {
+      "status": "WAIT_INFORMATION",
+      "reason": "causal option and realized-volatility pair absent"
+    },
+    "expiry-basis": {
+      "status": "WAIT_EXECUTABLE_PAIR",
+      "reason": "dated linear contract, spot ask and futures bid absent"
+    }
+  },
+  "account_entrants": 0,
+  "orders": 0,
+  "qualification": "RESEARCH_ONLY",
+  "provenance": "Caller-supplied research context; predicates do not authenticate venue receipts"
+}

@@ -181,8 +181,3 @@ class TrialPathTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()

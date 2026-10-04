@@ -121,8 +121,3 @@ class EnvironmentTests(TestCase):
             with self.assertRaises(Blocked):
                 Config('123', '/tmp/x', capital_limit_usdt=value)
         self.assertEqual(Config('123', '/tmp/x', capital_limit_usdt='250.5').capital_limit, D('250.5'))
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()

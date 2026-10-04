@@ -1,9 +1,7 @@
-# BTC core replacement: completed on main
+# BTC默认恢复及后续研究
 
-2026-10-04: Spot PR17 and Coin PR66 merged. Both actual strategy/risk defaults use btc-target-core-20261004-v1: Spot continuous positive target; Coin independently sized positive trend. Interim economic deterioration is authorized and fully disclosed; alpha improvement, new full-history CAGR and native qualification remain unproven.
+2026-10-05用户批准：无明显改善应回退。已恢复 SX60+DFII10 / primary7.5 / macro3.6 / scale1，原基线 113a792efc1531e1f00d5629f45e09756dce6e9c。target-core经济采用条款撤回，原失败与来源完整保留。工程状态：实现完成，最终Python3.13软件502项/5skip PASS，每仓全量一次；正常main集成待办。
 
-All A–E routes implemented and screened, including cause-specific Coin direction/carry revisions.16 independent10000-CNY wallets,444 accepted historical sessions, all wallet ledger audits pass. Original failures, negative results, source heads and old immutable forward consumers preserved. No795/private-account writes/old diary rebinding.
+三条固定研究路线已实现信息/成本筛选；当前实际输入不足，WAIT/0账户/0会话/0新795/0公开请求。未证明新alpha/beta；原完整历史收益只复用原来源证据。研究不得通过缺数据或代码交付晋升默认。
 
-Final Python3.13 fullsuite once each: Spot393/11skip, Coin495/5skip; initial legacy-fixture failures retained and only affected10/72 tests repaired/pass. One new money/checkpoint guard passes, Coin current inventory496. Fullsuite was not rerun; remote CI intentionally skipped, never reported PASS. See evidence/btc-core-20261004/verification.json and research/core-RESULT.md/GUIDE.md/core-roadmap.json.
-
-No engineering delivery remains pending. Future core replacement may follow the distinct failure routes; do not restore obsolete immediate-promotion/default-preservation gates or replay old data for documentation/HEAD changes. Old durable states reject; no automatic migration/reset. New source-bound forward observations need their own rule identity; no fabricated observations/native days.
+下一步：正常PR合并并核对远端；软件已通过，不再重跑。Coin所有共享账户UID任务串行。不得用新源码消费旧来源绑定账本、自动迁移/reset或操作真实资金。详情 research/replacement-RESULT.md / replacement-GUIDE.md 和 evidence/btc-replacement-20261005。

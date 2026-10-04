@@ -1,5 +1,5 @@
 """Read-only shared model evaluation. A preview never consumes an opportunity."""
-from .core import Campaign
+from .campaign import Campaign
 from .types import Blocked
 from decimal import Decimal as D
 

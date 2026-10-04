@@ -118,8 +118,3 @@ class CampaignTests(unittest.TestCase):
             venue.completed_market.side_effect=resumed
             model,_,cold=advance(state,venue)
             self.assertTrue(cold);self.assertTrue(state.get('market_bootstrap'))
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()

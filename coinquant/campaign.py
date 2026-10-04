@@ -162,6 +162,8 @@ class Campaign:
     def restore(cls, saved):
         try:
             body=saved['body']
+            if 'core' in body:
+                raise ValueError('foreign strategy checkpoint')
             if (saved['sha256']!=hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()
                     or body['version']!=VERSION):
                 raise ValueError('state identity')
