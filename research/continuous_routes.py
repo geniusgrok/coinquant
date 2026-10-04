@@ -105,14 +105,16 @@ def pieces(detail, event, kind):
             future = [s for s in detail['settlements'] if s['time_ms'] > event['time_ms'] and s['sleeve'] == int(w)]
             if future:
                 sold = sum(s['quantity'] for s in future)
-                result.append((amount, max(s['time_ms'] for s in future),
-                               sum(s['proceeds'] for s in future)/sold/D('.999')))
+                # Each sold fraction ends at its own actual fill. Rounding dust
+                # sold months later must not extend the bulk position's risk.
+                result.extend((amount*s['quantity']/sold, s['time_ms'],
+                               s['proceeds']/s['quantity']/D('.999')) for s in future)
         return result
     future = [t for t in detail['trades'] if t['side'] == 'SELL' and t['time'] > event['time_ms']]
     if not future:
         return []
     sold = sum(D(t['qty']) for t in future)
-    return [(event['removed'], max(t['time'] for t in future), sum(D(t['qty'])*D(t['price']) for t in future)/sold)]
+    return [(event['removed']*D(t['qty'])/sold, t['time'], D(t['price'])) for t in future]
 
 
 def stress(detail, event, bars, kind):
@@ -220,7 +222,6 @@ def execution(row, kind):
 def public_qualification(folder):
     receipts = json.loads((folder/'receipts.json').read_text())
     for receipt in receipts:
-        receipt = receipt  # mutate the local evidence copy, never a paper ledger
         if receipt.get('raw_file'):
             raw = (folder/receipt['raw_file']).read_bytes()
             if flow.sha(raw) != receipt['sha256']:
@@ -229,7 +230,7 @@ def public_qualification(folder):
             receipt.update(qualification='PUBLIC_SOURCE_UNAVAILABLE')
             continue
         receipt.update(qualification='HISTORICAL_PUBLICATION_VINTAGE_NOT_PROVEN')
-        if receipt['name'].startswith('oi-'):
+        if receipt['name'].startswith('oi-') or receipt['name'] == 'btc-oi':
             with zipfile.ZipFile(io.BytesIO(raw)) as z:
                 files = z.infolist()
                 if len(files) != 1 or files[0].file_size > 1048576:

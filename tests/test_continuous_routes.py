@@ -24,3 +24,9 @@ class ContinuousRouteChecks(unittest.TestCase):
     def test_regression_without_both_flag_states_never_qualifies(self):
         self.assertFalse(fit([dict(veto=False) for _ in range(10)])['identifiable'])
 
+    def test_late_dust_does_not_extend_bulk_ownership_risk(self):
+        event=dict(time_ms=START+3600000,mark=D(100),reductions={30:D(1)})
+        detail=dict(settlements=[dict(sleeve=30,time_ms=START+DAY,quantity=D('.999'),proceeds=D('109.78011')),
+                                dict(sleeve=30,time_ms=START+10*DAY,quantity=D('.001'),proceeds=D('.11988'))])
+        bars={START+2*DAY:(D(100),D(100),D(1),D(100))}
+        self.assertEqual(stress(detail,event,bars,'spot')[0],D('.099'))
