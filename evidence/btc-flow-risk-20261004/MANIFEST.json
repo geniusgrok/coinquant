@@ -1,0 +1,50 @@
+{
+  "format": "btc-flow-risk-evidence-v1",
+  "recorded_utc": "2026-10-04T05:09:19.064313+00:00",
+  "files": {
+    "baseline-inputs.json": {
+      "sha256": "fbfa98c81d5c12524650d9c2124568375935f2921232ce205192bec186e56f07",
+      "bytes": 1694
+    },
+    "coin-baseline-projection.json.gz": {
+      "sha256": "df118eb7eb89140e0a4a415c2ba0f521b14f8603ec148355109d07d35384436d",
+      "bytes": 876880
+    },
+    "money-audit.json": {
+      "sha256": "d00004d4e4bb514e12d72a3d663c46cbd24006a2cf6f67333106edbc83825fac",
+      "bytes": 1260
+    },
+    "producer-final.py.txt": {
+      "sha256": "9835d07f449d1d071308c650367791a08fd290f6167874d3fb8a565c74fdfc6e",
+      "bytes": 22743
+    },
+    "producer-initial.py.txt": {
+      "sha256": "ad0bcd3ce2cbf296eea0dec8255abf28d8b9a8ff7ac1b494ca22f57d110c3d70",
+      "bytes": 21898
+    },
+    "screen-recovery1.log": {
+      "sha256": "a825e91c753e42a5a31514b395ca7d24fed1cdbbb414030bbe97b63a974d9c8c",
+      "bytes": 6221
+    },
+    "screen-recovery2.json": {
+      "sha256": "cb0f301c325a5ccf6be7de8f47adec608852f629548ff8b8e791f797b1f5ebae",
+      "bytes": 765183
+    },
+    "screen-recovery2.log": {
+      "sha256": "2ffda8ba5ff8f45c7778d86eea1fadc80011508215b361138d4df56abf9ec0ea",
+      "bytes": 6655
+    },
+    "screen.json": {
+      "sha256": "98d423a13e5531700cf428048fa8c8f6e3ab89f974b2a61dfbac416f3a46f10c",
+      "bytes": 764584
+    },
+    "screen.log": {
+      "sha256": "d9f93813c64fc4e6e7286b0e44a52aaec9ef093cd3038966f361868e09f3540c",
+      "bytes": 623
+    },
+    "spot-baseline-projection.json.gz": {
+      "sha256": "ef32a84a7e89cfd7ea3d76a8c6fa56a1da95546500269a8a0b688047f94a2118",
+      "bytes": 692654
+    }
+  }
+}

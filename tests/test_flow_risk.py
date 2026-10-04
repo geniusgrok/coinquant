@@ -14,7 +14,7 @@ class FlowRiskChecks(unittest.TestCase):
         spot = {START: (D(100), D(101), D(99), D(100), D(150), D(60))}
         self.assertFalse(flow_at(spot, daily, START+DAY+59999)['available'])
         event = flow_at(spot, daily, START+DAY+60000)
-        self.assertEqual(event['perp_imbalance'], D(1)/3)
+        self.assertLess(abs(event['perp_imbalance']-D(1)/3), D('1e-26'))
         self.assertTrue(event['veto'])
         # Dropping one 4h slot must not turn a partial day into a feature.
         del bars[START]

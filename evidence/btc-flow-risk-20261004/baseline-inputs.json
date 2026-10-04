@@ -1,0 +1,34 @@
+{
+  "spot": {
+    "path": "/workspace/btc-flow-risk-20261004/artifacts/spot-baseline-projection.json.gz",
+    "sha256": "ef32a84a7e89cfd7ea3d76a8c6fa56a1da95546500269a8a0b688047f94a2118",
+    "bytes": 692654,
+    "parent_binding": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-crowding-interaction-base.json.gz",
+      "sha256": "4c937ecf80f60d957486a752562c8ab8dfee4c06fa2e5b38b135cfb24ec38872",
+      "source": {
+        "git_head": "74bd6e035e36531c517029077c1a9e2e5ec44516",
+        "dirty": false,
+        "python_sources_sha256": "f2d6c3e73c2acb7b328a7a0e2678bb95ceb77d8a17a46139abfe8b357befdbf6"
+      },
+      "candidate": "crowding-interaction-base"
+    },
+    "projection": "Lossless selected whole incumbent fields; no per-record transformation; verified original gzip parent once during extraction"
+  },
+  "coin": {
+    "path": "/workspace/btc-flow-risk-20261004/artifacts/coin-baseline-projection.json.gz",
+    "sha256": "df118eb7eb89140e0a4a415c2ba0f521b14f8603ec148355109d07d35384436d",
+    "bytes": 876880,
+    "parent_binding": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/perp-registered-16.json.gz",
+      "sha256": "a071749cb6498a0e9612241bca23b57f8de9bae002b93fe189b7e1a3777a416d",
+      "source": {
+        "git_head": "37061a7f588f97cc16852551cab6cd2e51acb920",
+        "dirty": false,
+        "python_sources_sha256": "ba63895131db566e708a5c96cde4504beace39fa0bdd54881d039dd5b8ef4c50"
+      },
+      "candidate": "incumbent/base"
+    },
+    "projection": "Lossless selected whole incumbent fields; no per-record transformation; verified original gzip parent once during extraction"
+  }
+}
