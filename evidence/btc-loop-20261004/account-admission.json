@@ -1,0 +1,20 @@
+{
+  "status": "NO_ACCOUNT_ENTRANT",
+  "jobs": [],
+  "pending": [],
+  "planned_max_new_accounts": 0,
+  "new_accounts": 0,
+  "new_sessions": 0,
+  "original795_replays": 0,
+  "selection": "Earliest actual qualified event per original era; no observed return selection.",
+  "default_adopted": false,
+  "orders": 0,
+  "format": "btc-loop-account-admission-v1",
+  "source": {
+    "git_head": "1b74251fc526bd4817daa0eee7f8c0e172e8f39a",
+    "dirty": false,
+    "python_sources_sha256": "91a19444977f76b9c0aabdf858be243e0742f8a4eecb30158cdecb948b55c9a4"
+  },
+  "screen_sha256": "3926dd5ae84063d3c09b997b112d21f246a6d2ff5eb01b91b7de29da5ec5de0c",
+  "spec_sha256": "6b41e20301510bc520f7c63d66e5dc63e064c357ddf7dbc4027d15f55b77e85b"
+}

@@ -7,6 +7,7 @@ from unittest.mock import patch
 from coinquant.opportunities import Opportunity, FOUR_HOURS
 from coinquant.types import Blocked
 from research import alpha_perp as alpha, complete_perp as meter, nine_routes as r
+from coinquant import lifecycle
 
 BASE=alpha.AlphaCampaign
 
@@ -69,6 +70,15 @@ class RouteCampaign(BASE):
 def variant(family,expression,book,context,journal):
     if family not in ('oi-deleveraging','option-insurance','dollar-financing') or expression not in (0,1):
         raise ValueError('unregistered Coin information expression')
-    with patch.object(alpha,'AlphaCampaign',RouteCampaign),patch.object(RouteCampaign,'family',family),patch.object(RouteCampaign,'expression',expression),patch.object(RouteCampaign,'book',book),patch.object(RouteCampaign,'context',staticmethod(context)),alpha.variant('incumbent',
+    original_decide=lifecycle.Lifecycle.decide
+    def record_control(engine,model,snapshot):
+        row=model.macro_observation;stamp=int(engine.reader.clock()*1000)
+        if row and row.get('missing_reason') is None and type(row.get('latest_value_available_ms')) is int and row['latest_value_available_ms']<stamp:
+            value=r.number(row['latest_value'])
+            if journal and journal[-1].get('event')=='decision':
+                journal[-1]['causal_dfii10']=dict(value=str(value),available_ms=row['latest_value_available_ms'],
+                    observation_date=row['latest_observation_date'],raw_observation=row)
+        return original_decide(engine,model,snapshot)
+    with patch.object(lifecycle.Lifecycle,'decide',record_control),patch.object(alpha,'AlphaCampaign',RouteCampaign),patch.object(RouteCampaign,'family',family),patch.object(RouteCampaign,'expression',expression),patch.object(RouteCampaign,'book',book),patch.object(RouteCampaign,'context',staticmethod(context)),alpha.variant('incumbent',
         binding=dict(nine_spec=r.sha(r.SPEC.read_bytes()),family=family,expression=expression,feature_book=book.sha256),journal=journal):
         yield
