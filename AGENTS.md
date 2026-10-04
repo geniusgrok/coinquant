@@ -2,6 +2,10 @@
 
 Repository: geniusgrok/coinquant. Use the personal / geniusgrok GitHub connection.
 
+## Latest mandate — economic baseline restoration (2026-10-05)
+
+User approved restoring the prior default when material improvement is unproven. Restore SX60+DFII10 / primary7.5 / macro3.6 / scale1, anchored to 113a792efc1531e1f00d5629f45e09756dce6e9c. This supersedes the 2026-10-04 target-core adoption mandate and its install-anyway clause. Main strategy and risk remain replaceable, but a candidate must satisfy research/replacement-spec.json and comparable actual-account/stress evidence before adoption. Phase losses belong in candidate research, not an economically unsupported default. Preserve original negative evidence and producer identities. No private account actions, state migration/reset, schedule changes or new795 for rollback. Coin strategy identity/missing-checkpoint checks must precede recovery AND final cleanup; do not silently read target-core checkpoints as incumbent state.
+
 ## Current mandate
 
 Latest user mandate (2026-10-04): replace actual strategy and risk cores, including main defaults. Interim economic deterioration is allowed. The core-spec.json preregistration and latest authorization supersede historical default-preservation/immediate-promotion restrictions below. Ownership, real money, causal clocks, manual bounded sessions, no unauthorized account writes, original evidence and old immutable forward consumers remain binding. Historical text below describes the incumbent, not a prohibition on this rebuild.
@@ -94,6 +98,6 @@ Read nine-RESULT.md/GUIDE.md and evidence/btc-nine-20261004. Five families/two e
 
 Read loop-RESULT.md/GUIDE.md and evidence/btc-loop-20261004. Mature alpha can admit actual accounts after net-owned cash, causal controls and independent halves; three new alpha and three beta failure mechanisms/finite read-only plans implemented. All current branches pending,0newaccounts/sessions/795/largevaultscan. Shared actual risk from six accepted wallets reused:2020baseline daily11.7309%/minute23.9868% versus session6.2022%,upperunknown29heldmarkminutes. New realSpotminute months fixed-fill revaluation only,not native/accountreplay. Originalnine gates unchanged. Originalcross-market unit error kept; only that branch recovered2.34s,other21.53s measurement reused. FinalPython3.13 softwareSpot389/Coin491 once each,skipCI not remotePASS. Source/oldforwardconsumers preserved; keep future evidence distinct and never backfill availability/relax gates.
 
-## Adopted BTC target core (2026-10-04)
+## Historical BTC target core adoption (2026-10-04; retired 2026-10-05)
 
 Current development default is btc-target-core-20261004-v1; Spot continuous positive95%-cap target, Coin independently sized positive trend2x-cap. Old vote/crowding and SX60/DFII10 defaults are historical. See core-RESULT.md/GUIDE.md/roadmap. Interim losses disclosed and authorized; no alpha/full-history economic/native qualification claimed. Sixteen finite independent wallets/444 accepted sessions audited; no795. Keep recorded original producer identities and old immutable forward consumers; no migration/reset. Final-only fullsuite and scoped failure recovery apply. Historical tests explicitly scope legacy strategies; current default funds/clock/recovery checks and actual finite accounts are separate.

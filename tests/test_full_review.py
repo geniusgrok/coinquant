@@ -206,8 +206,3 @@ class ConfigPath(TestCase):
             Config('123', 'state')
         Config('123', '~/.coinquant/x')
         Config('123', str(Path('/tmp/x')))
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()

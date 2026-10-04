@@ -96,8 +96,3 @@ class SourceBudgetTests(TestCase):
         done=subprocess.run([sys.executable,'-S','-c',code],capture_output=True,text=True,env=env,timeout=10)
         self.assertEqual(done.returncode,0,done.stderr)
         self.assertIn('tzdata',done.stdout)
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()

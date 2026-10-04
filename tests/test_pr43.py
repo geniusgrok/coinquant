@@ -196,8 +196,3 @@ class IncomeAuditTests(TestCase):
             before=income(reader,state);reader.clock.return_value+=100*86400
             with self.assertRaisesRegex(Unknown,'retention gap'):income(reader,state)
             self.assertEqual(state.get('income_coverage'),before)
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()

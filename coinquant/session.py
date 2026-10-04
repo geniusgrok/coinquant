@@ -13,16 +13,19 @@ from .types import Blocked, ObservationDeadline, Unknown
 from .audit import allows_new_risk, income
 
 
-def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None):
-    from . import linear_preview
+def _guard_strategy(state):
+    """Reject foreign or missing strategy state before recovery and cleanup."""
+    from .linear_preview import Campaign
     saved = state.get('linear_campaign')
-    if getattr(linear_preview.Campaign, 'continuous_entry', False):
-        # Reject an incompatible strategy before any exposure recovery or write.
-        if saved is not None:
-            linear_preview.Campaign.restore(saved)
-        elif (state.get('entry_plan') or state.get('entry_fill') or state.get('entry_campaigns')
-              or state.db.execute('SELECT 1 FROM intents LIMIT 1').fetchone()):
-            raise Blocked('durable execution state lacks its BTC core checkpoint')
+    if saved is not None:
+        Campaign.restore(saved)
+    elif (state.get('entry_plan') or state.get('entry_fill') or state.get('entry_campaigns')
+          or state.db.execute('SELECT 1 FROM intents LIMIT 1').fetchone()):
+        raise Blocked('durable execution state lacks its strategy checkpoint')
+
+
+def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None):
+    _guard_strategy(state)
     engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter,session=session)
     if execute:
         snapshot=engine.recover_exposure(engine.settle())
@@ -129,6 +132,7 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
         raise Blocked('exchange adapter and configuration differ in environment or capital limit')
     if hasattr(reader,'hard_deadline'):reader.hard_deadline=deadline+ABSOLUTE_GRACE
     with State(config.state_dir,config.scope) as state:
+        _guard_strategy(state)
         prior_writes=state.get('write_attempt_count') or 0
         last_failure=None
         try:

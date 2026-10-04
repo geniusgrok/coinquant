@@ -69,8 +69,3 @@ class VirtualClockTests(TestCase):
         with self.assertRaises(Unknown):
             venue.get('/fapi/v1/time')
         self.assertEqual(opener.open.call_count, 1)
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()

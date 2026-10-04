@@ -96,6 +96,8 @@ def main():
     p.add_argument('--policy',choices=('baseline','core'),help='Restrict recovery to one policy; reuse other completed wallets')
     p.add_argument('--case',help='One absent/failed case only; never overwrites a prior receipt')
     a=p.parse_args()
+    if a.policy != 'baseline':
+        raise ValueError('target core retired: reproduce core wallets only from their frozen producer source; use --policy baseline here')
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip():raise ValueError('freeze source first')
     if a.out.exists():raise ValueError('preserve previous output; choose new path for recovery')
     a.scratch.mkdir(parents=True,exist_ok=False);a.out.mkdir()

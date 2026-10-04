@@ -363,8 +363,3 @@ class SessionTests(TestCase):
         self.assertEqual(self.venue.q,0)
         self.assertEqual(self.venue.sent,[])
         self.assertEqual(result['cleanup'],'verified')
-
-
-# These saved scenarios seed legacy SX60/DFII10 checkpoints explicitly.
-from tests.legacy_policy import legacy_policy
-setUpModule, tearDownModule = legacy_policy()
