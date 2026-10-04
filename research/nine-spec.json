@@ -1,0 +1,150 @@
+{
+  "format": "btc-nine-routes-v1",
+  "registered_at_utc": "2026-10-04T09:11:50.924676+00:00",
+  "baseline": {
+    "spot_git": "815647e211fa064622afe1a681dde9a193de3204",
+    "coin_git": "b10ea38e8614343159ec4d67988d0806aa457a82"
+  },
+  "contract": {
+    "symbol": "BTCUSDT",
+    "initial_total_cny": "10000",
+    "pair_budgets_cny": [
+      "5000",
+      "5000"
+    ],
+    "deposits": 0,
+    "transfers": 0,
+    "session_seconds": 300,
+    "poll_seconds": 5,
+    "schedule_sha256": "f8fb73bebf142ddcc3ed4a3e6b12b4dd7abed1e27bcd8a4ff1c93aec4fe0b32a",
+    "economic_start_ms": 1577836800000,
+    "economic_end_exclusive_ms": 1789862400000,
+    "spot_goal": [
+      1,
+      0.3
+    ],
+    "coin_goal": [
+      1.5,
+      0.5
+    ],
+    "spot_long_cash_only": true,
+    "coin_default_long_only": true,
+    "native_authorized": false
+  },
+  "alpha_order": [
+    "etf-demand",
+    "oi-deleveraging",
+    "option-insurance",
+    "old-coin-supply",
+    "dollar-financing"
+  ],
+  "alpha": {
+    "etf-demand": {
+      "kind": "spot",
+      "information": "Five completed trading-day net ETF subscriptions / matching completed BTC spot quote turnover. Actual receipt/publication must precede decision. Units USD millions converted explicitly; USD/USDT conversion is an assumption and cannot qualify absent matched context.",
+      "trigger": "Five sums net negative, or first sum known positive after prior five sum negative.",
+      "expressions": [
+        "New BUY .75 spend when net demand weak",
+        "Hard decline weak demand; unchanged original size otherwise"
+      ]
+    },
+    "oi-deleveraging": {
+      "kind": "coin",
+      "information": "Prior completed day return<=-.02, actual OI day change<=-.10, causal spot taker imbalance>0. Preserve original persistent thresholds.",
+      "trigger": "Price down/OI contraction/spot absorption, at original legal idle manual session; signal only once per completed interval.",
+      "expressions": [
+        "New primary long using ten completed4h lows, original7day life and20R take; original macro/owned priorities and risk",
+        "Original new BUY .75 when contraction lacks absorption; no new held sizing"
+      ]
+    },
+    "option-insurance": {
+      "kind": "both",
+      "information": "Actual nearby30/90 day BTC greeks/IV, negative call-put RR improving over7 genuinely different daily receipts, near30/90 IV ratio<=1. Existing persistent skew expression retained.",
+      "trigger": "Known RR strengthening while below0; predictive volatility-only evidence is beta, never directional alpha.",
+      "expressions": [
+        "New BUY .75 when insurance demand strengthens negatively",
+        "Original new-size participation only when insurance release known; does not exceed incumbent"
+      ]
+    },
+    "old-coin-supply": {
+      "kind": "spot",
+      "information": "Completed BTC chain revived supply >=365days divided by actual total spent BTC, plus completed block height and actual reception. Old coin movement is not sale. Label-free only; no retrospectively labelled exchange wallets.",
+      "trigger": "Old-spend fraction > twice prior7 complete-day median; only prior available days.",
+      "expressions": [
+        "New BUY .75 during supply-release burst",
+        "Hard decline same fixed burst; no threshold grid"
+      ]
+    },
+    "dollar-financing": {
+      "kind": "coin",
+      "information": "Actually received SOFR minus IORB percentage-point spread as a secured-dollar-financing proxy, distinct from DFII10; five completed common observation dates. Latest5 mean falling below preceding5 after preceding mean>0. No revisions interpreted as old vintages.",
+      "trigger": "SOFR-IORB stress releases; additional information must survive BTC prior momentum/RMS and incumbent DFII10 controls.",
+      "expressions": [
+        "New BUY .75 while spread positive and not easing",
+        "Original new BUY participation after confirmed release; no extra leverage"
+      ]
+    }
+  },
+  "beta_order": [
+    "gross-entry-cap",
+    "stress-entry-cap",
+    "state-exposure",
+    "risk-capacity"
+  ],
+  "beta": {
+    "gross-entry-cap": "Known gross plus actual committed remaining entry budgets plus proposed new commitment <=4*joint equity; no held reduction.",
+    "stress-entry-cap": "Same gross cap plus completed20-day max downside*gross + confirmed stop/fee risk <=.20*joint equity.",
+    "state-exposure": "Both causal prior20day BTC directions negative -> new-risk cap2 else4; sameBTC not two independent signals.",
+    "risk-capacity": "When two separately sourced, known feasible preflights <=15sec old compete for gross-cap4 capacity, lower planned stop+roundtrip fee loss per notional wins; tie spot. Actual separate funds; no transfer or eviction of held/committed risk. No competitor means ordinary gross cap."
+  },
+  "alpha_gate": {
+    "minimum_independent_events": 10,
+    "minimum_each_available_era": 3,
+    "coverage": 0.9,
+    "cost_net_effect": "positive in both chronologically fixed halves of actually qualified applicability, control prior20day momentum/RMS and simple reduced sizing; previously seen histories all development",
+    "historical_vintage": "Never qualify past availability from a current download or caller boolean. New-receipt evidence can only enter later observations.",
+    "zero_action": "Support pending; do not change starts or synthesize checkpoint."
+  },
+  "beta_screen": {
+    "selector": "Earliest quarter containing actual neutral-funded Coin new campaign entry in each2020-21/2022+era. Entry timestamps only, never profit/risk outcomes. Original schedule subset; independent cold wallets. Zero intervention remains pending; no date extension or forged checkpoint.",
+    "windows_max": 2,
+    "sessions_per_account_max": 40,
+    "new_accounts_max": 24,
+    "wall_seconds_max": 1800,
+    "candidate_selection": "All four candidates, sequential. Reuse same-baseline/uniform results and inputs. No account if causal baseline proposal census shows0 new-risk effect.",
+    "control": "Uniform .75 genuine NEW BUY sizing in both separately financed accounts, once; no curve scaling.",
+    "gate": "Each window audited/archived/settled; >=1 independent commitment changed each window; net wealth>=baseline and observed synchronized joint MDD<=baseline+.01 OR observed joint MDD<=baseline*.8 and wealth>=baseline*.95; outperform uniform risk/wealth tradeoff. Window results cannot adopt original full-window default.",
+    "coupled_clock": "Two separate offline workers, immutable original venue/cost engines, unmodified production finite run. Coordinator advances both to each causal virtual API tick, obtains actual independently financed wallet/protection/ownership/commitment state. One Coin worker only, UID12000 unchanged through strictly serial cases. Coordinator timing is a research execution bridge, not canonical old-account equality/native proof.",
+    "all_fails": "Retain simplest accepted independent-budget baseline; next alpha family/new evidence rather than threshold search."
+  },
+  "inputs": {
+    "neutral_spot": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/selected-budgets/spot-crowding-interaction-budget-5000.json.gz",
+      "sha256": "19b114d314d8992ccbd78d49267f988fb6ea3f05e0a29a812bc0304fd9c2f63c"
+    },
+    "neutral_coin": {
+      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/budgets/perp-baseline-budget-5000.json.gz",
+      "sha256": "4df6b5baafc3bb9a6d349c5216aa6b4548a9c81d9ba055c5bd6efe71556385d7"
+    },
+    "features_sha256": "bf920626cc13653b8bbeafd171650cc1a76888e15aad0c20bbd1061fb41da512",
+    "warmup_sha256": "62e9a9ecddccac737f99032a224f7a2a1932756cf200db34fb5c5641b72c4094"
+  },
+  "budget": {
+    "full_software_each_repo": 1,
+    "failure_recovery": "Affected only; retain failures/results/source.",
+    "complete795": 0,
+    "large_vault_scans": 0,
+    "public_new_requests_max": 4,
+    "public_timeout_seconds": 5,
+    "public_response_bytes_max": 2097152,
+    "same_day_existing_receipts": "Reuse option/OI/ETF original bytes, no duplicate requests or manufactured independent dates."
+  },
+  "failure_edges": {
+    "NO_ACTION": "SUPPORT_PENDING -> next distinct mechanism",
+    "NEGATIVE_INFORMATION": "CLOSE_FAMILY -> next information source",
+    "COST_ERASES_EDGE": "One distinct expression -> next family",
+    "ONLY_LOWER_RISK": "Compare simple lower-budget control -> beta classification",
+    "UNAVAILABLE_DATA": "WAIT_QUALIFIED_DATA -> remaining routes",
+    "ALL_BRANCHES_FAIL": "No proven uplift under current constraints. Reopen only new source, new actual period or explicitly changed operational contract."
+  }
+}
