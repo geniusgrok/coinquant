@@ -61,7 +61,7 @@ class Reader:
             if item['id'] in self.orders:
                 state.finish(item['id'], 'confirmed', self.orders[item['id']])
 
-    def query_intent(self, identity):
+    def query_intent(self, identity, *, conditional=False):
         return dict(parent=self.orders[identity], child=None)
 
 

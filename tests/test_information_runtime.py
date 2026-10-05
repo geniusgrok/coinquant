@@ -71,7 +71,7 @@ class InformationRuntimeTests(unittest.TestCase):
                     Lifecycle.enter(SimpleNamespace(reader=venue), model, {'quantity_btc':'1'})
         self.assertEqual(observed, [D(2)])
         self.assertEqual(model.entry_fraction('.0011'), D(4))
-        self.assertEqual(journal[0]['factor'], '.5')
+        self.assertEqual(journal[0]['factor'], '0.5')
 
     def test_foreign_identity_and_adapter_reject_before_recovery_or_clock(self):
         book = information_fixtures.IncrementalInformationTests().book()
