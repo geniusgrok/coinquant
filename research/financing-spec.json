@@ -1,0 +1,28 @@
+{
+  "rule": "isolated-financing-buffer-v1",
+  "registered_before_new_measurement": true,
+  "purpose": "Replace part of Coin financing-risk admission/reduction; not a price forecast or holding-cost timer.",
+  "hypothesis": "Actual isolated collateral depleted by mark moves/funding can expose owned positions to financing-tail loss; a persistent campaign cap may reduce that loss more efficiently than uniform risk reduction.",
+  "expressions_in_order": ["half", "flat"],
+  "max_expressions": 2,
+  "adverse_mark_shock_fraction": "0.10",
+  "funding_stress": "Three settlements at the largest nonnegative directional payer rate from last three consecutive already-settled native receipts; scenario, never a forecast or a guaranteed future charge. This expression assumes the verified native eight-hour UTC settlement interval; a changed interval is unsupported, not silently normalised.",
+  "required_inputs": ["fresh wholly owned signed BTCUSDT isolated position", "actual isolated wallet, entry, mark/PnL and native liquidation price", "owned full-position protection and no pending/remainders", "effective dated native maintenance brackets", "actual account commission", "last three consecutive completed native funding settlements", "independently justified native remaining-margin lower bound for half reduction"],
+  "persistent_cap": "Absolute owned BTC ceiling from first breach, same account/campaign/direction, external checkpoint persisted before execution; only owned flat confirmation at or after saved last_observed_ms and no later than actual account observed_ms may release it. Later receipt availability cannot legitimise an old flat observation.",
+  "half_guard": "Pro-rata collateral release does not improve liquidation buffer ratio; half may emit only a research proposal with a separately justified remaining-isolated-wallet lower bound AFTER settled reduction fees and realised PnL, covering stress at the actual remaining entry (no assumed entry reset). Missing bound waits, inadequate bound rejects expression.",
+  "controls": ["independently financed incumbent", "independently financed uniform75 risk budget"],
+  "support_before_wallet": "Actual causal actionable breach plus qualified native funding/mark/margin/brackets and a lawful owned reduction; no threshold widening to force events.",
+  "account_comparison": "Same funds, costs, FX, schedule and cold start; no curve scaling, no spot collateral or transfers. Report actual fees/funding, tail loss, recovery, upside/downside beta and return cost.",
+  "adoption": "Current benefit-harm policy; return deterioration is not sole veto. Demonstrable material financing-tail benefit versus simple-risk control is required. No default change/native qualification from pure proposals.",
+  "historical_support": {
+    "status": "BLOCK_DATED_NATIVE_MARGIN_BRACKETS",
+    "source": "research/session_exchange.py",
+    "maintenance": "0.005",
+    "reason": "SessionExchange current historical adapter supplies a fixed synthetic one-tier bracket and proxy allocated margin/liquidation, explicitly not contemporaneous dated native bracket evidence. Existing wallet/market paths cannot manufacture it.",
+    "new_wallets": 0,
+    "new_sessions": 0,
+    "new795": 0
+  },
+  "failure_routes": ["Half without supported retained-collateral benefit stays pending or negative; never describe pro-rata reduction as liquidation safety.", "One alternative full flatten expression only when qualified actual financing breach exists; still compare opportunity cost to simple risk reduction.", "Both economic expressions fail: retain negatives and replace risk information source; do not tune shock or funding threshold repeatedly."],
+  "boundaries": {"orders": 0, "transfers": 0, "private_reads": 0, "default_changes": 0, "authentication": false}
+}

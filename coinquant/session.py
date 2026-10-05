@@ -12,9 +12,13 @@ from decimal import Decimal as D
 from .types import Blocked, ObservationDeadline, Unknown
 from .audit import allows_new_risk, income
 
+_LIFECYCLE_IDENTITY = None  # Only an explicitly scoped offline research context sets this.
+
 
 def _guard_strategy(state):
     """Reject foreign or missing strategy state before recovery and cleanup."""
+    if state.get('lifecycle_identity') != _LIFECYCLE_IDENTITY:
+        raise Blocked('lifecycle research state requires its matching offline consumer')
     from .linear_preview import Campaign
     saved = state.get('linear_campaign')
     if saved is not None:
