@@ -1,4 +1,5 @@
 from copy import deepcopy
+from decimal import Decimal
 import unittest
 
 from research.financing_risk import EIGHT_HOURS, evaluate
@@ -39,7 +40,7 @@ class FinancingRisk(unittest.TestCase):
     def test_actual_buffer_breach_caps_but_half_needs_supported_margin(self):
         p = packet();r = evaluate(p)
         # 10 collateral -10 shock PnL -.45 maintenance -.3 funding -.09 exit.
-        self.assertEqual(r['diagnostics']['stress_surplus_usdt'], '-0.840')
+        self.assertEqual(Decimal(r['diagnostics']['stress_surplus_usdt']), Decimal('-0.840'))
         self.assertEqual(r['status'], 'WAIT_REDUCTION_PREVIEW')
         self.assertEqual(r['new_exposure_cap_btc'], '0.5')
         preview = deepcopy(p['mark'])
