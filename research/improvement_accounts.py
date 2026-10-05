@@ -45,6 +45,8 @@ def main():
 
     @contextmanager
     def runtime_for(expression, book):
+        import time
+        started = time.monotonic()
         features = None
         if account.KIND == 'spot' and expression != 'baseline':
             from research.edge_features import FeatureBook
@@ -52,6 +54,8 @@ def main():
         prepared = False
         def run(config, venue, **kwargs):
             nonlocal prepared
+            if spec.get("full_registration") and time.monotonic() - started > 900:
+                raise TimeoutError("registered full candidate runtime budget reached between sessions")
             from decimal import Decimal
             if account.KIND == 'spot':
                 from research.session_account import HistoricalVenue
