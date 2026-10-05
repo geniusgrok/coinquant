@@ -17,3 +17,5 @@
 下一轮先解决已观察到的测量吞吐/安全venue checkpoint依赖，用小规模中断等价检查，不自动再做795；再决定完整候选比较是否仍有决策价值。真实独立信息须真实新日期和成熟标签，旧期权最早七日点2026-10-12 06:29:48.514UTC本身不自动合格，OI/强平/可交割合约及融资保证金缺口保留。已有正负结果不得反复测、改门槛或无限调参；无后台采集承诺。
 
 继续读research/improvement-RESULT.md、improvement-GUIDE.md、improvement-spec.json与improvement-roadmap.json。Coin同UID生产者/软件严格串行，资金和时钟独立，无HOME/UID/锁绕过。最终全量软件每仓一次，回执source与原日志归档；仅受影响失败补测。工程授权不含私有账户订单/转账/凭据/设置或状态reset。
+
+最终本机Python3.13软件：Coin537项/5skip、Spot429项/11skip，编译与完整suite各仓仅一次且PASS；Coin测试source75af202da4fdb8fbd52b172cf7317eb146c3d41c、Spotb6528cc见software原回执（完整SHA在回执）。本轮全量无失败，无补跑；早期仅1项初始尺寸针对性恢复PASS，不重复全量。归档/状态文档提交不改变上述代码依赖；skipCI不代表远程CI通过。

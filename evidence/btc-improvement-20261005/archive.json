@@ -1,0 +1,124 @@
+{
+  "repository": "geniusgrok/spotquant",
+  "path": "evidence/btc-improvement-20261005/research-artifacts.zip",
+  "bytes": 1148134,
+  "sha256": "897ee478f6b5ed3813545863f7120222d87f1b07eb3deed86cc7e205c5c9141b",
+  "git_blob_sha": "8ea1790eaa48cb7123d848d9b1095f4c3013805e",
+  "members": 125,
+  "accepted_finite_wallets": 12,
+  "accepted_finite_sessions": 344,
+  "original_invalid_wallets_preserved": 6,
+  "original_invalid_sessions": 171,
+  "full_history_attempts": 1,
+  "full_history": {
+    "source": "6532476d2ee9cdf470a512ce8bfb3fa02cacd6d1",
+    "complete": false,
+    "session_count": 405,
+    "registered": 795,
+    "failure": {
+      "phase": "session",
+      "start_ms": 1686582000000,
+      "reason": "registered full candidate runtime budget reached between sessions",
+      "error_type": "TimeoutError"
+    },
+    "elapsed_seconds": 902.6297418160248,
+    "whole_economic_accepted": false,
+    "safe_venue_checkpoint": false,
+    "no_automatic_rerun": true
+  },
+  "stage_participation_return_improvement_observed": true,
+  "stage_spot_tail_improvement_observed": true,
+  "independent_alpha_proven": false,
+  "whole_history_improvement_proven": false,
+  "default_strategy_changed": false,
+  "native_qualified": false,
+  "original_failures_preserved": true,
+  "raw_synthetic_states_archived": false,
+  "software": {
+    "coinquant": {
+      "source_head": "75af202da4fdb8fbd52b172cf7317eb146c3d41c",
+      "source_unchanged": true,
+      "checks": [
+        {
+          "name": "compile",
+          "command": [
+            "python3.13",
+            "-m",
+            "compileall",
+            "-q",
+            "coinquant",
+            "research",
+            "tests"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.04898421000689268,
+          "log": "/workspace/btc-improvement-20261005/software/coinquant-compile.log"
+        },
+        {
+          "name": "unittest",
+          "command": [
+            "python3.13",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 8.192008095036726,
+          "log": "/workspace/btc-improvement-20261005/software/coinquant-unittest.log"
+        }
+      ],
+      "passed": true,
+      "remote_ci_pass_claimed": false,
+      "full_suite_runs": 1,
+      "test_count": 537,
+      "reported_test_seconds": 7.947,
+      "skipped": 5
+    },
+    "spotquant": {
+      "source_head": "b6528ccebd51ddc2beda8155251cb28ecf37a877",
+      "source_unchanged": true,
+      "checks": [
+        {
+          "name": "compile",
+          "command": [
+            "python3.13",
+            "-m",
+            "compileall",
+            "-q",
+            "spotquant",
+            "research",
+            "tests"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.034144898992963135,
+          "log": "/workspace/btc-improvement-20261005/software/spotquant-compile.log"
+        },
+        {
+          "name": "unittest",
+          "command": [
+            "python3.13",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests",
+            "-v"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 57.043319160002284,
+          "log": "/workspace/btc-improvement-20261005/software/spotquant-unittest.log"
+        }
+      ],
+      "passed": true,
+      "remote_ci_pass_claimed": false,
+      "full_suite_runs": 1,
+      "test_count": 429,
+      "reported_test_seconds": 56.879,
+      "skipped": 11
+    }
+  },
+  "remote_ci_pass_claimed": false
+}

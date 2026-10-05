@@ -46,7 +46,7 @@ Spot可选信号缺失半预算的两个窗口，在检查已有真实缺失NEW 
 
 研究模块、有限钱包及失败记录为实际成果；生产默认Coin SX60+DFII10／primary7.5／macro3.6／scale1与Spot SMA30/40/50＋ATR＋crowding／scale1保留。原完整代理Coin119.2284%CNY CAGR／44.1051%MDD、Spot56.5981%／36.4122%仍绑定旧原生产来源，不是新HEAD测量结果；原目标NOT_MET，native0、actual accountdays0、NOT_QUALIFIED。
 
-最终软件结果见归档software原回执；软件通过不等于经济／native通过。完整原件在Spotquant `evidence/btc-improvement-20261005/research-artifacts.zip`，两仓归档绑定由archive.json记录；包含原spec、assessments、finite-wallet-inventory、full-budget-result、有效／无效钱包及原日志。当前任务状态只由各仓PROJECT_STATE.md维护。
+最终本机Python3.13检查各仓仅做一次：Coin编译及537项测试通过（5项跳过），Spot编译及429项测试通过（11项跳过）；无本轮全量失败，无全量补跑。早期Coin只补测1项初始尺寸必要边界。原命令、耗时、source和日志见归档software回执；skipCI不表示远程CI通过，软件通过不等于经济／native通过。完整原件在Spotquant `evidence/btc-improvement-20261005/research-artifacts.zip`，两仓归档绑定由archive.json记录；包含原spec、assessments、finite-wallet-inventory、full-budget-result、有效／无效钱包及原日志。当前任务状态只由各仓PROJECT_STATE.md维护。
 
 下一阶段按improvement-roadmap.json执行：先解决实际耗时及历史venue安全检查点依赖，再用真正新的独立信息确认候选。复用本轮结果，不扩大参数网格，不因一次失败永久关闭替代方向，也不靠重跑旧历史制造新证据。
 
