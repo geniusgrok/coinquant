@@ -39,7 +39,7 @@ def main():
             from research.return_core import Forecast
             from research.edge_features import FeatureBook
             features = FeatureBook(Path(spec['features']), spec['features_sha256'])
-            funding = [(a, b, rate) for a, b, rate, cause in features.records['funding'] if cause is None]
+            funding = features.records['funding']
             book = Forecast(bars, funding, mode='positive' if expression == 'return-net' else 'low-turnover')
         return book, bars
 
@@ -78,7 +78,12 @@ def main():
                 from research.return_core import configured
                 context = configured(book, binding=binding, journal=journal)
             with context as selected:
-                return selected.run(config, venue, **kwargs)
+                result = selected.run(config, venue, **kwargs)
+                invalid = [error for error in result.get('errors', [])
+                           if error.get('error_type') in ('TypeError', 'KeyError', 'ValueError', 'ArithmeticError')]
+                if invalid:
+                    raise ValueError('candidate integration failed: ' + json.dumps(invalid))
+                return result
         yield SimpleNamespace(run=run)
 
     account.signal_book = book_for

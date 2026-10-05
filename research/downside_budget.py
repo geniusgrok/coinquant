@@ -139,7 +139,7 @@ def configured(policy, *, binding, journal=None):
         if record:
             row = measure(model.returns, policy=policy, risk=risk,
                           completed_through_ms=model.last, decision_ms=now_ms)
-            journal.append(dict(event='downside-initial-sizing', policy=policy,
+            journal.append(dict(event='downside-initial-sizing',
                 at_ms=now_ms, campaign=model.active.identity,
                 completed_returns=list(map(str, model.returns)),
                 **{key: str(value) if isinstance(value, D) else value for key, value in row.items()}))

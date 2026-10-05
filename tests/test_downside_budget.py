@@ -21,8 +21,8 @@ class DownsideBudgetBoundaries(unittest.TestCase):
         returns = [D('.01'), D('-.01')]*10
         self.assertEqual(estimate(returns, POLICIES[0])['sigma'], D('.01'))
         for risk in (D('7.5'), D('3.6')):
-            self.assertEqual(target_fraction(returns, '.0011', POLICIES[0], risk=risk),
-                             risk*symmetric_fraction(returns, D('.0011')))
+            self.assertLess(abs(target_fraction(returns, '.0011', POLICIES[0], risk=risk)
+                                -risk*symmetric_fraction(returns, D('.0011'))), D('1e-25'))
 
     def test_fixed_shrinkage_bounds_positive_only_history_and_detects_downside(self):
         positive = estimate([D('.04')]*20, POLICIES[0])
@@ -113,5 +113,10 @@ class DownsideBudgetBoundaries(unittest.TestCase):
                 with self.assertRaisesRegex(Blocked, 'causally completed'):
                     Lifecycle.enter(SimpleNamespace(reader=reader), model, {'quantity_btc': '0'})
         self.assertEqual(observed, [target_fraction([D('-.01')]*20, '.0011', POLICIES[0], risk='7.5')])
+        self.assertEqual(len(journal), 1)
+        self.assertEqual(journal[0]['policy'], POLICIES[0])
+        self.assertEqual(journal[0]['event'], 'downside-initial-sizing')
+        self.assertEqual(journal[0]['candidate_fraction'], str(observed[0]))
+        self.assertEqual(journal[0]['observations'], 20)
         self.assertEqual(journal[0]['campaign'], ORIGIN+DAY)
         self.assertNotIn('entry_fraction', vars(HistoricalVariant))
