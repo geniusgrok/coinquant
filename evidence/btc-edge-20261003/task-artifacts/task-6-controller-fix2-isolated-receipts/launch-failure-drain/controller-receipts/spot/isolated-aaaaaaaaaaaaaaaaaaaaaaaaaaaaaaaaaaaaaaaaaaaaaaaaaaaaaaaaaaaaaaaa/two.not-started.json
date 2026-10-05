@@ -1,6 +1,0 @@
-{
-  "label": "two",
-  "state": "not_started",
-  "error": "ValueError('existing output/progress/invocation receipt: /tmp/controller-isolated-j9e5zh47/two.json')",
-  "recorded_utc": "2026-10-03T04:44:45.109946+00:00"
-}

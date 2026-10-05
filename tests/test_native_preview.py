@@ -1,15 +1,12 @@
 from decimal import Decimal as D
 from datetime import datetime, timezone
-import json
-from pathlib import Path
 from unittest import TestCase
 from unittest.mock import Mock
 from coinquant.campaign import Campaign, ORIGIN
 from coinquant.opportunities import Opportunity
-from coinquant.native_preview import BOOK_PARTICIPATION, entry_preview, topup_preview
-from coinquant.linear_account import Account
-from coinquant.linear_sizing import funded_target
+from coinquant.native_preview import entry_preview, topup_preview
 from coinquant.types import Unknown
+from tests.test_binance_quantity import instrument as quantity_rules
 
 
 class NativePreviewTests(TestCase):
@@ -20,7 +17,8 @@ class NativePreviewTests(TestCase):
         now=model.last+1000
         snapshot=dict(account_uid='123',quantity_btc='0',wallet_usdt='1000',available_usdt='1000',
                       possible_entry_remainders=0,mark_price='100',mark_time=now)
-        instrument=json.loads(Path('evidence/binance-boundary-20260921/current-instrument.json').read_text())['instrument']
+        instrument=quantity_rules()
+        instrument['filters'][2]['notional']='5'
         instrument.update(status='TRADING',contractType='PERPETUAL',marginAsset='USDT')
         instrument['filters']=[f for f in instrument['filters'] if f['filterType']!='PRICE_FILTER']+[
             dict(filterType='PRICE_FILTER',tickSize='.1',minPrice='.1',maxPrice='1000000')]
@@ -37,19 +35,24 @@ class NativePreviewTests(TestCase):
     def test_capital_limit_sizes_from_the_trial_capital_only(self):
         m,r,s,_,instrument=self.fixture()
         r.capital_limit=D(100)
-        p=entry_preview(r,m,s);a=Account(D(100))
-        funded_target(a,1,m.entry_fraction('.0011'),D('100.1'),D(100),D(90),D('200.1'),D(1000)*BOOK_PARTICIPATION,instrument,fee=D('.0005'),maintenance=D('.005'),notional_limit=D(100000))
-        self.assertEqual((p['quantity_btc'],p['sizing_capital_usdt']),(str(a.q),'100'))
+        p=entry_preview(r,m,s)
+        self.assertEqual(p['sizing_capital_usdt'],'100')
+        quantity=D(p['quantity_btc'])
+        self.assertGreater(quantity,0)
         self.assertLessEqual(D(p['allocated_margin_usdt']),100)
+        # Entry fee, ongoing funding reserve and closing fee remain cash funded.
+        self.assertLessEqual(D(p['allocated_margin_usdt'])+quantity*D(p['entry_estimate'])*D('.011'),100)
         m,r,s,_,_=self.fixture()
-        self.assertGreater(D(entry_preview(r,m,s)['quantity_btc']),a.q)
+        self.assertGreater(D(entry_preview(r,m,s)['quantity_btc']),quantity)
 
-    def test_native_inputs_use_identical_funding_function_without_consumption(self):
+    def test_preview_rounds_funded_quantity_without_consuming_campaign(self):
         m,r,s,values,instrument=self.fixture();before=m.checkpoint()
-        p=entry_preview(r,m,s);a=Account(D(1000))
-        expected=funded_target(a,1,m.entry_fraction('.0011'),D('100.1'),D(100),D(90),D('200.1'),D(1000)*BOOK_PARTICIPATION,instrument,fee=D('.0005'),maintenance=D('.005'),notional_limit=D(100000))
-        self.assertEqual(p['quantity_btc'],str(a.q));self.assertGreater(a.q,0)
-        self.assertEqual(p['allocated_margin_usdt'],str(a.margin));self.assertEqual(p['constraint'],expected['reason'])
+        p=entry_preview(r,m,s);quantity=D(p['quantity_btc'])
+        self.assertGreater(quantity,0)
+        self.assertEqual(quantity % D('.001'),0)
+        self.assertLessEqual(quantity*D(p['entry_estimate']),D(p['notional_cap']))
+        liquidation=(quantity*D(p['entry_estimate'])-D(p['allocated_margin_usdt']))/(quantity*(1-D(p['maintenance_bound'])-D(p['fee'])))
+        self.assertLess(liquidation,D(p['stop']))
         self.assertEqual(m.checkpoint(),before)
 
     def test_unknown_collateral_book_or_account_blocks(self):
@@ -71,11 +74,6 @@ class NativePreviewTests(TestCase):
         plan=entry_preview(r,m,s)
         self.assertLess(plan['campaign'],0)
         self.assertLessEqual(D(plan['quantity_btc'])*(D(plan['entry_estimate'])-D(plan['stop'])),D(30))
-
-    def test_liquidation_uses_supplied_closing_fee(self):
-        a=Account(D(1000),q=D(1),entry=D(100),margin=D(20))
-        self.assertGreater(a.liquidation(D('.005'),D('.002')),a.liquidation(D('.005'),D('.0005')))
-        self.assertEqual(a.liquidation(D('.005'),D('.002')),D(80)/(1-D('.007')))
 
     def test_top_up_keeps_whole_position_inside_the_stop_budget(self):
         m,r,s,values,_=self.fixture()

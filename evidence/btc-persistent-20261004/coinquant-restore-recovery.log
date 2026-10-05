@@ -1,6 +1,0 @@
-test_restore_binds_candidate_and_preserves_consumed_identity (test_persistent_perp.PersistentCampaignTests.test_restore_binds_candidate_and_preserves_consumed_identity) ... ok
-
-----------------------------------------------------------------------
-Ran 1 test in 0.001s
-
-OK

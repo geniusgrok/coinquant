@@ -1,7 +1,7 @@
 """Native Binance protection, reduction and margin operations.
 
 The default CLI is read-only. Explicit bounded trials use these operations
-through the same lifecycle; routine production remains unqualified.
+through the same lifecycle.
 """
 import json
 from decimal import Decimal as D, ROUND_CEILING

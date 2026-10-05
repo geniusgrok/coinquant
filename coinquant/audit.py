@@ -29,7 +29,7 @@ def income(reader,state,*,force=False,wallet=None,
                 and closure.get('state') in ('explained','anchored')):
             return {**coverage,'wallet_closure':closure['state']}
     # Re-read an overlap for late publication and deduplicate by native identity.
-    # First use only establishes a recent audit origin, never past qualification.
+    # First use establishes the wallet anchor.
     start=max(0,(coverage['through'] if coverage else now)-86400000)
     if now-start>89*86400000:
         raise Unknown('income retention gap requires native archive; no continuity inferred')
@@ -51,9 +51,8 @@ def income(reader,state,*,force=False,wallet=None,
         if len(page)<1000:break
         page_number+=1
     result=dict(origin=coverage['origin'] if coverage else start,through=now,
-                observed_transactions=0,continuous_equity_verified=False,
-                wallet_closure='collected',closure=coverage.get('closure') if coverage else None,
-                scope='native cashflows only; observation gaps are not interpolated')
+                observed_transactions=0,
+                wallet_closure='collected',closure=coverage.get('closure') if coverage else None)
     with state.db:
         for (kind,identity),event in observed.items():
             prior=state.db.execute('SELECT payload FROM native_income WHERE kind=? AND transaction_id=?',(kind,identity)).fetchone()

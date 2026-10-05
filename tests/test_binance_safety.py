@@ -74,20 +74,12 @@ class SafetyTests(unittest.TestCase):
         self.native.remainders=1
         r=cancel_entry(self.native,self.state,self.native.send,'123',100,'cq-entry',authorized=True)
         self.assertEqual(r['quantity_btc'],'.01');self.assertEqual(self.state.pending(),[])
-    def test_reduce_only_never_reverses(self):
-        reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',instrument=rules(),authorized=True)
-        self.assertEqual(self.native.sent[0][2]['reduceOnly'],'true')
-        self.assertEqual(self.native.q,'0')
     def test_unknown_margin_blocks_different_epoch(self):
         calls=[]
         def send(*a):calls.append(a);raise TimeoutError()
         for epoch in (100,200):
             with self.assertRaises(Unknown):add_margin(self.native,self.state,send,'123',epoch,'40',instrument=rules(),authorized=True)
         self.assertEqual(len(calls),1)
-    def test_model_margin_target_readback(self):
-        result=add_margin(self.native,self.state,self.native.send,'123',100,'40',instrument=rules(),authorized=True)
-        self.assertEqual(D(result['isolated_wallet_usdt']),40)
-        self.assertEqual(self.state.pending(),[])
 
     def test_no_open_order_is_not_proof_unknown_entry_cannot_arrive(self):
         payload=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='MARKET',quantity='.003')

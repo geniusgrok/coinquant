@@ -56,25 +56,7 @@ class StateTests(unittest.TestCase):
         self.assertLessEqual(len(client_id('live:123', 123, 'increase')), 36)
 
 
-class StateUpgradeAndRetention(unittest.TestCase):
-    def test_legacy_directory_is_backed_up_once_before_it_is_versioned(self):
-        import sqlite3
-        from pathlib import Path
-        with tempfile.TemporaryDirectory() as directory:
-            with State(directory, 'live:123') as state:
-                state.prepare('cq-old', 'binance_order', {'quantity': '1'})
-                state.db.execute("DELETE FROM meta WHERE key='schema_version'");state.db.commit()
-            with State(directory, 'live:123') as state:
-                self.assertEqual(state.get('schema_version'), 1)
-                self.assertEqual(state.pending()[0]['id'], 'cq-old')
-            backups = list(Path(directory, 'backups').glob('intents-schema-*.sqlite'))
-            self.assertEqual(len(backups), 1)
-            copy = sqlite3.connect(backups[0])
-            self.assertEqual(copy.execute("SELECT status FROM intents WHERE id='cq-old'").fetchone()[0], 'unknown')
-            copy.close()
-            with State(directory, 'live:123'):
-                pass
-            self.assertEqual(len(list(Path(directory, 'backups').glob('*.sqlite'))), 1)
+class StateIntegrityTests(unittest.TestCase):
 
     def test_fresh_directory_needs_no_backup_and_newer_state_blocks(self):
         from pathlib import Path

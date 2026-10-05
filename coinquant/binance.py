@@ -447,8 +447,8 @@ class Binance:
         unsupported intent kinds stay pending; never infer resolution.
         A canceled conditional parent does not settle a still-active child.
         """
-        # Reopen the old inference that treated any aged missing query as rejection.
-        # A rejection that recorded an explicit -2013 inside the query retention stays.
+        # Missing-query rejections require an explicit -2013 within native retention.
+        # Anything without that proof returns to pending for identity recovery.
         for identity, raw in state.db.execute("SELECT id,result FROM intents WHERE kind='binance_order' AND status='rejected'").fetchall():
             result=json.loads(raw)
             if 'absent_at_ms' in result and not result.get('query_absent_within_retention'):
@@ -838,8 +838,7 @@ def account_report(uid, config, symbol_config, account, positions, orders, algos
             'isolated_wallet_usdt':str(isolated),'native_liquidation_price':str(liquidation),
             'stop_before_liquidation':bool(safe_stops),
             'protective_algos':protective,'possible_entry_remainders':len(entries),
-            'open_orders':orders,'open_algos':algos,
-            'qualification':'NOT_QUALIFIED'}
+            'open_orders':orders,'open_algos':algos}
 
 
 def market_quantity(maximum, mark, instrument, *, reduce_only=False, order='MARKET'):

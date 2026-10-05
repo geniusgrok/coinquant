@@ -1,1 +1,0 @@
-{"out": "/workspace/btc-decision-loop-20261004/artifacts/screen.json", "wall_seconds": 21.525661399005912, "alpha_discovery": {"spot": "SUPPORT_PENDING", "coin": "SUPPORT_PENDING"}, "beta": {"drawdown_brake": "SUPPORT_PENDING", "implied_risk": "SUPPORT_PENDING", "protection": "WAIT_CONFIRMED_NATIVE_STOPS_AND_DEPTH"}, "new_accounts": 0}

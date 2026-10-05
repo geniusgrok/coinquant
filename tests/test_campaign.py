@@ -1,6 +1,5 @@
 from decimal import Decimal as D
 from datetime import datetime, timezone
-from hashlib import sha256
 import json
 import unittest
 import tempfile
@@ -13,7 +12,7 @@ from coinquant.linear_preview import advance, preview
 
 
 class CampaignTests(unittest.TestCase):
-    def test_promoted_macro_priority_consumption_and_restart(self):
+    def test_macro_priority_consumption_and_restart(self):
         m=Campaign()
         for i in range(11*6):
             m.update(ORIGIN+(i+1)*14400000,D(101),D(90),D(100))
@@ -51,12 +50,6 @@ class CampaignTests(unittest.TestCase):
         m.select_macro(row,'100',now,bootstrap=True)
         self.assertEqual(m.action(D(0)),'consumed')
 
-    def test_checkpoint_of_another_version_blocks(self):
-        m=Campaign()
-        for i in range(12*6):m.update(ORIGIN+(i+1)*14400000,D(101),D(90),D(100))
-        old=m.checkpoint();body=old['body'];body['version']=3
-        old['sha256']=sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()
-        with self.assertRaises(Blocked):Campaign.restore(old)
 
     def test_read_only_resume_and_unknown_ownership(self):
         with tempfile.TemporaryDirectory() as tmp, State(tmp,'test') as state:
@@ -71,16 +64,6 @@ class CampaignTests(unittest.TestCase):
             self.assertIsNone(restored.consumed)
             with self.assertRaises(Blocked):preview(restored,{'quantity_btc':'1'})
 
-    def test_every_prefix_survives_serialized_restart(self):
-        continuous=Campaign();restarted=Campaign()
-        for i in range(240):
-            close=D(100)+D(i%27)
-            end=ORIGIN+(i+1)*14400000
-            continuous.update(end,close+1,close-1,close)
-            restarted.update(end,close+1,close-1,close)
-            self.assertEqual(continuous.checkpoint(),restarted.checkpoint())
-            self.assertEqual(continuous.fraction('3.6','.0011'),restarted.fraction('3.6','.0011'))
-            restarted=Campaign.restore(json.loads(json.dumps(restarted.checkpoint())))
 
     def test_consumption_and_unknown_position(self):
         m=Campaign();m.last=ORIGIN+14400000;m.model.last=m.last

@@ -1,7 +1,0 @@
-{
-  "observation": "First optional whole-git-tree-clean assertion failed only for known root-owned PROJECT_STATE.md modifications; source identities themselves matched. No source repair/refreeze/reset performed.",
-  "source_git_status": {
-    "spot": " M PROJECT_STATE.md\n",
-    "perp": " M PROJECT_STATE.md\n"
-  }
-}

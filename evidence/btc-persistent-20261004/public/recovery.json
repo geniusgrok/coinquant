@@ -1,8 +1,0 @@
-{
-  "original_qualification_sha256": "3bf5d6d5e94a278b1b2ef52407a444c2c837be3a2f792dbe6982af139638b85e",
-  "parser_git": "1378eb2",
-  "affected_only": "option-summary was mistakenly parsed as a ticker, list vs object; fixed selection-only classification",
-  "unchanged_other_observations": true,
-  "unchanged_features": true,
-  "public_requests_rerun": 0
-}

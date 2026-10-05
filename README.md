@@ -1,169 +1,49 @@
-> 当前默认已于2026-10-05恢复改造前版本；target-core仅留研究。恢复依据、采用门槛和三条后续路线见 [恢复结果](research/replacement-RESULT.md) 与 [研究入口](research/replacement-GUIDE.md)。
-
 # Coinquant
 
-2026-10-04核心替换：当前开发默认是 **BTC连续目标持仓**。永续采用独立正向趋势，20/60日预测、60%年化波动预算、最多2倍敞口、5%再平衡死区和25%灾难保护；旧SX60/DFII10不再决定默认入场。策略与风控已实际修改，允许已有仓位减持/恢复。16个有限独立账户核算通过，结果有明显阶段性退步，**尚未证明alpha提升/新全历史收益达标**；保持默认只读与NOT_QUALIFIED。见 [结果](research/core-RESULT.md)、[当前指南](research/core-GUIDE.md)及 [持续换方向路线](research/core-roadmap.json)。
+个人使用的 Binance BTCUSDT USDT 本位永续交易程序。当前策略为 SX60 + DFII10，风险参数为 7.5 / 3.6；使用单向、逐仓、20 倍杠杆账户。默认只读，手动启动有限会话，没有后台守护进程。项目仅使用 Python 3.13 标准库；系统需提供 `America/New_York` 时区数据。
 
-以下为旧版本交付记录；旧绩效数字和“默认保持”描述只属于其原冻结来源。
-
-2026-10-04追加升级完成研究：趋势再入场、慢趋势参与、合约回撤修复均被预登记筛选拒绝，联合预算已由仓位互斥覆盖；正式默认保持。未新增795会话。见 [升级结果](research/upgrade-RESULT.md)与 [研究使用说明](research/upgrade-GUIDE.md)。
-
-本轮 BTC alpha/beta 完整交付后，开发默认保留 **SX60+DFII10、primary风险7.5/macro3.6、默认规模1**。三种新合约机制均完成压力及实际风险比较并按登记条件拒绝；完整负结果保留。交易所20倍是配置，不等于账户固定20倍敞口。
-
-原CNY10000历史成本后 **119.23% CAGR / 44.11% 连续分钟包络代理MDD**，150%/<50%原目标仍 **NOT_MET**。这批机制失败不能证明收益已经到天花板。未来改进必须保留因果输入、真实新订单风险、成本及时序约束；不按历史启动时间或最优资金比例改默认。
-
-71个原账户及5个共享现货账户独立复核通过。Coinquant负责合约、Spotquant负责现货；Starquant仅保留历史参考/FX。两个手动前向账本绑定实际来源与独立证明，不回填过去；原生案例/实际账户日仍0、**NOT_QUALIFIED**，默认只读。详见 [本轮结果](research/edge-RESULT.md)、[运行/复现指南](research/edge-GUIDE.md)和 [完整证据](evidence/btc-edge-20261003/README.md)。
-
-下方早期轮次和M10数字按各自冻结测量来源解释。上一轮evidence/alpha-beta-next-20261002保持不可变。
-
-第三轮完成三个实际 runner 的 795 次共享历史会话，并核对完整现金流水。
-Coinquant 默认为 119.23% CAGR / 44.11% MDD；Star 默认与半风险分别为
-−3.68% / 51.75%、−1.27% / 38.21%。这是共同代理模型的有限启停结果，
-保留 Coinquant 合约 + Spotquant 现货作为日常开发方向，Star 留作研究。
-原件、源码/输入身份、简化原生 snapshot 的限制与命令见
-[第三轮结果](evidence/third-round-20261001/RESULT.md)。150% 目标未达，
-原生资格未升级。新增 `snapshot --config ... --out ...` 只读账户导出。
-
-第二轮：[合约比较协议、逐事件复现与本机验收](evidence/second-round-20261001/RESULT.md)。
-五组诊断精确复现原成交前缀，六项故障案例通过；与 Starquant 仍有九项口径
-待对齐，因此没有选出唯一合约项目。默认配置、经济目标和原生资格门槛保留。
-
-2026-10-01 首轮：新增 `python -m research.path_analysis --help`，用于校验
-并归因不同执行条件下的账户路径。结论与当前源码的小窗口复现见
-[F1](evidence/path-analysis-20261001/RESULT.md)。默认风险与执行逻辑保留。
-
-本公开仓库仅用于托管 geniusgrok 的个人量化研究代码和实验记录，项目仅供仓库所有者本人使用。公开可见不代表开放授权、邀请贡献或实盘交易。未经权利人事先书面许可，不得擅自使用、复制、抄袭、修改、改编、传播其原创代码与研究内容，也不得冒名署名。详见 [LICENSE](LICENSE)。
-
-**仅仓库所有者可在专用账户中进行受控 Demo 与小额主网验证；常规生产执行仍未获得资格。** 策略、回测和收益数字仅为研究记录，不是投资建议、收益保证或可执行性证明。历史模拟不能证明真实撮合、费用、资金费、强平、网络故障和保护单失效等风险已得到控制；任何擅自使用所产生的行为与损失由使用者自行承担。
-
-研究对象是个人使用的 Binance BTCUSDT U 本位永续系统，交易所设置20×，单向逐仓、单账户。手动启动一个有限会话，会话内持续读取真实行情与账户状态、重复判断，超时或 Ctrl-C 后退出；没有后台守护进程。
-
-**当前是工程集成版本。默认只读；显式受控 Demo 入口可用于原生验证。小额主网入口要求独立的 Demo 闭环证据和当次 UID 确认。离线验证通过不等于生产资格。**
-
-## 所有者本地研究
-
-Python 3.13；项目运行仅使用标准库。美东时区来自系统 IANA 时区库；没有系统时区库的环境（如 Windows）须先 `python -m pip install tzdata`，否则 `run` 在读取凭据前即停止。
+## 配置与只读运行
 
 ```sh
-git clone https://github.com/geniusgrok/coinquant.git
-cd coinquant
 cp config.example.json config.json
-python -m coinquant status --config config.json
-python -m coinquant run --config config.json
+python3 -m coinquant status --config config.json
+python3 -m coinquant run --config config.json
+python3 -m coinquant snapshot --config config.json --out /tmp/coinquant-snapshot.json
 ```
 
-仅供仓库所有者在授权账户上进行本地只读研究。在配置中填写所有者的 Binance `account_uid` 和固定 `state_dir`。实盘凭据只从 `COINQUANT_BINANCE_KEY`、`COINQUANT_BINANCE_SECRET` 环境变量读取，Demo 凭据只从 `COINQUANT_BINANCE_DEMO_KEY`、`COINQUANT_BINANCE_DEMO_SECRET` 读取，都不写入配置或仓库。`status` 单次观察；`run` 默认观察300秒，每5秒重新核对，输出和状态目录的 `latest.json` 标明结果。配置项：
+先填写 `config.json` 的 `account_uid`，使用核验一致的 Binance UID；`state_dir` 使用该账户固定的绝对路径或 `~` 路径。配置不存凭据。
 
-| 配置 | 含义 |
+| 字段 | 用法 |
 |---|---|
-| `account_uid` | 必须与交易所核验的账户一致 |
-| `state_dir` | 此账户持续使用的恢复目录 |
-| `session_seconds` | 本次运行1～86400秒，默认300 |
-| `poll_seconds` | 轮询1～60秒，默认5，不得超过会话时长 |
-| `environment` | `live`（默认）或 `demo`：Binance 虚拟余额环境（`demo-fapi.binance.com`、`demo-api.binance.com`），使用自己的凭据变量与状态范围 `binance:BTCUSDT:demo:<uid>`；实盘状态目录拒绝 demo 配置，反之亦然 |
-| `capital_limit_usdt` | 可选，十进制字符串。模型只按 `min(钱包, 上限)` 计算仓位、逐仓保证金与宏观止损额度；钱包其余部分不是试验本金。它限制仓位规模，不是亏损上限：逐仓保证金与止损之间的跳空仍可能亏掉整笔逐仓保证金 |
+| `environment` | `live`（默认）或 `demo`，账户、凭据和状态分别隔离 |
+| `session_seconds` | 会话时长 1～86400 秒，默认 300 |
+| `poll_seconds` | 轮询间隔 1～60 秒，默认 5，不超过会话时长 |
+| `capital_limit_usdt` | 可选正值十进制字符串，限制策略用于定仓的资金；不是亏损上限 |
 
-### 启动、停止与恢复
+主网凭据从 `COINQUANT_BINANCE_KEY`、`COINQUANT_BINANCE_SECRET` 读取，Demo 从 `COINQUANT_BINANCE_DEMO_KEY`、`COINQUANT_BINANCE_DEMO_SECRET` 读取。两套凭据互不回退。
 
-1. 启动：`status` 单次只读核对；`run` 默认只读会话。写入只在 `--execute --trial demo|live --authorize-uid` 全部满足时开放，且要先通过配置、UID 与（主网）Demo 证据检查，之后才读取凭据。
-2. 停止：第一次 Ctrl-C 或 SIGTERM 结束观察并进入收尾（入场余单清理、保护核验、必要的授权减仓、最终核对）。收尾各阶段的预算总和不超过会话截止后 360 秒（`ABSOLUTE_GRACE`），任何续期都不能越过；收尾期间再次收到信号被忽略。强杀、断电、断网不保证收尾。
-3. 读报告：`latest.json` 与输出的 `cleanup`（`verified`/`unresolved`）、`execution_unresolved`（有未决意图、收尾未核实或持仓无原生保护时为 true）、`pending_intents`、`protection_replacement_pending`（旧保护仍在、价格替换尚未完成）、`state_backup`（`saved`/`failed`）、`observation_timeouts`（观察预算耗尽而未发出请求的轮数，不等于执行未决）、`errors[]`（阶段 `clock`/`cycle`/`cleanup`/`backup`、异常类别）、`exchange_leverage_setting`（固定20）与 `account_notional_leverage`（实际名义/钱包，两者不是同一个量）。写请求的未知结果会在意图里记录 HTTP 状态与交易所错误码，不保存签名 URL。
-4. 恢复：用同一 `state_dir` 先 `status`。状态库带 `schema_version`：旧目录首次被新代码打开时先备份到 `backups/`；每次有限会话结束再以 SQLite 一致备份保存至 `backups/`，轮转保留最近三份会话副本（版本升级副本另外保留）。`state_backup=failed` 要检查磁盘并另存完好的状态目录；同盘副本不能防止整盘丢失。版本高于当前代码或库损坏则拒绝启动，不会从空库继续。派生的观察记录超过约 2500 行时，较旧的先追加到 `observations-archive.jsonl` 再从库中删除；意图、成交、资金流水与计划不删除。
-5. 人工接管：`execution_unresolved=true`、超过成交历史（约3个月）或资金流水（约88天未观察）范围、状态目录丢失时，停自动进程，在交易所核对持仓、普通和条件订单及原身份后再决定；没有外部归档导入入口（尚未实现），不能新建空目录冒充空账户。
-6. 范围：一个账户一个独占客户端，不支持跨机器并行；默认模型不开空；`capital_limit_usdt` 是模型规模而非亏损保险；主网试验 JSON 是人工审查记录，不是程序对交易所证据的验证。
+`status` 读取一次账户和合约条件；`run` 在期限内观察、恢复订单状态、判断策略并输出预览。`snapshot` 导出新鲜只读账户 JSON，输出文件必须不存在。
 
-Demo 与主网共用同一执行器。`run` 默认只读；写入必须显式选择 `--execute --trial demo|live --authorize-uid`，配置必须显式写 `environment` 和正值 `capital_limit_usdt`。主网还须提供与当前执行源码摘要一致、经人工核验的 Demo 原生闭环证据；此 JSON 是审查记录，不是程序自动核验交易所证据的证明。Demo 账户 UID 接口与订单语义尚未原生验证。
-
-首次运行会从固定历史起点重建已完成4小时行情；网络不足以完成重建时返回未知，不用短历史冒充完整模型。已存在的仓位必须有可核验的本系统成交归属；禁止把新空目录当作空账户证明。同一账户只允许一台机器运行，本地锁覆盖整个会话。
-
-所有运行都使用同一个持久状态目录和本机独占锁；禁止其他程序或人工同时交易同一专用账户。检测到外部订单、成交或无法解释的资金变化即停止新风险。异常停止后先以同一目录 `status` 核对，不得删除 SQLite、清空状态或换目录重开。正常结束可保留已核验原生止盈止损的持仓；`latest.json` 的 `cleanup=unresolved` 需要人工接管，先停自动进程并核对交易所持仓、普通与条件订单及原身份。强杀、断电、断网不保证收尾。
-
-### 所有者受控试验入口
-
-先分别复制 [Demo 配置](config.demo.example.json) 与 [小额主网配置](config.live-trial.example.json)，填写实际 UID、固定且互不相同的状态目录和资金上限。用当前交易所只读凭据运行；没有凭据时不会访问交易所。Demo 使用 `COINQUANT_BINANCE_DEMO_KEY/SECRET`，主网使用 `COINQUANT_BINANCE_KEY/SECRET`，不得把密钥写进配置或聊天。API 权限只需读取及 U 本位合约交易；关闭提现与划转权限。账户预先由所有者设置为单向、单资产、BTCUSDT 逐仓、20×、关闭自动追加保证金；程序不会代设。程序会按计划主动追加逐仓保证金，这会增加仓位可承担的资金。专用主网合约账户里只放事前决定可承担风险的测试资金，不自动补钱；配置的上限不是累计亏损保护。按实际交易所最低数量、名义价值和保证金要求确定金额，不足时拒绝交易。
+## 有限交易试运行
 
 ```sh
-python -m coinquant status --config demo.json
-python -m coinquant run --config demo.json
-python -m coinquant run --config demo.json --execute --trial demo --authorize-uid <DEMO_UID>
-# Ctrl-C 请求停止；同一配置和状态目录再次运行即先恢复再决策
-python -m coinquant status --config demo.json
+cp config.demo.example.json demo.json
+python3 -m coinquant run --config demo.json
+python3 -m coinquant run --config demo.json --execute --trial demo --authorize-uid <DEMO_UID>
 ```
 
-`status` 核对 UID、账户模式、余额、持仓、普通/条件订单及 BTCUSDT 合约规则。Demo 的实际入场、成交、原生止损与止盈、正常停止留仓、重启恢复、实际减仓，以及停进程后至少一种原生保护触发，须分别记录订单身份与账户证据；未出现的部分成交只能记录为未原生验证。`latest.json` 的 `entry_timing` 分别记录入场发送尝试、成交可确认、止损发送尝试、接受及账户回读时间。故障注入结果须与原生事件分开。不能为等待触发而故意在无保护的真实资金仓位上断网。
+填写专用 Demo UID、固定状态目录和正值资金上限。执行需同时提供 `--execute`、匹配配置环境的 `--trial` 和匹配账户的 `--authorize-uid`；入口不会强造策略入场。
 
-Demo 闭环经人工核验后，在本机保存私有 `demo-closure.json`，填入 `source_digest`（`python -c 'from coinquant.cli import source_digest; print(source_digest())'`）、`demo_uid`、`demo_capital_limit_usdt`、`entry_order_id`、`stop_algo_id`、`take_algo_id`、`reduction_order_id`、`offline_trigger_order_id`，并保留相应交易所回读和状态目录。此文件只是准入记录，不能替代这些原件；源码变化会使准入失效。主网首次运行前由所有者确定投入总额、停止条件和当次交易意图，使用专用小额账户：
+小额主网试运行使用 [config.live-trial.example.json](config.live-trial.example.json)，还需 `--trial live --demo-evidence <JSON>`。该 JSON 必须匹配当前源码摘要，Demo 资金上限不低于本次上限，并包含 `demo_uid`、`entry_order_id`、`stop_algo_id`、`take_algo_id`、`reduction_order_id`、`offline_trigger_order_id` 六个真实原生身份及 `demo_capital_limit_usdt`。这是程序实际检查的交易入口条件；历史模拟不能替代原生回读。
 
-```sh
-python -m coinquant status --config live-trial.json
-python -m coinquant run --config live-trial.json --execute --trial live --authorize-uid <LIVE_UID> --demo-evidence demo-closure.json
-# 正常停止或中断后，用原状态目录核对，再决定是否重启
-python -m coinquant status --config live-trial.json
-```
+执行先持久记录订单身份，成交后确认交易所托管的整仓止损和止盈。丢失回包时查询原身份；未解释的成交、资金或保护状态阻止新增风险。会话到期或中断后停止开仓，已开始的保护或减仓可能使用有限清理时间，确认的原生保护留在交易所。
 
-主网验证尚未执行。首次小额主网运行要核对真实撮合、费用、资金费（发生时）、保护、余额、停止及恢复；任何停止条件都不能保证极端行情的成交价或最大亏损。经济资格仍是独立事项。
+## 账户状态
 
-## 已实现的工程路径
+固定 `state_dir` 保存 `intents.sqlite`、`latest.json` 和执行锁；账户锁还保存在 `~/.local/state/coinquant/account-locks`。同一账户只使用一台机器、一个客户端。重启继续原订单身份；状态不匹配时只读核对，不删除数据库、不改 UID 或换空目录绕过。
 
-`CLI → session → Campaign/资金预检 → Lifecycle → Binance → 持久化意图与原生回读`。
+停止进程后不会继续计算策略或修改保护。只读快照也不证明止损触发和重启执行已经验证。
 
-- 历史旧默认模型为 **SX60＋DFII10**：4小时 impulse-hold 多头主信号使用7.5风险尺度（`coinquant.campaign.PRIMARY_RISK`，R3 在测量器 M8 上按登记规则重选）；账户空仓且主信号无可执行多头机会时，DFII10 最近值较此前第20个观测下降至少0.25个百分点，才允许3.6尺度的补充多头，母单止损风险另限账户权益3%。一份账户、一条执行路径，无候选开关。默认模型只取方向为正的主信号，不产生空头入场；账户与保护层的卖出方向有代码和单测，但默认模型下没有端到端开空路径，“多空都能新开仓”尚未满足。
-- 旧模型的 DFII10 从公开 ALFRED 历史版本获取；只读美东版本日期日终再延迟48小时已可见的值。最近观测超过七个 UTC 日历日或不足21个观测时不触发宏观入场；只在能改变决定时读取（宏观仓，或空仓且没有未消费的主信号多头）；此时来源不可确认则本轮决策为未知、不增加风险，主信号出场与保护维护不依赖它。公共数据读取不需要交易凭据以外的新密钥。冷启动不把已经持续的宏观状态或已在进行的主信号当作新信号，也不从价格重建成交归属；检查点版本不符时停止，不用短历史重启。
-- 新入场和同会话补单都要求资金流水审计闭合**当次观察的钱包值**：钱包变化必须被已保存的原生流水解释（差额小于 USDT 原生精度 1e-8）；`pending_income`、`unexplained`、审计失败、只读缓存或换了钱包值都不放行。首次基线只允许空仓入场，持仓时不能靠它加仓。保护、减仓与退出不受审计阻塞。
-- 逐轮核对普通订单、条件订单、成交、持仓、钱包和实际保护。保护必须属于本账户持久化意图，并与当前计划一致；外部或被改动的保护不能充当安全证明。状态不明不增加风险，不把请求回执当成交。
-- 入场使用有价格上限/下限的限价IOC；未成交时下一轮按新状态重新定价。已有自有普通挂单先撤销并核对终态，随后才可能重新挂单；不会盲目修改未明订单。条件入场与外部订单不在可管理范围，发现后停止新风险并报告。
-- 部分成交按实际仓位设置交易所全仓止损/止盈，不按请求数量假设成交。仅在入场所在的会话内，后续轮询可按入场时承诺数量以 IOC 补足：先完成资金流水审计；宏观仓整笔持仓到止损的损失不超过入场时权益的3%；先追加逐仓保证金使强平价仍在原止损之外，追加后重新检查截止时间、停止请求和报价有效期。追加保证金会增加该仓位暴露的抵押品，逐仓总额不得超过模型规模资本；入场后资本额度下调时补单目标按比例缩小，不回到旧目标。3%是价格到止损的距离预算，不含手续费、滑点与资金费，不是硬止亏。不跨会话加仓；机会失效时只减仓退出。
-- 入场成交后，只有该入场单自空仓边界以来的成交证明等于当前持仓，才走最短保护路径（复用写后快照，保护120秒、失败后减仓120秒保留预算），完整归属审计随后进行；外部或人工持仓、无法证明的成交不接管、不写入。
-- 保护调整先建立并回读新保护，再逐一撤旧；未知结果保留恢复记录。替换期间旧保护腿成交造成部分平仓时，只有被自有保护腿的终态成交精确解释的仓位差才继续：仍有效的腿保留，已耗尽的新腿改用新一代身份重建；无法解释、子单仍在成交或仓位扩大都保持未知。仓位没有任何原生全仓保护且替换失败时，走已授权的减仓。保护无法建立时尝试已授权的减仓，并如实报告无法确认的结果。未知的保护、撤保护、只减仓或保证金意图只阻止新风险，不阻止保护与退出；已核实空仓且准备300秒后仍未结算才作废（作废只表示不能再改变敞口）。保护失败后的减仓只针对证明过的自有成交。
-- 正常结束和 Ctrl-C 后禁止新入场，清理自有入场余单并核验实际持仓保护；最终核验预算为120秒，保护建立与授权减仓可使用各自有界阶段，全部续期不得超过原会话截止后的360秒绝对上限（ABSOLUTE_GRACE）。持仓保护保留在交易所。强杀、断电和断网不可能保证收尾成功，下一次启动必须恢复核对。
+开发说明见 [AGENTS.md](AGENTS.md)，当前任务状态见 [PROJECT_STATE.md](PROJECT_STATE.md)。历史代码、研究和交付记录保存在 [archive/pre-slim-20261006](https://github.com/geniusgrok/coinquant/tree/archive/pre-slim-20261006) 分支。
 
-已核验终态、成交、每轮实际账户观察和原生资金流水保存在同一个 `intents.sqlite`；`latest.json` 仍是最后一份报告。密集成交按原生 ID 续页，只有完成数量与账户核对后才推进归档覆盖。连续归档可恢复超过交易所历史保留期的入场；超过保留期的未观察缺口仍返回未知。资金流水缺失阻止新风险，但不阻止已确认的减仓与保护维护。停机期间没有虚构权益，记录不能冒充完整连续 MDD。
-
-网络写入与保护建立不具原子性。原生成交后保护间隙、重复close-all接受行为、真实撮合与迟到成交仍待受控原生验证；详见 [工程验收记录](evidence/bounded-session-20260926/RESULT.md)。
-
-## 必要验证与回放
-
-```sh
-python -m unittest discover -s tests -v
-python -m research.session_replay TAPE.json --state-dir NEW_REPLAY_DIRECTORY
-python -m research.rebuild MYTRIAL --out /tmp/mytrial   # 完整基准，约6分钟；同名证据需要 --overwrite
-```
-
-`research.rebuild` 只写自己创建并带所有权标记的临时状态目录（默认每次唯一目录，拒绝无标记目录、符号链接、仍在运行的所有者），先校验全部参数与输出位置再动文件；部分或子窗口结果不能写入证据目录，同名证据结果需要 `--overwrite` 且原件以 `.superseded-<运行ID>` 保留；每份结果带 `run_id`。
-
-接口事件回放使用**同一个生产会话、决策和执行器**，在每个请求精确匹配后才释放对应响应。它验证调用时序与状态恢复，不是CAGR/MDD账户或历史成交模拟。测试不访问交易账户；CI只有一个Python 3.13离线任务、10分钟上限。
-
-经济测量器 `research.rebuild` 也在 `research.session_exchange.SessionExchange` 上运行同一个 `session.run` 与 `Lifecycle`，按冻结的795个会话起点（`research/session_schedule.json`）从2020-01-01跑完整账户。输入为 Binance 官方 4h/1m 成交与标记价、逐笔成交（aggTrades）、资金费，FRED DEXCHUS 汇率与 ALFRED DFII10；成交量取请求到达后1秒内的逐笔成交上界，不是历史订单簿。口径、各轮修正与压力设置见 `research/redesign-PROTOCOL.md`，结果原件在 `evidence/rebuild-20260927/`；过拟合审计在 `research/robustness.py`（`python -m research.robustness run|report`），结果见 `evidence/robustness-20260929/RESULT.md`。
-
-Binance 月度/日度 vision 文件由 `python -m research.session_market --root /data/coinquant-market` 下载并按官方校验和核对；逐日 aggTrades 从 `data.binance.vision` 放到 `/data/coinquant-prints`（官方文件名与 `.CHECKSUM`）。这两处和由它们生成的 `/data/coinquant-prints-cache` 都不入库，容器换新后需要按 [行情输入恢复](research/redesign-PROTOCOL.md) 重新下载。DEXCHUS、ALFRED DFII10 原件、2019年12月预热行情与合约规则随仓库提交，加载时按记录的 SHA-256 校验。
-
-当前验收契约是 `research/spec.json`。仓库只保留当前版本：旧 Bybit/反向合约实现、旧稀疏调用规格与抽签、历史候选研究脚本及其证据已于2026-09-28清理，需要时从 Git 历史（`3e9a696` 及以前）取回，它们不是当前结果。
-
-命令行只使用 `python -m coinquant`。现有状态目录里的旧 `absent_at_ms` 误拒记录仍须用原订单身份只读恢复，避免迟到成交被错当作无仓位；不要删除原状态目录。
-
-## 尚未完成的交付门
-
-经济目标：2020-01-01 00:00 UTC至2026-09-20 00:00 UTC，右端不含；人民币10,000元、不追加；成本后CAGR≥150%、完整连续账户MDD<50%，纳入会话时序、费用、滑点、资金费、保证金、强平及人民币/USDT估值。
-
-历史M10测量（测量器 M8：读请求占200 ms模拟时间；风险7.5）。下表对应经济源码摘要 `6504a24b…`，测量时 `git_head` 为 `07d78ec`（Python 与 `0fa8045` 相同）；原件在 [M10 结果](evidence/remeasure-20260929-m10/RESULT.md)。账户结果与旧 M9 相同，只少了 20 次会话末尾的空观察超时。更早 R3 的 ¥2,794,265／131.26% 只对应 `evidence/robustness-20260929/m8/`，旧 M9 原件留在 `evidence/remeasure-20260929/`。
-
-| 场景 | 期末人民币 | 成本后 CAGR | 连续 MDD 包络 |
-|---|---|---|---|
-| 基准，风险 7.5 | 1,893,613 | 118.24% | 44.51% |
-| 手续费 +50% | 2,406,523 | 126.17% | 44.79% |
-| 出场滑点 ×2 | 2,118,221 | 121.92% | 44.87% |
-| 深度取用 10% | 2,583,258 | 128.57% | 44.51% |
-| 随机跳过 20% 会话 | 909,932 | 95.69% | 45.39% |
-| 缺席序列 / 21 天空窗 | 1,893,613 | 118.24% | 44.51% |
-
-- MDD 达标，CAGR 未达150%：`economic_qualification` 为 `NOT_MET`。
-- 风险仍是 R3 登记规则选出的 7.5。M10 在当前源码上重跑了全窗口、七个日历年区块和上表压力，同一规则仍然选中 7.5，`PRIMARY_RISK` 不改。全窗口终值对风险不单调（6:¥1.70M、6.5:¥2.02M、7:¥2.21M、7.5:¥1.89M；7 最高）。风险 6 在读延迟 100／200／400 ms 为 ¥2.54M／1.70M／0.88M。手续费 +50%、出场滑点 ×2 和深度取用 10% 的终值高于基准，随机跳过低于基准；这是路径结果，不是这些假设有利。压力 MDD 最高 45.39%。这些百分比都不是稳定估计。
-- 历史 P7（¥5,228,630／153.86%／MDD 44.73%）只对应源码 `a6892b3`，不再描述当前代码：此后的生产修复改变了本地请求权重使用，同一默认参数在其后的一轮旧源码上测得¥0.9–3.4M（`evidence/robustness-20260929/RESULT.md` 的 O0）。M7 上的旧O0／O1数字（风险7.5为¥3,391,332／138.0%／MDD 50.14%，风险6为96.14%）已被 M8 取代。
-- 过拟合审计：脉冲倍数、ATR 窗口、持有根数、止损回撤、止盈次幂各向两侧挪一档，全窗口 CAGR 降到40–102%（中位约91%），模型常数在尖峰上；没有单参数改动通过采纳规则。收益集中于2020与2023年，（M7 上风险6）去掉最好3个月后 CAGR 为38%，2024–2026三年为 +44%、+1%、−9%，滚动一年窗口65%低于150%。没有样本外或前向证据。
-- 2020-01-19 13:09–13:37 UTC 缺29分钟官方标记价而账户持仓。上表按账户所有者2026-09-28接受的实测偏离边界计算，不是完整历史路径（`path_complete=false`）；按逐仓保证金全部没收的上限，旧参数下所有风险倍数 MDD 都超过50%（M2 测量，原件在 Git 历史）。
-- 人民币估值用 FRED DEXCHUS 的事后观测（H.10 每周发布），USDT 按美元等值，兑换成本0.1%为假设；汇率只用于估值，不进入决策。
-- 开空能力、经济结果与原生交易资格分别报告：默认模型不开空；真实账户上的成交、保护替换、断线和迟到成交核对未做；受控试验入口不表示常规生产资格，资格为 `NOT_QUALIFIED`。
-
-详见 [过拟合审计](evidence/robustness-20260929/RESULT.md) 与 [经济重建结果](evidence/rebuild-20260927/RESULT.md)。原生工程资格和经济资格分别取得后才能启用生产。
-
-当前恢复入口：`AGENTS.md`、`PROJECT_STATE.md`、`HANDOFF_PROMPT.md`。
+项目供仓库所有者个人使用，公开可见不授予第三方使用许可，详见 [LICENSE](LICENSE)。

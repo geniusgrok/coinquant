@@ -1,9 +1,0 @@
-{
-  "retired_core_report": "evidence/btc-core-20261004/risk-currency-recovery.json.gz",
-  "sha256": "d49d94de498ba9282f360e40b7575418cf4f006ac26f01843385564f4ef2de7a",
-  "baseline": "113a792efc1531e1f00d5629f45e09756dce6e9c",
-  "new_account_runs": 0,
-  "new795_runs": 0,
-  "public_requests": 0,
-  "raw_failures_preserved": true
-}

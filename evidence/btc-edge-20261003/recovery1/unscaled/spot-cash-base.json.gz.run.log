@@ -1,9 +1,0 @@
-{"candidate": "cash", "scenario": "base", "session": 0}
-{"candidate": "cash", "scenario": "base", "session": 100}
-{"candidate": "cash", "scenario": "base", "session": 200}
-{"candidate": "cash", "scenario": "base", "session": 300}
-{"candidate": "cash", "scenario": "base", "session": 400}
-{"candidate": "cash", "scenario": "base", "session": 500}
-{"candidate": "cash", "scenario": "base", "session": 600}
-{"candidate": "cash", "scenario": "base", "session": 700}
-{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-base.json.gz", "complete": true, "sha256": "4cc06871e517b90c2a00bab5b082d3abbd35772af5bc91eaf95f4382b440a329"}

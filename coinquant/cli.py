@@ -74,15 +74,15 @@ def observe(config_path, *, execute=False):
     venue.begin_cycle(60)
     with State(config.state_dir,config.scope) as state:
         had_pending=bool(state.pending())
-        recovery=venue.recover_pending(state)  # also reopens legacy false rejections
+        recovery=venue.recover_pending(state)
         snapshot=venue.snapshot(config.account_uid)
         Lifecycle(venue,state,config.account_uid).instrument()
         if had_pending or recovery['resolved']:
             # Recovery may observe fills newer than the first account read.
             snapshot=venue.snapshot(config.account_uid)
         report=dict(status='read_only',exchange='Binance',environment=config.environment,symbol='BTCUSDT',
-                    actual=snapshot,qualification='NOT_QUALIFIED',write_attempted=False,
-                    contract_rules_checked=True,source_digest=source_digest(),
+                    actual=snapshot,write_attempted=False,
+                    contract_rules_checked=True,
                     reason='Account and contract observation only')
         report['intent_recovery']=recovery
         report['pending_intents']=recovery['pending']
@@ -142,7 +142,7 @@ def _dispatch(args):
     if args.execute:
         trial_gate(args.config,config,mode=args.trial,uid=args.authorize_uid,evidence=args.demo_evidence)
     return run(config,connect(config,authorize_writes=args.execute),execute=args.execute,
-               trial_mode=args.trial if args.execute else None,source_digest=source_digest())
+               trial_mode=args.trial if args.execute else None,source_digest=source_digest() if args.execute else None)
 
 
 def main(argv=None):

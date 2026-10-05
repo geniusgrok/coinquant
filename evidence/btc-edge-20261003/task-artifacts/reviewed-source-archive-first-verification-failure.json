@@ -1,6 +1,0 @@
-{
-  "recorded_utc": "2026-10-03T05:36:39.341785+00:00",
-  "action": "verify protected Git archive modes",
-  "error": "TypeError: int() cannot convert non-string with explicit base",
-  "diagnosis": "Source protected_modes are integer Git modes; archive was generated but root verification assumed string. No source/helper/financial bytes changed, no producer launched. Preserve generated Spot source manifest/archive and verify actual integer modes before proceeding."
-}

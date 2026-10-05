@@ -1,9 +1,0 @@
-# Task6 forward scoped re-review round3
-
-Read task-6-forward-fix3-brief.md first: binding requirements and exact R1 contract. Read previous task-6-forward-fix2-rereview.md, final appended task-6-forward-report.md and task-6-fix3-evidence-sha256.json. Packages/source commits in task-6-forward-fix3-root-packages.json. Only T6-F6-R1 and material NEW regressions in this fix; F1–F5 remain closed, no broad re-review.
-
-Verify native market_bootstrap completion at successful pure select_macro + persisted Campaign checkpoint before downstream early return. Native advance repeatedly consumes primary while bootstrap pending. Strict bool flag cannot accept missing/null/0/1/string via Python equality; full raw replay derives initial/terminal checkpoints. Inspect original unchanged independent coldstart probe red/final green, normal and deferred missing/repeated missing/first-valid pre-init macro consumption, missing-book persistence and later actual fresh opportunity regressions. Synthetic baseline fixture corrections remain explicit, no actual paper observations/performance. Inspect exact committed synthetic source/normal/pending/warmup CLI audit evidence; whole source/report prefix and index hashes independently verify.
-
-No source/helper/docs edits or commits, no subagents, native/private/account/public-network operations, source freeze/full financial producers/export/actual diary/HOME/UID/lock operations or Coin account suites. Pure actual strategy/raw parser probes safe; retain all evidence. Root owns dirty PROJECT_STATE.md; reviewed source/HEAD frozen. External controller fully approved separately; do not reopen.
-
-Write NEW task-6-forward-fix3-rereview.md: per finding R1 addressed/unaddressed, material fix-new findings, SPEC and QUALITY verdicts, actual package/report/source/index identities, concrete evidence and limitations. Return concise DONE/verdict/report SHA; financial matrix and actual paper init are still pending.

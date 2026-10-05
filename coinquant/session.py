@@ -1,6 +1,5 @@
-"""Manually started finite sessions; live and replay use this exact coordinator."""
+"""Manually started finite sessions with bounded cleanup."""
 import time
-import sqlite3
 
 from .lifecycle import ABSOLUTE_GRACE, FINISH_SECONDS, Lifecycle, blocking
 from .linear_preview import advance, preview
@@ -12,14 +11,11 @@ from decimal import Decimal as D
 from .types import Blocked, ObservationDeadline, Unknown
 from .audit import allows_new_risk, income
 
-_LIFECYCLE_IDENTITY = None  # Only an explicitly scoped offline research context sets this.
-
-
 def _guard_strategy(state):
     """Reject foreign or missing strategy state before recovery and cleanup."""
-    if state.get('lifecycle_identity') != _LIFECYCLE_IDENTITY:
-        raise Blocked('lifecycle research state requires its matching offline consumer')
-    from .linear_preview import Campaign
+    if state.get('lifecycle_identity') is not None:
+        raise Blocked('state belongs to a different strategy; no automatic migration')
+    from .campaign import Campaign
     saved = state.get('linear_campaign')
     if saved is not None:
         Campaign.restore(saved)
@@ -115,9 +111,8 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
         trial_mode=None, source_digest=None):
     """Finite deadline plus bounded cleanup. No timers survive this function.
 
-    `execute` is an explicit operation authorization, not a qualification claim.
+    `execute` is an explicit operation authorization.
     The public CLI requires an explicit bounded trial gate before credentials.
-    Offline replay injects a non-network venue and virtual clock here.
 
     Budgets: trading ends at `deadline`; protection, bounded reduction and the final
     verification each keep their own budget, but none may renew the adapter past
@@ -127,7 +122,7 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
     """
     started=monotonic();deadline=started+config.session_seconds
     report=dict(status='read_only',cycles=0,write_attempted=False,errors=[],observation_timeouts=0,
-                qualification='NOT_QUALIFIED',stop_reason='deadline',cleanup='not_required',
+                stop_reason='deadline',cleanup='not_required',
                 session_started_at_ms=int(reader.clock()*1000))
     if trial_mode is not None:report['trial_mode']=trial_mode
     if source_digest is not None:report['source_digest']=source_digest
@@ -220,7 +215,6 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
             report['protection_replacement_pending']=bool(state.get('session_replacement'))
             if config.capital_limit is not None:
                 report['sizing_capital_usdt']=str(config.capital_limit)
-                report['sizing_capital_means']='model sizing capital, not a cumulative loss limit'
             if execute:report['entry_timing']=state.get('entry_timing')
             report['write_attempted']=(state.get('write_attempt_count') or 0)>prior_writes
             if report['pending_intents']:
@@ -237,12 +231,5 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                 report.update(status='executed' if report['write_attempted'] else 'no_action',
                               reason='Last poll ended at the observation deadline; closing verification settled')
             report['elapsed_seconds']=max(0,monotonic()-started)
-            try:
-                state.backup('session')
-                report['state_backup']='saved'
-            except (OSError, ValueError, sqlite3.Error) as exc:
-                report['state_backup']='failed'
-                report['errors']=(report['errors']+[dict(phase='backup',error_type=type(exc).__name__,
-                                                       reason='Consistent state backup failed')])[-10:]
             state.report(report)
     return report

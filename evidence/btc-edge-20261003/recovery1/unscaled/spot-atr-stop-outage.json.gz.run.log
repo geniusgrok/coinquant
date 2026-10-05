@@ -1,9 +1,0 @@
-{"candidate": "atr-stop", "scenario": "outage", "session": 0}
-{"candidate": "atr-stop", "scenario": "outage", "session": 100}
-{"candidate": "atr-stop", "scenario": "outage", "session": 200}
-{"candidate": "atr-stop", "scenario": "outage", "session": 300}
-{"candidate": "atr-stop", "scenario": "outage", "session": 400}
-{"candidate": "atr-stop", "scenario": "outage", "session": 500}
-{"candidate": "atr-stop", "scenario": "outage", "session": 600}
-{"candidate": "atr-stop", "scenario": "outage", "session": 700}
-{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-outage.json.gz", "complete": true, "sha256": "41863d08944d564007903570be57f476cffc3c9d6c214bd9174c17bb512a7de2"}

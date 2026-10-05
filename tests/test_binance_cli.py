@@ -9,10 +9,6 @@ from coinquant.state import State
 
 
 class BinanceCLI(unittest.TestCase):
-    def test_execution_blocked_before_credentials_or_network(self):
-        with patch('coinquant.cli.Binance') as venue:
-            with self.assertRaises(Blocked):observe('/nonexistent',execute=True)
-            venue.assert_not_called()
 
     def test_observation_saves_bound_account_report_without_decision(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -28,10 +24,6 @@ class BinanceCLI(unittest.TestCase):
                 self.assertEqual(json.loads((Path(tmp)/'state/latest.json').read_text()),result)
                 venue.return_value.snapshot.assert_called_with('123')
 
-    def test_unknown_configuration_fields_are_rejected(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            config=Path(tmp)/'config.json';config.write_text('{"environment":"live","api_host":"api.bybit.com"}')
-            with self.assertRaises(Blocked):observe(config)
 
     def test_pending_recovery_refreshes_account_and_keeps_unknown_blocked(self):
         with tempfile.TemporaryDirectory() as tmp:

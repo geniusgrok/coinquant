@@ -1,9 +1,0 @@
-{"candidate": "cash", "scenario": "slip2", "session": 0}
-{"candidate": "cash", "scenario": "slip2", "session": 100}
-{"candidate": "cash", "scenario": "slip2", "session": 200}
-{"candidate": "cash", "scenario": "slip2", "session": 300}
-{"candidate": "cash", "scenario": "slip2", "session": 400}
-{"candidate": "cash", "scenario": "slip2", "session": 500}
-{"candidate": "cash", "scenario": "slip2", "session": 600}
-{"candidate": "cash", "scenario": "slip2", "session": 700}
-{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-cash-slip2.json.gz", "complete": true, "sha256": "5bb969e0772e42faf479eeacb5864f3a1650bc7bd4d82d41f5c017a92dae87e3"}

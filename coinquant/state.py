@@ -13,7 +13,7 @@ import os
 import socket
 from pathlib import Path
 import sqlite3
-from time import time, time_ns
+from time import time
 
 from .types import Blocked, Unknown, serial, number
 from .campaign import ORIGIN
@@ -98,7 +98,7 @@ class State:
                     and type(prior.get('at')) is float and now-prior['at'] < 600):
                 raise Blocked('this account state was written by another machine in the last 10 minutes')
             if saved is not None and version != SCHEMA_VERSION:
-                self.backup('schema')
+                raise Blocked('incompatible state schema; use its matching code')
             self.set_many({'identity': self.identity, 'schema_version': SCHEMA_VERSION})
             self.set('writer_host', {'host': host, 'pid': os.getpid(), 'at': now})
             return self
@@ -108,27 +108,6 @@ class State:
         except Exception:
             self.__exit__(None, None, None)
             raise
-
-    def backup(self, reason: str) -> Path:
-        """Consistent SQLite copy; keep three completed session copies."""
-        folder = self.directory / 'backups'
-        folder.mkdir(exist_ok=True, mode=0o700)
-        target = folder / f'intents-{reason}-{time_ns()}.sqlite'
-        temporary = target.with_suffix('.tmp')
-        try:
-            copy = sqlite3.connect(temporary)
-            try:
-                self.db.backup(copy)
-            finally:
-                copy.close()
-            os.replace(temporary, target)
-            if reason == 'session':
-                for old in sorted(folder.glob('intents-session-*.sqlite'))[:-3]:
-                    old.unlink()
-        except Exception:
-            temporary.unlink(missing_ok=True)
-            raise
-        return target
 
     def __exit__(self, *args):
         if self.db is not None:

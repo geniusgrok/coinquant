@@ -1,6 +1,0 @@
-$ python -m unittest tests.test_edge_forward tests.test_preview tests.test_model
-....s....s.......................................
-----------------------------------------------------------------------
-Ran 49 tests in 1.091s
-
-OK (skipped=2)

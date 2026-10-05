@@ -1,9 +1,0 @@
-{"candidate": "protected-participation-25", "scenario": "outage", "session": 0}
-{"candidate": "protected-participation-25", "scenario": "outage", "session": 100}
-{"candidate": "protected-participation-25", "scenario": "outage", "session": 200}
-{"candidate": "protected-participation-25", "scenario": "outage", "session": 300}
-{"candidate": "protected-participation-25", "scenario": "outage", "session": 400}
-{"candidate": "protected-participation-25", "scenario": "outage", "session": 500}
-{"candidate": "protected-participation-25", "scenario": "outage", "session": 600}
-{"candidate": "protected-participation-25", "scenario": "outage", "session": 700}
-{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-protected-participation-25-outage.json.gz", "complete": true, "sha256": "5d42ad434b3a9c9edcd558ae088c81f1a84638c052d4200223a0807ce0b83855"}

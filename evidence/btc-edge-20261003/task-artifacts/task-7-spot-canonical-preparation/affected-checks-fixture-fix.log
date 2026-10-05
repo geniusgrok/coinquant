@@ -1,8 +1,0 @@
-test_forward_exact_raw_source_and_native_decision_agree (test_canonical_crowding.CanonicalCrowdingTests.test_forward_exact_raw_source_and_native_decision_agree) ... ok
-test_missing_inputs_preserve_safety_exit_and_native_stop_floor (test_canonical_crowding.CanonicalCrowdingTests.test_missing_inputs_preserve_safety_exit_and_native_stop_floor) ... ok
-test_shared_research_predicate_and_exactly_one_half_size (test_canonical_crowding.CanonicalCrowdingTests.test_shared_research_predicate_and_exactly_one_half_size) ... ok
-
-----------------------------------------------------------------------
-Ran 3 tests in 0.057s
-
-OK

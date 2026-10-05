@@ -1,9 +1,0 @@
-{
-  "patch_response_head": "90fd8c35a65e786b75a97fc168a737b0ebca630d",
-  "actual_pr_head": "78655f0202c8d9f90bfd2e748250e42b728e63f2",
-  "actual_branch_head": "78655f0202c8d9f90bfd2e748250e42b728e63f2",
-  "pr_state": "open",
-  "draft": true,
-  "mergeable": true,
-  "body_matches": true
-}

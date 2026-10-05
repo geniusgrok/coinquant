@@ -1,1 +1,0 @@
-{"event": "controller_error", "stage": "output_hash", "label": "first", "error": "OSError('output hash unavailable')", "recorded_utc": "2026-10-03T05:53:04.739385+00:00"}

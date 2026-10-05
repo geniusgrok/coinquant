@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/workspace/scratch/btc-alpha-beta-edge-20261003/financial-review/final-binding/bind.py", line 39, in <module>
-    receipts[label]={'start':bound(sp),'finish':bound(fp),'log':bound(lp),'actual_exit':code,'command':s['command']}
-                                                                                                       ~^^^^^^^^^^^
-KeyError: 'command'

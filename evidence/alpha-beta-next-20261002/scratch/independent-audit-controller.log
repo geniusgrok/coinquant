@@ -1,3 +1,0 @@
-{"audited_bundle": "spot-consensus", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}
-{"audited_bundle": "spot-trend-reentry", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}
-{"audited_bundle": "spot-target-participation", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}

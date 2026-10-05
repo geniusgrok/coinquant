@@ -1,9 +1,0 @@
-{
-  "finished_utc": "2026-10-03T12:10:51.343721+00:00",
-  "exit_code": 0,
-  "command_start_sha256": "1a996f3d56221ec62b9cc9d1e50fe75837427e0a73984aecf6d0f696bcc489ac",
-  "log_sha256": "9a1978739eed0e5c0d793ed98b5213eb7dbd7eba130e263145df79eea474b769",
-  "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/perp-risk-phase-input-binding.json",
-  "output_sha256": "a81e3a33d09a59c41ffe636862860f15c85cc8c02d051972c36700a69fec6628",
-  "production_profile_sha256": "6379f0ebe633f3f6c69a66d207feafcd40d6d5feb13c8828de3e1074e0e97bfd"
-}

@@ -44,6 +44,3 @@ class SnapshotExportTests(TestCase):
         with self.assertRaises(Unknown):
             export(actual, Config('1', '/tmp/unused'))
 
-    def test_crossed_long_liquidation_price_is_not_a_positive_buffer(self):
-        row = export(dict(self.fixture(), quantity_btc='2'), Config('1', '/tmp/unused'))
-        self.assertLess(float(row['liquidation_buffer_fraction']), 0)

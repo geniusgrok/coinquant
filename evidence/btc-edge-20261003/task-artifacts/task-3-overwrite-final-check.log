@@ -1,7 +1,0 @@
-usage: edge_spot.py [-h] --candidate
-                    {atr-stop,exit-confirm,stop-budget,crowding-interaction,cash,protected-participation-25,protected-participation-50,protected-participation-75,protected-participation-100,combo}
-                    --scenario {base,fee150,slip2,outage} --out OUT
-                    [--risk-calibration RISK_CALIBRATION]
-                    [--initial-cny {2500,5000,7500,10000}]
-                    [--features FEATURES] [--limit LIMIT] [--combo COMBO]
-edge_spot.py: error: clean committed source, exclusive output, and partial limits 1..795 only in /tmp required

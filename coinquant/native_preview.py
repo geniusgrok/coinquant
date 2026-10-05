@@ -1,12 +1,10 @@
 """Current native inputs for a conservatively funded entry preview.
 
-Current rules are never substituted for historical replay evidence. No method
-here sends an order, transfers funds, or marks a campaign as filled.
+No method here sends an order, transfers funds, or marks a campaign as filled.
 """
 from decimal import Decimal as D, ROUND_CEILING
 from .types import Blocked, Unknown, number, floor_step
-from .linear_account import Account
-from .linear_sizing import funded_target
+from .binance import market_quantity
 
 # Share of visible depth inside the IOC limit taken per order; later polls of
 # the entry session may top up the rest of the committed campaign size.
@@ -85,6 +83,63 @@ def _venue(reader, model, snapshot, direction):
                 mark=number(fresh['mark_price'],positive=True))
 
 
+def _funded_quantity(v, direction, stop, take, requested, *, q=D(0), entry=D(0), margin=D(0)):
+    """Round a proposed add and fund its combined position beyond the native stop."""
+    price,mark,fee,mmr=v['price'],v['mark'],v['fee'],v['mmr']
+    if (direction not in (-1,1) or min(price,mark,stop,take)<=0
+            or not requested.is_finite() or requested<0
+            or not 0<=fee<D('.05') or not 0<=mmr<D('.05')
+            or q and q*direction<=0):
+        raise ValueError('invalid funded entry inputs')
+    old=abs(q)
+    raw=min(requested,v['cap']/max(price,mark))
+    result=dict(requested=str(requested),quantity=D(0),margin=margin,reason='minimum_or_unchanged')
+    # This function only sizes entries/adds. Native reductions have their own
+    # reduce-only lifecycle and never pass through an account simulation.
+    if raw<=old:
+        return result
+    delta=market_quantity(min(raw-old,v['capacity']),price,v['instrument'],order='LIMIT')
+    if not delta:
+        return result
+    reason=('liquidity_cap' if v['capacity']<raw-old else
+            'notional_cap' if raw<requested else 'target')
+    if not (stop<min(price,mark)<=max(price,mark)<take if direction>0
+            else take<min(price,mark)<=max(price,mark)<stop):
+        result['reason']='protection';return result
+    boundary=stop-direction*mark*D('.10')
+    if boundary<=0:
+        result['reason']='gap_boundary';return result
+
+    def funded(amount):
+        quantity=old+amount
+        average=(old*entry+amount*price)/quantity
+        total=direction*quantity
+        entry_fee=amount*price*fee
+        required=max(margin,quantity*average/20,
+                     total*average-(total-quantity*(mmr+fee))*boundary)
+        reserve=quantity*max(price,mark)*(D('.01')+fee)
+        if required+reserve+entry_fee>v['capital']:
+            return None
+        liquidation=(total*average-required)/(total-quantity*(mmr+fee))
+        if not (liquidation<stop<mark if direction>0 else mark<stop<liquidation):
+            return None
+        return required
+
+    required=funded(delta)
+    if required is None:
+        low,high=D(0),delta
+        for _ in range(48):
+            middle=(low+high)/2
+            if funded(middle) is None:high=middle
+            else:low=middle
+        delta=market_quantity(low,price,v['instrument'],order='LIMIT')
+        required=funded(delta) if delta else None
+        reason='funding_cap'
+    if required is None:
+        result['reason']='insufficient_funded_minimum';return result
+    return dict(requested=str(requested),quantity=delta,margin=required,reason=reason)
+
+
 def entry_preview(reader, model, snapshot):
     if model.action(number(snapshot['quantity_btc']))!='enter':
         raise Blocked('entry preview requires a fresh flat campaign')
@@ -99,30 +154,24 @@ def entry_preview(reader, model, snapshot):
     take=(floor_step(opportunity.take,tick)+tick if direction>0 else floor_step(opportunity.take,tick))
     if not all(number(v['rule']['minPrice'])<=p<=number(v['rule']['maxPrice']) for p in (stop,take,price)):
         raise Blocked('protection outside current price limits')
-    account=Account(capital)
     fraction=model.entry_fraction('.0011')
-    target=budget=None
+    target=capital*fraction/max(price,mark)
+    budget=None
     if opportunity is model.macro_opportunity:
-        # The macro parent has the historical 3% equity-to-stop loss ceiling.
+        # The macro campaign has a 3% equity-to-stop loss ceiling.
         if price<=stop:raise Blocked('macro stop must be below executable entry')
         budget=capital*MACRO_STOP_BUDGET
-        target=min(capital*fraction/max(price,mark),budget/(price-stop))
-    result=funded_target(account,direction,fraction,price,mark,stop,take,v['capacity'],
-                         v['instrument'],fee=v['fee'],maintenance=v['mmr'],notional_limit=v['cap'],
-                         target_quantity=target)
-    return dict(quantity_btc=str(account.q),entry_estimate=str(price),stop=str(stop),take=str(take),
-                allocated_margin_usdt=str(account.margin),constraint=result['reason'],
+        target=min(target,budget/(price-stop))
+    result=_funded_quantity(v,direction,stop,take,target)
+    return dict(quantity_btc=str(direction*result['quantity']),entry_estimate=str(price),stop=str(stop),take=str(take),
+                allocated_margin_usdt=str(result['margin']),constraint=result['reason'],
                 requested_btc=result['requested'],
-                quantity_status='read-only conservative native-input preview',
                 fee=str(v['fee']),maintenance_bound=str(v['mmr']),maintenance_deduction='0',notional_cap=str(v['cap']),
-                rule_scope='current observation only; not historical evidence',
-                native_execution_verified=False,instrument=v['instrument'],
+                instrument=v['instrument'],
                 side='BUY' if direction>0 else 'SELL',campaign=opportunity.identity,
                 observed_at=v['fresh']['mark_time'],
                 stop_budget_usdt=None if budget is None else str(budget),
-                macro_budget_means=None if budget is None else 'price distance to the stop; excludes fees, slippage and funding',
-                sizing_capital_usdt=str(capital),
-                sizing_capital_means='model sizing capital, not a cumulative loss limit')
+                sizing_capital_usdt=str(capital))
 
 
 def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=None, entry_capital=None):
@@ -153,17 +202,14 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
     if entry_capital is not None and v['capital']<number(entry_capital):
         # A lowered budget never grows the position back toward the earlier, larger plan.
         target=min(target,number(requested)*v['capital']/number(entry_capital))
-    account=Account(v['capital'],q=q,entry=entry,margin=number(snapshot['isolated_wallet_usdt']))
+    margin=number(snapshot['isolated_wallet_usdt'])
     if target<=abs(q):
         return dict(quantity_btc='0',entry_estimate=str(price),stop=str(stop),take=str(take),
-                    allocated_margin_usdt=str(account.margin),constraint='stop_budget',
+                    allocated_margin_usdt=str(margin),constraint='stop_budget',
                     side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],tick=str(tick),
                     sizing_capital_usdt=str(v['capital']))
-    result=funded_target(account,direction,D(0),price,mark,stop,take,v['capacity'],
-                         v['instrument'],fee=v['fee'],maintenance=v['mmr'],notional_limit=v['cap'],
-                         target_quantity=target,intended_add=True)
-    added=number(result['accepted']) if result['event']=='rebalance_add' else D(0)
-    return dict(quantity_btc=str(added),entry_estimate=str(price),stop=str(stop),take=str(take),
-                allocated_margin_usdt=str(account.margin),constraint=result['reason'],
+    result=_funded_quantity(v,direction,stop,take,target,q=q,entry=entry,margin=margin)
+    return dict(quantity_btc=str(result['quantity']),entry_estimate=str(price),stop=str(stop),take=str(take),
+                allocated_margin_usdt=str(result['margin']),constraint=result['reason'],
                 side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],
                 tick=str(tick),sizing_capital_usdt=str(v['capital']))

@@ -1,9 +1,0 @@
-{"candidate": "exit-confirm", "scenario": "fee150", "session": 0}
-{"candidate": "exit-confirm", "scenario": "fee150", "session": 100}
-{"candidate": "exit-confirm", "scenario": "fee150", "session": 200}
-{"candidate": "exit-confirm", "scenario": "fee150", "session": 300}
-{"candidate": "exit-confirm", "scenario": "fee150", "session": 400}
-{"candidate": "exit-confirm", "scenario": "fee150", "session": 500}
-{"candidate": "exit-confirm", "scenario": "fee150", "session": 600}
-{"candidate": "exit-confirm", "scenario": "fee150", "session": 700}
-{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-exit-confirm-fee150.json.gz", "complete": true, "sha256": "d03cb045553cee8fc1434b6318c9119c14d12bbdf965179443b26aa905ffe017"}

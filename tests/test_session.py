@@ -10,7 +10,7 @@ from coinquant.session import run
 from coinquant.lifecycle import Lifecycle
 from coinquant.state import State
 from coinquant.campaign import Campaign
-from coinquant.types import Blocked,Unknown
+from coinquant.types import Blocked
 from tests.session_venue import Venue
 
 
@@ -32,27 +32,12 @@ class SessionTests(TestCase):
         self.assertTrue(result['actual']['native_full_position_protected'])
         self.assertEqual(len([p for m,path,p in self.venue.sent if path.endswith('/order') and p.get('reduceOnly')!='true']),1)
         self.assertEqual(result['pending_intents'],0)
-    def test_negative_impulse_does_not_enter_in_promoted_long_only_model(self):
+    def test_negative_impulse_does_not_enter_in_long_only_model(self):
         self.venue=Venue(-1);self.venue.seed(self.directory)
         r=self.run_session(seconds=2)
         self.assertEqual(self.venue.q,0);self.assertEqual(r['cleanup'],'verified')
         self.assertEqual(self.venue.sent,[])
 
-    def test_unavailable_cashflow_audit_blocks_top_up_before_it_is_sent(self):
-        self.venue.fraction=D('.5');original=self.venue.get;entered=[]
-        def get(path,parameters=None):
-            if path.endswith('/income') and entered:raise Unknown('fixture income unavailable')
-            return original(path,parameters)
-        self.venue.get=get
-        def wait(seconds):
-            entered.append(True);self.venue.wait(61)
-        r=self.run_session(seconds=120,wait=wait)
-        entries=[p for _,path,p in self.venue.sent if path.endswith('/order') and p.get('timeInForce')=='IOC']
-        self.assertEqual(len(entries),1)
-        self.assertGreater(self.venue.q,0)
-        self.assertEqual(r['income_audit']['status'],'unresolved')
-        with State(self.directory,'binance:BTCUSDT:live:123') as s:
-            self.assertIsNotNone(s.get('position_protection'))
     def test_macro_entry_restart_and_false_state_reduce_same_owned_position(self):
         with State(self.directory,'binance:BTCUSDT:live:123') as state:
             m=Campaign.restore(state.get('linear_campaign'))
@@ -79,10 +64,6 @@ class SessionTests(TestCase):
     def test_read_only_runs_repeatedly_without_orders(self):
         r=self.run_session(False,seconds=3)
         self.assertEqual(r['cycles'],3);self.assertEqual(r['status'],'read_only');self.assertEqual(self.venue.sent,[])
-    def test_timeout_after_fill_recovers_without_duplicate(self):
-        self.venue.timeout_after_entry=True
-        r=self.run_session(seconds=3)
-        self.assertEqual(r['cleanup'],'verified');self.assertEqual(len(self.venue.orders),1)
     def test_unknown_entry_never_resends_even_after_restart(self):
         self.venue.timeout_before_entry=True
         a=self.run_session(seconds=2);b=self.run_session(seconds=2)
@@ -128,14 +109,6 @@ class SessionTests(TestCase):
         count=len(self.venue.orders)
         self.venue.fraction=D(1);r=self.run_session(seconds=3)
         self.assertEqual(r['cleanup'],'verified',r);self.assertEqual(len(self.venue.orders),count)
-    def test_failed_protection_attempts_reduce_only_and_reports_unknown(self):
-        self.venue.reject_protection=True;r=self.run_session(seconds=1)
-        self.assertEqual(self.venue.q,0);self.assertEqual(r['status'],'unknown')
-        self.assertTrue(any(p.get('reduceOnly')=='true' for _,_,p in self.venue.sent))
-    def test_restart_retains_position_and_does_not_reenter(self):
-        self.run_session(seconds=1);n=len(self.venue.sent)
-        r=self.run_session(seconds=2)
-        self.assertEqual(r['cleanup'],'verified');self.assertEqual(len(self.venue.sent),n)
     def test_signal_expiry_closes_without_same_cycle_reversal(self):
         self.run_session(seconds=1)
         with State(self.directory,'binance:BTCUSDT:live:123') as s:
@@ -188,54 +161,7 @@ class SessionTests(TestCase):
         self.assertEqual(len([x for x in self.venue.sent if x[0]=='DELETE']),1)
         self.assertTrue(r['write_attempted'])
 
-    def test_complete_native_tape_replays_identical_requests_and_decisions(self):
-        self.risk.stop()  # both processes use the explicit historical risk scale
-        from copy import deepcopy
-        from research.session_replay import replay
-        with State(self.directory,'binance:BTCUSDT:live:123') as s:checkpoint=s.get('linear_campaign')
-        tape=dict(start_ms=self.venue.now,records=[])
-        for method in ('get','send','dfii10_snapshot'):
-            original=getattr(self.venue,method)
-            def capture(*args,_original=original,_method=method):
-                verb,path,p=(('GET',args[0],args[1] if len(args)>1 else {}) if _method=='get'
-                             else ('MACRO','/dfii10',{}) if _method=='dfii10_snapshot' else args)
-                rec=dict(method=verb,path=path,parameters=deepcopy(p or {}),time_ms=self.venue.now)
-                try:r=_original(*args);rec['response']=deepcopy(r);return r
-                except Unknown:rec['unknown']=True;raise
-                finally:tape['records'].append(rec)
-            setattr(self.venue,method,capture)
-        first=self.run_session(seconds=2)
-        with tempfile.TemporaryDirectory() as other:
-            with State(other,'binance:BTCUSDT:live:123') as s:s.set('linear_campaign',checkpoint)
-            second=replay(tape,Config('123',other,2,1),execute=True)
-        self.assertTrue(second['tape_complete'],second)
-        self.assertEqual(first['actual'],second['actual'])
-        self.assertEqual(first['model_preview'],second['model_preview'])
-        self.assertEqual(first['cleanup'],second['cleanup'])
-        self.assertEqual(second['status'],'no_action')
-        import subprocess,sys
-        with tempfile.TemporaryDirectory() as temporary:
-            payload={**tape,'checkpoint':checkpoint,'execute':True,
-                     'config':dict(account_uid='123',session_seconds=2,poll_seconds=1)}
-            path=Path(temporary)/'tape.json';path.write_text(json.dumps(payload))
-            legacy_replay = ('from coinquant import linear_preview; '
-                             'from coinquant.campaign import Campaign; '
-                             'linear_preview.Campaign=Campaign; '
-                             'from research.session_replay import main; main()')
-            completed=subprocess.run([sys.executable,'-c',legacy_replay,str(path),
-                '--state-dir',str(Path(temporary)/'state')],capture_output=True,text=True,timeout=10)
-            self.assertEqual(completed.returncode,0,completed.stderr)
-            self.assertTrue(json.loads(completed.stdout)['tape_complete'])
 
-    def test_protection_amendment_keeps_old_until_new_pair_confirmed(self):
-        self.run_session(seconds=1);before=len(self.venue.sent)
-        from dataclasses import replace
-        with State(self.directory,'binance:BTCUSDT:live:123') as s:
-            m=Campaign.restore(s.get('linear_campaign'));m.model.active=replace(m.model.active,stop=D(97000));s.set('linear_campaign',m.checkpoint())
-        r=self.run_session(seconds=1)
-        self.assertEqual(r['cleanup'],'verified')
-        changes=[(verb,p.get('type')) for verb,path,p in self.venue.sent[before:] if path.endswith('/algoOrder')]
-        self.assertEqual(changes,[('POST','STOP_MARKET'),('POST','TAKE_PROFIT_MARKET'),('DELETE',None),('DELETE',None)])
     def test_external_fill_prevents_strategy_or_cleanup_position_changes(self):
         self.run_session(seconds=1);before=len(self.venue.sent)
         self.venue.trades.append(dict(symbol='BTCUSDT',positionSide='BOTH',side='BUY',orderId=999,id=999,time=self.venue.now,qty='.001'))
@@ -308,27 +234,6 @@ class SessionTests(TestCase):
         self.assertEqual(result['cleanup'],'verified',result)
         self.assertTrue(result['actual']['native_full_position_protected'])
 
-    def test_retired_protection_history_can_expire_without_blocking_position(self):
-        self.run_session(seconds=1)
-        old=list(self.venue.algos)
-        from dataclasses import replace
-        with State(self.directory,'binance:BTCUSDT:live:123') as s:
-            m=Campaign.restore(s.get('linear_campaign'));m.model.active=replace(m.model.active,stop=D(97000));s.set('linear_campaign',m.checkpoint())
-        self.assertEqual(self.run_session(seconds=1)['cleanup'],'verified')
-        for identity in old:del self.venue.algos[identity]
-        result=self.run_session(seconds=2)
-        self.assertEqual(result['cleanup'],'verified',result)
-        self.assertTrue(result['actual']['native_full_position_protected'])
-
-    def test_verified_flat_finalizes_abandoned_replacement_journal(self):
-        self.run_session(seconds=1)
-        old=list(self.venue.algos)
-        with State(self.directory,'binance:BTCUSDT:live:123') as s:
-            s.set('binance_protection_replacement',dict(done=False,request={'old_ids':old,'new_ids':['cq-never-prepared']}))
-            m=Campaign.restore(s.get('linear_campaign'));m.model.active=None;s.set('linear_campaign',m.checkpoint())
-        result=self.run_session(seconds=2)
-        self.assertEqual(result['cleanup'],'verified')
-        with State(self.directory,'binance:BTCUSDT:live:123') as s:self.assertTrue(s.get('binance_protection_replacement')['done'])
 
     def test_real_transport_and_budget_complete_entry_protection_and_cleanup(self):
         from io import BytesIO

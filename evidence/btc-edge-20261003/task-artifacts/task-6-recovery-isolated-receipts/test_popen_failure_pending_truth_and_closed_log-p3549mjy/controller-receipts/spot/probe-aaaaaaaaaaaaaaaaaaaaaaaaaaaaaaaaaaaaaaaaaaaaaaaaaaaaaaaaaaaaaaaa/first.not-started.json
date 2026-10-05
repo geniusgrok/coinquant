@@ -1,6 +1,0 @@
-{
-  "label": "first",
-  "state": "not_started",
-  "error": "OSError('isolated Popen failure')",
-  "recorded_utc": "2026-10-03T06:01:43.804746+00:00"
-}

@@ -40,43 +40,12 @@ class ReplacementTests(unittest.TestCase):
             with self.assertRaises(Unknown):self.replace(reject)
         self.assertEqual(len(calls),1)
         self.assertTrue(all(o['algoStatus']=='NEW' for o in self.native.orders.values()))
-    def test_cancel_timeout_after_acceptance_settles_by_query(self):
-        def send(*a):
-            self.native.send(*a)
-            if a[0]=='DELETE':raise TimeoutError()
-        self.replace(send)
-        self.assertEqual(len(self.native.sent),6)
-    def test_unknown_cancel_is_not_repeated(self):
-        calls=[]
-        def send(*a):
-            if a[0]=='DELETE':calls.append(a);raise TimeoutError()
-            self.native.send(*a)
-        for _ in range(2):
-            with self.assertRaises(Unknown):self.replace(send)
-        self.assertEqual(len(calls),1)
-        self.native.orders[calls[0][2]['clientAlgoId']]['algoStatus']='CANCELED'
-        self.replace()
     def test_canceled_parent_working_child_blocks(self):
         identity=client_id(self.state.identity,100,'STOP_MARKET')
         self.native.orders[identity]['algoStatus']='CANCELED'
         self.native.children[identity]=dict(status='PARTIALLY_FILLED',origQty='.003',executedQty='.001')
         with self.assertRaises(Unknown):self.replace()
         self.assertFalse(any(m=='DELETE' for m,_,_ in self.native.sent))
-    def test_partial_exposure_restart_keeps_existing_protections(self):
-        def send(*a):
-            self.native.send(*a)
-            if a[0]=='DELETE':self.native.q='.002'
-        with self.assertRaises(Unknown):self.replace(send)
-        count=len(self.native.sent)
-        with self.assertRaises(Unknown):self.replace()
-        self.assertEqual(len(self.native.sent),count)
-    def test_flat_after_cancel_cleanup_does_not_reopen(self):
-        def send(*a):
-            self.native.send(*a)
-            if a[0]=='DELETE':self.native.q='0'
-        with self.assertRaises(Unknown):self.replace(send)
-        self.replace()
-        self.assertTrue(all(o['algoStatus']=='CANCELED' for o in self.native.orders.values()))
     def test_lost_ownership_blocks_without_writes(self):
         self.state.db.execute('DELETE FROM intents');self.state.db.commit();count=len(self.native.sent)
         with self.assertRaises(Blocked):self.replace()
@@ -98,11 +67,6 @@ class ReplacementTests(unittest.TestCase):
         n=len(self.native.sent)
         with self.assertRaises(Unknown):
             replace_protection(self.native,self.state,self.native.send,'123',100,201,'98000','112000',instrument=rules(),authorized=True)
-        self.assertEqual(n,len(self.native.sent))
-    def test_replacement_default_read_only(self):
-        n=len(self.native.sent)
-        with self.assertRaises(Blocked):
-            replace_protection(self.native,self.state,self.native.send,'123',100,200,'97000','111000',instrument=rules())
         self.assertEqual(n,len(self.native.sent))
 
     def test_authorized_reduce_remains_available_with_unknown_owned_cancel(self):

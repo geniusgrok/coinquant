@@ -1,6 +1,0 @@
-{
-  "label": "second",
-  "state": "not_started",
-  "error": "ValueError('existing output/progress/invocation receipt: /tmp/controller-isolated-w374w2rw/SIGTERM/second.json')",
-  "recorded_utc": "2026-10-03T04:44:45.114326+00:00"
-}

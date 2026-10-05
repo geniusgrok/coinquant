@@ -1,7 +1,0 @@
-{
-  "actual_risk_path": "/workspace/scratch/alpha-beta-next/risk-spot-project-early.json.gz",
-  "actual_risk_sha256": "42de6af1d1761ccf0260f81793e7746eb56eb08817c944e282f0f8479cced87f",
-  "actual_calibration_path": "/workspace/scratch/alpha-beta-next/spot-project-calibration.json",
-  "actual_calibration_sha256": "d574693fe94480c598dc1698b008147267227385ada31df82eab9498d38e7b2b",
-  "scope": "Actual Spot risk replays only; unified final assessment and independent review pending"
-}

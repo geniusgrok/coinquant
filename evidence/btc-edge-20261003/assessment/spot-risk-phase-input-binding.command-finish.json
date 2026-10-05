@@ -1,9 +1,0 @@
-{
-  "finished_utc": "2026-10-03T12:10:21.793781+00:00",
-  "exit_code": 0,
-  "command_start_sha256": "dbe2509599b3170a7dd1f47fa87ef079f2b54b1a02fc6bcdbcc0b0a39eebc1b3",
-  "log_sha256": "c1a5e5f9dbfcdf763cb3d1b371cc491c79b5edb4f077e71b78ec7ed1621a3acd",
-  "output": "/workspace/scratch/btc-alpha-beta-edge-20261003/assessment/spot-risk-phase-input-binding.json",
-  "output_sha256": "1c3afe89b91b871d08c07a190689a9e81f5e5700b3a02f358cd46ee6815aebf9",
-  "production_profile_sha256": "7dc82577afa57db44f2c0d25e976826862e9cfbc6713d61baec4656ae55691f4"
-}

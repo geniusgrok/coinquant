@@ -1,1 +1,0 @@
-{"audit": true, "events": 2, "qualification": "NOT_QUALIFIED", "scope": "raw_ledger_reconstruction_only", "source_binding_verified": false}

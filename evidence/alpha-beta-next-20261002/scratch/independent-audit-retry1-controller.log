@@ -1,9 +1,0 @@
-{"audited_bundle": "spot-consensus", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}
-{"audited_bundle": "spot-trend-reentry", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}
-{"audited_bundle": "spot-target-participation", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}
-{"audited_bundle": "spot-atr-close", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}
-{"audited_bundle": "spot-atr-stop", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}
-{"audited_bundle": "spot-core-permanent", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}
-{"audited_bundle": "spot-core-slow", "accounts": 4, "all_checks_passed": true, "all_reported_complete": true}
-{"audited_bundle": "perp-singletons", "accounts": 20, "all_checks_passed": true, "all_reported_complete": true}
-{"finished_unscaled_audits": true, "account_count": 48}

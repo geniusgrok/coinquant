@@ -1,8 +1,0 @@
-$ PYTHONPATH=/workspace/btc-alpha-beta-improve/spotquant python /workspace/btc-alpha-beta-improve/task-artifacts/task-6-forward-review-probe.py spot
-T6-F1 before: ['incomplete_public_protection_path'] btc= 12.71449
-T6-F1 after: ['incomplete_public_protection_path', 'protective_path_ambiguous_OHLC_no_exact_fill', 'current_mark_through_modeled_protection'] btc= 12.71449 fills= [] audit= True
-T6-F3 before: entry_day_ms= 130000 peak= 112.133211 canonical_high_counts= False
-T6-F3 after: peak= 112.133211
-T6-F4 stops: ['78.49', '78.49', '78.49']
-T6-F4 transition: unresolved= [] money= [('sell', '12.71449', False)]
-T6-F4 audit: True

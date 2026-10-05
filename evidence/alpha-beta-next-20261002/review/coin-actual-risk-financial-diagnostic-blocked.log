@@ -1,6 +1,0 @@
-{"actual_risk_account": "incumbent/base", "money_and_sizing_passed": true}
-{"actual_risk_account": "fresh-entry/base", "money_and_sizing_passed": true}
-{"actual_risk_account": "atr-trail/base", "money_and_sizing_passed": true}
-{"actual_risk_account": "compression-breakout/base", "money_and_sizing_passed": true}
-{"actual_risk_account": "single-topup/base", "money_and_sizing_passed": true}
-{"five_money_and_sizing_checks_passed_but_unity_gate_failed": true, "stage_approved": false, "max_regression_delta": 8.881784197001252e-16}

@@ -1,4 +1,4 @@
-"""The Binance order lifecycle used by both finite sessions and event replay.
+"""Native Binance entry, protection, recovery and bounded cleanup.
 
 No daemon, independent cash ledger or strategy selector. Transport acknowledgments
 never settle an intent. The CLI permits only explicit bounded trial writes.
@@ -407,7 +407,7 @@ class Lifecycle:
         # only protection of the journaled entry's own verified fill precedes it.
         # A stored plan alone cannot authorize changes to external/manual trades.
         if number(snapshot['quantity_btc']) or self.state.get('entry_campaigns'):
-            from .linear_preview import Campaign
+            from .campaign import Campaign
             from .ownership import reconcile
             checkpoint=self.state.get('linear_campaign')
             if checkpoint is None:
@@ -588,50 +588,8 @@ class Lifecycle:
             snapshot=self.close(snapshot)
         elif action=='hold':
             snapshot=self.maintain(model,snapshot)
-            if getattr(model, 'continuous_entry', False):
-                snapshot=self.rebalance(model,snapshot)
             snapshot=self.top_up(model,snapshot)
         return action,snapshot
-
-    def rebalance(self, model, snapshot):
-        """Sync a held target before reduce-only trimming or funded IOC adds.
-
-        A durable target is persisted before the reduction. Recovery settles the
-        same order intent; an older entry request can never buy back the trim.
-        """
-        from .target import DEADBAND
-        fill = self.state.get('entry_fill')
-        protection = self.state.get('position_protection')
-        q = number(snapshot['quantity_btc'])
-        if (not q or not fill or not protection or fill.get('campaign') != model.active.identity
-                or protection.get('campaign') != model.active.identity or self.state.pending()
-                or snapshot['possible_entry_remainders'] or not self.planned_protection(snapshot)):
-            return snapshot
-        mark = number(snapshot['mark_price'], positive=True)
-        equity = number(snapshot['equity_usdt'])
-        limit = getattr(self.reader, 'capital_limit', None)
-        capital = min(equity, limit) if limit is not None else equity
-        # The reader's verified account ceiling is also enforced by topup_preview.
-        target = max(D(0), capital)*model.entry_fraction('.0011')/mark
-        delta = target-abs(q)
-        if abs(delta)*mark < max(D(5), max(D(0), equity)*DEADBAND):
-            return snapshot
-        rules = self.instrument()
-        if delta < 0:
-            quantity = market_quantity(-delta,mark,rules,reduce_only=True)
-            if not quantity:
-                return snapshot
-            requested = abs(q)-quantity
-            # Sync even if a subsequent transport result is unknown.
-            self.state.set('entry_fill', dict(fill, requested=str(requested), session=self.session))
-            result = safety.reduce_existing(self.reader,self.state,self.send,self.uid,
-                self.epoch(),quantity,instrument=rules,authorized=self.authorized,snapshot=snapshot)
-            return self.recover_exposure(result)
-        if not self.risk_audit_ok or not self.may_enter():
-            return snapshot
-        self.state.set('entry_fill', dict(fill, requested=str(target), session=self.session,
-                                         sizing_capital=str(max(D(0), capital))))
-        return snapshot
 
     def top_up(self, model, snapshot):
         """Within the entry's own session, IOC-add toward the committed campaign size.

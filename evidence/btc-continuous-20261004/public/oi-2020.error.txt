@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Error><Code>NoSuchKey</Code><Message>The specified key does not exist.</Message><Key>data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2020-01-01.zip</Key><RequestId>J8M0T47AK63N9C1X</RequestId><HostId>wW7KDpwdCHRct1orkTXOwLAJ5N5kaE3z5bnSmsUZNzzqqCvNWe0MXcixkAS6uTWm06LJ7Tiogdfk2FfY75tIwtyJylFQTtZe</HostId></Error>

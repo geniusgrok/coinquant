@@ -1,9 +1,0 @@
-{
-  "format": "btc-edge-account-manifest-v1",
-  "files": [
-    {
-      "path": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/perp-registered-16.json.gz",
-      "sha256": "a071749cb6498a0e9612241bca23b57f8de9bae002b93fe189b7e1a3777a416d"
-    }
-  ]
-}

@@ -1,8 +1,0 @@
-test_public_failure_receipt_retained_and_predicted_rate_rejected (test_canonical_crowding.CanonicalCrowdingTests.test_public_failure_receipt_retained_and_predicted_rate_rejected) ... ok
-test_native_public_collection_caches_actual_receipts_and_honors_deadline (test_canonical_crowding.CanonicalCrowdingTests.test_native_public_collection_caches_actual_receipts_and_honors_deadline) ... ok
-test_frozen_proof_exact_categories_records_and_adapter (test_edge_forward.SourceAndExportTests.test_frozen_proof_exact_categories_records_and_adapter) ... ok
-
-----------------------------------------------------------------------
-Ran 3 tests in 0.052s
-
-OK

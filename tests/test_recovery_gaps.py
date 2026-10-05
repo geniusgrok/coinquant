@@ -1,4 +1,4 @@
-"""Offline reproductions of the 2026-09-28 review findings on the session path."""
+"""Recovery keeps owned fills protected and does not repeat uncertain writes."""
 import tempfile
 from decimal import Decimal as D
 from unittest import TestCase

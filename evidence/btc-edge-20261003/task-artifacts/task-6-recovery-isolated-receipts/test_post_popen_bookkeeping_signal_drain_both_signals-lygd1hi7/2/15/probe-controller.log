@@ -1,2 +1,0 @@
-{"event": "controller_error", "stage": "launch_bookkeeping", "label": "first", "error": "PermissionError('isolated post-Popen bookkeeping')", "recorded_utc": "2026-10-03T05:53:05.564604+00:00"}
-{"event": "controller_error", "stage": "handled_signal", "label": null, "error": "RuntimeError('controller received signal 15')", "recorded_utc": "2026-10-03T05:53:05.643659+00:00"}

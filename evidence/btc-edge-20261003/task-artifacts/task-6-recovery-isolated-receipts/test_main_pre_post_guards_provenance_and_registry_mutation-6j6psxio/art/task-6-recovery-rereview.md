@@ -1,1 +1,0 @@
-synthetic independent approval

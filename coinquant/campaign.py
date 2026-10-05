@@ -2,7 +2,7 @@
 
 Market state and execution ownership are separate. Replaying prices can rebuild
 the first, never prove past fills. No exchange writes are performed here;
-routine production remains unqualified.
+account recovery never infers fills from market data.
 """
 from collections import deque
 from dataclasses import asdict
@@ -11,7 +11,6 @@ import hashlib
 import json
 
 from .opportunities import Opportunities, Opportunity
-from .linear_sizing import target_fraction
 from .types import Blocked, Unknown
 
 PRIMARY_RISK = '7.5'
@@ -61,7 +60,10 @@ class Campaign:
         return opportunity
 
     def fraction(self, risk, friction):
-        return D(risk)*target_fraction(self.returns,D(friction))
+        if len(self.returns)<20:
+            return D(0)
+        rms=(sum((r*r for r in self.returns),D(0))/20).sqrt()
+        return D(risk)*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+D(friction)))
 
     @property
     def active(self):
@@ -142,7 +144,6 @@ class Campaign:
         def encode(v):
             if isinstance(v,D):return {'decimal':str(v)}
             if isinstance(v,Opportunity):return {'opportunity':encode(asdict(v))}
-            if isinstance(v,Opportunities):return {'opportunities':encode(vars(v))}
             if isinstance(v,deque):return {'deque':[encode(x) for x in v],'maxlen':v.maxlen}
             if isinstance(v,(tuple,list)):return [encode(x) for x in v]
             if isinstance(v,dict):return {k:encode(x) for k,x in v.items()}
@@ -162,7 +163,7 @@ class Campaign:
     def restore(cls, saved):
         try:
             body=saved['body']
-            if 'core' in body:
+            if set(body)!=set(cls().checkpoint()['body']):
                 raise ValueError('foreign strategy checkpoint')
             if (saved['sha256']!=hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()
                     or body['version']!=VERSION):
@@ -175,12 +176,6 @@ class Campaign:
                         if not d.is_finite():raise ValueError('nonfinite state')
                         return d
                     if set(v)=={'opportunity'}:return Opportunity(**decode(v['opportunity']))
-                    if set(v)=={'opportunities'}:
-                        fields=decode(v['opportunities'])
-                        model=Opportunities()
-                        if set(fields)!=set(vars(model)):raise ValueError('nested model fields')
-                        model.__dict__.update(fields)
-                        return model
                     if set(v)=={'deque','maxlen'}:return deque((decode(x) for x in v['deque']),maxlen=v['maxlen'])
                     return {k:decode(x) for k,x in v.items()}
                 return v

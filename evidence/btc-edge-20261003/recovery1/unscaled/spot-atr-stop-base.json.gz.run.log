@@ -1,9 +1,0 @@
-{"candidate": "atr-stop", "scenario": "base", "session": 0}
-{"candidate": "atr-stop", "scenario": "base", "session": 100}
-{"candidate": "atr-stop", "scenario": "base", "session": 200}
-{"candidate": "atr-stop", "scenario": "base", "session": 300}
-{"candidate": "atr-stop", "scenario": "base", "session": 400}
-{"candidate": "atr-stop", "scenario": "base", "session": 500}
-{"candidate": "atr-stop", "scenario": "base", "session": 600}
-{"candidate": "atr-stop", "scenario": "base", "session": 700}
-{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-atr-stop-base.json.gz", "complete": true, "sha256": "4362d338f0fe123089df245e8814a909f86bc2e90ccfd6ebf0c2f95126b635f3"}

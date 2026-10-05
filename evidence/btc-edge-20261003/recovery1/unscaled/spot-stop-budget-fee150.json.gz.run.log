@@ -1,9 +1,0 @@
-{"candidate": "stop-budget", "scenario": "fee150", "session": 0}
-{"candidate": "stop-budget", "scenario": "fee150", "session": 100}
-{"candidate": "stop-budget", "scenario": "fee150", "session": 200}
-{"candidate": "stop-budget", "scenario": "fee150", "session": 300}
-{"candidate": "stop-budget", "scenario": "fee150", "session": 400}
-{"candidate": "stop-budget", "scenario": "fee150", "session": 500}
-{"candidate": "stop-budget", "scenario": "fee150", "session": 600}
-{"candidate": "stop-budget", "scenario": "fee150", "session": 700}
-{"output": "/workspace/scratch/btc-alpha-beta-edge-20261003/recovery1/unscaled/spot-stop-budget-fee150.json.gz", "complete": true, "sha256": "e2327566b997b92c1c0993bbe0a98054ae15573ab48030a346968550c23f15ed"}

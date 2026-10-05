@@ -6,8 +6,6 @@ on:
       - 'coinquant/**'
       - 'tests/**'
       - 'config*.json'
-      - 'research/**'
-      - 'evidence/**'
       - '.github/workflows/check.yml'
   pull_request:
     branches: [main]
@@ -15,8 +13,6 @@ on:
       - 'coinquant/**'
       - 'tests/**'
       - 'config*.json'
-      - 'research/**'
-      - 'evidence/**'
       - '.github/workflows/check.yml'
   workflow_dispatch:
 permissions:
@@ -38,5 +34,5 @@ jobs:
           python-version: '3.13'
       - name: Compile and run offline checks
         run: |
-          python -m compileall -q coinquant research tests
-          python -m unittest discover -s tests -v
+          python -m compileall -q coinquant tests
+          python -m unittest discover -s tests
