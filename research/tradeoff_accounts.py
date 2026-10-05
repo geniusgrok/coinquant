@@ -123,13 +123,15 @@ def main():
         venue = ResearchExchange(market, b, initial, fx=fx, initial_cny=D(10000),
             matcher='trade_print', prints=tape, uid=12000, terminal_ms=e)
         venue.read_latency_ms, venue.latency_ms, venue.mark_gap = 200, 1000, 'bound'
+        venue.offline = True  # This constructor is the finite historical venue, never an adapter.
         config = config_class('12000', str(a.scratch/'state'), 300, 5)
         move = venue.advance_unattended
     else:
         from research.session_account import HistoricalVenue, audit
         from research.edge_features import FeatureBook
         from research.adoption_spot import risk_identity
-        venue = HistoricalVenue([(t, o, h, l, c, D(0)) for t, o, h, l, c in bars], b, initial, fx)
+        origin = 1546300800000 if a.policy == 'baseline' else 1504224000000
+        venue = HistoricalVenue([(t, o, h, l, c, D(0)) for t, o, h, l, c in bars if t >= origin], b, initial, fx)
         features = FeatureBook(Path(spec['features']), spec['features_sha256'])
         venue.crowding_features = lambda: features
         venue._adoption_risk = risk_identity(None)
@@ -144,6 +146,9 @@ def main():
                 r = selected.run(config, venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
                 reports.append(dict(start_ms=s, **{k:r.get(k) for k in ('status', 'cleanup', 'cycles', 'errors',
                     'pending_intents', 'execution_unresolved', 'state_backup', 'session_archive')}))
+                if any('history must start' in str(v) or 'incompatible' in str(v) for v in r.get('errors', [])):
+                    failure = dict(phase='session', start_ms=s, reason='strategy state/history incompatible')
+                    break
                 if r.get('pending_intents') or r.get('execution_unresolved'):
                     failure = dict(phase='session', start_ms=s, reason='unresolved execution')
                     break
@@ -166,7 +171,7 @@ def main():
             mark = None
         final = venue.wallet+venue.q*(mark-venue.entry) if mark is not None else None
         row = dict(trades=venue.trades, funding_ledger=venue.income, position=venue.q, fees=venue.fees,
-            wallet_usdt=venue.wallet, entry=venue.entry, funding=venue.funding_paid, final_mark=mark,
+            wallet_usdt=venue.wallet, entry=venue.entry, funding=venue.funding_paid, final_mark=mark, final_usdt=final,
             daily=[v for _, v in sorted(venue.daily.items())], mdd=venue.mdd_envelope, mdd_close=venue.mdd_close,
             known_path=venue.known_path, unknown_from=venue.unknown_from, hindsight_bounded=venue.hindsight_bounded,
             bounded_minutes=venue.bounded_minutes, funnel=venue.funnel,
