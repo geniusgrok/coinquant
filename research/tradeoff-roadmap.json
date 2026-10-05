@@ -1,0 +1,96 @@
+{
+  "format": "btc-sustained-tradeoff-route-v1",
+  "date": "2026-10-05",
+  "current_cycle": "14 independent wallets / 399 accepted finite sessions; no overall adoption",
+  "adoption": "benefit-harm-policy.md; no return-only veto, fitted metric weights, winner counting or gate relabel",
+  "defaults": "Retained after insufficient demonstrated net benefit; strategy/risk remain replaceable",
+  "routes": [
+    {
+      "family": "Coin lifecycle/core",
+      "attempts_done": [
+        "macro reconsideration",
+        "real uniform75 control",
+        "channel signed core",
+        "short-only alternative"
+      ],
+      "next_if_failure": "Change opportunity source to qualified absorption or independent demand; do not refit channel lengths/thresholds on the same quarters.",
+      "reopen_condition": "Distinct actual information/mechanism or new qualified regime/support; preserve all negative reference wallets."
+    },
+    {
+      "family": "Spot exposure/core",
+      "attempts_done": [
+        "defensive-base",
+        "tactical alternative",
+        "real constant25 control",
+        "incumbent quarters"
+      ],
+      "next_if_failure": "Replace the entry selection with an independently qualified demand/event source. Keep a simple fixed-budget comparator and actual owned stop/exit rules.",
+      "reopen_condition": "Evidence that new entry selection improves net results beyond market exposure, with magnitudes/uncertainty disclosed."
+    },
+    {
+      "family": "option risk",
+      "expressions": [
+        "new-risk factor .5",
+        "held-risk reduction .5 with verified owned capacity"
+      ],
+      "status": "Fresh strict pair NO_EVENT; 0 mature outcomes",
+      "next": "Record genuine finite observations/outcomes from actual receipt clocks; compare price RMS/momentum and fixed half-budget controls before wallet admission.",
+      "if_two_expressions_fail": "Retain risk evidence and switch to event opportunity information. No trigger relaxation or automatic old replay.",
+      "earliest_new_seven_day_point_utc": "2026-10-12T06:29:48.514+00:00",
+      "seven_days_alone_qualifies": false
+    },
+    {
+      "family": "OI/liquidation absorption",
+      "expressions": [
+        "entry capped .25 equity",
+        "fill-owned 7day decay exit"
+      ],
+      "status": "WAIT_MATCHED_OI_LIQUIDATION_AND_FLOW",
+      "next": "Find a source proving completed matched BTC/USDT 4h units and liquidation completeness; no inference from sampled forceOrder or price alone.",
+      "if_entry_fails": "Use event decay/exit expression; if both fail, change information source rather than tune the same entry."
+    },
+    {
+      "family": "cross venue demand",
+      "expressions": [
+        "independent demand entry",
+        "new-risk budget use"
+      ],
+      "status": "WAIT_WINDOW_COMPLETENESS_CONVERSION_AND_MATURITY",
+      "next": "Reuse accepted real streams; require closed-window gap handling and timestamped fresh conversion books, then causal nonoverlapping outcomes and single-venue/price controls.",
+      "if_both_fail": "Retain execution/data findings; switch to another independent information family, not another incomplete short capture."
+    },
+    {
+      "family": "expiry basis",
+      "expressions": [
+        "qualified USDT-linear dated executable net-cost screen"
+      ],
+      "status": "WAIT_ELIGIBLE_CONTRACT",
+      "next": "Only a genuinely eligible new instrument with synchronized sized spot/futures books, reserves and independent collateral admits a new cost screen.",
+      "if_cost_fails": "Change economically distinct settlement/financing structure only if allowed BTC/USDT and actual independent capital still qualify; no inverse/USDC substitution."
+    },
+    {
+      "family": "joint risk",
+      "attempts_done": [
+        "7 fixed actual independently financed pairs in both windows"
+      ],
+      "status": "No extra short hedge skill/continuous joint risk proven",
+      "next": "Measure a genuinely informative candidate alongside independently financed incumbent wallets at matched UTC; compare reducing Coin budget or cash before complex hedge.",
+      "if_daily_claim_not_enough": "Obtain actual matched minute accounts only for an adoption entrant; do not add individual MDD or scale curves."
+    }
+  ],
+  "execution_sequence": [
+    "Register purpose, costs accepted, new dependencies and finite resource budget before outcomes.",
+    "Use cheap causal information screening and actual relevant-control comparisons; at most two economic expressions per information family.",
+    "Run only needed actual shared-runtime wallets with separate finances and fixed clocks; failures recover only affected cases.",
+    "If overall utility is promising, predeclare fee/slippage/collateral and regime checks; otherwise preserve results and switch route.",
+    "Only a final useful entrant with an unresolved continuous-adoption question can need one new full795 candidate path; accepted baseline is reused.",
+    "Adopt supported strategy/risk components normally into main; unsupported candidates stay research and defaults remain economically evidenced."
+  ],
+  "efficiency": [
+    "Reuse immutable parsed data/evidence; no large-vault scans at task boundaries.",
+    "Precheck actual mount and account archives plus at most one derived binary day.",
+    "No automatic795, parameter grid, capital/start/time selection, optional tests or repeated full review.",
+    "Final full software once per delivery; affected-only fixes thereafter."
+  ],
+  "money_scope": "No private orders/transfers/credentials/settings, background daemon, account state migration/reset, HOME/UID/lock bypass or old-forward-consumer rebinding."
+}
