@@ -1,0 +1,41 @@
+{
+  "format": "btc-lifecycle-next-directions-v1",
+  "goal_met": false,
+  "main_strategy_and_risk_replaceable": true,
+  "adoption_policy": "benefit-harm-policy.md",
+  "completed_fixed_attempts": [
+    "giveback half",
+    "giveback full",
+    "campaign debt half",
+    "campaign debt two-loss"
+  ],
+  "current_decision": "No actual strategy entrant; retain recorded negatives, do not tune same thresholds or rerun same histories",
+  "next_routes": [
+    {
+      "family": "cross-demand independent information",
+      "completed": "One source-bound closed common window with real conversion book, negative demand; no mature outcome",
+      "next": "Preregister independent receipt dates/nonoverlapping actual forward outcomes, price/single-venue and fixed half-budget controls before candidate wallet",
+      "expressions": [
+        "new-risk budget factor .5",
+        "verified held-risk reduction .5"
+      ],
+      "failure_switch": "If predictive support/economics fail both expressions, retain transport benefit and change information family; no refit imbalance/window thresholds."
+    },
+    {
+      "family": "financing risk",
+      "completed": "Causal half/flat proposals with durable same-campaign cap and pro-rata margin guard",
+      "next": "Obtain genuinely contemporaneous native-origin dated maintenance, isolated funds/mark/settled funding and retained-margin evidence; historical fixed .005 cannot supply it",
+      "failure_switch": "If half cannot improve retained buffer, qualified full-flat alternative; if both economics fail switch to independently qualified event risk."
+    },
+    {
+      "family": "option/absorption alternatives",
+      "completed": "Reuse strict option NO_EVENT; OI/liquidation incomplete",
+      "next": "Only original receipt-time outcomes and complete matched OI/liquidation/flow admit screening",
+      "earliest_option_point_shanghai": "2026-10-12T14:29:48.514+08:00",
+      "one_point_qualifies": false,
+      "failure_switch": "Different actual information or instrument opportunity; no fake future release/guessed liquidation or inverse-USDC substitution."
+    }
+  ],
+  "joint": "Only new useful single-wallet mechanism admits matched separately financed joint comparison; no cross-collateral/transfers/scaled curves",
+  "efficiency": "No current795 justification; exact old source/input results reused. Next actual dependency change registered before costs; final fullsuite once; affected-only recovery."
+}

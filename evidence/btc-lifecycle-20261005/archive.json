@@ -1,0 +1,40 @@
+{
+  "repository": "geniusgrok/spotquant",
+  "path": "evidence/btc-lifecycle-20261005/research-artifacts.zip",
+  "bytes": 2586533,
+  "sha256": "ff5466b7d2038f0e40fe3c4110a65f420ee3709257caa22fc4e7462c5ad8e3d8",
+  "git_blob_sha": "9f0f1dd179ad5a7ef742ab7b7c04865950e2bb7c",
+  "members": 105,
+  "new_candidate_wallets": 0,
+  "new_reference_wallets": 4,
+  "new_sessions": 0,
+  "new795": 0,
+  "original_failures_preserved": true,
+  "complete_cross_windows": 1,
+  "mature_outcomes": 0,
+  "alpha_beta_improvement_proven": false,
+  "goal_met": false,
+  "native_qualified": false,
+  "software": {
+    "coin": {
+      "fullsuite_source": "02030e795be82ff64441ca3c2c95cc50fc2ea026",
+      "fullsuite_tests": 523,
+      "skipped": 5,
+      "first_fullsuite_passed": false,
+      "only_failure": "Decimal exactstring trailingzero assertion",
+      "scoped_recovery_source": "5ad8fe6e0a1b35b5e052bc91e7809309de12a2ab",
+      "scoped_recovery_tests": 1,
+      "scoped_recovery_passed": true,
+      "fullsuite_runs": 1,
+      "complete_affected_evidence_passed": true
+    },
+    "spot": {
+      "fullsuite_source": "7a8dd28e46e31ebd5d36f1ded49ff3b204f44c68",
+      "fullsuite_tests": 424,
+      "skipped": 11,
+      "passed": true,
+      "fullsuite_runs": 1
+    },
+    "remote_ci_pass_claimed": false
+  }
+}

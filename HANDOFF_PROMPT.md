@@ -1,5 +1,5 @@
-继续BTC alpha/beta工作时，先读PROJECT_STATE.md和research/tradeoff-RESULT.md/GUIDE.md/roadmap.json；PROJECT_STATE是唯一当前任务状态。最新本轮14钱包/399有限会话、旧6复用、7实际联合日线组合、7新公开GET和最终全量软件各一次已交付，无默认采用/新795。不要重跑本轮同依赖账户、软件或大行情校验；失败及负结果、精确producer与原forwardconsumer保持。
+继续BTC Coinquant/Spotquant alpha/beta时先读PROJECT_STATE.md和research/lifecycle-RESULT/GUIDE/spec/roadmap；PROJECT_STATE是唯一任务状态。本轮全部可执行工程和4固定表达筛选已交付，但金融目标仍未达。收益下降不是单项否决，main策略/风控可替换，需要实质综合净益处。四表达均无真实钱包入围；不要重复A/B阈值调参、历史筛选、旧795或可适用完整软件。
 
-原经济目标和native仍未达。收益降低非一票否决；需实质综合净益处、真实独立资金/时钟/保护/因果性。继续换机会来源而不是重复通道/风险调参。路线见roadmap：期权两表达当前NO_EVENT/成熟0，最早新7日点2026-10-12 06:29:48.514UTC仅是一个结果点；OI强平完整4h、跨场连续转换/共同窗口、USDT线性交割资格待实际数据，不造数据或换逆向/USDC。新机制先登记用途/代价/预算、因果成熟信息/price与simple-risk控制；前两表达不足可转另一机制，不永久关闭家族。仅有最终采用价值的候选才需压力或一份新795。
+已经换向独立信息并获得1真实完整跨场负需求窗口，成熟0/accountentrants0；不能把数据资格称alpha。采集认证频道错误已按公开batch依赖恢复，别名导入修复只读同raw，原失败/旧不完整30sec保持。后续按真实独立日期与非重叠接收结果、价格/单场/预算控制决定钱包；不存在承诺后台运行或把未来日期当结果。期权最早新七日点北京时间2026-10-12 14:29:48.514本身不合格；完整强平/OI及USDT线性交割缺口保留。融资输入需要真实dated margin/mark/isolated funds，历史.005合成值不能补。
 
-所有Coin同UID生产者/测试串行；不改HOME/UID或锁。固定数据缓存与适用证据复用，临时空间先按实际挂载/存档估计，失败仅恢复受影响部分，全量软件最后一次。私有账户/订单/转账/凭据/设置、背景交易、持久状态迁移/reset、旧forward日记补写/重绑未授权。shared信息提案始终orders0/account_entrants0；不是交易或经济验证。归档与原件SHA见本仓evidence/btc-tradeoff-20261005/archive.json。
+四现货hold25/cash参考是真实独立历史余额成交，0策略会话、不同直接时钟/无止损；不可当严格同会话alpha或保护合格默认。Coin523/5skip full一次有原格式失败，仅1项修复PASS；Spot424/11skip full一次PASS，完整失败/原producer和软件sourceSHAs在RESULT/归档。当前默认未采用失败策略，旧经济结果/forward消费者身份不改绑。Coin同UID生产者/软件串行，先查实际scratch空间，固定缓存复用，失败仅恢复影响范围，全量最后一次，不操作私有资金/订单、迁移/reset或改HOME/锁。归档原件单一共享Spot evidence/btc-lifecycle-20261005/research-artifacts.zip，各仓archive.json引用。
