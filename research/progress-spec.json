@@ -1,0 +1,267 @@
+{
+  "version": "btc-progress-v1",
+  "registered_at": "2026-10-05T22:20:19.093565+08:00",
+  "authorization": "2026-10-05 user authorizes all proposed improvements; alpha or beta or risk efficiency alone may justify adoption when accepted costs are reasonable.",
+  "windows": [
+    [
+      "2020-04-01",
+      "2020-07-01"
+    ],
+    [
+      "2023-10-01",
+      "2024-01-01"
+    ],
+    [
+      "2023-01-01",
+      "2023-04-01"
+    ]
+  ],
+  "window_reason": "Existing Coin actual treatment quarters; accepted Spot whole-account projection has NEW BUY orders in both. Chosen before new wallet outcomes; cold-wallet diagnostics do not replace continuous incumbent.",
+  "policies": {
+    "coin": [
+      "uniform-calibrated",
+      "downside-shock-half",
+      "downside-shock-exit",
+      "release-full-otherwise-half",
+      "release-new-primary"
+    ],
+    "spot": [
+      "reason-stop-reentry",
+      "sma-half-hold",
+      "release-full-otherwise-half"
+    ]
+  },
+  "sequence": "Independent component candidates first; downside original/current semivar wallets reused versus new simple calibrated control. Present held-risk candidates alone. Spot reason first, half-hold alternative if no net-utility entrant. Information preregistered separate cheap incremental screen; new mature supported information alone may enter finite wallet within budget.",
+  "capital_cny": "10000",
+  "initial_state": "cold cash, zero positions/orders; FX ingress .999; independently financed state",
+  "execution": {
+    "duration_seconds": 300,
+    "poll_seconds": 5,
+    "read_latency_ms": 200,
+    "write_latency_ms": 1000,
+    "coin_uid": 12000,
+    "coin_matcher": "trade_print",
+    "mark_gap": "bound"
+  },
+  "daily_packet": "/workspace/btc-history-2018-2019-20261005/days.json",
+  "daily_sha256": "26c9509c42ebcd88beca5bd1dc818a866d72b1285822f22e37fbb75091755d2a",
+  "schedule": "/workspace/coinquant/research/session_schedule.json",
+  "fx": "/workspace/starquant/data/usdcny_frankfurter.json",
+  "features": "/workspace/coinquant/evidence/btc-edge-20261003/task-artifacts/edge-features-v1.json",
+  "features_sha256": "bf920626cc13653b8bbeafd171650cc1a76888e15aad0c20bbd1061fb41da512",
+  "market": "/tmp/coinquant-market",
+  "prints": "/workspace/scratch/alpha-beta-next/public-print-vault",
+  "parsed_pack_roots": [
+    "/workspace/btc-core-rebuild-20261004/parsed-prints-cache",
+    "/tmp/btc-search-next-20261005-coin-accounts/private-parsed-prints-cache",
+    "/tmp/btc-search-next-20261005-coin-accounts-recovery/private-parsed-prints-cache",
+    "/tmp/btc-search-next-20261005-coin-macro-only/private-parsed-prints-cache"
+  ],
+  "comparison": "Single useful cost-net benefit can justify adoption, not all metrics or periods winning. Same capital/session/FX/clock wallets; no curve scaling or changed starts; all historic data developmental.",
+  "full_history": "No automatic795. Only final useful entrant with unresolved whole-path adoption question and stated budget can require one candidate replay; applicable baseline reused.",
+  "data_routes": {
+    "option_risk": [
+      "new-risk-limit",
+      "held-risk-reduction"
+    ],
+    "absorption": [
+      "event-entry",
+      "event-decay-exit"
+    ],
+    "cross_venue": [
+      "independent-demand-entry",
+      "risk-budget-use"
+    ],
+    "expiry_basis": [
+      "executable-net-cost-screen"
+    ]
+  },
+  "data_budget": {
+    "max_new_public_requests": 12,
+    "max_new_raw_bytes": 3000000,
+    "no_retries_for_prior_451": true,
+    "no_background_capture": true
+  },
+  "joint": "Only actual independent wallet sums at matched timestamps; no curve scaling/transfers. Compare real baseline, macro and signed/short alternatives when support exists.",
+  "resources": "Coin producer/UID12000/test strictly serial. Current /tmp885MB workspace195MB; retained state no reset or HOME/UID bypass. Existing immutable packets and parsed gzip data reused; no complete vault scan.",
+  "verification": "Necessary new money/causal checks now; final fullsuite once each repository, affected-only recovery.",
+  "max_candidate_wallets": 12,
+  "max_stress_wallets": 2,
+  "adoption": {
+    "spot_purpose": "Improve BTC upside participation and net wealth, allowing moderate downside risk increase.",
+    "spot_reference_gate": {
+      "sum_paired_delta_logwealth_min": 0.02,
+      "mean_path_mdd_increase_max": 0.04,
+      "mean_daily_es5_increase_max": 0.005
+    },
+    "coin_purpose": "Reduce downside losses with an economically useful preservation of profitable exposure.",
+    "coin_reference_gate": {
+      "mean_path_mdd_or_es5_relative_reduction_min": 0.1,
+      "sum_paired_delta_logwealth_min": -0.3
+    },
+    "coin_simple_control": "Against actual uniform75 require either +.02 paired logwealth with risk no more than5% worse, or a further10% risk reduction with logwealth cost<=.05; if not, preserve simple control as practical choice, do not claim dynamic skill.",
+    "return_core": "Positive cost-net opportunity support and account gain after actual costs/exposure controls; predicted/regression intercept alone never alpha.",
+    "meaning": "Reference gates for finite development entry, not all-period winners, target qualification or automatic native/default certification. Preserve magnitude, treatment support, loss concentration and original failures. Any actual adoption needs supported net utility and applicable cost/path evidence."
+  },
+  "return_core": {
+    "features": [
+      "completed5dayreturn",
+      "completed20dayreturn",
+      "completed20day_downside_RMS"
+    ],
+    "label": "i+2 open to i+9 open, actual 7day funding/cost cash proxy, mature only after exit price and all funding available",
+    "min_training_weeks": 26,
+    "max_training_weeks": 156,
+    "weekly_anchor": "fixed epoch",
+    "ridge": 100,
+    "gross_cap": 1,
+    "protection": 0.25,
+    "lowturn": "min7completed_days and2consecutive nonpositive predictions"
+  },
+  "downside": {
+    "window": 20,
+    "shrinkage": 0.5,
+    "semivar": "sigma2=.5*mean(r^2)+.5*(2*mean(min(r,0)^2))",
+    "tail4": "sigma2=.5*mean(r^2)+.5*(mean(top4 max(-r,0))/1.399809602)^2",
+    "sizing": "original .20/(2.33*sigma*sqrt7 +gap.10+funding.01+2fees/friction), original risk7.5/3.6 and funding/stop caps preserved; new initial requested persists, no retop to old"
+  },
+  "fallbacks": [
+    "reentry -> optional-public-feature missing-half",
+    "downside -> cost-net ridge return-core",
+    "return-net cost failure -> fixed lowturn",
+    "predictive failure -> real independent information, no model tuning"
+  ],
+  "baseline_source": {
+    "coinquant": "ca9c412a0a8b3c1ec3b392a0332193d6fdbe1d2e",
+    "spotquant": "492f19bdafe5fbb3b83b23f537caf49e6bf4d374"
+  },
+  "control_scale": "1.11333803",
+  "control_reason": "Arithmetic mean of original frozen semivar initial-sizing multipliers at actual historical entry attempts in fixed2020-2021, ignores account PnL. Approximate initial risk-dose control, not exact realized exposure/risk matching; early development quarter overlaps calibration and never newOOS.",
+  "held_risk": {
+    "short_days": 5,
+    "long_days": 20,
+    "shock_ratio": "1.5",
+    "actions": [
+      "half-once",
+      "exit"
+    ],
+    "restore_topup": false,
+    "initial_sizing": "incumbent"
+  },
+  "spot_reason": {
+    "stop_reentry": "confirmed STOP_LOSS and original price trend still valid; existing7/2/5 qualification",
+    "sma_half_hold": "ordinary SMA exit once half, held remainder originalATR/native hard stop; safety exit whole; no extra buying"
+  },
+  "performance": {
+    "max_profile_sessions": 12,
+    "equivalence_sessions": 12,
+    "independent_accounts": 2,
+    "pause_after": 2,
+    "no_old405_resume": true,
+    "full_registration": false,
+    "pause_reason": "Original accepted2020Q2 baseline has genuine entry fills in session2; select a held-and-protected checkpoint before any new proof outcomes."
+  },
+  "max_new_public_requests": 4,
+  "whole_history": "No automatic795; first complete safe checkpoint and throughput evidence. Only one final supported entrant may require registered whole-path comparison with applicable old baseline reused.",
+  "candidate_screen": "First validate treatment on cheap completed causal daily data and existing actual ownership logs. Only effect-covered policies enter actual cold-wallets; no fabricated counterfactual wealth.",
+  "finite_decision": "Judge material purpose-specific return/participation/tail gains, magnitude of wealth cost and duration/recovery uncertainty versus actual baseline and simple control. Preserve all negative measures and original gates; no weighted score/count of winners or automatic rejection for lower returns.",
+  "stress": "fees-x1.5 only for actual potentially adoptable finite entrant, independently funded original matching window/control; at most2wallets",
+  "budget_amendment": "Before any new actual wallets: admitted fixed delta information screen justifies <=4 additional actual candidate wallets, first half-spend and Coin-only independent event-primary alternative. Source/negative/reference gates unchanged; original initial budget retained in spec-initial-registration.json.",
+  "information_admission": {
+    "result": "/workspace/btc-progress-20261005/information-result.json",
+    "spec": "/workspace/btc-progress-20261005/information-spec.json",
+    "input_stage": "ELIGIBLE_FINITE_ACCOUNT_PROPOSAL, not alpha",
+    "expressions": [
+      "release-full-otherwise-half",
+      "release-new-primary"
+    ],
+    "backup_primary_kind": "coin-only",
+    "windows": [
+      [
+        "2020-04-01",
+        "2020-07-01"
+      ],
+      [
+        "2023-10-01",
+        "2024-01-01"
+      ]
+    ],
+    "window_reason": "Reuse two originally frozenquarters and controls; first expression changes every lawful new initial BUY budget, release vs nonrelease split is separately reported. Fixed event-primary can add only independent flat opportunities; no PnL windowselection.",
+    "max_extra_wallets": 6
+  },
+  "comparison_windows": [
+    [
+      "2020-04-01",
+      "2020-07-01"
+    ],
+    [
+      "2023-10-01",
+      "2024-01-01"
+    ]
+  ],
+  "policy_windows": {
+    "uniform-calibrated": [
+      [
+        "2020-04-01",
+        "2020-07-01"
+      ],
+      [
+        "2023-10-01",
+        "2024-01-01"
+      ]
+    ],
+    "downside-shock-half": [
+      [
+        "2023-01-01",
+        "2023-04-01"
+      ]
+    ],
+    "downside-shock-exit": [
+      [
+        "2023-01-01",
+        "2023-04-01"
+      ]
+    ],
+    "release-full-otherwise-half": [
+      [
+        "2020-04-01",
+        "2020-07-01"
+      ],
+      [
+        "2023-10-01",
+        "2024-01-01"
+      ]
+    ],
+    "release-new-primary": [
+      [
+        "2020-04-01",
+        "2020-07-01"
+      ],
+      [
+        "2023-10-01",
+        "2024-01-01"
+      ]
+    ],
+    "reason-stop-reentry": [
+      [
+        "2020-04-01",
+        "2020-07-01"
+      ],
+      [
+        "2023-10-01",
+        "2024-01-01"
+      ]
+    ],
+    "sma-half-hold": [
+      [
+        "2020-04-01",
+        "2020-07-01"
+      ],
+      [
+        "2023-10-01",
+        "2024-01-01"
+      ]
+    ]
+  },
+  "coverage_amendment": "Before actual new wallets: original two quarters have zero possible owned held-shock treatments, preserved incoverage-screen.json. Fixed four prior core quarters screened on cause+existing ownership, not PnL; only2023Q1 has3possible owned observations. Measure held expressions there alone, disclose thin support. Freed2held wallets allocated to supported Coin-only event-primary backup; total candidate cap12 unchanged. Old2023Q1 complete independently funded baseline reused subject actual runtime/FX input bridge."
+}
