@@ -1,0 +1,29 @@
+{
+  "source": {
+    "git_head": "3213cddb904b745193c5a27c06c42ec3a3ae2f93",
+    "dirty": false,
+    "python_sources_sha256": "782333a4bea85ac7f1a86050a28072eef2dda77b53ea8dd1b5a00cf42a69331a"
+  },
+  "complete": false,
+  "last_session": 794,
+  "accounts": {
+    "2500/base": {
+      "sessions": 795,
+      "wallet": "151457.6761911290574421256294",
+      "position": "0.000",
+      "failure": null
+    },
+    "5000/base": {
+      "sessions": 795,
+      "wallet": "245467.8571313121555102723591",
+      "position": "0.000",
+      "failure": null
+    },
+    "7500/base": {
+      "sessions": 795,
+      "wallet": "322060.0176035784297852654890",
+      "position": "0.000",
+      "failure": null
+    }
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "source": {
+    "git_head": "995d0530889d8b609f41218b6904ff55499fd578",
+    "dirty": false,
+    "python_sources_sha256": "5a1497a18004fce43827c68d80673300004b0cbb505d5106c4ee29cc63c995b3"
+  },
+  "complete": false,
+  "last_session": 794,
+  "accounts": {
+    "incumbent/base": {
+      "sessions": 795,
+      "wallet": "291702.6271814703536298592187",
+      "position": "0.000",
+      "failure": null
+    },
+    "incumbent/fees-x1.5": {
+      "sessions": 795,
+      "wallet": "385767.5695380778638068376183",
+      "position": "0.000",
+      "failure": null
+    },
+    "incumbent/read-400ms": {
+      "sessions": 795,
+      "wallet": "184459.7687214610366869776180",
+      "position": "0.000",
+      "failure": null
+    },
+    "incumbent/trigger-slip": {
+      "sessions": 795,
+      "wallet": "346692.3270510444114515249180",
+      "position": "0.000",
+      "failure": null
+    },
+    "tail-sizing/base": {
+      "sessions": 795,
+      "wallet": "308526.2507618602538798190187",
+      "position": "0.000",
+      "failure": null
+    },
+    "tail-sizing/fees-x1.5": {
+      "sessions": 795,
+      "wallet": "312520.2569439270322074533187",
+      "position": "0.000",
+      "failure": null
+    },
+    "tail-sizing/read-400ms": {
+      "sessions": 795,
+      "wallet": "162247.4058290655488476020179",
+      "position": "0.000",
+      "failure": null
+    },
+    "tail-sizing/trigger-slip": {
+      "sessions": 795,
+      "wallet": "287045.3564155169165352926184",
+      "position": "0.000",
+      "failure": null
+    },
+    "no-macro/base": {
+      "sessions": 795,
+      "wallet": "305450.9755006409503685545192",
+      "position": "0.000",
+      "failure": null
+    },
+    "no-macro/fees-x1.5": {
+      "sessions": 795,
+      "wallet": "412194.9806455363643981293197",
+      "position": "0.000",
+      "failure": null
+    },
+    "no-macro/read-400ms": {
+      "sessions": 795,
+      "wallet": "191506.6392381665459358868179",
+      "position": "0.000",
+      "failure": null
+    },
+    "no-macro/trigger-slip": {
+      "sessions": 795,
+      "wallet": "300741.7708855288049371845182",
+      "position": "0.000",
+      "failure": null
+    },
+    "slow-trend/base": {
+      "sessions": 795,
+      "wallet": "120933.5410509188387575719177",
+      "position": "0.365",
+      "failure": null
+    },
+    "slow-trend/fees-x1.5": {
+      "sessions": 795,
+      "wallet": "127534.6739316560051254824177",
+      "position": "0.385",
+      "failure": null
+    },
+    "slow-trend/read-400ms": {
+      "sessions": 795,
+      "wallet": "68650.75913179894053374351784",
+      "position": "0.207",
+      "failure": null
+    },
+    "slow-trend/trigger-slip": {
+      "sessions": 795,
+      "wallet": "115484.9411026433071573969176",
+      "position": "0.348",
+      "failure": null
+    },
+    "funding-filter/base": {
+      "sessions": 795,
+      "wallet": "260341.6291333695010882107183",
+      "position": "0.000",
+      "failure": null
+    },
+    "funding-filter/fees-x1.5": {
+      "sessions": 795,
+      "wallet": "258503.0290139494727325236187",
+      "position": "0.000",
+      "failure": null
+    },
+    "funding-filter/read-400ms": {
+      "sessions": 795,
+      "wallet": "132153.3496418523653233414181",
+      "position": "0.000",
+      "failure": null
+    },
+    "funding-filter/trigger-slip": {
+      "sessions": 795,
+      "wallet": "236335.9290223044324683232175",
+      "position": "0.000",
+      "failure": null
+    },
+    "basis-filter/base": {
+      "sessions": 795,
+      "wallet": "291298.7436366216305443231184",
+      "position": "0.000",
+      "failure": null
+    },
+    "basis-filter/fees-x1.5": {
+      "sessions": 795,
+      "wallet": "379149.7298098726658462981193",
+      "position": "0.000",
+      "failure": null
+    },
+    "basis-filter/read-400ms": {
+      "sessions": 795,
+      "wallet": "182041.2555280202637424969178",
+      "position": "0.000",
+      "failure": null
+    },
+    "basis-filter/trigger-slip": {
+      "sessions": 795,
+      "wallet": "282043.0855391053864088364185",
+      "position": "0.000",
+      "failure": null
+    },
+    "conditional-short/base": {
+      "sessions": 795,
+      "wallet": "296279.2832653013641131088189",
+      "position": "0.000",
+      "failure": null
+    },
+    "conditional-short/fees-x1.5": {
+      "sessions": 795,
+      "wallet": "271128.5697281151169429023187",
+      "position": "0.000",
+      "failure": null
+    },
+    "conditional-short/read-400ms": {
+      "sessions": 795,
+      "wallet": "170082.0564076724351865585179",
+      "position": "0.000",
+      "failure": null
+    },
+    "conditional-short/trigger-slip": {
+      "sessions": 795,
+      "wallet": "271893.4050213154029878480184",
+      "position": "0.000",
+      "failure": null
+    }
+  }
+}
