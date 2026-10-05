@@ -1,7 +1,7 @@
-继续BTC Coinquant/Spotquant任务先读PROJECT_STATE.md（唯一当前状态）、research/improvement-RESULT.md/GUIDE.md/spec.json/roadmap.json，原件双方evidence/btc-improvement-20261005/archive.json引用Spot单一ZIP。用户允许alpha、beta参与或风险效率单项提升；收益下降不是自动否决。main策略/风控可换，但实际综合净益与完整证据决定采用。
+继续任务先读 PROJECT_STATE.md（唯一当前状态）、research/progress-RESULT.md、progress-GUIDE.md、progress-spec.json、progress-roadmap.json及 evidence/btc-progress-20261005/archive.json。8条路线和唯一795已交付；new-primary完整负结果拒采，原默认保持，不能把有限两季度正收益重新当全历史改善。原完整账户119.23%→108.58%CAGR、MDD44.11%→66.51%，29info净归属cash负11528.31USDT；经济NOT_MET/native0/NOT_QUALIFIED。
 
-本轮机制代码与有限实际钱包已完成：12接受钱包344会话，6初始集成无效原件171会话保留。Coinsemivar提高两季度参与/收益但原降风险参考失败；Spot再入场早收益提高但sum Δlog财富.017445<原.02；可选缺失half两窗尾损下降、收益各有得失。预测核心不支持替换默认；低换手已实现但成本并非唯一负因，未触发测量。不能把有限历史改善说成独立alpha/完整历史提升。默认保持，准备的production patch未应用。
+下一方向是已实现持仓冲击全退出的其他固定regime实际owned处理支持（现仅2023Q1一次，+9.76pp/MDD不变）。先低成本cause覆盖，不用盈亏挑窗口；有支持与具体采用问题后才新独立有限账户，失败换机制。Spot没有当前替代默认支持，新原因/信息必须真实成熟，closed-boundary/freshFX不足PENDING。旧负路线、已有control、dose98.53%等适用证据直接复用，不调失败阈值或自动另一795。
 
-唯一semivar完整795尝试source6532476按900秒上限终止：902.63秒405会话，不完整，exit0非财务PASS，不可把partial全FX终值年化；没有重构venue安全checkpoint，不宣称恢复。不要自动从头重跑或换tail4再跑795。下一轮先解决吞吐/可重构venue checkpoint的实际依赖，小规模中断等价后才判断完整比较是否值得；不重复旧账户、数据扫描或调失败阈值。
+完整路径资金源码52ee、原e99恢复证明与缓存数据证明保持各自身份。原两段与setup/storage例外、原can_resume=false/no4及真实5进程4有执行段均保留；原State须配原源码/输入/策略/UID与最新安全snapshot，未知crash后SQLite推进拒绝旧snapshot，完成终点也不能拿前期snapshot回退数据库。旧405不可恢复。共享仅行情，资金、订单、模型和时钟独立；来源绑定和原账户锁不绕过，不改HOME/UID，不重绑旧forward，不做private资金/订单/settings或state reset。
 
-真实独立信息仍需真实新日期与成熟标签，无后台承诺或未来数据；旧forward消费者source不重绑。原全代理Coin119.2284/44.1051、Spot56.5981/36.4122仍原source/NOT_MET，native0/accountdays0/NOT_QUALIFIED。raw合成状态仅私有保存、storage-receipt记录路径，不在公开ZIP且不是完整checkpoint。复用原输入/parsed缓存/已通过证据，Coin同UID串行，最后全量软件各仓一次、失败仅补影响范围；不动HOME/UID/锁或私有账户资金/订单/设置/reset。Git正常FF，skipCI不叫远程PASS。
+全量软件已每仓一次，原失败保留；Coin13/Spot11受影响夹具补测PASS。后续文档/证据/提交身份变化不重测不重放。ZIP成员task/与full-account/保存原件，raw合成State仅私有压缩和映射；ZIP不包含大型行情vault，需原已资格输入与源资源才能复现。
