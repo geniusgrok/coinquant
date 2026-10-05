@@ -1,5 +1,7 @@
-继续BTC Coinquant/Spotquant alpha/beta时先读PROJECT_STATE.md和research/lifecycle-RESULT/GUIDE/spec/roadmap；PROJECT_STATE是唯一任务状态。本轮全部可执行工程和4固定表达筛选已交付，但金融目标仍未达。收益下降不是单项否决，main策略/风控可替换，需要实质综合净益处。四表达均无真实钱包入围；不要重复A/B阈值调参、历史筛选、旧795或可适用完整软件。
+继续BTC Coinquant/Spotquant任务先读PROJECT_STATE.md（唯一当前状态）、research/improvement-RESULT.md/GUIDE.md/spec.json/roadmap.json，原件双方evidence/btc-improvement-20261005/archive.json引用Spot单一ZIP。用户允许alpha、beta参与或风险效率单项提升；收益下降不是自动否决。main策略/风控可换，但实际综合净益与完整证据决定采用。
 
-已经换向独立信息并获得1真实完整跨场负需求窗口，成熟0/accountentrants0；不能把数据资格称alpha。采集认证频道错误已按公开batch依赖恢复，别名导入修复只读同raw，原失败/旧不完整30sec保持。后续按真实独立日期与非重叠接收结果、价格/单场/预算控制决定钱包；不存在承诺后台运行或把未来日期当结果。期权最早新七日点北京时间2026-10-12 14:29:48.514本身不合格；完整强平/OI及USDT线性交割缺口保留。融资输入需要真实dated margin/mark/isolated funds，历史.005合成值不能补。
+本轮机制代码与有限实际钱包已完成：12接受钱包344会话，6初始集成无效原件171会话保留。Coinsemivar提高两季度参与/收益但原降风险参考失败；Spot再入场早收益提高但sum Δlog财富.017445<原.02；可选缺失half两窗尾损下降、收益各有得失。预测核心不支持替换默认；低换手已实现但成本并非唯一负因，未触发测量。不能把有限历史改善说成独立alpha/完整历史提升。默认保持，准备的production patch未应用。
 
-四现货hold25/cash参考是真实独立历史余额成交，0策略会话、不同直接时钟/无止损；不可当严格同会话alpha或保护合格默认。Coin523/5skip full一次有原格式失败，仅1项修复PASS；Spot424/11skip full一次PASS，完整失败/原producer和软件sourceSHAs在RESULT/归档。当前默认未采用失败策略，旧经济结果/forward消费者身份不改绑。Coin同UID生产者/软件串行，先查实际scratch空间，固定缓存复用，失败仅恢复影响范围，全量最后一次，不操作私有资金/订单、迁移/reset或改HOME/锁。归档原件单一共享Spot evidence/btc-lifecycle-20261005/research-artifacts.zip，各仓archive.json引用。
+唯一semivar完整795尝试source6532476按900秒上限终止：902.63秒405会话，不完整，exit0非财务PASS，不可把partial全FX终值年化；没有重构venue安全checkpoint，不宣称恢复。不要自动从头重跑或换tail4再跑795。下一轮先解决吞吐/可重构venue checkpoint的实际依赖，小规模中断等价后才判断完整比较是否值得；不重复旧账户、数据扫描或调失败阈值。
+
+真实独立信息仍需真实新日期与成熟标签，无后台承诺或未来数据；旧forward消费者source不重绑。原全代理Coin119.2284/44.1051、Spot56.5981/36.4122仍原source/NOT_MET，native0/accountdays0/NOT_QUALIFIED。raw合成状态仅私有保存、storage-receipt记录路径，不在公开ZIP且不是完整checkpoint。复用原输入/parsed缓存/已通过证据，Coin同UID串行，最后全量软件各仓一次、失败仅补影响范围；不动HOME/UID/锁或私有账户资金/订单/设置/reset。Git正常FF，skipCI不叫远程PASS。

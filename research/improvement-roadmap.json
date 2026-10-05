@@ -1,0 +1,78 @@
+{
+  "version": "btc-single-improvement-roadmap-20261005-v1",
+  "status_source": "PROJECT_STATE.md",
+  "qualification": "DEVELOPMENT_RESEARCH_ONLY",
+  "defaults_adopted": false,
+  "independent_alpha_proven": false,
+  "full_history_improvement_proven": false,
+  "accepted_finite_wallets": 12,
+  "accepted_finite_sessions": 344,
+  "invalid_initial_wallets_preserved": 6,
+  "invalid_initial_sessions_preserved": 171,
+  "full_attempt": {
+    "source": "6532476d2ee9cdf470a512ce8bfb3fa02cacd6d1",
+    "complete": false,
+    "sessions": 405,
+    "registered": 795,
+    "elapsed_seconds": 902.6297418160248,
+    "runtime_budget_seconds": 900,
+    "safe_venue_checkpoint": false,
+    "automatic_rerun": false
+  },
+  "routes": [
+    {
+      "priority": 1,
+      "direction": "真实性能瓶颈与历史venue安全检查点",
+      "next": "先分析现有日志/回执，必要时用固定少量会话剖析实际依赖；估算CPU/I/O、临时挂载及内存/磁盘，复用解析行情。检查点需独立恢复钱包、持仓、订单、时钟、matcher和因果游标。",
+      "failure_switch": "若不能安全恢复，明确保留完整测量预算与执行成本；不假装续跑，不重启795凑证据。",
+      "decision": "是否有可安全、成本可控的完整账户比较路径。"
+    },
+    {
+      "priority": 2,
+      "direction": "Coin上涨参与候选",
+      "candidates": [
+        "downside-semivar",
+        "downside-tail4"
+      ],
+      "known": "有限季度净收益/上行beta提升，同时回撤和ES5增加；原风险降低参考FAIL保留。",
+      "next": "使用现有阶段与原统一75%预算证据评估用途。只有解决完整路径成本、注册明确采用问题及预算后，才考虑必要的完整候选账户；旧基线复用。",
+      "failure_switch": "若整体代价超过参与益处，保留原默认或简单预算；转向独立收益信息，勿继续微调相同风险参数。"
+    },
+    {
+      "priority": 3,
+      "direction": "Spot再入场/可选信息缺失处理",
+      "candidates": [
+        "trend-reentry",
+        "optional-crowding-half"
+      ],
+      "known": "再入场早期收益改善、晚期零作用，配对.017445<.02；缺失半预算两季度有局部尾损改善及收益代价。",
+      "next": "先用真正新独立时期/信息确认作用、必要简单风险预算对照与实际费用压力；现有四窗口不重跑。",
+      "failure_switch": "若参与或净益处不成立，换新的实际入场/持仓信息机制；不改旧阈值，也不豁免强制输入。"
+    },
+    {
+      "priority": 4,
+      "direction": "替代收益核心/真正独立信息",
+      "candidates": [
+        "return-net",
+        "return-lowturn",
+        "cross-venue",
+        "option-risk",
+        "absorption"
+      ],
+      "known": "return-net有限收益弱于基线，独立alpha未证；末阶段加回成本仍亏，lowturn已实现但未触发。",
+      "next": "优先取得真正新可用信息及成熟因果结果。每信息家族至多两个固定经济表达；仅得到支持者进入独立账户，历史重复开发不称新OOS。",
+      "failure_switch": "若预测无优势，切换信息来源或核心机制；仅因成本吞噬明确优势才启用固定低换手，禁止参数网格。"
+    }
+  ],
+  "measurement_rules": [
+    "历史报价共享；资金、持仓、订单与时钟独立，禁止缩放旧净值冒充账户。",
+    "不自动重跑795；依赖改变且无适用完整结果、且完整路径确实改变采用决定时，先登记问题与预算。",
+    "原失败、负结果、source身份和参考FAIL保留，用户后结果重评不改原PASS。",
+    "软件最终全量每仓一次；资金/订单/因果新依赖只做必要针对性检查。",
+    "不启动后台交易/采集，不访问私有账户，不迁移或reset状态，不重绑旧forwardconsumer。"
+  ],
+  "evidence_archive": "Spotquant evidence/btc-improvement-20261005/research-artifacts.zip; both repos archive.json",
+  "financial_goal": "原目标NOT_MET；native0/actual accountdays0/NOT_QUALIFIED，默认采用及真实交易授权另有证据边界。",
+  "project": "coinquant"
+}
+
