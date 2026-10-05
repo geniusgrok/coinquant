@@ -5,6 +5,7 @@ from decimal import Decimal as D
 import hashlib
 import json
 from pathlib import Path
+import shutil
 import subprocess
 import types
 
@@ -110,6 +111,9 @@ def main():
     b, e = stamp(a.begin), stamp(end)
     schedule = [s for s in starts if b <= s < e]
     a.out.parent.mkdir(parents=True, exist_ok=True)
+    a.scratch.parent.mkdir(parents=True, exist_ok=True)
+    if shutil.disk_usage(a.scratch.parent).free < 200_000_000:
+        raise ValueError('account scratch needs at least 200 MB free before starting')
     a.scratch.mkdir(parents=True)
     fx_module = import_module('research.unified_perp' if KIND == 'coin' else 'research.complete_spot')
     fx = fx_module.PriorFX(Path(spec['fx']))
@@ -134,7 +138,8 @@ def main():
         venue = HistoricalVenue([(t, o, h, l, c, D(0)) for t, o, h, l, c in bars if t >= origin], b, initial, fx)
         features = FeatureBook(Path(spec['features']), spec['features_sha256'])
         venue.crowding_features = lambda: features
-        venue._adoption_risk = risk_identity(None)
+        if a.policy == 'baseline':
+            venue._adoption_risk = risk_identity(None)
         config = config_class('1', str(a.scratch/'state'), 300, 5, 'demo', '5000000')
         move = venue.advance
     reports, failure = [], None
@@ -146,7 +151,8 @@ def main():
                 r = selected.run(config, venue, execute=True, monotonic=venue.monotonic, wait=venue.wait)
                 reports.append(dict(start_ms=s, **{k:r.get(k) for k in ('status', 'cleanup', 'cycles', 'errors',
                     'pending_intents', 'execution_unresolved', 'state_backup', 'session_archive')}))
-                if any('history must start' in str(v) or 'incompatible' in str(v) for v in r.get('errors', [])):
+                if any(word in str(v) for v in r.get('errors', [])
+                       for word in ('history must start', 'incompatible', 'risk identity mismatch')):
                     failure = dict(phase='session', start_ms=s, reason='strategy state/history incompatible')
                     break
                 if r.get('pending_intents') or r.get('execution_unresolved'):
