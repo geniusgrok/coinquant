@@ -1,0 +1,148 @@
+{
+  "version": "btc-history-core-2018-2019-v1",
+  "registered_utc": "2026-10-05T03:14:48.554252+00:00",
+  "authorization": "User explicitly adds Jan2018-Dec2019 research and implements both discussed core replacements; no private account actions. Material adoption gates retained.",
+  "source_heads": {
+    "coinquant": "ca9419954de22b144de9c3472a0f14685b2fe5b4",
+    "spotquant": "e814b3b9b7ef07947335eec7f8e01c135a2262ca"
+  },
+  "data": {
+    "study_start": "2018-01-01",
+    "study_end_exclusive": "2020-01-01",
+    "warmup_start": "2017-09-01",
+    "spot": "Official Binance BTCUSDT daily ZIPs+CHECKSUM. Reuse accepted2019-present daily-composition cache with source receipt binding. Only absent2017Sep-Dec and2018 monthly objects fetched.",
+    "futures": "At most2 public fapi GETs, 4h and funding, fixed2019Sep1-Jan2020 window; actual first trade timestamp controls market eligibility. No futures account economics before existence; no synthetic funding or substitute inverse contract.",
+    "coverage": "New complete daily spot rows >=99% overall and each year; no missing fill, invalid or conflicting rows. Reject window gaps relevant to signals. Only complete contract days; incomplete first day quarantined.",
+    "GET_budget": {
+      "spot_missing_months": 16,
+      "max_spot_GET": 32,
+      "max_futures_GET": 2,
+      "max_total_raw_bytes": 3000000,
+      "retry": false,
+      "TLS_proxy_preserved": true
+    },
+    "parsed_cache": "One immutable joined OHLCV/trade-count packet and receipt reused in all screens and accounts; no large-vault rescan."
+  },
+  "coin": {
+    "family": "signed-breakout-or-ma-trend",
+    "variants": [
+      "channel",
+      "ma"
+    ],
+    "channel": "Completed spot daily close breaks prior55 highs/lows to enter signed trend. Exit long below prior20 lows or short above prior20 highs; opposing55 breakout may reverse. No current-day extreme in entry threshold.",
+    "ma": "Completed20-day mean above/below completed100-day mean selects +1/-1; equality0.",
+    "risk": "Gross exposure min(2, .60/completed20-day annualized RMS). Catastrophe trail clip(3*ATR14/close,.08,.30), monotone after actual owned fill. Current lifecycle isolated margin, protection, reduce-only and IOC controls retained.",
+    "signal": "Spot BTCUSDT completed daily end+60s at original manual observation; venue-specific futures execution/funding only on qualified existence period.",
+    "prelisting_study": "2018-2019 direction-only long/short unlevered quote proxy with fees; no Coin funding/liquidation/native/account return claim."
+  },
+  "spot": {
+    "family": "base-plus-tactical",
+    "variants": [
+      "base",
+      "defensive-base"
+    ],
+    "base": "Target25% BTC base plus65% tactical when completed MA20>MA100, else25%; whole-account cap90%.",
+    "defensive-base": "Base25% only when completed close>MA100; tactical65% when completedMA20>MA100; else corresponding component0.",
+    "risk": "Each fill-owned component has clip(4*ATR14/close,.10,.30) catastrophe protection;5% whole-equity rebalance deadband. One actual cash pool, separately owned labels; no borrowing.",
+    "controls": [
+      "independent25% constant BTC allocation",
+      "independent90% constant BTC allocation",
+      "tactical65% without base"
+    ],
+    "signal": "Previous completed spot daily end+60s; no retrospective current-day knowledge."
+  },
+  "screen": {
+    "eras": [
+      [
+        "2018-01-01",
+        "2019-01-01"
+      ],
+      [
+        "2019-01-01",
+        "2020-01-01"
+      ],
+      [
+        "2020-01-01",
+        "2022-01-01"
+      ],
+      [
+        "2022-01-01",
+        "2024-01-01"
+      ],
+      [
+        "2024-01-01",
+        "2026-09-20"
+      ]
+    ],
+    "type": "Independently funded Decimal daily execution proxy using project core_screen.Wallet with gap-aware catastrophe stops, actual original settled funding only after2020, doubled fees/slippage stress. Never full-account/native proof.",
+    "coin_gate": "2018 and2019 standalone short contribution has positive net combined, >=3 disjoint short campaigns in each new year; common2020+ positive in >=2/3 eras at base AND doubled costs; no insolvency. Whole new period return positive at doubledcosts.",
+    "spot_gate": "2018 path-proxyMDD <=.8 of actual90%-constant control and finalwealth >= control;2019 netpositive/upcapture>=.5 of90% control; common2020+ positive in eachera at base/stress and>=25%constant wealth in>=2eras.",
+    "selection": "At most one actual entrant per repo. Registered return route takes higher common-window compound wealth, provided complete gates; no threshold/lag/horizon tuning. Both variants are fixed before data outcomes. Negative results retained.",
+    "budget": "<=4 economic variants plus prescribed controls in one low-cost batch; seconds/minutes, no795."
+  },
+  "finite_accounts": {
+    "conditional": "Only registered screen entrant may enter actual sharedsession/Lifecycle accounts.",
+    "coin_windows": [
+      [
+        "2020-01-01",
+        "2020-04-01"
+      ],
+      [
+        "2021-04-01",
+        "2021-07-01"
+      ],
+      [
+        "2022-04-01",
+        "2022-07-01"
+      ],
+      [
+        "2023-01-01",
+        "2023-04-01"
+      ]
+    ],
+    "spot_new_windows": [
+      [
+        "2018-01-01",
+        "2018-04-01"
+      ],
+      [
+        "2018-10-01",
+        "2019-01-01"
+      ],
+      [
+        "2019-04-01",
+        "2019-07-01"
+      ],
+      [
+        "2019-07-01",
+        "2019-10-01"
+      ]
+    ],
+    "spot_common_windows": [
+      [
+        "2020-01-01",
+        "2020-04-01"
+      ],
+      [
+        "2021-04-01",
+        "2021-07-01"
+      ],
+      [
+        "2022-04-01",
+        "2022-07-01"
+      ],
+      [
+        "2023-01-01",
+        "2023-04-01"
+      ]
+    ],
+    "schedule": "Original frozen795 schedule unchanged in2020+. Newperiod only Mon/Wed/Fri13:00UTC, registered ahead of outcomes; no favorable start search.",
+    "comparison": "Independent CNY10000 wallet state, actual costs/FX and clocks; reuse applicable fullquarter original incumbents only with content/state/source binding.2018-19 current crowding inputs did not exist, cannot fabricate them or call a disabled-input comparator economic superiority. Use registered constant controls with exact actual wallets for new-period account economics.",
+    "phase_gate": "Common windows satisfy same return/risk tradeoff: everywindow return>=baseline andMDD<=baseline with>=2pp return or20%MDD improvement somewhere; or everywindow wealth>=.95baseline andMDD<=.8baseline. Requires real actor support each selected window. Partial/unsafe wallet cannot pass.",
+    "resources": "Coin UID12000 jobs serial, no HOME/UID/lock bypass; immutable price caches shared, accounts independent; at most one day newly unpacked prints, task-regenerable caches bounded.",
+    "full_history": "No automatic795. If final entrant passes phase, state unresolved adoption question, changed strategy/risk dependencies and execution budget; one final candidate history required for full adoption, baseline reused."
+  },
+  "adoption": "research/replacement-spec.json unchanged: same2020-2026 economic window/control/stress. Extended2018-19 shown separately, not new OOS or directly comparable CAGR. Failed candidates remain research.",
+  "verification": "New causal/funding/ownership/recovery money-path checks only; full software once per repo at final stable delivery, scope-only repair. No broad repeated review.",
+  "closure": "Two fixed economic expressions per family. If both fail, close route, preserve current defaults/evidence and identify exact next new input/mechanism without endlessly tuning same histories."
+}

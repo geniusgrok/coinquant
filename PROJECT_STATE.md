@@ -1,13 +1,15 @@
-# BTC alpha/beta：独立机制搜索完成，候选未采用
+# BTC：2018—2019研究与核心替换实现完成，四候选拒绝
 
-2026-10-05用户指令“继续找吧”。目标仍是BTC Coinquant合约与Spotquant现货的alpha/beta改善。当前默认 SX60+DFII10 / primary7.5 / macro3.6 / scale1，恢复锚点 `113a792efc1531e1f00d5629f45e09756dce6e9c`。本轮未证明可采用的改善，运行策略、风险、配置、Python及测试未变。主策略/风控允许替换，但必须先满足 research/replacement-spec.json 的明显经济改善与可比实际账户条件；失败研究不安装默认。
+最新用户授权2026-10-05：“把2018年1月到2019年12月的数据用做研究，按你说的这些全部实施”。已补数据、实施Coin双向趋势和Spot底仓＋择时各2固定核心并完成预登记筛选。没有候选通过，0实际历史账户/0实际历史会话/0新795，原默认 SX60+DFII10 / primary7.5 / macro3.6 / scale1 继续保留。main策略/风控可改，但仍须满足replacement-spec明显改善及可比真实账户条件。
 
-新的平均quote成交额/笔数×收阳固定信息：Coin71独立七日标记通过信息筛选，原50真实初始成交中10受影响；Spot同表达拒绝。按每半首个受影响原机会时间选择2020Q2/2023Q4，各账户独立CNY10000。基线季度收益/MDD分别+29.1427%/34.5599%、+181.8225%/22.1154%。所有新入场过滤为−13.2920%/27.8354%、+187.2414%/22.1154%；macro-only为+12.7201%/26.1846%、+187.2414%/22.1154%。两行动表达均不通过原phase门槛，关闭家族。不把七日负收益归因直接当可删交易：真实机会随后成交，延迟损失趋势收益。
+2018/2019现货各365/365日合格。2019已有缓存，复用；补2018及2017Sep-Dec预热，共32个成功ZIP/CHECKSUM GET。另2个2019合约4h/funding GET返回451，原失败保留、不重试。合计34GET/36351B/3.463秒，joined3306日packet一次校验后复用，无大库扫描。Coin2018-19仅最高1倍方向报价代理，不是不存在市场的资金费/清算/账户证明；价格end+60s与日线开盘成交、OHLC及2020+日开盘名义金额资金费仍为开发近似。2019缓存及反复用过的2020+不是新OOS。
 
-六个完整新钱包账审PASS，一个受阻钱包保留并仅该候选恢复。共7实例、178实际完成会话（171完整+7受阻），不是795；第二表达复用两基线57会话，不能重复计数。账户执行累计214.763秒、三批实际耗时215.119秒；阶段登记到回执507.026/171.433秒。0新795、0大库扫描。Coin冻结源 abfec606a235ae88bf5e691965435ab6c50d1fd1 / Python509f579454f814ae329e8e3fcd01a0599465cf75cc29a5ca29b25249b0c861c2，所有生产已结束。本交付只静态文档/档案，复用原软件502/5skip PASS，不跑全量、不将skipCI说成远端PASS。
+Coin候选channel55/20＋3ATR及ma20/100＋3ATR，grosscap2/vol60%；共享已有Lifecycle/isolated/IOC/close-all与严格checkpoint，只有offline scope。原生形状fixture确认真实共享cycle开空且BUY TP/SL保护在清算前；这是软件，不是native案例。Spotbase25%＋tactical65%与defensive-base(close>MA100)；整体90%、ATR4clip10-30%、5%再平衡；同现金池、30/40组件分别拥有实际fill，不花未确认卖出款，scope恢复默认origin。代码在research/history_core.py，默认包及配置未改。
 
-Coinbase美元/USDT价格历史1723日均100%覆盖；192区间109收盘溢价事件的控制后前后半方向不同，两项目均拒绝。volume单位仍未合格，未使用。跨场所公开WS30秒/252成交确认Coinbase maker侧反转、Kraken WSv2 taker侧直接使用；共同窗口完整性及连续FX盘口仍缺，只有1真实UTC接收日、0成熟7日结果。矿工FeeTotNtv/IssTotNtv取得2485/2485日，新增官方定义补齐gross/burn但BTC专用范围及UTC桶起末仍pending；唯一固定表达已登记但NO_SCREEN，不放宽输入门槛。期权沿用2真实接收日、WAIT_NEW_INTERVAL。
+Coinchannel2018+10.7361%/MDD25.7369%、2019−14.1731%/22.1583%，两年压力−7.0293%失败。Coinma2018−18.3272%、2019+51.9031%，共同三段−18.4454/+40.3587/−36.6281%，且2019空头2个不足；screen保留SUPPORT_PENDING，assessment明确经济拒绝，不等待放宽数量。Spotbase2018−63.3726%/MDD71.1615%、2019+134.5257%；defensive-base2018−58.4730%/66.2285%、2019+138.6724%；都未通过2018MDD≤63.8897%的原门槛。这是开发报价/OHLC代理结果，不能与原完整CNY CAGR直接比较或当alpha/beta证明。每家族2表达已关闭，不调参救活或启动无入围依据的钱包矩阵。
 
-最新完整结果 research/search-next-RESULT.md；原spec/producer、原HTTP/WS字节与receipt、全部负筛选、受阻/evaluator原失败及完整账户统一保存在Spotquant evidence/btc-search-next-20261005/search-artifacts.zip，archive.json绑定。前次 search-RESULT.md/search-artifacts.zip 保持。仅共享静态研究证据；运行资金/订单/时钟独立，旧收益producer和forward消费者不改绑。本轮开始Spotmain66b8a68756affbaeb8a0dcf0fbb9bbd3b95ff0ed。
+首批74个低精度案例0.987秒；末端平仓错误引用区间外最后价格导致原现货收益异常，screen-original/源码/日志保留且无效。仅恢复30受影响案例0.688秒，44完整案例绑定复用；资金/区间外价格不影响终值的检查通过。3个必要新软件检查每仓；Coin一个报告字段断言错，只补该项。最终Python3.13编译/全量软件每仓一次：505/5skip PASS，7.425秒。软件PASS不是收益证明；提交skipCI避免重复全量，不说新的远端CI PASS。测量时精确源码与最终经济函数AST桥保留，不因HEAD变化重测。
 
-下一次只补真实新数据/独立机制：跨现货连续窗口闭合+FX+成熟独立时期，矿工明确scope/bucket官方证据，或成熟期权/合格forced-selling。不要再测本轮两个入场过滤或收盘溢价，不启动后台重复采集，不优化schedule/阈值或原资金曲线。每家族最多2行动表达；输入/信息先合格，才注册必要真实钱包与简单恒定/减预算对照。原Coin119.2284%/44.1051%和Spot56.5981%/36.4122%完整代理指标与目标NOT_MET/native NOT_QUALIFIED不变；没有真实账户操作授权。
+详情research/history-RESULT.md、history-GUIDE.md、history-spec.json。全部数据/HTTP receipts/规格/原异常/恢复/producer/完整筛选/测试logs在Spotquant evidence/btc-history-2018-2019-20261005/research-artifacts.zip，archive.json绑定；Coin仅共享静态研究行情证据，运行账户独立。研究起始Coinmainca9419954de22b144de9c3472a0f14685b2fe5b4、Spotmaine814b3b9b7ef07947335eec7f8e01c135a2262ca。旧搜索结果和所有负证据保留。
+
+下一次复用730日和原共同区间缓存；需要独立信息/新收益来源或退出机制的新家族，不再测本轮4失败核心。跨现货窗口/同步FX/成熟样本，矿工scope/UTC桶，期权成熟周期等旧pending继续按search-next状态。实际账户仅在信息/经济入围后，冻结源并串行同UID、独立资金时钟、复用适用原基线与解析cache；不要更改schedule/HOME/UID/锁或迁移reset旧状态。Coin119.2284%/44.1051%、Spot56.5981%/36.4122%完整原CNY代理指标与目标NOT_MET不变；native0/accountdays0/NOT_QUALIFIED。旧收益producer/forwardconsumer不改绑，不启后台或操作真实资金。
