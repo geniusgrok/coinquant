@@ -1,13 +1,13 @@
-# BTC alpha/beta：本轮继续搜索完成
+# BTC alpha/beta：独立机制搜索完成，候选未采用
 
-2026-10-05用户指令“那就继续找”。最新结果：**0新账户入围，未证明新alpha/beta改善；旧默认继续保留**。默认 SX60+DFII10 / primary7.5 / macro3.6 / scale1，经济恢复锚点 `113a792efc1531e1f00d5629f45e09756dce6e9c`；main可改策略/风控，但须先满足 research/replacement-spec.json 的明显经济改善与实际账户/压力条件。不得重复 target-core 的收益回落采用。
+2026-10-05用户指令“继续找吧”。目标仍是BTC Coinquant合约与Spotquant现货的alpha/beta改善。当前默认 SX60+DFII10 / primary7.5 / macro3.6 / scale1，恢复锚点 `113a792efc1531e1f00d5629f45e09756dce6e9c`。本轮未证明可采用的改善，运行策略、风险、配置、Python及测试未变。主策略/风控允许替换，但必须先满足 research/replacement-spec.json 的明显经济改善与可比实际账户条件；失败研究不安装默认。
 
-本轮完成：复用原完整账户成交投影归因；固定价格/主动卖压交互和 UTC 周末条件低成本筛选；第二个真实 UTC 期权接收日；一次跨现货公开数据资格探测。0新账户/0历史会话执行/0新795/0大库扫描/0软件测试/0私有操作。公开GET12次（期权5、跨现货7），全部成功，无旧451重试。
+新的平均quote成交额/笔数×收阳固定信息：Coin71独立七日标记通过信息筛选，原50真实初始成交中10受影响；Spot同表达拒绝。按每半首个受影响原机会时间选择2020Q2/2023Q4，各账户独立CNY10000。基线季度收益/MDD分别+29.1427%/34.5599%、+181.8225%/22.1154%。所有新入场过滤为−13.2920%/27.8354%、+187.2414%/22.1154%；macro-only为+12.7201%/26.1846%、+187.2414%/22.1154%。两行动表达均不通过原phase门槛，关闭家族。不把七日负收益归因直接当可删交易：真实机会随后成交，延迟损失趋势收益。
 
-结论：卖压承接根表达0事件，原空闲会话另一表达2个负代理结果，买压耗尽否决0作用，均支持不足；周末減新风险方向被正成本收益及下侧结果拒绝，不能事后转成周末加杠杆。并行价格流量表达重叠完整披露，不算多个独立机制，后续先合并家族管理、最多两表达。Coin12零成交IOC仅3个初始且后来均入场；直接删macro已有完整失败压力证据，不能重测。Spot普通退出占负出售片段69.78%，但精确退出原因不足，未证明代码缺陷。
+六个完整新钱包账审PASS，一个受阻钱包保留并仅该候选恢复。共7实例、178实际完成会话（171完整+7受阻），不是795；第二表达复用两基线57会话，不能重复计数。账户执行累计214.763秒、三批实际耗时215.119秒；阶段登记到回执507.026/171.433秒。0新795、0大库扫描。Coin冻结源 abfec606a235ae88bf5e691965435ab6c50d1fd1 / Python509f579454f814ae329e8e3fcd01a0599465cf75cc29a5ca29b25249b0c861c2，所有生产已结束。本交付只静态文档/档案，复用原软件502/5skip PASS，不跑全量、不将skipCI说成远端PASS。
 
-期权2真实接收日、七日结果未成熟，WAIT_NEW_INTERVAL；跨场所Coinbase盘口时间/美元换算可用，Kraken ticker缺venue事件时间，近期成交窗口不等且主动方向语义未绑定，PUBLIC_DATA_AVAILABLE_CROSS_VENUE_SIGNAL_NOT_QUALIFIED。此为新数据路径实质进展，不是可交易alpha。
+Coinbase美元/USDT价格历史1723日均100%覆盖；192区间109收盘溢价事件的控制后前后半方向不同，两项目均拒绝。volume单位仍未合格，未使用。跨场所公开WS30秒/252成交确认Coinbase maker侧反转、Kraken WSv2 taker侧直接使用；共同窗口完整性及连续FX盘口仍缺，只有1真实UTC接收日、0成熟7日结果。矿工FeeTotNtv/IssTotNtv取得2485/2485日，新增官方定义补齐gross/burn但BTC专用范围及UTC桶起末仍pending；唯一固定表达已登记但NO_SCREEN，不放宽输入门槛。期权沿用2真实接收日、WAIT_NEW_INTERVAL。
 
-详情 research/search-RESULT.md。全量原结果/失败/producer/公开原响应统一保存在 Spotquant evidence/btc-search-20261005/search-artifacts.zip；跨仓仅共享静态研究行情证据，不耦合运行账户。研究开始Coin main39ccfaf70f3aa8eb84d3650c2cf775d2f512c68e、Spot main5bcea8e19147145051c201db7ddffd8de82a0bfd；本交付只新增静态归档/报告/状态，运行与默认未变。复用上一交付Python3.13软件 502/5skip PASS，不重跑、不把skipCI说成远端PASS。恢复PR和原接受源码继续见 evidence/btc-replacement-20261005/GITHUB-INTEGRATION.json。
+最新完整结果 research/search-next-RESULT.md；原spec/producer、原HTTP/WS字节与receipt、全部负筛选、受阻/evaluator原失败及完整账户统一保存在Spotquant evidence/btc-search-next-20261005/search-artifacts.zip，archive.json绑定。前次 search-RESULT.md/search-artifacts.zip 保持。仅共享静态研究证据；运行资金/订单/时钟独立，旧收益producer和forward消费者不改绑。本轮开始Spotmain66b8a68756affbaeb8a0dcf0fbb9bbd3b95ff0ed。
 
-下一次：从本状态继续，不再重复旧筛选。取得真实新增且时钟/主动方向合格的跨现货固定时间窗，再登记单一需求迁移事件；期权等到真实七日结果成熟后评估。若信号仅FX/动量别名或在人工启动前消失，则转独立forced-selling/期权信息，不放宽门槛/优化启动时刻。入围后才比较独立钱包和恒定风险对照，旧收益生产者和前向consumer身份保持，不用新HEAD重绑旧账本。未达明显改善时不替换默认；不自动后台采集、不迁移/reset、不操作真实资金。
+下一次只补真实新数据/独立机制：跨现货连续窗口闭合+FX+成熟独立时期，矿工明确scope/bucket官方证据，或成熟期权/合格forced-selling。不要再测本轮两个入场过滤或收盘溢价，不启动后台重复采集，不优化schedule/阈值或原资金曲线。每家族最多2行动表达；输入/信息先合格，才注册必要真实钱包与简单恒定/减预算对照。原Coin119.2284%/44.1051%和Spot56.5981%/36.4122%完整代理指标与目标NOT_MET/native NOT_QUALIFIED不变；没有真实账户操作授权。
