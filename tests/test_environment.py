@@ -166,9 +166,16 @@ class EnvironmentTests(TestCase):
                 conditional('stop','STOP_MARKET');conditional('take','TAKE_PROFIT_MARKET')
                 ordinary('reduce','SELL','MARKET',2,1,'EXPIRED',True)
                 conditional('offline','STOP_MARKET',True)
+                actions=[dict(id=identity,method='POST',path=path,at_ms=1000100+index)
+                         for index,(identity,path) in enumerate((
+                             ('entry','/fapi/v1/order'),('stop','/fapi/v1/algoOrder'),
+                             ('take','/fapi/v1/algoOrder'),('reduce','/fapi/v1/order'),
+                             ('offline','/fapi/v1/algoOrder')))]
                 base=dict(trial_mode='demo',source_digest='digest',cleanup='verified',pending_intents=0,
                           sizing_capital_usdt='100',
                           elapsed_seconds=3)
+                state.report(dict(base,session_started_at_ms=1000000,write_attempted=True,actions=actions,
+                                  actual=dict(quantity_btc='2',native_full_position_protected=True)))
                 state.report(dict(base,session_started_at_ms=1000000,
                                   actual=dict(quantity_btc='2',native_full_position_protected=True)))
                 state.report(dict(base,session_started_at_ms=1020000,
@@ -179,6 +186,22 @@ class EnvironmentTests(TestCase):
             reader.get.return_value=[dict(id=1,time=1010000,orderId=40,qty='2',price='89',
                                           symbol='BTCUSDT',positionSide='BOTH',side='SELL')]
             self.assertTrue(verify(proof,'digest',D(100),reader))
+            with State(directory,scope) as state:
+                sequence,recorded,payload=state.db.execute(
+                    'SELECT sequence,recorded_at,payload FROM observations ORDER BY sequence LIMIT 1').fetchone()
+                archived=dict(sequence=sequence,recorded_at=recorded,report=json.loads(payload))
+                archive=directory/'observations-archive.jsonl'
+                archive.write_text(json.dumps(archived)+'\n')
+            self.assertTrue(verify(proof,'digest',D(100),reader))  # same row in both stores
+            archive.write_text(json.dumps(archived)+'\n'+json.dumps(dict(archived,report={}))+'\n')
+            with self.assertRaises(Unknown):verify(proof,'digest',D(100),reader)
+            archive.write_text(json.dumps(archived)+'\n')
+            with State(directory,scope) as state:
+                with state.db:state.db.execute('DELETE FROM observations WHERE sequence=?',(sequence,))
+            self.assertTrue(verify(proof,'digest',D(100),reader))  # event only in archive
+            archive.write_text(json.dumps(dict(archived,report=dict(archived['report'],source_digest='old')))+'\n')
+            with self.assertRaises(Blocked):verify(proof,'digest',D(100),reader)
+            archive.write_text(json.dumps(archived)+'\n')
             orders['offline']['child']['status']='NEW'
             with self.assertRaises(Unknown):
                 verify(proof,'digest',D(100),reader)

@@ -24,9 +24,10 @@ def _guard_strategy(state):
         raise Blocked('durable execution state lacks its strategy checkpoint')
 
 
-def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None):
+def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None, actions=None):
     _guard_strategy(state)
     engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter,session=session)
+    if actions is not None:engine.actions=actions
     if execute:
         snapshot=engine.recover_exposure(engine.settle())
     else:
@@ -149,7 +150,7 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                     phase='cycle'
                     current=cycle(reader,state,config.account_uid,execute=execute,
                                   may_enter=lambda:monotonic()<deadline and not stopping(),
-                                  session=report['session_started_at_ms'])
+                                  session=report['session_started_at_ms'],actions=report['actions'])
                     report.update(current,write_attempted=report['write_attempted'] or current['write_attempted'])
                     report['observation_current']=True
                     report.pop('reason',None)
@@ -205,6 +206,7 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                         report.pop('model_preview',None)
                         break
                 report['write_attempted'] |= bool(engine.actions)
+                if engine.actions:report['cleanup_actions']=engine.actions
                 if report['cleanup']=='verified':
                     try:report['income_audit']=income(reader,state,force=True)
                     except KeyboardInterrupt:
