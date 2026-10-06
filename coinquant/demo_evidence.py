@@ -11,6 +11,31 @@ IDS=('entry_order_id','stop_algo_id','take_algo_id','reduction_order_id',
      'offline_trigger_order_id')
 
 
+def _observations(state):
+    """Read the durable report archive and live rows once, rejecting conflicts."""
+    rows={}
+    def add(sequence,recorded,report):
+        if type(sequence) is not int or sequence<=0 or not isinstance(recorded,(int,float)) or not isinstance(report,dict):
+            raise Unknown('invalid Demo observation record')
+        value=(recorded,report)
+        if sequence in rows and rows[sequence]!=value:
+            raise Unknown('conflicting Demo observation archive row')
+        rows[sequence]=value
+    try:
+        archive=state.directory/'observations-archive.jsonl'
+        if archive.exists():
+            with archive.open() as stream:
+                for line in stream:
+                    item=json.loads(line)
+                    add(item['sequence'],item['recorded_at'],item['report'])
+        for sequence,recorded,payload in state.db.execute(
+                'SELECT sequence,recorded_at,payload FROM observations'):
+            add(sequence,recorded,json.loads(payload))
+    except (OSError,ValueError,KeyError,TypeError):
+        raise Unknown('Demo observation archive is unreadable') from None
+    return [rows[key] for key in sorted(rows)]
+
+
 def verify(proof, digest, live_limit, reader):
     """Match local durable requests, native orders/fills and saved Demo sessions.
 
@@ -59,8 +84,23 @@ def verify(proof, digest, live_limit, reader):
             row=state.db.execute('SELECT status,result FROM intents WHERE id=?',(identity,)).fetchone()
             if not row or row[0]!='confirmed' or json.loads(row[1]).get('status')!='NEW':
                 raise Blocked('Demo protection lacks native active readback')
-        all_reports=[json.loads(row[0]) for row in state.db.execute(
-            'SELECT payload FROM observations ORDER BY sequence')]
+        observed=_observations(state)
+        # A current-code report of a later recovery does not prove that code
+        # placed an older order. Require the exact native identity to appear in
+        # a current-code write attempt within that Demo session's recorded time.
+        for key in IDS:
+            path='/fapi/v1/algoOrder' if key in ('stop_algo_id','take_algo_id','offline_trigger_order_id') else '/fapi/v1/order'
+            if not any(r.get('trial_mode')=='demo' and r.get('source_digest')==digest
+                       and r.get('write_attempted') is True
+                       and type(r.get('session_started_at_ms')) is int
+                       and isinstance(action,dict) and action.get('method')=='POST'
+                       and action.get('path')==path and action.get('id')==proof[key]
+                       and type(action.get('at_ms')) is int
+                       and r['session_started_at_ms']<=action['at_ms']<=int(recorded*1000)+5000
+                       for recorded,r in observed
+                       for action in (r.get('actions') or [])+(r.get('cleanup_actions') or [])):
+                raise Blocked('Demo native order lacks a current-source session write: '+key)
+        all_reports=[r for _,r in observed]
         reports=[r for r in all_reports if r.get('trial_mode')=='demo' and r.get('source_digest')==digest
                  and r.get('cleanup')=='verified' and r.get('pending_intents')==0
                  and isinstance(r.get('actual'),dict)]

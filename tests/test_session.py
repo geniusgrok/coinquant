@@ -34,6 +34,9 @@ class SessionTests(TestCase):
         self.assertIn('manual run',result['offline_boundary'])
         self.assertEqual(len([p for m,path,p in self.venue.sent if path.endswith('/order') and p.get('reduceOnly')!='true']),1)
         self.assertEqual(result['pending_intents'],0)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            reports=[json.loads(row[0]) for row in state.db.execute('SELECT payload FROM observations')]
+        self.assertTrue(any(type(a.get('at_ms')) is int for r in reports for a in r.get('actions',[])))
     def test_negative_impulse_does_not_enter_in_long_only_model(self):
         self.venue=Venue(-1);self.venue.seed(self.directory)
         r=self.run_session(seconds=2)
@@ -71,6 +74,10 @@ class SessionTests(TestCase):
         a=self.run_session(seconds=2);b=self.run_session(seconds=2)
         self.assertEqual(a['cleanup'],'unresolved');self.assertEqual(b['status'],'unknown')
         self.assertEqual(len([x for x in self.venue.sent if x[1].endswith('/order')]),1)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            reports=[json.loads(row[0]) for row in state.db.execute('SELECT payload FROM observations')]
+        self.assertTrue(any(action.get('method')=='POST' and type(action.get('at_ms')) is int
+                            for report in reports for action in report.get('actions',[])))
     def test_partial_fill_protects_actual_size_then_tops_up_under_same_protection(self):
         self.venue.fraction=D('.5');r=self.run_session(seconds=3)
         self.assertEqual(r['cleanup'],'verified',r);self.assertGreater(len(self.venue.orders),1)

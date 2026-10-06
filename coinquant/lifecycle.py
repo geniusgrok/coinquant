@@ -126,7 +126,8 @@ class Lifecycle:
                 timing[field]=int(self.reader.clock()*1000)
                 self.state.set('entry_timing',timing)
         self.state.set('write_attempt_count',(self.state.get('write_attempt_count') or 0)+1)
-        self.actions.append(dict(method=method, path=path, id=payload.get('newClientOrderId', payload.get('clientAlgoId', payload.get('origClientOrderId')))))
+        self.actions.append(dict(method=method, path=path, id=payload.get('newClientOrderId', payload.get('clientAlgoId', payload.get('origClientOrderId'))),
+                                 at_ms=int(self.reader.clock()*1000)))
         return self.reader.send(method, path, payload)
 
     def epoch(self):
