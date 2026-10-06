@@ -19,6 +19,8 @@ python3 -m coinquant snapshot --config config.json --out /tmp/coinquant-snapshot
 | `session_seconds` | 会话时长 1～86400 秒，默认 300 |
 | `poll_seconds` | 轮询间隔 1～60 秒，默认 5，不超过会话时长 |
 | `capital_limit_usdt` | 可选正值十进制字符串，限制策略用于定仓的资金；不是亏损上限 |
+| `max_stop_loss_fraction` | 可选入场资金基数到止损损失预算，十进制比例；须与下一项同时填写，未设置时保持原策略定仓 |
+| `stop_slippage_fraction` | 上述预算采用的止损逆向滑点假设，十进制比例；预算还计入双边实际 taker 费率 |
 
 主网凭据从 `COINQUANT_BINANCE_KEY`、`COINQUANT_BINANCE_SECRET` 读取，Demo 从 `COINQUANT_BINANCE_DEMO_KEY`、`COINQUANT_BINANCE_DEMO_SECRET` 读取。两套凭据互不回退。
 
@@ -34,7 +36,17 @@ python3 -m coinquant run --config demo.json --execute --trial demo --authorize-u
 
 填写专用 Demo UID、固定状态目录和正值资金上限。执行需同时提供 `--execute`、匹配配置环境的 `--trial` 和匹配账户的 `--authorize-uid`；入口不会强造策略入场。
 
-小额主网试运行使用 [config.live-trial.example.json](config.live-trial.example.json)，还需 `--trial live --demo-evidence <JSON>`。该 JSON 必须匹配当前源码摘要，Demo 资金上限不低于本次上限，并包含 `demo_uid`、`entry_order_id`、`stop_algo_id`、`take_algo_id`、`reduction_order_id`、`offline_trigger_order_id` 六个真实原生身份及 `demo_capital_limit_usdt`。这是程序实际检查的交易入口条件；历史模拟不能替代原生回读。
+主网试运行使用 [config.live-trial.example.json](config.live-trial.example.json)，还需 `--trial live --demo-evidence <JSON>`。Demo 验收后用只读命令采集证据：
+
+```sh
+python3 -m coinquant demo-evidence --config demo.json --out demo-evidence.json \
+  --entry-order-id <ENTRY> --stop-algo-id <STOP> --take-algo-id <TAKE> \
+  --reduction-order-id <REDUCTION> --offline-trigger-order-id <TRIGGER>
+```
+
+命令核对 Demo 专用 UID、持久状态中的原始委托、交易所原生订单与成交，以及已保存的会话报告；要求保护回读、部分减仓、停机后触发与再次启动核对。证据文件只保存在本地，主网入口会重新做只读 Demo 核对，单独填写订单 ID 不会通过。采集和核对都需要用户另行授权的 Demo 账户访问；当前仓库没有原生验收结果。
+
+会话日志保留入场前盘口时间、买卖价、限价内可见量、请求与回读时间及原生成交量/价格；对账报告在交易所提供成交价时计算保护触发价到实际成交价的滑点。缺项保持缺项，不按零成本补值。这些观察用于后续校准旧回测代理，当前尚无真实样本。
 
 执行先持久记录订单身份，成交后确认交易所托管的整仓止损和止盈。丢失回包时查询原身份；未解释的成交、资金或保护状态阻止新增风险。会话到期或中断后停止开仓，已开始的保护或减仓可能使用有限清理时间，确认的原生保护留在交易所。
 
@@ -42,7 +54,9 @@ python3 -m coinquant run --config demo.json --execute --trial demo --authorize-u
 
 固定 `state_dir` 保存 `intents.sqlite`、`latest.json` 和执行锁；账户锁还保存在 `~/.local/state/coinquant/account-locks`。同一账户只使用一台机器、一个客户端。重启继续原订单身份；状态不匹配时只读核对，不删除数据库、不改 UID 或换空目录绕过。
 
-停止进程后不会继续计算策略或修改保护。只读快照也不证明止损触发和重启执行已经验证。
+启动时间可以不固定。每次运行都会重新核对实际持仓、原生保护与策略状态；报告中的 `next_required_review_at_ms` 标示下一根完整四小时 K 线的复核点，宏观数据或订单变化可能更早需要复核，程序不会自动唤醒。停止进程后只有交易所原生保护可能执行；七天到期、宏观数据变化和新信号均要等下一次人工运行。只读快照也不证明止损触发和重启执行已经验证。
+
+`snapshot` 提供方向、BTC 名义金额、未保护名义金额及按现有止损触发价计算的价格距离损失，供与另一账户合并查看。价格距离损失不含手续费、滑点或跳空，不能当亏损上界。两个模型在本账户共用一个单向持仓；可选预算在每次原生入场及同一持仓追加前按新鲜账户余额、双边手续费和指定逆向滑点估算整仓到止损损失。它不保证跳空时不会超额，不包含另一账户敞口，也不代表已有历史回测使用该预算。
 
 ## 当前完整回测
 

@@ -209,6 +209,20 @@ def reconcile(state, reader, model, snapshot):
     if (entry_total!=sum((number(x[3]['executedQty']) for x in group),D(0))
             or total!=number(snapshot['quantity_btc'])):
         raise Unknown('native fills do not reconcile to current position')
+    protection_slippage=[]
+    for order_id,(intent_id,order) in native.items():
+        row=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(intent_id,)).fetchone()
+        if not row or row[0]!='binance_algo':continue
+        prices=[(number(t['qty'],positive=True),number(t['price'],positive=True))
+                for t in trades if str(t['orderId'])==order_id and t.get('price') is not None]
+        if not prices:continue  # unavailable native price is never represented as zero slippage
+        trigger=number(json.loads(row[1])['triggerPrice'],positive=True)
+        quantity=sum((q for q,_ in prices),D(0))
+        average=sum((q*p for q,p in prices),D(0))/quantity
+        adverse=(trigger-average if order['side']=='SELL' else average-trigger)/trigger
+        protection_slippage.append(dict(id=intent_id,filled_btc=str(quantity),
+                                        avg_fill_price=str(average),trigger_price=str(trigger),
+                                        adverse_slippage_fraction=str(adverse)))
     again=reader.snapshot(snapshot['account_uid'])
     if any(again[k]!=snapshot[k] for k in ('quantity_btc','entry','wallet_usdt','possible_entry_remainders')):
         raise Unknown('account changed during ownership recovery')
@@ -236,6 +250,7 @@ def reconcile(state, reader, model, snapshot):
         # forever after an independently reconciled flat boundary.
         _archive_links(state,links)
     return {'status':'reconciled','campaign':campaign,'quantity':str(total),'fill_count':len(trades),
+            'protection_slippage':protection_slippage,
             'protection_confirmed':snapshot.get('native_full_position_protected',False),
             'entry_remainder':snapshot['possible_entry_remainders']}
 

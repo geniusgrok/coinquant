@@ -26,6 +26,10 @@ class Config:
     # Optional ceiling on the USDT the model may size from; the rest of the
     # wallet is not trial capital. A decimal string, or None for the whole wallet.
     capital_limit_usdt: str | None = None
+    # Optional whole-campaign stop loss budget. Neither field has a strategy
+    # default; an explicit budget requires an explicit slippage assumption.
+    max_stop_loss_fraction: str | None = None
+    stop_slippage_fraction: str | None = None
 
     def __post_init__(self):
         if (not isinstance(self.account_uid, str) or not self.account_uid.isascii()
@@ -48,6 +52,15 @@ class Config:
                 limit = None
             if limit is None or not limit.is_finite() or limit <= 0:
                 raise Blocked('capital_limit_usdt must be a positive decimal string')
+        if (self.max_stop_loss_fraction is None) != (self.stop_slippage_fraction is None):
+            raise Blocked('loss budget and stop slippage must be configured together')
+        for name in ('max_stop_loss_fraction','stop_slippage_fraction'):
+            value=getattr(self,name)
+            if value is not None:
+                try: fraction=Decimal(value) if isinstance(value,str) else None
+                except InvalidOperation: fraction=None
+                if fraction is None or not fraction.is_finite() or not 0<fraction<1:
+                    raise Blocked(f'{name} must be a decimal fraction between zero and one')
 
     @property
     def scope(self):
@@ -56,6 +69,14 @@ class Config:
     @property
     def capital_limit(self):
         return None if self.capital_limit_usdt is None else Decimal(self.capital_limit_usdt)
+
+    @property
+    def loss_fraction(self):
+        return None if self.max_stop_loss_fraction is None else Decimal(self.max_stop_loss_fraction)
+
+    @property
+    def slip_fraction(self):
+        return None if self.stop_slippage_fraction is None else Decimal(self.stop_slippage_fraction)
 
 
 def load(path):

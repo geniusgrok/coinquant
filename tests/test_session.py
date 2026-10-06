@@ -30,6 +30,8 @@ class SessionTests(TestCase):
         self.assertEqual(result['cycles'],3);self.assertEqual(result['cleanup'],'verified')
         self.assertGreater(self.venue.q,0)
         self.assertTrue(result['actual']['native_full_position_protected'])
+        self.assertEqual(result['next_required_review_at_ms'],self.venue.now//14400000*14400000+14400000)
+        self.assertIn('manual run',result['offline_boundary'])
         self.assertEqual(len([p for m,path,p in self.venue.sent if path.endswith('/order') and p.get('reduceOnly')!='true']),1)
         self.assertEqual(result['pending_intents'],0)
     def test_negative_impulse_does_not_enter_in_long_only_model(self):

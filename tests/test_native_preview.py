@@ -30,6 +30,7 @@ class NativePreviewTests(TestCase):
         reader=Mock();reader.clock.return_value=now/1000;reader.get.side_effect=lambda path,params=None:values[path]
         reader.snapshot.return_value=snapshot.copy()
         reader.capital_limit=None
+        reader.loss_fraction=None;reader.slip_fraction=None
         return model,reader,snapshot,values,instrument
 
     def test_capital_limit_sizes_from_the_trial_capital_only(self):
@@ -89,3 +90,29 @@ class NativePreviewTests(TestCase):
         self.assertLessEqual(1*(100-90)+add*(D(plan['entry_estimate'])-90),30)
         spent=topup_preview(r,m,held,'5','90','200.1','10')
         self.assertEqual(spent['quantity_btc'],'0');self.assertEqual(spent['constraint'],'stop_budget')
+
+    def test_explicit_loss_budget_includes_both_fees_and_adverse_stop_slippage(self):
+        m,r,s,_,_=self.fixture()
+        r.loss_fraction=D('.02');r.slip_fraction=D('.01')
+        plan=entry_preview(r,m,s)
+        quantity=D(plan['quantity_btc']);price=D(plan['entry_estimate']);stop=D(plan['stop'])
+        per_btc=price-stop+price*D(plan['fee'])+stop*(D('.01')+D('1.01')*D(plan['fee']))
+        self.assertLessEqual(quantity*per_btc,D(plan['stop_budget_usdt']))
+        self.assertEqual(D(plan['stop_budget_usdt']),D('20'))
+        held=dict(s,quantity_btc=str(quantity),entry=str(price),isolated_wallet_usdt=plan['allocated_margin_usdt'])
+        r.snapshot.return_value=dict(held)
+        add=topup_preview(r,m,held,'100',str(stop),plan['take'],plan['stop_budget_usdt'],
+                          plan['sizing_capital_usdt'],plan['stop_slippage_fraction'])
+        self.assertEqual(add['quantity_btc'],'0')
+
+    def test_explicit_budget_also_caps_macro_campaign(self):
+        m,r,s,_,_=self.fixture()
+        m.model.active=None;m.daily_lows.extend([D(90)]*10)
+        row=dict(missing_reason=None,latest_value='1',prior20_value='1.3',
+                 latest_observation_date=datetime.fromtimestamp(m.last/1000,timezone.utc).date().isoformat(),
+                 latest_value_available_ms=m.last-1,prior20_value_available_ms=m.last-1)
+        m.select_macro(row,'100',m.last+1000)
+        r.loss_fraction=D('.01');r.slip_fraction=D('.01')
+        plan=entry_preview(r,m,s)
+        self.assertLess(plan['campaign'],0)
+        self.assertEqual(plan['stop_budget_usdt'],'10.00')
