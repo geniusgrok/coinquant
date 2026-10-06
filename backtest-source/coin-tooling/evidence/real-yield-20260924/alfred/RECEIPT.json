@@ -1,0 +1,111 @@
+{
+  "url": "https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10",
+  "observation_start": "2019-01-01",
+  "observation_end": "2026-09-19",
+  "file_type": "3",
+  "format": "csv",
+  "attempts": [
+    {
+      "label": "single",
+      "selected_count": 1,
+      "request_sha256": "60516afe5867fb52f845adbc3ee81f552d7c46889f59e416d89b9ada1857115e",
+      "request_bytes": 258,
+      "http_status": 200,
+      "content_type": "application/zip",
+      "final_url": "https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10",
+      "response_bytes": 1061,
+      "response_sha256": "5badc32f957d8c11d49ac36497cdd1b8354b56080a752cdf4f3fe22d02f39082",
+      "members": [
+        "README.txt",
+        "vintages_starting_2020-01-02.csv"
+      ],
+      "path": "DFII10_ALFRED_single.zip"
+    },
+    {
+      "label": "batch-0000",
+      "selected_count": 400,
+      "request_sha256": "f9f222afafda5d5ce1a288e7c02823774abb38acb98bbbbc3e492914e40e6ea7",
+      "request_bytes": 20208,
+      "http_status": 200,
+      "content_type": "application/zip",
+      "final_url": "https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10",
+      "response_bytes": 7007,
+      "response_sha256": "48e08d7da424d7c7a509a3998288f69c9bef5d1ccf76a3bfa523b19d66d6a82d",
+      "members": [
+        "README.txt",
+        "vintages_starting_2019-01-02.csv"
+      ],
+      "path": "DFII10_ALFRED_batch-0000.zip"
+    },
+    {
+      "label": "batch-0400",
+      "selected_count": 400,
+      "request_sha256": "2bdd653848a58078b914841c719e8020f9368c3417fa19587b0608efba3cc3f5",
+      "request_bytes": 20208,
+      "http_status": 200,
+      "content_type": "application/zip",
+      "final_url": "https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10",
+      "response_bytes": 6888,
+      "response_sha256": "6a25b513bfae3910427b5ce2944ceb0e79982140857a69cd1bb76366fc3bc0da",
+      "members": [
+        "README.txt",
+        "vintages_starting_2020-08-11.csv"
+      ],
+      "path": "DFII10_ALFRED_batch-0400.zip"
+    },
+    {
+      "label": "batch-0800",
+      "selected_count": 400,
+      "request_sha256": "9d36d2054e73ba09987ea607d2d88486c2d375fbca4feead6b4ce1e7c114b37f",
+      "request_bytes": 20208,
+      "http_status": 200,
+      "content_type": "application/zip",
+      "final_url": "https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10",
+      "response_bytes": 7014,
+      "response_sha256": "6858d3a13cd4b1523f1fa695496f24c4fe2b6037fd33ec8e6a83fc46c08c6d9c",
+      "members": [
+        "README.txt",
+        "vintages_starting_2022-03-24.csv"
+      ],
+      "path": "DFII10_ALFRED_batch-0800.zip"
+    },
+    {
+      "label": "batch-1200",
+      "selected_count": 400,
+      "request_sha256": "05f76ccaa1a8a2609cafd9d93100601923866bbdf2f7f593de8b2bf58d03a059",
+      "request_bytes": 20208,
+      "http_status": 200,
+      "content_type": "application/zip",
+      "final_url": "https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10",
+      "response_bytes": 7098,
+      "response_sha256": "119def711562901f811fbc940963126b7372ef33ea8b94ca87aafcd32b5268f1",
+      "members": [
+        "README.txt",
+        "vintages_starting_2023-11-01.csv"
+      ],
+      "path": "DFII10_ALFRED_batch-1200.zip"
+    },
+    {
+      "label": "batch-1600",
+      "selected_count": 314,
+      "request_sha256": "ed03a1817258a406dd947a41f944247cda0ee61c5f98c109d75ea9995f59ffb6",
+      "request_bytes": 15908,
+      "http_status": 200,
+      "content_type": "application/zip",
+      "final_url": "https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10",
+      "response_bytes": 5538,
+      "response_sha256": "3567cf787f5ad710f20afcf63fbb8d6edfe73d7e57814c90e4f1cafbf15bd572",
+      "members": [
+        "README.txt",
+        "vintages_starting_2025-06-16.csv"
+      ],
+      "path": "DFII10_ALFRED_batch-1600.zip"
+    }
+  ],
+  "vintages": {
+    "count": 1914,
+    "first": "2019-01-02",
+    "last": "2026-09-18",
+    "sha256": "6268da3cc3d61fa2ca57b8472b1d06fa822e327d14143c0b4518293e0dfd782d"
+  }
+}

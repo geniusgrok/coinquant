@@ -1,0 +1,37 @@
+{
+  "git_head": "47837e391be4130104967d794e9701068a0bcc5a",
+  "files": {
+    "coinquant/__init__.py": "fe919747f40d205f7d0f5804ecc9de9244b4c6ed48c4a78ad233b703c87ba1b3",
+    "coinquant/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "coinquant/audit.py": "483245ec009e9dee8d6e51f3bd47e56675979c0e641bbcba3dc659e5a02136ed",
+    "coinquant/binance.py": "0e45dcfaab934655bfc3f5eec4f23ccea6b136b6aadd678b44ba714d08c8cd82",
+    "coinquant/binance_safety.py": "d172e505b15e1f21422ee5c75de915cd2120c5f2f659405cb9a976e28ae3103d",
+    "coinquant/campaign.py": "b7f2aef689297cb1551a1fa6de4a5db367b8e61953ab2cab97aa492ca40436fb",
+    "coinquant/cli.py": "193001366e826a68ae47b0a7d27701e833f78c2d347cf22a59ef8e1d9047b11b",
+    "coinquant/config.py": "4c98fb3ac0d3cc464524c0f5aeb5e6cfa76e4445e3ebe5aac47d31f73496873b",
+    "coinquant/dfii10.py": "800c85fa61072165972a3eeb5ee6b58b27b22099fcd0da2063b77b4bf42cb05e",
+    "coinquant/lifecycle.py": "5157afb110926b45c2f32a5071cc555047471854961b287cd1229437c711d551",
+    "coinquant/linear_preview.py": "8715c17cfbc8a5a3ad775b5785c52445dbcb2184c3e4cd37068d3fd1ec368653",
+    "coinquant/native_preview.py": "3c4a144f55e5bb1a31e930b364bf362fdbfca69e4217635708e91be5daa036e0",
+    "coinquant/opportunities.py": "d3f2df939be7d7c8971a26d95cc5ae68f58b4de6402d14fb940ea0bf0f940c4e",
+    "coinquant/ownership.py": "5b02627a899a13eccbc9c7ce05325488775cf4172a2efc4fe133d8bec2bd57c0",
+    "coinquant/session.py": "d62577d7f5247959048bab0c80881e4e1a65412da146e2756d29825a6823bcc7",
+    "coinquant/snapshot.py": "21404d9d6c4a3a0125bf84f71958a0acf57be50c8bb280d5860cc7a10acca2b9",
+    "coinquant/state.py": "6dfbd87465318e348a8b8cc7862a9e02d1aeb5c48404526ea2adf39d37d0c340",
+    "coinquant/types.py": "28d2d1dded73d1dffdd43f9d473e3a829d456aff6d5098fca70954eaed65e4f1"
+  },
+  "runtime_module": "/workspace/coinquant/coinquant/session.py",
+  "tooling_files": {
+    "research/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "research/comparison_report.py": "82d1a183ef124de5b7ee2f090c80b7e387b3aa5395f2eba9b1f7042a08eceb1d",
+    "research/complete_perp.py": "c4bc04bb9fc555db63a5527698a0b0a0cbcfe9785ba0cf16e62ca5dc6b7b9ffd",
+    "research/data_loader.py": "2250c2ad44588992b95b858d19eff4be7cc6b1f96b08d43c26bc8ebf1f4f9289",
+    "research/dfii10_history.py": "b8e7a84618db732de5706b43de0a375a8de60cecac2e01e0f1236b8e34450e3e",
+    "research/replay_checkpoint.py": "2f29b0f80d0cdc53c56e4e3a671c59de2b3a2889b890f58cc5f44fa4e41e4bde",
+    "research/session_exchange.py": "f9c73b2ad90ae2eacdb96586fbfdd1a6166b2354f834d62d3ab5cc2d1f25000f",
+    "research/session_market.py": "7ab3a31b7e02cec0c95802a309b7c0c0c0f66b596e6fc96afedef13e192557ae",
+    "research/unified_perp.py": "b3fea1b21a1ffaa96f429c3c3573b1c83d40e741a17f1782d0743a09b5a3af2f"
+  },
+  "producer_sha256": "801457f2bc50fa009bb10595b80f8af7ee330015f7c09b005280619c46f45c59",
+  "source_sha256": "705050a947dcbb99047166085136e889bfc4427ae68db013910b7b9f1aff04c4"
+}

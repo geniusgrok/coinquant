@@ -1,0 +1,51 @@
+{
+  "version": "current-main-full-backtest-v1",
+  "runtime_head": "47837e391be4130104967d794e9701068a0bcc5a",
+  "source_sha256": "705050a947dcbb99047166085136e889bfc4427ae68db013910b7b9f1aff04c4",
+  "producer_sha256": "801457f2bc50fa009bb10595b80f8af7ee330015f7c09b005280619c46f45c59",
+  "uid": "12000",
+  "initial_cny": "10000",
+  "session_count": 795,
+  "begin": "2020-01-01",
+  "end": "2026-09-20",
+  "terminal_ms": 1789862400000,
+  "chunk_wall_seconds": 7200,
+  "total_wall_seconds": 7200,
+  "max_segments": 3,
+  "checkpoint_every": 100,
+  "min_free_bytes": 250000000,
+  "market": "/tmp/coinquant-market",
+  "prints": "/workspace/scratch/alpha-beta-next/public-print-vault",
+  "schedule": "/workspace/btc-main-backtest-20261006/coin-tooling/research/session_schedule.json",
+  "fx": "/workspace/starquant/data/usdcny_frankfurter.json",
+  "qualified_metadata": "/workspace/btc-main-backtest-20261006/data/qualified-market-metadata.json",
+  "qualified_metadata_sha256": "2d83c285d50cd5432ef5d9855149df9283f5955efa40ff584227d5f00785ce7e",
+  "parser_sha256": "7ab3a31b7e02cec0c95802a309b7c0c0c0f66b596e6fc96afedef13e192557ae",
+  "parsed_pack_roots": [
+    "/workspace/btc-core-rebuild-20261004/parsed-prints-cache",
+    "/tmp/btc-search-next-20261005-coin-accounts/private-parsed-prints-cache",
+    "/tmp/btc-search-next-20261005-coin-accounts-recovery/private-parsed-prints-cache",
+    "/tmp/btc-search-next-20261005-coin-macro-only/private-parsed-prints-cache"
+  ],
+  "shared_parsed_cache": "/tmp/btc-progress-20261005/shared-parsed-prints",
+  "registered_at": "2026-10-06T07:40:40.031804+08:00",
+  "authorization": "User explicitly requests one complete new latest slim-main default wallet per project and updating main result descriptions",
+  "unresolved_question": "What are actual full-history cost-net returns, drawdown and account paths after current runtime sizing/strategy/execution simplification?",
+  "decision_changed": "Publish measured current-main performance, compare archived results; disclose or fix real accounting/runtime errors rather than assume economic equivalence",
+  "dependency_change": "Coin direct funded native sizing and recovery simplification; Spot current-only SMA/ATR/crowding execution and flattened order/venue interfaces",
+  "expected_wall_minutes": {
+    "coin": [
+      35,
+      60
+    ],
+    "spot": [
+      5,
+      11
+    ]
+  },
+  "historical_window_is_development_data": true,
+  "new_cold_accounts": 1,
+  "controls_replayed": false,
+  "live_or_private_account_access": false,
+  "full_software_rerun": false
+}
