@@ -13,6 +13,7 @@ from .config import load
 from .lifecycle import Lifecycle
 from .state import State
 from .types import Blocked, Unknown, serial
+from .demo_evidence import IDS, verify as verify_demo_evidence
 
 
 # Demo keys never reach live hosts and live keys never reach demo hosts.
@@ -28,6 +29,8 @@ def connect(config, *, authorize_writes=False):
         raise Blocked(f'explicit Binance {config.environment} read credentials required ({names[0]}, {names[1]})')
     reader=Binance(key=key,secret=secret,environment=config.environment,
                    capital_limit=config.capital_limit,authorize_writes=authorize_writes)
+    reader.loss_fraction=config.loss_fraction
+    reader.slip_fraction=config.slip_fraction
     reader.align_time=True
     return reader
 
@@ -53,14 +56,23 @@ def trial_gate(path, config, *, mode, uid, evidence=None):
             raise Blocked('live trial requires reviewed Demo closure evidence') from None
         if not isinstance(proof,dict):
             raise Blocked('Demo closure evidence must be an object')
-        required=('demo_uid','entry_order_id','stop_algo_id','take_algo_id',
-                  'reduction_order_id','offline_trigger_order_id')
+        required=('demo_uid','demo_state_dir',*IDS)
         try:demo_limit=Decimal(proof['demo_capital_limit_usdt'])
         except (KeyError,InvalidOperation,TypeError):demo_limit=Decimal(0)
         if (proof.get('source_digest')!=source_digest() or
                 not demo_limit.is_finite() or demo_limit<config.capital_limit or
                 any(not isinstance(proof.get(k),str) or not proof[k] for k in required)):
             raise Blocked('Demo closure evidence is absent or belongs to different execution code')
+        demo=load_from_evidence(proof)
+        reader=connect(demo)
+        reader.begin_cycle(120)
+        verify_demo_evidence(proof,source_digest(),config.capital_limit,reader)
+
+
+def load_from_evidence(proof):
+    from .config import Config
+    return Config(proof['demo_uid'],proof['demo_state_dir'],environment='demo',
+                  capital_limit_usdt=proof['demo_capital_limit_usdt'])
 
 
 def observe(config_path, *, execute=False):
@@ -92,6 +104,10 @@ def observe(config_path, *, execute=False):
         if replacement and not replacement.get('done'):
             report.update(status='unknown',reason='Protection replacement incomplete; reconcile before changing exposure')
             report['protection_replacement']=replacement
+        checkpoint=(state.get('linear_campaign') or {}).get('body',{})
+        if type(checkpoint.get('last')) is int:
+            report['next_required_review_at_ms']=checkpoint['last']+14400000
+        report['offline_boundary']='Native exchange protection may execute; strategy expiry, new candles and macro changes require another manual run.'
         state.report(report)
         return report
 
@@ -118,6 +134,21 @@ class _FirstSignal:
 
 
 def _dispatch(args):
+    if args.command=='demo-evidence':
+        config=load(args.config)
+        if config.environment!='demo' or config.capital_limit is None:
+            raise Blocked('evidence collection requires a bounded Demo configuration')
+        proof=dict(source_digest=source_digest(),demo_uid=config.account_uid,
+                   demo_state_dir=str(Path(config.state_dir).expanduser().resolve()),
+                   demo_capital_limit_usdt=config.capital_limit_usdt,
+                   **{key:getattr(args,key) for key in IDS})
+        reader=connect(config)
+        reader.begin_cycle(120)
+        verify_demo_evidence(proof,source_digest(),config.capital_limit,reader)
+        with args.out.open('x') as stream:
+            json.dump(proof,stream,indent=2)
+            stream.write('\n')
+        return dict(status='read_only',reason='Native Demo evidence verified and saved',out=str(args.out))
     if args.command=='snapshot':
         from .snapshot import export
         config=load(args.config)
@@ -159,6 +190,10 @@ def main(argv=None):
     snapshot=commands.add_parser('snapshot',help='Fresh read-only export for the two-account report')
     snapshot.add_argument('--config',required=True)
     snapshot.add_argument('--out',type=Path,required=True)
+    evidence=commands.add_parser('demo-evidence',help='Verify native Demo closure and save local evidence')
+    evidence.add_argument('--config',required=True)
+    evidence.add_argument('--out',type=Path,required=True)
+    for key in IDS:evidence.add_argument('--'+key.replace('_','-'),required=True)
     args=parser.parse_args(argv)
     try:
         with _FirstSignal():

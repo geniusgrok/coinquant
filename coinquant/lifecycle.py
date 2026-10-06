@@ -339,7 +339,11 @@ class Lifecycle:
             self.reserve(REDUCE_SECONDS)
             try:
                 current = self.snapshot()
-                if (number(current['quantity_btc']) == q and not current['possible_entry_remainders']
+                if number(current['quantity_btc']) != q:
+                    # A protective child may have reduced the fill between reads.
+                    # Full native fill reconciliation is required for that residual.
+                    self.recover_exposure(current)
+                elif (not current['possible_entry_remainders']
                         and self.entry_fill_proven(plan, current)):
                     self.close(current, rules, observed=True)
             except (Blocked, Unknown):
@@ -349,6 +353,33 @@ class Lifecycle:
                        stop=plan['stop'],take=plan['take'],campaign=plan['campaign']))
         self.state.set('entry_plan', None)
         return snapshot
+
+    def entry_residual(self, snapshot, plan, ownership):
+        """A smaller position is reducible only after native ownership closes."""
+        q = number(snapshot['quantity_btc'])
+        parent = owned_observation(self.state,self.reader,plan['id'])['parent']
+        filled = number(parent['executedQty'])
+        if (not q or snapshot['possible_entry_remainders'] or parent.get('status') not in TERMINAL
+                or q*number(plan['quantity_btc'])<=0 or not 0<abs(q)<filled
+                or ownership.get('status')!='reconciled' or ownership.get('campaign')!=plan['campaign']):
+            return False
+        # Reconciliation accounts for every fill. A partially filled protective
+        # child still working could reduce the position again during our write.
+        for identity, raw, status in self.state.db.execute("SELECT id,payload,status FROM intents WHERE kind='binance_algo'"):
+            if status in ('rejected','void'):
+                continue
+            payload=json.loads(raw)
+            if payload.get('closePosition')!='true':
+                continue
+            observed=owned_observation(self.state,self.reader,identity,conditional=True)
+            child=observed['child']
+            if child is not None and number(child['executedQty']):
+                if observed['parent'].get('algoStatus') not in ('FINISHED','CANCELED','EXPIRED','REJECTED') or child.get('status') not in TERMINAL:
+                    raise Unknown('protective child fill is not terminal')
+        fresh=self.snapshot()
+        if any(fresh[k]!=snapshot[k] for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders')):
+            raise Unknown('residual changed after protective child readback')
+        return True
 
     def close(self, snapshot, rules=None, *, observed=False):
         """Durable reduce-only exit. `observed`: the snapshot was just read after
@@ -406,6 +437,7 @@ class Lifecycle:
         # Match the complete native fill history before changing any position;
         # only protection of the journaled entry's own verified fill precedes it.
         # A stored plan alone cannot authorize changes to external/manual trades.
+        ownership=None
         if number(snapshot['quantity_btc']) or self.state.get('entry_campaigns'):
             from .campaign import Campaign
             from .ownership import reconcile
@@ -413,8 +445,8 @@ class Lifecycle:
             if checkpoint is None:
                 raise Unknown('position recovery lacks its model/ownership checkpoint')
             try:
-                self.reconciled=(snapshot,len(self.actions),
-                                 reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot))
+                ownership=reconcile(self.state,self.reader,Campaign.restore(checkpoint),snapshot)
+                self.reconciled=(snapshot,len(self.actions),ownership)
             except (Blocked,Unknown):
                 # A fill of the journaled entry, sent from a verified flat account,
                 # is protected when every fill since that flat boundary is its own,
@@ -449,6 +481,9 @@ class Lifecycle:
             return self.close(snapshot)
         plan = self.state.get('entry_plan')
         if plan:
+            if self.entry_residual(snapshot,plan,ownership):
+                self.reserve(REDUCE_SECONDS)
+                return self.close(snapshot,observed=True)
             return self.protect_entry(snapshot,plan)
         replacement=self.state.get('session_replacement')
         if replacement:
@@ -536,10 +571,12 @@ class Lifecycle:
         self.state.set('entry_plan',plan)
         self.state.set('entry_fill',dict(campaign=plan['campaign'],requested=plan['requested_btc'],
                                          session=self.session,stop_budget=plan.get('stop_budget_usdt'),
+                                         stop_slippage_fraction=plan.get('stop_slippage_fraction'),
                                          sizing_capital=plan.get('sizing_capital_usdt')))
         self.state.prepare(identity,'binance_order',payload,campaign=plan['campaign'],flat_snapshot=fresh,
                            result={'prepared_at_ms':int(self.reader.clock()*1000)})
-        self.state.set('entry_timing',{'entry_id':identity})
+        self.state.set('entry_timing',{'entry_id':identity,'quote_observation':plan['quote_observation'],
+                                       'entry_limit_price':plan['entry_estimate']})
         safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         snapshot = self.settle()
         # Shortest path to protection for this IOC's own proven fill; the full
@@ -552,6 +589,9 @@ class Lifecycle:
             timing=self.state.get('entry_timing') or {}
             if timing.get('entry_id')==identity:
                 timing['fill_confirmed_at_ms']=int(self.reader.clock()*1000)
+                timing['entry_executed_btc']=str(number(proven['executedQty']))
+                if number(proven.get('avgPrice','0'))>0:
+                    timing['entry_avg_price']=str(number(proven['avgPrice']))
                 self.state.set('entry_timing',timing)
             snapshot = self.protect_entry(snapshot,plan,proven_order=proven)
         return self.recover_exposure(snapshot)
@@ -621,7 +661,7 @@ class Lifecycle:
         try:
             plan = topup_preview(self.reader, model, snapshot, fill['requested'],
                                  protection['stop'], protection['take'], fill.get('stop_budget'),
-                                 fill.get('sizing_capital'))
+                                 fill.get('sizing_capital'),fill.get('stop_slippage_fraction'))
         except ValueError:
             return snapshot
         self.entry_constraint = plan['constraint']

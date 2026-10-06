@@ -81,3 +81,31 @@ class RecoveryGapTests(TestCase):
         self.venue.send=cancel_stop
         self.session()
         self.assertEqual(len(self.entries()),1)
+
+    def test_terminal_partial_stop_during_install_closes_owned_residual(self):
+        original=self.venue.send
+        def partial_stop(method,path,payload):
+            answer=original(method,path,payload)
+            if path.endswith('/algoOrder') and payload.get('type')=='STOP_MARKET':
+                amount=(self.venue.q/D(2)//D('.001'))*D('.001')
+                child=dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL',type='MARKET',
+                           orderId=len(self.venue.orders)+1,clientOrderId='fixture-stop-child',
+                           origQty=str(self.venue.q),executedQty='0',status='EXPIRED',reduceOnly=True)
+                self.venue.orders[child['clientOrderId']]=child
+                self.venue.fill(child,amount)
+                self.venue.algos[payload['clientAlgoId']].update(
+                    algoStatus='FINISHED',actualOrderId=child['orderId'])
+                self.venue.fail_reads=True
+            return answer
+        self.venue.send=partial_stop
+        interrupted=self.session()
+        self.assertEqual(interrupted['cleanup'],'unresolved')
+        self.assertGreater(self.venue.q,0)
+        self.venue.fail_reads=False
+        result=self.session()
+        self.assertEqual(self.venue.q,0)
+        self.assertEqual(result['cleanup'],'verified')
+        self.assertEqual(len([p for _,path,p in self.venue.sent
+                              if path.endswith('/order') and p.get('reduceOnly')=='true']),1)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            self.assertIsNone(state.get('entry_plan'))

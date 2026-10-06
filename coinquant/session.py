@@ -127,8 +127,10 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
     if trial_mode is not None:report['trial_mode']=trial_mode
     if source_digest is not None:report['source_digest']=source_digest
     if (getattr(reader,'environment','live')!=config.environment
-            or getattr(reader,'capital_limit',None)!=config.capital_limit):
-        raise Blocked('exchange adapter and configuration differ in environment or capital limit')
+            or getattr(reader,'capital_limit',None)!=config.capital_limit
+            or getattr(reader,'loss_fraction',None)!=config.loss_fraction
+            or getattr(reader,'slip_fraction',None)!=config.slip_fraction):
+        raise Blocked('exchange adapter and configuration differ in environment or risk limits')
     if hasattr(reader,'hard_deadline'):reader.hard_deadline=deadline+ABSOLUTE_GRACE
     with State(config.state_dir,config.scope) as state:
         _guard_strategy(state)
@@ -221,6 +223,10 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                 report.update(status='unknown',reason='Durable intents require recovery')
             report['execution_unresolved']=_execution_unresolved(report,execute)
             actual=report.get('actual')
+            checkpoint=(state.get('linear_campaign') or {}).get('body',{})
+            if type(checkpoint.get('last')) is int:
+                report['next_required_review_at_ms']=checkpoint['last']+14400000
+            report['offline_boundary']='Native exchange protection may execute; strategy expiry, new candles and macro changes require another manual run.'
             if actual and D(actual.get('wallet_usdt') or 0)>0 and actual.get('mark_price'):
                 report['exchange_leverage_setting']=20
                 report['account_notional_leverage']=str(abs(D(actual['quantity_btc']))*D(actual['mark_price'])/D(actual['wallet_usdt']))

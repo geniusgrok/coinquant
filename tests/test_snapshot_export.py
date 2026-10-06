@@ -21,6 +21,9 @@ class SnapshotExportTests(TestCase):
         self.assertEqual(row['equity_usdt'], '1010')
         self.assertEqual(row['available_usdt'], '500')
         self.assertEqual(row['btc_position'], '-2')
+        self.assertEqual(row['btc_direction'],'short')
+        self.assertEqual(row['btc_notional_usdt'],'190')
+        self.assertEqual(row['unprotected_notional_usdt'],'0')
         self.assertFalse(row['write_attempted'])
         self.assertFalse(row['native_execution_verified'])
 
@@ -38,9 +41,15 @@ class SnapshotExportTests(TestCase):
         self.assertEqual(row['environment'], 'demo')
         self.assertIsNone(row['liquidation_buffer_fraction'])
 
+    def test_stop_distance_and_unprotected_notional_are_reported_separately(self):
+        actual=dict(self.fixture(),native_full_position_protected=False,
+                    protective_algos=[dict(type='STOP_MARKET',trigger='110')])
+        row=export(actual,Config('1','/tmp/unused'))
+        self.assertEqual(row['stop_distance_loss_usdt'],'20')
+        self.assertEqual(row['unprotected_notional_usdt'],'190')
+
     def test_reversed_collection_clock_is_unknown(self):
         actual = self.fixture()
         actual['wallet_observed_from_ms'] = actual['wallet_observed_until_ms'] + 1
         with self.assertRaises(Unknown):
             export(actual, Config('1', '/tmp/unused'))
-
