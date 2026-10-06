@@ -1,0 +1,27 @@
+# Frozen held-downside exit: original-path treatment support
+
+This is a read-only follow-up to the previously frozen `downside-shock-exit` candidate, **not** a new threshold or an account result. Its proposed action remains one protected, owned long exit when the last five completed Binance USDT-perpetual daily downside-return RMS exceeds 1.5 times the last 20-day RMS. The 20-day window includes those five days. It acts only at a real manual session after ownership and native protection are confirmed; it cannot run while the user is offline. The original 150% CAGR / <50% drawdown target remains unmet.
+
+## Source and counting boundary
+
+`held_shock_support.py` joins the existing 50 original flat-to-flat intervals to the 795 archived manual session reports in simulation archive `c6223a5d1bd6ae46fd192668335cee31630ff33e`. It rebuilds **completed perpetual** daily returns from the original 80 Binance UM four-hour monthly ZIPs for January 2020–August 2026, verifying every ZIP against that archive's `qualified-market-metadata.json` SHA-256. The 50-row input is the local, anonymized output of `entry_path_reconstruct.py`; no account/order ID or private session timestamp is written into this branch. The script makes no network request, wallet, fill, or state change. Run it with that local 50-row JSON and a directory of those original ZIPs; it fails on source mismatch or missing files.
+
+The join requires the *same original campaign* still alive after the session, a `hold` preview for that campaign, and the final report's full-position native protection and stop-before-liquidation readback. This prevents an old campaign from claiming a new one when an exit and entry share a session. It counts entry-session post-fill holds as well as positions already held when a session began. The older spot-close coverage screen checked only ownership at session start, so its sparse 2020/2021 result did not answer this narrower original-path question. Spot closes are not used for the new trigger count.
+
+| Read-only count | Result |
+| --- | ---: |
+| Original manual sessions / position intervals | 795 / 50 |
+| Held-at-start intersections / confirmed same-campaign hold reports | 90 / 54 |
+| Entry sessions / confirmed same-session post-fill hold reports | 50 / 34 |
+| Confirmed hold reports with complete 20-day futures history, start / entry | 51 / 33 |
+| Triggered confirmed hold reports / independent campaigns | 5 / **3** |
+| Additional campaign with protected post-entry hold strongly inferred from prior successful cycles | **1** |
+| Early campaigns lacking the preceding 20-day original futures source | **2** |
+
+The three strictly confirmed, independent treatments are **macro** campaigns in 2020, 2021 and 2023; two reports for the 2020 campaign and two for the 2023 campaign must not be counted as four independent exits. The 2023 campaign is the one already treated in the archived 2023Q1 cold candidate journal, which reported one actual reduction. The 2020 and 2021 treatments add genuine support in previously selected periods. The fourth macro campaign, in March 2020, has 21 successful cycles after its original entry/protection readback, then an `ObservationDeadline` in the final cycle that removes the terminal `model_preview`; its continued protected position is strongly supported, but the missing terminal hold preview prevents strict classification. The two early-January campaigns cannot be evaluated because the original December 2019 perpetual 20-day source is unavailable here. Even assuming both would trigger, the present path supports at most six distinct campaigns, not a frequent signal.
+
+## Economic boundary and decision
+
+All four identified original campaigns later lost money, but their eventual loss is **not** a usable action-time label. A narrow descriptive check used the original first eligible 300-second manual windows, the archived eventual sell, fees/funding, and original Binance perpetual **one-minute mark** bars whose ZIP digests match the archived source metadata. Across those four, a five-minute low-mark versus high-mark arithmetic bracket, including modeled taker fees at 2× versus 1× the original 0.075% rate, gives approximately **+2.16k to +2.33k simulated USDT** for an immediate exit instead of original continuation. This is only a price-space diagnostic: mark is not an executable bid, and the calculation lacks order-book depth, queue, latency, adverse selection, slippage, later wallet effects and an actual paired account path. It cannot establish net strategy benefit, tail improvement, or safety acceptance. The earlier 2023Q1 cold wallet's local gain and unchanged drawdown likewise cannot be extrapolated to all 795 sessions.
+
+This evidence **opens a real support question** for the already frozen exit; it does not justify main adoption. A paired, original-wallet comparison in the preselected 2020/2021 periods would need the original SHA-qualified public print vault and market inputs. Those artifacts are not present in this workspace; reconstructing them from new large monthly trade archives would be disproportionate to this support check and risks exposing private manual-session timing if fetched by day. No new wallet, full-history replay, threshold optimization, live/Demo observation, code change or default strategy change was made. Research remains on this branch until a source-faithful, safe paired check is possible.
