@@ -187,7 +187,7 @@ def main(argv=None):
             command.add_argument('--trial',choices=('demo','live'))
             command.add_argument('--authorize-uid',help='Repeat the dedicated account UID for this run')
             command.add_argument('--demo-evidence',help='Reviewed native Demo closure JSON, required for live')
-    snapshot=commands.add_parser('snapshot',help='Fresh read-only export for the two-account report')
+    snapshot=commands.add_parser('snapshot',help='Fresh read-only exposure export for this account')
     snapshot.add_argument('--config',required=True)
     snapshot.add_argument('--out',type=Path,required=True)
     evidence=commands.add_parser('demo-evidence',help='Verify native Demo closure and save local evidence')
