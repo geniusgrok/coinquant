@@ -44,6 +44,12 @@ python3 -m coinquant run --config demo.json --execute --trial demo --authorize-u
 
 停止进程后不会继续计算策略或修改保护。只读快照也不证明止损触发和重启执行已经验证。
 
+## 当前完整回测
+
+2026-10-06 对当前运行代码 `47837e3` 完成独立 1 万元账户的完整回测（2020-01-01 至 2026-09-20 UTC，末端不含，795 会话，不追加资金）。期末人民币权益 **1,951,753.81 元**，年化净收益 **119.23%**，人民币路径最大回撤代理 **44.11%**。
+
+结果已计入模拟成交成本和换汇成本；历史价格与执行使用代理，历史窗口曾用于开发，不证明实盘或样本外 alpha。详细口径、权益图及数据见 [BACKTEST.md](BACKTEST.md)。
+
 开发说明见 [AGENTS.md](AGENTS.md)，当前任务状态见 [PROJECT_STATE.md](PROJECT_STATE.md)。历史代码、研究和交付记录保存在 [archive/pre-slim-20261006](https://github.com/geniusgrok/coinquant/tree/archive/pre-slim-20261006) 分支。
 
 项目供仓库所有者个人使用，公开可见不授予第三方使用许可，详见 [LICENSE](LICENSE)。
