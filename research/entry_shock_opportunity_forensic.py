@@ -165,13 +165,13 @@ def summary():
     def compare(label, keys):
         old = aggregate([left[k] for k in keys if k in left])
         new = aggregate([right[k] for k in keys if k in right])
-        print(label, 'count', len(keys), 'old', {k: str(v) for k,v in old.items()})
-        print(label, 'delta', {k: str(new[k]-v) for k,v in old.items()})
+        print(label, 'campaigns', len(keys), 'delta',
+              {k: str(new[k] - v) for k, v in old.items()})
 
     compare('all',set(left)|set(right))
     compare('baseline_only',base_only)
     compare('shared',shared)
-    for year in sorted({row['entry_year'] for row in left.values()}):
+    for year in (2023, 2024):
         keys={k for k,row in left.items() if row['entry_year']==year}
         compare('entry_year_'+str(year), keys)
     for typ in ('macro','primary'):
