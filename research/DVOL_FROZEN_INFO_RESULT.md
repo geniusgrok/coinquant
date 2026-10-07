@@ -70,6 +70,8 @@ residualized on those controls. The sole statistic was their **one-sided
 partial Pearson correlation**, with 10,000 within-period label permutations
 using fixed seed 0. The frozen positive-information screen required p ≤ 0.05
 and a positive stop-minus-nonstop residual-score difference in both periods.
+The seven-day price momentum is an ex-ante price-state control, not an exact
+reconstruction of the primary model's four-hour ATR impulse.
 
 Observed correlation: **−0.0932**. Permutation one-sided **p = 0.7103**.
 Residual-score stop-minus-nonstop differences are **+1.21** index points in
