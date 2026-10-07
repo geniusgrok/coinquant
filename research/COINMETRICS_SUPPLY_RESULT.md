@@ -1,0 +1,27 @@
+# Frozen Coin Metrics supply-transition screen: failed
+
+2026-10-07. This non-commercial offline development result follows the [pre-outcome frozen rule](COINMETRICS_SUPPLY_FREEZE.md), published first as branch commit `b99df0a319daed2e7837263a690afec0811b1bee`. The separate CoinGecko market-cap contraction veto and its negative result were not altered or joined. [Coin Metrics Community API](https://github.com/coinmetrics/product-docs/blob/master/docs/access-our-data/api/README.md#free-tier-community-api) is credited under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/); the fixed private source snapshot SHA-256 is `18d511062eb636677960843006325a7f448f176faca0fbcddb8a9459ae4f99da`. Only transformed aggregates appear here; no raw licensed rows or private exact manual starts are published.
+
+The single source-specific hypothesis used `CapMrktEstUSD / PriceUSD` as estimated circulating USDT units, then its first positive three-point slope transition. It assumed **72 hours after the daily label**, at only the first original manual start during the next 24 hours. This is a retrospective *conditional* availability convention, **not** an observed 2020–2026 release clock: historical first receipt remains null and PIT remains false. No alternative lag, sign, size threshold or source series was tested.
+
+## Support before outcomes
+
+The fixed 2,465-day source has 198 positive-transition dates. Sixty-one dates had an original manual start in the designated window. The original owned-position intervals, completed BTCUSDT USD-M price impulse, point-in-time ALFRED DFII10 macro status, positive prior three-day perpetual return and 20-day completed-return RMS left **22** distinct, already seven-day-separated flat starts with no incumbent raw long opportunity. Nine are in the original development period and thirteen later. All 22 original reports ended `no_action`, verified cleanup and positive terminal available balance; the latter is only an observation, not a new-entry risk budget. The same-year, pre-start covariate matching found 22 distinct non-event controls from 263 eligible starts. The registered support gate therefore passed, and the one information screen was run. There were no invented sessions or replays of the 795-session wallet.
+
+Controls were chosen without future outcomes using within-year ranks of prior BTC perpetual three-day return, prior 20-day daily RMS and signed USDT/USD deviation. Across pairs, median absolute pre-start gaps were **0.50 percentage point** in BTC three-day return, **0.27 point** in RMS and **2.10 basis points** in USDT/USD price. This is a small, non-random historical match, not causal isolation or independent future data.
+
+## One seven-day information and cost proxy
+
+Percentages below are per **one unit of BTCUSDT USD-M notional**, from the last completed four-hour close at/before each real manual start to the last completed close at/before seven calendar days later. The screen subtracts the original 7.5 bp taker fee on each side and sums original signed Binance funding **rates at their settlement timestamps**, approximating constant notional; the registered stress doubles the two fees. Each path crossed 21–22 funding settlements. Exact funding cash payments would require the position quantity and minute mark at each settlement. This screen has no executable entry quote, native stop fill, minute drawdown, margin or account wallet, so its numbers are not tradable strategy returns.
+
+| Period | Event pairs | Event mean, doubled-fee net | Event median | Matched control mean | Paired mean advantage | Event ES5 / control ES5 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Development | 9 | −1.28% | +0.36% | −6.86% | +5.58 pp | −13.72% / −28.92% |
+| Later | 13 | **−3.05%** | **−3.01%** | +2.34% | **−5.39 pp** | **−11.37% / −5.57%** |
+| Combined | 22 | **−2.32%** | −1.44% | −1.42% | **−0.90 pp** | −12.54% / −17.85% |
+
+Only 8/22 event proxies stayed positive after doubled fees (5/9 early, 3/13 later). Combined event mean gross price movement was **−1.86%**, signed funding was a **0.164%** long cost, and original round-trip fee was 0.15%; costs cannot explain away the negative gross direction. One original entry began within seven days of an event and was not an original winning interval, but a real added position could still alter subsequent wallet capital, protection and opportunities; that interaction was **not** simulated.
+
+**Frozen decision:** The rule required positive event mean and median, positive paired advantage and no worse ES5 **in both** chronological periods after doubled fees. It fails decisively, especially later. The older period's favorable comparison is insufficient and its event mean is still negative. Close this particular positive-supply transition expression. Do not reverse the sign, move the lag, tune a threshold, substitute market cap, run a 795-session wallet, or absorb any trading change into `main` from this result. The 150% CAGR / below-50% drawdown reference remains unmet; no native alpha or beta improvement is claimed.
+
+Reproduce only with private inputs: `python -m research.coinmetrics_supply_screen` for pre-outcome support, then `python -m research.coinmetrics_information_check` for this one conditional information/cost screen. Neither script downloads new market data, exposes source rows, touches Demo/real accounts, or schedules operation.
