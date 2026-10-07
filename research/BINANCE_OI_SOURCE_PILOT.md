@@ -1,7 +1,9 @@
 # Binance BTCUSDT futures metrics: archive qualified only as today's snapshot
 
-**Decision:** Do not run a historical open-interest information or wallet test
-from this archive. The current public files are internally checkable and cover
+**Source-pilot decision:** Do not run a *strict point-in-time* historical open-interest information or wallet test
+from this archive. A later, separately frozen **conditional development-only**
+information check is recorded in [BINANCE_OI_CONDITIONAL_RESULT.md](BINANCE_OI_CONDITIONAL_RESULT.md);
+it does not alter the four-opportunity strict-version count. The current public files are internally checkable and cover
 many calendar days, but their **current versions** rarely predate the original
 manual opportunities. Only four original independent campaigns have both
 needed prior-day file versions available before entry, and just one of those
