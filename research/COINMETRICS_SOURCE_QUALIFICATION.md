@@ -2,6 +2,8 @@
 
 2026-10-07. Independent, read-only source check on the Coinquant research branch based on main `f3fe9b8be32fbe8cce324b35c57a06fc929a4958`. This does **not** replace the frozen CoinGecko USDT source, combine the two series, test any trade outcome, or change production code.
 
+**Later scope clarification, same date:** the user expressly limited this use to non-commercial offline research and authorized a conditional historical experiment. The original decision below remains the source-qualification record; its pause on offline outcomes is superseded only for that non-commercial research. Historical point-in-time status remains false, and no commercial or live trading use was authorized. The separate pre-outcome experiment is frozen in `COINMETRICS_SUPPLY_FREEZE.md`.
+
 ## Source identity and private receipt
 
 - Source ID: `coinmetrics_community_usdt_capest_price_v1`. The sole fixed public request is [`community-api.coinmetrics.io` asset metrics](https://community-api.coinmetrics.io/v4/timeseries/asset-metrics?assets=usdt&metrics=CapMrktEstUSD,PriceUSD&frequency=1d&start_time=2020-01-01&end_time=2026-09-30&page_size=10000) for `usdt`, `CapMrktEstUSD,PriceUSD`, `1d`, 2020-01-01 through 2026-09-30, page size 10,000. No API key or account endpoint was used.
