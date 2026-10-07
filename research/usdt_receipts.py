@@ -63,7 +63,7 @@ def _points(raw, received_ms):
                            received_ms=received_ms, market_cap_usd=_number(value),
                            usdt_price_usd=prices[event_ms], unit='USD',
                            data_era='first_local_receipt' if age_days <= 2 else 'late_historical_import',
-                           revision_stage='settled_at_receipt' if received_ms >= event_ms + 2 * DAY + 600_000 else 'provisional'))
+                           revision_stage='past_scheduled_revision_window' if received_ms >= event_ms + 2 * DAY + 600_000 else 'provisional'))
     if not points or points != sorted(points, key=lambda p: p['event_ms']):
         raise ValueError('missing or unordered completed daily points')
     return points
@@ -84,7 +84,7 @@ def _read(stream):
     return records
 
 
-def append_response(path, raw, received_ms, *, capture='caller_supplied'):
+def append_response(path, raw, received_ms, *, capture='caller_supplied', source_url=None):
     """Append one complete response; never replace a prior value or receipt."""
     points = _points(raw, received_ms)
     target = Path(path)
@@ -106,7 +106,15 @@ def append_response(path, raw, received_ms, *, capture='caller_supplied'):
             point['version_hash'] = digest(json.dumps(dict(source=SOURCE, response_sha256=digest(raw), **point), sort_keys=True, separators=(',', ':')).encode())
         if capture not in ('caller_supplied', 'direct_https'):
             raise ValueError('unknown source capture method')
-        record = dict(source=SOURCE, source_url=URL, capture=capture, received_ms=received_ms,
+        if capture == 'direct_https':
+            if source_url not in (None, URL):
+                raise ValueError('direct HTTPS source differs from fixed request')
+            source_url = URL
+        else:
+            source_url = source_url or 'unknown'
+            if source_url == URL:
+                raise ValueError('caller-supplied bytes cannot claim direct source URL')
+        record = dict(source=SOURCE, source_url=source_url, capture=capture, received_ms=received_ms,
                       response_sha256=digest(raw), raw_response=raw.decode('utf-8'),
                       previous_receipt_hash=records[-1]['receipt_hash'] if records else None,
                       points=points)
@@ -128,6 +136,8 @@ def asof(path, decision_ms):
     for record in records:
         if record['received_ms'] > decision_ms:
             break
+        if record.get('capture') != 'direct_https' or record.get('source_url') != URL:
+            continue  # Imported bytes are audit records, never decision-time proof.
         for point in record['points']:
             if point['event_ms'] <= decision_ms and point['available_ms'] <= decision_ms:
                 known[point['event_ms']] = point

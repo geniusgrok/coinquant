@@ -1,0 +1,28 @@
+# Positive USDT information at original irregular starts: qualification inventory
+
+2026-10-07. Read-only research branch; original Coinquant main `f3fe9b8be32fbe8cce324b35c57a06fc929a4958`. This is **separate** from the frozen negative-slope macro veto in `USDT_FROZEN_GATE.md`; that failed result is not reversed or retuned. No account, trade, return, wallet or 795-session replay was run.
+
+## Question and fixed inventory method
+
+The external public `dddabtc/usdt-slope-strategies` reference at commit `69305ca546aca1932df75e5b118d84b62590d5fd` combines positive USDT market-cap slope with BTC price strength. Its burst percentile, band, daily fill and duration rules do not transfer here. Before inspecting any return, this inventory uses a deliberately **loose necessary condition** for a positive three-point slope, `cap[t] > cap[t-2]`, and a positive three-day change in the last **completed Binance USD-M BTCUSDT four-hour close** at each actual start. Passing these conditions is not the external strategy's signal, a new Coinquant entry rule or evidence of alpha. It can only show whether an independent source could in principle reach a distinct decision state. BTC strength by itself duplicates already failed Coinquant price-entry expansions.
+
+The join reuses the frozen 795 manual starts, 50 verified first-fill intervals, original terminal reports, previously source-matched 80 monthly plus 19 final daily futures four-hour ZIPs, and the original ALFRED DFII10 vintage reader with its New York day-end plus 48-hour and seven-day freshness constraints. Price opportunities are reconstructed from completed four-hour bars, and macro eligibility from the archived vintage rows; neither is inferred from later P/L. Reconstruction agrees with 29/30 original primary first-fill starts, while the earliest one lacks the December 2019 warmup source, and with all 20 original macro first-fill eligibility checks. The 50 intervals determine whether a position was already held at a start. Terminal `available_usdt > 0` is observed only as a coarse funding indicator after a session; it does not prove entry sizing, safe loss budget, free margin, stop geometry or native protection at that start.
+
+Two **disjoint, unqualified** source eras are used only for an upper-bound count. The old public reference CSV covers original starts before the first date in the present-day official response; its pre-2026-04-25 intraday-mean rows lacked original first-seen timestamps and had an approximately one-day-later label. We grant them an optimistic one-day-plus-00:10 hypothetical release. The present-day official 365-day CoinGecko response covers the later starts, with an optimistic event-day 00:10 release. Its current historical values are not their original vintages. Neither hypothetical clock is a historical point-in-time receipt. The private append-only direct HTTPS ledger began after the original schedule ended: **zero** of 795 starts had a qualifying first-seen USDT observation.
+
+| Conditional count at original starts | Older CSV era | Current official backfill era |
+| --- | ---: | ---: |
+| Source grid hypothetically covered | 679 | 115 |
+| Positive USDT three-point slope | 450 | 56 |
+| Also positive completed BTC perpetual three-day price change | 229 | 26 |
+| Already holding a position at that start | 53 | 2 |
+| Flat at that start | 176 | 24 |
+| Flat with raw active primary long | 16 | 1 |
+| Flat without raw primary, but DFII10 eligible | 7 | 0 |
+| Flat without either raw incumbent opportunity | **153** | **23** |
+
+The last row gives **176 hypothetical starts on 175 source days**, split 89 in the original development period and 87 later. All 176 ended as no-action sessions with positive terminal available balance, but no entry-sized risk budget or protective stop follows from that. Most terminal reports have no final model preview; the archived ALFRED/price reconstructions establish raw opportunity eligibility, not whether a previously consumed identity could be entered again. The old first-fill ledger has 16 primary and six macro entries among the older era's positive-trend flat starts; those are incumbent actions, not new participation. There is one other original start without a complete three-point source grid.
+
+**Decision:** The independent data family has a *conceptual* action space at irregular manual starts beyond merely vetoing 20 macro first fills. Its historical **qualified** action space remains zero because original market-cap receipt/vintage and USDT/USD control are absent. The broad positive-slope screen has not been tested against future returns, fees, signed funding, stop gaps, missed winners or a paired wallet. It cannot justify a new entry or rescue the older `release-new-primary` price-only failure (108.58% CAGR, 66.51% path-proxy drawdown). The incumbent original simulated 119.23% CAGR / 44.11% path-proxy drawdown has not been improved, and the 150% / below-50% reference remains unmet. No `main` change, fixed-start scheduler, Demo, real-account command or deployment follows.
+
+Future work depends on independently received source versions **at real future manual starts** and subsequent mature outcomes. Only then could one predeclare an exact positive event, original-state action, missing-winner accounting, costs and native stop/risk budget checks. A later backfill or a next manual session cannot create an earlier opportunity. `python -m research.usdt_positive_space` documents the local-only input order and emits aggregates without order IDs, wallet amounts or exact private start times. The raw source response and original account timeline remain private; no third-party strategy source was copied.
