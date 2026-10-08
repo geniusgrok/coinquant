@@ -17,7 +17,7 @@ PRIMARY_RISK = '7.5'
 MACRO_RISK = '3.6'
 ORIGIN = 1575158400000  # 2019-12-01T00:00Z, fixed model warmup origin
 DAY = 86400000
-VERSION = 4
+VERSION = 5
 
 
 def disposition(opportunity, quantity, consumed):

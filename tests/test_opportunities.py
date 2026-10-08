@@ -40,6 +40,21 @@ class OpportunityTests(unittest.TestCase):
         self.assertEqual(full[:23], prefix)
         self.assertEqual(changed[:23], prefix)
 
+    def test_a_long_up_six_risk_units_at_expiry_trails_instead_of_ending(self):
+        m = Opportunities()
+        signal = self.feed(m, [(101, 99, 100)] * 20 + [(120, 99, 115)])[-1]
+        # Stay above the midpoint stop while the close climbs through six risk units.
+        for i in range(22, 21 + 42):
+            self.assertEqual(m.update(i * FOUR_HOURS, D(150), D(140), D(145)).identity, signal.identity)
+        held = m.update((21 + 42) * FOUR_HOURS, D(170), D(160), D(165))
+        self.assertIsNotNone(held)
+        self.assertTrue(held.extended)
+        self.assertIsNone(held.expires)
+        self.assertEqual(held.identity, signal.identity)
+        self.assertGreater(held.stop, signal.stop)
+        # An 18% trail under the running high retires the campaign.
+        self.assertIsNone(m.update((22 + 42) * FOUR_HOURS, D(170), D(130), D(140)))
+
     def test_missing_bar_fails_closed(self):
         m = Opportunities()
         m.update(FOUR_HOURS, D(101), D(99), D(100))

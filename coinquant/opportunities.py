@@ -12,6 +12,10 @@ IMPULSE_ATR = 3
 ATR_BARS = 14
 TAKE_POWER = 20
 LIFE_BARS = 42
+# A long still this many initial risk units above its signal close at expiry
+# stays open. The stop then ratchets an 18% trail under the running high.
+EXTEND_R = 6
+WINNER_TRAIL = D('0.18')
 
 
 @dataclass(frozen=True)
@@ -21,12 +25,18 @@ class Opportunity:
     stop: D
     take: D
     expires: int | None
+    anchor: D | None = None
+    risk: D | None = None
+    peak: D | None = None
+    extended: bool = False
 
 
 class Opportunities:
     """A close more than three prior ATR(14) from the previous close opens a
     campaign in its direction, stopped at the midpoint of the two closes, with
-    a 20x risk-multiple target and a 42-bar (seven-day) life."""
+    a 20x risk-multiple target and a 42-bar (seven-day) life. A long that is
+    still at least six initial risk units above its signal close at that life
+    is kept, and its stop becomes an 18% trail under the high since the signal."""
 
     interval = FOUR_HOURS
 
@@ -46,13 +56,34 @@ class Opportunities:
         self.tr.append(max(high - low, abs(high - prior), abs(low - prior)))
         self.close, self.last = close, end
         a = self.active
-        if a and ((a.expires is not None and end >= a.expires) or
-                  (low <= a.stop or high >= a.take if a.direction > 0 else high >= a.stop or low <= a.take)):
-            self.active = None
+        if a is not None:
+            peak = high if a.peak is None else (max(a.peak, high) if a.direction > 0 else min(a.peak, low))
+            stop = a.stop
+            extended = a.extended
+            expires = a.expires
+            if extended and a.direction > 0:
+                stop = max(stop, peak * (1 - WINNER_TRAIL))
+            time_up = expires is not None and end >= expires
+            through = low <= stop or high >= a.take if a.direction > 0 else high >= stop or low <= a.take
+            extend = (a.direction > 0 and not extended and time_up and not through
+                      and a.anchor is not None and a.risk is not None and a.risk > 0
+                      and close >= a.anchor + EXTEND_R * a.risk)
+            if extend:
+                stop = max(a.stop, peak * (1 - WINNER_TRAIL))
+                through = low <= stop
+                extended = not through
+                expires = None if extended else expires
+            if through or (time_up and not extended):
+                self.active = None
+            elif peak != a.peak or stop != a.stop or extended != a.extended or expires != a.expires:
+                self.active = Opportunity(a.identity, a.direction, stop, a.take, expires,
+                                          a.anchor, a.risk, peak, extended)
         if not self.active and prior_atr and abs(close - prior) > IMPULSE_ATR * prior_atr:
             side = 1 if close > prior else -1
             stop = (prior + close) / 2
             take = close * (close / stop) ** TAKE_POWER
-            if take > 0 and stop > 0:
-                self.active = Opportunity(end, side, stop, take, end + LIFE_BARS * FOUR_HOURS)
+            risk = abs(close - stop)
+            if take > 0 and stop > 0 and risk > 0:
+                self.active = Opportunity(end, side, stop, take, end + LIFE_BARS * FOUR_HOURS,
+                                          close, risk, high, False)
         return self.active
