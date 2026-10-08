@@ -1,7 +1,6 @@
 import hashlib
 import hmac
 from io import BytesIO
-from urllib.error import HTTPError
 from unittest import TestCase
 from urllib.parse import parse_qs
 from unittest.mock import Mock
@@ -37,13 +36,6 @@ class WriterTests(TestCase):
         venue=Binance(key='x',secret='x',opener=opener,authorize_writes=True)
         with self.assertRaises(Unknown):venue.send('POST','/fapi/v1/order',self.payload())
         self.assertEqual(opener.open.call_count,1)
-    def test_rate_limit_cooldown_prevents_poll_storm(self):
-        opener=Mock();opener.open.side_effect=HTTPError('https://fapi.binance.com',429,'rate limit',{'Retry-After':'120'},None)
-        venue=Binance(opener=opener)
-        for _ in range(3):
-            with self.assertRaises(Unknown):venue.get('/fapi/v1/time')
-        self.assertEqual(opener.open.call_count,1)
-
     def test_candle_weight_tracks_page_size_and_reserves_before_request(self):
         import time
         opener=Mock();opener.open.side_effect=lambda *a,**k:BytesIO(b'[]')

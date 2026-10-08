@@ -59,12 +59,6 @@ class Campaign:
         self.last=end
         return opportunity
 
-    def fraction(self, risk, friction):
-        if len(self.returns)<20:
-            return D(0)
-        rms=(sum((r*r for r in self.returns),D(0))/20).sqrt()
-        return D(risk)*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+D(friction)))
-
     @property
     def active(self):
         # The default model gives an owned macro position priority while its
@@ -104,9 +98,8 @@ class Campaign:
         elif self.position_campaign is not None and self.position_campaign<0:
             if self.macro_opportunity is None or self.macro_opportunity.identity!=self.position_campaign:
                 raise Blocked('owned macro geometry unavailable')
-        elif self.position_campaign is not None:
-            self.macro_epoch=self.macro_opportunity=None
-        elif primary is not None and primary.direction>0 and primary.identity!=self.primary_consumed:
+        elif self.position_campaign is not None or (
+                primary is not None and primary.direction>0 and primary.identity!=self.primary_consumed):
             self.macro_epoch=self.macro_opportunity=None
         else:
             if self.macro_epoch is None:self.macro_epoch=-call
@@ -122,8 +115,11 @@ class Campaign:
                     self.macro_opportunity=Opportunity(self.macro_epoch,1,stop,price*(price/stop)**20,None)
 
     def entry_fraction(self, friction):
-        return self.fraction(MACRO_RISK if self.macro_opportunity is not None and
-                             self.active is self.macro_opportunity else PRIMARY_RISK,friction)
+        risk=MACRO_RISK if self.macro_opportunity is not None and self.active is self.macro_opportunity else PRIMARY_RISK
+        if len(self.returns)<20:
+            return D(0)
+        rms=(sum((r*r for r in self.returns),D(0))/20).sqrt()
+        return D(risk)*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+D(friction)))
 
     def action(self, quantity):
         if quantity and self.position_campaign is None:

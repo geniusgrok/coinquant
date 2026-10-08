@@ -2,11 +2,8 @@
 from __future__ import annotations
 
 from dataclasses import asdict
-from decimal import Decimal, InvalidOperation, ROUND_DOWN
+from decimal import Decimal as D, InvalidOperation, ROUND_DOWN
 from typing import Any
-
-D = Decimal
-ZERO = D(0)
 
 
 class Blocked(RuntimeError):

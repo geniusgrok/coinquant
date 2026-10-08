@@ -12,7 +12,6 @@ IMPULSE_ATR = 3
 ATR_BARS = 14
 TAKE_POWER = 20
 LIFE_BARS = 42
-RETRACE = D('0.5')
 
 
 @dataclass(frozen=True)
@@ -52,7 +51,7 @@ class Opportunities:
             self.active = None
         if not self.active and prior_atr and abs(close - prior) > IMPULSE_ATR * prior_atr:
             side = 1 if close > prior else -1
-            stop = (prior + close) / 2 if RETRACE == D('0.5') else close - RETRACE * (close - prior)
+            stop = (prior + close) / 2
             take = close * (close / stop) ** TAKE_POWER
             if take > 0 and stop > 0:
                 self.active = Opportunity(end, side, stop, take, end + LIFE_BARS * FOUR_HOURS)

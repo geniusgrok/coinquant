@@ -213,12 +213,12 @@ class SessionTests(TestCase):
         self.run_session(seconds=1)
         with State(self.directory,'binance:BTCUSDT:live:123') as s:
             engine=Lifecycle(self.venue,s,'123',authorized=True)
-            snapshot=engine.snapshot();original=self.venue.q
+            snapshot=self.venue.snapshot('123');original=self.venue.q
             # A native protective reduction won the race after the first read.
             self.venue.q=original/2;self.venue.margin/=2
             with self.assertRaises(Blocked):engine.close(snapshot)
             self.assertFalse(any(p.get('reduceOnly')=='true' for _,_,p in self.venue.sent))
-            result=engine.close(engine.snapshot())
+            result=engine.close(self.venue.snapshot('123'))
             self.assertEqual(D(result['quantity_btc']),0)
             reduction=[p for _,_,p in self.venue.sent if p.get('reduceOnly')=='true'][-1]
             self.assertEqual(D(reduction['quantity']),original/2)

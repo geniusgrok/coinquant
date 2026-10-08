@@ -9,7 +9,7 @@ from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 from .binance import Binance
-from .config import load
+from .config import Config, load
 from .lifecycle import Lifecycle
 from .state import State
 from .types import Blocked, Unknown, serial
@@ -63,16 +63,11 @@ def trial_gate(path, config, *, mode, uid, evidence=None):
                 not demo_limit.is_finite() or demo_limit<config.capital_limit or
                 any(not isinstance(proof.get(k),str) or not proof[k] for k in required)):
             raise Blocked('Demo closure evidence is absent or belongs to different execution code')
-        demo=load_from_evidence(proof)
+        demo=Config(proof['demo_uid'],proof['demo_state_dir'],environment='demo',
+                    capital_limit_usdt=proof['demo_capital_limit_usdt'])
         reader=connect(demo)
         reader.begin_cycle(120)
         verify_demo_evidence(proof,source_digest(),config.capital_limit,reader)
-
-
-def load_from_evidence(proof):
-    from .config import Config
-    return Config(proof['demo_uid'],proof['demo_state_dir'],environment='demo',
-                  capital_limit_usdt=proof['demo_capital_limit_usdt'])
 
 
 def observe(config_path, *, execute=False):

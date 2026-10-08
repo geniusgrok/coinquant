@@ -211,7 +211,7 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
         raise Unknown('top-up requires a reconciled position without remainders')
     direction=1 if q>0 else -1
     v=_venue(reader,model,snapshot,direction)
-    tick,price,mark=v['tick'],v['price'],v['mark']
+    tick,price=v['tick'],v['price']
     stop,take=number(stop,positive=True),number(take,positive=True)
     if not all(number(v['rule']['minPrice'])<=p<=number(v['rule']['maxPrice']) for p in (stop,take,price)):
         raise Blocked('protection outside current price limits')
@@ -235,12 +235,9 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
         target=min(target,number(requested)*v['capital']/number(entry_capital))
     margin=number(snapshot['isolated_wallet_usdt'])
     if target<=abs(q):
-        return dict(quantity_btc='0',entry_estimate=str(price),stop=str(stop),take=str(take),
-                    allocated_margin_usdt=str(margin),constraint='stop_budget',
-                    side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],tick=str(tick),
-                    quote_observation=v['quote'],
-                    sizing_capital_usdt=str(v['capital']))
-    result=_funded_quantity(v,direction,stop,take,target,q=q,entry=entry,margin=margin)
+        result=dict(quantity='0',margin=margin,reason='stop_budget')
+    else:
+        result=_funded_quantity(v,direction,stop,take,target,q=q,entry=entry,margin=margin)
     return dict(quantity_btc=str(result['quantity']),entry_estimate=str(price),stop=str(stop),take=str(take),
                 allocated_margin_usdt=str(result['margin']),constraint=result['reason'],
                 side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],

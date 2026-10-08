@@ -57,27 +57,21 @@ class State:
         self.directory.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.lock = open(self.directory / 'execution.lock', 'a+b')
         try:
-            if os.name == 'nt':
-                import msvcrt
-                self.lock.seek(0)
-                if self.lock.read(1) == b'':
-                    self.lock.write(b'0'); self.lock.flush()
-                self.lock.seek(0)
-                msvcrt.locking(self.lock.fileno(), msvcrt.LK_NBLCK, 1)
-            else:
-                import fcntl
-                fcntl.flock(self.lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            self.account_lock = open(_account_lock_path(self.identity), 'a+b')
-            if os.name == 'nt':
-                import msvcrt
-                self.account_lock.seek(0)
-                if self.account_lock.read(1) == b'':
-                    self.account_lock.write(b'0'); self.account_lock.flush()
-                self.account_lock.seek(0)
-                msvcrt.locking(self.account_lock.fileno(), msvcrt.LK_NBLCK, 1)
-            else:
-                import fcntl
-                fcntl.flock(self.account_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            # Acquire the directory lock before the shared account lock.
+            for name in ('lock', 'account_lock'):
+                if name == 'account_lock':
+                    self.account_lock = open(_account_lock_path(self.identity), 'a+b')
+                lock = getattr(self, name)
+                if os.name == 'nt':
+                    import msvcrt
+                    lock.seek(0)
+                    if lock.read(1) == b'':
+                        lock.write(b'0'); lock.flush()
+                    lock.seek(0)
+                    msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             self.db = sqlite3.connect(self.directory / 'intents.sqlite', timeout=0)
             self.db.execute('PRAGMA synchronous=FULL')
             self.db.execute('CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT NOT NULL)')
