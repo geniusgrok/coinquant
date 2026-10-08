@@ -46,14 +46,14 @@ class OpportunityTests(unittest.TestCase):
         # Stay above the midpoint stop while the close climbs through six risk units.
         for i in range(22, 21 + 42):
             self.assertEqual(m.update(i * FOUR_HOURS, D(150), D(140), D(145)).identity, signal.identity)
-        held = m.update((21 + 42) * FOUR_HOURS, D(170), D(160), D(165))
+        held = m.update((21 + 42) * FOUR_HOURS, D(170), D(162), D(165))
         self.assertIsNotNone(held)
         self.assertTrue(held.extended)
         self.assertIsNone(held.expires)
         self.assertEqual(held.identity, signal.identity)
-        self.assertGreater(held.stop, signal.stop)
-        # An 18% trail under the running high retires the campaign.
-        self.assertIsNone(m.update((22 + 42) * FOUR_HOURS, D(170), D(130), D(140)))
+        self.assertGreaterEqual(held.stop, D(170) * (1 - D('0.05')))
+        # A 5% trail under the running high retires the campaign.
+        self.assertIsNone(m.update((22 + 42) * FOUR_HOURS, D(170), D(150), D(155)))
 
     def test_missing_bar_fails_closed(self):
         m = Opportunities()

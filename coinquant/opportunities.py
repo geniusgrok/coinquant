@@ -13,9 +13,10 @@ ATR_BARS = 14
 TAKE_POWER = 20
 LIFE_BARS = 42
 # A long still this many initial risk units above its signal close at expiry
-# stays open. The stop then ratchets an 18% trail under the running high.
+# stays open. The stop then ratchets a 5% trail under the running high.
+# A wider trail raised the screened bar-path drawdown through 50%.
 EXTEND_R = 6
-WINNER_TRAIL = D('0.18')
+WINNER_TRAIL = D('0.05')
 
 
 @dataclass(frozen=True)
@@ -36,7 +37,7 @@ class Opportunities:
     campaign in its direction, stopped at the midpoint of the two closes, with
     a 20x risk-multiple target and a 42-bar (seven-day) life. A long that is
     still at least six initial risk units above its signal close at that life
-    is kept, and its stop becomes an 18% trail under the high since the signal."""
+    is kept, and its stop becomes a 5% trail under the high since the signal."""
 
     interval = FOUR_HOURS
 
