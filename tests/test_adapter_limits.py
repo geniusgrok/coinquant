@@ -180,18 +180,18 @@ class CleanupBudgets(TestCase):
         with State(self.directory, SCOPE) as state:
             engine = Lifecycle(self.venue, state, '123', authorized=True)
             order = []
-            snapshot = engine.snapshot()
+            snapshot = self.venue.snapshot('123')
             self.assertTrue(snapshot['quantity_btc'] != 0)
             with patch.object(Lifecycle, 'planned_protection', return_value=False), \
                     patch.object(safety, 'protect_existing', side_effect=Unknown('fixture')), \
-                    patch.object(Lifecycle, 'reserve', lambda self, seconds: order.append(('reserve', seconds))), \
+                    patch.object(self.venue, 'set_deadline', lambda seconds, *, extend_only=False: order.append(('reserve', seconds, extend_only))), \
                     patch.object(Lifecycle, 'close', lambda self, snap, *a, **k: order.append(('close',))), \
                     patch.object(Lifecycle, 'entry_fill_proven', return_value=False):
                 state.set('entry_plan', None)
                 state.set('session_replacement', None)
                 with self.assertRaises(Unknown):
                     engine.recover_exposure(snapshot)
-            self.assertEqual(order, [('reserve', REDUCE_SECONDS), ('close',)])
+            self.assertEqual(order, [('reserve', REDUCE_SECONDS, True), ('close',)])
 
 
 class ConfigPath(TestCase):

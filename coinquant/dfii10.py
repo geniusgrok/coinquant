@@ -4,32 +4,30 @@ import zlib
 from http.client import HTTPException
 from datetime import date, datetime, time, timedelta, timezone
 from decimal import Decimal as D
+from functools import cache
 import os
 from hashlib import sha256
 from pathlib import Path
 from html.parser import HTMLParser
-from io import StringIO
+from io import BytesIO, StringIO
 from urllib.parse import urlencode
 from urllib.request import Request, build_opener, HTTPCookieProcessor
 from time import monotonic
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 from zipfile import BadZipFile, ZipFile
-from io import BytesIO
 
 from .types import Blocked, Unknown
 
 URL='https://alfred.stlouisfed.org/series/downloaddata?seid=DFII10'
-_EASTERN=[]
 
 
+@cache
 def eastern():
     """America/New_York with daylight saving; never a fixed UTC offset."""
-    if not _EASTERN:
-        try:_EASTERN.append(ZoneInfo('America/New_York'))
-        except ZoneInfoNotFoundError:
-            raise Blocked('IANA time zone data unavailable; install the tzdata package '
-                          '(python -m pip install tzdata), required on Windows') from None
-    return _EASTERN[0]
+    try:return ZoneInfo('America/New_York')
+    except ZoneInfoNotFoundError:
+        raise Blocked('IANA time zone data unavailable; install the tzdata package '
+                      '(python -m pip install tzdata), required on Windows') from None
 
 
 class _Dates(HTMLParser):

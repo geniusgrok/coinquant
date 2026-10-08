@@ -137,7 +137,7 @@ def reconcile(state, reader, model, snapshot):
         native[str(observed['orderId'])]=(identity,observed)
     if not filled:
         if number(snapshot['quantity_btc']):raise Unknown('position has no verified campaign fill')
-        terminal=all(o['status'] in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED') for _,o in native.values())
+        terminal=all(o['status'] in TERMINAL for _,o in native.values())
         if terminal and not snapshot['possible_entry_remainders'] and not state.pending():
             again=reader.snapshot(snapshot['account_uid'])
             if any(again.get(k)!=snapshot.get(k) for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders')):

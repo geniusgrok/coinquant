@@ -20,9 +20,9 @@ def risk_reducing(state, pending):
     kind,payload=pending['kind'],pending['payload']
     if kind=='binance_algo_cancel':
         owner=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(payload.get('clientAlgoId'),)).fetchone()
-        return bool(owner and owner[0]=='binance_algo'
-                    and json.loads(owner[1]).get('symbol')=='BTCUSDT'
-                    and json.loads(owner[1]).get('closePosition')=='true')
+        if not owner or owner[0]!='binance_algo':return False
+        owned=json.loads(owner[1])
+        return owned.get('symbol')=='BTCUSDT' and owned.get('closePosition')=='true'
     return (kind=='binance_margin' or
             kind=='binance_order' and payload.get('reduceOnly')=='true' or
             kind=='binance_algo' and (payload.get('closePosition')=='true' or payload.get('reduceOnly')=='true'))
@@ -260,7 +260,6 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     journal pins the request/exposure across crashes; uncertain writes never retry.
     The default CLI is read-only; controlled trials use this same lifecycle.
     """
-    import json
     if authorized is not True:raise Blocked('explicit operation authorization required')
     if state.identity!=scope(reader.environment,uid):raise Blocked('account scope mismatch')
     if old_epoch==epoch:raise Blocked('replacement needs a distinct stable epoch')

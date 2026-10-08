@@ -11,6 +11,8 @@ from decimal import Decimal as D
 from .types import Blocked, ObservationDeadline, Unknown
 from .audit import allows_new_risk, income
 
+RECOVERABLE=(Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError)
+
 def _guard_strategy(state):
     """Reject foreign or missing strategy state before recovery and cleanup."""
     if state.get('lifecycle_identity') is not None:
@@ -63,7 +65,7 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
             try:
                 audit=income(reader,state,wallet=wallet,**wallet_window)
                 engine.risk_audit_ok=allows_new_risk(audit,wallet,flat=False)
-            except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError):
+            except RECOVERABLE:
                 engine.risk_audit_ok=False
         writes=len(engine.actions)
         action,snapshot=engine.decide(model,snapshot)
@@ -79,15 +81,12 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
         result.update(entry_preview(reader,model,snapshot))
     if audit is None:
         try:audit=income(reader,state)
-        except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError):
+        except RECOVERABLE:
             # Reporting must not discard this cycle's actions after a reduction or exit.
             audit={'status':'unresolved'}
     return dict(status='executed' if execute and engine.actions else 'no_action' if execute else 'read_only',
                 actual=snapshot,model_preview=result,market_through=market['complete_through'],
                 actions=engine.actions,write_attempted=bool(engine.actions),income_audit=audit)
-
-
-RECOVERABLE=(Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError)
 
 
 def _reason(exc,generic):

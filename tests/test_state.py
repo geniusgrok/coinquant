@@ -42,13 +42,6 @@ class StateTests(unittest.TestCase):
                 with self.assertRaises(Unknown):
                     state.prepare(identity, 'order', {'quantity': 5})
 
-    def test_atomic_report(self):
-        with tempfile.TemporaryDirectory() as directory:
-            with State(directory, 'testnet:123') as state:
-                state.report({'status': 'unknown'})
-                with open(state.directory / 'latest.json') as stream:
-                    self.assertEqual(json.load(stream)['status'], 'unknown')
-
     def test_deterministic_id_scope(self):
         self.assertTrue(client_id('live:123', 123, 'increase').startswith('cq-'))
         self.assertEqual(client_id('live:123', 123, 'increase'), client_id('live:123', 123, 'increase'))

@@ -82,10 +82,6 @@ def _guard_prices(snapshot, plan, rules):
     return stop, take
 
 
-def margin_pending(state):
-    return any(p['kind']=='binance_margin' for p in state.pending())
-
-
 def blocking(state):
     """Unknown intents that block every decision.
 
@@ -134,13 +130,6 @@ class Lifecycle:
         value = max(int(self.reader.clock()*1000), (self.state.get('operation_sequence') or 0)+1)
         self.state.set('operation_sequence', value)
         return value
-
-    def snapshot(self):
-        return self.reader.snapshot(self.uid)
-
-    def reserve(self, seconds):
-        # Use the adapter clock; a wall monotonic would outlive a virtual session.
-        self.reader.set_deadline(seconds, extend_only=True)
 
     def instrument(self):
         rows = [r for r in self.reader.get('/fapi/v1/exchangeInfo')['symbols'] if r.get('symbol') == 'BTCUSDT']
@@ -193,7 +182,7 @@ class Lifecycle:
             if not safety.settled_protection(self.reader,self.state,identity):
                 raise Unknown('flat protection child or cancellation unresolved')
             self.state.finish(cancel_id, 'confirmed', {'target':identity, 'terminal':True})
-            snapshot = self.snapshot()
+            snapshot = self.reader.snapshot(self.uid)
             if number(snapshot['quantity_btc']) or snapshot['possible_entry_remainders']:
                 raise Unknown('account changed during flat cleanup')
         return snapshot
@@ -224,7 +213,7 @@ class Lifecycle:
 
     def settle(self):
         self.reader.recover_pending(self.state)
-        snapshot = self.cancel_entries(self.snapshot())
+        snapshot = self.cancel_entries(self.reader.snapshot(self.uid))
         self.reader.recover_pending(self.state)
         # An unresolved risk-reducing intent blocks new risk (entry, add and the
         # next transfer all require no pending intent) but not protection or exits.
@@ -293,7 +282,7 @@ class Lifecycle:
         fresh = (type(plan.get('observed_at')) is int
                  and 0 <= int(self.reader.clock()*1000)-plan['observed_at'] <= RULES_FRESH_MS)
         rules = plan.get('instrument') if fresh and plan.get('instrument') else self.instrument()
-        self.reserve(PROTECT_SECONDS)
+        self.reader.set_deadline(PROTECT_SECONDS, extend_only=True)
         try:
             # With an earlier transfer unresolved, protection is still tried
             # against the observed liquidation price; it never sends another.
@@ -321,7 +310,8 @@ class Lifecycle:
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
                     snapshot=snapshot)
-            if number(snapshot['isolated_wallet_usdt']) < target and not margin_pending(self.state):
+            if (number(snapshot['isolated_wallet_usdt']) < target
+                    and not any(p['kind']=='binance_margin' for p in self.state.pending())):
                 snapshot = safety.add_margin(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],target,instrument=rules,authorized=self.authorized,snapshot=snapshot)
             if guard_epoch is not None:
@@ -337,9 +327,9 @@ class Lifecycle:
             # with its own budget, but never assert that a disconnected venue accepted it.
             # Only the proven own fill is reduced: a manual or external fill that
             # arrived meanwhile leaves the whole position untouched and unknown.
-            self.reserve(REDUCE_SECONDS)
+            self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
             try:
-                current = self.snapshot()
+                current = self.reader.snapshot(self.uid)
                 if number(current['quantity_btc']) != q:
                     # A protective child may have reduced the fill between reads.
                     # Full native fill reconciliation is required for that residual.
@@ -377,7 +367,7 @@ class Lifecycle:
             if child is not None and number(child['executedQty']):
                 if observed['parent'].get('algoStatus') not in ('FINISHED','CANCELED','EXPIRED','REJECTED') or child.get('status') not in TERMINAL:
                     raise Unknown('protective child fill is not terminal')
-        fresh=self.snapshot()
+        fresh=self.reader.snapshot(self.uid)
         if any(fresh[k]!=snapshot[k] for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders')):
             raise Unknown('residual changed after protective child readback')
         return True
@@ -406,7 +396,7 @@ class Lifecycle:
                     self.state.set('position_exit',operation)
             if row and row[0]=='confirmed':
                 terminal=owned_observation(self.state,self.reader,prior)['parent']
-                if terminal.get('status') not in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED'):
+                if terminal.get('status') not in TERMINAL:
                     raise Unknown('confirmed reduction is not terminal at exchange')
                 if number(terminal['executedQty'])<=0:
                     raise Unknown('zero-fill reduction requires review before another attempt')
@@ -483,7 +473,7 @@ class Lifecycle:
         plan = self.state.get('entry_plan')
         if plan:
             if self.entry_residual(snapshot,plan,ownership):
-                self.reserve(REDUCE_SECONDS)
+                self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
                 return self.close(snapshot,observed=True)
             return self.protect_entry(snapshot,plan)
         replacement=self.state.get('session_replacement')
@@ -500,7 +490,7 @@ class Lifecycle:
                 # Only a position with no native full protection at all is
                 # reduced; a healthy leg or unresolved order keeps the block.
                 if not snapshot['native_full_position_protected'] and not snapshot['possible_entry_remainders']:
-                    self.reserve(REDUCE_SECONDS)
+                    self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
                     self.close(snapshot)
                 raise
         if not self.planned_protection(snapshot):
@@ -512,7 +502,7 @@ class Lifecycle:
                     protection['epoch'],protection['stop'],protection['take'],
                     instrument=self.instrument(),authorized=self.authorized)
             except (Blocked,Unknown):
-                self.reserve(REDUCE_SECONDS)
+                self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
                 self.close(snapshot)
                 raise
         return snapshot
@@ -550,7 +540,7 @@ class Lifecycle:
         if not number(plan['quantity_btc']):
             return snapshot
         # Recheck after all sizing inputs. Never treat a preview as an order.
-        fresh = self.snapshot()
+        fresh = self.reader.snapshot(self.uid)
         if any(fresh[k] != snapshot[k] for k in ('quantity_btc','wallet_usdt','available_usdt','possible_entry_remainders')) or fresh['open_algos'] or fresh['open_orders']:
             raise Unknown('account changed between sizing and entry')
         if abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
@@ -668,7 +658,7 @@ class Lifecycle:
         self.entry_constraint = plan['constraint']
         if not number(plan['quantity_btc']):
             return snapshot
-        fresh = self.snapshot()
+        fresh = self.reader.snapshot(self.uid)
         if (any(fresh[k] != snapshot[k] for k in ('quantity_btc','wallet_usdt','possible_entry_remainders'))
                 or fresh['open_orders'] or not self.planned_protection(fresh)):
             raise Unknown('account changed between top-up sizing and order')

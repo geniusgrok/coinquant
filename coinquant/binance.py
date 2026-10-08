@@ -246,7 +246,6 @@ class Binance:
     def _request(self, method, path, parameters=None):
         private = method != 'GET' or path in PRIVATE
         params = dict(parameters or {})
-        self._inflight = (method, path, dict(parameters or {}))
         # Conservative per-process rolling budget; leave headroom under the usual
         # 2400/min allowance. Unfiltered order scans are restricted to cycle start.
         weights={'/api/v3/account':20,'/fapi/v1/accountConfig':5,'/fapi/v1/symbolConfig':5,
@@ -850,7 +849,6 @@ def market_quantity(maximum, mark, instrument, *, reduce_only=False, order='MARK
     """
     if order not in ('MARKET', 'LIMIT'):
         raise Blocked('unknown order quantity rule')
-    from decimal import Decimal
     from math import lcm
     maximum=number(maximum);mark=number(mark,positive=True)
     if maximum<0 or instrument.get('symbol')!='BTCUSDT':

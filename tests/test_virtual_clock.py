@@ -1,6 +1,5 @@
 import tempfile
 import time
-from io import BytesIO
 from unittest import TestCase
 from unittest.mock import Mock
 from urllib.error import HTTPError
@@ -50,7 +49,7 @@ class VirtualClockTests(TestCase):
 
     def test_rate_limit_cooldown_stays_on_the_injected_clock(self):
         opener = Mock()
-        opener.open.side_effect = HTTPError('https://fapi.binance.com', 429, 'rate', {'Retry-After': '90'}, BytesIO(b''))
+        opener.open.side_effect = HTTPError('https://fapi.binance.com', 429, 'rate', {'Retry-After': '90'}, None)
         clock = {'now': 1000.0}
         venue = Binance(monotonic=lambda: clock['now'], opener=opener, clock=lambda: 1_700_000_000)
         with self.assertRaises(Unknown):

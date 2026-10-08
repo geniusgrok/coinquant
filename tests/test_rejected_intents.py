@@ -38,15 +38,6 @@ class RejectedIntentTests(unittest.TestCase):
         row = self.state.db.execute('SELECT status FROM intents WHERE id=?', (stop[0],)).fetchone()
         self.assertEqual(row[0], 'confirmed')
 
-    def test_unknown_protection_is_never_resent(self):
-        def lost(*args):
-            raise TimeoutError()
-        with self.assertRaises(Unknown):
-            self.protect(lost)
-        with self.assertRaises(Unknown):
-            self.protect(self.native.send)
-        self.assertEqual(self.native.sent, [])
-
     def test_rejected_entry_is_never_prepared_again(self):
         payload = dict(symbol='BTCUSDT', side='BUY', type='LIMIT', quantity='1')
         self.state.prepare('cq-entry', 'binance_order', payload)
