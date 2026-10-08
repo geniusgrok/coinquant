@@ -43,17 +43,21 @@ class OpportunityTests(unittest.TestCase):
     def test_a_long_up_six_risk_units_at_expiry_trails_instead_of_ending(self):
         m = Opportunities()
         signal = self.feed(m, [(101, 99, 100)] * 20 + [(120, 99, 115)])[-1]
-        # Stay above the midpoint stop while the close climbs through six risk units.
+        for i in range(22, 21 + 42):
+            self.assertEqual(m.update(i * FOUR_HOURS, D(150), D(140), D(145)).identity, signal.identity)
+        # No recorded fill: the seven-day life still ends the campaign.
+        self.assertIsNone(m.update((21 + 42) * FOUR_HOURS, D(170), D(162), D(165)))
+        m = Opportunities()
+        signal = self.feed(m, [(101, 99, 100)] * 20 + [(120, 99, 115)])[-1]
+        m.fill = D(110)
         for i in range(22, 21 + 42):
             self.assertEqual(m.update(i * FOUR_HOURS, D(150), D(140), D(145)).identity, signal.identity)
         held = m.update((21 + 42) * FOUR_HOURS, D(170), D(162), D(165))
-        self.assertIsNotNone(held)
         self.assertTrue(held.extended)
         self.assertIsNone(held.expires)
-        self.assertEqual(held.identity, signal.identity)
-        self.assertGreaterEqual(held.stop, D(170) * (1 - D('0.05')))
-        # A 5% trail under the running high retires the campaign.
-        self.assertIsNone(m.update((22 + 42) * FOUR_HOURS, D(170), D(150), D(155)))
+        self.assertGreaterEqual(held.stop, m.fill)
+        self.assertEqual(held.take, D(170) * 5)
+        self.assertIsNone(m.update((22 + 42) * FOUR_HOURS, D(170), m.fill - 1, D(160)))
 
     def test_missing_bar_fails_closed(self):
         m = Opportunities()

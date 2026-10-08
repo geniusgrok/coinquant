@@ -1,5 +1,6 @@
 from decimal import Decimal as D
 from datetime import datetime, timezone
+import hashlib
 import json
 import unittest
 import tempfile
@@ -76,6 +77,34 @@ class CampaignTests(unittest.TestCase):
         self.assertEqual(m.action(D(0)),'consumed')
         m.model.active=None
         self.assertEqual(m.action(D(1)),'exit')
+
+    def test_entry_fill_is_checkpointed_and_extends_only_the_owned_campaign(self):
+        end=ORIGIN+50*14400000
+        ident=ORIGIN+14400000
+        def prepared():
+            m=Campaign()
+            m.last=end-14400000
+            m.model.last=m.last
+            m.model.close=D(100)
+            m.model.active=Opportunity(ident,1,D(100),D(500),end,D(115),D(15),D(140),False)
+            m.model.lows.extend([D(130)]*84)
+            m.entry_fill=D(110)
+            return m
+        missed=prepared()
+        self.assertIsNone(missed.update(end,D(190),D(150),D(180)))
+        owned=prepared()
+        owned.filled(ident)
+        held=owned.update(end,D(190),D(150),D(180))
+        self.assertTrue(held.extended)
+        self.assertGreaterEqual(held.stop,D(130))
+        self.assertEqual(held.take,D(190)*5)
+        restored=Campaign.restore(json.loads(json.dumps(owned.checkpoint())))
+        self.assertEqual(restored.entry_fill,D(110))
+        self.assertTrue(restored.model.active.extended)
+        bad=owned.checkpoint()
+        bad['body']['entry_fill']='0'
+        bad['sha256']=hashlib.sha256(json.dumps(bad['body'],sort_keys=True).encode()).hexdigest()
+        with self.assertRaises(Blocked):Campaign.restore(bad)
 
     def test_missing_history_and_corrupt_checkpoint_block(self):
         m=Campaign()

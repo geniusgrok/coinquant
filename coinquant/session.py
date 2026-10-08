@@ -35,7 +35,9 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
     else:
         reader.recover_pending(state)
         snapshot=reader.snapshot(uid)
-    model,market,reconstructed=advance(state,reader)
+    quantity=D(snapshot['quantity_btc'])
+    model,market,reconstructed=advance(
+        state,reader,fill=snapshot['entry'] if quantity else None)
     # DFII10 is read only when it can change the decision, so its outage never
     # delays a primary exit or protection maintenance.
     row=reader.dfii10_snapshot() if model.macro_relevant() else None

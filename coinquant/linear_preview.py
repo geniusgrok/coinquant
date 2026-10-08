@@ -4,10 +4,14 @@ from .types import Blocked
 from decimal import Decimal as D
 
 
-def advance(state, venue):
+def advance(state, venue, fill=None):
     saved=state.get('linear_campaign')
     model=Campaign.restore(saved) if saved is not None else Campaign()
     if saved is None:state.set('market_bootstrap',True)
+    if fill is not None:
+        price=D(fill)
+        if price.is_finite() and price>0:
+            model.entry_fill=price
     bootstrap=bool(state.get('market_bootstrap'))
     def save_page(bars):
         for bar in bars:

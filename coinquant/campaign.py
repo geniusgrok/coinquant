@@ -17,7 +17,7 @@ PRIMARY_RISK = '7.5'
 MACRO_RISK = '3.6'
 ORIGIN = 1575158400000  # 2019-12-01T00:00Z, fixed model warmup origin
 DAY = 86400000
-VERSION = 5
+VERSION = 6
 
 
 def disposition(opportunity, quantity, consumed):
@@ -43,12 +43,18 @@ class Campaign:
         self.macro_epoch=None
         self.macro_opportunity=None
         self.macro_observation=None
+        self.entry_fill=None
 
     def update(self, end, high, low, close):
         if type(end) is not int or end!=self.last+self.model.interval:
             raise Blocked('complete history from fixed origin or matching checkpoint required')
         values=[D(high),D(low),D(close)]
         if not all(v.is_finite() for v in values):raise Blocked('nonfinite candle')
+        active=self.model.active
+        # A fill belongs to the campaign that was actually owned. Replaying
+        # history must not extend a different impulse with a later entry price.
+        self.model.fill=(self.entry_fill if self.entry_fill is not None and active is not None
+                         and active.identity==self.position_campaign else None)
         opportunity=self.model.update(end,*values)
         self.day_low=min(self.day_low,values[1]) if self.day_low is not None else values[1]
         if end%DAY==0:
@@ -152,7 +158,8 @@ class Campaign:
               'day_low':str(self.day_low) if self.day_low is not None else None,
               'daily_lows':[str(v) for v in self.daily_lows],
               'macro_epoch':self.macro_epoch,'macro_opportunity':encode(self.macro_opportunity),
-              'macro_observation':self.macro_observation}
+              'macro_observation':self.macro_observation,
+              'entry_fill':None if self.entry_fill is None else str(self.entry_fill)}
         return {'body':body,'sha256':hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()}
 
     @classmethod
@@ -210,6 +217,9 @@ class Campaign:
             result.macro_epoch=body['macro_epoch']
             result.macro_opportunity=decode(body['macro_opportunity'])
             result.macro_observation=body['macro_observation']
+            result.entry_fill=D(body['entry_fill']) if body['entry_fill'] is not None else None
+            if result.entry_fill is not None and (not result.entry_fill.is_finite() or result.entry_fill<=0):
+                raise ValueError('entry fill')
             if (result.macro_epoch is not None and
                 (type(result.macro_epoch) is not int or not -(result.last+interval)<result.macro_epoch<0)):
                 raise ValueError('macro epoch')
