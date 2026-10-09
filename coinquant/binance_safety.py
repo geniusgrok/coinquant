@@ -226,7 +226,7 @@ def cancel_entry(reader,state,send,uid,epoch,entry_id,*,authorized=False):
     return reader.snapshot(uid)
 
 
-def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized=False,snapshot=None,expected_owner=None,expected_direction=None):
+def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized=False,expected_owner=None,expected_direction=None):
     """Bounded reduce-only market request; caller supplies rule-rounded quantity."""
     # Exit sizing may follow other network reads; always refresh the full account
     # before reducing, even when the caller supplies its ownership observation.
