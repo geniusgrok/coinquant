@@ -1064,7 +1064,7 @@ class Lifecycle:
             raise Blocked('session deadline or stop request prohibits a new entry')
         tick=[f['tickSize'] for f in plan['instrument']['filters'] if f.get('filterType')=='PRICE_FILTER'][0]
         if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],tick,
-                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc'])),
+                             quantity=abs(number(plan['quantity_btc'])),
                              completed_through=model.last):
             raise Unknown('order book changed before the order was sent')
         safety._check_cursor(self.reader,fresh)
@@ -1289,7 +1289,7 @@ class Lifecycle:
         if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
             return fresh
         if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],plan['tick'],
-                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc'])),
+                             quantity=abs(number(plan['quantity_btc'])),
                              completed_through=model.last):
             return fresh
         # A stop can fill during the final book read. The old position cursor

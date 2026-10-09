@@ -57,6 +57,47 @@ class ExecutionBoundaries(TestCase):
         self.assertEqual(result['cleanup'],'verified')
         self.assertEqual(result['risk_limits'],dict(max_stop_loss_fraction='.10',stop_slippage_fraction='.01'))
 
+    def test_entry_and_topup_accept_changing_depth_within_funded_limit(self):
+        self.venue.fraction=D('.5')
+        original=self.venue.get;books=[]
+        def changing(path,parameters=None):
+            result=original(path,parameters)
+            if path.endswith('/depth'):
+                result['asks'][0][1]=str(101+len(books))
+                books.append(result)
+            return result
+        self.venue.get=changing
+        report=self.session()
+        self.assertEqual(report['cleanup'],'verified')
+        self.assertGreater(self.venue.q,0)
+        self.assertEqual(report['entry_timing']['quote_observation']['visible_limit_depth_btc'],'101')
+        before=len(self.venue.orders);quantity=self.venue.q
+        with State(self.directory,SCOPE) as state:
+            model=Campaign.restore(state.get('linear_campaign'));snapshot=self.venue.snapshot('123')
+            ownership=reconcile(state,self.venue,model,snapshot)
+            engine=Lifecycle(self.venue,state,'123',authorized=True,session=state.get('entry_fill')['session'])
+            engine.risk_audit_ok=True;engine.reconciled=(snapshot,0,ownership)
+            result=engine.top_up(model,snapshot)
+        self.assertEqual(len(self.venue.orders),before+1)
+        self.assertGreater(self.venue.q,quantity)
+        self.assertTrue(result['native_full_position_protected'])
+        self.assertEqual(len(books),4)
+
+    def test_entry_rejects_changed_depth_below_fresh_participation_limit(self):
+        original=self.venue.get;books=[]
+        def depleted(path,parameters=None):
+            result=original(path,parameters)
+            if path.endswith('/depth'):
+                books.append(result)
+                if len(books)==2:result['asks'][0][1]='.001'
+            return result
+        self.venue.get=depleted
+        result=self.session()
+        self.assertEqual(len(books),2)
+        self.assertEqual(self.venue.sent,[])
+        self.assertEqual(self.venue.q,0)
+        self.assertEqual(result['cleanup'],'verified')
+
     def test_final_topup_book_read_cannot_extend_entry_deadline(self):
         self.venue.fraction=D('.5')
         self.assertEqual(self.session()['cleanup'],'verified')
