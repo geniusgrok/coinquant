@@ -43,6 +43,28 @@ class OwnershipTests(TestCase):
                 with self.assertRaises(Unknown):reconcile(state,r,m,s)
                 self.assertEqual(before,m.checkpoint())
 
+    def test_successful_reconciliation_reuses_final_account_observation(self):
+        with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+            m,r,s,_=self.fixture(state)
+            s.update(mark_price='99',observed_at_ms=1,wallet_observed_from_ms=1,wallet_observed_until_ms=1)
+            fresh=dict(s,mark_price='101',native_full_position_protected=True,
+                       observed_at_ms=3,wallet_observed_from_ms=2,wallet_observed_until_ms=3)
+            r.snapshot.return_value=fresh
+            result=reconcile(state,r,m,s)
+            self.assertEqual(s,fresh)
+            self.assertTrue(result['protection_confirmed'])
+            r.snapshot.assert_called_once_with('123')
+
+    def test_changed_exposure_at_final_readback_never_refreshes_or_commits(self):
+        with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+            m,r,s,_=self.fixture(state)
+            before=m.checkpoint();original=dict(s)
+            r.snapshot.return_value=dict(s,quantity_btc='.004',mark_price='101')
+            with self.assertRaises(Unknown):reconcile(state,r,m,s)
+            self.assertEqual(s,original)
+            self.assertEqual(m.checkpoint(),before)
+            self.assertIsNone(state.get('ownership_coverage'))
+
     def test_rejected_reduction_has_no_native_order_to_query(self):
         with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
             m,r,s,t=self.fixture(state)
@@ -109,7 +131,11 @@ class AbsentEntryOwnership(TestCase):
                 state.prepare('cq-entry','binance_order',p,campaign=int(time()*1000)//14400000*14400000,flat_snapshot=flat)
                 state.finish('cq-entry','rejected',{'prepared_at_ms':1,'absent_at_ms':400000,
                                                     **({'query_absent_within_retention':True} if marker else {})})
-                if ok:self.assertEqual(reconcile(state,r,m,flat)['status'],'no_campaign_fill')
+                fresh=dict(flat,mark_price='101',observed_at_ms=2)
+                r.snapshot.return_value=fresh
+                if ok:
+                    self.assertEqual(reconcile(state,r,m,flat)['status'],'no_campaign_fill')
+                    self.assertEqual(flat,fresh)
                 else:
                     with self.assertRaises(Unknown):reconcile(state,r,m,flat)
 
