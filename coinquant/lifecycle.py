@@ -1,7 +1,7 @@
 """Native Binance entry, protection, recovery and bounded cleanup.
 
-No daemon, independent cash ledger or strategy selector. Transport acknowledgments
-never settle an intent. The CLI permits only explicit bounded trial writes.
+Order intents require native state evidence; unknown writes are never retried.
+The CLI permits only explicit bounded trial writes.
 """
 import json
 from decimal import Decimal as D, ROUND_CEILING, ROUND_FLOOR
@@ -31,7 +31,7 @@ REDUCE_SECONDS = 120
 # most any renewal may extend the session's absolute end (Binance.hard_deadline).
 FINISH_SECONDS = 120
 ABSOLUTE_GRACE = PROTECT_SECONDS + REDUCE_SECONDS + FINISH_SECONDS
-# Contract rules from the entry preflight are reused only within one session.
+# Entry preflight rules remain reusable for five minutes after observation.
 RULES_FRESH_MS = 300000
 # Query Algo Order stops retaining parents created more than 90 days ago.
 # Renew an observed native pair before that boundary, using its creation time.
@@ -631,7 +631,7 @@ class Lifecycle:
         # The reserve was calculated before entry; scale to actual executed size.
         target = number(plan['allocated_margin_usdt'])*abs(q/expected)
         replacement_started=snapshot.get('wallet_observed_from_ms',int(self.reader.clock()*1000))
-        # Rules from this entry's own preflight; a plan resumed later reads them again.
+        # Refresh stale preflight rules before protecting a resumed entry.
         fresh = (type(plan.get('observed_at')) is int
                  and 0 <= int(self.reader.clock()*1000)-plan['observed_at'] <= RULES_FRESH_MS)
         rules = plan.get('instrument') if fresh and plan.get('instrument') else self.instrument()
@@ -965,8 +965,8 @@ class Lifecycle:
             try:
                 return self.complete_replacement(replacement,self.instrument(),snapshot=snapshot)
             except (Blocked,Unknown):
-                # Only a position with no native full protection at all is
-                # reduced; a healthy leg or unresolved order keeps the block.
+                # Keep a complete native pair; otherwise try an owned exit
+                # when no entry remainders remain.
                 if not snapshot['native_full_position_protected'] and not snapshot['possible_entry_remainders']:
                     self.close_owned()
                 raise
