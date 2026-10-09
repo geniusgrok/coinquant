@@ -118,7 +118,7 @@ class SafetyTests(unittest.TestCase):
         operations=(
             lambda:self.protect(authorized=True,snapshot=owner,expected_owner=owner),
             lambda:reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',
-                instrument=rules(),authorized=True,snapshot=owner,expected_owner=owner,expected_direction=1),
+                instrument=rules(),authorized=True,expected_owner=owner,expected_direction=1),
             lambda:add_margin(self.native,self.state,self.native.send,'123',100,'40',
                 instrument=rules(),authorized=True,snapshot=owner,expected_owner=owner))
         for operation in operations:
