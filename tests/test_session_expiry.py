@@ -71,6 +71,18 @@ class SessionExpiryTests(TestCase):
         return [p for _,path,p in self.venue.sent
                 if path.endswith('/order') and p.get('reduceOnly')=='true']
 
+    def mark_at_ownership_readback(self, mark):
+        snapshot=self.venue.snapshot
+        reads=0
+        def read(uid):
+            nonlocal reads
+            reads+=1
+            if reads==2:
+                self.venue.mark=D(mark)
+                self.venue.wait(.001)
+            return snapshot(uid)
+        self.venue.snapshot=read
+
     def test_read_only_restores_owner_before_checkpointing_expiry(self):
         self.expiry_replay()
         writes=len(self.venue.sent)
@@ -150,6 +162,38 @@ class SessionExpiryTests(TestCase):
             self.assertGreater(D(result['quantity_btc']),0)
             self.assertEqual(D(state.get('position_protection')['stop']),self.venue.entry)
         self.assertEqual(self.reductions(),[])
+
+    def test_mark_rebounding_during_ownership_readback_installs_stop_without_exit(self):
+        self.candidate('100001')
+        with State(self.directory,SCOPE) as state:
+            snapshot=self.venue.snapshot('123')
+            self.mark_at_ownership_readback('102000')
+            engine=Lifecycle(self.venue,state,'123',authorized=True)
+            result=engine.maintain(Campaign.restore(state.get('linear_campaign')),snapshot)
+            self.assertGreater(D(result['quantity_btc']),0)
+            self.assertEqual(D(result['mark_price']),D(102000))
+            self.assertEqual(D(state.get('position_protection')['stop']),self.venue.entry)
+            self.assertIsNone(state.get('position_exit'))
+            self.assertIsNone(state.get('session_replacement'))
+        self.assertEqual(self.reductions(),[])
+
+    def test_mark_still_crossed_at_ownership_readback_closes(self):
+        self.candidate('100001')
+        with State(self.directory,SCOPE) as state:
+            snapshot=self.venue.snapshot('123')
+            self.mark_at_ownership_readback('99000')
+            engine=Lifecycle(self.venue,state,'123',authorized=True)
+            result=engine.maintain(Campaign.restore(state.get('linear_campaign')),snapshot)
+            self.assertEqual(D(result['quantity_btc']),0)
+        self.assertEqual(len(self.reductions()),1)
+
+    def test_unconditional_owned_exit_still_closes_after_mark_rebounds(self):
+        self.candidate('100001')
+        self.mark_at_ownership_readback('102000')
+        with State(self.directory,SCOPE) as state:
+            result=Lifecycle(self.venue,state,'123',authorized=True).close_owned()
+            self.assertEqual(D(result['quantity_btc']),0)
+        self.assertEqual(len(self.reductions()),1)
 
     def test_crossed_stop_does_not_reduce_an_external_fill_after_decision(self):
         self.candidate('100001')

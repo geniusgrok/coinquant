@@ -105,6 +105,7 @@ def fill_history(reader,start,end,after_id=None):
 
 
 def reconcile(state, reader, model, snapshot):
+    """Close fill ownership and refresh the supplied snapshot after stable readback."""
     links=state.get('entry_campaigns') or {}
     if not links:
         if number(snapshot['quantity_btc']):raise Unknown('entry campaign journal unavailable')
@@ -143,6 +144,7 @@ def reconcile(state, reader, model, snapshot):
             if any(again.get(k)!=snapshot.get(k) for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders')):
                 raise Unknown('account changed while settling zero-fill entries')
             _archive_links(state,links)
+            snapshot.update(again)
         return {'status':'no_campaign_fill'}
     # A campaign may own its first entry plus later adds; all share one history boundary.
     owner=max(filled,key=lambda x:(x[0],not x[2].get('add')))[2]['campaign']
@@ -249,6 +251,9 @@ def reconcile(state, reader, model, snapshot):
         # Keep the campaign audit trail, but do not query terminal old entries
         # forever after an independently reconciled flat boundary.
         _archive_links(state,links)
+    # Reuse the last verified account observation, including its mark, protection
+    # and wallet observation window, for the caller's decision and safety gate.
+    snapshot.update(again)
     return {'status':'reconciled','campaign':campaign,'quantity':str(total),'fill_count':len(trades),
             'protection_slippage':protection_slippage,
             'protection_confirmed':snapshot.get('native_full_position_protected',False),
