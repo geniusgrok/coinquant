@@ -1,0 +1,21 @@
+{
+  "coinquant/__init__.py": "fe919747f40d205f7d0f5804ecc9de9244b4c6ed48c4a78ad233b703c87ba1b3",
+  "coinquant/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+  "coinquant/audit.py": "483245ec009e9dee8d6e51f3bd47e56675979c0e641bbcba3dc659e5a02136ed",
+  "coinquant/binance.py": "9f3ce05e75c8cdacd774a1790245743fe91ed74947bc5980e08156c5c499e5b4",
+  "coinquant/binance_safety.py": "e699973c6e63b988458ff044bc4c7fcb82cdc34f1de737da06af0563a8898a46",
+  "coinquant/campaign.py": "106d4578c6ce1df86ed3e498be68f8faebbd90f0c3a9f70c78e2067fc4fd8085",
+  "coinquant/cli.py": "2f45ec7512692b3b294d37c37e26a263a74451657f0640e955e358ccf8db3a11",
+  "coinquant/config.py": "92ba03936a833d9662d35e18cda1cf1bade8c806dda1c4a201aecd1968cf6339",
+  "coinquant/demo_evidence.py": "8a2b29cbc4af77bf63ea6d21a3afb36c90882353ea9fee729f4055bc97766027",
+  "coinquant/dfii10.py": "d37099f8227c398ca6cc2fc04599369619b53b3bc671e31c8ccb5df160776bf0",
+  "coinquant/lifecycle.py": "38c899c641e0c7b74aa86e77d3a1a87b92609caa4a8978c65a3289ee8d271925",
+  "coinquant/linear_preview.py": "2b21fdca00946699e4e03a235433cc29139dda1624a7ab93ce086548853a7a2d",
+  "coinquant/native_preview.py": "b6ca98cd124a8265c630229e93942e047743f4e1e6e942b50579c2a74df9c166",
+  "coinquant/opportunities.py": "134d96804f36efe96fbe946a63336d0b2c43261d91dabcb939cc89e78601b536",
+  "coinquant/ownership.py": "e20212c5daf0c3a9980b14891befa189a2ccd1bdba294aece2108bae1dab4f76",
+  "coinquant/session.py": "f21eae68dec825e56dfd2e8dbad958dba036ffb9ea1c33de39ffff7387b814d8",
+  "coinquant/snapshot.py": "a25c07e6b0fa779e633748e16394f9f073cf835743549e0169e083129113a295",
+  "coinquant/state.py": "4cbf191d42e74ee7286fca61f92410bc62ee1b46fc00bdb378577cd2aea3a200",
+  "coinquant/types.py": "d166b5f5bd1815be1de0bd56b3e587afda70135dad5ccea4c5fd15e381474f53"
+}

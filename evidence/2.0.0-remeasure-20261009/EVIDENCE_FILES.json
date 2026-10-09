@@ -1,0 +1,629 @@
+{
+  "files": [
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/ATTEMPTS.json",
+      "bytes": 1517,
+      "sha256": "c2983f7ba2114370e02e908a4f4d5b7fd8bace85edc2ab75a6cdc53eaead269f"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/FIRST_ATTEMPT_PREFIX_COMPARISON.json",
+      "bytes": 554,
+      "sha256": "0baced30a23db802a6d8759694691b2ae2d5a608a1babddcbda540c73412c586"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/FULL_COMMANDS.jsonl",
+      "bytes": 4690,
+      "sha256": "bd59e14106c2922c00ed26e7932afea99a69e999f77ce356b6db6b65592a6ab7"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/POSTPROCESSING_FIX.json",
+      "bytes": 909,
+      "sha256": "8571510ced31a4aa6654573c28235f4e3a82be1828e99cf965be9562d00a1bd6"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/PROGRESS.json",
+      "bytes": 649,
+      "sha256": "d5bcc5b3aaeec78be60a912668479e93448a9b17a4bbdecd0ad87cf6bbf297ae"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/PROTOCOL.md",
+      "bytes": 6498,
+      "sha256": "ebeb12c0f23e71c4a2b425958b4fce85ec9f122524aca3d58f7fa8e958fb065e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/TRACE_FAILURE_DIAGNOSIS.json",
+      "bytes": 8907,
+      "sha256": "29e96a000aa16621846a4ec2d57bd7f2dbc13026fcd6de32b0bb06088caf1f84"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-audit-summary.json",
+      "bytes": 11280,
+      "sha256": "2bc0718c9138098580c69f8986a0dc9d7efc885916f5f2c112e7c361d0401ac2"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-audit.json",
+      "bytes": 5295620,
+      "sha256": "8658b25512093aa4731204df2f95bc3241f82612c6bf919683e826bcbab9b7bf"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000020.json.gz",
+      "bytes": 12546,
+      "sha256": "b84c0812cd0b5be87e7bc839f43d47ae2d388059fe0fb45493748120f5a40c49"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000040.json.gz",
+      "bytes": 20629,
+      "sha256": "cc29d41da18724c0941c3802e9c3177caf3a6d849c1e0e812ed511c80c284d89"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000060.json.gz",
+      "bytes": 25428,
+      "sha256": "5dc8ca3aa22546cf1de34c05f9142bd750803fa8c5dd83064acde731ea2b304b"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000080.json.gz",
+      "bytes": 32626,
+      "sha256": "a4fa16019ddb6cc5a9f358217a41e9396c27302a8d291ff2e772c270c45d9432"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000100.json.gz",
+      "bytes": 37318,
+      "sha256": "b4f5975b7a7ca3038aa3ebe95c9d983231f1f7458a7db7d080e7e6515c6decab"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000120.json.gz",
+      "bytes": 45601,
+      "sha256": "482e19fd7f3c3a40cac19ec8eee8193d3bf16d60fd3ed9f32a31023bdd253ffd"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000140.json.gz",
+      "bytes": 50474,
+      "sha256": "749f080301c38a8a591a0b9442bc9cc88722f12f3d75004594bfae28e2d6f50b"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000160.json.gz",
+      "bytes": 55003,
+      "sha256": "4cc0a8963709f0face6bfe335af0f1457b553869076824857326b467de9f52d6"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000180.json.gz",
+      "bytes": 60179,
+      "sha256": "1b6a5f738d3d4ba3a4c09d45e8655f9796900cae2bf9a766c10f119a90b132f0"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000200.json.gz",
+      "bytes": 64957,
+      "sha256": "7338b173b4fa6ad32a1d6a546e8e0da098342db84b35433dc8cd59b49e174bd1"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000220.json.gz",
+      "bytes": 70185,
+      "sha256": "1185f1dcde28df0966cda979d99b9b01e8b129159b58ce3032eed0569fce4201"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000240.json.gz",
+      "bytes": 73839,
+      "sha256": "5d166521a09c058582c70f10144a7b0e7799f721c2e867145d8a051fa9f51e4e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000260.json.gz",
+      "bytes": 79863,
+      "sha256": "53cb0a65fcee5766ebd9d628a9d7c68618ef9df3aef09f282a881d58f2149fc2"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000280.json.gz",
+      "bytes": 85748,
+      "sha256": "812275a4b2acd7a4226327fb1ee28b442274c2ee4955a3bde6be7ff9695af16d"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000300.json.gz",
+      "bytes": 88833,
+      "sha256": "1eda2e60b2669b99756ed32513b5e624a1bcd6e593667469db5076f7fc8e6d1d"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000320.json.gz",
+      "bytes": 95186,
+      "sha256": "0a95f9302d8be5004d733131a623d0f270ac68abf17cb7ec4efc3277958f8bb7"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000340.json.gz",
+      "bytes": 98960,
+      "sha256": "3ee295b8bbcf36fd1e20131c319d8feaa85db96b9e18e0ed468f6805c581f376"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000360.json.gz",
+      "bytes": 107433,
+      "sha256": "9890f32df1f5b15afb6db1a84e9496e8b93ddef54798af6dc379e817447b9a3b"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000380.json.gz",
+      "bytes": 116702,
+      "sha256": "6d18d191893d22f45fa95f0ef377a1828314f9f1a7bacaa6701f2b4081cf504c"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000400.json.gz",
+      "bytes": 123480,
+      "sha256": "636d1fc3d64ec43453437a92668e8fa587171b3d5563f6814e9b36dd27d93a99"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000420.json.gz",
+      "bytes": 130007,
+      "sha256": "4c96fa087207512d248fce6724547503817e23a34d81689497fa2c1768d49d70"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000440.json.gz",
+      "bytes": 133805,
+      "sha256": "720e03127dca3c3dce7015c3d88a3bdd4fd4083210819496d7ccd846d2b9b646"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000460.json.gz",
+      "bytes": 143956,
+      "sha256": "de92e875712e39f137641e59b1d1157d04b30b7ae4e52acd134af790efe56d08"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000467.json.gz",
+      "bytes": 146545,
+      "sha256": "4cf5cc0d85c421f03d94e6c0529990628b1a08bf6d4240eee5fe21978aee566e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000480.json.gz",
+      "bytes": 150347,
+      "sha256": "dbbd5232c1aee8c86644b818125512310069475f4e68d9ff12a9c2decbce6390"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000500.json.gz",
+      "bytes": 156689,
+      "sha256": "5dfd45cf3a089fe784f9bd2f202fd001327b7cb322dc51be39a54004ef4714c5"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000520.json.gz",
+      "bytes": 161535,
+      "sha256": "c638e9f7b872910225a0181042cbb14f2785e574d73355ce7c686439600f6c8e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000540.json.gz",
+      "bytes": 165128,
+      "sha256": "feecb2d39f947f3a00d732a46f8b2ff17158893c7d9d9944942e040b05a3a8ea"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000560.json.gz",
+      "bytes": 170914,
+      "sha256": "d867994ff8016854e530b34087e58b31246b51d80817f2b99863a1495821a6b6"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000580.json.gz",
+      "bytes": 176503,
+      "sha256": "5d61ec509be5258921b9c1397c686e793717820f10f3039006856f01db15e3a4"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000600.json.gz",
+      "bytes": 180886,
+      "sha256": "9d855da3014fef3cc7a99b3d3174805f6987688212ec77237e02d5b7ad5367bb"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000620.json.gz",
+      "bytes": 185697,
+      "sha256": "840dbbb7c3575fcb21eb7fd153f808e0af792fdae22094bd6147bd8840791b74"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000640.json.gz",
+      "bytes": 190686,
+      "sha256": "35bb5e54f020028d059d7ea4e31a67c7c6bfd7851588c8a9fb1b7d60f4fe9001"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000660.json.gz",
+      "bytes": 197030,
+      "sha256": "6f4db2b5260b100b6f115dfd2d3813876310256463876184ad88d3c122794ebd"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000680.json.gz",
+      "bytes": 201444,
+      "sha256": "27d34f583f0585768ace3c1948679c46a32436000f4706f9dae5dd32eec7128a"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000700.json.gz",
+      "bytes": 205123,
+      "sha256": "afc3fd25d7d380593d2495c708993cd32c7d2d36058805ffd4a5adc9b39a5f89"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000720.json.gz",
+      "bytes": 208837,
+      "sha256": "f86d259da53392061a7f5da5c1dcef733610f939341b7a8e7519ef32cf17ab2b"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000740.json.gz",
+      "bytes": 213209,
+      "sha256": "24019a297dc172ea515159549b38453d78558a97407690b414dff8495c5f9b80"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000760.json.gz",
+      "bytes": 215701,
+      "sha256": "90485d1def1e4f6539872459ff54ad421d7ef1dcedec325dbf57dd68dd610b21"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/checkpoints/cursor-000780.json.gz",
+      "bytes": 220417,
+      "sha256": "3537435c2e9b006a919a73e8bf0e1671ef451f71731e9ccda54dd276b55fb457"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/path-traces/segment-001.jsonl.gz",
+      "bytes": 16842418,
+      "sha256": "7c7db656b525ffe291ea6ef2645fcc5574eebccb7a77f7fb06e1c6b648274414"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/path-traces/segment-002.jsonl.gz",
+      "bytes": 6497486,
+      "sha256": "b29b967e0599771d1c883cc860ad76458148dd1a9719cf5d67ec65befcf9d566"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/production-calls.jsonl",
+      "bytes": 2711017,
+      "sha256": "86fed473f463e48a9c8d4992f03c0b47ad107c0d4b5513ccc08b78fb7f079c6e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current/reports.jsonl",
+      "bytes": 2846001,
+      "sha256": "77fde0bbc28f355dd516e487f4d1f40f20e672b4b8d809fb62be66b510f88476"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current-segment-001.json.gz",
+      "bytes": 61923,
+      "sha256": "3bb09494faff31bbd7fab63c7330f437e5643823d1bec647ba2bf8166d04db5e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current-segment-001.log",
+      "bytes": 2084,
+      "sha256": "cfc43f076b7fa6c7e49e92d3b7998bf752b14a0c7fd5d21c1771ef3e6cceaeb0"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current-segment-002.json.gz",
+      "bytes": 257586,
+      "sha256": "6d5fb6aaa0f3daa074ac870203834dcdb4763dc7a262e307929233b6804bab6e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-current-segment-002.log",
+      "bytes": 1474,
+      "sha256": "8ffabf388743e2ea60e442cb1d0f9d21f64eb4fd964fb9d68a12538cea13be0c"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000020.json.gz",
+      "bytes": 14126,
+      "sha256": "5faa6ed8b307f906bffbee2535802b878bd6066656874745ca191ec58b9c2098"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000040.json.gz",
+      "bytes": 22007,
+      "sha256": "b4af85d9dc8924fccd326d4d1aed993d99c1679929d2b26879c4cc9940af149b"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000060.json.gz",
+      "bytes": 28387,
+      "sha256": "e2d73d40c5cf9bbca6b787838f72b26d9fbad5d3139620620ea255b1b9315a9d"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000080.json.gz",
+      "bytes": 37468,
+      "sha256": "fbe40093b971aae5dc5de01ba0b32bcbc4b95ab1c71567f3314035289e77b7e5"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000100.json.gz",
+      "bytes": 43218,
+      "sha256": "18658194ca7317f33bd75fb82caf892ef7b03c52e9f1c607372d3829c87a2d07"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000120.json.gz",
+      "bytes": 57341,
+      "sha256": "e3abe24ccbebf97469c59d5e94cfbba79cc15d4d9c1f8630123a200275ea849a"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000140.json.gz",
+      "bytes": 70819,
+      "sha256": "0a02be66b76b8b7e7d3646a0e096763c34466dfced7d2e3d69af15e05c5bbaa7"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000160.json.gz",
+      "bytes": 74957,
+      "sha256": "90b9bb594a6a7ac81c2ebb0233e1d0f2aae1b01ceb434ad6f212e105c2942c1f"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000180.json.gz",
+      "bytes": 80759,
+      "sha256": "b0e032ed9b71e2b531d4f73d88dd0ae82d3fb0c269449a095c82d07ffb551f58"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000200.json.gz",
+      "bytes": 86792,
+      "sha256": "fde6f39c5518c2ca0f970353045619bb029da09e91841abd0868f597ab67d96a"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000220.json.gz",
+      "bytes": 93078,
+      "sha256": "1eb9b7f8d836c2a0808de45ec299e46c4df510223b08574572f84ad49d83d025"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000240.json.gz",
+      "bytes": 97311,
+      "sha256": "d4317f09190e5b2d8652249ab93081570fdd4c6b0aac59ee0909b13b2b6695bd"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000260.json.gz",
+      "bytes": 103192,
+      "sha256": "6e5ea8cafbc8d0c07c5eec03907e368a3e36e18445cbd598c4b39e715b1170fb"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000280.json.gz",
+      "bytes": 111345,
+      "sha256": "32dfd7b2afb08b145f62e10e662aa21c8ba5b5e0f999db46deb04cb37f81d9b4"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000300.json.gz",
+      "bytes": 115429,
+      "sha256": "799226308644cf02839f2b7a0c17985518991bd5f818eec38f59052db4315b33"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000320.json.gz",
+      "bytes": 123140,
+      "sha256": "fa14ffce5bba3cd05c7e8cb888d7875ed799a0d1e19792c48a063c46257c782c"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000340.json.gz",
+      "bytes": 127309,
+      "sha256": "e6b4215d40965726a594e905d9621038bfe400b4a00ad8bc9c810573aa46ae68"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000360.json.gz",
+      "bytes": 137043,
+      "sha256": "6c8c066b7a982346ae66eefb37b4bd596157d075f28638ecf4fca4270bbc026e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000380.json.gz",
+      "bytes": 152868,
+      "sha256": "81cd24ff4bee8e300dac59aeb94f065823326cdd94e7f8a45c46148ed096659c"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000400.json.gz",
+      "bytes": 164153,
+      "sha256": "5cc214a4755201afb08ace2158cb3d27447105981036e1d5c502c92ea32aa472"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000420.json.gz",
+      "bytes": 170554,
+      "sha256": "a8245405d60d6ba16ad2ae19c726bf1461574fd0fc0573640dbd0f46ceb1748f"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000440.json.gz",
+      "bytes": 173089,
+      "sha256": "2aca4c54ee5cd9679e66b7f5cc5f9aa1f4c8561a8aee8f7ca2d46933b69a6ddf"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000450.json.gz",
+      "bytes": 183401,
+      "sha256": "27d6a9e4fcd418ba8cf9e6991063f73eb0e56fdfc89ecddf608dc19c8dba839f"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000460.json.gz",
+      "bytes": 189674,
+      "sha256": "ad89e973269da89310da96ab0647520646d011445164f4ae3a8942b2af5e0404"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000480.json.gz",
+      "bytes": 198950,
+      "sha256": "9febc83bdc8611790b549c5ee8b53a9fa7cd64f81db9eaf1dfeeaa6ea92f4e04"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000500.json.gz",
+      "bytes": 215462,
+      "sha256": "f0f55ff593c2511169c0022e0c19492d2726e2d72cf674b3e7da1205bf827403"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000520.json.gz",
+      "bytes": 222233,
+      "sha256": "7a63421dd841f838464b0b77a00fa0aa286f3592c65adbc80fccec41a9961b53"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000540.json.gz",
+      "bytes": 225895,
+      "sha256": "d0aa05511af0975ab61cc01237183fa6bf03110c1bca6cd1dafec521f2abc33a"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000560.json.gz",
+      "bytes": 236664,
+      "sha256": "b8ff18e2b858c7461f721473e9381368d628308d0d965dd75ffcc9b0d3dfb377"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000580.json.gz",
+      "bytes": 243006,
+      "sha256": "aea7db25e07b2751a63919686222f09fafd9814b9f9faf2a922e184d201a4909"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000600.json.gz",
+      "bytes": 248106,
+      "sha256": "e28342271089918c3305a154f7f0c0e76b86ec7506f9e8f4cf23112dadda6fc5"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000620.json.gz",
+      "bytes": 253358,
+      "sha256": "0b9f3518a16c387080e15d2b4af95996f47c033d30402235327900c60b81649a"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000640.json.gz",
+      "bytes": 261187,
+      "sha256": "1db6c36d8ba49946309d70ba0095e9bbb48c30c82b958553548dc77c39c7831d"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000660.json.gz",
+      "bytes": 268465,
+      "sha256": "6852be185bf8905bf818177ddb3d6447b654e87316ea0f601e56c399209edda6"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000680.json.gz",
+      "bytes": 279971,
+      "sha256": "5a6bed5a7184edaa95703f63a5c5c2858f51d94635625203a41b93fad8d2bbd5"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000700.json.gz",
+      "bytes": 283208,
+      "sha256": "b92ff3d42577154cafc1f07035a29ed48293822dceb16886bb714740a9906193"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000720.json.gz",
+      "bytes": 286712,
+      "sha256": "ca204dc6ac989489557bd346cae44cc9e1b6a9a5883cf398eb8af9db80897456"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000740.json.gz",
+      "bytes": 296565,
+      "sha256": "75ece492d23f64f71fe6bd141b629e5e1271cafa502ad0ff5e3d3fa09ceede01"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000760.json.gz",
+      "bytes": 299650,
+      "sha256": "a5338e88ea83f5f767d7720ece735151b2d2b938cef7bcc4a1e5393c38c006ec"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000780.json.gz",
+      "bytes": 307120,
+      "sha256": "c79bf2686cf8d16c16576a44b55f380531b64260b8d4290cf6ba4ec285bda1cb"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/checkpoints/cursor-000787.json.gz",
+      "bytes": 317476,
+      "sha256": "fb2eaca040b8ccfbd33e52953e9cc8e3ce788703f92ebc626e3ac68fca1de1cb"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/path-traces/segment-001.jsonl.gz",
+      "bytes": 28428229,
+      "sha256": "99cd3861ebb7395e49b330b4327fc91551dfe91f674a037ed8c7a57f832c9da5"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/path-traces/segment-002.jsonl.gz",
+      "bytes": 10097810,
+      "sha256": "e8834ab1b56e43b32ce90614a52fd8e6d2c1d75ad6c44d81c249d1ef0274584e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/path-traces/segment-003.jsonl.gz",
+      "bytes": 505422,
+      "sha256": "75b71966d984a43e9fc22f06cf22e942a0e639f01d5794ab3bf81dbccbd4cefc"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/production-calls.jsonl",
+      "bytes": 2411344,
+      "sha256": "16334b986ea3855dd495d3062537b85655fa6702d55d02f44f0d2740f6d0c94f"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous/reports.jsonl",
+      "bytes": 2421034,
+      "sha256": "c42dae172bacb79d73761a7d1b4c8bb19a41f328706aba86ce6fcb6acff4db56"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous-segment-001.json.gz",
+      "bytes": 61920,
+      "sha256": "f98eedf9417002b372632fad72de58db83c5cc61c86c769889642836b190d146"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous-segment-001.log",
+      "bytes": 2001,
+      "sha256": "8e65eb2971ae82f85daf2599798fb5d5246ae267d265a1ee6da196261225d860"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous-segment-002.json.gz",
+      "bytes": 62042,
+      "sha256": "5ac38a64f36e834ee66bf8c93f7c497dd277e43c0897f6339e6651066422d700"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous-segment-002.log",
+      "bytes": 1584,
+      "sha256": "f477eaeb4a97c45417e5148c57dc530f5b49d644663f6efb50a53a24459fff91"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous-segment-003.json.gz",
+      "bytes": 351532,
+      "sha256": "236836c2b021b4da7233dde382d77e177e879d747baf6de3b9e129b1c3ff9f25"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/full-previous-segment-003.log",
+      "bytes": 144,
+      "sha256": "29bab55fa4a59bb82c729d68c614b0c13b9a1cb311d3cec9104bd79254dd0f74"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/metrics.json",
+      "bytes": 21125,
+      "sha256": "240a0c2682f52269a9dfe064082cd2d9c648258309f145bceaa3dce33caedb5e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/report-errors.json",
+      "bytes": 3163,
+      "sha256": "693af4c6f743b5c85413495239976b137023ddb53826a08b1a0a93195f5d9478"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/results-comparison.md",
+      "bytes": 2713,
+      "sha256": "0c3d40dc8ac4ce9ef196b4bb978bbf080d489ffbf80df6c186623b0afb1163cd"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-audit-summary.json",
+      "bytes": 10165,
+      "sha256": "758ee589a104e81938dab628f0f96ff127253e4f0112adae66f09605884c5511"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-audit.json",
+      "bytes": 69910,
+      "sha256": "c2c946c7bb65ce68970960a0be799eade867bcc2fb7ffe4d1b278bc00d81ae6e"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-current/path-traces/segment-001.jsonl.gz",
+      "bytes": 33110,
+      "sha256": "aaf3c959c3f68cc2a1a0c6ae86dc0e69df5767822aa63087e9635b898a8714d7"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-current/production-calls.jsonl",
+      "bytes": 24118,
+      "sha256": "5db44cc5ed303172269572bfecfac3afa137d3f6d24d08797f16dec8f4b0748f"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-current/reports.jsonl",
+      "bytes": 22820,
+      "sha256": "02afdacf5e5504910a9b811b9e5caf1a980f478dbf70d892b837c07bdc702a41"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-current.json.gz",
+      "bytes": 62967,
+      "sha256": "9a649072915254084aac0aad3037559bad141971af4e769e0724ec1ad866cdc0"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-previous/path-traces/segment-001.jsonl.gz",
+      "bytes": 975081,
+      "sha256": "8e2bad96833346eba7e95691ed54f5cd7d827c926bd6296c21d65ad158494446"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-previous/production-calls.jsonl",
+      "bytes": 21509,
+      "sha256": "73118306426a698a5a989331d35efdf823c00abbf29102907080c5a1439ec8a2"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-previous/reports.jsonl",
+      "bytes": 23259,
+      "sha256": "10a39d88d917a4ac3f31521a1ee73a3f3537c0d3973c1c27f7157c6661b2533d"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/smoke-previous.json.gz",
+      "bytes": 64796,
+      "sha256": "66b801d1aeead890b997de7c3ac6600a1699cb01f478ac3f241fe462fe3ea512"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/spec.json",
+      "bytes": 3230,
+      "sha256": "748c6f06c23a6b6994d4f3e7bb3d38f62f47894c662ec05be1dfe07802574cb1"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/state-audit-current.json",
+      "bytes": 2934,
+      "sha256": "8f4aa012e9079592a155665afb20537438154427a5e176b226f98043bfa967a1"
+    },
+    {
+      "path": "coinquant-remeasure-2.0.0-v2/state-audit-previous.json",
+      "bytes": 3056,
+      "sha256": "c7babad8ddf19b5e9bb107741c43f6d3170afdd2ba1a0ec5e47cc98a19e577e4"
+    }
+  ]
+}

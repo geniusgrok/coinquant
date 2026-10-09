@@ -1,0 +1,53 @@
+{
+  "actual": {
+    "macro_sha256": "653cc13036099bb54f55c01db175211d897f954a16f4f8aaeebd34b75f5ec937",
+    "market_identity_sha256": "435274dc18df4dd1bf01f08c95c31ee70fc79f64e3420b2d39a221e9e79e207b",
+    "market_values_sha256": "5d99e131ea6de0524dfc9eb24b584503d1ef9f758b71e53f5e16db12004e54a8"
+  },
+  "all_exact_original_match": true,
+  "expected": {
+    "macro_sha256": "653cc13036099bb54f55c01db175211d897f954a16f4f8aaeebd34b75f5ec937",
+    "market_identity_sha256": "435274dc18df4dd1bf01f08c95c31ee70fc79f64e3420b2d39a221e9e79e207b",
+    "market_values_sha256": "5d99e131ea6de0524dfc9eb24b584503d1ef9f758b71e53f5e16db12004e54a8"
+  },
+  "fx_sha256": "67606315ea34c0301e0129ac8fc27056099986d9fbd58a552a07f140cdd05bb5",
+  "measurement_started": false,
+  "source": {
+    "files": {
+      "coinquant/__init__.py": "fe919747f40d205f7d0f5804ecc9de9244b4c6ed48c4a78ad233b703c87ba1b3",
+      "coinquant/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "coinquant/audit.py": "32481518469f8c7372c658ec2b77b3dc934e462ca8f85922b6527d23525b055b",
+      "coinquant/binance.py": "ea9b6ab748063d444322f737ae7ebe24ab2843dfd4b0d94a78802e4430bcbfd3",
+      "coinquant/binance_safety.py": "20d6305b84e0e63aa52dfdd02338c1e8470205c7bb95cfc7f2777b5f6dd371e2",
+      "coinquant/campaign.py": "487d5c26702bee4625443c51a1653fa06bd9aac3c335891808617958259b82f5",
+      "coinquant/cli.py": "042b0741129252c2f6daba2241078b8a5f513981ea62330fd4675405a2f72a79",
+      "coinquant/config.py": "70ce5c8619d1703212e015efba59a178167ec55aefb012646d43d84522885242",
+      "coinquant/demo_evidence.py": "9850ec5df58fc51ff426353fa71e4f60fd03f7066c6c2c6354ddd34b88fa9ddd",
+      "coinquant/dfii10.py": "d37099f8227c398ca6cc2fc04599369619b53b3bc671e31c8ccb5df160776bf0",
+      "coinquant/lifecycle.py": "698fa1accf1a66d4f72acb339f57317aea12129381e51ce89d8e044e34361714",
+      "coinquant/linear_preview.py": "0fa7b845f868d83c411b623deb28651fd2ba9d1096aec77821a04f2eab7ed048",
+      "coinquant/native_preview.py": "65591202285b03650878f06b90de96e120367dcc7915e52e946ff1813f4dc614",
+      "coinquant/opportunities.py": "042a4d789eff26ac55b895709c2e801f98d1e5e8f5f545337f19f5b0d1a03c22",
+      "coinquant/ownership.py": "af8325b657a0f331879d2060ff14e181149321d943ffd3be538099055395a562",
+      "coinquant/session.py": "189726dd9a1b23d1e1320b0d596c7fc120974cec4f7ea9a91533f28cef562c04",
+      "coinquant/snapshot.py": "a25c07e6b0fa779e633748e16394f9f073cf835743549e0169e083129113a295",
+      "coinquant/state.py": "4cbf191d42e74ee7286fca61f92410bc62ee1b46fc00bdb378577cd2aea3a200",
+      "coinquant/types.py": "d166b5f5bd1815be1de0bd56b3e587afda70135dad5ccea4c5fd15e381474f53"
+    },
+    "git_head": "162ee7138952925ffafbc9b68be7c754c0c0a6c3",
+    "producer_sha256": "43b855b5df5803168b02e2e925394cfaaa8c5e07a76034fd804f81c35f40d370",
+    "runtime_module": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/current/coinquant/session.py",
+    "source_sha256": "35038c0bab5d520f3fed6d6b66437ef1dfecaee159315ec497ee6410927bfc53",
+    "tooling_files": {
+      "research/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "research/comparison_report.py": "82d1a183ef124de5b7ee2f090c80b7e387b3aa5395f2eba9b1f7042a08eceb1d",
+      "research/complete_perp.py": "bc83af6421e8693e418ebaa59943354376aece8c541e6faf5aae9f1b3cbebb92",
+      "research/data_loader.py": "2250c2ad44588992b95b858d19eff4be7cc6b1f96b08d43c26bc8ebf1f4f9289",
+      "research/dfii10_history.py": "b8e7a84618db732de5706b43de0a375a8de60cecac2e01e0f1236b8e34450e3e",
+      "research/replay_checkpoint.py": "d38241004ce921ed999245c58458690bbaf4fc3427dd572395ec0785094ac2e4",
+      "research/session_exchange.py": "73963ec9f05047a41f6f4f4049421e63cc1846e958468e84dd2c35f84096a980",
+      "research/session_market.py": "7ab3a31b7e02cec0c95802a309b7c0c0c0f66b596e6fc96afedef13e192557ae",
+      "research/unified_perp.py": "b3fea1b21a1ffaa96f429c3c3573b1c83d40e741a17f1782d0743a09b5a3af2f"
+    }
+  }
+}

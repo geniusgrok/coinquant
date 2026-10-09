@@ -1,0 +1,11 @@
+{
+  "scope": "Postprocessing schema correction only; no producer, receipt, audit, state, configuration, economic input or measured value changed.",
+  "file": "summarize_results.py",
+  "before_sha256": "a279df5e62430687249a4b1d1970ac46d5fe9119459b19b73d43cac929f78093",
+  "after_sha256": "b607c483b0c70682e3889e43b14aa9e4fd1f72db7a186ad649218b71b477bed3",
+  "failed_invocation": "python summarize_results.py --previous full-previous-segment-003.json.gz --current full-current-segment-002.json.gz --audit full-audit-summary.json",
+  "failure": "ValueError: terminal durable pending intent",
+  "observed_schema": "Both actual final receipts contain sqlite.pending as an empty list [], consistent with the passed independent state audits.",
+  "fix": "Require sqlite.pending == [] instead of sqlite.pending == 0; a nonempty or wrong-type pending value still fails.",
+  "outputs_created_by_failed_invocation": []
+}

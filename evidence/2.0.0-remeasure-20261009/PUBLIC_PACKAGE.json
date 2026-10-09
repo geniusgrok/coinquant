@@ -1,0 +1,9 @@
+{
+  "name": "coinquant-2.0.0-remeasurement-evidence-20261009.tar.xz",
+  "bytes": 67465568,
+  "sha256": "3b2ebd1078c373c8b09fd152b82bc70c6722b77853909b726633d5b4498f73d3",
+  "files": 126,
+  "url": "https://github.com/geniusgrok/coinquant/releases/download/2.0.0/coinquant-2.0.0-remeasurement-evidence-20261009.tar.xz",
+  "inventory": "EVIDENCE_FILES.json",
+  "runtime_head": "162ee7138952925ffafbc9b68be7c754c0c0a6c3"
+}

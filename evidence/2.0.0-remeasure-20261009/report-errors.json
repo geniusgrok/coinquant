@@ -1,0 +1,97 @@
+{
+  "basis": "Final report errors lists, each limited to the last 10 retained entries by session.py; not a count of all failed attempts or exchange rejections. A session may subsequently execute successfully.",
+  "arms": {
+    "previous": {
+      "reports": 795,
+      "reports_sha256": "c42dae172bacb79d73761a7d1b4c8bb19a41f328706aba86ce6fcb6acff4db56",
+      "reports_with_retained_errors": 675,
+      "retained_error_entries": 735,
+      "report_status_counts": {
+        "no_action": 738,
+        "executed": 56,
+        "blocked": 1
+      },
+      "reason_counts": [
+        {
+          "error_type": "ObservationDeadline",
+          "reason": "bounded Binance observation deadline exceeded; no request sent",
+          "retained_entries": 671,
+          "reports_retaining_reason": 671
+        },
+        {
+          "error_type": "Blocked",
+          "reason": "protection outside current price limits",
+          "retained_entries": 45,
+          "reports_retaining_reason": 5
+        },
+        {
+          "error_type": "Unknown",
+          "reason": "completed mark minute unavailable",
+          "retained_entries": 9,
+          "reports_retaining_reason": 1
+        },
+        {
+          "error_type": "Unknown",
+          "reason": "stale or invalid Binance mark observation",
+          "retained_entries": 9,
+          "reports_retaining_reason": 4
+        },
+        {
+          "error_type": "Blocked",
+          "reason": "session deadline or stop request prohibits a new entry",
+          "retained_entries": 1,
+          "reports_retaining_reason": 1
+        }
+      ]
+    },
+    "current": {
+      "reports": 795,
+      "reports_sha256": "77fde0bbc28f355dd516e487f4d1f40f20e672b4b8d809fb62be66b510f88476",
+      "reports_with_retained_errors": 722,
+      "retained_error_entries": 1065,
+      "report_status_counts": {
+        "no_action": 754,
+        "executed": 36,
+        "unknown": 5
+      },
+      "reason_counts": [
+        {
+          "error_type": "ObservationDeadline",
+          "reason": "bounded Binance observation deadline exceeded; no request sent",
+          "retained_entries": 703,
+          "reports_retaining_reason": 703
+        },
+        {
+          "error_type": "Unknown",
+          "reason": "order book changed before the order was sent",
+          "retained_entries": 296,
+          "reports_retaining_reason": 42
+        },
+        {
+          "error_type": "Blocked",
+          "reason": "protection outside current price limits",
+          "retained_entries": 45,
+          "reports_retaining_reason": 5
+        },
+        {
+          "error_type": "Unknown",
+          "reason": "stale or invalid Binance mark observation",
+          "retained_entries": 10,
+          "reports_retaining_reason": 5
+        },
+        {
+          "error_type": "Unknown",
+          "reason": "completed mark minute unavailable",
+          "retained_entries": 9,
+          "reports_retaining_reason": 1
+        },
+        {
+          "error_type": "Unknown",
+          "reason": "protection cancellation/child unresolved",
+          "retained_entries": 2,
+          "reports_retaining_reason": 2
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "created_at_utc": "2026-10-09T15:38:24.242416+00:00",
+  "first_attempt": {
+    "root": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0",
+    "receipt": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/full-previous-segment-002.json.gz",
+    "receipt_sha256": "57e59bd9b60bc12ee28e82f5d7b07aae032b99339277b73656a59c006cc5dccd",
+    "completed_sessions": 478,
+    "published_economic_result": false,
+    "resumed": false,
+    "trace_sha256": "24be42eb03ec5fdb504ef11b94dcb2354d0f682c8e59f2b0d4636a928d336aa0",
+    "missing_trace_points": 147543,
+    "retained": true
+  },
+  "second_attempt": {
+    "root": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2",
+    "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+    "source_sha256_by_arm": {
+      "current": "9cbc2507d7d5e1f644228a37e0f9a50d69ef4aafaf7793c4cb2ccdc2a97081f2",
+      "previous": "fbe4beaca18a12df53aa7e0206c28ba9269a8f0b211c2b360c3daeb16b2ecadc"
+    },
+    "spec_sha256": "748c6f06c23a6b6994d4f3e7bb3d38f62f47894c662ec05be1dfe07802574cb1",
+    "protocol_sha256": "ebeb12c0f23e71c4a2b425958b4fce85ec9f122524aca3d58f7fa8e958fb065e",
+    "same_economic_contract": true,
+    "production_source_changes": false,
+    "state_restored_from_failed_attempt": false
+  },
+  "verification": {
+    "current": [
+      "test_trace_storage",
+      "test_trace"
+    ],
+    "previous": [
+      "test_trace"
+    ],
+    "all_selected_tests_passed": true,
+    "market_and_venue_retested": false
+  }
+}

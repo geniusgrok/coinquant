@@ -1,0 +1,11 @@
+{
+  "created_at_utc": "2026-10-09T15:49:56.204404+00:00",
+  "scope": "first478 completed production session reports only; not a complete economic result",
+  "source_head": "79a334b2d776be2dbe8756f3a616697f9403982e",
+  "first_attempt_journal_prefix_sha256": "ae045ef1d01c0ca278ef19577287c256694d9f6603930301b29399f5109149f4",
+  "second_attempt_journal_prefix_sha256": "ae045ef1d01c0ca278ef19577287c256694d9f6603930301b29399f5109149f4",
+  "sessions_compared": 478,
+  "byte_identical": true,
+  "all_report_values_identical": true,
+  "changed_reports": []
+}

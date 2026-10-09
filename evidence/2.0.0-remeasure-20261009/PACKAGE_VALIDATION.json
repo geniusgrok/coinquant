@@ -1,0 +1,10 @@
+{
+  "public": {
+    "passed": true,
+    "name": "coinquant-2.0.0-remeasurement-evidence-20261009.tar.xz",
+    "sha256": "3b2ebd1078c373c8b09fd152b82bc70c6722b77853909b726633d5b4498f73d3",
+    "bytes": 67465568,
+    "members_checked": 126,
+    "all_member_bytes_and_sha256_match": true
+  }
+}

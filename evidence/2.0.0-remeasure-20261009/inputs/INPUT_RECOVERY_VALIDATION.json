@@ -1,0 +1,193 @@
+{
+  "format": "coinquant-frozen-input-recovery-validation-v1",
+  "scope": "Completeness and identity of all expected frozen final input files and sidecars",
+  "completed_at_utc": "2026-10-09T15:15:55Z",
+  "complete": true,
+  "files": 1164,
+  "market_files": 390,
+  "print_files": 773,
+  "fx_files": 1,
+  "input_bytes": 14309495767,
+  "exact_sidecar_files": 1163,
+  "input_failures": 0,
+  "status_counts": {
+    "verified-existing": 152,
+    "downloaded-verified": 1012
+  },
+  "group_counts": {
+    "4h": 99,
+    "fx": 1,
+    "funding": 81,
+    "trade_1m": 99,
+    "mark_1m": 111,
+    "prints": 773
+  },
+  "downloader_seconds": 525.3772063040014,
+  "free_disk_bytes": 13281296384,
+  "content_verification": "The preserved downloaders stream-hashed incoming bodies and independently re-read final .part files before atomic rename; every v2 existing final file was fully re-read and SHA-256 checked. This final cross-check confirms complete matching expected/result sets, every actual file length, exact archived sidecar bytes and source manifest identities. It does not claim a new economic backtest.",
+  "redundant_transfer_prefix_cleanup": {
+    "removed_files": 204,
+    "removed_bytes": 2531373218,
+    "verification": "Each corresponding final file was fully SHA-256 checked again; every discarded partial byte equaled its final-file prefix and file size/inode/mtime stayed stable throughout verification.",
+    "subsequent_observation": "A later exec saw some previously deleted partial paths again with identical bytes, mtime and content SHA. Cause not established. These are verified redundant prefixes and are not loader inputs; no repeated deletion attempted.",
+    "remaining_visible_files": 18,
+    "remaining_visible_bytes": 200278016,
+    "remaining": [
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-12-04.zip.part",
+        "bytes": 8388608,
+        "sha256": "2eb0cd628fc0c73ff6aa4cd8ab5ae5f948ad59753c40f669aa4f6b9826a75f93",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2021-01-09.zip.part",
+        "bytes": 9437184,
+        "sha256": "fa6ab4aa931d6b7a21b1be7c7de489d792e4b218c3d65e51cc234dba37417f23",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-08-20.zip.part",
+        "bytes": 2097152,
+        "sha256": "0cc8d90b16e26dbffeeba840457186be462eba6098375360a12edfea6bb64f28",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-08-07.zip.part",
+        "bytes": 4194304,
+        "sha256": "6a167ed564b552a6a5862412c50bb12de2a3373a454f4985cebcd86add677f5a",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-12-21.zip.part",
+        "bytes": 10485760,
+        "sha256": "c71ce1a2d11998faa4d05b348e8174a3ce2346fffb1225bf1a2900c9d4f4bc2c",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-12-28.zip.part",
+        "bytes": 9437184,
+        "sha256": "8d63aacc9b64a76a153f45101dfcf9fe739ea05b281d6c21cb7b4200ce32226e",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-12-25.zip.part",
+        "bytes": 8388608,
+        "sha256": "4f51d1b4f27620283f72119203d3fdb717a1fa04038075f19f54c7449a55cc59",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-08-21.zip.part",
+        "bytes": 3145728,
+        "sha256": "041176c692d4b197720b4fa5da41a5552ffd78d4137e03c4147f2966f2610930",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-07-27.zip.part",
+        "bytes": 2097152,
+        "sha256": "0e5e3dc9cc1b4fcc888bcf56247dd735b8b983a12148ecb6046c61b7ee3b1126",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2021-01-11.zip.part",
+        "bytes": 69206016,
+        "sha256": "7393acc237130a1dc8eeb41801295b73b6af67ef0e93a1b057adb8e6068debd0",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-07-26.zip.part",
+        "bytes": 4194304,
+        "sha256": "14aaca47792742259d10c4d8c7155fa8651b6dce4ac80ba0d0f8b91e8e2a2c89",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-08-12.zip.part",
+        "bytes": 2097152,
+        "sha256": "320ab9019ac1fcf2c812bc6d1b9c68059daf9dc437822d5c0e839e2540198af2",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-08-27.zip.part",
+        "bytes": 2097152,
+        "sha256": "40cbdfa05f76f6602fc359782c0831badf7a9e6232f1f1b7b7dcbe4da76a08a8",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-12-18.zip.part",
+        "bytes": 8388608,
+        "sha256": "47172f644cfcc7bfb42da1cca50ad01fa16d5ccae2ddb236521f27fd8110da4d",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-08-06.zip.part",
+        "bytes": 3145728,
+        "sha256": "0904d561f85b129c827d2a3935e743ec5ea66beb021fcce562fbcc43bf21b64f",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2020-06-26.zip.part",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2021-06-26.zip.part",
+        "bytes": 28311552,
+        "sha256": "c941f4fb284431f2642c308f08eb266e49a8901f616f446204732dc2389369ac",
+        "same_prior_bytes_and_mtime": true
+      },
+      {
+        "relative_path": "prints/BTCUSDT-aggTrades-2026-02-27.zip.part",
+        "bytes": 25165824,
+        "sha256": "64bbaa22bf0a1823d88679edc0f76fd296f0970f827d252ee47beebdbe4d7de7",
+        "same_prior_bytes_and_mtime": true
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "relative_path": "INPUT_MANIFEST.json",
+      "bytes": 729422,
+      "sha256": "a808f1333b4fc18a5a65afe883804795b9286c117e1cc38a4b2a252a90064e82"
+    },
+    {
+      "relative_path": "DOWNLOAD_RECEIPT.json",
+      "bytes": 885384,
+      "sha256": "d2bf3bce94bd6578a374d43c6672d55790c4d323ee2184810df71c932d810818"
+    },
+    {
+      "relative_path": "DOWNLOAD_PROGRESS_V2.jsonl",
+      "bytes": 789236,
+      "sha256": "2e23e3778556c834a4bb5635134f9c3db2049183f998db76d33753a5fa0151cd"
+    },
+    {
+      "relative_path": "TRANSFER_RESTART.json",
+      "bytes": 1947,
+      "sha256": "e5495be69a52036c18e021553fe167248c1ee54292fc4b7846c86da82ccccd31"
+    },
+    {
+      "relative_path": "restore_inputs.py",
+      "bytes": 10009,
+      "sha256": "8c4b9dffee3fc330a1cc84bca8685b21cbe0940731404967c8c536b564d99616"
+    },
+    {
+      "relative_path": "restore_inputs_v2.py",
+      "bytes": 10145,
+      "sha256": "0ad6c5ed58255e53658a18c30b8e90b85b20793c20d5c6938bb3462fdbbbda4b"
+    },
+    {
+      "relative_path": "sources/DOWNLOAD_PLAN.json",
+      "bytes": 247726,
+      "sha256": "4bc771802e525c4beb23953b7454aea243d2dd5520513e298862ef03fc31b485"
+    },
+    {
+      "relative_path": "sources/qualified-market-metadata.json",
+      "bytes": 1429914,
+      "sha256": "2d83c285d50cd5432ef5d9855149df9283f5955efa40ff584227d5f00785ce7e"
+    },
+    {
+      "relative_path": "REDUNDANT_PARTIAL_CLEANUP.json",
+      "bytes": 129856,
+      "sha256": "c25d401af4edd5bd2ff169c2a477697dfd2fdadbcfd42a6417d5f0ff4b94287d"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "archive_ref": "archive/pre-slim-20261006",
+  "archive_head": "8617bef6dc236389a6dc254348adef5ad03c763b",
+  "runtime_source": "47837e391be4130104967d794e9701068a0bcc5a",
+  "runtime_restored_from_archive": false,
+  "entries": [
+    {
+      "original_path": "research/session_exchange.py",
+      "original_sha256": "f9c73b2ad90ae2eacdb96586fbfdd1a6166b2354f834d62d3ab5cc2d1f25000f",
+      "adapted": false
+    },
+    {
+      "original_path": "research/session_market.py",
+      "original_sha256": "7ab3a31b7e02cec0c95802a309b7c0c0c0f66b596e6fc96afedef13e192557ae",
+      "adapted": false
+    },
+    {
+      "original_path": "research/dfii10_history.py",
+      "original_sha256": "b8e7a84618db732de5706b43de0a375a8de60cecac2e01e0f1236b8e34450e3e",
+      "adapted": false
+    },
+    {
+      "original_path": "research/replay_checkpoint.py",
+      "original_sha256": "8b06f925cc440d76856f15caa42fce5558ef6bf11f07c9292897432f1d368735",
+      "adapted": true
+    },
+    {
+      "original_path": "research/session_schedule.json",
+      "original_sha256": "c21b4fcfe3cb12fb062bb01d3c3591aa0ee8c65db9e9afde3c26b1bcdc2ac28e",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/binance-boundary-20260921/warmup-trade.json",
+      "original_sha256": "62e9a9ecddccac737f99032a224f7a2a1932756cf200db34fb5c5641b72c4094",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/binance-boundary-20260921/warmup-funding.json",
+      "original_sha256": "25a949a83bc5305727fb86f0d6e3e297235a03990d6404a3f160a2ce82bd82b3",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/bounded-session-20260926/public/rules.json",
+      "original_sha256": "a730dabf5b6710dafb1bc70db1ab579083ad0699e07b5f59e1f20a5617445c7f",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/real-yield-20260924/alfred/DFII10_ALFRED_batch-0000.zip",
+      "original_sha256": "48e08d7da424d7c7a509a3998288f69c9bef5d1ccf76a3bfa523b19d66d6a82d",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/real-yield-20260924/alfred/DFII10_ALFRED_batch-0400.zip",
+      "original_sha256": "6a25b513bfae3910427b5ce2944ceb0e79982140857a69cd1bb76366fc3bc0da",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/real-yield-20260924/alfred/DFII10_ALFRED_batch-0800.zip",
+      "original_sha256": "6858d3a13cd4b1523f1fa695496f24c4fe2b6037fd33ec8e6a83fc46c08c6d9c",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/real-yield-20260924/alfred/DFII10_ALFRED_batch-1200.zip",
+      "original_sha256": "119def711562901f811fbc940963126b7372ef33ea8b94ca87aafcd32b5268f1",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/real-yield-20260924/alfred/DFII10_ALFRED_batch-1600.zip",
+      "original_sha256": "3567cf787f5ad710f20afcf63fbb8d6edfe73d7e57814c90e4f1cafbf15bd572",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/real-yield-20260924/alfred/DFII10_ALFRED_single.zip",
+      "original_sha256": "5badc32f957d8c11d49ac36497cdd1b8354b56080a752cdf4f3fe22d02f39082",
+      "adapted": false
+    },
+    {
+      "original_path": "evidence/real-yield-20260924/alfred/RECEIPT.json",
+      "original_sha256": "75e67cc989927a18d0fdb674877d64f33b697c7c6b772e2256c972e4c835abd8",
+      "adapted": false
+    }
+  ]
+}

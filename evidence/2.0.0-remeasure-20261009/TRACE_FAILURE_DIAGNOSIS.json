@@ -1,0 +1,158 @@
+{
+  "format": "coinquant-trace-failure-diagnosis-v1",
+  "diagnosed_at_utc": "2026-10-09T15:38:24.746555+00:00",
+  "read_only_inputs_preserved": true,
+  "database_opened": false,
+  "receipt": {
+    "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/full-previous-segment-002.json.gz",
+    "sha256": "57e59bd9b60bc12ee28e82f5d7b07aae032b99339277b73656a59c006cc5dccd",
+    "complete": false,
+    "can_resume": false,
+    "session_count": 478,
+    "failure": {
+      "phase": "path-trace-finalize",
+      "error_type": "ValueError",
+      "reason": "EOFError: Compressed file ended before the end-of-stream marker was reached"
+    },
+    "stop_reason": "registered-chunk-wall-budget"
+  },
+  "trace": {
+    "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/full-previous/path-traces/segment-002.jsonl.gz",
+    "bytes": 9417387,
+    "inode": 1574317,
+    "device": 27,
+    "mtime_ns": 1791559855077138271,
+    "ctime_ns": 1791559858289093475,
+    "mtime_utc": "2026-10-09T15:30:55.077138+00:00",
+    "sha256": "24be42eb03ec5fdb504ef11b94dcb2354d0f682c8e59f2b0d4636a928d336aa0",
+    "identity_and_content_stable_during_diagnosis": true,
+    "receipt_bytes_and_sha_match": true,
+    "header_hex": "1f8b0808db06c96a02ff7365676d656e742d3030322e6a736f6e6c00c4bdcb8e",
+    "terminal_bytes_hex": "e9b52cbc1d9bde27be512425390174b044d8413703304719bd73eb8f54d7f47f"
+  },
+  "gzip": {
+    "strict_reader_error": "EOFError: Compressed file ended before the end-of-stream marker was reached",
+    "zlib_error": null,
+    "end_of_stream_reached": false,
+    "unused_trailing_bytes": 0,
+    "unconsumed_input_bytes": 0,
+    "available_uncompressed_bytes": 102615383,
+    "available_uncompressed_sha256": "4404421645b4e75be91a9b3fae9db2f800a259c4cdf5a701ae387b5dfc37b0f5",
+    "available_prefix_crc32_hex": "2d8d8da5",
+    "footer_crc_verified": false,
+    "footer_note": "No valid gzip EOF/footer was reached. The CRC shown is only the computed available-prefix CRC and is not a successful member integrity check."
+  },
+  "decoded_complete_lines": {
+    "first_sequence": 1218990,
+    "last_sequence": 1863745,
+    "count": 644756,
+    "all_shapes_and_sequences_valid": true,
+    "last_point_stamp_ms": 1701338460000,
+    "last_point_utc": "2023-11-30T10:01:00+00:00",
+    "rolling_before": "c7ca0055106d4dd7fd6b7a286a1a9257118c292854bb87a596ea92e2cf33f2f1",
+    "rolling_after_complete_lines": "cf740bacb2862e2f41bf22d5f3ff6f70caf8ed634822c754265586554a95100e",
+    "matches_failed_receipt_observation": true,
+    "trailing_partial_line_bytes": 6,
+    "trailing_partial_line_utf8": "[18637"
+  },
+  "checkpoint_boundary": {
+    "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/full-previous/checkpoints/cursor-000478.json.gz",
+    "bytes": 198628,
+    "inode": 1574501,
+    "device": 27,
+    "mtime_ns": 1791559928016158034,
+    "ctime_ns": 1791559928016158034,
+    "mtime_utc": "2026-10-09T15:32:08.016158+00:00",
+    "sha256": "b94100b38fb7d0b26f7182fc7b4287116f5e8a18092a5e92a5e302d6c6549dd1",
+    "envelope_sha256": "db2162882e40ac9845d4f873d9490a8abb3ab293912357b0d868699c6b3b2491",
+    "envelope_matches_receipt": true,
+    "cursor": 478,
+    "venue_now_ms": 1706173502600,
+    "path_count": 2011288,
+    "path_rolling_sha256": "d55b57e76f04f1509873e8f78bae84253589403a7ff2d8d8ce02325ce643506a",
+    "matches_receipt_boundary": true,
+    "missing_complete_points_to_checkpoint": 147543,
+    "expected_segment_points": 792299
+  },
+  "timeline": {
+    "trace": {
+      "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/full-previous/path-traces/segment-002.jsonl.gz",
+      "bytes": 9417387,
+      "inode": 1574317,
+      "device": 27,
+      "mtime_ns": 1791559855077138271,
+      "ctime_ns": 1791559858289093475,
+      "mtime_utc": "2026-10-09T15:30:55.077138+00:00"
+    },
+    "reports": {
+      "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/full-previous/reports.jsonl",
+      "bytes": 1508195,
+      "inode": 1573104,
+      "device": 27,
+      "mtime_ns": 1791559926548177754,
+      "ctime_ns": 1791559926548177754,
+      "mtime_utc": "2026-10-09T15:32:06.548178+00:00"
+    },
+    "checkpoint": {
+      "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/full-previous/checkpoints/cursor-000478.json.gz",
+      "bytes": 198628,
+      "inode": 1574501,
+      "device": 27,
+      "mtime_ns": 1791559928016158034,
+      "ctime_ns": 1791559928016158034,
+      "mtime_utc": "2026-10-09T15:32:08.016158+00:00"
+    },
+    "failed_receipt": {
+      "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/full-previous-segment-002.json.gz",
+      "bytes": 62248,
+      "inode": 1322899,
+      "device": 27,
+      "mtime_ns": 1791559931308117865,
+      "ctime_ns": 1791559931308117865,
+      "mtime_utc": "2026-10-09T15:32:11.308118+00:00"
+    }
+  },
+  "source": {
+    "driver_path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-tooling/driver.py",
+    "driver_sha256": "43b855b5df5803168b02e2e925394cfaaa8c5e07a76034fd804f81c35f40d370",
+    "path_writer_sha256": "bc83af6421e8693e418ebaa59943354376aece8c541e6faf5aae9f1b3cbebb92",
+    "validator_sha256": "b8d097a60f390da0cc95f5424ff2f8649c7250045fa82ba5e3c7f7acffd3145e",
+    "flow": [
+      "open_path_trace opens gzip directly on the final workspace path in exclusive text mode",
+      "complete_perp.ResearchExchange._record updates in-memory count/rolling and writes each corresponding 10-field line to the retained text stream",
+      "driver sets PATH_TRACE=None, calls trace.close(), then calls path_trace_receipt on the pathname",
+      "The failed receipt contains the complete path_trace_receipt structure and readback EOFError; this control flow shows trace.close returned normally",
+      "readback hashes/stat-checks the pathname and parses gzip rows, but the old writer does not retain/publish an immutable spool or compare open-FD versus pathname device/inode"
+    ]
+  },
+  "established_findings": [
+    "The actual pathname is a stable truncated gzip member matching the failed receipt bytes and SHA.",
+    "The file contains 644756 intact consecutive lines but ends in a partial next line before the expected checkpoint count.",
+    "147543 measurement points are missing relative to the checkpoint, so supplying a gzip footer cannot restore evidence.",
+    "The producer correctly marked the segment failed and non-resumable. These flags and original files must remain unchanged."
+  ],
+  "root_cause_boundary": {
+    "confirmed": "Evidence stream publication/readback failed to preserve the complete expected path up to the checkpoint. The surviving pathname stops before the producer checkpoint.",
+    "not_proven": [
+      "Which process or filesystem mechanism caused the truncation",
+      "Whether the original open file descriptor referred to a replaced/unlinked inode, because the failed producer recorded no open-FD identity",
+      "Whether a workspace synchronization/copy operation caused the surviving earlier prefix"
+    ],
+    "fsync_limit": "Lack of fsync alone normally concerns crash durability and does not explain a successful close followed by immediate pathname readback of a much earlier prefix without a crash. An FD/path replacement or publication-visibility race is compatible with the evidence, but attribution is not established."
+  },
+  "minimal_fix": {
+    "scope": "Change evidence I/O only; preserve economic decisions, events, schedule and all count/rolling checks.",
+    "steps": [
+      "Write each segment gzip to SpooledTemporaryFile(max_size=64MiB), with an anonymous temporary file on spill, rather than a long-lived workspace pathname.",
+      "Pass the spool explicitly as GzipFile(fileobj=...). Close TextIO/gzip to finalize compressed data while retaining the spool for rewind/read; avoid calling spool.fileno() before spill is desired.",
+      "After finalization, exclusively publish the complete compressed bytes into the new run directory, flush/fsync, verify the publishing FD and pathname identify the same file, then run the unchanged full gzip/count/rolling readback.",
+      "Fail closed on any replacement, truncation, CRC, row/count or rolling mismatch. Do not repair or flip flags on the failed original segment.",
+      "Register the changed producer under a new spec/run directory and start both arms anew; preserve this failed run as evidence."
+    ],
+    "directed_validation": [
+      "Old and new writer receive identical deterministic lines; their fully decoded bytes must match exactly. gzip headers and compressed SHA need not match.",
+      "Replace/truncate the workspace publication path during the targeted test; publication must reject it or the private spool must remain unaffected, with no false passed receipt.",
+      "Use a deliberately small threshold to exercise anonymous-file spill and verify identical decoded bytes and count/rolling validation."
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "updated_at_utc": "2026-10-09T16:14:42.463820+00:00",
+  "previous": {
+    "receipt": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-previous-segment-003.json.gz",
+    "session_count": 795,
+    "segment": 3,
+    "complete": true,
+    "can_resume": false,
+    "failure": null,
+    "cumulative_wall_seconds": 1114.4628093160027
+  },
+  "current": {
+    "receipt": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current-segment-002.json.gz",
+    "session_count": 795,
+    "segment": 2,
+    "complete": true,
+    "can_resume": false,
+    "failure": null,
+    "cumulative_wall_seconds": 1016.9387880999966
+  }
+}

@@ -1,0 +1,477 @@
+{
+  "version": "coinquant-fixed-sha-results-v1",
+  "economic_results_ready": true,
+  "period": {
+    "start_inclusive": "2020-01-01T00:00:00Z",
+    "end_exclusive": "2026-09-20T00:00:00Z",
+    "days": 2454,
+    "year_days": "365.2425",
+    "cagr_exponent": "0.14883557457212713936430317848410757946210268948655",
+    "cagr_formula": "(final_cny / 10000) ** (365.2425 / 2454) - 1",
+    "daily_mdd_basis": "Initial 10000 plus all 2454 UTC daily closing values; each calendar year starts with previous-year-end carried equity."
+  },
+  "audit": {
+    "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-audit-summary.json",
+    "bytes": 11280,
+    "sha256": "2bc0718c9138098580c69f8986a0dc9d7efc885916f5f2c112e7c361d0401ac2"
+  },
+  "auditor_sha256": "ffa8968c4fb023a5bc026754258b698530866dea966abe9c873a210faf5ff345",
+  "summarizer": {
+    "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/summarize_results.py",
+    "bytes": 20822,
+    "sha256": "b607c483b0c70682e3889e43b14aa9e4fd1f72db7a186ad649218b71b477bed3"
+  },
+  "arms": {
+    "previous": {
+      "head": "79a334b2d776be2dbe8756f3a616697f9403982e",
+      "receipt": {
+        "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-previous-segment-003.json.gz",
+        "bytes": 351532,
+        "sha256": "236836c2b021b4da7233dde382d77e177e879d747baf6de3b9e129b1c3ff9f25"
+      },
+      "source_sha256": "fbe4beaca18a12df53aa7e0206c28ba9269a8f0b211c2b360c3daeb16b2ecadc",
+      "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+      "input_sha256": "a0c5e64108edc270c0dd4982b34e87755f83b8bc3000889640535d91420bda36",
+      "risk_configuration": {
+        "capital_limit_usdt": null,
+        "max_stop_loss_fraction": ".49",
+        "stop_slippage_fraction": ".01"
+      },
+      "initial_cny": "10000",
+      "final_cny": "7516290.023435836543333855273",
+      "final_usdt": "1123359.686644933954399612117",
+      "total_return_pct": "75062.9002343583654333385527300",
+      "cagr_pct": "167.94868978615014542686241101917375147089641527108",
+      "path_mdd_proxy_pct": "46.2719771251475894680832061800",
+      "close_observation_mdd_proxy_pct": "46.0122809509164197724470410200",
+      "daily_equity": {
+        "basis": "financial.daily UTC closing-boundary valuations; initial 10000; annual prior-year-end carry",
+        "missing_values_imputed": 0,
+        "opening_post_conversion_cny": "9980.009999999999999999999996",
+        "full_period": {
+          "start_date": "2020-01-01",
+          "end_date": "2026-09-19",
+          "days": 2454,
+          "opening_equity_cny": "10000",
+          "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+          "ending_equity_cny": "7516290.023435836543333855273",
+          "return_pct": "75062.9002343583654333385527300",
+          "mdd_pct": "41.104279272585886726610829208116088883363765240119",
+          "mdd_event": {
+            "peak_at": "2021-01-08",
+            "trough_date": "2021-01-29",
+            "peak_equity_cny": "895591.3681925401793185202289",
+            "trough_equity_cny": "527464.9910695055343897136749"
+          }
+        },
+        "by_year": [
+          {
+            "start_date": "2020-01-01",
+            "end_date": "2020-12-31",
+            "days": 366,
+            "opening_equity_cny": "10000",
+            "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+            "ending_equity_cny": "564503.1986202111124751464828",
+            "return_pct": "5545.03198620211112475146482800",
+            "mdd_pct": "24.291973579499935691946792239489330074302757299150",
+            "mdd_event": {
+              "peak_at": "2020-11-24",
+              "trough_date": "2020-11-27",
+              "peak_equity_cny": "276180.1053948422847812592907",
+              "trough_equity_cny": "209090.5071604921204125507610"
+            },
+            "year": 2020,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2021-01-01",
+            "end_date": "2021-12-31",
+            "days": 365,
+            "opening_equity_cny": "564503.1986202111124751464828",
+            "opening_equity_at": "2020-12-31",
+            "ending_equity_cny": "785823.4215283432761747075333",
+            "return_pct": "39.206194659143629447589928740014089670588971530000",
+            "mdd_pct": "41.104279272585886726610829208116088883363765240119",
+            "mdd_event": {
+              "peak_at": "2021-01-08",
+              "trough_date": "2021-01-29",
+              "peak_equity_cny": "895591.3681925401793185202289",
+              "trough_equity_cny": "527464.9910695055343897136749"
+            },
+            "year": 2021,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2022-01-01",
+            "end_date": "2022-12-31",
+            "days": 365,
+            "opening_equity_cny": "785823.4215283432761747075333",
+            "opening_equity_at": "2021-12-31",
+            "ending_equity_cny": "644183.9202212110113627479223",
+            "return_pct": "-18.024342037509959324824509106819570939700574930266",
+            "mdd_pct": "26.957455803270482460478872091205001149097561710390",
+            "mdd_event": {
+              "peak_at": "2022-03-28",
+              "trough_date": "2022-08-04",
+              "peak_equity_cny": "824835.8705335995839254358882",
+              "trough_equity_cny": "602481.1052849831394662130121"
+            },
+            "year": 2022,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2023-01-01",
+            "end_date": "2023-12-31",
+            "days": 365,
+            "opening_equity_cny": "644183.9202212110113627479223",
+            "opening_equity_at": "2022-12-31",
+            "ending_equity_cny": "3400905.662730914851232670664",
+            "return_pct": "427.94016677147934225481802858277967257529584781685",
+            "mdd_pct": "9.4225920096356307604113681902756123856077752674310",
+            "mdd_event": {
+              "peak_at": "2023-01-29",
+              "trough_date": "2023-01-30",
+              "peak_equity_cny": "1076631.144126718573582570714",
+              "trough_equity_cny": "975184.5839669857177060223462"
+            },
+            "year": 2023,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2024-01-01",
+            "end_date": "2024-12-31",
+            "days": 366,
+            "opening_equity_cny": "3400905.662730914851232670664",
+            "opening_equity_at": "2023-12-31",
+            "ending_equity_cny": "5815639.416620298825697587500",
+            "return_pct": "71.002667917297111133039640134356327323935396954490",
+            "mdd_pct": "18.979332717617364060851260064772657504669337992902",
+            "mdd_event": {
+              "peak_at": "2024-03-04",
+              "trough_date": "2024-03-05",
+              "peak_equity_cny": "4733269.637739321862337143832",
+              "trough_equity_cny": "3834926.644770813863298069388"
+            },
+            "year": 2024,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2025-01-01",
+            "end_date": "2025-12-31",
+            "days": 365,
+            "opening_equity_cny": "5815639.416620298825697587500",
+            "opening_equity_at": "2024-12-31",
+            "ending_equity_cny": "6589105.497454973542565855814",
+            "return_pct": "13.299759930511077996289407807551204848511471784170",
+            "mdd_pct": "4.4198959317207769266605824612922762742281029572010",
+            "mdd_event": {
+              "peak_at": "2025-01-09",
+              "trough_date": "2025-09-17",
+              "peak_equity_cny": "5841772.108740904053727683243",
+              "trough_equity_cny": "5583571.860966265794656461530"
+            },
+            "year": 2025,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2026-01-01",
+            "end_date": "2026-09-19",
+            "days": 262,
+            "opening_equity_cny": "6589105.497454973542565855814",
+            "opening_equity_at": "2025-12-31",
+            "ending_equity_cny": "7516290.023435836543333855273",
+            "return_pct": "14.071477931852598764515988264634678090311677751810",
+            "mdd_pct": "8.3005502130540882919103343375704386120841255091180",
+            "mdd_event": {
+              "peak_at": "2025-12-31",
+              "trough_date": "2026-08-19",
+              "peak_equity_cny": "6589105.497454973542565855814",
+              "trough_equity_cny": "6042173.487047616091983568690"
+            },
+            "year": 2026,
+            "complete_calendar_year": false
+          }
+        ],
+        "terminal_vs_daily_equity_difference_cny": "0E-21"
+      },
+      "net_commission_paid_usdt": "38661.6347087025",
+      "insurance_charge_usdt": "0",
+      "fees_including_insurance_usdt": "38661.6347087025",
+      "net_funding_paid_usdt": "75628.8900690461571065288",
+      "fills": 3079,
+      "filled_ordinary_orders": 301,
+      "income_records": 4275,
+      "funding_events": 1147,
+      "end_position": {
+        "quantity_btc": "0.000",
+        "flat": true,
+        "entry_usdt": "0",
+        "mark_usdt": "0",
+        "wallet_usdt": "1123359.686644933954399612117",
+        "margin_usdt": "0",
+        "live_protections": 0
+      },
+      "cleanup": {
+        "verified_sessions": 795,
+        "sessions": 795,
+        "terminal_pending_intents": 0,
+        "execution_unresolved_sessions": 0,
+        "reported_error_entries": 735,
+        "reports_with_errors": 675,
+        "error_types": {
+          "Unknown": 18,
+          "ObservationDeadline": 671,
+          "Blocked": 46
+        }
+      },
+      "path_evidence": {
+        "points": 2544832,
+        "rolling_sha256": "97c4fbcdbd4282e07076bd59591ee702a909c783a067d6043602fb0bb70abeab",
+        "trace_files": 3,
+        "hindsight_bounded": true,
+        "bounded_minutes": 53,
+        "limitation": "All original observation points retained and independently recomputed in original event order. OHLC extrema ordering, print/mark proxies and hindsight bounds remain the historical simulation method; no actual native risk acceptance."
+      }
+    },
+    "current": {
+      "head": "162ee7138952925ffafbc9b68be7c754c0c0a6c3",
+      "receipt": {
+        "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current-segment-002.json.gz",
+        "bytes": 257586,
+        "sha256": "6d5fb6aaa0f3daa074ac870203834dcdb4763dc7a262e307929233b6804bab6e"
+      },
+      "source_sha256": "9cbc2507d7d5e1f644228a37e0f9a50d69ef4aafaf7793c4cb2ccdc2a97081f2",
+      "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+      "input_sha256": "a0c5e64108edc270c0dd4982b34e87755f83b8bc3000889640535d91420bda36",
+      "risk_configuration": {
+        "capital_limit_usdt": null,
+        "max_stop_loss_fraction": ".10",
+        "stop_slippage_fraction": ".01"
+      },
+      "initial_cny": "10000",
+      "final_cny": "51498.49564014073702134529786",
+      "final_usdt": "7696.793729966937945671617907",
+      "total_return_pct": "414.984956401407370213452978600",
+      "cagr_pct": "27.626350225218363842056477048778673484027473448540",
+      "path_mdd_proxy_pct": "15.1634397847834416097821407100",
+      "close_observation_mdd_proxy_pct": "14.8996792225490021456407460100",
+      "daily_equity": {
+        "basis": "financial.daily UTC closing-boundary valuations; initial 10000; annual prior-year-end carry",
+        "missing_values_imputed": 0,
+        "opening_post_conversion_cny": "9980.009999999999999999999996",
+        "full_period": {
+          "start_date": "2020-01-01",
+          "end_date": "2026-09-19",
+          "days": 2454,
+          "opening_equity_cny": "10000",
+          "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+          "ending_equity_cny": "51498.49564014073702134529786",
+          "return_pct": "414.984956401407370213452978600",
+          "mdd_pct": "12.115394642945874683970092433241786901519478559867",
+          "mdd_event": {
+            "peak_at": "2025-01-09",
+            "trough_date": "2026-08-19",
+            "peak_equity_cny": "53377.41399080866917174650791",
+            "trough_equity_cny": "46910.52963562319384854425631"
+          }
+        },
+        "by_year": [
+          {
+            "start_date": "2020-01-01",
+            "end_date": "2020-12-31",
+            "days": 366,
+            "opening_equity_cny": "10000",
+            "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+            "ending_equity_cny": "12876.28771952470910250267658",
+            "return_pct": "28.762877195247091025026765800",
+            "mdd_pct": "10.966890026858091561135560623514023800448745539196",
+            "mdd_event": {
+              "peak_at": "2020-04-08",
+              "trough_date": "2020-09-16",
+              "peak_equity_cny": "10734.45629978806293556343906",
+              "trough_equity_cny": "9557.220282409165738702263530"
+            },
+            "year": 2020,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2021-01-01",
+            "end_date": "2021-12-31",
+            "days": 365,
+            "opening_equity_cny": "12876.28771952470910250267658",
+            "opening_equity_at": "2020-12-31",
+            "ending_equity_cny": "15964.96576970284430438510769",
+            "return_pct": "23.987333286244281077188416207656149935588334065530",
+            "mdd_pct": "5.4528193974905723578692569266219165030394778038510",
+            "mdd_event": {
+              "peak_at": "2021-04-01",
+              "trough_date": "2021-05-31",
+              "peak_equity_cny": "13374.15982941838542230970586",
+              "trough_equity_cny": "12644.89104798846765849740109"
+            },
+            "year": 2021,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2022-01-01",
+            "end_date": "2022-12-31",
+            "days": 365,
+            "opening_equity_cny": "15964.96576970284430438510769",
+            "opening_equity_at": "2021-12-31",
+            "ending_equity_cny": "17374.67863167721640230574553",
+            "return_pct": "8.8300399907503908458315807369638730949460310963000",
+            "mdd_pct": "6.4710763191771778364920087343461111644569656990560",
+            "mdd_event": {
+              "peak_at": "2022-11-03",
+              "trough_date": "2022-12-30",
+              "peak_equity_cny": "18576.79736695154749192394347",
+              "trough_equity_cny": "17374.67863167721640230574553"
+            },
+            "year": 2022,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2023-01-01",
+            "end_date": "2023-12-31",
+            "days": 365,
+            "opening_equity_cny": "17374.67863167721640230574553",
+            "opening_equity_at": "2022-12-31",
+            "ending_equity_cny": "39353.33111696152018342611860",
+            "return_pct": "126.49818135463640247383351461288603003313824923475",
+            "mdd_pct": "7.8804895880905533180837389701614119314255901840870",
+            "mdd_event": {
+              "peak_at": "2023-01-29",
+              "trough_date": "2023-01-30",
+              "peak_equity_cny": "21930.39094234259412621099209",
+              "trough_equity_cny": "20202.16876750373221613880831"
+            },
+            "year": 2023,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2024-01-01",
+            "end_date": "2024-12-31",
+            "days": 366,
+            "opening_equity_cny": "39353.33111696152018342611860",
+            "opening_equity_at": "2023-12-31",
+            "ending_equity_cny": "53138.63447321524232184698451",
+            "return_pct": "35.029571741417778626959884717732100233446404631590",
+            "mdd_pct": "5.6876590541699226092703646958139002896826291802560",
+            "mdd_event": {
+              "peak_at": "2024-07-24",
+              "trough_date": "2024-09-27",
+              "peak_equity_cny": "42679.42853642798613489221243",
+              "trough_equity_cny": "40251.96815500785809471037180"
+            },
+            "year": 2024,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2025-01-01",
+            "end_date": "2025-12-31",
+            "days": 365,
+            "opening_equity_cny": "53138.63447321524232184698451",
+            "opening_equity_at": "2024-12-31",
+            "ending_equity_cny": "50977.51292155812873256087205",
+            "return_pct": "-4.0669497307960298068482084297208941322995517785770",
+            "mdd_pct": "4.6212510134868451628683712795782527122048155952740",
+            "mdd_event": {
+              "peak_at": "2025-01-09",
+              "trough_date": "2025-07-20",
+              "peak_equity_cny": "53377.41399080866917174650791",
+              "trough_equity_cny": "50910.70970578535446267687644"
+            },
+            "year": 2025,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2026-01-01",
+            "end_date": "2026-09-19",
+            "days": 262,
+            "opening_equity_cny": "50977.51292155812873256087205",
+            "opening_equity_at": "2025-12-31",
+            "ending_equity_cny": "51498.49564014073702134529786",
+            "return_pct": "1.0219853592784581874006078813234888019609090571800",
+            "mdd_pct": "7.9779947134592917996439970317166195967165889316020",
+            "mdd_event": {
+              "peak_at": "2025-12-31",
+              "trough_date": "2026-08-19",
+              "peak_equity_cny": "50977.51292155812873256087205",
+              "trough_equity_cny": "46910.52963562319384854425631"
+            },
+            "year": 2026,
+            "complete_calendar_year": false
+          }
+        ],
+        "terminal_vs_daily_equity_difference_cny": "0E-23"
+      },
+      "net_commission_paid_usdt": "257.2268543475",
+      "insurance_charge_usdt": "0",
+      "fees_including_insurance_usdt": "257.2268543475",
+      "net_funding_paid_usdt": "282.6634983681735604693",
+      "fills": 142,
+      "filled_ordinary_orders": 93,
+      "income_records": 926,
+      "funding_events": 740,
+      "end_position": {
+        "quantity_btc": "0.000",
+        "flat": true,
+        "entry_usdt": "0",
+        "mark_usdt": "0",
+        "wallet_usdt": "7696.793729966937945671617907",
+        "margin_usdt": "0",
+        "live_protections": 0
+      },
+      "cleanup": {
+        "verified_sessions": 795,
+        "sessions": 795,
+        "terminal_pending_intents": 0,
+        "execution_unresolved_sessions": 0,
+        "reported_error_entries": 1065,
+        "reports_with_errors": 722,
+        "error_types": {
+          "Unknown": 317,
+          "ObservationDeadline": 703,
+          "Blocked": 45
+        }
+      },
+      "path_evidence": {
+        "points": 1763276,
+        "rolling_sha256": "ab4f5bbc97a9d68833d224138bfd972c0429a877ecb6be59e6710df7ca284ec6",
+        "trace_files": 2,
+        "hindsight_bounded": true,
+        "bounded_minutes": 29,
+        "limitation": "All original observation points retained and independently recomputed in original event order. OHLC extrema ordering, print/mark proxies and hindsight bounds remain the historical simulation method; no actual native risk acceptance."
+      }
+    }
+  },
+  "current_minus_previous": {
+    "cagr_pct_delta_pp": "-140.32233956093178158480593397039507798686894182254",
+    "path_mdd_proxy_pct_delta_pp": "-31.1085373403641478583010654700",
+    "total_return_pct_delta_pp": "-74647.915277956958063125099751400",
+    "daily_mdd_delta_pp": "-28.988884629640012042640736774874301981844286680252",
+    "final_cny_difference": "-7464791.52779569580631250997514"
+  },
+  "historical_previous_calibration": {
+    "historical_head": "79a334b2d776be2dbe8756f3a616697f9403982e",
+    "historical_reported": {
+      "cagr_pct": "167.94868978615018",
+      "path_mdd_proxy_pct": "46.27197712514759"
+    },
+    "basis": "Historical PR74 reported values versus the same runtime SHA under the newly registered producer; no inferred attribution.",
+    "numeric_differences_ignored": false,
+    "tolerance_applied": null,
+    "cagr_pct_remeasured": "167.94868978615014542686241101917375147089641527108",
+    "cagr_pct_delta_pp": "-3.457313758898082624852910358472892E-14",
+    "path_mdd_proxy_pct_remeasured": "46.2719771251475894680832061800",
+    "path_mdd_proxy_pct_delta_pp": "-5.319167938200E-16"
+  },
+  "notes": [
+    "CAGR and returns use terminal CNY equity after the registered costs and FX conversions.",
+    "Funding paid is signed: positive is net expense, negative is net income.",
+    "Fills are execution records; filled ordinary orders are counted separately.",
+    "2026 is a partial calendar year; its period return is not annualized.",
+    "Daily-close MDD is calculated from financial.daily, not financial.mdd_close.",
+    "All source, cost, path and old-baseline differences remain visible; no causal attribution is inferred."
+  ]
+}

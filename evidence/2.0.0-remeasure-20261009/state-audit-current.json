@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "scope": "completed-original795-state-only",
+  "receipt": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current-segment-002.json.gz",
+  "receipt_sha256": "6d5fb6aaa0f3daa074ac870203834dcdb4763dc7a262e307929233b6804bab6e",
+  "reports_sha256": "77fde0bbc28f355dd516e487f4d1f40f20e672b4b8d809fb62be66b510f88476",
+  "production_head": "162ee7138952925ffafbc9b68be7c754c0c0a6c3",
+  "validator_sha256": "5f645f75e26f1fbb31f702c89db98b8b01fbe8ae2bc2b00b82052e7312a61c8d",
+  "original_validator_sha256": "b8d097a60f390da0cc95f5424ff2f8649c7250045fa82ba5e3c7f7acffd3145e",
+  "sqlite": {
+    "database_path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current/state/intents.sqlite",
+    "database_sha256": "79398a0b1c2ab65aeaa4fe7aa15370c074d01800a9cd4be315d0240706baa172",
+    "schema_sha256": "63e7e1efe8b113ab5f403dd96e27c432d7872c7b11c29d3304df82277f2ffd10",
+    "canonical_sha256": "644123d12a36bf151b8b2a20600f603a52ef051ae2b51533606735f02c02d162",
+    "table_counts": {
+      "intents": 757,
+      "meta": 23,
+      "native_fills": 142,
+      "native_income": 926,
+      "observations": 2056
+    },
+    "archive_rows": 28500,
+    "archive_sha256": "e3d82679260c22d152a4b93d62f249e22026ad4d6da96e5f1198bce6fc93ff14",
+    "host_process_pid": 11,
+    "normalization": {
+      "sqlite_wall_time": [
+        "intents.updated (exchange preparation time required for non-rejected margins)",
+        "observations.recorded_at",
+        "observations-archive.jsonl[*].recorded_at",
+        "meta[writer_host].value.at"
+      ],
+      "host_process_identity": "meta[writer_host].value.pid is checked against receipt.process_pid, then represented as that receipt process",
+      "preserved": "hostname, every other schema/row/meta/payload/result/ledger field, exchange execution timestamps, archive order and duplicates",
+      "financial_io_annotation": "input_qualification_reuse is reported separately; per-process raw verification counters reset at setup and never affect the venue or production decision path"
+    }
+  },
+  "native_archive": {
+    "archived_fills": 142,
+    "venue_fills": 142,
+    "archived_income": 926,
+    "venue_income": 926,
+    "fills_exact_payload_match": true,
+    "income_exact_decimal_match": true,
+    "ownership_coverage": {
+      "entry_id": "cq-91a33c0d8189acfbd0f4b3eb034cc1",
+      "start": 1787227417200,
+      "through": 1788102064800
+    },
+    "income_coverage": {
+      "closure": null,
+      "observed_transactions": 926,
+      "origin": 1577750464600,
+      "through": 1789689902400,
+      "wallet_closure": "collected"
+    },
+    "venue_fills_not_archived": [],
+    "venue_income_not_archived": [],
+    "boundary": "Matches every locally archived native row only. Venue events outside the local archive, including unattended terminal events after the last observation, remain explicitly unarchived; no full-venue archive claim."
+  }
+}

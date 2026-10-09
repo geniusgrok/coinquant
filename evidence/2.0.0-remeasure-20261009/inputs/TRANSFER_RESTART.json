@@ -1,0 +1,45 @@
+{
+  "format": "coinquant-safe-public-input-transfer-restart-v1",
+  "stopped_pid": 16997,
+  "signal": "exec session interrupt (Ctrl-C), observed exit 130",
+  "reason": "Small-request latency: eliminate redundant live CHECKSUM fetch while keeping frozen archived sidecar and official body exact bytes and SHA-256; increase streaming workers from 8 to 16. No manifest or verified source-byte change.",
+  "old_downloader": {
+    "relative_path": "restore_inputs.py",
+    "sha256": "8c4b9dffee3fc330a1cc84bca8685b21cbe0940731404967c8c536b564d99616",
+    "bytes": 10009
+  },
+  "old_downloader_preserved": "restore_inputs_v1_preserved.py",
+  "manifest_sha256": "a808f1333b4fc18a5a65afe883804795b9286c117e1cc38a4b2a252a90064e82",
+  "stopped_at_utc": "2026-10-09T15:03:08Z",
+  "preservation": "Verified final files and interrupted .part prefixes retained. Restart rereads and hashes every final file; resumed prefixes are rehashed and whole final files independently read back.",
+  "stop_attempts": [
+    {
+      "method": "os.kill exact PID 16997 with SIGTERM",
+      "result": "ProcessLookupError: separate exec PID namespace; no process signaled"
+    },
+    {
+      "method": "write_stdin session 65630 Ctrl-C",
+      "result": "session exited 130"
+    }
+  ],
+  "old_downloader_original_unchanged": true,
+  "old_progress": {
+    "relative_path": "DOWNLOAD_PROGRESS.jsonl",
+    "preserved_path": "DOWNLOAD_PROGRESS_V1_PRESERVED.jsonl",
+    "bytes": 87196,
+    "sha256": "462378aab1c57b3e260839852a330ee54d0b09dd42ecf8f1d0b3add4630f38c8",
+    "completed": 152,
+    "verified": 152,
+    "failed": 0,
+    "verified_bytes": 938972
+  },
+  "retained_partials": [],
+  "new_downloader": {
+    "relative_path": "restore_inputs_v2.py",
+    "sha256": "0ad6c5ed58255e53658a18c30b8e90b85b20793c20d5c6938bb3462fdbbbda4b",
+    "bytes": 10145,
+    "workers": 16,
+    "progress_path": "DOWNLOAD_PROGRESS_V2.jsonl",
+    "final_receipt_path": "DOWNLOAD_RECEIPT.json"
+  }
+}

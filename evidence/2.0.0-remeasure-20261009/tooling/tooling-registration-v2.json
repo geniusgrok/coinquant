@@ -1,0 +1,18 @@
+{
+  "version": "coinquant-default-runtime-paired-replay-v2",
+  "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+  "source_sha256_by_arm": {
+    "current": "9cbc2507d7d5e1f644228a37e0f9a50d69ef4aafaf7793c4cb2ccdc2a97081f2",
+    "previous": "fbe4beaca18a12df53aa7e0206c28ba9269a8f0b211c2b360c3daeb16b2ecadc"
+  },
+  "runtime_heads": {
+    "current": "162ee7138952925ffafbc9b68be7c754c0c0a6c3",
+    "previous": "79a334b2d776be2dbe8756f3a616697f9403982e"
+  },
+  "changed_execution_files_from_v1": [
+    "driver.py"
+  ],
+  "research_module_changes_from_v1": [],
+  "implementation_file_count": 9,
+  "independent_restart_reason": "incomplete persisted original path in first attempt; no change in financial acceptance thresholds"
+}
