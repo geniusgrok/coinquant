@@ -1,4 +1,5 @@
 import json
+import sqlite3
 import tempfile
 import unittest
 import unittest.mock
@@ -50,6 +51,26 @@ class StateTests(unittest.TestCase):
 
 
 class StateIntegrityTests(unittest.TestCase):
+
+    def test_terminal_status_and_evidence_commit_or_rollback_together(self):
+        with tempfile.TemporaryDirectory() as directory, State(directory, 'live:123') as state:
+            state.prepare('cq-zero', 'binance_order', {'quantity': '.001'})
+            native=dict(parent=dict(status='EXPIRED',origQty='.001',executedQty='0'),child=None)
+            state.db.execute("""CREATE TRIGGER fail_archive BEFORE INSERT ON meta
+                WHEN NEW.key='terminal_native_orders'
+                BEGIN SELECT RAISE(ABORT, 'archive interrupted'); END""")
+            with self.assertRaises(sqlite3.IntegrityError):
+                state.finish('cq-zero','confirmed',{'executed_quantity':'0'},native=native)
+            self.assertEqual(state.pending()[0]['status'],'unknown')
+            self.assertIsNone(state.get('terminal_native_orders'))
+            state.db.execute('DROP TRIGGER fail_archive')
+            state.finish('cq-zero','confirmed',{'executed_quantity':'0'},native=native)
+            self.assertEqual(state.pending(),[])
+            self.assertEqual(state.get('terminal_native_orders')['cq-zero'],native)
+            with self.assertRaises(Unknown):
+                state.finish('cq-zero','confirmed',{'executed_quantity':'0'},
+                             native=dict(native,parent=dict(native['parent'],status='CANCELED')))
+            self.assertEqual(state.get('terminal_native_orders')['cq-zero'],native)
 
     def test_fresh_directory_needs_no_backup_and_newer_state_blocks(self):
         from pathlib import Path

@@ -38,7 +38,7 @@ class Rejected(Unknown):
 
 
 class Missing(Unknown):
-    """An ordinary-order identity query answered -2013: no such order exists now."""
+    """An order identity query answered -2013; no terminal state is implied."""
 
 
 def number(value: Any, name: str = "number", *, positive: bool = False) -> D:

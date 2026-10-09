@@ -112,6 +112,43 @@ def _execution_unresolved(report,execute):
         actual.get('native_full_position_protected') and actual.get('stop_before_liquidation'))
 
 
+def offline_report(report, state, now):
+    """Describe the last verified observation, never promise protection after it."""
+    actual=report.get('actual') if report.get('observation_current',True) else None
+    checkpoint=(state.get('linear_campaign') or {}).get('body',{})
+    if type(checkpoint.get('last')) is int:
+        report['next_required_review_at_ms']=checkpoint['last']+14400000
+    report['unresolved_order_ids']=[p['id'] for p in state.pending()]
+    report['possible_entry_remainders']=actual.get('possible_entry_remainders') if actual else None
+    unresolved=bool(report.get('execution_unresolved') or report.get('pending_intents')
+                    or report.get('possible_entry_remainders')
+                    or report.get('protection_replacement_pending') or actual is None)
+    q=D(actual['quantity_btc']) if actual and 'quantity_btc' in actual else None
+    equity=D(actual['equity_usdt']) if actual and actual.get('equity_usdt') is not None else None
+    report['equity_status']='unverified' if equity is None else 'positive' if equity>0 else 'nonpositive'
+    protected=bool(actual and actual.get('native_full_position_protected')
+                   and actual.get('stop_before_liquidation'))
+    report['native_protection_at_stop']=dict(
+        status='unverified' if q is None else 'flat' if not q else 'observed' if protected else 'incomplete',
+        observed_at_ms=actual.get('observed_at_ms') if actual else None,
+        protective_algos=actual.get('protective_algos',[]) if actual else [])
+    report['strategy_review_required']=bool(q and report.get('status') in ('blocked','unknown'))
+    report['manual_takeover_required']=unresolved or report['strategy_review_required'] or bool(q and (not protected or equity is None or equity<=0))
+    report['review_due_now']=(report['manual_takeover_required'] or
+                             report.get('next_required_review_at_ms',now+1)<=now)
+    if report['manual_takeover_required']:
+        report['manual_action']=('Correct the reported configuration or state and use status to inspect current exposure; keep the original state directory.'
+                                if report.get('status')=='blocked' and not report.get('write_attempted') and not report.get('pending_intents') else
+                                'Keep the original state directory; inspect the position, orders and protection. Do not resend an unknown order or open new risk.')
+    report['offline_boundary']='Only last-observed native exchange protection may execute; strategy expiry, new candles and macro changes require another manual run. Offline manual positions can be affected by retained close-position orders.'
+    if actual and actual.get('mark_price') and q is not None:
+        notional=abs(q)*D(actual['mark_price'])
+        wallet=D(actual.get('wallet_usdt') or 0)
+        report['exchange_leverage_setting']=20
+        report['wallet_notional_ratio']=str(notional/wallet) if wallet>0 else None
+        report['account_notional_leverage']=str(notional/equity) if equity is not None and equity>0 else None
+
+
 def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sleep, stopping=lambda:False,
         trial_mode=None, source_digest=None):
     """Finite deadline plus bounded cleanup. No timers survive this function.
@@ -165,7 +202,8 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                     timeout=isinstance(exc,ObservationDeadline)
                     last_failure='deadline' if timeout else 'other'
                     report['observation_timeouts']+=timeout
-                    report.update(status='unknown',reason=_reason(exc,'Invalid observation or state'))
+                    report.update(status='blocked' if isinstance(exc,Blocked) else 'unknown',
+                                  reason=_reason(exc,'Invalid observation or state'))
                     report['errors']=(report['errors']+[dict(cycle=report['cycles'],phase=phase,
                                                              error_type=type(exc).__name__,reason=report['reason'])])[-10:]
                 report['write_attempted']=(state.get('write_attempt_count') or 0)>prior_writes
@@ -180,10 +218,15 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
             if execute:
                 # No new entry is permitted here. Native protection remains at process exit.
                 engine=Lifecycle(reader,state,config.account_uid,authorized=True)
-                for attempt in (1,2):
+                cleanup_deadline=min(deadline+ABSOLUTE_GRACE,monotonic()+ABSOLUTE_GRACE)
+                if hasattr(reader,'hard_deadline'):reader.hard_deadline=cleanup_deadline
+                interrupted=False
+                report['cleanup']='unresolved'
+                while monotonic()<cleanup_deadline:
+                    progress=engine.exit_progress
                     try:
                         try:
-                            reader.begin_cycle(FINISH_SECONDS)
+                            reader.begin_cycle(min(FINISH_SECONDS,cleanup_deadline-monotonic()))
                         except RECOVERABLE as exc:
                             # Signed reads align the clock again; a failed sample must not skip verification.
                             report['errors']=(report['errors']+[dict(cycle=report['cycles'],phase='cleanup_clock',
@@ -195,12 +238,14 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                         break
                     except KeyboardInterrupt:
                         # The first signal may have landed inside this cleanup; the handler ignores later ones.
-                        if attempt==1:
+                        if not interrupted:
+                            interrupted=True
                             continue
                         report.update(status='unknown',cleanup='unresolved',reason='Interrupted again during cleanup; state is recoverable')
                         report['observation_current']=False
                         report.pop('actual',None)
                         report.pop('model_preview',None)
+                        break
                     except RECOVERABLE as exc:
                         report.update(status='unknown',cleanup='unresolved',reason=_reason(exc,'Cleanup could not be verified'))
                         report['errors']=(report['errors']+[dict(cycle=report['cycles'],phase='cleanup',
@@ -208,7 +253,10 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                         report['observation_current']=False
                         report.pop('actual',None)
                         report.pop('model_preview',None)
-                        break
+                        # Only a freshly reconciled terminal owned reduction may
+                        # advance to a new identity, within the original hard end.
+                        if engine.exit_progress<=progress:
+                            break
                 report['write_attempted'] |= bool(engine.actions)
                 if engine.actions:report['cleanup_actions']=engine.actions
                 if report['cleanup']=='verified':
@@ -228,20 +276,13 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
             if report['pending_intents']:
                 report.update(status='unknown',reason='Durable intents require recovery')
             report['execution_unresolved']=_execution_unresolved(report,execute)
-            actual=report.get('actual')
-            checkpoint=(state.get('linear_campaign') or {}).get('body',{})
-            if type(checkpoint.get('last')) is int:
-                report['next_required_review_at_ms']=checkpoint['last']+14400000
-            report['offline_boundary']='Native exchange protection may execute; strategy expiry, new candles and macro changes require another manual run.'
-            if actual and D(actual.get('wallet_usdt') or 0)>0 and actual.get('mark_price'):
-                report['exchange_leverage_setting']=20
-                report['account_notional_leverage']=str(abs(D(actual['quantity_btc']))*D(actual['mark_price'])/D(actual['wallet_usdt']))
             if (execute and last_failure=='deadline' and report['status']=='unknown' and report['cleanup']=='verified'
                     and not report['execution_unresolved'] and report.get('income_audit',{}).get('status')!='unresolved'):
                 # The last poll ran out of observation time before any request left, and the
                 # closing verification found the account settled: report that, not a failure.
                 report.update(status='executed' if report['write_attempted'] else 'no_action',
                               reason='Last poll ended at the observation deadline; closing verification settled')
+            offline_report(report,state,int(reader.clock()*1000))
             report['elapsed_seconds']=max(0,monotonic()-started)
             state.report(report)
     return report

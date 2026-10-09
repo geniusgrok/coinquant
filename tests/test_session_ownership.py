@@ -1,12 +1,15 @@
 """Session ownership and protection under unavailable or delayed responses."""
 import tempfile
+from dataclasses import replace
 from decimal import Decimal as D
 from unittest import TestCase
 from unittest.mock import patch
 from urllib.parse import parse_qsl, urlsplit
 
 from coinquant.binance import Binance
+from coinquant.campaign import Campaign
 from coinquant.config import Config
+from coinquant.lifecycle import Lifecycle
 from coinquant.session import run
 from coinquant.state import State
 from coinquant.types import Unknown
@@ -113,6 +116,142 @@ class SessionOwnershipTests(TestCase):
         self.assertEqual((self.margins(),self.posts(),self.reductions()),([],[],[]))
         self.assertEqual(result['cleanup'],'unresolved')
         self.assertTrue(any('external or unowned fill' in e['reason'] for e in result['errors']),result['errors'])
+
+    def test_manual_equal_reopen_after_exit_decision_is_not_reduced(self):
+        self.session(seconds=1)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            model=Campaign.restore(state.get('linear_campaign'))
+            model.model.active=None
+            state.set('linear_campaign',model.checkpoint())
+        original=self.venue.get;writes=len(self.venue.sent);fired=[]
+        def get(path,p=None):
+            if path.endswith('/exchangeInfo') and not fired:
+                fired.append(True)
+                wallet,entry=self.venue.wallet,self.venue.entry
+                self.manual_close_and_reopen(entry)
+                # Preserve size, entry and wallet: the new fill cursor must still
+                # stop the write, even if other sampled values happen to match.
+                self.venue.wallet=wallet
+            return original(path,p)
+        self.venue.get=get
+        result=self.session(seconds=1)
+        self.assertTrue(fired)
+        self.assertGreater(self.venue.q,0)
+        self.assertEqual(len(self.venue.sent),writes)
+        self.assertEqual(self.reductions(),[])
+        self.assertEqual(result['cleanup'],'unresolved')
+
+    def test_manual_reverse_after_exit_decision_does_not_change_reduction_side(self):
+        self.session(seconds=1)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            model=Campaign.restore(state.get('linear_campaign'))
+            model.model.active=None
+            state.set('linear_campaign',model.checkpoint())
+        original=self.venue.get;writes=len(self.venue.sent);fired=[]
+        def get(path,p=None):
+            if path.endswith('/exchangeInfo') and not fired:
+                fired.append(True);q=self.venue.q
+                for identity,reduce in ((900,True),(901,False)):
+                    self.venue.fill(dict(side='SELL',reduceOnly=reduce,price=str(self.venue.mark),
+                                         orderId=identity,executedQty='0'),q)
+            return original(path,p)
+        self.venue.get=get
+        result=self.session(seconds=1)
+        self.assertTrue(fired)
+        self.assertLess(self.venue.q,0)
+        self.assertEqual(len(self.venue.sent),writes)
+        self.assertEqual(self.reductions(),[])
+        self.assertEqual(result['cleanup'],'unresolved')
+
+    def test_native_creation_age_renews_unchanged_protection_with_fresh_ids(self):
+        self.session(seconds=1)
+        for order in self.venue.algos.values():
+            order['createTime']=self.venue.now-75*86400000
+        original=self.venue.send
+        def send(method,path,p):
+            result=original(method,path,p)
+            if method=='POST' and path.endswith('/algoOrder'):
+                self.venue.algos[p['clientAlgoId']]['createTime']=self.venue.now
+            return result
+        self.venue.send=send
+        old_ids=set(self.venue.algos)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            model=Campaign.restore(state.get('linear_campaign'))
+            before=state.get('position_protection')
+            self.venue.begin_cycle(120)
+            engine=Lifecycle(self.venue,state,'123',authorized=True)
+            result=engine.maintain(model,self.venue.snapshot('123'))
+            after=state.get('position_protection')
+            self.assertNotEqual(before['epoch'],after['epoch'])
+            self.assertEqual((before['stop'],before['take']),(after['stop'],after['take']))
+            new_ids={a['clientAlgoId'] for a in result['open_algos']}
+            self.assertEqual(len(new_ids),2)
+            self.assertFalse(old_ids & new_ids)
+            self.assertTrue(all(self.venue.algos[i]['algoStatus']=='CANCELED' for i in old_ids))
+            writes=len(self.venue.sent)
+            engine.maintain(model,result)
+            self.assertEqual(len(self.venue.sent),writes)
+
+    def test_acceptance_observation_is_not_used_as_native_creation_age(self):
+        self.session(seconds=1)
+        writes=len(self.venue.sent)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            protection=state.get('position_protection')
+            protection['accepted_at_ms']=self.venue.now-80*86400000
+            state.set('position_protection',protection)
+            self.venue.begin_cycle(120)
+            Lifecycle(self.venue,state,'123',authorized=True).maintain(
+                Campaign.restore(state.get('linear_campaign')),self.venue.snapshot('123'))
+        self.assertEqual(len(self.venue.sent),writes)
+
+    def test_over_history_limit_geometry_change_does_not_cancel_old_protection(self):
+        self.session(seconds=1)
+        active_ids={identity for identity,a in self.venue.algos.items() if a['algoStatus']=='NEW'}
+        for order in self.venue.algos.values():
+            order['createTime']=self.venue.now-90*86400000
+        writes=len(self.venue.sent)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            model=Campaign.restore(state.get('linear_campaign'))
+            model.model.active=replace(model.model.active,stop=model.model.active.stop+D(100))
+            self.venue.begin_cycle(120)
+            with self.assertRaisesRegex(Unknown,'outside algo history'):
+                Lifecycle(self.venue,state,'123',authorized=True).maintain(model,self.venue.snapshot('123'))
+        self.assertEqual(len(self.venue.sent),writes)
+        self.assertTrue(all(self.venue.algos[i]['algoStatus']=='NEW' for i in active_ids))
+
+    def test_exit_progress_requires_owned_fills_even_when_protection_wins_readback(self):
+        for owned in (True,False):
+            with self.subTest(owned=owned):
+                self.tmp.cleanup();self.tmp=tempfile.TemporaryDirectory();self.directory=self.tmp.name
+                self.venue=Venue();self.venue.seed(self.directory);self.session(seconds=1)
+                original=self.venue.send
+                def race(method,path,p):
+                    if method!='POST' or p.get('reduceOnly')!='true':
+                        return original(method,path,p)
+                    self.venue.now+=1;self.venue.sent.append((method,path,dict(p)))
+                    order=dict(p,orderId=len(self.venue.orders)+1,clientOrderId=p['newClientOrderId'],
+                               reduceOnly=True,origQty=p['quantity'],executedQty='0',status='EXPIRED')
+                    self.venue.orders[p['newClientOrderId']]=order
+                    self.venue.fill(order,D(p['quantity'])//D('.002')*D('.001'))
+                    child=dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL',type='MARKET',
+                               orderId=900001,clientOrderId='native-child',reduceOnly=True,
+                               origQty=str(self.venue.q),executedQty='0',status='EXPIRED')
+                    self.venue.orders['native-child']=child
+                    self.venue.fill(child,D('.001'))
+                    if owned:
+                        stop=next(a for a in self.venue.algos.values() if a['orderType']=='STOP_MARKET' and a['algoStatus']=='NEW')
+                        stop.update(algoStatus='FINISHED',actualOrderId=900001)
+                    return dict(order)
+                self.venue.send=race
+                with State(self.directory,'binance:BTCUSDT:live:123') as state:
+                    self.venue.begin_cycle(120)
+                    engine=Lifecycle(self.venue,state,'123',authorized=True)
+                    reason='partial exit remains' if owned else 'external or unowned fill'
+                    with self.assertRaisesRegex(Unknown,reason):
+                        engine.close(self.venue.snapshot('123'))
+                    self.assertEqual(engine.exit_progress,1 if owned else 0)
+                self.assertEqual(len(self.reductions()),1)
+                self.assertGreater(self.venue.q,0)
 
 
     def test_failed_protection_never_reduces_a_manual_fill_that_arrived_between_legs(self):

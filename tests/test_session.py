@@ -10,7 +10,7 @@ from coinquant.session import run
 from coinquant.lifecycle import Lifecycle
 from coinquant.state import State
 from coinquant.campaign import Campaign
-from coinquant.types import Blocked
+from coinquant.types import Blocked, Unknown
 from tests.session_venue import Venue
 
 
@@ -32,6 +32,8 @@ class SessionTests(TestCase):
         self.assertTrue(result['actual']['native_full_position_protected'])
         self.assertEqual(result['next_required_review_at_ms'],self.venue.now//14400000*14400000+14400000)
         self.assertIn('manual run',result['offline_boundary'])
+        self.assertEqual(result['native_protection_at_stop']['status'],'observed')
+        self.assertFalse(result['manual_takeover_required'])
         self.assertEqual(len([p for m,path,p in self.venue.sent if path.endswith('/order') and p.get('reduceOnly')!='true']),1)
         self.assertEqual(result['pending_intents'],0)
         with State(self.directory,'binance:BTCUSDT:live:123') as state:
@@ -73,6 +75,8 @@ class SessionTests(TestCase):
         self.venue.timeout_before_entry=True
         a=self.run_session(seconds=2);b=self.run_session(seconds=2)
         self.assertEqual(a['cleanup'],'unresolved');self.assertEqual(b['status'],'unknown')
+        self.assertEqual(a['native_protection_at_stop']['status'],'unverified')
+        self.assertTrue(a['manual_takeover_required'])
         self.assertEqual(len([x for x in self.venue.sent if x[1].endswith('/order')]),1)
         with State(self.directory,'binance:BTCUSDT:live:123') as state:
             reports=[json.loads(row[0]) for row in state.db.execute('SELECT payload FROM observations')]
@@ -216,7 +220,7 @@ class SessionTests(TestCase):
             snapshot=self.venue.snapshot('123');original=self.venue.q
             # A native protective reduction won the race after the first read.
             self.venue.q=original/2;self.venue.margin/=2
-            with self.assertRaises(Blocked):engine.close(snapshot)
+            with self.assertRaises(Unknown):engine.close(snapshot)
             self.assertFalse(any(p.get('reduceOnly')=='true' for _,_,p in self.venue.sent))
             result=engine.close(self.venue.snapshot('123'))
             self.assertEqual(D(result['quantity_btc']),0)
@@ -259,7 +263,9 @@ class SessionTests(TestCase):
                 if url.path.endswith('/positionMargin'):p['type']=int(p['type'])
                 response=backend.get(url.path,p) if request.method=='GET' else backend.send(request.method,url.path,p)
                 return BytesIO(json.dumps(response).encode())
-        reader=Binance(key='fixture',secret='fixture',clock=backend.clock,opener=HTTP(),authorize_writes=True)
+        reader=Binance(key='fixture',secret='fixture',clock=backend.clock,monotonic=backend.monotonic,
+                       opener=HTTP(),authorize_writes=True)
+        reader.loss_fraction=backend.loss_fraction;reader.slip_fraction=backend.slip_fraction
         reader._dfii10=type('Macro',(),{'snapshot':lambda _,now:backend.dfii10_snapshot()})()
         result=run(Config('123',self.directory,1,1),reader,execute=True,monotonic=backend.monotonic,wait=backend.wait)
         self.assertEqual(result['cleanup'],'verified',result)
@@ -277,3 +283,17 @@ class SessionTests(TestCase):
         self.assertEqual(self.venue.q,0)
         self.assertEqual(self.venue.sent,[])
         self.assertEqual(result['cleanup'],'verified')
+
+    def test_report_uses_current_equity_and_marks_nonpositive_equity(self):
+        from unittest.mock import patch
+        self.venue.q=D('.1');self.venue.entry=D(100000);self.venue.margin=D(1000)
+        for mark,leverage in ((95000,'19'),(90000,None)):
+            self.venue.mark=D(mark)
+            actual=self.venue.snapshot('123')
+            with patch('coinquant.session.cycle',return_value=dict(actual=actual,write_attempted=False)):
+                result=self.run_session(False,seconds=1)
+            self.assertEqual(result['account_notional_leverage'],leverage)
+            self.assertEqual(result['equity_status'],'positive' if leverage else 'nonpositive')
+            self.assertEqual(result['wallet_notional_ratio'],str(D('.1')*mark/1000))
+            self.assertEqual(result['native_protection_at_stop']['status'],'incomplete')
+            self.assertTrue(result['manual_takeover_required'])

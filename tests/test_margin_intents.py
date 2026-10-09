@@ -164,13 +164,15 @@ class WriteClassificationTests(unittest.TestCase):
         self.assertEqual(answer['amount'],D('623.19382938882948900'))
 
     def test_read_rejections_remain_unknown(self):
-        for path,answer in (('/fapi/v1/order',rejection(400,-1102)),('/fapi/v1/algoOrder',rejection(400,-2013))):
+        for path,answer in (('/fapi/v1/order',rejection(400,-1102)),('/fapi/v1/algoOrder',rejection(400,-1102))):
             reader,_http=self.reader(answer)
             with self.assertRaises(Unknown) as caught:reader.get(path,{'symbol':'BTCUSDT','origClientOrderId':'cq-x'})
             self.assertEqual(type(caught.exception),Unknown)
-        # A missing ordinary order is a distinct observation, never a write rejection.
-        reader,_http=self.reader(rejection(400,-2013))
-        with self.assertRaises(Missing):reader.get('/fapi/v1/order',{'symbol':'BTCUSDT','origClientOrderId':'cq-x'})
+        # A missing identity is a distinct observation, never a write rejection.
+        for path,params in (('/fapi/v1/order',{'symbol':'BTCUSDT','origClientOrderId':'cq-x'}),
+                            ('/fapi/v1/algoOrder',{'clientAlgoId':'cq-x'})):
+            reader,_http=self.reader(rejection(400,-2013))
+            with self.assertRaises(Missing):reader.get(path,params)
 
 
     def test_missing_order_without_a_preparation_time_or_past_retention_stays_unknown(self):

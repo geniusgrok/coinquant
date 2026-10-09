@@ -8,6 +8,7 @@ from decimal import Decimal as D
 from math import ceil
 from coinquant.binance import Binance
 from coinquant.campaign import Campaign
+from coinquant.config import Config
 from coinquant.opportunities import Opportunity
 from coinquant.state import State
 from coinquant.types import Unknown
@@ -18,7 +19,9 @@ class Venue(Binance):
     def __init__(self, direction=1):
         self.now=1770004800000  # completed 4h boundary
         self.now=self.now//14400000*14400000+1000
+        config=Config('123','/tmp/coinquant-fixture')
         super().__init__(clock=lambda:self.now/1000,authorize_writes=True)
+        self.loss_fraction=config.loss_fraction;self.slip_fraction=config.slip_fraction
         self.direction=direction;self.q=D(0);self.entry=D(0);self.wallet=D(1000);self.margin=D(0)
         self.orders={};self.algos={};self.trades=[];self.calls=[];self.sent=[];self.income=[];self.margin_history=[]
         self.fraction=D(1);self.timeout_after_entry=False;self.timeout_before_entry=False
