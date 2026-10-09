@@ -204,13 +204,46 @@ class TrialSizingTests(TestCase):
         # The audit quote remains the original sizing observation.
         self.assertEqual(plan['quote_observation']['best_ask'], '100')
         self.assertEqual(plan['quote_observation']['visible_limit_depth_btc'], '1000')
-        for ask, depth in [('100', '1'), ('100.1', '1000')]:
+        for ask, depth in [('100', '1'), ('99.8', '1000'), ('100.2', '1000')]:
             with self.subTest(ask=ask, depth=depth):
-                values['/fapi/v1/depth']['asks'] = [[ask, depth]]
+                values['/fapi/v1/depth'].update(bids=[[str(D(ask)-D('.1')), '1000']], asks=[[ask, depth]])
                 self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
-        values['/fapi/v1/depth']['asks'] = [['100', '1000']]
+        values['/fapi/v1/depth'].update(bids=[['99.9', '1000']],asks=[['100', '1000']])
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1',
                                        quantity='251'))
+
+    def test_final_book_keeps_original_limit_inside_fresh_band_for_both_sides(self):
+        model, reader, _, values, _ = self.fixture()
+        book=values['/fapi/v1/depth']
+        for direction, original_limit, bid, ask, outside_bid, outside_ask in (
+                (1, '100100', '100009', '100010', '99799', '99800'),
+                (-1, '99899.1', '99990', '99991', '100200', '100201')):
+            with self.subTest(direction=direction):
+                book.update(bids=[[bid, '100']], asks=[[ask, '100']])
+                args=dict(quantity='1',completed_through=model.last)
+                # The fresh tick-rounded allowance differs, but the funded
+                # order is still executable without repricing or resizing.
+                self.assertTrue(limit_matches(reader,direction,original_limit,'.1',**args))
+                self.assertFalse(limit_matches(reader,direction,D(original_limit)+D('.01'),'.1',**args))
+                book.update(bids=[[outside_bid, '100']], asks=[[outside_ask, '100']])
+                self.assertFalse(limit_matches(reader,direction,original_limit,'.1',**args))
+
+    def test_final_book_counts_depth_at_original_limit_for_both_sides(self):
+        model, reader, _, values, _ = self.fixture()
+        book=values['/fapi/v1/depth']
+        for direction, original_limit, bids, asks in (
+                (1, '100100', [['100009','100']], [['100010','1'],['100110','1000']]),
+                (-1, '99899.1', [['99990','1'],['99895','1000']], [['99991','100']])):
+            with self.subTest(direction=direction):
+                book.update(bids=bids,asks=asks)
+                args=dict(completed_through=model.last)
+                # A thousand BTC inside the new allowance are outside our
+                # original limit and therefore cannot fund a larger order.
+                self.assertTrue(limit_matches(reader,direction,original_limit,'.1',quantity='.25',**args))
+                self.assertFalse(limit_matches(reader,direction,original_limit,'.1',quantity='1',**args))
+                if direction>0:book['asks']=[['100101','1000']]
+                else:book['bids']=[['99899','1000']]
+                self.assertFalse(limit_matches(reader,direction,original_limit,'.1',quantity='.001',**args))
 
     def test_add_cannot_spend_an_already_locked_campaign_profit(self):
         model, reader, snapshot, values, _ = self.fixture()

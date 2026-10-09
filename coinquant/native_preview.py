@@ -418,12 +418,14 @@ def limit_matches(reader, direction, limit_price, tick, *, quantity=None,
             or any(a[0]<=b[0] for a,b in zip(bids,bids[1:]))):
         raise Unknown('invalid order book ordering')
     tick=number(tick,positive=True)
+    limit=number(limit_price,positive=True)
+    if floor_step(limit,tick)!=limit:return False
     raw=(asks[0][0]*D('1.001') if direction>0 else bids[0][0]*D('.999'))
     price=(floor_step(raw,tick) if direction>0 else (raw/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
+    if (limit>price if direction>0 else limit<price):return False
     depth=sum((q for p,q in (asks if direction>0 else bids)
-               if (p<=price if direction>0 else p>=price)),D(0))
-    if price!=number(limit_price,positive=True):return False
-    # The unchanged IOC limit is the worst price funded by the preview. Normal
-    # changes inside that tick or to book quantities do not alter its risk;
-    # the order must still fit the freshly observed executable depth below.
+               if (p<=limit if direction>0 else p>=limit)),D(0))
+    # Keep the funded IOC limit. A changed book is usable while that original
+    # price stays inside the fresh allowance and has enough executable depth;
+    # never reprice the order or count liquidity beyond its original limit.
     return quantity is None or number(quantity,positive=True)<=depth*BOOK_PARTICIPATION
