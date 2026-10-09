@@ -57,13 +57,16 @@ class ExecutionBoundaries(TestCase):
         self.assertEqual(result['cleanup'],'verified')
         self.assertEqual(result['risk_limits'],dict(max_stop_loss_fraction='.10',stop_slippage_fraction='.01'))
 
-    def test_entry_and_topup_accept_changing_depth_within_funded_limit(self):
+    def test_entry_and_topup_keep_funded_limit_when_fresh_band_changes(self):
         self.venue.fraction=D('.5')
         original=self.venue.get;books=[]
         def changing(path,parameters=None):
             result=original(path,parameters)
             if path.endswith('/depth'):
                 result['asks'][0][1]=str(101+len(books))
+                if len(books)%2:
+                    result['bids'][0][0]=str(self.venue.mark+D(9))
+                    result['asks'][0][0]=str(self.venue.mark+D(10))
                 books.append(result)
             return result
         self.venue.get=changing
@@ -82,6 +85,7 @@ class ExecutionBoundaries(TestCase):
         self.assertGreater(self.venue.q,quantity)
         self.assertTrue(result['native_full_position_protected'])
         self.assertEqual(len(books),4)
+        self.assertTrue(all(D(order['price'])==D('100100') for order in self.venue.orders.values()))
 
     def test_entry_rejects_changed_depth_below_fresh_participation_limit(self):
         original=self.venue.get;books=[]
