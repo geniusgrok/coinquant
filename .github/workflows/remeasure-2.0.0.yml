@@ -1,0 +1,29 @@
+name: Publish audited 2.0.0 remeasurement
+
+on:
+  push:
+    branches:
+      - release/remeasure-2.0.0-20261009
+
+permissions:
+  contents: write
+
+concurrency:
+  group: coinquant-release-2.0.0
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'geniusgrok/coinquant' && github.ref == 'refs/heads/release/remeasure-2.0.0-20261009'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the exact publication payload
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Upload evidence, verify bytes, and update existing release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/publish_release.py

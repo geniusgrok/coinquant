@@ -1,0 +1,102 @@
+{
+  "notes": {
+    "bytes": 20699,
+    "sha256": "babee16aad85d86a1ca3943546c8d9a87f06ecb30b7f05b657761ff08851fdd1"
+  },
+  "evidence_commit": "d874ed0bef69d1b1ab8c32cf87eb2dc6791be486",
+  "evidence_tree": "d54e10ad8492bdf55fef3af8e3ff48e87f480dc8",
+  "assets": [
+    {
+      "name": "coinquant-2.0.0-remeasurement-evidence-20261009.tar.xz",
+      "bytes": 67465568,
+      "sha256": "3b2ebd1078c373c8b09fd152b82bc70c6722b77853909b726633d5b4498f73d3",
+      "chunks": [
+        {
+          "path": ".github/release-assets/part-000",
+          "bytes": 4194304,
+          "sha256": "1ed3961e68b170ee4d1b0233197dd8d830c057306fe87aee3b6969655452618f"
+        },
+        {
+          "path": ".github/release-assets/part-001",
+          "bytes": 4194304,
+          "sha256": "dada41fed49a105a64ce866e0f9a84d75c591f6e14f97465c560efe6251f81db"
+        },
+        {
+          "path": ".github/release-assets/part-002",
+          "bytes": 4194304,
+          "sha256": "ea657e436aa9b33be206ef1353d7c0f28110df3af1609a365790ef90f56181d4"
+        },
+        {
+          "path": ".github/release-assets/part-003",
+          "bytes": 4194304,
+          "sha256": "38cd06bc43d0d0f14bc81563067909268324ab4359344831848b0e658d67ba5d"
+        },
+        {
+          "path": ".github/release-assets/part-004",
+          "bytes": 4194304,
+          "sha256": "7d3badbe8ea24773f1e39dadb974463922b0d897507c3cc406e26eb7d8ad4cdd"
+        },
+        {
+          "path": ".github/release-assets/part-005",
+          "bytes": 4194304,
+          "sha256": "45ff9fdd9a29818c415d70051299e5783e56afe97c523d7762e399628a3467f4"
+        },
+        {
+          "path": ".github/release-assets/part-006",
+          "bytes": 4194304,
+          "sha256": "100c8cd82814f26b5aa991f7f45a262134253a8d316ef3f190f6c737d5aa00d2"
+        },
+        {
+          "path": ".github/release-assets/part-007",
+          "bytes": 4194304,
+          "sha256": "df28043fb5a8225c0adf593e6a57c08eed7277d13bbde84b54b0f364b21a5c9c"
+        },
+        {
+          "path": ".github/release-assets/part-008",
+          "bytes": 4194304,
+          "sha256": "4c55c8fc7cb9f2130847bad0901c57cdef8902ce226c32ee0f68adc0b4359bf2"
+        },
+        {
+          "path": ".github/release-assets/part-009",
+          "bytes": 4194304,
+          "sha256": "447b56c4aebcaf8a19bb2225c3f824360e1b48d3a68fd514a1d7e48c2393d4e8"
+        },
+        {
+          "path": ".github/release-assets/part-010",
+          "bytes": 4194304,
+          "sha256": "f46e5f521b55156a32f6c515f4e849e41002bb059c89ba44a98d79ff5f82aefa"
+        },
+        {
+          "path": ".github/release-assets/part-011",
+          "bytes": 4194304,
+          "sha256": "86c8b5e28742a2524e70251cb5e686c978aaf9e394eda664f96e02677faebe5b"
+        },
+        {
+          "path": ".github/release-assets/part-012",
+          "bytes": 4194304,
+          "sha256": "b85c72f3e735ed44e7e811dbca858d086946e789dde4afea310c4e74d057a707"
+        },
+        {
+          "path": ".github/release-assets/part-013",
+          "bytes": 4194304,
+          "sha256": "c7fb198fa4d17e7ddcec7ca07ea76699a97543907fd0ee191a7d055fc3b67ee3"
+        },
+        {
+          "path": ".github/release-assets/part-014",
+          "bytes": 4194304,
+          "sha256": "52afecad76832d9630b2412532cfb5e8c5f0890bdcf19ac826634bb827f9113d"
+        },
+        {
+          "path": ".github/release-assets/part-015",
+          "bytes": 4194304,
+          "sha256": "296bcae4bea06ff8b7dcad90d09ae891ce1bb73ae7d97fcc5ecf2a16d930abca"
+        },
+        {
+          "path": ".github/release-assets/part-016",
+          "bytes": 356704,
+          "sha256": "de4fade6af8c6de848cb7e84be1937e64b4b810202aa836e0c508d020ef89108"
+        }
+      ]
+    }
+  ]
+}
