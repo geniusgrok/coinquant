@@ -4,10 +4,10 @@ No daemon, independent cash ledger or strategy selector. Transport acknowledgmen
 never settle an intent. The CLI permits only explicit bounded trial writes.
 """
 import json
-from decimal import Decimal as D, ROUND_CEILING
+from decimal import Decimal as D, ROUND_CEILING, ROUND_FLOOR
 
 from . import binance_safety as safety
-from .native_preview import (MAX_ISOLATED_MARGIN_FRACTION, LIQUIDATION_BUFFER,
+from .native_preview import (MAX_ISOLATED_MARGIN_FRACTION,
                              entry_preview, limit_matches, topup_preview)
 from .ownership import TERMINAL, owned_observation
 from .state import client_id
@@ -130,8 +130,13 @@ class Lifecycle:
                 timing[field]=int(self.reader.clock()*1000)
                 self.state.set('entry_timing',timing)
         self.state.set('write_attempt_count',(self.state.get('write_attempt_count') or 0)+1)
-        self.actions.append(dict(method=method, path=path, id=payload.get('newClientOrderId', payload.get('clientAlgoId', payload.get('origClientOrderId'))),
-                                 at_ms=int(self.reader.clock()*1000)))
+        action=dict(method=method, path=path, id=payload.get('newClientOrderId', payload.get('clientAlgoId', payload.get('origClientOrderId'))),
+                    at_ms=int(self.reader.clock()*1000))
+        exit_operation=self.state.get('position_exit')
+        if (method=='POST' and path=='/fapi/v1/order' and payload.get('reduceOnly')=='true'
+                and exit_operation and action['id']==client_id(self.state.identity,exit_operation['epoch'],'reduce')):
+            action['position_before_btc']=str(exit_operation['position_at_request'])
+        self.actions.append(action)
         return self.reader.send(method, path, payload)
 
     def epoch(self):
@@ -151,7 +156,10 @@ class Lifecycle:
         return (stop-liq) if q>0 else (liq-stop)
 
     def _save_protection(self, payload, snapshot):
-        gap=self._gap(snapshot, payload['stop'])
+        previous=self.state.get('position_protection')
+        gap=(number(previous['buffer_distance'])
+             if previous and previous.get('campaign')==payload.get('campaign') and 'buffer_distance' in previous
+             else self._gap(snapshot, payload['stop']))
         if gap is not None:
             payload['buffer_distance']=str(gap)
         self.state.set('position_protection', payload)
@@ -172,23 +180,29 @@ class Lifecycle:
         self._in_buffer=True
         try:
             gap=self._gap(snapshot, protection['stop'])
-            mark=number(snapshot['mark_price'],positive=True)
             target=D(protection.get('buffer_distance') or 0)
             unsafe=snapshot.get('stop_before_liquidation') is False
-            shrunk=gap is not None and target>0 and gap+mark*D('0.001')<target
+            shrunk=gap is not None and target>0 and gap<target
             if not unsafe and not shrunk:
                 return snapshot
             equity=number(snapshot.get('equity_usdt') or 0)
             wallet=number(snapshot['wallet_usdt'])
             limit=getattr(self.reader,'capital_limit',None)
             capital=wallet if limit is None else min(wallet,limit)
-            risk=min(capital,equity) if equity>0 else capital
+            risk=max(D(0),min(capital,equity))
             isolated=number(snapshot['isolated_wallet_usdt'])
             cap=risk*MAX_ISOLATED_MARGIN_FRACTION
             if isolated<cap:
+                rules=self.instrument()
+                places=rules.get('quotePrecision')
+                if type(places) is not int or not 0<=places<=8:
+                    raise Blocked('settlement amount precision unavailable')
+                # The transfer rounds up to the asset precision; leave no fraction
+                # above the collateral ceiling for that rounding to consume.
+                cap=cap.quantize(D(1).scaleb(-places),rounding=ROUND_FLOOR)
                 try:
                     snapshot=safety.add_margin(self.reader,self.state,self.send,self.uid,self.epoch(),
-                        cap,instrument=self.instrument(),authorized=self.authorized,snapshot=snapshot,
+                        cap,instrument=rules,authorized=self.authorized,snapshot=snapshot,
                         expected_owner=dict(snapshot))
                 except Blocked:
                     pass
@@ -196,11 +210,7 @@ class Lifecycle:
                     raise
                 else:
                     gap=self._gap(snapshot, protection['stop'])
-                    if snapshot.get('stop_before_liquidation') and (gap is None or gap+mark*D('0.001')>=target):
-                        kept=dict(protection)
-                        if gap is not None:
-                            kept['buffer_distance']=str(gap)
-                        self.state.set('position_protection', kept)
+                    if snapshot.get('stop_before_liquidation') and (gap is None or gap>=target):
                         return snapshot
             closed=self.close(snapshot)
             return closed if closed is not None else snapshot
@@ -449,7 +459,7 @@ class Lifecycle:
             observed=owned_observation(self.state,self.reader,identity,conditional=True)
             child=observed['child']
             if child is not None and number(child['executedQty']):
-                if observed['parent'].get('algoStatus') not in ('FINISHED','CANCELED','EXPIRED','REJECTED') or child.get('status') not in TERMINAL:
+                if not safety.conditional_is_terminal(observed):
                     raise Unknown('protective child fill is not terminal')
         fresh=self.reader.snapshot(self.uid)
         if any(fresh[k]!=snapshot[k] for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders')):
@@ -471,7 +481,10 @@ class Lifecycle:
         operation = self.state.get('position_exit')
         row=None
         retry_zero=False
+        retry_budget={}
         if operation is not None:
+            if 'zero_retry_session' in operation:
+                retry_budget={'zero_retry_session':operation['zero_retry_session']}
             prior=client_id(self.state.identity,operation['epoch'],'reduce')
             row=self.state.db.execute('SELECT status,result FROM intents WHERE id=?',(prior,)).fetchone()
             if row is None and q*operation['direction']>0:
@@ -488,12 +501,19 @@ class Lifecycle:
                 if terminal.get('status') not in TERMINAL:
                     raise Unknown('confirmed reduction is not terminal at exchange')
                 if number(terminal['executedQty'])<=0:
-                    # Archived zero-fill. One later call may use a new epoch.
-                    # Unknown outcomes keep the previous identity and never resend.
+                    if (q*operation['direction']<=0
+                            or abs(q)!=number(operation.get('position_at_request',operation['quantity']))):
+                        raise Unknown('position changed after zero-fill reduction')
+                    if retry_budget and retry_budget['zero_retry_session']==self.session:
+                        raise Unknown('zero-fill reduction retry exhausted for this session')
+                    # One proven zero-fill retry per manual session, including
+                    # cleanup. A later session rechecks ownership before retrying.
+                    retry_budget={'zero_retry_session':self.session}
                     operation=None
                     retry_zero=True
                 else:
                     # Only a known terminal partial may create a fresh remainder order.
+                    retry_budget={}
                     operation=None
             elif row and row[0]=='rejected':
                 # Refused locally or by Binance: nothing executed under that identity.
@@ -503,7 +523,7 @@ class Lifecycle:
             if legal<=0:
                 raise Blocked('position is below the native reducible quantity')
             operation = dict(epoch=self.epoch(), quantity=str(legal),direction=1 if q>0 else -1,
-                             position_at_request=str(abs(q)))
+                             position_at_request=str(abs(q)),**retry_budget)
             if stop is not None and (retry_zero or not row or row[0] in ('rejected','void')):
                 operation['trigger_stop']=str(number(stop,positive=True))
             self.state.set('position_exit',operation)
@@ -524,7 +544,7 @@ class Lifecycle:
                 operation['epoch'],operation['quantity'],instrument=rules,authorized=self.authorized,
                 expected_owner=dict(snapshot),
                 expected_direction=operation['direction'],
-                stop=stop if not row or row[0] in ('rejected','void') else None)
+                stop=stop if retry_zero or not row or row[0] in ('rejected','void') else None)
         except Unknown:
             row=self.state.db.execute('SELECT status FROM intents WHERE id=?',(identity,)).fetchone()
             if not row or row[0]!='confirmed':
@@ -557,6 +577,7 @@ class Lifecycle:
         """Reconcile before reducing; an optional stop must still be crossed."""
         from .campaign import Campaign
         from .ownership import reconcile
+        if stop is not None:stop=number(stop,positive=True)
         self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
         rules=rules or self.instrument()
         current=self.settle()
@@ -573,6 +594,14 @@ class Lifecycle:
         # Match the complete native fill history before changing any position;
         # only protection of the journaled entry's own verified fill precedes it.
         # A stored plan alone cannot authorize changes to external/manual trades.
+        plan=self.state.get('entry_plan')
+        if plan and number(snapshot['quantity_btc']) and not self.state.get('position_exit'):
+            try:
+                proven=self.entry_fill_proven(plan,snapshot)
+            except (Blocked,Unknown):
+                proven=False
+            if proven:
+                snapshot=self.protect_entry(snapshot,plan,proven_order=proven)
         ownership=None
         if number(snapshot['quantity_btc']) or self.state.get('entry_campaigns'):
             from .campaign import Campaign
@@ -716,8 +745,14 @@ class Lifecycle:
         if not self.may_enter():
             raise Blocked('session deadline or stop request prohibits a new entry')
         tick=[f['tickSize'] for f in plan['instrument']['filters'] if f.get('filterType')=='PRICE_FILTER'][0]
-        if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],tick):
+        if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],tick,
+                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc']))):
             raise Unknown('order book changed before the order was sent')
+        safety._check_cursor(self.reader,fresh)
+        if not self.may_enter():
+            raise Blocked('session deadline or stop request prohibits a new entry')
+        if abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
+            raise Unknown('entry preflight expired during the final book read')
         # An entry begun within the session retains a bounded protection budget;
         # the trading deadline must not cut network access immediately after fill.
         # Use the adapter clock. A wall monotonic here would outlive a virtual session
@@ -855,6 +890,12 @@ class Lifecycle:
             return snapshot
         expected_owner=dict(snapshot)
         try:
+            from .audit import funding_debit
+            paid_funding=funding_debit(self.reader,self.state,fill['campaign'],snapshot)
+        except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError):
+            self.entry_constraint='campaign_funding_unverified'
+            return snapshot
+        try:
             self.reader.refresh_safety_observation()
             self.reader.ensure_capacity(TOPUP_RESERVE+PREVIEW_WEIGHT)
         except Unknown:
@@ -864,7 +905,8 @@ class Lifecycle:
                                  protection['stop'], protection['take'], fill.get('stop_budget'),
                                  fill.get('sizing_capital'),fill.get('stop_slippage_fraction'),
                                  paid_commission_usdt=ownership['campaign_fee_usdt'],
-                                 realized_pnl_usdt=ownership['campaign_realized_pnl_usdt'])
+                                 realized_pnl_usdt=ownership['campaign_realized_pnl_usdt'],
+                                 paid_funding_usdt=paid_funding)
         except ValueError:
             return snapshot
         self.entry_constraint = plan['constraint']
@@ -872,6 +914,8 @@ class Lifecycle:
             return snapshot
         fresh = self.reader.snapshot(self.uid)
         safety._check_owner(fresh,expected_owner)
+        if any(number(fresh[k])!=number(snapshot[k]) for k in ('isolated_wallet_usdt','available_usdt')):
+            raise Unknown('collateral changed between top-up sizing and order')
         if fresh['open_orders'] or not self.planned_protection(fresh):
             raise Unknown('account changed between top-up sizing and order')
         if abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
@@ -906,7 +950,18 @@ class Lifecycle:
         safety._check_cursor(self.reader,expected_owner)
         if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
             return fresh
-        if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],plan['tick']):
+        if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],plan['tick'],
+                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc']))):
+            return fresh
+        # A stop can fill during the final book read. The old position cursor
+        # cannot authorize an add that would reopen the now-flat account.
+        safety._check_cursor(self.reader,expected_owner)
+        if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
+            return fresh
+        projected_margin=(number(fresh['isolated_wallet_usdt'])
+                          +number(plan['quantity_btc'])*number(plan['entry_estimate'])/20)
+        if projected_margin>number(plan['stop_budget_capital_usdt'])*MAX_ISOLATED_MARGIN_FRACTION:
+            self.entry_constraint='margin_or_funding_cap'
             return fresh
         identity = client_id(self.state.identity,epoch,'entry')
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',

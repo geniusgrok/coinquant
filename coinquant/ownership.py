@@ -4,6 +4,7 @@ import calendar
 from datetime import datetime, timezone
 from decimal import Decimal as D
 from .types import Blocked, Unknown, number
+from .binance import conditional_is_terminal
 
 
 TERMINAL = ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
@@ -32,10 +33,8 @@ def owned_observation(state,reader,identity,*,conditional=False):
             raise Unknown('owned protection differs from its durable request')
     elif 'price' in payload and number(parent.get('price'))!=number(payload['price']):
         raise Unknown('owned entry price changed')
-    terminal=(not conditional or parent.get('algoStatus') in ('FINISHED','CANCELED','EXPIRED','REJECTED'))
-    if order is None:
-        terminal &= parent.get('algoStatus')!='FINISHED'
-    else:
+    terminal=not conditional or conditional_is_terminal(observed)
+    if order is not None:
         if (any(order.get(k)!=parent.get(k) for k in ('symbol','side','positionSide'))
                 or not 0<=number(order.get('executedQty'))<=number(order.get('origQty'),positive=True)):
             raise Unknown('invalid native order fill evidence')
@@ -110,7 +109,8 @@ def reconcile(state, reader, model, snapshot):
     if not links:
         if number(snapshot['quantity_btc']):raise Unknown('entry campaign journal unavailable')
         return {'status':'flat_without_entry_journal'}
-    if type(snapshot.get('last_fill_id')) is not int or snapshot['last_fill_id']<-1:
+    if (snapshot.get('recent_fill_window_complete') is False
+            or type(snapshot.get('last_fill_id')) is not int or snapshot['last_fill_id']<-1):
         raise Unknown('ownership lacks a verified recent fill cursor')
     # Only one entry campaign can own the one-way isolated position. Later
     # rejected/zero-fill orders must not hide an older actually filled entry.
@@ -143,7 +143,7 @@ def reconcile(state, reader, model, snapshot):
         terminal=all(o['status'] in TERMINAL for _,o in native.values())
         if terminal and not snapshot['possible_entry_remainders'] and not state.pending():
             again=reader.snapshot(snapshot['account_uid'])
-            if (type(again.get('last_fill_id')) is not int or
+            if (again.get('recent_fill_window_complete') is False or type(again.get('last_fill_id')) is not int or
                     any(again.get(k)!=snapshot.get(k) for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders','last_fill_id'))):
                 raise Unknown('account changed while settling zero-fill entries')
             _archive_links(state,links)
@@ -229,7 +229,7 @@ def reconcile(state, reader, model, snapshot):
                                         avg_fill_price=str(average),trigger_price=str(trigger),
                                         adverse_slippage_fraction=str(adverse)))
     again=reader.snapshot(snapshot['account_uid'])
-    if (type(again.get('last_fill_id')) is not int or
+    if (again.get('recent_fill_window_complete') is False or type(again.get('last_fill_id')) is not int or
             any(again[k]!=snapshot[k] for k in ('quantity_btc','entry','wallet_usdt','possible_entry_remainders','last_fill_id'))):
         raise Unknown('account changed during ownership recovery')
     # The default native cursor covers only seven days. A stable empty window
@@ -253,6 +253,11 @@ def reconcile(state, reader, model, snapshot):
     else:model.primary_consumed=campaign
     model.consumed=campaign
     model.position_campaign=campaign if total else None
+    if (not total and model.exit_cause=='price' and model.exit_campaign==campaign
+            and model.model.active is not None and model.model.active.identity==campaign):
+        # A pierced signal stays active while its final-mark exit is pending.
+        # Verified flat fills now settle it without occupying the signal slot.
+        model.model.active=None
     if model.position_campaign!=model.exit_campaign:
         model.exit_cause=model.exit_stop=model.exit_campaign=None
     state.set('linear_campaign',model.checkpoint())

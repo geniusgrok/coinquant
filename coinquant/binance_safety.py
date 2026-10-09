@@ -7,7 +7,7 @@ import json
 from decimal import Decimal as D, ROUND_CEILING
 from .config import scope
 from .state import client_id
-from .binance import market_quantity
+from .binance import conditional_is_terminal, market_quantity
 from .types import Blocked, NotSent, Rejected, Unknown, number
 
 
@@ -31,7 +31,9 @@ def risk_reducing(state, pending):
 def _check_owner(snapshot, expected_owner):
     if expected_owner is None:return
     fields=('account_uid','quantity_btc','entry','wallet_usdt','last_fill_id','possible_entry_remainders')
-    if (any(k not in snapshot or k not in expected_owner for k in fields)
+    if (snapshot.get('recent_fill_window_complete') is False
+            or expected_owner.get('recent_fill_window_complete') is False
+            or any(k not in snapshot or k not in expected_owner for k in fields)
             or type(expected_owner['last_fill_id']) is not int
             or type(snapshot['last_fill_id']) is not int
             or expected_owner['last_fill_id']<-1):
@@ -128,17 +130,8 @@ def settled_protection(reader,state,identity):
         return True
     if not reader.conditional_terminal(identity):return False
     observed=reader.query_intent(identity,conditional=True)
-    parent,child=observed['parent'],observed['child']
-    if parent.get('algoStatus') not in ('CANCELED','EXPIRED','REJECTED','FINISHED'):
+    if not conditional_is_terminal(observed):
         raise Unknown('protective terminal state changed')
-    if child is not None:
-        if (child.get('status') not in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
-                or not 0<=D(child['executedQty'])<=D(child['origQty'])
-                or child['status']=='FILLED' and D(child['executedQty'])!=D(child['origQty'])
-                or child['status']=='REJECTED' and D(child['executedQty'])):
-            raise Unknown('protective child terminal state changed')
-    elif parent['algoStatus']=='FINISHED':
-        raise Unknown('finished protection lacks child evidence')
     settled[identity]=observed
     state.set('settled_protection',settled)
     return True
@@ -268,14 +261,18 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,
     persisted before the separate wallet readback; a lost answer is settled only
     from native margin history, never from a balance change or a resend.
     """
-    before=_gate(reader,state,uid,authorized,snapshot=snapshot,expected_owner=expected_owner)
+    # Funding and margin changes do not move the fill cursor. Re-read funds even
+    # when the lifecycle supplied its earlier ownership snapshot.
+    before=_gate(reader,state,uid,authorized,expected_owner=expected_owner)
     if not D(before['quantity_btc']) or before['possible_entry_remainders']:raise Blocked('unsafe margin scope')
     places=instrument.get('quotePrecision')
     if (instrument.get('symbol')!='BTCUSDT' or instrument.get('marginAsset')!='USDT'
             or type(places) is not int or not 0<=places<=8):
         raise Blocked('settlement amount precision unavailable')
     amount=(D(target)-D(before['isolated_wallet_usdt'])).quantize(D(1).scaleb(-places),rounding=ROUND_CEILING)
-    if not 0<amount<=D(before['wallet_usdt'])-D(before['isolated_wallet_usdt']):
+    if before.get('available_usdt') is None:
+        raise Unknown('native available margin is unavailable')
+    if not 0<amount<=min(number(before['available_usdt']),D(before['wallet_usdt'])-D(before['isolated_wallet_usdt'])):
         raise Blocked('margin addition must be funded from existing wallet')
     identity=client_id(state.identity,epoch,'margin_add')
     payload=dict(symbol='BTCUSDT',positionSide='BOTH',amount=format(amount.normalize(),'f'),type=1)

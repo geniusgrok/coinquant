@@ -8,7 +8,7 @@ from coinquant.binance import REJECT_CODES, market_quantity
 from coinquant.binance_safety import send_once
 from coinquant.lifecycle import Lifecycle
 from coinquant.state import State
-from coinquant.types import Blocked, Unknown
+from coinquant.types import Blocked, Missing, Unknown
 from tests.session_venue import Venue
 from tests.test_binance_quantity import instrument
 from tests import test_margin_intents as margin_fixture
@@ -99,6 +99,12 @@ class AbsentOrderTests(unittest.TestCase):
         venue = Venue()
         venue.now = int(now[0] * 1000)
         venue.clock = lambda: now[0]
+        original_get=venue.get
+        def get(path,params=None):
+            if path=='/fapi/v1/order' and params.get('origClientOrderId')=='cq-x':
+                raise Missing('Binance reports -2013 within retention')
+            return original_get(path,params)
+        venue.get=get
         with State(tmp.name, 'binance:BTCUSDT:live:123') as state:
             payload = dict(symbol='BTCUSDT', side='BUY', positionSide='BOTH', type='LIMIT', quantity='0.001')
             state.prepare('cq-x', 'binance_order', payload, result={'prepared_at_ms': int(now[0] * 1000)})

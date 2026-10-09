@@ -58,6 +58,22 @@ MAX_RESPONSE_BYTES = 8000000
 MIN_WRITE_SECONDS = 2.0
 
 
+def conditional_is_terminal(observed):
+    """A terminal child settles a triggered parent, even before FINISHED arrives."""
+    parent,child=observed['parent'],observed['child']
+    status=parent.get('algoStatus')
+    if status not in ('CANCELED','EXPIRED','REJECTED','FINISHED','TRIGGERED'):
+        return False
+    if child is None:
+        return status not in ('FINISHED','TRIGGERED')
+    original=number(child.get('origQty'),positive=True);filled=number(child.get('executedQty'))
+    if not 0<=filled<=original:raise Unknown('invalid protection child quantities')
+    status=child.get('status')
+    if status=='FILLED' and filled!=original:raise Unknown('incomplete filled protection child')
+    if status in ('NEW','REJECTED') and filled:raise Unknown('unfilled child status reports fills')
+    return status in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
+
+
 def _retry_after(exc):
     try:
         return max(60, min(86400, float(exc.headers.get('Retry-After', '60'))))
@@ -451,23 +467,7 @@ class Binance:
 
     def conditional_terminal(self, identity):
         """A canceled parent is not proof that its triggered child stopped trading."""
-        observed=self.query_intent(identity,conditional=True)
-        parent,child=observed['parent'],observed['child']
-        status=parent.get('algoStatus')
-        # TRIGGERED is terminal only once its child has reached a terminal state.
-        if status=='TRIGGERED':
-            if child is None:return False
-        elif status not in ('CANCELED','EXPIRED','REJECTED','FINISHED'):
-            return False
-        if child is None:
-            if status=='FINISHED':raise Unknown('finished protection lacks child evidence')
-            return True
-        original=number(child.get('origQty'),positive=True);filled=number(child.get('executedQty'))
-        if original<=0 or not 0<=filled<=original:raise Unknown('invalid protection child quantities')
-        status=child.get('status')
-        if status=='FILLED' and filled!=original:raise Unknown('incomplete filled protection child')
-        if status=='REJECTED' and filled:raise Unknown('rejected child with fills')
-        return status in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
+        return conditional_is_terminal(self.query_intent(identity,conditional=True))
 
     def recover_pending(self, state):
         """Read-only terminal reconciliation; no missing-order retry inference.
@@ -567,17 +567,9 @@ class Binance:
                         state.finish(intent['id'],'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
                         resolved+=1
                         continue
-                    status_name=parent.get('algoStatus')
-                    if status_name=='TRIGGERED' and (child is None or child.get('status') not in (
-                            'FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')):
-                        continue
-                    parent_terminal = status_name in ('FINISHED', 'CANCELED', 'EXPIRED', 'REJECTED', 'TRIGGERED')
-                    if not parent_terminal:
+                    if not conditional_is_terminal(observed):
                         continue
                     if child is None:
-                        # FINISHED without child identity is insufficient evidence.
-                        if parent.get('algoStatus') == 'FINISHED':
-                            continue
                         state.finish(intent['id'], 'confirmed', {'algo_status': parent['algoStatus'], 'child': None},
                                      native=observed)
                         resolved += 1
@@ -618,6 +610,10 @@ class Binance:
         now=int(self.clock()*1000)
         if (intent['status']!='unknown' or type(prepared) is not int
                 or not UNACCEPTED_AFTER_MS<=now-prepared<QUERYABLE_MS):
+            return False
+        # Recovery and flat retirement use the same evidence. A missing-query
+        # result alone cannot bypass the open-order and complete-fill checks.
+        if not self.proven_absent(state,intent):
             return False
         # Binance keeps every order that ever had a fill queryable, so "does not exist"
         # inside the retention window is authoritative. A reduction can only reduce
@@ -686,12 +682,12 @@ class Binance:
         The open list must not contain it, and every trade since preparation must
         already be archived. A failed query or a full trade page is not absence.
         """
-        from .types import Missing
-        kind=intent['kind']
+        row=state.db.execute('SELECT kind,result FROM intents WHERE id=?',(intent['id'],)).fetchone()
+        if not row:return False
+        kind=row[0]
         if kind not in ('binance_order','binance_algo'):
             return False
-        row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
-        result=json.loads(row[0]) if row else {}
+        result=json.loads(row[1])
         prepared=result.get('prepared_at_ms')
         now=int(self.clock()*1000)
         if type(prepared) is not int or not UNACCEPTED_AFTER_MS<=now-prepared<QUERYABLE_MS:
@@ -713,15 +709,18 @@ class Binance:
             else:
                 rows=self.get('/fapi/v1/openAlgoOrders',{'symbol':'BTCUSDT'})
                 field='clientAlgoId'
-            if not isinstance(rows,list) or any(isinstance(item,dict) and item.get(field)==intent['id'] for item in rows):
+            if (not isinstance(rows,list) or any(not isinstance(item,dict)
+                    or item.get('symbol')!='BTCUSDT' or not isinstance(item.get(field),str) for item in rows)
+                    or any(item[field]==intent['id'] for item in rows)):
                 return False
-            trades=self._trade_page({'symbol':'BTCUSDT','startTime':prepared,'limit':1000})
+            begin=max(0,prepared-15000)
+            trades=self._trade_page({'symbol':'BTCUSDT','startTime':begin,'endTime':now,'limit':1000})
         except (Blocked,Unknown,TypeError):
             return False
         if len(trades)>=1000:
             return False
-        known={item[0] for item in state.db.execute('SELECT trade_id FROM native_fills')}
-        return all(trade.get('id') in known for trade in trades)
+        known={tid:json.loads(raw) for tid,raw in state.db.execute('SELECT trade_id,payload FROM native_fills')}
+        return all(known.get(trade['id'])==trade for trade in trades)
 
     def snapshot(self, expected_uid):
         uid=self.account_identity()
@@ -772,15 +771,18 @@ class Binance:
         fills=self.get('/fapi/v1/userTrades',parameters)
         if not isinstance(fills,list) or len(fills)>1000:
             raise Unknown('recent trade response is missing or oversized')
-        if any(f.get('symbol')!='BTCUSDT' for f in fills):
+        if any(not isinstance(f,dict) or f.get('symbol')!='BTCUSDT' for f in fills):
             raise Unknown('unexpected recent trade scope')
         if (any(type(f.get('id')) is not int or f['id']<0 for f in fills)
                 or len({f['id'] for f in fills})!=len(fills)):
             raise Unknown('invalid native fill cursor')
+        if 'startTime' in parameters or 'endTime' in parameters:
+            if any(type(f.get('time')) is not int or not parameters.get('startTime',0)<=f['time']<=parameters.get('endTime',int(self.clock()*1000)) for f in fills):
+                raise Unknown('fill response is outside the requested time window')
         return fills
 
     def _recent_fills(self):
-        """Latest BTCUSDT fills. A full page continues by id and is not a cursor."""
+        """Verify the latest BTCUSDT cursor, independently of full ownership history."""
         fills=self._trade_page({'symbol':'BTCUSDT','limit':1000})
         if len(fills)<1000:
             return fills,True

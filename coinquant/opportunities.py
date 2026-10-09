@@ -50,10 +50,10 @@ class Opportunities:
         self.active = None
         self.lows = deque(maxlen=WINNER_LOW_BARS)
         self.fill = None
-        # Set only on the bar that ends a campaign. None while it continues.
+        # A completed-bar exit condition; owned stop touches await mark review.
         self.exit_event = None
 
-    def update(self, end, high, low, close, *, effective_protection=None):
+    def update(self, end, high, low, close, *, effective_protection=None, defer_stop_exit=False):
         if self.last is not None and end != self.last + self.interval:
             raise ValueError('incomplete model clock')
         if not 0 < low <= close <= high:
@@ -87,8 +87,9 @@ class Opportunities:
                 if effective:
                     effective_stop = D(effective_protection['stop'])
                     effective_take = D(effective_protection['take'])
-            through = effective and (low <= effective_stop or high >= effective_take
-                                     if a.direction > 0 else high >= effective_stop or low <= effective_take)
+            through_stop = effective and (low <= effective_stop if a.direction > 0 else high >= effective_stop)
+            through_take = effective and (high >= effective_take if a.direction > 0 else low <= effective_take)
+            through = through_stop or through_take
             fill = self.fill
             extend = (a.direction > 0 and not extended and time_up and not through
                       and fill is not None and fill > stop
@@ -108,9 +109,17 @@ class Opportunities:
                     stop = max(stop, fill)
                 take = max(take, peak * 5)
             if through or (time_up and not extended):
-                self.exit_event = {'cause': 'price' if through else 'time',
-                                   'stop': str(effective_stop) if through else None}
-                self.active = None
+                # Expiry remains unconditional even when this same candle also
+                # pierces the stop. A take hit is not a stop-price condition.
+                cause = 'time' if time_up and not extended else 'take' if through_take else 'price'
+                self.exit_event = {'cause': cause,
+                                   'stop': str(effective_stop) if cause == 'price' else None}
+                # Trade lows cannot prove a MARK_PRICE stop filled. Keep an
+                # owned campaign's expiry/trail until execution has reconciled
+                # the position; a rebound must not permanently erase them.
+                self.active = (Opportunity(a.identity, a.direction, stop, take, expires,
+                                           a.anchor, a.risk, peak, extended)
+                               if cause == 'price' and defer_stop_exit else None)
             elif (peak != a.peak or stop != a.stop or take != a.take
                   or extended != a.extended or expires != a.expires):
                 self.active = Opportunity(a.identity, a.direction, stop, take, expires,

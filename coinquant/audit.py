@@ -52,7 +52,9 @@ def income(reader,state,*,force=False,wallet=None,
         page_number+=1
     result=dict(origin=coverage['origin'] if coverage else start,through=now,
                 observed_transactions=0,
-                wallet_closure='collected',closure=coverage.get('closure') if coverage else None)
+                # A new collection has not closed any wallet until the check
+                # below succeeds. A wallet-less refresh cannot extend old proof.
+                wallet_closure='collected',closure=None)
     with state.db:
         for (kind,identity),event in observed.items():
             prior=state.db.execute('SELECT payload FROM native_income WHERE kind=? AND transaction_id=?',(kind,identity)).fetchone()
@@ -65,6 +67,44 @@ def income(reader,state,*,force=False,wallet=None,
             result['closure']=dict(state=state_name,wallet=wallet_text,at=now)
         state.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('income_coverage',json.dumps(result,sort_keys=True)))
     return result
+
+
+def funding_debit(reader,state,campaign,snapshot):
+    """Verified paid BTC funding for an add; receipts never refill its budget."""
+    links=state.get('entry_campaigns') or {}
+    if not isinstance(links,dict) or any(not isinstance(link,dict) for link in links.values()):
+        raise Unknown('campaign funding boundary unavailable')
+    starts=[link.get('prepared_at') for link in links.values() if link.get('campaign')==campaign]
+    if (not starts or any(type(stamp) is not int or stamp<=0 for stamp in starts)
+            or any(link.get('campaign')!=campaign for link in links.values())):
+        raise Unknown('campaign funding boundary unavailable')
+    start=min(starts)  # Includes the existing conservative 15-second overlap.
+    first=snapshot.get('wallet_observed_from_ms',snapshot.get('observed_at_ms'))
+    last=snapshot.get('wallet_observed_until_ms',snapshot.get('observed_at_ms'))
+    if type(first) is not int or type(last) is not int or not start<=first<=last:
+        raise Unknown('campaign funding wallet boundary unavailable')
+    coverage=state.get('income_coverage') or {}
+    closure=coverage.get('closure') or {}
+    # Equal wallet balances can hide funding offset by a receipt or realized
+    # profit. Only an audit of this wallet observation may supply add costs.
+    fresh=type(closure.get('at')) is int and closure['at']>=last
+    proof=income(reader,state,force=not fresh,wallet=snapshot.get('wallet_usdt'),
+                 wallet_observed_from_ms=first,wallet_observed_until_ms=last)
+    if (not allows_new_risk(proof,snapshot.get('wallet_usdt'),flat=False)
+            or type(proof.get('origin')) is not int or proof['origin']>start
+            or type(proof.get('through')) is not int or proof['through']<last):
+        raise Unknown('campaign funding history does not close the current wallet')
+    paid=number(0)
+    for payload, in state.db.execute("SELECT payload FROM native_income WHERE kind='FUNDING_FEE'"):
+        row=json.loads(payload);stamp=row.get('time')
+        if type(stamp) is not int:
+            raise Unknown('funding observation time unavailable')
+        if stamp<start:continue
+        if (stamp>proof['through'] or row.get('asset')!='USDT'
+                or not isinstance(row.get('symbol'),str) or not row['symbol']):
+            raise Unknown('campaign funding scope unavailable')
+        if row['symbol']=='BTCUSDT':paid+=max(number(0),-number(row.get('income')))
+    return paid
 
 
 def _wallet_closure(state, wallet, now, wallet_from=None, wallet_until=None):

@@ -60,12 +60,14 @@ class Campaign:
         # history must not extend a different impulse with a later entry price.
         self.model.fill=self.entry_fill if owned else None
         protection=effective_protection if owned else None
-        opportunity=self.model.update(end,*values,effective_protection=protection)
+        opportunity=self.model.update(end,*values,effective_protection=protection,defer_stop_exit=owned)
         event=self.model.exit_event
-        if owned and isinstance(event,dict) and event.get('cause') in ('price','time'):
+        if owned and isinstance(event,dict) and event.get('cause') in ('price','time','take'):
             self.exit_cause=event['cause']
             self.exit_campaign=owned_id
             self.exit_stop=event.get('stop') if event.get('cause')=='price' else None
+        elif owned and self.exit_cause=='price' and self.exit_campaign==owned_id:
+            self.exit_cause=self.exit_stop=self.exit_campaign=None
         self.day_low=min(self.day_low,values[1]) if self.day_low is not None else values[1]
         if end%DAY==0:
             if self.previous_daily is not None:self.returns.append(values[2]/self.previous_daily-1)
@@ -144,6 +146,8 @@ class Campaign:
     def action(self, quantity):
         if quantity and self.position_campaign is None:
             raise Blocked('position campaign unknown; market replay cannot reconstruct fills')
+        if quantity and self.exit_cause is not None and self.exit_campaign==self.position_campaign:
+            return 'exit'
         selected=self.active
         consumed=(self.position_campaign if quantity else
                   self.macro_consumed if selected is self.macro_opportunity else self.primary_consumed)
@@ -238,16 +242,21 @@ class Campaign:
             result.exit_cause=body['exit_cause']
             result.exit_stop=body['exit_stop']
             result.exit_campaign=body['exit_campaign']
-            if result.exit_cause not in (None,'price','time'):
+            if result.exit_cause not in (None,'price','time','take'):
                 raise ValueError('exit cause')
-            if result.exit_cause=='price' and (not isinstance(result.exit_stop,str) or D(result.exit_stop)<=0):
+            if result.exit_cause=='price' and (not isinstance(result.exit_stop,str)
+                    or not D(result.exit_stop).is_finite() or D(result.exit_stop)<=0):
                 raise ValueError('exit stop')
+            if result.exit_cause=='price' and (result.model.active is None
+                    or result.model.active.identity!=result.exit_campaign
+                    or result.position_campaign!=result.exit_campaign):
+                raise ValueError('price exit lost its owned campaign geometry')
             if result.exit_cause!='price':
                 result.exit_stop=None
             if result.exit_campaign is not None and (type(result.exit_campaign) is not int or result.exit_campaign==0):
                 raise ValueError('exit campaign')
             event=result.model.exit_event
-            if event is not None and (not isinstance(event,dict) or event.get('cause') not in ('price','time')):
+            if event is not None and (not isinstance(event,dict) or event.get('cause') not in ('price','time','take')):
                 raise ValueError('exit event')
             if (result.macro_epoch is not None and
                 (type(result.macro_epoch) is not int or not -(result.last+interval)<result.macro_epoch<0)):

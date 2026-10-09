@@ -170,9 +170,12 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
     started=monotonic();deadline=started+config.session_seconds
     report=dict(status='read_only',cycles=0,write_attempted=False,errors=[],observation_timeouts=0,
                 stop_reason='deadline',cleanup='not_required',
-                session_started_at_ms=int(reader.clock()*1000))
+                session_started_at_ms=int(reader.clock()*1000),
+                risk_limits=dict(max_stop_loss_fraction=config.max_stop_loss_fraction,
+                                 stop_slippage_fraction=config.stop_slippage_fraction))
     if trial_mode is not None:report['trial_mode']=trial_mode
     if source_digest is not None:report['source_digest']=source_digest
+    if config.capital_limit is not None:report['sizing_capital_usdt']=str(config.capital_limit)
     if (getattr(reader,'environment','live')!=config.environment
             or getattr(reader,'capital_limit',None)!=config.capital_limit
             or getattr(reader,'loss_fraction',None)!=config.loss_fraction
@@ -222,7 +225,8 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
         finally:
             if execute:
                 # No new entry is permitted here. Native protection remains at process exit.
-                engine=Lifecycle(reader,state,config.account_uid,authorized=True)
+                engine=Lifecycle(reader,state,config.account_uid,authorized=True,
+                                 session=report['session_started_at_ms'])
                 cleanup_deadline=min(deadline+ABSOLUTE_GRACE,monotonic()+ABSOLUTE_GRACE)
                 if hasattr(reader,'hard_deadline'):reader.hard_deadline=cleanup_deadline
                 interrupted=False
@@ -276,8 +280,6 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
             report['protection_replacement_pending']=bool(state.get('session_replacement') or (
                 (state.get('binance_protection_replacement') or {}).get('done') is False
                 and state.get('binance_protection_replacement')))
-            if config.capital_limit is not None:
-                report['sizing_capital_usdt']=str(config.capital_limit)
             if execute:report['entry_timing']=state.get('entry_timing')
             report['write_attempted']=(state.get('write_attempt_count') or 0)>prior_writes
             if report['pending_intents']:

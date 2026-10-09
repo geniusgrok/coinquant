@@ -63,8 +63,20 @@ def trial_gate(path, config, *, mode, uid, evidence=None):
                 not demo_limit.is_finite() or demo_limit<config.capital_limit or
                 any(not isinstance(proof.get(k),str) or not proof[k] for k in required)):
             raise Blocked('Demo closure evidence is absent or belongs to different execution code')
+        for field in ('max_stop_loss_fraction','stop_slippage_fraction'):
+            try:
+                value=Decimal(proof[field])
+            except (KeyError,InvalidOperation,TypeError):
+                raise Blocked('Demo closure lacks its risk configuration') from None
+            configured=getattr(config,field)
+            # Disabling both entry budgets still permits management of existing
+            # exposure; its earlier Demo execution used the recorded risk limits.
+            if not value.is_finite() or not 0<value<1 or configured is not None and value!=Decimal(configured):
+                raise Blocked('Demo and live trial risk configurations differ')
         demo=Config(proof['demo_uid'],proof['demo_state_dir'],environment='demo',
-                    capital_limit_usdt=proof['demo_capital_limit_usdt'])
+                    capital_limit_usdt=proof['demo_capital_limit_usdt'],
+                    max_stop_loss_fraction=proof['max_stop_loss_fraction'],
+                    stop_slippage_fraction=proof['stop_slippage_fraction'])
         reader=connect(demo)
         reader.begin_cycle(120)
         verify_demo_evidence(proof,source_digest(),config.capital_limit,reader)
@@ -135,6 +147,8 @@ def _dispatch(args):
         proof=dict(source_digest=source_digest(),demo_uid=config.account_uid,
                    demo_state_dir=str(Path(config.state_dir).expanduser().resolve()),
                    demo_capital_limit_usdt=config.capital_limit_usdt,
+                   max_stop_loss_fraction=config.max_stop_loss_fraction,
+                   stop_slippage_fraction=config.stop_slippage_fraction,
                    **{key:getattr(args,key) for key in IDS})
         reader=connect(config)
         reader.begin_cycle(120)

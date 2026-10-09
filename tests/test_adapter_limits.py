@@ -1,5 +1,6 @@
 """Native adapter limits, cleanup budgets and absent-order retirement."""
 import io
+import json
 import tempfile
 from http.client import IncompleteRead
 from pathlib import Path
@@ -13,7 +14,7 @@ from coinquant.config import Config
 from coinquant.lifecycle import FINISH_SECONDS, REDUCE_SECONDS, Lifecycle
 from coinquant.session import run
 from coinquant.state import State
-from coinquant.types import Blocked, NotSent, ObservationDeadline, Unknown
+from coinquant.types import Blocked, Missing, NotSent, ObservationDeadline, Unknown
 from tests.session_venue import Venue
 
 SCOPE = 'binance:BTCUSDT:live:123'
@@ -93,6 +94,15 @@ class AbsentOrderRetirement(TestCase):
         self.assertGreater(self.venue.q, 0)
         self.state = State(self.tmp.name, SCOPE).__enter__()
         self.now = int(self.venue.clock() * 1000)
+        self.assertEqual([json.loads(raw) for raw, in self.state.db.execute(
+            'SELECT payload FROM native_fills ORDER BY trade_id')],self.venue.trades)
+        original_get=self.venue.get
+        def get(path,params=None):
+            if (path=='/fapi/v1/order' and params.get('origClientOrderId')
+                    and params['origClientOrderId'] not in self.venue.orders):
+                raise Missing('Binance reports -2013 within retention')
+            return original_get(path,params)
+        self.venue.get=get
 
     def tearDown(self):
         self.state.__exit__(None, None, None)
