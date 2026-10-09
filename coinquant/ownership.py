@@ -3,7 +3,7 @@ import json
 import calendar
 from datetime import datetime, timezone
 from decimal import Decimal as D
-from .types import Unknown, number
+from .types import Blocked, Unknown, number
 
 
 TERMINAL = ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
@@ -263,7 +263,21 @@ def reconcile(state, reader, model, snapshot):
     # Reuse the last verified account observation, including its mark, protection
     # and wallet observation window, for the caller's decision and safety gate.
     snapshot.update(again)
+    # Missing cost metadata blocks new risk at its caller, never protection or
+    # exit. Keep all paid costs and realized PnL after partial reductions.
+    try:
+        commissions=[number(t.get('commission')) for t in trades]
+        paid_fees=(sum(commissions,D(0)) if all(t.get('commissionAsset')=='USDT' for t in trades)
+                   and all(fee>=0 for fee in commissions) else None)
+    except (Blocked,ArithmeticError):paid_fees=None
+    try:
+        realized_pnl=(sum((number(t.get('realizedPnl')) for t in trades),D(0))
+                      if all(t.get('marginAsset','USDT')=='USDT' for t in trades) else None)
+    except (Blocked,ArithmeticError):realized_pnl=None
     return {'status':'reconciled','campaign':campaign,'quantity':str(total),'fill_count':len(trades),
+            'campaign_fee_usdt':str(paid_fees) if paid_fees is not None else None,
+            'campaign_realized_pnl_usdt':str(realized_pnl) if realized_pnl is not None else None,
+            'last_fill_id':max(t['id'] for t in trades),
             'protection_slippage':protection_slippage,
             'protection_confirmed':snapshot.get('native_full_position_protected',False),
             'entry_remainder':snapshot['possible_entry_remainders']}

@@ -748,6 +748,18 @@ class Lifecycle:
             return snapshot
         if model.active is model.macro_opportunity and fill.get('stop_budget') is None:
             return snapshot
+        proof=self.reconciled
+        ownership=proof[2] if proof and proof[0] is snapshot and proof[1]==len(self.actions) else {}
+        if (ownership.get('status')!='reconciled'
+                or ownership.get('campaign')!=fill['campaign']
+                or type(ownership.get('last_fill_id')) is not int
+                or ownership['last_fill_id']!=snapshot.get('last_fill_id')
+                or number(ownership.get('quantity','0'))!=number(snapshot['quantity_btc'])
+                or ownership.get('campaign_fee_usdt') is None
+                or ownership.get('campaign_realized_pnl_usdt') is None):
+            self.entry_constraint='campaign_costs_unverified'
+            return snapshot
+        expected_owner=dict(snapshot)
         try:
             self.reader.refresh_safety_observation()
             self.reader.ensure_capacity(TOPUP_RESERVE+PREVIEW_WEIGHT)
@@ -756,15 +768,17 @@ class Lifecycle:
         try:
             plan = topup_preview(self.reader, model, snapshot, fill['requested'],
                                  protection['stop'], protection['take'], fill.get('stop_budget'),
-                                 fill.get('sizing_capital'),fill.get('stop_slippage_fraction'))
+                                 fill.get('sizing_capital'),fill.get('stop_slippage_fraction'),
+                                 paid_commission_usdt=ownership['campaign_fee_usdt'],
+                                 realized_pnl_usdt=ownership['campaign_realized_pnl_usdt'])
         except ValueError:
             return snapshot
         self.entry_constraint = plan['constraint']
         if not number(plan['quantity_btc']):
             return snapshot
         fresh = self.reader.snapshot(self.uid)
-        if (any(fresh[k] != snapshot[k] for k in ('quantity_btc','wallet_usdt','possible_entry_remainders'))
-                or fresh['open_orders'] or not self.planned_protection(fresh)):
+        safety._check_owner(fresh,expected_owner)
+        if fresh['open_orders'] or not self.planned_protection(fresh):
             raise Unknown('account changed between top-up sizing and order')
         if abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:
             raise Unknown('top-up preflight expired')
@@ -791,10 +805,13 @@ class Lifecycle:
             except Unknown:
                 return fresh
             # The earlier safety checks predate the transfer; the add needs them again.
-            if (number(fresh['quantity_btc'])!=number(snapshot['quantity_btc'])
-                    or fresh['possible_entry_remainders'] or fresh['open_orders']
+            safety._check_owner(fresh,expected_owner)
+            if (fresh['possible_entry_remainders'] or fresh['open_orders']
                     or not self.planned_protection(fresh)):
                 raise Unknown('exposure or protection changed during the margin transfer; no add')
+        safety._check_cursor(self.reader,expected_owner)
+        if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
+            return fresh
         identity = client_id(self.state.identity,epoch,'entry')
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
                        timeInForce='IOC',quantity=plan['quantity_btc'],

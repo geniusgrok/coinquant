@@ -98,21 +98,23 @@ class Venue(Binance):
 
     def fill(self,order,amount):
         self.updated=self.now
-        wallet=self.wallet
         signed=amount if order['side']=='BUY' else -amount
+        price=self.mark if order['reduceOnly'] else D(order['price'])
+        commission=amount*price*D('.0005')
+        realized=-signed*(price-self.entry) if order['reduceOnly'] else D(0)
         if order['reduceOnly']:
-            self.wallet+=-signed*(self.mark-self.entry)-amount*self.mark*D('.0005')
+            self.wallet+=realized-commission
             self.margin*=1-amount/abs(self.q)
             self.q+=signed
             if not self.q:self.entry=self.margin=D(0)
         else:
-            price=D(order['price'])
             if amount:self.entry=(abs(self.q)*self.entry+amount*price)/(abs(self.q)+amount)
             self.q+=signed;self.margin+=amount*price/20
-            self.wallet-=amount*self.entry*D('.0005')
-        if self.wallet!=wallet:self.pay('COMMISSION',self.wallet-wallet)
+            self.wallet-=commission
+        if commission:self.pay('COMMISSION',-commission)
+        if realized:self.pay('REALIZED_PNL',realized)
         if amount:
-            self.trades.append(dict(symbol='BTCUSDT',positionSide='BOTH',side=order['side'],orderId=order['orderId'],id=len(self.trades)+1,time=self.now,qty=str(amount)))
+            self.trades.append(dict(symbol='BTCUSDT',positionSide='BOTH',side=order['side'],orderId=order['orderId'],id=len(self.trades)+1,time=self.now,qty=str(amount),price=str(price),commission=str(commission),commissionAsset='USDT',realizedPnl=str(realized)))
         order['executedQty']=str(D(order['executedQty'])+amount)
 
     def send(self,method,path,p):

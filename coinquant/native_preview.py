@@ -18,6 +18,17 @@ def _loss_per_btc(direction, entry, stop, fee, slip):
     return direction*(entry-stop)+entry*fee+stop*(slip+(1+slip)*fee)
 
 
+def _stop_budget(reader, capital):
+    fraction=getattr(reader,'loss_fraction',None)
+    slip=getattr(reader,'slip_fraction',None)
+    if fraction is None or slip is None:
+        raise Blocked('stop loss budget and slippage must be configured before new risk')
+    fraction=number(fraction,positive=True);slip=number(slip,positive=True)
+    if fraction>=1 or slip>=1:
+        raise Blocked('invalid loss budget or stop slippage')
+    return capital*fraction,slip
+
+
 def _venue(reader, model, snapshot, direction):
     info=reader.get('/fapi/v1/exchangeInfo')
     instruments=[x for x in info['symbols'] if x.get('symbol')=='BTCUSDT']
@@ -71,24 +82,31 @@ def _venue(reader, model, snapshot, direction):
     fresh=reader.snapshot(snapshot['account_uid'])
     if fresh['mark_time']//14400000*14400000!=model.last:
         raise Unknown('a new completed candle requires model catch-up')
-    if any(fresh[k]!=snapshot[k] for k in ('wallet_usdt','quantity_btc','possible_entry_remainders')):
+    if (any(fresh[k]!=snapshot[k] for k in ('wallet_usdt','quantity_btc','entry','possible_entry_remainders'))
+            or fresh.get('last_fill_id')!=snapshot.get('last_fill_id')):
         raise Unknown('account changed during preflight')
     available=fresh.get('available_usdt')
     if available is None:raise Unknown('available USDT balance missing')
     wallet=number(fresh['wallet_usdt']);available=number(available)
     if not 0<=available<=wallet:raise Unknown('unsupported available collateral')
+    equity=fresh.get('equity_usdt')
+    if equity is None:raise Unknown('account equity missing for stop budget')
+    equity=number(equity,positive=True)
+    mark=number(fresh['mark_price'],positive=True)
+    if equity!=wallet+number(fresh['quantity_btc'])*(mark-number(fresh['entry'])):
+        raise Unknown('account equity disagrees with the observed position')
     if abs(int(reader.clock()*1000)-stamp)>15000:raise Unknown('book expired during account refresh')
     raw_price=(asks[0][0]*D('1.001') if direction>0 else bids[0][0]*D('.999'))
     price=(floor_step(raw_price,tick) if direction>0 else (raw_price/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
     capacity=sum((q for p,q in (asks if direction>0 else bids) if (p<=price if direction>0 else p>=price)),D(0))*BOOK_PARTICIPATION
     limit=getattr(reader,'capital_limit',None)
+    capital=wallet if limit is None else min(wallet,limit)
     return dict(instrument=instrument,rule=filters[0],tick=tick,fee=fee,cap=cap,mmr=mmr,fresh=fresh,
                 wallet=wallet,available=available,price=price,capacity=capacity,
                 quote=dict(observed_at_ms=stamp,best_bid=str(bids[0][0]),best_ask=str(asks[0][0]),
                            visible_limit_depth_btc=str(capacity/BOOK_PARTICIPATION),
                            participation_fraction=str(BOOK_PARTICIPATION)),
-                capital=wallet if limit is None else min(wallet,limit),
-                mark=number(fresh['mark_price'],positive=True))
+                capital=capital,equity=equity,risk_capital=min(capital,equity),mark=mark)
 
 
 def _funded_quantity(v, direction, stop, take, requested, *, q=D(0), entry=D(0), margin=D(0)):
@@ -164,27 +182,16 @@ def entry_preview(reader, model, snapshot):
         raise Blocked('protection outside current price limits')
     fraction=model.entry_fraction('.0011')
     target=capital*fraction/max(price,mark)
-    budget=None
-    loss_fraction=getattr(reader,'loss_fraction',None)
-    slip_fraction=getattr(reader,'slip_fraction',None)
-    if (loss_fraction is None)!=(slip_fraction is None):
-        raise Blocked('loss budget and slippage configuration disagree')
-    if loss_fraction is not None:
-        loss_fraction=number(loss_fraction,positive=True)
-        slip_fraction=number(slip_fraction,positive=True)
-        if loss_fraction>=1 or slip_fraction>=1:
-            raise Blocked('invalid loss budget or stop slippage')
-        budget=capital*loss_fraction
+    # Flat entry equity equals the wallet. A trial capital ceiling applies to
+    # both cash funding and the equity amount from which loss may be budgeted.
+    budget,slip_fraction=_stop_budget(reader,v['risk_capital'])
     if opportunity is model.macro_opportunity:
         # The macro campaign has a 3% equity-to-stop loss ceiling.
         if price<=stop:raise Blocked('macro stop must be below executable entry')
-        macro_budget=capital*MACRO_STOP_BUDGET
-        budget=macro_budget if budget is None else min(budget,macro_budget)
-    if budget is not None:
-        per_unit=(_loss_per_btc(direction,price,stop,v['fee'],slip_fraction)
-                  if slip_fraction is not None else direction*(price-stop))
-        if per_unit<=0:raise Blocked('nonpositive modeled stop loss')
-        target=min(target,budget/per_unit)
+        budget=min(budget,v['risk_capital']*MACRO_STOP_BUDGET)
+    per_unit=_loss_per_btc(direction,price,stop,v['fee'],slip_fraction)
+    if per_unit<=0:raise Blocked('nonpositive modeled stop loss')
+    target=min(target,budget/per_unit)
     result=_funded_quantity(v,direction,stop,take,target)
     return dict(quantity_btc=str(direction*result['quantity']),entry_estimate=str(price),stop=str(stop),take=str(take),
                 allocated_margin_usdt=str(result['margin']),constraint=result['reason'],
@@ -194,13 +201,13 @@ def entry_preview(reader, model, snapshot):
                 side='BUY' if direction>0 else 'SELL',campaign=opportunity.identity,
                 observed_at=v['fresh']['mark_time'],
                 quote_observation=v['quote'],
-                stop_budget_usdt=None if budget is None else str(budget),
-                stop_slippage_fraction=None if slip_fraction is None else str(slip_fraction),
+                stop_budget_usdt=str(budget),stop_slippage_fraction=str(slip_fraction),
+                account_equity_usdt=str(v['equity']),stop_budget_capital_usdt=str(v['risk_capital']),
                 sizing_capital_usdt=str(capital))
 
 
 def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=None, entry_capital=None,
-                  stop_slippage_fraction=None):
+                  stop_slippage_fraction=None, *, paid_commission_usdt=None, realized_pnl_usdt=None):
     """Size an IOC add toward the committed campaign quantity under owned protection.
 
     The existing close-all stop and take stay in force; the add is funded so the
@@ -209,6 +216,12 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
     q=number(snapshot['quantity_btc'])
     if not q or snapshot['possible_entry_remainders']:
         raise Unknown('top-up requires a reconciled position without remainders')
+    if stop_budget is None or stop_slippage_fraction is None:
+        raise Blocked('committed stop budget and slippage required before an add')
+    if paid_commission_usdt is None or realized_pnl_usdt is None:
+        raise Unknown('verified campaign commissions and realized PnL required before an add')
+    paid_fee=number(paid_commission_usdt);realized_pnl=number(realized_pnl_usdt)
+    if paid_fee<0:raise Unknown('unsupported negative campaign commission')
     direction=1 if q>0 else -1
     v=_venue(reader,model,snapshot,direction)
     tick,price=v['tick'],v['price']
@@ -217,19 +230,25 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
         raise Blocked('protection outside current price limits')
     entry=number(snapshot['entry'],positive=True)
     target=number(requested)
-    if stop_budget is not None:
-        # The whole position, not only the add, must stay inside the entry's stop budget.
-        slip=number(stop_slippage_fraction) if stop_slippage_fraction is not None else None
-        if slip is not None and not 0<slip<1:raise Blocked('invalid committed stop slippage')
-        old_loss=(_loss_per_btc(direction,entry,stop,v['fee'],slip)
-                  if slip is not None else direction*(entry-stop))
-        per_unit=(_loss_per_btc(direction,price,stop,v['fee'],slip)
-                  if slip is not None else direction*(price-stop))
-        room=number(stop_budget)-abs(q)*old_loss
-        if per_unit<=0 or room<=0:
-            target=abs(q)
-        else:
-            target=min(target,abs(q)+room/per_unit)
+    current_budget,current_slip=_stop_budget(reader,v['risk_capital'])
+    budget=number(stop_budget,positive=True)
+    slip=number(stop_slippage_fraction,positive=True)
+    if slip>=1:raise Blocked('invalid committed stop slippage')
+    slip=max(slip,current_slip)
+    # Native commissions and realized PnL remain cumulative after reductions.
+    # Only the still-unpaid exit is estimated at today's commission rate.
+    exit_cost=stop*(slip+(1+slip)*v['fee'])
+    old_loss=direction*(entry-stop)+exit_cost
+    per_unit=_loss_per_btc(direction,price,stop,v['fee'],slip)
+    # Fresh equity already includes paid costs, realized and unrealized PnL.
+    # Its remaining risk is mark-to-stop plus the still-unpaid exit cost.
+    marked_loss=direction*(v['mark']-stop)+exit_cost
+    room=min(budget-paid_fee+realized_pnl-abs(q)*old_loss,
+             current_budget-abs(q)*marked_loss)
+    if per_unit<=0 or room<=0:
+        target=abs(q)
+    else:
+        target=min(target,abs(q)+room/per_unit)
     if entry_capital is not None and v['capital']<number(entry_capital):
         # A lowered budget never grows the position back toward the earlier, larger plan.
         target=min(target,number(requested)*v['capital']/number(entry_capital))
@@ -242,4 +261,7 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
                 allocated_margin_usdt=str(result['margin']),constraint=result['reason'],
                 side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],
                 quote_observation=v['quote'],
+                stop_budget_usdt=str(budget),stop_slippage_fraction=str(slip),
+                current_equity_stop_budget_usdt=str(current_budget),
+                account_equity_usdt=str(v['equity']),stop_budget_capital_usdt=str(v['risk_capital']),
                 tick=str(tick),sizing_capital_usdt=str(v['capital']))

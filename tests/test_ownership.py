@@ -1,3 +1,4 @@
+import json
 import tempfile
 from unittest import TestCase
 from unittest.mock import Mock
@@ -155,6 +156,57 @@ class OwnershipTests(TestCase):
             for result in ({'executed_quantity':'.002'},{}):
                 with self.assertRaises(Unknown):state.finish('cq-entry','confirmed',result)
             self.assertEqual(state.pending()[0]['status'],'partial')
+
+    def test_campaign_costs_keep_entry_add_and_partial_reduction_after_restart(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with State(tmp,'binance:BTCUSDT:live:123') as state:
+                m,r,s,t=self.fixture(state)
+                t.update(commission='.125',commissionAsset='USDT',realizedPnl='0')
+                entry=r.query_intent.return_value['parent'];entry['status']='CANCELED'
+                s['possible_entry_remainders']=0
+                reconcile(state,r,m,s)
+                state.finish('cq-entry','confirmed',{'executed_quantity':'.003'})
+                add=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='LIMIT',quantity='.002')
+                state.prepare('cq-add','binance_order',add,campaign=m.last,position_snapshot=s)
+                add_order=dict(add,orderId=2,origQty='.002',executedQty='.002',status='FILLED')
+                reduce=dict(symbol='BTCUSDT',side='SELL',positionSide='BOTH',type='MARKET',quantity='.001',reduceOnly='true')
+                state.prepare('cq-reduce','binance_order',reduce)
+                reduce_order=dict(reduce,orderId=3,reduceOnly=True,origQty='.001',executedQty='.001',status='FILLED')
+                orders={'cq-entry':entry,'cq-add':add_order,'cq-reduce':reduce_order}
+                r.query_intent.side_effect=lambda identity,**kw:dict(parent=orders[identity],child=None)
+                added=dict(t,id=12,orderId=2,qty='.002',commission='.2',time=t['time']+1)
+                removed=dict(t,id=13,orderId=3,side='SELL',qty='.001',commission='.063',realizedPnl='-.25',time=t['time']+2)
+                r.get.return_value=[t,added,removed]
+                s.update(quantity_btc='.004',last_fill_id=13)
+                result=reconcile(state,r,m,s)
+                self.assertEqual(D(result['campaign_fee_usdt']),D('.388'))
+                self.assertEqual(D(result['campaign_realized_pnl_usdt']),D('-.25'))
+                self.assertEqual(result['last_fill_id'],13)
+                self.assertEqual(state.db.execute('SELECT DISTINCT entry_id FROM native_fills').fetchall(),[('cq-entry',)])
+                saved=[json.loads(row[0]) for row in state.db.execute('SELECT payload FROM native_fills ORDER BY trade_id')]
+                self.assertEqual(saved,[t,added,removed])
+            with State(tmp,'binance:BTCUSDT:live:123') as state:
+                r.get.return_value=[]
+                again=reconcile(state,r,m,s)
+                self.assertEqual(again['campaign_fee_usdt'],result['campaign_fee_usdt'])
+                self.assertEqual(again['campaign_realized_pnl_usdt'],result['campaign_realized_pnl_usdt'])
+                self.assertEqual(again['last_fill_id'],13)
+
+    def test_missing_or_unsupported_costs_do_not_block_position_reconciliation(self):
+        variants=({'commission':None},{'commission':'NaN'},{'commission':'-.001'},
+                  {'commissionAsset':'BNB'},{'commissionAsset':'BTC'},
+                  {'realizedPnl':None},{'realizedPnl':'Infinity'},{'marginAsset':'BTC'})
+        for changed in variants:
+            with self.subTest(changed=changed),tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+                m,r,s,t=self.fixture(state)
+                t.update(commission='.125',commissionAsset='USDT',realizedPnl='0')
+                t.update(changed)
+                result=reconcile(state,r,m,s)
+                self.assertEqual(result['status'],'reconciled')
+                self.assertEqual(result['quantity'],'0.003')
+                missing='campaign_fee_usdt' if any(k.startswith('commission') for k in changed) else 'campaign_realized_pnl_usdt'
+                self.assertIsNone(result[missing])
+                self.assertEqual(state.db.execute('SELECT COUNT(*) FROM native_fills').fetchone()[0],1)
 
 
 class AbsentEntryOwnership(TestCase):
