@@ -1,0 +1,18 @@
+{
+  "case": "combined",
+  "head": "7b5f6b89ca01fa3a626061b816380a827dfb41c3",
+  "runtime": "/workspace/scratch/4a60782c7dbc/diagnosis/runtimes/combined",
+  "source_sha256": "cf0dc9c7830f6b787ac6f01dfd2f731d16243cb758e8724d6e1d6e263cba5d43",
+  "spec_sha256": "67e53bf53e5cdb94fc0f6d31f3ac62c9c79acf48ee97f4972519ba6896a93cb4",
+  "protocol_sha256": "92bd7cb57e7c60f41b12e877f26c25af6ae0fc265926aaa42cf5963fe04c2f25",
+  "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+  "controller_sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f",
+  "registration_script_sha256": "dd97f042e160b60a26aedbfb55b3b79f0c3535927922f3719a7fe31e79b8b54b",
+  "control_receipt": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current-segment-002.json.gz",
+  "control_spec": "/workspace/scratch/4a60782c7dbc/remeasure-evidence/evidence/2.0.0-remeasure-20261009/spec.json",
+  "fixed_risk": {
+    "capital_limit_usdt": null,
+    "max_stop_loss_fraction": ".10",
+    "stop_slippage_fraction": ".01"
+  }
+}

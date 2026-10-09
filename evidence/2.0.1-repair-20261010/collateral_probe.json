@@ -1,0 +1,504 @@
+{
+  "kind": "pure-source-and-original-observation-collateral-probe",
+  "no_account_requests": true,
+  "original_head": "162ee7138952925ffafbc9b68be7c754c0c0a6c3",
+  "original_native_preview_sha256": "65591202285b03650878f06b90de96e120367dcc7915e52e946ff1813f4dc614",
+  "fixed_head": "b89994f0defef71718ee026800c622764b5469f2",
+  "fixed_native_preview_sha256": "3e49eaa7d0efc9a960ccd03b30ea2b34533f2593b549bf68289359b1f2c2c419",
+  "probe_sha256": "cbff45361e111793110cb651f9c629f81c2e350cb699385defbf07095666c364",
+  "fixture": {
+    "original": {
+      "quantity_btc": "21.501",
+      "entry": "100.1",
+      "stop": "99",
+      "margin_usdt": "249.185839500",
+      "observations": [
+        {
+          "mark": "100",
+          "action": "hold",
+          "reason": "within_budget",
+          "margin_cap_usdt": "249.19344373"
+        },
+        {
+          "mark": "99.995",
+          "action": "exit",
+          "reason": "isolated_margin_cap",
+          "margin_cap_usdt": "249.16656748"
+        },
+        {
+          "mark": "99.5",
+          "action": "exit",
+          "reason": "isolated_margin_cap",
+          "margin_cap_usdt": "246.50581873"
+        },
+        {
+          "mark": "99.000001",
+          "action": "exit",
+          "reason": "isolated_margin_cap",
+          "margin_cap_usdt": "243.81819911"
+        }
+      ]
+    },
+    "fixed": {
+      "quantity_btc": "20.598",
+      "entry": "100.1",
+      "stop": "99",
+      "margin_usdt": "238.720521000",
+      "observations": [
+        {
+          "mark": "100",
+          "action": "hold",
+          "reason": "within_budget",
+          "margin_cap_usdt": "249.22731752"
+        },
+        {
+          "mark": "99.995",
+          "action": "hold",
+          "reason": "within_budget",
+          "margin_cap_usdt": "249.20157002"
+        },
+        {
+          "mark": "99.5",
+          "action": "hold",
+          "reason": "within_budget",
+          "margin_cap_usdt": "246.65256752"
+        },
+        {
+          "mark": "99.000001",
+          "action": "hold",
+          "reason": "within_budget",
+          "margin_cap_usdt": "244.07782267"
+        }
+      ]
+    }
+  },
+  "first_historical_trade": {
+    "original_archive_sha256": "e3d82679260c22d152a4b93d62f249e22026ad4d6da96e5f1198bce6fc93ff14",
+    "excerpt_sha256": "558469cbbeb66f77d735cedf621661a69b97cbe61f381dc002b45793daf68179",
+    "reports": {
+      "86": {
+        "actions": [
+          {
+            "at_ms": 1578074408200,
+            "id": "cq-0a28dfd2e27054f39e9a8bbfe6a864",
+            "method": "POST",
+            "path": "/fapi/v1/order"
+          },
+          {
+            "at_ms": 1578074412800,
+            "id": "cq-29d99805c4d458acca987e86ae9944",
+            "method": "POST",
+            "path": "/fapi/v1/algoOrder"
+          },
+          {
+            "at_ms": 1578074416200,
+            "id": "cq-d3dc12141d0271ffdbba17bc4dd6c2",
+            "method": "POST",
+            "path": "/fapi/v1/algoOrder"
+          },
+          {
+            "at_ms": 1578074421600,
+            "id": null,
+            "method": "POST",
+            "path": "/fapi/v1/positionMargin"
+          }
+        ],
+        "actual": {
+          "account_uid": "12000",
+          "available_usdt": "1076.084352522611506140917905",
+          "entry": "7360.2",
+          "equity_usdt": "1432.670390718491506140917905",
+          "isolated_wallet_usdt": "357.09090961",
+          "last_fill_id": 1,
+          "mark_price": "7358.70186524",
+          "mark_time": 1578074422597,
+          "native_account_equity_usdt": "1432.670390718491506140917905",
+          "native_full_position_protected": true,
+          "native_liquidation_price": "6337.020927872358046900240179",
+          "observed_at_ms": 1578074427200,
+          "open_algos": [
+            {
+              "actualOrderId": "0",
+              "algoId": 3,
+              "algoStatus": "NEW",
+              "algoType": "CONDITIONAL",
+              "clientAlgoId": "cq-29d99805c4d458acca987e86ae9944",
+              "closePosition": true,
+              "createTime": 1578074413800,
+              "orderType": "STOP_MARKET",
+              "positionSide": "BOTH",
+              "priceProtect": false,
+              "side": "SELL",
+              "symbol": "BTCUSDT",
+              "triggerPrice": "7072.60",
+              "workingType": "MARK_PRICE"
+            },
+            {
+              "actualOrderId": "0",
+              "algoId": 4,
+              "algoStatus": "NEW",
+              "algoType": "CONDITIONAL",
+              "clientAlgoId": "cq-d3dc12141d0271ffdbba17bc4dd6c2",
+              "closePosition": true,
+              "createTime": 1578074417200,
+              "orderType": "TAKE_PROFIT_MARKET",
+              "positionSide": "BOTH",
+              "priceProtect": false,
+              "side": "SELL",
+              "symbol": "BTCUSDT",
+              "triggerPrice": "10228.00",
+              "workingType": "MARK_PRICE"
+            }
+          ],
+          "open_orders": [],
+          "possible_entry_remainders": 0,
+          "protective_algos": [
+            {
+              "algo_id": 3,
+              "trigger": "7072.60",
+              "type": "STOP_MARKET"
+            },
+            {
+              "algo_id": 4,
+              "trigger": "10228.00",
+              "type": "TAKE_PROFIT_MARKET"
+            }
+          ],
+          "quantity_btc": "0.337",
+          "recent_fill_count": 1,
+          "recent_fill_window_complete": true,
+          "recovery_history_complete": false,
+          "status": "read_only_observation",
+          "stop_before_liquidation": true,
+          "symbol": "BTCUSDT",
+          "wallet_observed_from_ms": 1578074425200,
+          "wallet_observed_until_ms": 1578074427000,
+          "wallet_usdt": "1433.175262132611506140917905"
+        },
+        "cleanup": "not_required",
+        "cycles": 1,
+        "errors": [],
+        "income_audit": {
+          "closure": {
+            "at": 1578074402800,
+            "state": "anchored",
+            "wallet": "1435.035552682611506140917905"
+          },
+          "observed_transactions": 0,
+          "origin": 1577750464600,
+          "through": 1578074402800,
+          "wallet_closure": "anchored"
+        },
+        "market_through": 1578067200000,
+        "model_preview": {
+          "action": "enter",
+          "consumed_campaign": null,
+          "entry_constraint": "margin_or_funding_cap",
+          "macro_observation": null,
+          "model": "SX60+DFII10",
+          "opportunity": {
+            "anchor": "7198.02",
+            "direction": 1,
+            "expires": 1578643200000,
+            "extended": false,
+            "identity": 1578038400000,
+            "peak": "7379",
+            "risk": "125.335",
+            "stop": "7072.685",
+            "take": "10227.92906638563278786069046"
+          },
+          "ownership": {
+            "status": "flat_without_entry_journal"
+          },
+          "position_campaign": null,
+          "protection_required": false,
+          "quantity_btc": null,
+          "quantity_status": "native preflight required",
+          "reconstructed_market_only": false,
+          "target_fraction": null
+        },
+        "observation_current": true,
+        "observation_timeouts": 0,
+        "risk_limits": {
+          "max_stop_loss_fraction": ".10",
+          "stop_slippage_fraction": ".01"
+        },
+        "session_started_at_ms": 1578074400000,
+        "status": "executed",
+        "stop_reason": "deadline",
+        "write_attempted": true
+      },
+      "98": {
+        "actions": [],
+        "actual": {
+          "account_uid": "12000",
+          "available_usdt": "1076.084352522611506140917905",
+          "entry": "7360.2",
+          "equity_usdt": "1429.626219579631506140917905",
+          "isolated_wallet_usdt": "357.09090961",
+          "last_fill_id": 1,
+          "mark_price": "7349.66871646",
+          "mark_time": 1578074585195,
+          "native_account_equity_usdt": "1430.718375784831506140917905",
+          "native_full_position_protected": true,
+          "native_liquidation_price": "6337.020927872358046900240179",
+          "observed_at_ms": 1578074585400,
+          "open_algos": [
+            {
+              "actualOrderId": "0",
+              "algoId": 3,
+              "algoStatus": "NEW",
+              "algoType": "CONDITIONAL",
+              "clientAlgoId": "cq-29d99805c4d458acca987e86ae9944",
+              "closePosition": true,
+              "createTime": 1578074413800,
+              "orderType": "STOP_MARKET",
+              "positionSide": "BOTH",
+              "priceProtect": false,
+              "side": "SELL",
+              "symbol": "BTCUSDT",
+              "triggerPrice": "7072.60",
+              "workingType": "MARK_PRICE"
+            },
+            {
+              "actualOrderId": "0",
+              "algoId": 4,
+              "algoStatus": "NEW",
+              "algoType": "CONDITIONAL",
+              "clientAlgoId": "cq-d3dc12141d0271ffdbba17bc4dd6c2",
+              "closePosition": true,
+              "createTime": 1578074417200,
+              "orderType": "TAKE_PROFIT_MARKET",
+              "positionSide": "BOTH",
+              "priceProtect": false,
+              "side": "SELL",
+              "symbol": "BTCUSDT",
+              "triggerPrice": "10228.00",
+              "workingType": "MARK_PRICE"
+            }
+          ],
+          "open_orders": [],
+          "possible_entry_remainders": 0,
+          "protective_algos": [
+            {
+              "algo_id": 3,
+              "trigger": "7072.60",
+              "type": "STOP_MARKET"
+            },
+            {
+              "algo_id": 4,
+              "trigger": "10228.00",
+              "type": "TAKE_PROFIT_MARKET"
+            }
+          ],
+          "quantity_btc": "0.337",
+          "recent_fill_count": 1,
+          "recent_fill_window_complete": true,
+          "recovery_history_complete": false,
+          "status": "read_only_observation",
+          "stop_before_liquidation": true,
+          "symbol": "BTCUSDT",
+          "wallet_observed_from_ms": 1578074583400,
+          "wallet_observed_until_ms": 1578074585200,
+          "wallet_usdt": "1433.175262132611506140917905"
+        },
+        "cleanup": "not_required",
+        "cycles": 13,
+        "errors": [],
+        "income_audit": {
+          "closure": {
+            "at": 1578074585600,
+            "state": "explained",
+            "wallet": "1433.175262132611506140917905"
+          },
+          "observed_transactions": 1,
+          "origin": 1577750464600,
+          "through": 1578074585600,
+          "wallet_closure": "explained"
+        },
+        "market_through": 1578067200000,
+        "model_preview": {
+          "action": "hold",
+          "consumed_campaign": 1578038400000,
+          "entry_constraint": "insufficient_funded_minimum",
+          "macro_observation": null,
+          "model": "SX60+DFII10",
+          "opportunity": {
+            "anchor": "7198.02",
+            "direction": 1,
+            "expires": 1578643200000,
+            "extended": false,
+            "identity": 1578038400000,
+            "peak": "7379",
+            "risk": "125.335",
+            "stop": "7072.685",
+            "take": "10227.92906638563278786069046"
+          },
+          "ownership": {
+            "campaign": 1578038400000,
+            "campaign_fee_usdt": "1.86029055",
+            "campaign_realized_pnl_usdt": "0",
+            "entry_remainder": 0,
+            "fill_count": 1,
+            "last_fill_id": 1,
+            "protection_confirmed": true,
+            "protection_slippage": [],
+            "protective_exit_started": false,
+            "quantity": "0.337",
+            "status": "reconciled"
+          },
+          "position_campaign": 1578038400000,
+          "protection_required": false,
+          "quantity_btc": "0.337",
+          "quantity_status": "shared inventory decision",
+          "reconstructed_market_only": false,
+          "target_fraction": null
+        },
+        "observation_current": true,
+        "observation_timeouts": 0,
+        "risk_limits": {
+          "max_stop_loss_fraction": ".10",
+          "stop_slippage_fraction": ".01"
+        },
+        "session_started_at_ms": 1578074400000,
+        "status": "no_action",
+        "stop_reason": "deadline",
+        "write_attempted": true
+      },
+      "99": {
+        "actions": [
+          {
+            "at_ms": 1578074601600,
+            "id": "cq-309034f896f47d5aa8e9de80cd8232",
+            "method": "POST",
+            "path": "/fapi/v1/order",
+            "position_before_btc": "0.337"
+          },
+          {
+            "at_ms": 1578074607000,
+            "id": "cq-29d99805c4d458acca987e86ae9944",
+            "method": "DELETE",
+            "path": "/fapi/v1/algoOrder"
+          },
+          {
+            "at_ms": 1578074612600,
+            "id": "cq-d3dc12141d0271ffdbba17bc4dd6c2",
+            "method": "DELETE",
+            "path": "/fapi/v1/algoOrder"
+          }
+        ],
+        "actual": {
+          "account_uid": "12000",
+          "available_usdt": "1426.768883707611506140917905",
+          "entry": "0",
+          "equity_usdt": "1426.768883707611506140917905",
+          "isolated_wallet_usdt": "0",
+          "last_fill_id": 2,
+          "mark_price": "7343.72721387",
+          "mark_time": 1578074617209,
+          "native_account_equity_usdt": "1426.768883707611506140917905",
+          "native_full_position_protected": false,
+          "native_liquidation_price": "0",
+          "observed_at_ms": 1578074618200,
+          "open_algos": [],
+          "open_orders": [],
+          "possible_entry_remainders": 0,
+          "protective_algos": [],
+          "quantity_btc": "0",
+          "recent_fill_count": 2,
+          "recent_fill_window_complete": true,
+          "recovery_history_complete": false,
+          "status": "read_only_observation",
+          "stop_before_liquidation": false,
+          "symbol": "BTCUSDT",
+          "wallet_observed_from_ms": 1578074616200,
+          "wallet_observed_until_ms": 1578074618000,
+          "wallet_usdt": "1426.768883707611506140917905"
+        },
+        "cleanup": "not_required",
+        "cycles": 14,
+        "errors": [],
+        "income_audit": {
+          "closure": {
+            "at": 1578074599200,
+            "state": "explained",
+            "wallet": "1433.175262132611506140917905"
+          },
+          "observed_transactions": 1,
+          "origin": 1577750464600,
+          "through": 1578074599200,
+          "wallet_closure": "collected"
+        },
+        "market_through": 1578067200000,
+        "model_preview": {
+          "action": "flat",
+          "consumed_campaign": 1578038400000,
+          "entry_constraint": "isolated_margin_cap",
+          "macro_observation": {
+            "asof_vintage_date": "2019-12-31",
+            "latest_observation_date": "2019-12-30",
+            "latest_value": "0.15",
+            "latest_value_available_ms": 1578027599999,
+            "missing_reason": null,
+            "prior20_observation_date": "2019-11-29",
+            "prior20_value": "0.17",
+            "prior20_value_available_ms": 1575521999999,
+            "response_sha256": "historical-alfred-originals"
+          },
+          "model": "SX60+DFII10",
+          "opportunity": null,
+          "ownership": {
+            "campaign": 1578038400000,
+            "campaign_fee_usdt": "3.717168975",
+            "campaign_realized_pnl_usdt": "-4.5495",
+            "entry_remainder": 0,
+            "fill_count": 2,
+            "last_fill_id": 2,
+            "protection_confirmed": false,
+            "protection_slippage": [],
+            "protective_exit_started": false,
+            "quantity": "0.000",
+            "status": "reconciled"
+          },
+          "position_campaign": null,
+          "protection_required": false,
+          "quantity_btc": "0",
+          "quantity_status": "shared inventory decision",
+          "reconstructed_market_only": false,
+          "target_fraction": null
+        },
+        "observation_current": true,
+        "observation_timeouts": 0,
+        "risk_limits": {
+          "max_stop_loss_fraction": ".10",
+          "stop_slippage_fraction": ".01"
+        },
+        "session_started_at_ms": 1578074400000,
+        "status": "executed",
+        "stop_reason": "deadline",
+        "write_attempted": true
+      }
+    },
+    "inferred_mark_from_rounded_margin": "7355.79072127641953099759821",
+    "inference_limitation": "not an exact recovered market observation",
+    "sizing_from_same_inferred_mark": {
+      "original": {
+        "requested": "0.3886840160058635353316285872",
+        "quantity": "0.337",
+        "margin": "357.090909610000000000000000",
+        "reason": "margin_or_funding_cap",
+        "margin_breach_mark": "7345.922184888393156851875653",
+        "margin_breach_from_entry_percent": "-0.1939867817668927902519543900"
+      },
+      "fixed": {
+        "requested": "0.3886840160058635353316285872",
+        "quantity": "0.311",
+        "margin": "329.540869105964391691394659",
+        "reason": "margin_or_funding_cap",
+        "margin_breach_mark": "6989.925692576353892683796563",
+        "margin_breach_from_entry_percent": "-5.030764210532948932314385980"
+      }
+    }
+  },
+  "economic_limitation": "This probe proves the sizing/holding inconsistency and the first observed exit cause. It is not a full-window economic attribution or a return forecast."
+}

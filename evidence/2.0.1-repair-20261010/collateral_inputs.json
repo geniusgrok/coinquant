@@ -1,0 +1,15 @@
+{
+  "original_source_head": "162ee7138952925ffafbc9b68be7c754c0c0a6c3",
+  "public_margin_only_source_head": "06206ac0c5383fb009df8bac20601cd9e2d9b004",
+  "private_original_archive_sha256": "e3d82679260c22d152a4b93d62f249e22026ad4d6da96e5f1198bce6fc93ff14",
+  "excerpt_sequences": [
+    86,
+    98,
+    99
+  ],
+  "excerpt_sha256": "558469cbbeb66f77d735cedf621661a69b97cbe61f381dc002b45793daf68179",
+  "rules_sha256": "a730dabf5b6710dafb1bc70db1ab579083ad0699e07b5f59e1f20a5617445c7f",
+  "rules_original_path": "evidence/bounded-session-20260926/public/rules.json",
+  "environment": "historical fake account UID 12000; no live or Demo account",
+  "notes": "The excerpt contains exact original archived JSONL rows from the prior full 795-session simulation. It is not an account database."
+}

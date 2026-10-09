@@ -1,0 +1,80 @@
+{
+  "kind": "execution-guard-v2-fixed-limit-band-proof",
+  "head": "b354a3e18860fbcad75ede4d6c9c8d30fcf272b1",
+  "parent_v1_local_head": "85a6ef078a33bfdf6028f9c4365e20662f071d40",
+  "v1_remote_head": "4f65e6ba271773037383eea59a17f453bc9aa5b3",
+  "patch": "/workspace/scratch/4a60782c7dbc/diagnosis/execution-band-v2.patch",
+  "patch_sha256": "18699d4edf53ded6e8fe57b2ec5b0212fbe0f668a88100021d53280e3bb1fbb0",
+  "source_hashes": {
+    "coinquant/native_preview.py": "96a1b222122f035fbbf0cd5381822c1b6a3fd39b54cc13e58f4e6b454121f0fc",
+    "tests/test_pr77_execution.py": "5a5fbf7792572e8947f06d86916c81118112fdef6a3f21ab044199b76c5fcd3c",
+    "tests/test_pr77_risk_strategy.py": "ae94d8dab8b9101c6d5d93891bd5f6cfb5bd5d3d4b440f419d100b81521ca274"
+  },
+  "change": {
+    "buy": "original IOC limit <= floor(fresh best ask * 1.001 / tick) * tick",
+    "sell": "original IOC limit >= ceil(fresh best bid * 0.999 / tick) * tick",
+    "depth": "fresh executable quantity at the original unchanged IOC limit",
+    "tick_alignment": "explicitly require original limit == floor_step(original limit,tick)",
+    "unchanged": [
+      "order limit",
+      "order quantity",
+      "funding and stop budgets",
+      "25% book participation",
+      "15000ms freshness",
+      "same completed 4h candle",
+      "native account identity and fill ownership checks",
+      "session stop/deadline and final send clock"
+    ]
+  },
+  "focused_verification": [
+    {
+      "command": "python -m unittest tests.test_loss_risk.FinalQuoteClockTests tests.test_pr77_risk_strategy tests.test_pr77_execution",
+      "cases": 43,
+      "passed": 42,
+      "errors": 1,
+      "explanation": "One altered negative test fixture lowered ask below its unchanged bid; production correctly rejected a crossed book. All other tests passed."
+    },
+    {
+      "command": "python -m unittest tests.test_pr77_risk_strategy.TrialSizingTests.test_final_book_keeps_funded_price_and_checks_current_depth",
+      "cases": 1,
+      "errors": 1,
+      "explanation": "Adjusted case-local bid, then exposed the same test fixture failing to restore bid for its final quantity-cap assertion; production again correctly rejected crossed book."
+    },
+    {
+      "command": "python -m unittest tests.test_pr77_risk_strategy.TrialSizingTests.test_final_book_keeps_funded_price_and_checks_current_depth",
+      "cases": 1,
+      "passed": 1,
+      "errors": 0,
+      "explanation": "Both test fixture resets fixed. No production edit between the initial 42 passing tests and the successful affected-test rerun."
+    }
+  ],
+  "effective_focused_scope": {
+    "cases": 43,
+    "all_pass_using_unchanged_valid_results": true,
+    "full_suite_deferred_to_root": true
+  },
+  "v1_counterexample": {
+    "new_cases": 3,
+    "failed_subtests_and_cases": 5,
+    "errors": 0,
+    "expected": true,
+    "includes": [
+      "BUY cross-tick unchanged funded price",
+      "SELL cross-tick unchanged funded price",
+      "BUY old-price-only depth",
+      "SELL old-price-only depth",
+      "Lifecycle initial entry and partial-fill topup"
+    ]
+  },
+  "market_probe": {
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/book-band-probe.json",
+    "sha256": "d71e8cc4b4cf84510eb68beb9669d8e555227cc447e06056a659ab5d2abdfdab",
+    "actual_production_predicate_checks": 354,
+    "matched_independent_market_equations": 354,
+    "one_btc_acceptances": 171,
+    "no_account_requests": true,
+    "limitations": "Deterministic observation pairs from 3 previously selected sessions, not recovered failed request timestamps, order predictions, or economic performance estimates."
+  },
+  "mathematical_review": "The fixed order price and quantity are not changed; new allowance is used only to reject an original price that is too aggressive for the fresh book. Liquidity at a newly computed price can never count toward the fixed order. BUY/SELL inequalities are mirrored. The margin-scenario fix still funds the exact same order limit.",
+  "published": false
+}

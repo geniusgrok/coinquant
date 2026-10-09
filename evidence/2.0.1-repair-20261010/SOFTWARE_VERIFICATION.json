@@ -1,0 +1,19 @@
+{
+  "python": "3.12.14",
+  "compile_command": "python -m compileall -q coinquant tests",
+  "compile_exit_code": 0,
+  "command": "python -m unittest discover -s tests",
+  "exit_code": 0,
+  "tests": 448,
+  "elapsed_seconds": 5.62,
+  "log_sha256": "810125e391e74af4a0f75e3578908420f1ba2b596994fd60a0e88c7885677024",
+  "production_head": "7b5f6b89ca01fa3a626061b816380a827dfb41c3",
+  "production_tree": "2e5d369a8d6629d69000ca5090c6b90191863388",
+  "initial_discovery": {
+    "command": "python -m unittest discover",
+    "exit_code": 5,
+    "tests": 0,
+    "log": "full-software-check.log",
+    "disposition": "kept as a failed discovery, not counted as passing tests"
+  }
+}

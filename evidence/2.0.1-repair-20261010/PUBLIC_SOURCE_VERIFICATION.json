@@ -1,0 +1,45 @@
+{
+  "verified_by": "GitHub connector GET Git commit plus native git fetch immutable worktree",
+  "commits": [
+    {
+      "sha": "4f65e6ba271773037383eea59a17f453bc9aa5b3",
+      "tree": "7891355daff06ae31fe0ab810d885b1a5aa24a87",
+      "parents": [
+        "162ee7138952925ffafbc9b68be7c754c0c0a6c3"
+      ],
+      "url": "https://github.com/geniusgrok/coinquant/commit/4f65e6ba271773037383eea59a17f453bc9aa5b3"
+    },
+    {
+      "sha": "06206ac0c5383fb009df8bac20601cd9e2d9b004",
+      "tree": "319b094ac5b36d74093cd6d033508130fb0e4f94",
+      "parents": [
+        "162ee7138952925ffafbc9b68be7c754c0c0a6c3"
+      ],
+      "url": "https://github.com/geniusgrok/coinquant/commit/06206ac0c5383fb009df8bac20601cd9e2d9b004"
+    },
+    {
+      "sha": "7b5f6b89ca01fa3a626061b816380a827dfb41c3",
+      "tree": "2e5d369a8d6629d69000ca5090c6b90191863388",
+      "parents": [
+        "06206ac0c5383fb009df8bac20601cd9e2d9b004"
+      ],
+      "url": "https://github.com/geniusgrok/coinquant/commit/7b5f6b89ca01fa3a626061b816380a827dfb41c3"
+    },
+    {
+      "sha": "37bfc8a833d1ff3c0992842ce363758a47b1d06f",
+      "tree": "a83552ad0b45a6a2df717ca3d4e2d8f5226fea8f",
+      "parents": [
+        "4f65e6ba271773037383eea59a17f453bc9aa5b3"
+      ],
+      "url": "https://github.com/geniusgrok/coinquant/commit/37bfc8a833d1ff3c0992842ce363758a47b1d06f"
+    },
+    {
+      "sha": "3561728dab351d269b19b107fb4fbabb2ac1f674",
+      "tree": "8a7fa7dc2eb7d52ed00f9ae8f2eae820ec393d13",
+      "parents": [
+        "7b5f6b89ca01fa3a626061b816380a827dfb41c3"
+      ],
+      "url": "https://github.com/geniusgrok/coinquant/commit/3561728dab351d269b19b107fb4fbabb2ac1f674"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "head": "3561728dab351d269b19b107fb4fbabb2ac1f674",
+  "tree": "8a7fa7dc2eb7d52ed00f9ae8f2eae820ec393d13",
+  "python": "3.12.14",
+  "compileall": {
+    "exit_code": 0
+  },
+  "tests": {
+    "command": "python -m unittest discover -s tests",
+    "exit_code": 0,
+    "count": 450,
+    "seconds": "5.934",
+    "log": "diagnosis/full-software-check-v2.log",
+    "sha256": "ee4a36b556e9f25eacde7c8b87bd563e61967007b11cd9a81a2b4acd9ac2de95"
+  },
+  "scope": "combined v2 final production changes; earlier checks and fixture failures retained in v1/v2 proofs"
+}

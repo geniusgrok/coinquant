@@ -1,0 +1,61 @@
+{
+  "checkpoint_every": 20,
+  "chunk_wall_seconds": 540,
+  "download_receipt": "/workspace/scratch/4a60782c7dbc/remeasure-inputs/DOWNLOAD_RECEIPT.json",
+  "fx": "/workspace/scratch/4a60782c7dbc/remeasure-inputs/usdcny_frankfurter.json",
+  "initial_cny": "10000",
+  "input_manifest": "/workspace/scratch/4a60782c7dbc/remeasure-inputs/INPUT_MANIFEST.json",
+  "input_manifest_sha256": "a808f1333b4fc18a5a65afe883804795b9286c117e1cc38a4b2a252a90064e82",
+  "market": "/workspace/scratch/4a60782c7dbc/remeasure-inputs/market",
+  "max_segments": 64,
+  "min_free_bytes": 250000000,
+  "no_live_or_demo_account_access": true,
+  "parsed_pack_roots": [],
+  "parser_sha256": "7ab3a31b7e02cec0c95802a309b7c0c0c0f66b596e6fc96afedef13e192557ae",
+  "prints": "/workspace/scratch/4a60782c7dbc/remeasure-inputs/prints",
+  "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+  "protocol_sha256": "92bd7cb57e7c60f41b12e877f26c25af6ae0fc265926aaa42cf5963fe04c2f25",
+  "qualified_metadata": "/workspace/scratch/4a60782c7dbc/remeasure-inputs/sources/qualified-market-metadata.json",
+  "qualified_metadata_sha256": "2d83c285d50cd5432ef5d9855149df9283f5955efa40ff584227d5f00785ce7e",
+  "requested_measurement": "Predeclared source repair experiment: book-only; compare with retained full 2.0.0 control 162ee7138952925ffafbc9b68be7c754c0c0a6c3; unchanged v2 producer, economic inputs, schedule and default risk limits.",
+  "restored_input_identity": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/restored-input-identity.json",
+  "restored_input_identity_sha256": "591d0a5f303f029ed4e4d8df0200e1c0ddfe9b4debcbcf13db16d829abba6329",
+  "risk_by_arm": {
+    "current": {
+      "capital_limit_usdt": null,
+      "max_stop_loss_fraction": ".10",
+      "stop_slippage_fraction": ".01"
+    },
+    "previous": {
+      "capital_limit_usdt": null,
+      "max_stop_loss_fraction": ".49",
+      "stop_slippage_fraction": ".01"
+    }
+  },
+  "runtime_heads": {
+    "current": "4f65e6ba271773037383eea59a17f453bc9aa5b3",
+    "previous": "79a334b2d776be2dbe8756f3a616697f9403982e"
+  },
+  "runtime_roots": {
+    "current": "/workspace/scratch/4a60782c7dbc/diagnosis/runtimes/book-only",
+    "previous": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0/previous"
+  },
+  "schedule": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-tooling-v2/research/session_schedule.json",
+  "serial_same_uid": true,
+  "session_count": 795,
+  "shared_parsed_cache": "/workspace/scratch/4a60782c7dbc/remeasure-inputs/shared-parsed-cache",
+  "source_files_by_arm": {
+    "current": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/book-only/current-source-files.json",
+    "previous": "/workspace/scratch/4a60782c7dbc/remeasure-evidence/evidence/2.0.0-remeasure-20261009/previous-source-files.json"
+  },
+  "source_runtime": "Python 3.12.14, matching recorded PR72 execution",
+  "source_sha256_by_arm": {
+    "current": "f890917a9dc51b52a7c6cb6f18df2ad5005330e8650b52485d97aa816ba78f5d",
+    "previous": "fbe4beaca18a12df53aa7e0206c28ba9269a8f0b211c2b360c3daeb16b2ecadc"
+  },
+  "terminal_ms": 1789862400000,
+  "tooling_root": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-tooling-v2",
+  "total_wall_seconds": 7200,
+  "uid": "12000",
+  "version": "coinquant-default-runtime-paired-replay-v2"
+}

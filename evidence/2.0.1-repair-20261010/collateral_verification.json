@@ -1,0 +1,37 @@
+{
+  "candidate_local_commit": "b89994f0defef71718ee026800c622764b5469f2",
+  "published_margin_only_source": "06206ac0c5383fb009df8bac20601cd9e2d9b004",
+  "scope": "Only entry/top-up collateral sizing changed; the 10% stop-loss cap, 3% macro cap, 25% current capital cap, holding guard, and liquidation buffer remain enforced.",
+  "checks": [
+    {
+      "command": "python -m unittest tests.test_native_preview tests.test_pr77_risk_strategy tests.test_loss_risk tests.test_holding_risk_execution",
+      "total_test_methods": 58,
+      "result": "57 test methods passed; one newly added test method errored in both direction subtests.",
+      "failure": "The new test incorrectly expected topup_preview() to return a fee field; it does not. Both errors were KeyError: fee in that test, not a production exception.",
+      "correction": "Read the fixture's known 0.0005 taker fee in the test. No production code changed after this run."
+    },
+    {
+      "command": "python -m unittest tests.test_pr77_risk_strategy.TrialSizingTests.test_add_preserves_stop_headroom_for_both_directions_after_paid_costs",
+      "total_test_methods": 1,
+      "result": "PASS; both long and short subtests passed after the test-fixture correction."
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS before the candidate commit."
+    }
+  ],
+  "new_regressions": [
+    "A margin-capped long entry remains within the unchanged holding cap for marks from 100 down to 99.000001 above its original 99 stop.",
+    "Long and short additions retain stop-scenario collateral headroom, including automatic added initial margin, already-paid funding/fees, and offsetting realized gains without double-counting.",
+    "A larger configured adverse stop-slippage assumption reduces the amount allowed by the collateral cap."
+  ],
+  "existing_fixture_changes": [
+    "The recovery fixture keeps the original pre-fix 0.015 BTC durable plan and its 249.701775 USDT margin as literal historical input; it no longer asks the corrected current sizer to regenerate an unsafe legacy plan.",
+    "The existing automatic initial-margin top-up test starts with 240 USDT rather than 249 USDT collateral so it has valid stop-scenario headroom for a positive add. Its automatic-transfer and 25% cap assertions remain in force."
+  ],
+  "not_claimed": [
+    "This focused verification is not a full-suite pass. The root task owns the final full software gate.",
+    "The pure sizing probe is not a 795-session return or drawdown result.",
+    "No live or Demo account request, native execution acceptance, or future-return claim was made."
+  ]
+}

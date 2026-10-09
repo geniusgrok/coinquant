@@ -1,0 +1,292 @@
+{
+  "version": "margin-only-six-session-cause-confirmation-v1",
+  "passed": true,
+  "conclusion": "The actual default-runtime historical replay retained the smaller first position beyond the previous 192.842-second isolated_margin_cap exit. The same first campaign later left through the shared strategy exit path on 2020-01-14. The margin mechanism is confirmed fixed in this discriminating case.",
+  "economic_scope": "Six scheduled sessions only. No annualized return, final-window return, full-window drawdown, OOS, or live/Demo acceptance is claimed.",
+  "same_initial_entry_price_and_fill_millisecond": true,
+  "same_strategy_config": {
+    "kind": "coinquant-default-runtime-paired-replay-v2",
+    "primary_risk": "7.5",
+    "macro_risk": "3.6",
+    "session_seconds": 300,
+    "poll_seconds": 5,
+    "read_latency_ms": 200,
+    "write_latency_ms": 1000,
+    "mark_gap": "bound",
+    "matcher": "trade_print",
+    "uid": "12000",
+    "capital_limit_usdt": null,
+    "max_stop_loss_fraction": ".10",
+    "stop_slippage_fraction": ".01"
+  },
+  "same_producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+  "same_research_module_bytes": true,
+  "same_economic_inputs_checked": [
+    "schedule_sha256",
+    "fx_sha256",
+    "market_identity_sha256",
+    "market_values_sha256",
+    "macro_sha256",
+    "starts_ms",
+    "terminal_ms",
+    "initial_cny"
+  ],
+  "changed_production_files": [
+    "coinquant/native_preview.py"
+  ],
+  "results": {
+    "original_2_0_0": {
+      "receipt": "coinquant-remeasure-2.0.0-v2/smoke-current.json.gz",
+      "receipt_sha256": "9a649072915254084aac0aad3037559bad141971af4e769e0724ec1ad866cdc0",
+      "source_head": "162ee7138952925ffafbc9b68be7c754c0c0a6c3",
+      "source_sha256": "9cbc2507d7d5e1f644228a37e0f9a50d69ef4aafaf7793c4cb2ccdc2a97081f2",
+      "reports_sha256": "02afdacf5e5504910a9b811b9e5caf1a980f478dbf70d892b837c07bdc702a41",
+      "first_entry": {
+        "symbol": "BTCUSDT",
+        "positionSide": "BOTH",
+        "side": "BUY",
+        "orderId": 2,
+        "id": 1,
+        "time": 1578074409758,
+        "qty": "0.337",
+        "price": "7360.2",
+        "commissionAsset": "USDT",
+        "commission": "1.86029055",
+        "realizedPnl": "0",
+        "time_utc": "2020-01-03T18:00:09.758000+00:00"
+      },
+      "first_exit": {
+        "symbol": "BTCUSDT",
+        "positionSide": "BOTH",
+        "side": "SELL",
+        "orderId": 5,
+        "id": 2,
+        "time": 1578074602600,
+        "qty": "0.337",
+        "price": "7346.7",
+        "commissionAsset": "USDT",
+        "commission": "1.856878425",
+        "realizedPnl": "-4.5495",
+        "time_utc": "2020-01-03T18:03:22.600000+00:00"
+      },
+      "first_round_hold_seconds": "192.842",
+      "first_round_commission_usdt": "3.717168975",
+      "first_round_net_funding_income_usdt": "0",
+      "first_round_net_pnl_usdt": "-8.266668975",
+      "entry_session_end": {
+        "observed_at_ms": 1578074703000,
+        "quantity_btc": "0",
+        "mark_price": "7344.21143439",
+        "isolated_wallet_usdt": "0",
+        "equity_usdt": "1426.768883707611506140917905",
+        "holding_risk": {
+          "status": "flat"
+        },
+        "native_protection_at_stop": {
+          "status": "flat",
+          "observed_at_ms": 1578074703000,
+          "protective_algos": []
+        }
+      },
+      "all_six_cleanup_verified": true,
+      "all_six_pending_zero_and_execution_resolved": true,
+      "completed_historical_window": false,
+      "native_verified": false
+    },
+    "margin_only": {
+      "receipt": "diagnosis/replays/margin-only/smoke-current.json.gz",
+      "receipt_sha256": "ca54f680f2f82a5f70d200b0e4bcb34e674d3808aaa589def77efa90cd42909d",
+      "source_head": "06206ac0c5383fb009df8bac20601cd9e2d9b004",
+      "source_sha256": "55f044e1294f52d7c4f06800552e96e22a2af52c3c393f57eed04ec6d47f6f04",
+      "reports_sha256": "d5938ed03109ee913d458b38229e257fce9fbe4befae6a37584eaac2e7624e70",
+      "first_entry": {
+        "symbol": "BTCUSDT",
+        "positionSide": "BOTH",
+        "side": "BUY",
+        "orderId": 2,
+        "id": 1,
+        "time": 1578074409758,
+        "qty": "0.311",
+        "price": "7360.2",
+        "commissionAsset": "USDT",
+        "commission": "1.71676665",
+        "realizedPnl": "0",
+        "time_utc": "2020-01-03T18:00:09.758000+00:00"
+      },
+      "first_exit": {
+        "symbol": "BTCUSDT",
+        "positionSide": "BOTH",
+        "side": "SELL",
+        "orderId": 15,
+        "id": 2,
+        "time": 1579028451400,
+        "qty": "0.311",
+        "price": "8767.05",
+        "commissionAsset": "USDT",
+        "commission": "2.0449144125",
+        "realizedPnl": "437.53035",
+        "time_utc": "2020-01-14T19:00:51.400000+00:00"
+      },
+      "first_round_hold_seconds": "954041.642",
+      "first_round_commission_usdt": "3.7616810625",
+      "first_round_net_funding_income_usdt": "-8.5024854640439083910",
+      "first_round_net_pnl_usdt": "425.2661834734560916090",
+      "entry_session_end": {
+        "observed_at_ms": 1578074705000,
+        "quantity_btc": "0.311",
+        "mark_price": "7343.93134548",
+        "isolated_wallet_usdt": "329.54086911",
+        "equity_usdt": "1428.259234476891506140917905",
+        "holding_risk": {
+          "action": "hold",
+          "campaign": 1578038400000,
+          "current_mark_loss_usdt": "6.77631820572",
+          "current_protected_loss_usdt": "114.822333439500",
+          "current_stop_budget_usdt": "142.8259234476891506140917905",
+          "entry": "7360.2",
+          "frozen_stop_budget_usdt": "143.5035552682611506140917905",
+          "last_fill_id": 1,
+          "loss_ceiling_usdt": "143.5035552682611506140917905",
+          "margin_cap_usdt": "357.06480861",
+          "mark_price": "7343.93134548",
+          "modeled_stop_loss_usdt": "114.822333439500",
+          "native_stop": "7072.60",
+          "observed_at_ms": 1578074705000,
+          "quantity_btc": "0.311",
+          "reason": "within_budget",
+          "risk_capital_usdt": "1428.259234476891506140917905",
+          "status": "observed",
+          "stop": "7072.60",
+          "wallet_usdt": "1433.318786032611506140917905"
+        },
+        "native_protection_at_stop": {
+          "status": "observed",
+          "observed_at_ms": 1578074705000,
+          "protective_algos": [
+            {
+              "algo_id": 3,
+              "type": "STOP_MARKET",
+              "trigger": "7072.60"
+            },
+            {
+              "algo_id": 4,
+              "type": "TAKE_PROFIT_MARKET",
+              "trigger": "10228.00"
+            }
+          ]
+        }
+      },
+      "all_six_cleanup_verified": true,
+      "all_six_pending_zero_and_execution_resolved": true,
+      "completed_historical_window": false,
+      "native_verified": false
+    }
+  },
+  "original_exit_reason_proof": {
+    "archive_sequence": 99,
+    "model_preview_entry_constraint": "isolated_margin_cap",
+    "excerpt_sha256": "558469cbbeb66f77d735cedf621661a69b97cbe61f381dc002b45793daf68179"
+  },
+  "candidate_later_exit_proof": {
+    "source_sqlite_sha256": "1b4d47c8c71067737149f1bb507a7b5003a57a8b62b6da5664e7c1f496e783b3",
+    "read_only_sqlite_uri": true,
+    "exit_observation": {
+      "sequence": 150,
+      "session_started_at_ms": 1579028400000,
+      "model_preview": {
+        "action": "exit",
+        "consumed_campaign": 1578038400000,
+        "macro_observation": null,
+        "model": "SX60+DFII10",
+        "opportunity": {
+          "anchor": "8469.84",
+          "direction": 1,
+          "expires": 1579579200000,
+          "extended": false,
+          "identity": 1578974400000,
+          "peak": "8770",
+          "risk": "178.42",
+          "stop": "8291.42",
+          "take": "12965.85132520424185095440419"
+        },
+        "ownership": {
+          "campaign": 1578038400000,
+          "campaign_fee_usdt": "1.71676665",
+          "campaign_realized_pnl_usdt": "0",
+          "entry_remainder": 0,
+          "fill_count": 1,
+          "last_fill_id": 1,
+          "protection_confirmed": true,
+          "protection_slippage": [],
+          "protective_exit_started": false,
+          "quantity": "0.311",
+          "status": "reconciled"
+        },
+        "position_campaign": 1578038400000,
+        "protection_required": false,
+        "quantity_btc": "0",
+        "quantity_status": "shared inventory decision",
+        "reconstructed_market_only": false,
+        "target_fraction": null
+      },
+      "actions": [
+        {
+          "at_ms": 1579028410000,
+          "id": "cq-77db920f6016b66b9026eabfc4b2dd",
+          "method": "POST",
+          "path": "/fapi/v1/algoOrder"
+        },
+        {
+          "at_ms": 1579028413400,
+          "id": "cq-cdd21212bbbbb7183853074b25754a",
+          "method": "POST",
+          "path": "/fapi/v1/algoOrder"
+        },
+        {
+          "at_ms": 1579028424000,
+          "id": "cq-3aca8c3ee5631934069d0a41cf9255",
+          "method": "DELETE",
+          "path": "/fapi/v1/algoOrder"
+        },
+        {
+          "at_ms": 1579028434800,
+          "id": "cq-912c4bc555122e7987b0ccfeba6d2b",
+          "method": "DELETE",
+          "path": "/fapi/v1/algoOrder"
+        },
+        {
+          "at_ms": 1579028450400,
+          "id": "cq-44c035de46eb485f9ae6df9c60d9c0",
+          "method": "POST",
+          "path": "/fapi/v1/order",
+          "position_before_btc": "0.311"
+        },
+        {
+          "at_ms": 1579028455800,
+          "id": "cq-77db920f6016b66b9026eabfc4b2dd",
+          "method": "DELETE",
+          "path": "/fapi/v1/algoOrder"
+        },
+        {
+          "at_ms": 1579028461400,
+          "id": "cq-cdd21212bbbbb7183853074b25754a",
+          "method": "DELETE",
+          "path": "/fapi/v1/algoOrder"
+        }
+      ]
+    },
+    "isolated_margin_cap_observation_sequences": []
+  },
+  "independent_audit": {
+    "path": "diagnosis/replays/margin-only/smoke-audit-summary.json",
+    "sha256": "7deefa51ce7af8fb463bdf6e3c887aaf16a9cb6bf42657566f2976680c179bb3",
+    "passed": true,
+    "full795": false,
+    "difference_count": 332,
+    "main_financial_passed": true,
+    "candidate_financial_passed": true,
+    "main_path_passed": true,
+    "candidate_path_passed": true
+  },
+  "safety_scope": "Read receipt/report/audit files and the finished smoke SQLite with mode=ro only. No new replay, exchange/account request, State open, or write to simulated account state was performed."
+}
