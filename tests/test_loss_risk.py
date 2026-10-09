@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 
 from coinquant.campaign import Campaign
 from coinquant.lifecycle import Lifecycle
-from coinquant.native_preview import _funded_quantity, _loss_per_btc, limit_matches
+from coinquant.native_preview import limit_matches
 from coinquant.state import client_id
 from coinquant.types import Blocked
 
@@ -18,14 +18,9 @@ class EntryRecoveryMarginTests(TestCase):
             dict(filterType='PRICE_FILTER', tickSize='.1', minPrice='.1', maxPrice='1000000'),
             dict(filterType='LOT_SIZE', stepSize='.001', minQty='.001', maxQty='1000'),
             dict(filterType='MIN_NOTIONAL', notional='100')])
-        venue = dict(price=D(100000), mark=D(100000), fee=D('.0005'), mmr=D('.004'),
-                     cap=D(1000000), instrument=rules, capacity=D(10), wallet=D(1000),
-                     available=D(1000), capital=D(1000), equity=D(1000), margin_step=D('.00000001'))
-        sized = _funded_quantity(venue, 1, D(93730), D(200000), D('.015'))
-        self.assertEqual(sized['quantity'], D('.015'))
-        self.assertEqual(sized['margin'], D('249.701775'))
-        self.assertLess(sized['quantity'] * _loss_per_btc(
-            1, venue['price'], D(93730), venue['fee'], D('.001')), D(100))
+        # A durable entry plan made before stop-scenario collateral headroom
+        # was required. Recovery must still reject its now-excessive target.
+        original_margin = D('249.701775')
         # The opening commission is already paid; only 20x initial margin moved
         # before the process stopped. A 0.2% price move remains above liquidation.
         wallet = D('999.25')
@@ -47,7 +42,7 @@ class EntryRecoveryMarginTests(TestCase):
         engine.close = Mock(return_value={**snapshot, 'quantity_btc': '0'})
         engine._save_protection = Mock()
         plan = dict(id='entry', epoch=1, campaign=14400000, quantity_btc='.015',
-                    stop='93730', take='200000', allocated_margin_usdt=str(sized['margin']),
+                    stop='93730', take='200000', allocated_margin_usdt=str(original_margin),
                     observed_at=1700000000000, instrument=rules)
         return engine, snapshot, plan, rules
 

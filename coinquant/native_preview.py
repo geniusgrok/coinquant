@@ -209,12 +209,14 @@ def _venue(reader, model, snapshot, direction):
                 margin_step=D(1).scaleb(-places))
 
 
-def _funded_quantity(v, direction, stop, take, requested, *, q=D(0), entry=D(0), margin=D(0)):
+def _funded_quantity(v, direction, stop, take, requested, *, stop_slippage_fraction,
+                     q=D(0), entry=D(0), margin=D(0)):
     """Round a proposed add and fund its combined position beyond the native stop."""
     price,mark,fee,mmr=v['price'],v['mark'],v['fee'],v['mmr']
+    slip=number(stop_slippage_fraction,positive=True)
     if (direction not in (-1,1) or min(price,mark,stop,take)<=0
             or not requested.is_finite() or requested<0
-            or not 0<=fee<D('.05') or not 0<=mmr<D('.05')
+            or not 0<=fee<D('.05') or not 0<=mmr<D('.05') or slip>=1
             or q and q*direction<=0):
         raise ValueError('invalid funded entry inputs')
     old=abs(q)
@@ -253,7 +255,14 @@ def _funded_quantity(v, direction, stop, take, requested, *, q=D(0), entry=D(0),
         # reduce the capital the holding guard will observe after this fill.
         post_wallet=v['wallet']-entry_fee
         post_equity=v['equity']-entry_fee+direction*amount*(mark-price)
-        post_risk=max(D(0),min(v['capital'],post_wallet,post_equity))
+        # Holding uses the same 25% cap after a drawdown. Funding right up to
+        # today's cap would therefore force an exit on a tiny ordinary decline,
+        # long before the planned stop. Leave room through the modeled stop,
+        # including its existing slippage and exit-fee assumptions. Paid costs
+        # and realized PnL are already in the wallet; do not charge them again.
+        stop_equity=(post_wallet+total*(stop-average)
+                     -quantity*stop*(slip+(1+slip)*fee))
+        post_risk=max(D(0),min(v['capital'],post_wallet,post_equity,stop_equity))
         margin_cap=floor_step(post_risk*MAX_ISOLATED_MARGIN_FRACTION,v['margin_step'])
         if (required>margin_cap or required+reserve+entry_fee+open_loss>v['capital']
                 or required-margin+reserve+entry_fee+open_loss>v['available']):
@@ -304,7 +313,7 @@ def entry_preview(reader, model, snapshot):
     per_unit=_loss_per_btc(direction,price,stop,v['fee'],slip_fraction)
     if per_unit<=0:raise Blocked('nonpositive modeled stop loss')
     target=min(target,budget/per_unit)
-    result=_funded_quantity(v,direction,stop,take,target)
+    result=_funded_quantity(v,direction,stop,take,target,stop_slippage_fraction=slip_fraction)
     return dict(quantity_btc=str(direction*result['quantity']),entry_estimate=str(price),stop=str(stop),take=str(take),
                 allocated_margin_usdt=str(result['margin']),constraint=result['reason'],
                 requested_btc=result['requested'],
@@ -373,7 +382,8 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
     if target<=abs(q):
         result=dict(quantity='0',margin=margin,reason='stop_budget')
     else:
-        result=_funded_quantity(v,direction,stop,take,target,q=q,entry=entry,margin=margin)
+        result=_funded_quantity(v,direction,stop,take,target,stop_slippage_fraction=slip,
+                                q=q,entry=entry,margin=margin)
     return dict(quantity_btc=str(result['quantity']),entry_estimate=str(price),stop=str(stop),take=str(take),
                 allocated_margin_usdt=str(result['margin']),constraint=result['reason'],
                 side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],

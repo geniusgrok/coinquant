@@ -26,13 +26,13 @@ class TrialSizingTests(TestCase):
 
     def test_add_counts_automatic_initial_margin_on_top_of_existing_collateral(self):
         model, reader, snapshot, _, _ = self.fixture()
-        held = dict(snapshot, quantity_btc='1', entry='100', isolated_wallet_usdt='249', available_usdt='751')
+        held = dict(snapshot, quantity_btc='1', entry='100', isolated_wallet_usdt='240', available_usdt='760')
         reader.snapshot.return_value = dict(held)
         plan = topup_preview(reader, model, held, '5', '90', '200.1', '30', '1000', '.01',
                              paid_commission_usdt='.05', realized_pnl_usdt='0', paid_funding_usdt='0')
         add = D(plan['quantity_btc'])
         self.assertGreater(add, 0)
-        actual_margin = D(249) + add * D(plan['entry_estimate']) / 20
+        actual_margin = D(240) + add * D(plan['entry_estimate']) / 20
         self.assertLessEqual(actual_margin, D(plan['allocated_margin_usdt']))
         post_wallet = D(held['wallet_usdt']) - add * D(plan['entry_estimate']) * D('.0005')
         post_equity = post_wallet + add * (D(held['mark_price']) - D(plan['entry_estimate']))
@@ -48,6 +48,77 @@ class TrialSizingTests(TestCase):
         post_equity = post_wallet + q * (D(snapshot['mark_price']) - price)
         self.assertGreater(q, 0)
         self.assertLessEqual(D(plan['allocated_margin_usdt']), min(post_wallet, post_equity) * D('.25'))
+
+    def test_margin_capped_entry_survives_an_ordinary_move_toward_its_stop(self):
+        model, reader, snapshot, _, instrument = self.fixture()
+        model.model.active = Opportunity(model.last, 1, D(99), D(200), model.last + FOUR_HOURS)
+        plan = entry_preview(reader, model, snapshot)
+        self.assertEqual(plan['constraint'], 'margin_or_funding_cap')
+        q, entry, fee = (D(plan[key]) for key in ('quantity_btc', 'entry_estimate', 'fee'))
+        self.assertGreater(q, 0)
+        paid = q * entry * fee
+        fill = dict(campaign=plan['campaign'], stop_budget=plan['stop_budget_usdt'],
+                    sizing_capital=plan['sizing_capital_usdt'], stop_slippage_fraction=plan['stop_slippage_fraction'])
+        protection = dict(campaign=plan['campaign'], stop=plan['stop'])
+        # The old sizer filled today's 25% cap so tightly that 100 -> 99.995
+        # already forced a margin exit, although the chosen stop was 99.
+        for mark in map(D, ('100', '99.995', '99.5', '99.000001')):
+            with self.subTest(mark=mark):
+                wallet = D(snapshot['wallet_usdt']) - paid
+                held = dict(snapshot, quantity_btc=str(q), entry=str(entry), wallet_usdt=str(wallet),
+                            equity_usdt=str(wallet + q * (mark - entry)), mark_price=str(mark),
+                            isolated_wallet_usdt=plan['allocated_margin_usdt'])
+                risk = holding_risk(held, protection, fill, instrument, fee,
+                    paid_commission_usdt=paid, realized_pnl_usdt='0', paid_funding_usdt='0',
+                    loss_fraction=reader.loss_fraction, slip_fraction=reader.slip_fraction)
+                self.assertEqual(risk['action'], 'hold', risk)
+                self.assertLessEqual(D(plan['allocated_margin_usdt']), D(risk['margin_cap_usdt']))
+
+    def test_add_preserves_stop_headroom_for_both_directions_after_paid_costs(self):
+        for direction in (1, -1):
+            with self.subTest(direction=direction):
+                model, reader, snapshot, _, instrument = self.fixture()
+                held = dict(snapshot, quantity_btc=str(direction), entry='100', wallet_usdt='970',
+                            equity_usdt='970', isolated_wallet_usdt='200', available_usdt='770')
+                reader.snapshot.return_value = dict(held)
+                stop = D(100 - direction)
+                args = (reader, model, held, '100', stop, D(100 + direction * 50), '100', '1000', '.01')
+                plan = topup_preview(*args, paid_commission_usdt='1', paid_funding_usdt='29',
+                                     realized_pnl_usdt='0')
+                # An offsetting realized gain and paid funding leave the same
+                # wallet and net campaign cost; neither may be charged twice.
+                offset = topup_preview(*args, paid_commission_usdt='1', paid_funding_usdt='39',
+                                       realized_pnl_usdt='10')
+                self.assertEqual(plan['quantity_btc'], offset['quantity_btc'])
+                self.assertEqual(plan['allocated_margin_usdt'], offset['allocated_margin_usdt'])
+                add, price = (D(plan[key]) for key in ('quantity_btc', 'entry_estimate'))
+                fee = D('.0005')
+                self.assertGreater(add, 0)
+                q = direction * (1 + add)
+                entry = (100 + add * price) / abs(q)
+                wallet = D(held['wallet_usdt']) - add * price * fee
+                mark = stop + direction * D('.000001')
+                after = dict(held, quantity_btc=str(q), entry=str(entry), wallet_usdt=str(wallet),
+                             equity_usdt=str(wallet + q * (mark - entry)), mark_price=str(mark),
+                             isolated_wallet_usdt=plan['allocated_margin_usdt'])
+                fill = dict(campaign=model.last, stop_budget='100', sizing_capital='1000',
+                            stop_slippage_fraction='.01')
+                risk = holding_risk(after, dict(campaign=model.last, stop=str(stop)), fill, instrument, fee,
+                    paid_commission_usdt=1 + add * price * fee, paid_funding_usdt='29',
+                    realized_pnl_usdt='0', loss_fraction='.10', slip_fraction='.01')
+                self.assertEqual(risk['action'], 'hold', risk)
+                self.assertLessEqual(D(plan['allocated_margin_usdt']), D(risk['margin_cap_usdt']))
+
+    def test_stop_slippage_assumption_also_reserves_collateral_headroom(self):
+        model, reader, snapshot, _, _ = self.fixture()
+        model.model.active = Opportunity(model.last, 1, D(99), D(200), model.last + FOUR_HOURS)
+        first = entry_preview(reader, model, snapshot)
+        reader.slip_fraction = D('.03')
+        wider = entry_preview(reader, model, snapshot)
+        self.assertEqual(first['constraint'], 'margin_or_funding_cap')
+        self.assertEqual(wider['constraint'], 'margin_or_funding_cap')
+        self.assertGreater(D(first['quantity_btc']), D(wider['quantity_btc']))
+        self.assertGreater(D(wider['quantity_btc']), 0)
 
     def test_add_cash_requirement_uses_available_balance(self):
         model, reader, snapshot, _, _ = self.fixture()
