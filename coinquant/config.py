@@ -26,10 +26,12 @@ class Config:
     # Optional ceiling on the USDT the model may size from; the rest of the
     # wallet is not trial capital. A decimal string, or None for the whole wallet.
     capital_limit_usdt: str | None = None
-    # Optional whole-campaign stop loss budget. Neither field has a strategy
-    # default; an explicit budget requires an explicit slippage assumption.
-    max_stop_loss_fraction: str | None = None
-    stop_slippage_fraction: str | None = None
+    # Modeled whole-campaign loss ceiling, including both taker fees and the
+    # adverse stop-slippage assumption. These defaults need economic replay;
+    # they are not a realized drawdown or execution-slippage guarantee.
+    # Both null allows management of existing exposure, never new risk.
+    max_stop_loss_fraction: str | None = '.49'
+    stop_slippage_fraction: str | None = '.01'
 
     def __post_init__(self):
         if (not isinstance(self.account_uid, str) or not self.account_uid.isascii()

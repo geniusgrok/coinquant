@@ -2,5 +2,7 @@
   "account_uid": "",
   "state_dir": "~/.coinquant/binance-btcusdt",
   "session_seconds": 300,
-  "poll_seconds": 5
+  "poll_seconds": 5,
+  "max_stop_loss_fraction": ".49",
+  "stop_slippage_fraction": ".01"
 }
