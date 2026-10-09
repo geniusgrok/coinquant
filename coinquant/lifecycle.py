@@ -303,7 +303,10 @@ class Lifecycle:
                         or number(current['quantity_btc'])*q<=0
                         or current['possible_entry_remainders'] or not self.planned_protection(current)):
                     raise
-                if replacement.get('loss_ceiling_usdt') is not None or report.get('action')=='tighten':
+                required_risk_stop=(report.get('action')=='tighten' or
+                    report.get('action') is None and replacement.get('loss_ceiling_usdt') is not None
+                    and (number(replacement['stop'])-number(self.state.get('position_protection')['stop']))*q>0)
+                if required_risk_stop:
                     # A required risk stop that cannot be established is not a
                     # successful hold, even when the older looser pair survives.
                     self.reader.set_deadline(REDUCE_SECONDS,extend_only=True)
