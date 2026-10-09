@@ -109,6 +109,7 @@ class EnvironmentTests(TestCase):
             with self.assertRaises(Blocked):trial_gate(config,live,mode='live',uid='123')
             evidence=Path(tmp)/'evidence.json'
             proof=dict(source_digest='wrong',demo_uid='456',demo_state_dir=str(Path(tmp)/'demo-state'),
+                       max_stop_loss_fraction='.02',stop_slippage_fraction='.01',
                        demo_capital_limit_usdt='100',entry_order_id='1',stop_algo_id='2',
                        take_algo_id='3',reduction_order_id='4',offline_trigger_order_id='5')
             evidence.write_text(json.dumps(proof))
@@ -125,11 +126,12 @@ class EnvironmentTests(TestCase):
             with State(directory,'binance:BTCUSDT:demo:456'):
                 pass
             proof=dict(source_digest='digest',demo_uid='456',demo_state_dir=str(directory),
+                       max_stop_loss_fraction='.10',stop_slippage_fraction='.01',
                        demo_capital_limit_usdt='100',entry_order_id='made-up-entry',
                        stop_algo_id='made-up-stop',take_algo_id='made-up-take',
                        reduction_order_id='made-up-reduction',
                        offline_trigger_order_id='made-up-trigger')
-            reader=Mock(environment='demo',authorize_writes=False)
+            reader=Mock(environment='demo',authorize_writes=False,loss_fraction=D('.10'),slip_fraction=D('.01'))
             reader.account_identity.return_value='456'
             reader.query_intent.side_effect=Unknown('native identity absent')
             with self.assertRaises(Unknown):
@@ -138,53 +140,8 @@ class EnvironmentTests(TestCase):
     def test_demo_evidence_requires_native_fill_and_session_chronology(self):
         with tempfile.TemporaryDirectory() as tmp:
             directory=Path(tmp)/'demo-state';scope='binance:BTCUSDT:demo:456'
-            proof=dict(source_digest='digest',demo_uid='456',demo_state_dir=str(directory),
-                       demo_capital_limit_usdt='100',entry_order_id='entry',stop_algo_id='stop',
-                       take_algo_id='take',reduction_order_id='reduce',offline_trigger_order_id='offline')
-            orders={}
-            with State(directory,scope) as state:
-                def ordinary(identity,side,kind,requested,filled,status,reduce=False):
-                    payload=dict(symbol='BTCUSDT',positionSide='BOTH',side=side,type=kind,
-                                 quantity=str(requested),reduceOnly='true' if reduce else 'false')
-                    state.prepare(identity,'binance_order',payload)
-                    state.finish(identity,'confirmed',{})
-                    parent=dict(payload,reduceOnly=reduce,orderId=len(orders)+1,
-                                origQty=str(requested),executedQty=str(filled),status=status)
-                    orders[identity]=dict(parent=parent,child=None)
-                def conditional(identity,kind,finished=False):
-                    payload=dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL',type=kind,
-                                 triggerPrice='90',workingType='MARK_PRICE',
-                                 closePosition='true',priceProtect='false')
-                    state.prepare(identity,'binance_algo',payload)
-                    state.finish(identity,'confirmed',{'status':'NEW'})
-                    parent=dict(payload,orderType=kind,closePosition=True,priceProtect=False,
-                                algoStatus='FINISHED' if finished else 'NEW')
-                    child=(dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL',orderId=40,
-                                origQty='2',executedQty='2',status='FILLED') if finished else None)
-                    orders[identity]=dict(parent=parent,child=child)
-                ordinary('entry','BUY','LIMIT',3,3,'FILLED')
-                conditional('stop','STOP_MARKET');conditional('take','TAKE_PROFIT_MARKET')
-                ordinary('reduce','SELL','MARKET',2,1,'EXPIRED',True)
-                conditional('offline','STOP_MARKET',True)
-                actions=[dict(id=identity,method='POST',path=path,at_ms=1000100+index)
-                         for index,(identity,path) in enumerate((
-                             ('entry','/fapi/v1/order'),('stop','/fapi/v1/algoOrder'),
-                             ('take','/fapi/v1/algoOrder'),('reduce','/fapi/v1/order'),
-                             ('offline','/fapi/v1/algoOrder')))]
-                base=dict(trial_mode='demo',source_digest='digest',cleanup='verified',pending_intents=0,
-                          sizing_capital_usdt='100',
-                          elapsed_seconds=3)
-                state.report(dict(base,session_started_at_ms=1000000,write_attempted=True,actions=actions,
-                                  actual=dict(quantity_btc='2',native_full_position_protected=True)))
-                state.report(dict(base,session_started_at_ms=1000000,
-                                  actual=dict(quantity_btc='2',native_full_position_protected=True)))
-                state.report(dict(base,session_started_at_ms=1020000,
-                                  actual=dict(quantity_btc='0',native_full_position_protected=False)))
-            reader=Mock(environment='demo',authorize_writes=False)
-            reader.account_identity.return_value='456';reader.clock.return_value=1030
-            reader.query_intent.side_effect=lambda identity,conditional=False:orders[identity]
-            reader.get.return_value=[dict(id=1,time=1010000,orderId=40,qty='2',price='89',
-                                          symbol='BTCUSDT',positionSide='BOTH',side='SELL')]
+            from tests.test_pr77_evidence import demo_fixture
+            proof,reader,orders=demo_fixture(directory)
             self.assertTrue(verify(proof,'digest',D(100),reader))
             with State(directory,scope) as state:
                 sequence,recorded,payload=state.db.execute(

@@ -4,6 +4,7 @@ import calendar
 from datetime import datetime, timezone
 from decimal import Decimal as D
 from .types import Blocked, Unknown, number
+from .binance import conditional_is_terminal
 
 
 TERMINAL = ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
@@ -16,7 +17,23 @@ def owned_observation(state,reader,identity,*,conditional=False):
         raise Unknown('missing durable native order ownership')
     payload=json.loads(row[1])
     archived=state.get('terminal_native_orders') or {}
-    observed=archived.get(identity) or (state.get('settled_protection') or {}).get(identity)
+    settled=state.get('settled_protection') or {}
+    observed=archived.get(identity) or settled.get(identity)
+    repair=bool(conditional and observed and observed.get('child') is None
+                and any(observed['parent'].get(field) is not None
+                        and number(observed['parent'][field])!=0 for field in ('actualQty','actualPrice')))
+    if repair:
+        # Older code could freeze a canceled parent whose fill was reported
+        # before its child ID. That is incomplete evidence, not an immutable
+        # terminal archive. Recover only the very same native parent.
+        previous=observed['parent']
+        observed=reader.query_intent(identity,conditional=True)
+        if (str(observed['parent'].get('algoId'))!=str(previous.get('algoId'))
+                or previous.get('clientAlgoId')!=identity
+                or observed['parent'].get('clientAlgoId')!=identity
+                or not str(previous.get('algoId','')).isdigit()
+                or int(previous['algoId'])<=0):
+            raise Unknown('incomplete protection archive changed its native identity')
     if observed is None:observed=reader.query_intent(identity,conditional=conditional)
     parent=observed['parent'];order=observed['child'] if conditional else parent
     for field in ('symbol','side','positionSide'):
@@ -32,10 +49,8 @@ def owned_observation(state,reader,identity,*,conditional=False):
             raise Unknown('owned protection differs from its durable request')
     elif 'price' in payload and number(parent.get('price'))!=number(payload['price']):
         raise Unknown('owned entry price changed')
-    terminal=(not conditional or parent.get('algoStatus') in ('FINISHED','CANCELED','EXPIRED','REJECTED'))
-    if order is None:
-        terminal &= parent.get('algoStatus')!='FINISHED'
-    else:
+    terminal=not conditional or conditional_is_terminal(observed)
+    if order is not None:
         if (any(order.get(k)!=parent.get(k) for k in ('symbol','side','positionSide'))
                 or not 0<=number(order.get('executedQty'))<=number(order.get('origQty'),positive=True)):
             raise Unknown('invalid native order fill evidence')
@@ -46,8 +61,14 @@ def owned_observation(state,reader,identity,*,conditional=False):
                 or status in ('NEW','REJECTED') and executed):
             raise Unknown('inconsistent native order status')
         terminal &= status in TERMINAL
-    if terminal and identity not in archived:
-        archived[identity]=observed;state.set('terminal_native_orders',archived)
+    if repair and (order is None or not terminal or number(order['executedQty'])<=0):
+        raise Unknown('incomplete protection archive still lacks a terminal child')
+    if terminal and (identity not in archived or repair):
+        archived[identity]=observed
+        updates={'terminal_native_orders':archived}
+        if repair and identity in settled:
+            settled[identity]=observed;updates['settled_protection']=settled
+        state.set_many(updates)
     return observed
 
 
@@ -110,7 +131,8 @@ def reconcile(state, reader, model, snapshot):
     if not links:
         if number(snapshot['quantity_btc']):raise Unknown('entry campaign journal unavailable')
         return {'status':'flat_without_entry_journal'}
-    if type(snapshot.get('last_fill_id')) is not int or snapshot['last_fill_id']<-1:
+    if (snapshot.get('recent_fill_window_complete') is False
+            or type(snapshot.get('last_fill_id')) is not int or snapshot['last_fill_id']<-1):
         raise Unknown('ownership lacks a verified recent fill cursor')
     # Only one entry campaign can own the one-way isolated position. Later
     # rejected/zero-fill orders must not hide an older actually filled entry.
@@ -143,7 +165,7 @@ def reconcile(state, reader, model, snapshot):
         terminal=all(o['status'] in TERMINAL for _,o in native.values())
         if terminal and not snapshot['possible_entry_remainders'] and not state.pending():
             again=reader.snapshot(snapshot['account_uid'])
-            if (type(again.get('last_fill_id')) is not int or
+            if (again.get('recent_fill_window_complete') is False or type(again.get('last_fill_id')) is not int or
                     any(again.get(k)!=snapshot.get(k) for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders','last_fill_id'))):
                 raise Unknown('account changed while settling zero-fill entries')
             _archive_links(state,links)
@@ -215,11 +237,15 @@ def reconcile(state, reader, model, snapshot):
             or total!=number(snapshot['quantity_btc'])):
         raise Unknown('native fills do not reconcile to current position')
     protection_slippage=[]
+    protective_exit_started=False
     for order_id,(intent_id,order) in native.items():
         row=state.db.execute('SELECT kind,payload FROM intents WHERE id=?',(intent_id,)).fetchone()
         if not row or row[0]!='binance_algo':continue
+        child_fills=[t for t in trades if str(t['orderId'])==order_id]
+        if child_fills and json.loads(row[1]).get('closePosition')=='true':
+            protective_exit_started=True
         prices=[(number(t['qty'],positive=True),number(t['price'],positive=True))
-                for t in trades if str(t['orderId'])==order_id and t.get('price') is not None]
+                for t in child_fills if t.get('price') is not None]
         if not prices:continue  # unavailable native price is never represented as zero slippage
         trigger=number(json.loads(row[1])['triggerPrice'],positive=True)
         quantity=sum((q for q,_ in prices),D(0))
@@ -229,7 +255,7 @@ def reconcile(state, reader, model, snapshot):
                                         avg_fill_price=str(average),trigger_price=str(trigger),
                                         adverse_slippage_fraction=str(adverse)))
     again=reader.snapshot(snapshot['account_uid'])
-    if (type(again.get('last_fill_id')) is not int or
+    if (again.get('recent_fill_window_complete') is False or type(again.get('last_fill_id')) is not int or
             any(again[k]!=snapshot[k] for k in ('quantity_btc','entry','wallet_usdt','possible_entry_remainders','last_fill_id'))):
         raise Unknown('account changed during ownership recovery')
     # The default native cursor covers only seven days. A stable empty window
@@ -253,6 +279,18 @@ def reconcile(state, reader, model, snapshot):
     else:model.primary_consumed=campaign
     model.consumed=campaign
     model.position_campaign=campaign if total else None
+    if (not total and model.exit_cause=='price' and model.exit_campaign==campaign
+            and model.model.active is not None and model.model.active.identity==campaign):
+        # A pierced signal stays active while its final-mark exit is pending.
+        # Verified flat fills now settle it without occupying the signal slot.
+        model.model.active=None
+    if (not total and model.exit_cause=='macro' and model.exit_campaign==campaign
+            and model.macro_opportunity is not None and model.macro_opportunity.identity==campaign):
+        # The inactive macro decision retires its geometry only when the actual
+        # exit has completed. A later eligible observation can then start anew.
+        model.macro_epoch=model.macro_opportunity=None
+    if model.position_campaign!=model.exit_campaign:
+        model.exit_cause=model.exit_stop=model.exit_campaign=None
     state.set('linear_campaign',model.checkpoint())
     if not total and snapshot['possible_entry_remainders']==0 and all(
             observed['status'] not in ('NEW','PARTIALLY_FILLED')
@@ -278,6 +316,7 @@ def reconcile(state, reader, model, snapshot):
             'campaign_fee_usdt':str(paid_fees) if paid_fees is not None else None,
             'campaign_realized_pnl_usdt':str(realized_pnl) if realized_pnl is not None else None,
             'last_fill_id':max(t['id'] for t in trades),
+            'protective_exit_started':protective_exit_started,
             'protection_slippage':protection_slippage,
             'protection_confirmed':snapshot.get('native_full_position_protected',False),
             'entry_remainder':snapshot['possible_entry_remainders']}

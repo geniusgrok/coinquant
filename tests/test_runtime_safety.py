@@ -11,7 +11,7 @@ from urllib.error import HTTPError
 from urllib.parse import parse_qsl, urlsplit
 
 from coinquant import cli
-from coinquant.audit import allows_new_risk, income
+from coinquant.audit import allows_new_risk, funding_debit, income
 from coinquant.binance import Binance
 from coinquant.campaign import Campaign
 from coinquant.config import Config
@@ -72,6 +72,82 @@ class FundsAuditGate(TestCase):
             self.assertFalse(allows_new_risk(collected, None, flat=True))
             self.assertFalse(allows_new_risk({}, '90', flat=True))
             self.assertEqual(state.get('income_coverage')['closure']['wallet'], '90')
+
+    def test_wallet_less_refresh_invalidates_the_older_wallet_closure(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp, SCOPE) as state:
+            reader = Clocked(1_000_000)
+            income(reader, state, wallet='100')
+            reader.now += 1000
+            explained = income(reader, state, force=True, wallet='100')
+            self.assertTrue(allows_new_risk(explained, '100', flat=False))
+            reader.now += 1000
+            reader.pages.append(dict(row(1, '-1', reader.now - 1), incomeType='FUNDING_FEE'))
+            collected = income(reader, state, force=True)
+            self.assertIsNone(collected['closure'])
+            self.assertFalse(allows_new_risk(collected, '100', flat=False))
+            # The old unchanged wallet cannot borrow proof predating this debit.
+            pending = income(reader, state, wallet='100')
+            self.assertEqual(pending['wallet_closure'], 'pending_income')
+            self.assertFalse(allows_new_risk(pending, '100', flat=False))
+
+    def test_add_refreshes_balanced_funding_hidden_by_the_same_wallet_cache(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp, SCOPE) as state:
+            reader = Clocked(1_000_000)
+            income(reader, state, wallet='1000')
+            reader.now += 1000
+            income(reader, state, force=True, wallet='1000')
+            state.set('entry_campaigns', {'entry': dict(campaign=7, prepared_at=reader.now - 500)})
+            reader.now += 1000
+            reader.pages.extend([dict(row(1, '-2', reader.now - 1), incomeType='FUNDING_FEE'),
+                                 dict(row(2, '2', reader.now - 1), incomeType='TRANSFER', symbol='')])
+            cached = income(reader, state, wallet='1000')
+            self.assertTrue(allows_new_risk(cached, '1000', flat=False))
+            self.assertEqual(cached['observed_transactions'], 0)
+            snapshot = dict(wallet_usdt='1000', observed_at_ms=reader.now)
+            with patch.object(reader, 'get', wraps=reader.get) as get:
+                self.assertEqual(funding_debit(reader, state, 7, snapshot), 2)
+                self.assertEqual(funding_debit(reader, state, 7, snapshot), 2)
+            self.assertEqual(get.call_count, 1)
+            self.assertEqual(state.get('income_coverage')['closure']['at'], reader.now)
+
+    def test_campaign_funding_uses_earliest_boundary_without_netting_receipts(self):
+        with tempfile.TemporaryDirectory() as tmp, State(tmp, SCOPE) as state:
+            reader = Clocked(1_000_000)
+            income(reader, state, wallet='1000')
+            start = reader.now + 10_000
+            state.set('entry_campaigns', {'add': dict(campaign=7, prepared_at=start + 5000),
+                                         'entry': dict(campaign=7, prepared_at=start)})
+            reader.pages = [dict(row(1, '-20', start - 1), incomeType='FUNDING_FEE'),
+                            dict(row(2, '-2', start), incomeType='FUNDING_FEE'),
+                            dict(row(3, '8', start + 1), incomeType='FUNDING_FEE'),
+                            dict(row(4, '-9', start + 2), incomeType='FUNDING_FEE', symbol='ETHUSDT'),
+                            dict(row(5, '100', start + 3), incomeType='TRANSFER', symbol='')]
+            reader.now = start + 20_000
+            self.assertEqual(funding_debit(reader, state, 7,
+                                          dict(wallet_usdt='1077', observed_at_ms=reader.now)), 2)
+
+    def test_ambiguous_funding_scope_or_coverage_never_defaults_to_zero(self):
+        for flaw in ('missing_boundary', 'invalid_boundary', 'missing_symbol', 'invalid_symbol',
+                     'late_origin', 'unclosed_wallet'):
+            with self.subTest(flaw=flaw), tempfile.TemporaryDirectory() as tmp, State(tmp, SCOPE) as state:
+                reader = Clocked(1_000_000)
+                income(reader, state, wallet='1000')
+                start = reader.now + 500
+                link = dict(campaign=7, prepared_at=start)
+                if flaw == 'missing_boundary': link.pop('prepared_at')
+                elif flaw == 'invalid_boundary': link['prepared_at'] = str(start)
+                state.set('entry_campaigns', {'entry': link})
+                reader.now += 1000
+                debit = dict(row(1, '-1', reader.now - 1), incomeType='FUNDING_FEE')
+                if flaw == 'missing_symbol': debit.pop('symbol')
+                elif flaw == 'invalid_symbol': debit['symbol'] = None
+                reader.pages = [debit]
+                if flaw == 'late_origin':
+                    state.set('income_coverage', {**state.get('income_coverage'), 'origin': start + 1})
+                snapshot = dict(wallet_usdt='1000' if flaw == 'unclosed_wallet' else '999',
+                                observed_at_ms=reader.now)
+                with self.assertRaises(Unknown):
+                    funding_debit(reader, state, 7, snapshot)
 
     def test_unexplained_wallet_stops_top_up_but_keeps_protection(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -240,12 +316,23 @@ class FirstFillToProtection(TestCase):
             self.assertEqual(len([1 for _, path, _ in venue.sent if path.endswith('/positionMargin')]), 1)
             entries = [p for _, path, p in venue.sent if path.endswith('/order') and p.get('timeInForce') == 'IOC']
             self.assertEqual(len(entries), 1)
-            self.assertEqual(result['status'], 'unknown')
             self.assertEqual(result['errors'][0]['reason'], 'margin outcome unknown; no automatic retry')
-            live = [a for a in venue.algos.values() if a['algoStatus'] == 'NEW']
-            self.assertEqual({a['orderType'] for a in live}, {'STOP_MARKET', 'TAKE_PROFIT_MARKET'})
             reduce = [p for _, _, p in venue.sent if p.get('reduceOnly') == 'true']
-            self.assertTrue(all(D(p['quantity']) <= D(entries[0]['quantity']) / 2 for p in reduce))
+            self.assertTrue(all(D(p['quantity']) <= D(entries[0]['quantity']) for p in reduce))
+            # A five-second flat readback cannot identify a lost margin write or
+            # retire it before the signed-request expiry bound. Matching history
+            # alone is not permission to confirm this request.
+            self.assertEqual(result['status'], 'unknown')
+            self.assertEqual(result['pending_intents'], 1)
+            with State(tmp, SCOPE) as state:
+                self.assertEqual([(p['kind'], p['status']) for p in state.pending()],
+                                 [('binance_margin', 'unknown')])
+            if venue.q == 0:
+                self.assertEqual(result['cleanup'], 'verified')
+                self.assertFalse(any(a['algoStatus'] == 'NEW' for a in venue.algos.values()))
+            else:
+                live = [a for a in venue.algos.values() if a['algoStatus'] == 'NEW']
+                self.assertEqual({a['orderType'] for a in live}, {'STOP_MARKET', 'TAKE_PROFIT_MARKET'})
 
 
 class EmergencyExitVenue(Venue):
@@ -311,7 +398,8 @@ class BoundedPartialCleanup(TestCase):
 
     def test_terminal_zero_fill_has_no_retry_progress(self):
         venue,result,reductions=self.session('zero')
-        self.assertEqual(len(reductions),1)
+        self.assertEqual(len(reductions),2)
+        self.assertEqual(len({p['newClientOrderId'] for p in reductions}),2)
         self.assertGreater(venue.q,0)
         self.assertEqual(result['cleanup'],'unresolved')
         self.assertEqual(result['pending_intents'],0)
@@ -337,12 +425,14 @@ class SmallFundBoundaries(TestCase):
         kwargs.setdefault('stop_slippage_fraction',fill['stop_slippage_fraction'])
         kwargs.setdefault('paid_commission_usdt',ownership['campaign_fee_usdt'])
         kwargs.setdefault('realized_pnl_usdt',ownership['campaign_realized_pnl_usdt'])
+        kwargs.setdefault('paid_funding_usdt','0')
         return topup_preview(venue, model, snapshot, fill['requested'], protection['stop'], protection['take'],
                              fill['stop_budget'], **kwargs)
 
     def test_topup_uses_verified_actual_campaign_costs(self):
         with tempfile.TemporaryDirectory() as tmp:
             venue,_=self.partial(tmp)
+            venue.wait(1);venue.wallet-=D(1);venue.pay('FUNDING_FEE',D(-1))
             venue.begin_cycle(120)
             with State(tmp,SCOPE) as state:
                 model=Campaign.restore(state.get('linear_campaign'))
@@ -357,6 +447,38 @@ class SmallFundBoundaries(TestCase):
                                  sum((D(t['commission']) for t in venue.trades),D(0)))
                 self.assertEqual(D(preview.call_args.kwargs['realized_pnl_usdt']),
                                  sum((D(t['realizedPnl']) for t in venue.trades),D(0)))
+                self.assertEqual(preview.call_args.kwargs['paid_funding_usdt'], D(1))
+
+    def test_unverified_funding_blocks_only_the_add_not_owned_protection_or_exit(self):
+        for flaw in ('missing_symbol', 'invalid_symbol', 'coverage_gap', 'income_unavailable'):
+            with self.subTest(flaw=flaw), tempfile.TemporaryDirectory() as tmp:
+                venue,_=self.partial(tmp)
+                venue.wait(1);venue.wallet-=D(1);venue.pay('FUNDING_FEE',D(-1))
+                if flaw == 'missing_symbol': venue.income[-1].pop('symbol')
+                elif flaw == 'invalid_symbol': venue.income[-1]['symbol'] = None
+                venue.begin_cycle(120)
+                with State(tmp,SCOPE) as state:
+                    model=Campaign.restore(state.get('linear_campaign'))
+                    snapshot=venue.snapshot('123')
+                    ownership=reconcile(state,venue,model,snapshot)
+                    if flaw == 'coverage_gap':
+                        start=min(link['prepared_at'] for link in state.get('entry_campaigns').values())
+                        state.set('income_coverage',{**state.get('income_coverage'),'origin':start+1})
+                    engine=Lifecycle(venue,state,'123',authorized=True,session=state.get('entry_fill')['session'])
+                    engine.risk_audit_ok=True;engine.reconciled=(snapshot,0,ownership)
+                    original=venue.get
+                    def get(path,parameters=None):
+                        if flaw == 'income_unavailable' and path.endswith('/income'):
+                            raise Unknown('fixture funding income unavailable')
+                        return original(path,parameters)
+                    with patch.object(venue,'get',side_effect=get):
+                        before=len(venue.sent)
+                        held=engine.top_up(model,snapshot)
+                        self.assertEqual(engine.entry_constraint,'campaign_funding_unverified')
+                        self.assertEqual(len(venue.sent),before)
+                        self.assertTrue(held['native_full_position_protected'])
+                        self.assertEqual(D(engine.close_owned()['quantity_btc']),0)
+                        self.assertTrue(any(p.get('reduceOnly')=='true' for _,_,p in venue.sent[before:]))
 
     def test_missing_or_unsupported_actual_costs_block_adds_but_keep_protection(self):
         for field,value in (('commission',None),('commissionAsset','BNB'),('commission','NaN'),('realizedPnl',None)):

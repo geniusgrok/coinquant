@@ -4,10 +4,10 @@ The default CLI is read-only. Explicit bounded trials use these operations
 through the same lifecycle.
 """
 import json
-from decimal import Decimal as D, ROUND_CEILING
+from decimal import Decimal as D, ROUND_CEILING, ROUND_FLOOR
 from .config import scope
 from .state import client_id
-from .binance import market_quantity
+from .binance import conditional_is_terminal, market_quantity
 from .types import Blocked, NotSent, Rejected, Unknown, number
 
 
@@ -31,7 +31,9 @@ def risk_reducing(state, pending):
 def _check_owner(snapshot, expected_owner):
     if expected_owner is None:return
     fields=('account_uid','quantity_btc','entry','wallet_usdt','last_fill_id','possible_entry_remainders')
-    if (any(k not in snapshot or k not in expected_owner for k in fields)
+    if (snapshot.get('recent_fill_window_complete') is False
+            or expected_owner.get('recent_fill_window_complete') is False
+            or any(k not in snapshot or k not in expected_owner for k in fields)
             or type(expected_owner['last_fill_id']) is not int
             or type(snapshot['last_fill_id']) is not int
             or expected_owner['last_fill_id']<-1):
@@ -43,12 +45,11 @@ def _check_owner(snapshot, expected_owner):
 
 def _check_cursor(reader, expected_owner):
     if expected_owner is None:return
-    fills=reader.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','limit':1000})
-    if (not isinstance(fills,list) or len(fills)>1000
-            or any(not isinstance(f,dict) or f.get('symbol')!='BTCUSDT'
-                   or type(f.get('id')) is not int or f['id']<0 for f in fills)
-            or len({f['id'] for f in fills})!=len(fills)):
-        raise Unknown('final write fill cursor is unavailable')
+    if expected_owner.get('recent_fill_window_complete') is False:
+        raise Unknown('fill cursor window is incomplete')
+    fills,complete=reader._recent_fills()
+    if not complete:
+        raise Unknown('fill cursor window is incomplete')
     if max((f['id'] for f in fills),default=-1)!=expected_owner['last_fill_id']:
         raise Unknown('fill ownership changed before the safety write')
 
@@ -121,25 +122,21 @@ def send_once(state, identity, send, method, path, payload):
 
 def settled_protection(reader,state,identity):
     """Retain conclusive terminal child evidence before exchange history expires."""
+    from .ownership import owned_observation
     settled=state.get('settled_protection') or {}
-    if identity in settled or absent(state,identity):return True
+    if absent(state,identity):return True
+    if identity in settled:
+        return conditional_is_terminal(owned_observation(state,reader,identity,conditional=True))
     archived=(state.get('terminal_native_orders') or {}).get(identity)
     if archived and 'algoStatus' in archived['parent']:
-        settled[identity]=archived;state.set('settled_protection',settled)
+        observed=owned_observation(state,reader,identity,conditional=True)
+        if not conditional_is_terminal(observed):return False
+        settled[identity]=observed;state.set('settled_protection',settled)
         return True
     if not reader.conditional_terminal(identity):return False
-    observed=reader.query_intent(identity,conditional=True)
-    parent,child=observed['parent'],observed['child']
-    if parent.get('algoStatus') not in ('CANCELED','EXPIRED','REJECTED','FINISHED'):
+    observed=owned_observation(state,reader,identity,conditional=True)
+    if not conditional_is_terminal(observed):
         raise Unknown('protective terminal state changed')
-    if child is not None:
-        if (child.get('status') not in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
-                or not 0<=D(child['executedQty'])<=D(child['origQty'])
-                or child['status']=='FILLED' and D(child['executedQty'])!=D(child['origQty'])
-                or child['status']=='REJECTED' and D(child['executedQty'])):
-            raise Unknown('protective child terminal state changed')
-    elif parent['algoStatus']=='FINISHED':
-        raise Unknown('finished protection lacks child evidence')
     settled[identity]=observed
     state.set('settled_protection',settled)
     return True
@@ -175,11 +172,24 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
         if (any(parent.get(k)!=v for k,v in expected.items())
                 or D(parent.get('triggerPrice','0'))!=trigger or observed['child'] is not None):
             raise Unknown('native protection not confirmed active; reconcile exposure')
-        state.finish(identity,'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
+        previous=json.loads(state.db.execute('SELECT result FROM intents WHERE id=?',(identity,)).fetchone()[0])
+        if 'algo_id' in previous and previous['algo_id']!=parent['algoId']:
+            raise Unknown('confirmed protection changed its native identity')
+        confirmed_at=previous.get('first_confirmed_at_ms')
+        if confirmed_at is None:confirmed_at=int(reader.clock()*1000)+getattr(reader,'time_offset_ms',0)
+        if type(confirmed_at) is not int or confirmed_at<=0:
+            raise Unknown('invalid native protection confirmation time')
+        state.finish(identity,'confirmed',{'algo_id':parent['algoId'],'status':'NEW',
+                                          'first_confirmed_at_ms':confirmed_at})
         timing=state.get('entry_timing') if kind=='STOP_MARKET' else None
         plan=state.get('entry_plan') if timing else None
-        if timing and kind=='STOP_MARKET' and plan and plan.get('epoch')==epoch:
-            timing['stop_accepted_at_ms']=int(reader.clock()*1000)
+        timed_stop=(timing and plan and timing.get('entry_id')==plan.get('id')
+                    and timing.get('first_stop_id')==identity)
+        if timed_stop:
+            # The first stop may be a temporary guard. Record this native
+            # identity's first successful readback, never a later plan stop or
+            # a presumed acceptance time while the process was stopped.
+            timing.setdefault('stop_accepted_at_ms',int(reader.clock()*1000))
             state.set('entry_timing',timing)
         if kind=='TAKE_PROFIT_MARKET':break  # the final readback follows
         observed_account=reader.snapshot(uid)
@@ -188,8 +198,8 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
                 or observed_account['possible_entry_remainders']):
             raise Unknown('exposure changed between protection legs; reconcile before next write')
         _check_cursor(reader,expected_owner)
-        if timing and plan and plan.get('epoch')==epoch:
-            timing['stop_account_readback_at_ms']=int(reader.clock()*1000)
+        if timed_stop:
+            timing.setdefault('stop_account_readback_at_ms',int(reader.clock()*1000))
             state.set('entry_timing',timing)
     after=reader.snapshot(uid)
     _check_owner(after,expected_owner)
@@ -266,18 +276,32 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,
 
     Binance margin writes have no client transaction ID. The amount is rounded up
     to the settlement asset's native precision. A definitive success response is
-    persisted before the separate wallet readback; a lost answer is settled only
-    from native margin history, never from a balance change or a resend.
+    persisted before the separate wallet readback. A lost answer stays unknown:
+    native history has no request identity, and a balance change cannot prove it.
+    Only a verified flat account can retire that unresolved risk-reducing intent.
     """
-    before=_gate(reader,state,uid,authorized,snapshot=snapshot,expected_owner=expected_owner)
+    # Funding and margin changes do not move the fill cursor. Re-read funds even
+    # when the lifecycle supplied its earlier ownership snapshot.
+    before=_gate(reader,state,uid,authorized,expected_owner=expected_owner)
     if not D(before['quantity_btc']) or before['possible_entry_remainders']:raise Blocked('unsafe margin scope')
     places=instrument.get('quotePrecision')
     if (instrument.get('symbol')!='BTCUSDT' or instrument.get('marginAsset')!='USDT'
             or type(places) is not int or not 0<=places<=8):
         raise Blocked('settlement amount precision unavailable')
     amount=(D(target)-D(before['isolated_wallet_usdt'])).quantize(D(1).scaleb(-places),rounding=ROUND_CEILING)
-    if not 0<amount<=D(before['wallet_usdt'])-D(before['isolated_wallet_usdt']):
+    if before.get('available_usdt') is None:
+        raise Unknown('native available margin is unavailable')
+    if not 0<amount<=min(number(before['available_usdt']),D(before['wallet_usdt'])-D(before['isolated_wallet_usdt'])):
         raise Blocked('margin addition must be funded from existing wallet')
+    # A resumed plan or the caller's earlier mark can no longer authorize its
+    # old reserve. Enforce the cap on this fresh account and the actual rounded
+    # transfer, including the margin already at the exchange.
+    capital=min(number(before['wallet_usdt']),number(before.get('equity_usdt')))
+    if reader.capital_limit is not None:capital=min(capital,number(reader.capital_limit,positive=True))
+    if capital<=0:raise Blocked('positive current capital required for margin addition')
+    cap=(capital*D('.25')).quantize(D(1).scaleb(-places),rounding=ROUND_FLOOR)
+    if D(before['isolated_wallet_usdt'])+amount>cap:
+        raise Blocked('margin addition exceeds the current 25% capital limit')
     identity=client_id(state.identity,epoch,'margin_add')
     payload=dict(symbol='BTCUSDT',positionSide='BOTH',amount=format(amount.normalize(),'f'),type=1)
     if any(p['kind']=='binance_margin' for p in state.pending()):raise Unknown('previous margin outcome unresolved')
@@ -294,7 +318,7 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,
     if (not isinstance(answer,dict) or answer.get('code')!=200 or str(answer.get('type'))!='1'
             or D(str(answer.get('amount',0)))!=amount):
         raise Unknown('margin response not definitive')
-    # Later history attribution needs this time to exclude this transfer's row.
+    # Persist this request's definitive success before the separate readback.
     state.finish(identity,'confirmed',{'prepared_at_ms':prepared,'amount':str(amount),'acknowledged':True})
     after=reader.snapshot(uid)
     _check_owner(after,expected_owner)

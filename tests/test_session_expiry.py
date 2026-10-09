@@ -113,7 +113,16 @@ class SessionExpiryTests(TestCase):
         self.assertEqual(executed['cleanup'],'verified',executed)
         with State(self.directory,SCOPE) as state:
             protection=state.get('position_protection')
-            self.assertEqual(D(protection['stop']),D(125000))
+            # The historical trail remains 125000. Current observed-profit risk
+            # can require a tighter native stop, which strategy maintenance must
+            # retain rather than loosen back to that historical proposal.
+            self.assertEqual(Campaign.restore(state.get('linear_campaign')).model.active.stop,D(125000))
+            risk=state.get('holding_risk')
+            self.assertEqual(risk['status'],'observed')
+            self.assertEqual(D(protection['stop']),D(risk['native_stop']))
+            self.assertGreaterEqual(D(protection['stop']),D(125000))
+            self.assertLess(D(risk['loss_ceiling_usdt']),0)
+            self.assertLessEqual(D(risk['modeled_stop_loss_usdt']),D(risk['loss_ceiling_usdt']))
             self.assertGreaterEqual(protection['accepted_at_ms'],executed['session_started_at_ms'])
 
     def test_unknown_ownership_does_not_advance_read_only_checkpoint(self):

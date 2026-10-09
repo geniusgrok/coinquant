@@ -30,7 +30,7 @@ class Config:
     # adverse stop-slippage assumption. These defaults need economic replay;
     # they are not a realized drawdown or execution-slippage guarantee.
     # Both null allows management of existing exposure, never new risk.
-    max_stop_loss_fraction: str | None = '.49'
+    max_stop_loss_fraction: str | None = '.10'
     stop_slippage_fraction: str | None = '.01'
 
     def __post_init__(self):

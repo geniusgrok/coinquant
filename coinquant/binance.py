@@ -58,6 +58,28 @@ MAX_RESPONSE_BYTES = 8000000
 MIN_WRITE_SECONDS = 2.0
 
 
+def conditional_is_terminal(observed):
+    """A terminal child settles a triggered parent, even before FINISHED arrives."""
+    parent,child=observed['parent'],observed['child']
+    status=parent.get('algoStatus')
+    if status not in ('CANCELED','EXPIRED','REJECTED','FINISHED','TRIGGERED'):
+        return False
+    if child is None:
+        # Cancellation cannot erase the parent's reported execution. Nonzero
+        # fill metadata cannot be archived as a childless terminal order: the
+        # missing child must remain queryable for ownership.
+        if any(parent.get(field) is not None and number(parent[field])!=0
+               for field in ('actualQty','actualPrice')):
+            raise Unknown('executed protection parent lacks its native child')
+        return status not in ('FINISHED','TRIGGERED')
+    original=number(child.get('origQty'),positive=True);filled=number(child.get('executedQty'))
+    if not 0<=filled<=original:raise Unknown('invalid protection child quantities')
+    status=child.get('status')
+    if status=='FILLED' and filled!=original:raise Unknown('incomplete filled protection child')
+    if status in ('NEW','REJECTED') and filled:raise Unknown('unfilled child status reports fills')
+    return status in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
+
+
 def _retry_after(exc):
     try:
         return max(60, min(86400, float(exc.headers.get('Retry-After', '60'))))
@@ -451,18 +473,7 @@ class Binance:
 
     def conditional_terminal(self, identity):
         """A canceled parent is not proof that its triggered child stopped trading."""
-        observed=self.query_intent(identity,conditional=True)
-        parent,child=observed['parent'],observed['child']
-        if parent.get('algoStatus') not in ('CANCELED','EXPIRED','REJECTED','FINISHED'):return False
-        if child is None:
-            if parent['algoStatus']=='FINISHED':raise Unknown('finished protection lacks child evidence')
-            return True
-        original=number(child.get('origQty'),positive=True);filled=number(child.get('executedQty'))
-        if original<=0 or not 0<=filled<=original:raise Unknown('invalid protection child quantities')
-        status=child.get('status')
-        if status=='FILLED' and filled!=original:raise Unknown('incomplete filled protection child')
-        if status=='REJECTED' and filled:raise Unknown('rejected child with fills')
-        return status in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')
+        return conditional_is_terminal(self.query_intent(identity,conditional=True))
 
     def recover_pending(self, state):
         """Read-only terminal reconciliation; no missing-order retry inference.
@@ -477,6 +488,13 @@ class Binance:
             result=json.loads(raw)
             if 'absent_at_ms' in result and not result.get('query_absent_within_retention'):
                 state.finish(identity,'unknown',{**result,'legacy_absence_reopened':True})
+        # Margin history has no request identity. A same-amount row could be a
+        # manual transfer, including one before this request was prepared. Keep
+        # the evidence, but do not let an older inferred success permit a retry.
+        for identity, raw in state.db.execute("SELECT id,result FROM intents WHERE kind='binance_margin' AND status='confirmed'").fetchall():
+            result=json.loads(raw)
+            if 'history_time' in result and result.get('acknowledged') is not True:
+                state.finish(identity,'unknown',{**result,'legacy_margin_history_reopened':True})
         resolved = 0
         for intent in state.pending():
             kind, payload = intent['kind'], intent['payload']
@@ -515,13 +533,9 @@ class Binance:
                 except (Blocked,Unknown,KeyError,TypeError,ValueError,ArithmeticError):
                     pass
                 continue
-            if kind=='binance_margin':
-                try:
-                    if self.recover_margin(state,intent):resolved+=1
-                except (Blocked,Unknown,KeyError,TypeError,ValueError,ArithmeticError):
-                    pass
-                continue
             if kind not in ('binance_order', 'binance_algo'):
+                # A lost margin response stays unknown. Its native history has
+                # no client/transaction ID and cannot prove this write finished.
                 continue
             try:
                 conditional = kind == 'binance_algo'
@@ -559,16 +573,20 @@ class Binance:
                         # Lost POST/readback can leave an accepted protective leg
                         # active. Matching native readback resolves acceptance,
                         # allowing the durable lifecycle to install its other leg.
-                        state.finish(intent['id'],'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
+                        previous=json.loads(state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()[0])
+                        if 'algo_id' in previous and previous['algo_id']!=parent['algoId']:
+                            raise Unknown('confirmed protection changed its native identity')
+                        confirmed_at=previous.get('first_confirmed_at_ms')
+                        if confirmed_at is None:confirmed_at=int(self.clock()*1000)+getattr(self,'time_offset_ms',0)
+                        if type(confirmed_at) is not int or confirmed_at<=0:
+                            raise Unknown('invalid native protection confirmation time')
+                        state.finish(intent['id'],'confirmed',{'algo_id':parent['algoId'],'status':'NEW',
+                                                              'first_confirmed_at_ms':confirmed_at})
                         resolved+=1
                         continue
-                    parent_terminal = parent.get('algoStatus') in ('FINISHED', 'CANCELED', 'EXPIRED', 'REJECTED')
-                    if not parent_terminal:
+                    if not conditional_is_terminal(observed):
                         continue
                     if child is None:
-                        # FINISHED without child identity is insufficient evidence.
-                        if parent.get('algoStatus') == 'FINISHED':
-                            continue
                         state.finish(intent['id'], 'confirmed', {'algo_status': parent['algoStatus'], 'child': None},
                                      native=observed)
                         resolved += 1
@@ -610,6 +628,10 @@ class Binance:
         if (intent['status']!='unknown' or type(prepared) is not int
                 or not UNACCEPTED_AFTER_MS<=now-prepared<QUERYABLE_MS):
             return False
+        # Recovery and flat retirement use the same evidence. A missing-query
+        # result alone cannot bypass the open-order and complete-fill checks.
+        if not self.proven_absent(state,intent):
+            return False
         # Binance keeps every order that ever had a fill queryable, so "does not exist"
         # inside the retention window is authoritative. A reduction can only reduce
         # whatever is left. An entry or add is retired only when the position is
@@ -628,48 +650,51 @@ class Binance:
                                                'query_absent_within_retention':True})
         return True
 
-    def recover_margin(self, state, intent):
-        """Settle a transfer whose answer was lost from bounded native margin history.
+    def proven_absent(self, state, intent):
+        """A fill-capable identity is absent only after -2013 inside retention.
 
-        A margin write has no client identity. Exactly one matching user add in
-        the window after preparation confirms it, and only when no other margin
-        intent could have produced a row in that window; any other add there is
-        ambiguous and stays unknown. An empty window is not treated as final: a
-        history publication delay is not documented. Such an intent is only
-        retired by the verified flat account (Lifecycle.retire_stale).
-        Balance changes never decide it.
+        The open list must not contain it, and every trade since preparation must
+        already be archived. A failed query or a full trade page is not absence.
         """
-        row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
-        prepared=json.loads(row[0]).get('prepared_at_ms') if row else None
-        if type(prepared) is not int:
-            raise Unknown('margin intent lacks its preparation time; operator review required')
-        now=int(self.clock()*1000);begin=prepared-15000
-        if not begin<now<=begin+29*86400000:
-            raise Unknown('margin history window unavailable; operator review required')
-        for other,updated in state.db.execute("SELECT result,updated FROM intents WHERE kind='binance_margin' AND id!=? AND status!='rejected'",(intent['id'],)):
-            # Intents from before preparation times were recorded are bounded by
-            # their last local update, which follows the transfer.
-            at=json.loads(other).get('prepared_at_ms')
-            if type(at) is not int:at=int(updated*1000)
-            if at>=begin-15000:
-                raise Unknown('another margin transfer may own a history row in this window')
-        rows=self.get('/fapi/v1/positionMargin/history',
-                      {'symbol':'BTCUSDT','startTime':begin,'endTime':now,'limit':500})
-        if not isinstance(rows,list) or len(rows)>=500:
-            raise Unknown('margin history incomplete')
-        adds=[]
-        for r in rows:
-            if (r.get('symbol')!='BTCUSDT' or r.get('asset','USDT')!='USDT'
-                    or r.get('positionSide','BOTH')!='BOTH' or type(r.get('time')) is not int
-                    or not begin<=r['time']<=now or str(r.get('type')) not in ('1','2')):
-                raise Unknown('unexpected margin history scope')
-            if str(r['type'])=='1' and r.get('deltaType','USER_ADJUST')=='USER_ADJUST':
-                adds.append(r)
-        amount=number(intent['payload']['amount'],positive=True)
-        if len(adds)==1 and number(adds[0].get('amount'))==amount:
-            state.finish(intent['id'],'confirmed',{'prepared_at_ms':prepared,'amount':str(amount),'history_time':adds[0]['time']})
-            return True
-        return False
+        row=state.db.execute('SELECT kind,result FROM intents WHERE id=?',(intent['id'],)).fetchone()
+        if not row:return False
+        kind=row[0]
+        if kind not in ('binance_order','binance_algo'):
+            return False
+        result=json.loads(row[1])
+        prepared=result.get('prepared_at_ms')
+        now=int(self.clock()*1000)
+        if type(prepared) is not int or not UNACCEPTED_AFTER_MS<=now-prepared<QUERYABLE_MS:
+            return False
+        try:
+            if kind=='binance_order':
+                self.get('/fapi/v1/order',{'symbol':'BTCUSDT','origClientOrderId':intent['id']})
+            else:
+                self.get('/fapi/v1/algoOrder',{'clientAlgoId':intent['id']})
+            return False
+        except Missing:
+            pass
+        except (Blocked,Unknown):
+            return False
+        try:
+            if kind=='binance_order':
+                rows=self.get('/fapi/v1/openOrders',{'symbol':'BTCUSDT'})
+                field='clientOrderId'
+            else:
+                rows=self.get('/fapi/v1/openAlgoOrders',{'symbol':'BTCUSDT'})
+                field='clientAlgoId'
+            if (not isinstance(rows,list) or any(not isinstance(item,dict)
+                    or item.get('symbol')!='BTCUSDT' or not isinstance(item.get(field),str) for item in rows)
+                    or any(item[field]==intent['id'] for item in rows)):
+                return False
+            begin=max(0,prepared-15000)
+            trades=self._trade_page({'symbol':'BTCUSDT','startTime':begin,'endTime':now,'limit':1000})
+        except (Blocked,Unknown,TypeError):
+            return False
+        if len(trades)>=1000:
+            return False
+        known={tid:json.loads(raw) for tid,raw in state.db.execute('SELECT trade_id,payload FROM native_fills')}
+        return all(known.get(trade['id'])==trade for trade in trades)
 
     def snapshot(self, expected_uid):
         uid=self.account_identity()
@@ -689,16 +714,9 @@ class Binance:
                         'algos':self.get('/fapi/v1/openAlgoOrders',{} if scan_all else {'symbol':'BTCUSDT'})}
             wallet_observed_from_ms=int(self.clock()*1000)
             first=observe()
-            fills=self.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','limit':1000})
+            fills,fills_complete=self._recent_fills()
             second=observe()
             wallet_observed_until_ms=int(self.clock()*1000)
-            if not isinstance(fills,list) or len(fills)>1000:
-                raise Unknown('recent trade response is missing or oversized')
-            if any(f.get('symbol')!='BTCUSDT' for f in fills):
-                raise Unknown('unexpected recent trade scope')
-            if (any(type(f.get('id')) is not int or f['id']<0 for f in fills)
-                    or len({f['id'] for f in fills})!=len(fills)):
-                raise Unknown('invalid native fill cursor')
             if observation_key(first)!=observation_key(second):continue
             symbols=second['symbol']
             if not isinstance(symbols,list) or len(symbols)!=1:
@@ -712,7 +730,7 @@ class Binance:
                                   second['positions'],second['orders'],second['algos'],ticker['markPrice'])
             report.update(mark_time=ticker['time'],mark_price=ticker['markPrice'],
                           recent_fill_count=len(fills),last_fill_id=max((f['id'] for f in fills),default=-1),
-                          recent_fill_window_complete=len(fills)<1000,
+                          recent_fill_window_complete=fills_complete,
                           observed_at_ms=int(self.clock()*1000),
                           wallet_observed_from_ms=wallet_observed_from_ms,
                           wallet_observed_until_ms=wallet_observed_until_ms,
@@ -722,6 +740,159 @@ class Binance:
             self.check_all_orders=False
             return report
         raise Unknown('Binance account changed during bounded reconciliation')
+
+    def entry_snapshot(self, state, expected_uid, entry_id, *, flat_snapshot):
+        """Observe only the first terminal IOC's fill for immediate protection.
+
+        A fresh, verified flat boundary and the independently queried terminal
+        order replace the ordinary snapshot's second account round. Every fill
+        since that boundary must be this entry, including its price and fees.
+        The safety write must still recheck the final native fill cursor. Any
+        unavailable evidence falls back to snapshot plus full ownership recovery.
+        """
+        from .config import scope
+        from .ownership import owned_observation
+        try:
+            now=int(self.clock()*1000)
+            uid=str(expected_uid)
+            observed_at=flat_snapshot.get('observed_at_ms')
+            cursor=flat_snapshot.get('last_fill_id')
+            if (getattr(self,'_verified_uid',None)!=uid or state.identity!=scope(self.environment,uid)
+                    or flat_snapshot.get('account_uid')!=uid
+                    or number(flat_snapshot.get('quantity_btc'))!=0
+                    or number(flat_snapshot.get('entry'))!=0
+                    or flat_snapshot.get('possible_entry_remainders')!=0
+                    or flat_snapshot.get('open_orders')!=[] or flat_snapshot.get('open_algos')!=[]
+                    or flat_snapshot.get('recent_fill_window_complete') is not True
+                    or type(cursor) is not int or cursor < -1
+                    or type(observed_at) is not int or not 0<=now-observed_at<=15000):
+                raise Unknown('immediate entry lacks a fresh verified flat boundary')
+            links=state.get('entry_campaigns') or {}
+            if set(links)!={entry_id} or links[entry_id].get('add'):
+                raise Unknown('immediate protection requires the campaign first entry')
+            link=links[entry_id];start=link.get('prepared_at')
+            if (type(start) is not int or start<=0 or start!=observed_at-15000
+                    or type(link.get('after_trade_id')) is not int or link['after_trade_id']!=cursor
+                    or type(link.get('campaign')) is not int or not link['campaign']):
+                raise Unknown('entry journal does not bind this flat observation')
+            row=state.db.execute('SELECT kind,payload,status FROM intents WHERE id=?',(entry_id,)).fetchone()
+            if not row or row[0]!='binance_order' or row[2]!='confirmed' or state.pending():
+                raise Unknown('entry has not been independently settled')
+            payload=json.loads(row[1])
+            if (payload.get('symbol')!='BTCUSDT' or payload.get('positionSide')!='BOTH'
+                    or payload.get('side') not in ('BUY','SELL')
+                    or payload.get('type')!='LIMIT' or payload.get('timeInForce')!='IOC'
+                    or payload.get('newClientOrderId')!=entry_id
+                    or payload.get('reduceOnly','false')!='false'
+                    or payload.get('closePosition','false')!='false'):
+                raise Unknown('immediate protection requires the journaled opening IOC')
+            # Only recover_pending's native order query can establish this
+            # archive; neither a POST result nor a confirmed local status is it.
+            if entry_id not in (state.get('terminal_native_orders') or {}):
+                raise Unknown('queried terminal entry evidence unavailable')
+            parent=owned_observation(state,self,entry_id)['parent']
+            if (parent.get('clientOrderId')!=entry_id or type(parent.get('orderId')) is not int
+                    or parent['orderId']<=0 or parent.get('timeInForce')!='IOC'
+                    or parent.get('reduceOnly') is not False or parent.get('closePosition',False) is not False
+                    or parent.get('status') not in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH')):
+                raise Unknown('native entry is not a terminal opening IOC')
+            executed=number(parent.get('executedQty'),positive=True)
+            config=getattr(self,'_cycle_config',None)
+            if (config is None or self.check_all_orders
+                    or not 0<=self.monotonic()-getattr(self,'_config_at',-60)<60
+                    or not isinstance(config[1],list) or len(config[1])!=1):
+                raise Unknown('fresh entry account configuration unavailable')
+            wallet_from=int(self.clock()*1000)
+            account=self.get('/fapi/v3/account')
+            wallet_until=int(self.clock()*1000)
+            positions=self.get('/fapi/v3/positionRisk',{'symbol':'BTCUSDT'})
+            # One all-symbol round also rules out other pending account risk.
+            orders=self.get('/fapi/v1/openOrders')
+            algos=self.get('/fapi/v1/openAlgoOrders')
+            if orders!=[] or algos!=[]:
+                raise Unknown('orders changed after the verified flat entry')
+            ticker=self.get('/fapi/v1/premiumIndex',{'symbol':'BTCUSDT'})
+            if (not isinstance(ticker,dict) or ticker.get('symbol')!='BTCUSDT'
+                    or type(ticker.get('time')) is not int
+                    or abs(int(self.clock()*1000)-ticker['time'])>15000):
+                raise Unknown('stale or invalid Binance mark observation')
+            report=account_report(uid,config[0],config[1][0],account,positions,orders,algos,ticker['markPrice'])
+            q=number(report['quantity_btc'])
+            if abs(q)!=executed or (q>0)!=(parent['side']=='BUY'):
+                raise Unknown('native position is not the terminal entry fill')
+            query=({'symbol':'BTCUSDT','fromId':cursor+1,'limit':1000} if cursor>=0 else
+                   {'symbol':'BTCUSDT','startTime':start,'endTime':int(self.clock()*1000),'limit':1000})
+            fills=self._trade_page(query)
+            if not fills or len(fills)>=1000:
+                raise Unknown('immediate entry fill history is incomplete')
+            total=notional=fees=number(0);last=cursor
+            now=int(self.clock()*1000);limit=number(payload['price'],positive=True)
+            for trade in fills:
+                stamp=trade.get('time')
+                if (trade.get('positionSide')!='BOTH' or trade.get('orderId')!=parent['orderId']
+                        or trade.get('side')!=parent['side'] or trade['id']<=last
+                        or type(stamp) is not int or not start<=stamp<=now
+                        or trade.get('commissionAsset')!='USDT'):
+                    raise Unknown('external or invalid fill after the entry flat boundary')
+                amount=number(trade.get('qty'),positive=True);price=number(trade.get('price'),positive=True)
+                fee=number(trade.get('commission'))
+                if (fee<0 or number(trade.get('realizedPnl'))!=0
+                        or (price>limit if q>0 else price<limit)):
+                    raise Unknown('entry fill price or cost conflicts with its opening IOC')
+                total+=amount;notional+=amount*price;fees+=fee;last=trade['id']
+            # Compare in USDT: an entry price rounded by Binance may leave a
+            # residue, bounded by the same native 1e-8 unit as account arithmetic.
+            if (total!=executed or abs(total*number(report['entry'])-notional)>number('.00000001')
+                    or number(report['wallet_usdt'])!=number(flat_snapshot['wallet_usdt'])-fees):
+                raise Unknown('entry fills do not close native quantity, price and wallet')
+            now=int(self.clock()*1000)
+            if not 0<wallet_from<=wallet_until<=now:
+                raise Unknown('entry wallet observation clock changed')
+            if abs(now-ticker['time'])>15000:
+                raise Unknown('entry mark expired while verifying native fills')
+            report.update(mark_time=ticker['time'],mark_price=ticker['markPrice'],
+                          recent_fill_count=len(fills),last_fill_id=last,recent_fill_window_complete=True,
+                          observed_at_ms=now,wallet_observed_from_ms=wallet_from,
+                          wallet_observed_until_ms=wallet_until,recovery_history_complete=False)
+            self.all_orders_checked_at=self.monotonic()
+            return report,parent
+        except (Blocked,KeyError,TypeError,ValueError,ArithmeticError,AttributeError) as exc:
+            raise Unknown('immediate entry proof unavailable; full reconciliation required') from exc
+
+    def _trade_page(self, parameters):
+        fills=self.get('/fapi/v1/userTrades',parameters)
+        if not isinstance(fills,list) or len(fills)>1000:
+            raise Unknown('recent trade response is missing or oversized')
+        if any(not isinstance(f,dict) or f.get('symbol')!='BTCUSDT' for f in fills):
+            raise Unknown('unexpected recent trade scope')
+        if (any(type(f.get('id')) is not int or f['id']<0 for f in fills)
+                or len({f['id'] for f in fills})!=len(fills)):
+            raise Unknown('invalid native fill cursor')
+        if 'startTime' in parameters or 'endTime' in parameters:
+            if any(type(f.get('time')) is not int or not parameters.get('startTime',0)<=f['time']<=parameters.get('endTime',int(self.clock()*1000)) for f in fills):
+                raise Unknown('fill response is outside the requested time window')
+        return fills
+
+    def _recent_fills(self):
+        """Verify the latest BTCUSDT cursor, independently of full ownership history."""
+        fills=self._trade_page({'symbol':'BTCUSDT','limit':1000})
+        if len(fills)<1000:
+            return fills,True
+        seen={f['id'] for f in fills}
+        cursor=max(seen)
+        for _ in range(20):
+            page=self._trade_page({'symbol':'BTCUSDT','fromId':cursor+1,'limit':1000})
+            if not page:
+                return fills,True
+            for trade in page:
+                if trade['id']<=cursor or trade['id'] in seen:
+                    raise Unknown('fill id page did not advance')
+                seen.add(trade['id'])
+                fills.append(trade)
+            cursor=max(trade['id'] for trade in page)
+            if len(page)<1000:
+                return fills,True
+        raise Unknown('recent fill cursor exceeds bounded pages')
 
 
 def _error_body(error):

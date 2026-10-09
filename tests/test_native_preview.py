@@ -20,7 +20,7 @@ class NativePreviewTests(TestCase):
                       possible_entry_remainders=0,mark_price='100',mark_time=now)
         instrument=quantity_rules()
         instrument['filters'][2]['notional']='5'
-        instrument.update(status='TRADING',contractType='PERPETUAL',marginAsset='USDT')
+        instrument.update(status='TRADING',contractType='PERPETUAL',marginAsset='USDT',quotePrecision=8)
         instrument['filters']=[f for f in instrument['filters'] if f['filterType']!='PRICE_FILTER']+[
             dict(filterType='PRICE_FILTER',tickSize='.1',minPrice='.1',maxPrice='1000000')]
         values={
@@ -54,6 +54,7 @@ class NativePreviewTests(TestCase):
         self.assertGreater(quantity,0)
         self.assertEqual(quantity % D('.001'),0)
         self.assertLessEqual(quantity*D(p['entry_estimate']),D(p['notional_cap']))
+        self.assertLessEqual(D(p['allocated_margin_usdt']), D(p['stop_budget_capital_usdt'])*D('.25'))
         liquidation=(quantity*D(p['entry_estimate'])-D(p['allocated_margin_usdt']))/(quantity*(1-D(p['maintenance_bound'])-D(p['fee'])))
         self.assertLess(liquidation,D(p['stop']))
         self.assertEqual(m.checkpoint(),before)
@@ -88,7 +89,7 @@ class NativePreviewTests(TestCase):
         held=dict(s,quantity_btc='1',entry='100',isolated_wallet_usdt='10',mark_price='110',equity_usdt='1010')
         r.snapshot.return_value=dict(held)
         with self.assertRaises(Blocked):topup_preview(r,m,held,'5','90','200.1')
-        costs=dict(paid_commission_usdt='.05',realized_pnl_usdt='0')
+        costs=dict(paid_commission_usdt='.05',realized_pnl_usdt='0',paid_funding_usdt='0')
         plan=topup_preview(r,m,held,'5','90','200.1','30',stop_slippage_fraction='.01',**costs)
         add=D(plan['quantity_btc'])
         self.assertGreater(add,0)
@@ -109,7 +110,7 @@ class NativePreviewTests(TestCase):
         r.snapshot.return_value=dict(held)
         add=topup_preview(r,m,held,'100',str(stop),plan['take'],plan['stop_budget_usdt'],
                           plan['sizing_capital_usdt'],plan['stop_slippage_fraction'],
-                          paid_commission_usdt=quantity*price*D('.0005'),realized_pnl_usdt='0')
+                          paid_commission_usdt=quantity*price*D('.0005'),realized_pnl_usdt='0',paid_funding_usdt='0')
         self.assertEqual(add['quantity_btc'],'0')
 
     def test_explicit_budget_also_caps_macro_campaign(self):
@@ -151,7 +152,7 @@ class NativePreviewTests(TestCase):
         values['/fapi/v1/depth']=dict(E=now,bids=[['109.9','1000']],asks=[['110','1000']])
         held=dict(s,quantity_btc='1',entry='100',isolated_wallet_usdt='10',mark_price='110',equity_usdt='1010')
         r.snapshot.return_value=dict(held)
-        costs=dict(paid_commission_usdt='.05',realized_pnl_usdt='0')
+        costs=dict(paid_commission_usdt='.05',realized_pnl_usdt='0',paid_funding_usdt='0')
         frozen=topup_preview(r,m,held,'100','90','200.1','30','1000','.01',**costs)
         self.assertEqual(D(frozen['stop_budget_usdt']),30)
         # Unrealized profit does not increase trial cash capital or the frozen budget.
@@ -178,11 +179,11 @@ class NativePreviewTests(TestCase):
         values['/fapi/v1/depth']=dict(E=now,bids=[['399.9','1000']],asks=[['400','1000']])
         r.loss_fraction=D('.3')
         plan=topup_preview(r,m,held,'100','90','1000','490','1000','.01',
-                           paid_commission_usdt='.05',realized_pnl_usdt='0')
+                           paid_commission_usdt='.05',realized_pnl_usdt='0',paid_funding_usdt='0')
         # Entry-to-stop loss fits 490; mark-to-stop giveback already exceeds
-        # the fresh 300 budget. The add is refused, without reducing this position.
+        # the fresh hard 100 budget. The add is refused, without reducing this position.
         self.assertEqual(plan['quantity_btc'],'0')
-        self.assertEqual(D(plan['current_equity_stop_budget_usdt']),300)
+        self.assertEqual(D(plan['current_equity_stop_budget_usdt']),100)
 
     def test_lower_current_fee_does_not_discount_the_already_paid_entry_fee(self):
         m,r,s,values,_=self.fixture()
@@ -192,7 +193,7 @@ class NativePreviewTests(TestCase):
         held=dict(s,quantity_btc='1',entry='100',isolated_wallet_usdt='10',mark_price='110',equity_usdt='1010')
         r.snapshot.return_value=dict(held)
         plan=topup_preview(r,m,held,'5','90','200.1','30',stop_slippage_fraction='.01',
-                           paid_commission_usdt='.05',realized_pnl_usdt='0')
+                           paid_commission_usdt='.05',realized_pnl_usdt='0',paid_funding_usdt='0')
         add=D(plan['quantity_btc']);price=D(plan['entry_estimate'])
         # The native entry paid .05 at the old rate. Only this new add and the
         # future exit use the lower current rate; their cost stays inside 30.
@@ -210,7 +211,7 @@ class NativePreviewTests(TestCase):
                   wallet_usdt='979.85',available_usdt='979.85',equity_usdt='984.85')
         r.snapshot.return_value=dict(held)
         plan=topup_preview(r,m,held,'5','90','200.1','30',stop_slippage_fraction='.01',
-                           paid_commission_usdt='.15',realized_pnl_usdt='-20')
+                           paid_commission_usdt='.15',realized_pnl_usdt='-20',paid_funding_usdt='0')
         add=D(plan['quantity_btc']);price=D(plan['entry_estimate'])
         loss=D('.15')+20+D('.5')*(100-90)+add*(price-90)+add*price*D('.0005')
         loss+=(D('.5')+add)*90*(D('.01')+D('1.01')*D('.0005'))
@@ -219,9 +220,9 @@ class NativePreviewTests(TestCase):
         # Cumulative realized losses can exhaust the campaign without changing
         # its residual entry price or making present equity nonpositive.
         spent=topup_preview(r,m,held,'5','90','200.1','30',stop_slippage_fraction='.01',
-                            paid_commission_usdt='.15',realized_pnl_usdt='-30')
+                            paid_commission_usdt='.15',realized_pnl_usdt='-30',paid_funding_usdt='0')
         self.assertEqual(spent['quantity_btc'],'0')
         for fee,pnl in ((None,'0'),('.15',None),('-1','0'),('NaN','0'),('.15','NaN')):
             with self.subTest(fee=fee,pnl=pnl),self.assertRaises((Blocked,Unknown)):
                 topup_preview(r,m,held,'5','90','200.1','30',stop_slippage_fraction='.01',
-                              paid_commission_usdt=fee,realized_pnl_usdt=pnl)
+                              paid_commission_usdt=fee,realized_pnl_usdt=pnl,paid_funding_usdt='0')

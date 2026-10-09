@@ -51,7 +51,12 @@ class AccountHistoryTests(TestCase):
             original(order,amount)
             if amount:
                 trade=self.venue.trades.pop();first=amount/2000
-                self.venue.trades=[dict(trade,id=i+1,qty=str(first if i<1000 else amount/2)) for i in range(1001)]
+                # Splitting one fill must split its actual costs too; copying
+                # the whole fee 1,001 times fabricates an exhausted risk budget.
+                self.venue.trades=[dict(trade,id=i+1,qty=str(quantity),
+                    commission=str(D(trade['commission'])*quantity/amount),
+                    realizedPnl=str(D(trade['realizedPnl'])*quantity/amount))
+                    for i in range(1001) for quantity in [first if i<1000 else amount/2]]
         self.venue.fill=fragmented
         result=self.session();self.assertEqual(result['cleanup'],'verified')
         with State(self.directory,'binance:BTCUSDT:live:123') as state:

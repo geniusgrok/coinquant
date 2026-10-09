@@ -23,7 +23,13 @@ class ReplacementTests(unittest.TestCase):
         self.native.send=send
         query=self.native.query_intent
         def observe(identity,conditional=False):
-            r=query(identity,conditional);r['child']=self.native.children.get(identity);return r
+            r=query(identity,conditional);child=self.native.children.get(identity)
+            if child is not None:
+                parent=r['parent']
+                r['child']=dict(symbol=parent['symbol'],side=parent['side'],positionSide=parent['positionSide'],
+                                type='MARKET',orderId=1000+parent['algoId'],**child)
+                r['parent']=dict(parent,actualOrderId=str(r['child']['orderId']))
+            return r
         self.native.query_intent=observe
     def tearDown(self):
         self.state.__exit__();self.tmp.cleanup()

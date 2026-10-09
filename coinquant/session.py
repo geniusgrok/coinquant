@@ -28,13 +28,24 @@ def _guard_strategy(state):
 
 def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=None, actions=None):
     _guard_strategy(state)
+    prior_protection=state.get('position_protection')
     engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter,session=session)
     if actions is not None:engine.actions=actions
     if execute:
-        snapshot=engine.recover_exposure(engine.settle())
+        snapshot=engine.settle()
+        engine.recover_entry_protection(snapshot)
+        prior_protection=state.get('position_protection')
+        snapshot=engine.recover_exposure(snapshot)
+        # Native risk maintenance does not wait for historical candles or macro
+        # data. A bounded session may be resumed after any manual interval.
+        snapshot=engine.enforce_holding_risk(snapshot)
     else:
         reader.recover_pending(state)
         snapshot=reader.snapshot(uid)
+        engine.recover_entry_protection(snapshot)
+        prior_protection=state.get('position_protection')
+        if state.get('entry_plan') and D(snapshot['quantity_btc']) and not prior_protection:
+            raise Unknown('incomplete entry protection prevents history checkpointing')
     # Fill-dependent expiry must never be checkpointed before ownership closes.
     # A read-only recovery is just as durable as an executing session.
     prior=engine.reconciled
@@ -44,11 +55,12 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
         from .campaign import Campaign
         saved=state.get('linear_campaign')
         ownership=reconcile(state,reader,Campaign.restore(saved) if saved is not None else Campaign(),snapshot)
+    engine.reconciled=(snapshot,len(engine.actions),ownership)
     if blocking(state):
         raise Unknown('unsettled intents block decisions')
     quantity=D(snapshot['quantity_btc'])
     model,market,reconstructed=advance(
-        state,reader,fill=snapshot['entry'] if quantity else None)
+        state,reader,fill=snapshot['entry'] if quantity else None,effective_protection=prior_protection)
     # DFII10 is read only when it can change the decision, so its outage never
     # delays a primary exit or protection maintenance.
     row=reader.dfii10_snapshot() if model.macro_relevant() else None
@@ -117,12 +129,17 @@ def offline_report(report, state, now):
     actual=report.get('actual') if report.get('observation_current',True) else None
     checkpoint=(state.get('linear_campaign') or {}).get('body',{})
     if type(checkpoint.get('last')) is int:
-        report['next_required_review_at_ms']=checkpoint['last']+14400000
+        report['model_caught_up_through_ms']=checkpoint['last']
+        report['next_strategy_candle_at_ms']=checkpoint['last']+14400000
     report['unresolved_order_ids']=[p['id'] for p in state.pending()]
     report['possible_entry_remainders']=actual.get('possible_entry_remainders') if actual else None
+    journal=state.get('binance_protection_replacement') or {}
+    report['protection_replacement_pending']=bool(state.get('session_replacement')) or bool(journal and not journal.get('done'))
+    report['close_position_client_ids']=[a.get('clientAlgoId') for a in (actual.get('open_algos',[]) if actual else [])
+                                         if a.get('closePosition') is True and a.get('clientAlgoId')]
     unresolved=bool(report.get('execution_unresolved') or report.get('pending_intents')
                     or report.get('possible_entry_remainders')
-                    or report.get('protection_replacement_pending') or actual is None)
+                    or report['protection_replacement_pending'] or actual is None)
     q=D(actual['quantity_btc']) if actual and 'quantity_btc' in actual else None
     equity=D(actual['equity_usdt']) if actual and actual.get('equity_usdt') is not None else None
     report['equity_status']='unverified' if equity is None else 'positive' if equity>0 else 'nonpositive'
@@ -133,14 +150,26 @@ def offline_report(report, state, now):
         observed_at_ms=actual.get('observed_at_ms') if actual else None,
         protective_algos=actual.get('protective_algos',[]) if actual else [])
     report['strategy_review_required']=bool(q and report.get('status') in ('blocked','unknown'))
-    report['manual_takeover_required']=unresolved or report['strategy_review_required'] or bool(q and (not protected or equity is None or equity<=0))
-    report['review_due_now']=(report['manual_takeover_required'] or
-                             report.get('next_required_review_at_ms',now+1)<=now)
+    risk=state.get('holding_risk') if q else None
+    started=report.get('session_started_at_ms')
+    reviewed=bool(risk and risk.get('status')=='observed' and report.get('cleanup')=='verified'
+                  and type(started) is int and type(risk.get('observed_at_ms')) is int
+                  and risk['observed_at_ms']>=started
+                  and all(risk.get(k)==actual.get(k) for k in ('quantity_btc','entry','wallet_usdt','last_fill_id')))
+    report['holding_risk']=({**risk,'status':'last_observed'} if risk and risk.get('status')=='observed' and not reviewed
+                            else risk if risk else dict(status='flat' if q==0 else 'unverified'))
+    report['holding_risk_review_required']=bool(q and not reviewed)
+    report['manual_takeover_required']=(unresolved or report['strategy_review_required']
+        or report['holding_risk_review_required'] or bool(q and (not protected or equity is None or equity<=0)))
+    report['strategy_catchup_due']=bool(q and report.get('next_strategy_candle_at_ms',now+1)<=now)
+    report['review_due_now']=report['manual_takeover_required'] or report['strategy_catchup_due']
     if report['manual_takeover_required']:
         report['manual_action']=('Correct the reported configuration or state and use status to inspect current exposure; keep the original state directory.'
                                 if report.get('status')=='blocked' and not report.get('write_attempted') and not report.get('pending_intents') else
                                 'Keep the original state directory; inspect the position, orders and protection. Do not resend an unknown order or open new risk.')
-    report['offline_boundary']='Only last-observed native exchange protection may execute; strategy expiry, new candles and macro changes require another manual run. Offline manual positions can be affected by retained close-position orders.'
+    report['offline_boundary']=('Only last-observed native exchange protection may execute. The next manual run catches up completed candles and handles any remaining owned exposure at that time. '
+                                'Expiry, the 14-day trail, macro exits and further cost/risk adjustments do not run while this process is stopped; a longer interval delays their response. '
+                                'Model catch-up, including a read-only run, does not prove that exchange protection was updated. Offline manual positions can be affected by retained close-position orders.')
     if actual and actual.get('mark_price') and q is not None:
         notional=abs(q)*D(actual['mark_price'])
         wallet=D(actual.get('wallet_usdt') or 0)
@@ -165,9 +194,12 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
     started=monotonic();deadline=started+config.session_seconds
     report=dict(status='read_only',cycles=0,write_attempted=False,errors=[],observation_timeouts=0,
                 stop_reason='deadline',cleanup='not_required',
-                session_started_at_ms=int(reader.clock()*1000))
+                session_started_at_ms=int(reader.clock()*1000),
+                risk_limits=dict(max_stop_loss_fraction=config.max_stop_loss_fraction,
+                                 stop_slippage_fraction=config.stop_slippage_fraction))
     if trial_mode is not None:report['trial_mode']=trial_mode
     if source_digest is not None:report['source_digest']=source_digest
+    if config.capital_limit is not None:report['sizing_capital_usdt']=str(config.capital_limit)
     if (getattr(reader,'environment','live')!=config.environment
             or getattr(reader,'capital_limit',None)!=config.capital_limit
             or getattr(reader,'loss_fraction',None)!=config.loss_fraction
@@ -217,7 +249,8 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
         finally:
             if execute:
                 # No new entry is permitted here. Native protection remains at process exit.
-                engine=Lifecycle(reader,state,config.account_uid,authorized=True)
+                engine=Lifecycle(reader,state,config.account_uid,authorized=True,
+                                 session=report['session_started_at_ms'])
                 cleanup_deadline=min(deadline+ABSOLUTE_GRACE,monotonic()+ABSOLUTE_GRACE)
                 if hasattr(reader,'hard_deadline'):reader.hard_deadline=cleanup_deadline
                 interrupted=False
@@ -268,9 +301,9 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                         report.update(status='unknown',income_audit={'status':'unresolved'},
                                       reason=_reason(exc,'Income audit unavailable'))
             report['pending_intents']=len(state.pending())
-            report['protection_replacement_pending']=bool(state.get('session_replacement'))
-            if config.capital_limit is not None:
-                report['sizing_capital_usdt']=str(config.capital_limit)
+            report['protection_replacement_pending']=bool(state.get('session_replacement') or (
+                (state.get('binance_protection_replacement') or {}).get('done') is False
+                and state.get('binance_protection_replacement')))
             if execute:report['entry_timing']=state.get('entry_timing')
             report['write_attempted']=(state.get('write_attempt_count') or 0)>prior_writes
             if report['pending_intents']:

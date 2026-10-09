@@ -57,12 +57,12 @@ class MarginIntentTests(unittest.TestCase):
         self.native.fail_snapshot=False
         self.assertEqual(self.native.recover_pending(self.state),{'resolved':0,'pending':0})
 
-    def test_lost_answer_is_settled_from_margin_history_only(self):
+    def test_lost_answer_stays_unknown_even_with_matching_native_margin_history(self):
         def send(*args):self.native.send(*args);raise TimeoutError()
         with self.assertRaises(Unknown):self.add(send)
         self.assertEqual(len(self.state.pending()),1)
-        self.assertEqual(self.native.recover_pending(self.state)['resolved'],1)
-        self.assertEqual(self.intents()[0][0],'confirmed')
+        self.assertEqual(self.native.recover_pending(self.state),dict(resolved=0,pending=1))
+        self.assertEqual(self.intents()[0][0],'unknown')
         self.assertEqual(len(self.native.sent),1)
 
     def test_ambiguous_history_stays_unknown(self):
