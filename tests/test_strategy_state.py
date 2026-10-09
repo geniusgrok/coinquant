@@ -22,7 +22,11 @@ def foreign_checkpoint():
 
 class StrategyStateTests(TestCase):
     def test_foreign_strategy_rejects_before_exchange_access(self):
-        for key, value in (('linear_campaign', foreign_checkpoint()), ('lifecycle_identity', 'foreign')):
+        old=Campaign().checkpoint()
+        del old['body']['entry_fill']
+        old['sha256']=hashlib.sha256(json.dumps(old['body'],sort_keys=True).encode()).hexdigest()
+        for key, value in (('linear_campaign', foreign_checkpoint()), ('linear_campaign',old),
+                           ('lifecycle_identity', 'foreign')):
             with tempfile.TemporaryDirectory() as folder, State(folder, 'binance:BTCUSDT:live:123') as state:
                 state.set(key, value)
                 with self.assertRaises(Blocked):

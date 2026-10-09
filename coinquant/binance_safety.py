@@ -28,10 +28,37 @@ def risk_reducing(state, pending):
             kind=='binance_algo' and (payload.get('closePosition')=='true' or payload.get('reduceOnly')=='true'))
 
 
-def _gate(reader, state, uid, authorized, *, canceling_entry=False, snapshot=None):
+def _check_owner(snapshot, expected_owner):
+    if expected_owner is None:return
+    fields=('account_uid','quantity_btc','entry','wallet_usdt','last_fill_id','possible_entry_remainders')
+    if (any(k not in snapshot or k not in expected_owner for k in fields)
+            or type(expected_owner['last_fill_id']) is not int
+            or type(snapshot['last_fill_id']) is not int
+            or expected_owner['last_fill_id']<-1):
+        raise Unknown('final write lacks a verified fill ownership boundary')
+    if (any(snapshot[k]!=expected_owner[k] for k in ('account_uid','last_fill_id','possible_entry_remainders'))
+            or any(D(snapshot[k])!=D(expected_owner[k]) for k in ('quantity_btc','entry','wallet_usdt'))):
+        raise Unknown('position or fill ownership changed before the safety write')
+
+
+def _check_cursor(reader, expected_owner):
+    if expected_owner is None:return
+    fills=reader.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','limit':1000})
+    if (not isinstance(fills,list) or len(fills)>1000
+            or any(not isinstance(f,dict) or f.get('symbol')!='BTCUSDT'
+                   or type(f.get('id')) is not int or f['id']<0 for f in fills)
+            or len({f['id'] for f in fills})!=len(fills)):
+        raise Unknown('final write fill cursor is unavailable')
+    if max((f['id'] for f in fills),default=-1)!=expected_owner['last_fill_id']:
+        raise Unknown('fill ownership changed before the safety write')
+
+
+def _gate(reader, state, uid, authorized, *, canceling_entry=False, snapshot=None, expected_owner=None):
     """Scope and pending-intent checks before a safety write.
 
     `snapshot` may only be an observation taken after the caller's latest write.
+    A bound owner gets a fresh fill cursor before the write, including when the
+    caller supplies its already verified account readback.
     """
     if authorized is not True:raise Blocked('explicit operation authorization required')
     if state.identity != scope(reader.environment, uid):
@@ -42,6 +69,8 @@ def _gate(reader, state, uid, authorized, *, canceling_entry=False, snapshot=Non
             raise Unknown('unsettled possible entry intent; reconcile before reporting safety')
     if snapshot is None:snapshot=reader.snapshot(uid)
     if snapshot['account_uid']!=str(uid):raise Blocked('account mismatch')
+    _check_owner(snapshot,expected_owner)
+    _check_cursor(reader,expected_owner)
     return snapshot
 
 
@@ -116,13 +145,13 @@ def settled_protection(reader,state,identity):
     return True
 
 
-def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authorized=False,snapshot=None):
+def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authorized=False,snapshot=None,expected_owner=None):
     """Install full-position SL then TP, retaining every existing protection.
 
     There must be no possible entry remainder. A partial position is protected
     by closePosition, never by the requested entry size. ACK is not readback.
     """
-    before=_gate(reader,state,uid,authorized,snapshot=snapshot)
+    before=_gate(reader,state,uid,authorized,snapshot=snapshot,expected_owner=expected_owner)
     q=D(before['quantity_btc']);mark=D(before['mark_price']);liq=D(before['native_liquidation_price'])
     stop,take=D(stop),D(take)
     filters=[f for f in instrument.get('filters',[]) if f.get('filterType')=='PRICE_FILTER']
@@ -154,13 +183,16 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
             state.set('entry_timing',timing)
         if kind=='TAKE_PROFIT_MARKET':break  # the final readback follows
         observed_account=reader.snapshot(uid)
+        _check_owner(observed_account,expected_owner)
         if (observed_account['account_uid']!=str(uid) or D(observed_account['quantity_btc'])!=q
                 or observed_account['possible_entry_remainders']):
             raise Unknown('exposure changed between protection legs; reconcile before next write')
+        _check_cursor(reader,expected_owner)
         if timing and plan and plan.get('epoch')==epoch:
             timing['stop_account_readback_at_ms']=int(reader.clock()*1000)
             state.set('entry_timing',timing)
     after=reader.snapshot(uid)
+    _check_owner(after,expected_owner)
     if (D(after['quantity_btc'])!=q or after['possible_entry_remainders']
             or not after['native_full_position_protected'] or not after['stop_before_liquidation']):
         raise Unknown('exposure changed or full-position protection not established')
@@ -194,24 +226,36 @@ def cancel_entry(reader,state,send,uid,epoch,entry_id,*,authorized=False):
     return reader.snapshot(uid)
 
 
-def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized=False,snapshot=None):
+def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized=False,expected_owner=None,expected_direction=None):
     """Bounded reduce-only market request; caller supplies rule-rounded quantity."""
-    before=_gate(reader,state,uid,authorized,snapshot=snapshot);q=D(before['quantity_btc']);qty=D(quantity)
+    # Exit sizing may follow other network reads; always refresh the full account
+    # before reducing, even when the caller supplies its ownership observation.
+    before=_gate(reader,state,uid,authorized,expected_owner=expected_owner);q=D(before['quantity_btc']);qty=D(quantity)
+    direction=1 if q>0 else -1
+    if expected_direction is not None:
+        if type(expected_direction) is not int or expected_direction not in (-1,1) or direction!=expected_direction:
+            raise Unknown('reduction direction differs from its durable owner')
+        direction=expected_direction
     if before['possible_entry_remainders'] or not 0<qty<=abs(q):raise Blocked('unsafe reduction')
     if market_quantity(qty,before['mark_price'],instrument,reduce_only=True)!=qty:raise Blocked('reduction violates native quantity rule')
     identity=client_id(state.identity,epoch,'reduce')
-    payload=dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL' if q>0 else 'BUY',
+    payload=dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL' if direction>0 else 'BUY',
         type='MARKET',quantity=str(qty),reduceOnly='true',newClientOrderId=identity)
     _once(state,identity,'binance_order',payload,send,'POST','/fapi/v1/order',at_ms=int(reader.clock()*1000))
     reader.recover_pending(state)
     if any(p['id']==identity for p in state.pending()):raise Unknown('reduction result unresolved')
+    from .ownership import owned_observation, TERMINAL
+    terminal=owned_observation(state,reader,identity)['parent']
+    executed=D(terminal['executedQty'])
+    if terminal.get('status') not in TERMINAL or not 0<=executed<=qty:
+        raise Unknown('reduction lacks a matching terminal fill')
     after=reader.snapshot(uid);remaining=D(after['quantity_btc'])
-    if after['possible_entry_remainders'] or remaining*q<0 or abs(remaining)>abs(q)-qty:
+    if after['possible_entry_remainders'] or remaining*q<0 or abs(remaining)!=abs(q)-executed:
         raise Unknown('risk removal readback conflicts')
     return after
 
 
-def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,snapshot=None):
+def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,snapshot=None,expected_owner=None):
     """Model-selected isolated wallet target; never withdraw or retry unknown adds.
 
     Binance margin writes have no client transaction ID. The amount is rounded up
@@ -219,7 +263,7 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,
     persisted before the separate wallet readback; a lost answer is settled only
     from native margin history, never from a balance change or a resend.
     """
-    before=_gate(reader,state,uid,authorized,snapshot=snapshot)
+    before=_gate(reader,state,uid,authorized,snapshot=snapshot,expected_owner=expected_owner)
     if not D(before['quantity_btc']) or before['possible_entry_remainders']:raise Blocked('unsafe margin scope')
     places=instrument.get('quotePrecision')
     if (instrument.get('symbol')!='BTCUSDT' or instrument.get('marginAsset')!='USDT'
@@ -247,12 +291,13 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,
     # Later history attribution needs this time to exclude this transfer's row.
     state.finish(identity,'confirmed',{'prepared_at_ms':prepared,'amount':str(amount),'acknowledged':True})
     after=reader.snapshot(uid)
+    _check_owner(after,expected_owner)
     if D(after['quantity_btc'])!=D(before['quantity_btc']) or D(after['isolated_wallet_usdt'])<D(target):
         raise Unknown('margin/position readback changed; reconcile without retry')
     return after
 
 
-def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrument,authorized=False):
+def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrument,authorized=False,expected_owner=None):
     """Try a new close-all pair, then retire owned old parents after readback.
 
     No atomic amendment or duplicate-close-all acceptance is assumed. Rejection or
@@ -289,7 +334,7 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
         if pending and pending[0] in ('unknown','partial'):
             if not reader.conditional_terminal(identity):raise Unknown('cancel or child still unsettled; no retry')
             state.finish(cancel_id,'confirmed',{'target':identity,'terminal':True})
-    before=_gate(reader,state,uid,authorized)
+    before=_gate(reader,state,uid,authorized,expected_owner=expected_owner)
     q=D(before['quantity_btc'])
     if before['possible_entry_remainders']:raise Unknown('entry remainder blocks replacement')
     if journal is None:
@@ -301,12 +346,14 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
         journal['original_quantity']=journal['quantity']
         state.set(key,journal)
     original=D(journal['original_quantity'])
-    if q and q!=D(journal['quantity']):
-        # A smaller same-direction position continues only when confirmed terminal
-        # fills of this operation's own protection legs explain exactly the missing
-        # size. A leg still healthy (NEW, no child) stays as protection; a leg that
-        # is spent cannot be reused, so the new pair moves to a fresh generation.
-        # An external change or a child that is still working stays unknown.
+    spent_new=bool(q) and any(
+        state.db.execute('SELECT 1 FROM intents WHERE id=?',(identity,)).fetchone()
+        and not absent(state,identity) and settled_protection(reader,state,identity)
+        for identity in new_ids)
+    if q and (q!=D(journal['quantity']) or spent_new):
+        # Every quantity change must be explained by terminal owned fills. A spent
+        # new leg needs a fresh generation even after zero fills; healthy NEW legs
+        # stay protective. External changes and working children remain unknown.
         if q*original<=0 or abs(q)>abs(original):
             raise Unknown('exposure grew or reversed during protection replacement')
         executed=D(0);live=[];spent_new=False
@@ -323,7 +370,7 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
             if parent.get('algoStatus')!='NEW' or observed['child'] is not None or parent.get('closePosition') is not True:
                 raise Unknown('partial fill or exposure change; retain protection and reconcile')
             live.append(identity)
-        if executed<=0:
+        if q!=D(journal['quantity']) and executed<=0:
             raise Unknown('position changed without a terminal owned protection fill')
         if abs(original)-abs(q)!=executed:
             raise Unknown('position change is not explained by confirmed owned protection fills')
@@ -344,6 +391,8 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
         if settled_protection(reader,state,identity):return
         cancel_id=client_id(state.identity,epoch,'retire:'+identity)
         payload=dict(clientAlgoId=identity)
+        if expected_owner is not None:
+            _gate(reader,state,uid,authorized,snapshot=before,expected_owner=expected_owner)
         _once(state,cancel_id,'binance_algo_cancel',payload,send,'DELETE','/fapi/v1/algoOrder',at_ms=int(reader.clock()*1000))
         if not settled_protection(reader,state,identity):raise Unknown('protection cancellation/child unresolved')
         state.finish(cancel_id,'confirmed',{'target':identity,'terminal':True})
@@ -351,10 +400,10 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
     if q:
         # Every attempt first reuses/queries the same new identities, never blindly
         # resends a timed-out request. Native acceptance is the coexistence check.
-        protect_existing(reader,state,send,uid,epoch,stop,take,instrument=instrument,authorized=True)
+        protect_existing(reader,state,send,uid,epoch,stop,take,instrument=instrument,authorized=True,expected_owner=expected_owner)
         for identity in old_ids:
             # Read BOTH new legs and the account again before each destructive step.
-            protect_existing(reader,state,send,uid,epoch,stop,take,instrument=instrument,authorized=True)
+            protect_existing(reader,state,send,uid,epoch,stop,take,instrument=instrument,authorized=True,expected_owner=expected_owner)
             observed=reader.query_intent(identity,conditional=True)
             p=observed['parent']
             if (p.get('closePosition') is not True or p.get('side')!=('SELL' if q>0 else 'BUY')
@@ -366,7 +415,7 @@ def replace_protection(reader,state,send,uid,old_epoch,epoch,stop,take,*,instrum
             after=reader.snapshot(uid)
             if after['account_uid']!=str(uid) or D(after['quantity_btc'])!=q or after['possible_entry_remainders']:
                 raise Unknown('protection filled during retirement; reconcile before next write')
-        after=protect_existing(reader,state,send,uid,epoch,stop,take,instrument=instrument,authorized=True)
+        after=protect_existing(reader,state,send,uid,epoch,stop,take,instrument=instrument,authorized=True,expected_owner=expected_owner)
     else:
         # A previously journaled position closed during replacement. Cancel only
         # known accepted close-all intents; unknown acceptance still fails closed.

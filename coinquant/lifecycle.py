@@ -31,6 +31,10 @@ FINISH_SECONDS = 120
 ABSOLUTE_GRACE = PROTECT_SECONDS + REDUCE_SECONDS + FINISH_SECONDS
 # Contract rules from the entry preflight are reused only within one session.
 RULES_FRESH_MS = 300000
+# Query Algo Order stops retaining parents created more than 90 days ago.
+# Renew an observed native pair before that boundary, using its creation time.
+PROTECTION_RENEW_MS = 75 * 86400000
+ALGO_HISTORY_MS = 90 * 86400000
 
 
 
@@ -101,6 +105,9 @@ class Lifecycle:
         self.actions = []
         self.entry_constraint = None
         self.reconciled = None
+        # A cleanup retry is allowed only after another owned terminal reduction
+        # has strictly shrunk exposure. Unknown or zero-fill writes never count.
+        self.exit_progress = 0
         # Set only by a cashflow audit closed against the wallet observed for this
         # decision (audit.allows_new_risk). Entry and top-up both require it.
         self.risk_audit_ok = False
@@ -305,23 +312,24 @@ class Lifecycle:
                 # Cover the fill at the current liquidation before moving margin.
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     guard_epoch,guard[0],guard[1],instrument=rules,authorized=self.authorized,
-                    snapshot=snapshot)
+                    snapshot=snapshot,expected_owner=dict(snapshot))
             elif fits:
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
-                    snapshot=snapshot)
+                    snapshot=snapshot,expected_owner=dict(snapshot))
             if (number(snapshot['isolated_wallet_usdt']) < target
                     and not any(p['kind']=='binance_margin' for p in self.state.pending())):
                 snapshot = safety.add_margin(self.reader,self.state,self.send,self.uid,
-                    plan['epoch'],target,instrument=rules,authorized=self.authorized,snapshot=snapshot)
+                    plan['epoch'],target,instrument=rules,authorized=self.authorized,snapshot=snapshot,
+                    expected_owner=dict(snapshot))
             if guard_epoch is not None:
                 snapshot = safety.replace_protection(self.reader,self.state,self.send,self.uid,
                     guard_epoch,plan['epoch'],plan['stop'],plan['take'],instrument=rules,
-                    authorized=self.authorized)
+                    authorized=self.authorized,expected_owner=dict(snapshot))
             elif not fits:
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
-                    snapshot=snapshot)
+                    snapshot=snapshot,expected_owner=dict(snapshot))
         except (Blocked, Unknown):
             # Native entry and protection are NOT atomic. Try a bounded reduction
             # with its own budget, but never assert that a disconnected venue accepted it.
@@ -336,7 +344,7 @@ class Lifecycle:
                     self.recover_exposure(current)
                 elif (not current['possible_entry_remainders']
                         and self.entry_fill_proven(plan, current)):
-                    self.close(current, rules, observed=True)
+                    self.close(current, rules)
             except (Blocked, Unknown):
                 pass
             raise
@@ -373,9 +381,12 @@ class Lifecycle:
             raise Unknown('residual changed after protective child readback')
         return True
 
-    def close(self, snapshot, rules=None, *, observed=False):
-        """Durable reduce-only exit. `observed`: the snapshot was just read after
-        the latest write and may stand in for the reduction's own gate read."""
+    def close(self, snapshot, rules=None):
+        """Durable reduce-only exit from an owned snapshot.
+
+        The reduction refreshes the account and checks that this ownership
+        boundary has not changed.
+        """
         q = number(snapshot['quantity_btc'])
         if not q:
             return snapshot
@@ -417,11 +428,35 @@ class Lifecycle:
         opened=number(operation.get('position_at_request', operation['quantity']))
         if q*operation['direction']<=0 or abs(q)>opened:
             raise Unknown('position grew during durable exit')
-        result = safety.reduce_existing(self.reader,self.state,self.send,self.uid,
-            operation['epoch'],operation['quantity'],instrument=rules,authorized=self.authorized,
-            snapshot=snapshot if observed else None)
-        if number(result['quantity_btc']):
-            raise Unknown('partial exit remains; reconcile before another reduction')
+        identity=client_id(self.state.identity,operation['epoch'],'reduce')
+        readback_changed=False
+        try:
+            result = safety.reduce_existing(self.reader,self.state,self.send,self.uid,
+                operation['epoch'],operation['quantity'],instrument=rules,authorized=self.authorized,
+                expected_owner=dict(snapshot),
+                expected_direction=operation['direction'])
+        except Unknown:
+            row=self.state.db.execute('SELECT status FROM intents WHERE id=?',(identity,)).fetchone()
+            if not row or row[0]!='confirmed':
+                raise
+            # Another owned protective fill can win the readback race. Only a
+            # complete fresh fill audit can turn that conflict into exit progress.
+            result=self.reader.snapshot(self.uid)
+            readback_changed=True
+        if number(result['quantity_btc']) or readback_changed:
+            terminal=owned_observation(self.state,self.reader,identity)['parent']
+            if terminal.get('status') not in TERMINAL or number(terminal['executedQty'])<=0:
+                raise Unknown('exit has no terminal fill progress')
+            from .campaign import Campaign
+            from .ownership import reconcile
+            ownership=reconcile(self.state,self.reader,Campaign.restore(self.state.get('linear_campaign')),result)
+            self.reconciled=(result,len(self.actions),ownership)
+            remaining=number(result['quantity_btc'])
+            if remaining*q<0 or abs(remaining)>=abs(q):
+                raise Unknown('owned terminal exit did not shrink exposure')
+            if remaining:
+                self.exit_progress+=1
+                raise Unknown('partial exit remains; reconcile before another reduction')
         self.state.set('position_exit',None)
         return self.cleanup_flat(result)
 
@@ -430,6 +465,7 @@ class Lifecycle:
         from .campaign import Campaign
         from .ownership import reconcile
         self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
+        rules=rules or self.instrument()
         current=self.settle()
         ownership=reconcile(self.state,self.reader,
                             Campaign.restore(self.state.get('linear_campaign')),current)
@@ -438,7 +474,7 @@ class Lifecycle:
         mark=number(current['mark_price'])
         if stop is not None and q and not (mark<=stop if q>0 else mark>=stop):
             return None
-        return self.close(current,rules,observed=True)
+        return self.close(current,rules)
 
     def recover_exposure(self, snapshot):
         # Match the complete native fill history before changing any position;
@@ -490,7 +526,7 @@ class Lifecycle:
         if plan:
             if self.entry_residual(snapshot,plan,ownership):
                 self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
-                return self.close(snapshot,observed=True)
+                return self.close(snapshot)
             return self.protect_entry(snapshot,plan)
         replacement=self.state.get('session_replacement')
         if replacement:
@@ -515,7 +551,7 @@ class Lifecycle:
             try:
                 return safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     protection['epoch'],protection['stop'],protection['take'],
-                    instrument=self.instrument(),authorized=self.authorized)
+                    instrument=self.instrument(),authorized=self.authorized,expected_owner=dict(snapshot))
             except (Blocked,Unknown):
                 self.close_owned()
                 raise
@@ -549,7 +585,7 @@ class Lifecycle:
         try:
             result=safety.replace_protection(self.reader,self.state,self.send,self.uid,
                 replacement['old_epoch'],replacement['epoch'],replacement['stop'],replacement['take'],
-                instrument=rules,authorized=self.authorized)
+                instrument=rules,authorized=self.authorized,expected_owner=dict(before))
         except (Blocked,Unknown):
             # The mark may cross between the session decision and the adapter's
             # geometry gate. A fresh owned position can still leave safely.
@@ -639,9 +675,21 @@ class Lifecycle:
         if q>0 and opportunity.extended and model.entry_fill is not None:
             stop=max(stop,(model.entry_fill/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
         take=floor_step(opportunity.take,tick)+tick if q>0 else floor_step(opportunity.take,tick)
-        if D(protection['stop'])==stop and D(protection['take'])==take and not self.state.get('session_replacement'):
-            return snapshot
+        same_prices=D(protection['stop'])==stop and D(protection['take'])==take
         replacement = self.state.get('session_replacement')
+        active={a.get('clientAlgoId'):a for a in snapshot['open_algos']}
+        now=int(self.reader.clock()*1000)
+        ages=[]
+        for kind in ('STOP_MARKET','TAKE_PROFIT_MARKET'):
+            order=active.get(client_id(self.state.identity,protection['epoch'],kind),{})
+            created=order.get('createTime') if order.get('algoStatus')=='NEW' else None
+            ages.append(now-created if type(created) is int and 0<created<=now else None)
+        if any(age is not None and age>=ALGO_HISTORY_MS for age in ages) and (not same_prices or replacement):
+            raise Unknown('native protection is outside algo history; replacement needs manual resolution')
+        renew=(all(age is not None and age<ALGO_HISTORY_MS for age in ages)
+               and any(age>=PROTECTION_RENEW_MS for age in ages))
+        if same_prices and not renew and replacement is None:
+            return snapshot
         if replacement is None:
             replacement=dict(old_epoch=protection['epoch'],epoch=self.epoch(),stop=str(stop),take=str(take),campaign=opportunity.identity)
             self.state.set('session_replacement',replacement)
@@ -716,7 +764,8 @@ class Lifecycle:
             if target > number(plan['sizing_capital_usdt']):
                 raise Blocked('margin addition would exceed the sizing capital')
             fresh = safety.add_margin(self.reader,self.state,self.send,self.uid,epoch,
-                                      target,instrument=self.instrument(),authorized=self.authorized)
+                                      target,instrument=self.instrument(),authorized=self.authorized,
+                                      expected_owner=dict(fresh))
             # The transfer takes time. The deadline, a stop request and the quote
             # are checked again; the added margin only lowers risk.
             if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at']) > 15000:

@@ -54,14 +54,19 @@ class ExitSliceTests(unittest.TestCase):
     def test_close_sends_the_market_cap_then_the_remainder(self):
         tmp = tempfile.TemporaryDirectory()
         venue = Venue()
-        venue.q = D('150')
-        venue.entry = D('100000')
-        venue.margin = D('1000')
-        venue.wallet = D('5000')
+        venue.seed(tmp.name)
+        venue.wallet = D('10000000')
         venue.rules = instrument()
         venue.rules['filters'].append(dict(filterType='PRICE_FILTER', tickSize='.1', minPrice='1', maxPrice='1000000'))
         venue.rules.update(status='TRADING', contractType='PERPETUAL', marginAsset='USDT', quotePrecision=8)
         with State(tmp.name, 'binance:BTCUSDT:live:123') as state:
+            payload=dict(symbol='BTCUSDT',positionSide='BOTH',side='BUY',type='LIMIT',
+                         timeInForce='IOC',quantity='150',price='100000',newClientOrderId='cq-large-entry')
+            state.prepare('cq-large-entry','binance_order',payload,
+                          campaign=state.get('linear_campaign')['body']['last'],
+                          flat_snapshot=venue.snapshot('123'))
+            venue.send('POST','/fapi/v1/order',payload)
+            venue.recover_pending(state)
             life = Lifecycle(venue, state, '123', authorized=True)
             with self.assertRaises(Unknown):
                 life.close(venue.snapshot('123'))

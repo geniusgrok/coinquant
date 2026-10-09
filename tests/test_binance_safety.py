@@ -14,12 +14,15 @@ def rules():
 class Native(Binance):
     def __init__(self):
         super().__init__(clock=lambda:1770004800.0)
-        self.orders={};self.sent=[];self.q='.003';self.margin='30';self.remainders=0
+        self.orders={};self.sent=[];self.q='.003';self.margin='30';self.remainders=0;self.cursor=7
     def snapshot(self,uid):
         return dict(account_uid=str(uid),quantity_btc=self.q,mark_price='100000',
-            native_liquidation_price='91000',isolated_wallet_usdt=self.margin,wallet_usdt='100',
+            native_liquidation_price='91000',isolated_wallet_usdt=self.margin,wallet_usdt='100',entry='100000',last_fill_id=self.cursor,
             possible_entry_remainders=self.remainders,
             native_full_position_protected=len(self.orders)>=2,stop_before_liquidation=True)
+    def get(self,path,parameters=None):
+        if path=='/fapi/v1/userTrades':return [dict(symbol='BTCUSDT',id=self.cursor)]
+        raise Unknown('fixture read unavailable')
     def query_intent(self,identity,conditional=False):
         if identity not in self.orders:raise Unknown('missing')
         return dict(parent=self.orders[identity],child=None)
@@ -109,3 +112,59 @@ class SafetyTests(unittest.TestCase):
             if f['filterType']=='MIN_NOTIONAL':f['notional']='1000'
         result=reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',instrument=instrument,authorized=True)
         self.assertEqual(result['quantity_btc'],'0')
+
+    def test_same_direction_equal_size_reopen_blocks_all_safety_writes(self):
+        owner=self.native.snapshot('123');self.native.cursor+=2
+        operations=(
+            lambda:self.protect(authorized=True,snapshot=owner,expected_owner=owner),
+            lambda:reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',
+                instrument=rules(),authorized=True,expected_owner=owner,expected_direction=1),
+            lambda:add_margin(self.native,self.state,self.native.send,'123',100,'40',
+                instrument=rules(),authorized=True,snapshot=owner,expected_owner=owner))
+        for operation in operations:
+            with self.assertRaises(Unknown):operation()
+        self.assertEqual(self.native.sent,[])
+        self.assertEqual(self.state.pending(),[])
+
+    def test_invalid_final_fill_cursor_blocks_before_protection(self):
+        owner=self.native.snapshot('123')
+        for fills in (None,[dict(symbol='ETHUSDT',id=7)],[dict(symbol='BTCUSDT',id=True)],
+                      [dict(symbol='BTCUSDT',id=7)]*2,[]):
+            with self.subTest(fills=fills):
+                self.native.get=lambda *a: fills
+                with self.assertRaises(Unknown):self.protect(authorized=True,snapshot=owner,expected_owner=owner)
+        self.assertEqual(self.native.sent,[])
+
+    def test_reduction_keeps_its_durable_direction(self):
+        self.native.q='-.003'
+        with self.assertRaises(Unknown):
+            reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',
+                instrument=rules(),authorized=True,expected_direction=1)
+        self.assertEqual(self.native.sent,[])
+
+    def test_same_size_manual_fill_between_protection_legs_stops_take(self):
+        owner=self.native.snapshot('123')
+        def send(*args):
+            self.native.send(*args);self.native.cursor+=2
+        with self.assertRaises(Unknown):self.protect(send,authorized=True,expected_owner=owner)
+        self.assertEqual(len(self.native.sent),1)
+        self.assertEqual(self.native.sent[0][2]['type'],'STOP_MARKET')
+
+    def test_terminal_partial_reduction_returns_its_proven_remainder(self):
+        def send(method,path,p):
+            self.native.send(method,path,p)
+            self.native.orders[p['newClientOrderId']].update(status='EXPIRED',executedQty='.001')
+            self.native.q='.002'
+        result=reduce_existing(self.native,self.state,send,'123',100,'.003',
+            instrument=rules(),authorized=True)
+        self.assertEqual(result['quantity_btc'],'.002')
+        self.assertEqual(self.state.pending(),[])
+
+    def test_terminal_zero_fill_returns_unchanged_position_for_no_progress_check(self):
+        def send(method,path,p):
+            self.native.send(method,path,p)
+            self.native.orders[p['newClientOrderId']].update(status='EXPIRED',executedQty='0')
+            self.native.q='.003'
+        result=reduce_existing(self.native,self.state,send,'123',100,'.003',
+            instrument=rules(),authorized=True)
+        self.assertEqual(result['quantity_btc'],'.003')

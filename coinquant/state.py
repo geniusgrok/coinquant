@@ -185,7 +185,7 @@ class State:
                 self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',('entry_campaigns',json.dumps(links,sort_keys=True)))
         # A crash immediately after this commit must be treated as possibly sent.
 
-    def finish(self, identity: str, status: str, result: dict) -> None:
+    def finish(self, identity: str, status: str, result: dict, *, native=None) -> None:
         # void: a risk-reducing request retired on a verified flat account after
         # its signed timestamp expired (Lifecycle.retire_stale). It can no longer
         # change exposure; whether it was ever accepted is not asserted.
@@ -197,11 +197,24 @@ class State:
             if old is not None and (result.get('executed_quantity') is None
                     or number(result['executed_quantity'])<number(old)):
                 raise Unknown('native cumulative fill cannot regress or disappear')
+        archived=None
+        if native is not None:
+            if status!='confirmed':
+                raise ValueError('terminal native evidence requires confirmation')
+            archived=self.get('terminal_native_orders') or {}
+            if identity in archived and archived[identity]!=serial(native):
+                raise Unknown('terminal native evidence changed after confirmation')
+            archived[identity]=serial(native)
         with self.db:
             cursor = self.db.execute('UPDATE intents SET status=?,result=?,updated=? WHERE id=?',
                                     (status, json.dumps(serial(result), sort_keys=True), time(), identity))
             if cursor.rowcount != 1:
                 raise Blocked('cannot finish an unrecorded intent')
+            if archived is not None:
+                # Status and full evidence commit together; a crash cannot strand
+                # a confirmed intent after its native query retention expires.
+                self.db.execute('INSERT OR REPLACE INTO meta VALUES (?,?)',
+                                ('terminal_native_orders',json.dumps(archived,sort_keys=True)))
 
     def pending(self) -> list[dict]:
         return [dict(id=a, kind=b, payload=json.loads(c), status=d)

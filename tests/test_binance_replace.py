@@ -27,8 +27,8 @@ class ReplacementTests(unittest.TestCase):
         self.native.query_intent=observe
     def tearDown(self):
         self.state.__exit__();self.tmp.cleanup()
-    def replace(self,send=None):
-        return replace_protection(self.native,self.state,send or self.native.send,'123',100,200,'97000','111000',instrument=rules(),authorized=True)
+    def replace(self,send=None,**kwargs):
+        return replace_protection(self.native,self.state,send or self.native.send,'123',100,200,'97000','111000',instrument=rules(),authorized=True,**kwargs)
     def test_new_pair_before_old_cancel_and_restart_no_writes(self):
         self.replace();sent=list(self.native.sent);self.replace()
         self.assertEqual(self.native.sent,sent)
@@ -93,6 +93,17 @@ class ReplacementTests(unittest.TestCase):
             replace_protection(self.native,self.state,self.native.send,'123',100,200,'101000','111000',instrument=rules(),authorized=True)
         self.assertEqual(len(self.native.sent),n)
         self.assertTrue(all(o['algoStatus']=='NEW' for o in self.native.orders.values()))
+
+    def test_manual_same_size_reopen_before_retirement_keeps_old_stop(self):
+        owner=self.native.snapshot('123');query=self.native.query_intent
+        old_stop=client_id(self.state.identity,100,'STOP_MARKET')
+        def observe(identity,conditional=False):
+            if identity==old_stop:self.native.cursor+=2
+            return query(identity,conditional)
+        self.native.query_intent=observe
+        with self.assertRaises(Unknown):self.replace(expected_owner=owner)
+        self.assertFalse(any(method=='DELETE' for method,_,_ in self.native.sent))
+        self.assertEqual(self.native.orders[old_stop]['algoStatus'],'NEW')
 
 
 class PartialFillReplacementTests(unittest.TestCase):
@@ -160,3 +171,44 @@ class PartialFillReplacementTests(unittest.TestCase):
         self.replace()
         self.assertTrue(self.state.get('binance_protection_replacement')['done'])
         self.assertFalse(any(o['algoStatus']=='NEW' for o in self.native.orders.values()))
+
+    def zero_fill_replacement(self,parent_status,child):
+        new_stop=client_id(self.state.identity,200,'STOP_MARKET');fired=False
+        def send(method,path,p):
+            nonlocal fired
+            self.native.send(method,path,p)
+            if method=='DELETE' and not fired:
+                fired=True
+                self.native.orders[new_stop]['algoStatus']=parent_status
+                if child is not None:self.native.children[new_stop]=child
+        with self.assertRaises(Unknown):self.replace(send)
+        before=set(self.native.orders);self.replace()
+        journal=self.state.get('binance_protection_replacement')
+        self.assertTrue(journal['done']);self.assertNotEqual(journal['epoch'],200)
+        fresh=[identity for identity in self.native.orders if identity not in before]
+        self.assertEqual(len(fresh),2)
+        self.assertTrue(all(self.native.orders[identity]['algoStatus']=='NEW' for identity in fresh))
+        self.assertEqual(self.native.q,'.003')
+        self.assertEqual(sum(o['algoStatus']=='NEW' for o in self.native.orders.values()),2)
+        writes=len(self.native.sent);self.replace();self.assertEqual(len(self.native.sent),writes)
+
+    def test_zero_fill_expired_new_stop_rotates_its_generation(self):
+        self.zero_fill_replacement('FINISHED',dict(status='EXPIRED',origQty='.003',executedQty='0'))
+
+    def test_rejected_new_stop_without_child_rotates_its_generation(self):
+        self.zero_fill_replacement('REJECTED',None)
+
+    def test_unfilled_working_new_child_never_rotates_or_resends(self):
+        new_stop=client_id(self.state.identity,200,'STOP_MARKET');fired=False
+        def send(method,path,p):
+            nonlocal fired
+            self.native.send(method,path,p)
+            if method=='DELETE' and not fired:
+                fired=True
+                self.native.orders[new_stop]['algoStatus']='TRIGGERED'
+                self.native.children[new_stop]=dict(status='NEW',origQty='.003',executedQty='0')
+        with self.assertRaises(Unknown):self.replace(send)
+        writes=len(self.native.sent);identities=set(self.native.orders)
+        with self.assertRaises(Unknown):self.replace()
+        self.assertEqual(len(self.native.sent),writes)
+        self.assertEqual(set(self.native.orders),identities)

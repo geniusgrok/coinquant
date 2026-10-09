@@ -309,7 +309,8 @@ class Binance:
                 raise Rejected(f'Binance rejected the request with code {code}') from None
             if method != 'GET' and exc.code == 503 and (code == -1008 or message in FAILED_503):
                 raise Rejected('Binance reported a failed operation with HTTP 503') from None
-            if method == 'GET' and path == '/fapi/v1/order' and exc.code == 400 and code == -2013:
+            if (method == 'GET' and path in ('/fapi/v1/order','/fapi/v1/algoOrder')
+                    and exc.code == 400 and code == -2013):
                 raise Missing('Binance reports that the order does not exist') from None
             raise Unknown('Binance HTTP outcome unresolved; query stable identity after cooldown',
                           http_status=exc.code,native_code=code) from None
@@ -389,7 +390,9 @@ class Binance:
     def query_intent(self, client_identity, *, conditional=False):
         """Observe a stable identity, including the conditional order's child.
 
-        Missing/expired history remains Unknown. Never authorizes resubmission;
+        Missing history may use a freshly observed, untriggered close-all parent.
+        Its durable request is still checked by the caller. No absence authorizes
+        resubmission or proves a terminal state;
         a parent trigger/cancel status is not evidence of its child's fill state.
         """
         if (not isinstance(client_identity, str) or not 1 <= len(client_identity) <= 36
@@ -397,7 +400,29 @@ class Binance:
                        for c in client_identity)):
             raise Blocked('invalid stable Binance order identity')
         if conditional:
-            parent = self.get('/fapi/v1/algoOrder', {'clientAlgoId':client_identity})
+            try:
+                parent = self.get('/fapi/v1/algoOrder', {'clientAlgoId':client_identity})
+            except Missing:
+                # The history endpoint has a 90-day creation-time boundary.
+                # Current open orders can prove only a NEW, childless parent.
+                rows=self.get('/fapi/v1/openAlgoOrders', {'symbol':'BTCUSDT'})
+                if not isinstance(rows,list) or any(not isinstance(row,dict) for row in rows):
+                    raise Unknown('current conditional order evidence unavailable')
+                matches=[row for row in rows if row.get('clientAlgoId')==client_identity]
+                if len(matches)!=1:
+                    raise Unknown('missing or ambiguous current conditional identity')
+                parent=matches[0]
+                if (parent.get('algoType')!='CONDITIONAL' or parent.get('algoStatus')!='NEW'
+                        or type(parent.get('actualOrderId')) not in (int,str)
+                        or parent['actualOrderId'] not in ('','0',0)
+                        or parent.get('closePosition') is not True or parent.get('priceProtect') is not False
+                        or parent.get('workingType')!='MARK_PRICE'
+                        or parent.get('orderType') not in ('STOP_MARKET','TAKE_PROFIT_MARKET')
+                        or isinstance(parent.get('algoId'),bool) or not str(parent.get('algoId')).isascii()
+                        or not str(parent.get('algoId')).isdigit()
+                        or int(parent['algoId'])<=0):
+                    raise Unknown('current conditional parent is not verified untriggered protection')
+                number(parent.get('triggerPrice'),positive=True)
             identity_field = 'clientAlgoId'
         else:
             parent = self.get('/fapi/v1/order', {'symbol':'BTCUSDT',
@@ -544,7 +569,8 @@ class Binance:
                         # FINISHED without child identity is insufficient evidence.
                         if parent.get('algoStatus') == 'FINISHED':
                             continue
-                        state.finish(intent['id'], 'confirmed', {'algo_status': parent['algoStatus'], 'child': None})
+                        state.finish(intent['id'], 'confirmed', {'algo_status': parent['algoStatus'], 'child': None},
+                                     native=observed)
                         resolved += 1
                         continue
                 order = child if conditional else parent
@@ -563,14 +589,8 @@ class Binance:
                     continue
                 if status == 'REJECTED' and executed:
                     raise Unknown('rejected order cannot prove a nonzero fill')
-                state.finish(intent['id'], 'confirmed', {'status': status, 'executed_quantity': str(executed)})
-                if not conditional:
-                    # The terminal parent is immutable. Reuse this verified read
-                    # for immediate fill ownership instead of querying it again
-                    # before the first protective stop.
-                    archived=state.get('terminal_native_orders') or {}
-                    archived[intent['id']]=observed
-                    state.set('terminal_native_orders',archived)
+                state.finish(intent['id'], 'confirmed', {'status': status, 'executed_quantity': str(executed)},
+                             native=observed)
                 resolved += 1
             except (Blocked, Unknown, KeyError, TypeError, ValueError, ArithmeticError):
                 # Keep independent recoverable intents moving, never erase unknowns.

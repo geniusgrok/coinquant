@@ -110,6 +110,8 @@ def reconcile(state, reader, model, snapshot):
     if not links:
         if number(snapshot['quantity_btc']):raise Unknown('entry campaign journal unavailable')
         return {'status':'flat_without_entry_journal'}
+    if type(snapshot.get('last_fill_id')) is not int or snapshot['last_fill_id']<-1:
+        raise Unknown('ownership lacks a verified recent fill cursor')
     # Only one entry campaign can own the one-way isolated position. Later
     # rejected/zero-fill orders must not hide an older actually filled entry.
     filled=[];native={}
@@ -141,7 +143,8 @@ def reconcile(state, reader, model, snapshot):
         terminal=all(o['status'] in TERMINAL for _,o in native.values())
         if terminal and not snapshot['possible_entry_remainders'] and not state.pending():
             again=reader.snapshot(snapshot['account_uid'])
-            if any(again.get(k)!=snapshot.get(k) for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders')):
+            if (type(again.get('last_fill_id')) is not int or
+                    any(again.get(k)!=snapshot.get(k) for k in ('quantity_btc','wallet_usdt','entry','possible_entry_remainders','last_fill_id'))):
                 raise Unknown('account changed while settling zero-fill entries')
             _archive_links(state,links)
             snapshot.update(again)
@@ -226,8 +229,14 @@ def reconcile(state, reader, model, snapshot):
                                         avg_fill_price=str(average),trigger_price=str(trigger),
                                         adverse_slippage_fraction=str(adverse)))
     again=reader.snapshot(snapshot['account_uid'])
-    if any(again[k]!=snapshot[k] for k in ('quantity_btc','entry','wallet_usdt','possible_entry_remainders')):
+    if (type(again.get('last_fill_id')) is not int or
+            any(again[k]!=snapshot[k] for k in ('quantity_btc','entry','wallet_usdt','possible_entry_remainders','last_fill_id'))):
         raise Unknown('account changed during ownership recovery')
+    # The default native cursor covers only seven days. A stable empty window
+    # (-1) is valid for an older position whose full history is verified above.
+    # A nonempty window must end at the last fill that actually passed ownership.
+    if again['last_fill_id']>=0 and again['last_fill_id']!=max(t['id'] for t in trades):
+        raise Unknown('recent fill cursor is outside verified ownership')
     campaign=link['campaign']
     if type(campaign) is not int or not (0<campaign<=model.last or -(model.last+14400000)<campaign<0):
         raise Unknown('invalid campaign clock')

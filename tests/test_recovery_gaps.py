@@ -7,6 +7,7 @@ from unittest.mock import patch
 from coinquant.config import Config
 from coinquant.campaign import Campaign
 from coinquant.ownership import reconcile
+from coinquant.lifecycle import Lifecycle
 from coinquant.session import run
 from coinquant.state import State, client_id
 from coinquant.types import Missing, Unknown
@@ -14,6 +15,29 @@ from tests.session_venue import Venue
 
 
 class RecoveryGapTests(TestCase):
+    def test_old_active_parent_recovers_with_recent_fill_coverage_without_terminal_inference(self):
+        self.session()
+        created=self.venue.now
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            for days in (30,60,89):
+                self.venue.now=created+days*86400000
+                reconcile(state,self.venue,Campaign.restore(state.get('linear_campaign')),
+                          self.venue.snapshot('123'))
+            self.venue.now=created+91*86400000
+            original=self.venue.get
+            def expired(path,params=None):
+                if path=='/fapi/v1/algoOrder':raise Missing('old parent query retention')
+                return original(path,params)
+            self.venue.get=expired
+            before=len(self.venue.sent)
+            result=reconcile(state,self.venue,Campaign.restore(state.get('linear_campaign')),
+                             self.venue.snapshot('123'))
+            self.assertEqual(result['status'],'reconciled')
+            self.assertTrue(Lifecycle(self.venue,state,'123',authorized=True).finish()['native_full_position_protected'])
+            self.assertEqual(len(self.venue.sent),before)
+            archived=state.get('terminal_native_orders') or {}
+            self.assertTrue(all(a['clientAlgoId'] not in archived for a in self.active()))
+
     def test_late_query_missing_does_not_orphan_filled_add(self):
         self.session()
         with State(self.directory,'binance:BTCUSDT:live:123') as state:

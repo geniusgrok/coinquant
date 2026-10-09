@@ -7,6 +7,8 @@ from pathlib import Path
 from unittest import TestCase
 from unittest.mock import patch
 from urllib.error import URLError
+from urllib.error import HTTPError
+from urllib.parse import parse_qsl, urlsplit
 
 from coinquant import cli
 from coinquant.audit import allows_new_risk, income
@@ -244,6 +246,75 @@ class FirstFillToProtection(TestCase):
             self.assertTrue(all(D(p['quantity']) <= D(entries[0]['quantity']) / 2 for p in reduce))
 
 
+class EmergencyExitVenue(Venue):
+    """Real signing/recovery with a refused stop and terminal partial markets."""
+    def __init__(self, outcome='partial'):
+        super().__init__()
+        self.key,self.secret='synthetic','synthetic'
+        self.outcome=outcome
+
+    def get(self,path,parameters=None):
+        return Binance.get(self,path,parameters)
+
+    def send(self,method,path,parameters):
+        return Binance.send(self,method,path,parameters)
+
+    def _transport(self,request,timeout):
+        split=urlsplit(request.full_url);method=request.get_method()
+        query=split.query if method=='GET' else request.data.decode()
+        integer=('startTime','endTime','fromId','limit','orderId')
+        p={k:(int(v) if k in integer else v) for k,v in parse_qsl(query)
+           if k not in ('timestamp','recvWindow','signature')}
+        if split.path.endswith('/positionMargin'):p['type']=int(p['type'])
+        if method=='GET':return Venue.get(self,split.path,p)
+        if split.path.endswith('/algoOrder') and method=='POST':
+            raise HTTPError(request.full_url,400,'Bad Request',{},
+                            io.BytesIO(b'{"code":-2021,"msg":"Order would immediately trigger."}'))
+        if method=='POST' and p.get('reduceOnly')=='true':
+            self.now+=1;self.sent.append((method,split.path,p))
+            if self.outcome=='unknown':raise TimeoutError()
+            qty=D(p['quantity'])
+            filled=D(0) if self.outcome=='zero' else qty if qty<=D('.001') else qty//D('.002')*D('.001')
+            order=dict(p,orderId=len(self.orders)+1,clientOrderId=p['newClientOrderId'],reduceOnly=True,
+                       origQty=p['quantity'],executedQty='0',status='FILLED' if filled==qty else 'EXPIRED')
+            self.orders[p['newClientOrderId']]=order
+            self.fill(order,filled)
+            return dict(order)
+        return Venue.send(self,method,split.path,p)
+
+
+class BoundedPartialCleanup(TestCase):
+    def session(self,outcome):
+        with tempfile.TemporaryDirectory() as tmp, patch('coinquant.state._account_lock_path',lambda identity:Path(tmp)/'account.lock'):
+            venue=EmergencyExitVenue(outcome);venue.seed(tmp)
+            result=run(Config('123',tmp,1,1),venue,execute=True,monotonic=venue.monotonic,wait=venue.wait)
+            reductions=[p for _,_,p in venue.sent if p.get('reduceOnly')=='true']
+            return venue,result,reductions
+
+    def test_terminal_partial_emergency_exits_continue_until_flat_before_stopping(self):
+        venue,result,reductions=self.session('partial')
+        self.assertEqual(venue.q,0,result)
+        self.assertEqual(result['cleanup'],'verified',result)
+        self.assertEqual(result['pending_intents'],0)
+        self.assertGreater(len(reductions),2)
+        self.assertEqual(len({p['newClientOrderId'] for p in reductions}),len(reductions))
+        self.assertLessEqual(venue.monotonic(),venue.hard_deadline)
+
+    def test_unknown_emergency_exit_is_never_resent_during_cleanup(self):
+        venue,result,reductions=self.session('unknown')
+        self.assertEqual(len(reductions),1)
+        self.assertGreater(venue.q,0)
+        self.assertEqual(result['cleanup'],'unresolved')
+        self.assertEqual(result['pending_intents'],1)
+
+    def test_terminal_zero_fill_has_no_retry_progress(self):
+        venue,result,reductions=self.session('zero')
+        self.assertEqual(len(reductions),1)
+        self.assertGreater(venue.q,0)
+        self.assertEqual(result['cleanup'],'unresolved')
+        self.assertEqual(result['pending_intents'],0)
+
+
 class SmallFundBoundaries(TestCase):
     def partial(self, tmp):
         venue = Venue()
@@ -259,7 +330,10 @@ class SmallFundBoundaries(TestCase):
             fill, protection = state.get('entry_fill'), state.get('position_protection')
         venue.begin_cycle(60)
         snapshot = venue.snapshot('123')
-        return topup_preview(venue, model, snapshot, fill['requested'], protection['stop'], protection['take'], None, **kwargs)
+        kwargs.setdefault('entry_capital',fill['sizing_capital'])
+        kwargs.setdefault('stop_slippage_fraction',fill['stop_slippage_fraction'])
+        return topup_preview(venue, model, snapshot, fill['requested'], protection['stop'], protection['take'],
+                             fill['stop_budget'], **kwargs)
 
     def test_lowered_capital_never_grows_the_position_back_to_the_old_target(self):
         with tempfile.TemporaryDirectory() as tmp:

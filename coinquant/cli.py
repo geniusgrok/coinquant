@@ -99,10 +99,9 @@ def observe(config_path, *, execute=False):
         if replacement and not replacement.get('done'):
             report.update(status='unknown',reason='Protection replacement incomplete; reconcile before changing exposure')
             report['protection_replacement']=replacement
-        checkpoint=(state.get('linear_campaign') or {}).get('body',{})
-        if type(checkpoint.get('last')) is int:
-            report['next_required_review_at_ms']=checkpoint['last']+14400000
-        report['offline_boundary']='Native exchange protection may execute; strategy expiry, new candles and macro changes require another manual run.'
+        from .session import offline_report
+        report['protection_replacement_pending']=bool(replacement and not replacement.get('done'))
+        offline_report(report,state,int(venue.clock()*1000))
         state.report(report)
         return report
 
