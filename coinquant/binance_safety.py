@@ -170,8 +170,13 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
         state.finish(identity,'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
         timing=state.get('entry_timing') if kind=='STOP_MARKET' else None
         plan=state.get('entry_plan') if timing else None
-        if timing and kind=='STOP_MARKET' and plan and plan.get('epoch')==epoch:
-            timing['stop_accepted_at_ms']=int(reader.clock()*1000)
+        timed_stop=(timing and plan and timing.get('entry_id')==plan.get('id')
+                    and timing.get('first_stop_id')==identity)
+        if timed_stop:
+            # The first stop may be a temporary guard. Record this native
+            # identity's first successful readback, never a later plan stop or
+            # a presumed acceptance time while the process was stopped.
+            timing.setdefault('stop_accepted_at_ms',int(reader.clock()*1000))
             state.set('entry_timing',timing)
         if kind=='TAKE_PROFIT_MARKET':break  # the final readback follows
         observed_account=reader.snapshot(uid)
@@ -180,8 +185,8 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
                 or observed_account['possible_entry_remainders']):
             raise Unknown('exposure changed between protection legs; reconcile before next write')
         _check_cursor(reader,expected_owner)
-        if timing and plan and plan.get('epoch')==epoch:
-            timing['stop_account_readback_at_ms']=int(reader.clock()*1000)
+        if timed_stop:
+            timing.setdefault('stop_account_readback_at_ms',int(reader.clock()*1000))
             state.set('entry_timing',timing)
     after=reader.snapshot(uid)
     _check_owner(after,expected_owner)

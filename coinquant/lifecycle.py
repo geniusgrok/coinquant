@@ -8,7 +8,7 @@ from decimal import Decimal as D, ROUND_CEILING, ROUND_FLOOR
 
 from . import binance_safety as safety
 from .native_preview import (MAX_ISOLATED_MARGIN_FRACTION,
-                             entry_preview, limit_matches, topup_preview)
+                             commission, entry_preview, holding_risk, limit_matches, topup_preview)
 from .ownership import TERMINAL, owned_observation
 from .state import client_id
 from .binance import UNACCEPTED_AFTER_MS, market_quantity
@@ -126,6 +126,7 @@ class Lifecycle:
                 # The first stop for this fill, including a guard placed before margin.
                 if 'stop_send_attempt_at_ms' not in timing:
                     field='stop_send_attempt_at_ms'
+                    timing['first_stop_id']=payload.get('clientAlgoId')
             if field:
                 timing[field]=int(self.reader.clock()*1000)
                 self.state.set('entry_timing',timing)
@@ -157,12 +158,160 @@ class Lifecycle:
 
     def _save_protection(self, payload, snapshot):
         previous=self.state.get('position_protection')
+        started=payload.pop('started_at_ms',payload.get('accepted_at_ms'))
         gap=(number(previous['buffer_distance'])
              if previous and previous.get('campaign')==payload.get('campaign') and 'buffer_distance' in previous
              else self._gap(snapshot, payload['stop']))
         if gap is not None:
             payload['buffer_distance']=str(gap)
-        self.state.set('position_protection', payload)
+        if previous and previous.get('campaign')==payload.get('campaign'):
+            ceilings=[number(p['loss_ceiling_usdt']) for p in (previous,payload)
+                      if p.get('loss_ceiling_usdt') is not None]
+            if ceilings:
+                payload['loss_ceiling_usdt']=str(min(ceilings))
+        history=self.state.get('protection_catchup') or []
+        through=((self.state.get('linear_campaign') or {}).get('body') or {}).get('last',0)
+        history=[p for p in history if p['ended_at_ms']>through]
+        if (previous and previous.get('campaign')==payload.get('campaign')
+                and previous.get('epoch')!=payload.get('epoch')
+                and type(previous.get('accepted_at_ms')) is int and type(started) is int
+                and previous['accepted_at_ms']<started):
+            history.append({**{key:previous[key] for key in ('campaign','stop','take','accepted_at_ms')},
+                            'ended_at_ms':started})
+        self.state.set_many({'position_protection':payload,'protection_catchup':history})
+
+    def enforce_holding_risk(self, snapshot):
+        """Recheck owned exposure before market catch-up and before stopping.
+
+        Only observed native costs can tighten a campaign's net loss ceiling.
+        A missing audit leaves its existing protection in place, blocks adds and
+        is reported as unverified. A known collateral breach can still exit.
+        """
+        q=number(snapshot['quantity_btc'])
+        if not q:
+            self.state.set('holding_risk',None)
+            return snapshot
+        if not self.authorized:
+            raise Blocked('holding risk maintenance requires execution authorization')
+        protection=self.state.get('position_protection')
+        campaign=protection.get('campaign') if protection else None
+        report=dict(status='unverified',campaign=campaign,
+                    observed_at_ms=snapshot.get('observed_at_ms'))
+        rules=None
+        try:
+            if not protection or not self.planned_protection(snapshot):
+                raise Unknown('holding risk requires the owned native protection')
+            rules=self.instrument()
+            replacement=self.state.get('session_replacement')
+            if replacement and replacement.get('campaign')!=campaign:
+                raise Unknown('pending protection belongs to another campaign')
+            if replacement and replacement.get('loss_ceiling_usdt') is not None:
+                ceiling=number(replacement['loss_ceiling_usdt'])
+                if protection.get('loss_ceiling_usdt') is not None:
+                    ceiling=min(ceiling,number(protection['loss_ceiling_usdt']))
+                protection={**protection,'loss_ceiling_usdt':str(ceiling)}
+            proof=self.reconciled
+            if not (proof and proof[0] is snapshot and proof[1]==len(self.actions)):
+                from .campaign import Campaign
+                from .ownership import reconcile
+                ownership=reconcile(self.state,self.reader,
+                                    Campaign.restore(self.state.get('linear_campaign')),snapshot)
+                self.reconciled=(snapshot,len(self.actions),ownership)
+            else:
+                ownership=proof[2]
+            if (ownership.get('status')!='reconciled' or ownership.get('campaign')!=campaign
+                    or number(ownership.get('quantity','0'))!=number(snapshot['quantity_btc'])):
+                raise Unknown('holding risk lacks current campaign ownership')
+            fee=funding=None
+            cost_error=None
+            try:
+                fee=commission(self.reader)
+                from .audit import funding_debit
+                funding=funding_debit(self.reader,self.state,campaign,snapshot)
+            except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError) as exc:
+                cost_error=exc
+            try:
+                risk=holding_risk(snapshot,protection,self.state.get('entry_fill'),rules,fee,
+                    paid_commission_usdt=ownership.get('campaign_fee_usdt'),
+                    realized_pnl_usdt=ownership.get('campaign_realized_pnl_usdt'),
+                    paid_funding_usdt=funding,
+                    loss_fraction=getattr(self.reader,'loss_fraction',None),
+                    slip_fraction=getattr(self.reader,'slip_fraction',None),
+                    capital_limit=getattr(self.reader,'capital_limit',None))
+            except (Blocked,Unknown):
+                if cost_error is not None:raise cost_error
+                raise
+            report.update(risk,observed_at_ms=snapshot.get('observed_at_ms'),
+                          quantity_btc=snapshot['quantity_btc'],entry=snapshot['entry'],
+                          wallet_usdt=snapshot['wallet_usdt'],mark_price=snapshot['mark_price'],
+                          last_fill_id=snapshot.get('last_fill_id'))
+            if risk['action']=='exit':
+                report['status']='exit_pending'
+                self.state.set('holding_risk',report)
+                self.risk_audit_ok=False
+                self.entry_constraint=risk['reason']
+                self.reader.set_deadline(REDUCE_SECONDS,extend_only=True)
+                result=self.close(snapshot,rules)
+                self.state.set('holding_risk',None)
+                return result
+            if replacement:
+                # Known budget breaches exit before an unrelated strategy
+                # amendment can block them. A pending identity still settles
+                # before another replacement is created; then recheck its result.
+                snapshot=self.complete_replacement(replacement,rules,snapshot=snapshot)
+                return self.enforce_holding_risk(snapshot)
+            if risk['action']=='tighten':
+                replacement=dict(old_epoch=protection['epoch'],epoch=self.epoch(),
+                                 stop=risk['stop'],take=protection['take'],campaign=campaign,
+                                 loss_ceiling_usdt=risk['loss_ceiling_usdt'],
+                                 started_at_ms=int(self.reader.clock()*1000))
+                # A failed or interrupted replacement retains this exact target;
+                # it must not be recalculated from a later, lower mark on restart.
+                self.state.set('session_replacement',replacement)
+                snapshot=self.complete_replacement(replacement,rules,snapshot=snapshot)
+                if not number(snapshot['quantity_btc']):
+                    self.state.set('holding_risk',None)
+                    return snapshot
+            else:
+                self._save_protection({**protection,'loss_ceiling_usdt':risk['loss_ceiling_usdt']},snapshot)
+            report.update(status='observed',native_stop=self.state.get('position_protection')['stop'],
+                          current_protected_loss_usdt=risk['modeled_stop_loss_usdt'])
+            self.state.set('holding_risk',report)
+            return snapshot
+        except (Blocked,Unknown,OSError,ValueError,KeyError,TypeError,ArithmeticError) as exc:
+            report.update(status='unverified',reason=str(exc) if isinstance(exc,(Blocked,Unknown))
+                          else 'holding risk inputs could not be verified')
+            self.state.set('holding_risk',report)
+            self.risk_audit_ok=False
+            self.entry_constraint='holding_risk_unverified'
+            if report.get('action')=='exit' or self.state.get('position_exit'):
+                raise
+            replacement=self.state.get('session_replacement')
+            if replacement:
+                # A refused strategy amendment must not trap a separately
+                # required exit behind it. Only a fresh complete ownership
+                # audit and the still-active old pair can keep this path open.
+                from .campaign import Campaign
+                from .ownership import reconcile
+                current=self.reader.snapshot(self.uid)
+                ownership=reconcile(self.state,self.reader,
+                                    Campaign.restore(self.state.get('linear_campaign')),current)
+                self.reconciled=(current,len(self.actions),ownership)
+                if not number(current['quantity_btc']):
+                    return self.recover_exposure(current)
+                if (replacement.get('campaign')!=campaign or ownership.get('campaign')!=campaign
+                        or number(current['quantity_btc'])*q<=0
+                        or current['possible_entry_remainders'] or not self.planned_protection(current)):
+                    raise
+                if replacement.get('loss_ceiling_usdt') is not None or report.get('action')=='tighten':
+                    # A required risk stop that cannot be established is not a
+                    # successful hold, even when the older looser pair survives.
+                    self.reader.set_deadline(REDUCE_SECONDS,extend_only=True)
+                    result=self.close(current,rules)
+                    self.state.set('holding_risk',None)
+                    return result
+                return current
+            return snapshot
 
     def ensure_liquidation_buffer(self, snapshot):
         """Restore the entry liquidation gap, or leave while the stop is still valid.
@@ -776,11 +925,14 @@ class Lifecycle:
         safety.send_once(self.state,identity,self.send,'POST','/fapi/v1/order',payload)
         # Confirm this order, then protect, before cancel/history work.
         self.reader.recover_pending(self.state)
-        snapshot=self.reader.snapshot(self.uid)
         try:
-            proven = self.entry_fill_proven(plan,snapshot)
+            snapshot,proven=self.reader.entry_snapshot(self.state,self.uid,identity,flat_snapshot=fresh)
         except (Blocked,Unknown):
-            proven = False
+            snapshot=self.reader.snapshot(self.uid)
+            try:
+                proven=self.entry_fill_proven(plan,snapshot)
+            except (Blocked,Unknown):
+                proven=False
         if proven:
             timing=self.state.get('entry_timing') or {}
             if timing.get('entry_id')==identity:
@@ -812,6 +964,9 @@ class Lifecycle:
         stop=floor_step(opportunity.stop,tick) if q>0 else -floor_step(-opportunity.stop,tick)
         if q>0 and opportunity.extended and model.entry_fill is not None:
             stop=max(stop,(model.entry_fill/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
+        # Strategy updates cannot spend a loss allowance already locked at the
+        # exchange by a prior risk review of this same campaign.
+        stop=max(stop,number(protection['stop'])) if q>0 else min(stop,number(protection['stop']))
         take=floor_step(opportunity.take,tick)+tick if q>0 else floor_step(opportunity.take,tick)
         same_prices=D(protection['stop'])==stop and D(protection['take'])==take
         replacement = self.state.get('session_replacement')
@@ -829,7 +984,8 @@ class Lifecycle:
         if same_prices and not renew and replacement is None:
             return snapshot
         if replacement is None:
-            replacement=dict(old_epoch=protection['epoch'],epoch=self.epoch(),stop=str(stop),take=str(take),campaign=opportunity.identity)
+            replacement=dict(old_epoch=protection['epoch'],epoch=self.epoch(),stop=str(stop),take=str(take),campaign=opportunity.identity,
+                             started_at_ms=int(self.reader.clock()*1000))
             self.state.set('session_replacement',replacement)
         return self.complete_replacement(replacement,rules,snapshot=snapshot)
 
@@ -838,6 +994,9 @@ class Lifecycle:
         action=model.action(number(snapshot['quantity_btc']))
         if action=='enter':
             snapshot=self.enter(model,snapshot)
+            if number(snapshot['quantity_btc']):
+                snapshot=self.enforce_holding_risk(snapshot)
+                if not number(snapshot['quantity_btc']):action='exit'
         elif action=='exit':
             price_exit=(model.exit_cause=='price' and model.exit_campaign==model.position_campaign
                         and model.exit_stop is not None)
@@ -850,9 +1009,11 @@ class Lifecycle:
         elif action=='hold':
             snapshot=self.maintain(model,snapshot)
             if number(snapshot['quantity_btc']):
+                before=snapshot
                 snapshot=self.top_up(model,snapshot)
-            else:
-                action='exit'
+                if snapshot is not before:
+                    snapshot=self.enforce_holding_risk(snapshot)
+            if not number(snapshot['quantity_btc']):action='exit'
         return action,snapshot
 
     def top_up(self, model, snapshot):
@@ -869,6 +1030,10 @@ class Lifecycle:
         if (not self.risk_audit_ok or not fill or self.session is None or fill.get('session') != self.session or not protection
                 or fill.get('campaign') != protection.get('campaign') or model.active is None
                 or model.active.identity != fill['campaign'] or not self.may_enter()):
+            return snapshot
+        risk=self.state.get('holding_risk') or {}
+        if risk.get('status')!='observed' or risk.get('campaign')!=fill['campaign']:
+            self.entry_constraint='holding_risk_unverified'
             return snapshot
         if (self.state.pending() or snapshot['possible_entry_remainders'] or snapshot['open_orders']
                 or not self.planned_protection(snapshot)):
@@ -906,7 +1071,8 @@ class Lifecycle:
                                  fill.get('sizing_capital'),fill.get('stop_slippage_fraction'),
                                  paid_commission_usdt=ownership['campaign_fee_usdt'],
                                  realized_pnl_usdt=ownership['campaign_realized_pnl_usdt'],
-                                 paid_funding_usdt=paid_funding)
+                                 paid_funding_usdt=paid_funding,
+                                 loss_ceiling_usdt=protection.get('loss_ceiling_usdt'))
         except ValueError:
             return snapshot
         self.entry_constraint = plan['constraint']
@@ -976,6 +1142,7 @@ class Lifecycle:
 
     def finish(self):
         snapshot=self.recover_exposure(self.settle())
+        snapshot=self.enforce_holding_risk(snapshot)
         if number(snapshot['quantity_btc']) and not self.planned_protection(snapshot):
             raise Unknown('session ended without confirmed exchange-hosted protection')
         return snapshot

@@ -767,6 +767,124 @@ class Binance:
             return report
         raise Unknown('Binance account changed during bounded reconciliation')
 
+    def entry_snapshot(self, state, expected_uid, entry_id, *, flat_snapshot):
+        """Observe only the first terminal IOC's fill for immediate protection.
+
+        A fresh, verified flat boundary and the independently queried terminal
+        order replace the ordinary snapshot's second account round. Every fill
+        since that boundary must be this entry, including its price and fees.
+        The safety write must still recheck the final native fill cursor. Any
+        unavailable evidence falls back to snapshot plus full ownership recovery.
+        """
+        from .config import scope
+        from .ownership import owned_observation
+        try:
+            now=int(self.clock()*1000)
+            uid=str(expected_uid)
+            observed_at=flat_snapshot.get('observed_at_ms')
+            cursor=flat_snapshot.get('last_fill_id')
+            if (getattr(self,'_verified_uid',None)!=uid or state.identity!=scope(self.environment,uid)
+                    or flat_snapshot.get('account_uid')!=uid
+                    or number(flat_snapshot.get('quantity_btc'))!=0
+                    or number(flat_snapshot.get('entry'))!=0
+                    or flat_snapshot.get('possible_entry_remainders')!=0
+                    or flat_snapshot.get('open_orders')!=[] or flat_snapshot.get('open_algos')!=[]
+                    or flat_snapshot.get('recent_fill_window_complete') is not True
+                    or type(cursor) is not int or cursor < -1
+                    or type(observed_at) is not int or not 0<=now-observed_at<=15000):
+                raise Unknown('immediate entry lacks a fresh verified flat boundary')
+            links=state.get('entry_campaigns') or {}
+            if set(links)!={entry_id} or links[entry_id].get('add'):
+                raise Unknown('immediate protection requires the campaign first entry')
+            link=links[entry_id];start=link.get('prepared_at')
+            if (type(start) is not int or start<=0 or start!=observed_at-15000
+                    or type(link.get('after_trade_id')) is not int or link['after_trade_id']!=cursor
+                    or type(link.get('campaign')) is not int or not link['campaign']):
+                raise Unknown('entry journal does not bind this flat observation')
+            row=state.db.execute('SELECT kind,payload,status FROM intents WHERE id=?',(entry_id,)).fetchone()
+            if not row or row[0]!='binance_order' or row[2]!='confirmed' or state.pending():
+                raise Unknown('entry has not been independently settled')
+            payload=json.loads(row[1])
+            if (payload.get('symbol')!='BTCUSDT' or payload.get('positionSide')!='BOTH'
+                    or payload.get('side') not in ('BUY','SELL')
+                    or payload.get('type')!='LIMIT' or payload.get('timeInForce')!='IOC'
+                    or payload.get('newClientOrderId')!=entry_id
+                    or payload.get('reduceOnly','false')!='false'
+                    or payload.get('closePosition','false')!='false'):
+                raise Unknown('immediate protection requires the journaled opening IOC')
+            # Only recover_pending's native order query can establish this
+            # archive; neither a POST result nor a confirmed local status is it.
+            if entry_id not in (state.get('terminal_native_orders') or {}):
+                raise Unknown('queried terminal entry evidence unavailable')
+            parent=owned_observation(state,self,entry_id)['parent']
+            if (parent.get('clientOrderId')!=entry_id or type(parent.get('orderId')) is not int
+                    or parent['orderId']<=0 or parent.get('timeInForce')!='IOC'
+                    or parent.get('reduceOnly') is not False or parent.get('closePosition',False) is not False
+                    or parent.get('status') not in ('FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH')):
+                raise Unknown('native entry is not a terminal opening IOC')
+            executed=number(parent.get('executedQty'),positive=True)
+            config=getattr(self,'_cycle_config',None)
+            if (config is None or self.check_all_orders
+                    or not 0<=self.monotonic()-getattr(self,'_config_at',-60)<60
+                    or not isinstance(config[1],list) or len(config[1])!=1):
+                raise Unknown('fresh entry account configuration unavailable')
+            wallet_from=int(self.clock()*1000)
+            account=self.get('/fapi/v3/account')
+            wallet_until=int(self.clock()*1000)
+            positions=self.get('/fapi/v3/positionRisk',{'symbol':'BTCUSDT'})
+            # One all-symbol round also rules out other pending account risk.
+            orders=self.get('/fapi/v1/openOrders')
+            algos=self.get('/fapi/v1/openAlgoOrders')
+            if orders!=[] or algos!=[]:
+                raise Unknown('orders changed after the verified flat entry')
+            ticker=self.get('/fapi/v1/premiumIndex',{'symbol':'BTCUSDT'})
+            if (not isinstance(ticker,dict) or ticker.get('symbol')!='BTCUSDT'
+                    or type(ticker.get('time')) is not int
+                    or abs(int(self.clock()*1000)-ticker['time'])>15000):
+                raise Unknown('stale or invalid Binance mark observation')
+            report=account_report(uid,config[0],config[1][0],account,positions,orders,algos,ticker['markPrice'])
+            q=number(report['quantity_btc'])
+            if abs(q)!=executed or (q>0)!=(parent['side']=='BUY'):
+                raise Unknown('native position is not the terminal entry fill')
+            query=({'symbol':'BTCUSDT','fromId':cursor+1,'limit':1000} if cursor>=0 else
+                   {'symbol':'BTCUSDT','startTime':start,'endTime':int(self.clock()*1000),'limit':1000})
+            fills=self._trade_page(query)
+            if not fills or len(fills)>=1000:
+                raise Unknown('immediate entry fill history is incomplete')
+            total=notional=fees=number(0);last=cursor
+            now=int(self.clock()*1000);limit=number(payload['price'],positive=True)
+            for trade in fills:
+                stamp=trade.get('time')
+                if (trade.get('positionSide')!='BOTH' or trade.get('orderId')!=parent['orderId']
+                        or trade.get('side')!=parent['side'] or trade['id']<=last
+                        or type(stamp) is not int or not start<=stamp<=now
+                        or trade.get('commissionAsset')!='USDT'):
+                    raise Unknown('external or invalid fill after the entry flat boundary')
+                amount=number(trade.get('qty'),positive=True);price=number(trade.get('price'),positive=True)
+                fee=number(trade.get('commission'))
+                if (fee<0 or number(trade.get('realizedPnl'))!=0
+                        or (price>limit if q>0 else price<limit)):
+                    raise Unknown('entry fill price or cost conflicts with its opening IOC')
+                total+=amount;notional+=amount*price;fees+=fee;last=trade['id']
+            # Compare in USDT: an entry price rounded by Binance may leave a
+            # residue, bounded by the same native 1e-8 unit as account arithmetic.
+            if (total!=executed or abs(total*number(report['entry'])-notional)>number('.00000001')
+                    or number(report['wallet_usdt'])!=number(flat_snapshot['wallet_usdt'])-fees):
+                raise Unknown('entry fills do not close native quantity, price and wallet')
+            now=int(self.clock()*1000)
+            if not 0<wallet_from<=wallet_until<=now:
+                raise Unknown('entry wallet observation clock changed')
+            if abs(now-ticker['time'])>15000:
+                raise Unknown('entry mark expired while verifying native fills')
+            report.update(mark_time=ticker['time'],mark_price=ticker['markPrice'],
+                          recent_fill_count=len(fills),last_fill_id=last,recent_fill_window_complete=True,
+                          observed_at_ms=now,wallet_observed_from_ms=wallet_from,
+                          wallet_observed_until_ms=wallet_until,recovery_history_complete=False)
+            self.all_orders_checked_at=self.monotonic()
+            return report,parent
+        except (Blocked,KeyError,TypeError,ValueError,ArithmeticError,AttributeError) as exc:
+            raise Unknown('immediate entry proof unavailable; full reconciliation required') from exc
+
     def _trade_page(self, parameters):
         fills=self.get('/fapi/v1/userTrades',parameters)
         if not isinstance(fills,list) or len(fills)>1000:

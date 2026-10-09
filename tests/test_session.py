@@ -30,7 +30,7 @@ class SessionTests(TestCase):
         self.assertEqual(result['cycles'],3);self.assertEqual(result['cleanup'],'verified')
         self.assertGreater(self.venue.q,0)
         self.assertTrue(result['actual']['native_full_position_protected'])
-        self.assertEqual(result['next_required_review_at_ms'],self.venue.now//14400000*14400000+14400000)
+        self.assertEqual(result['next_strategy_candle_at_ms'],self.venue.now//14400000*14400000+14400000)
         self.assertIn('manual run',result['offline_boundary'])
         self.assertEqual(result['native_protection_at_stop']['status'],'observed')
         self.assertFalse(result['manual_takeover_required'])
