@@ -120,18 +120,26 @@ class TrialSizingTests(TestCase):
             with self.subTest(funding=unknown), self.assertRaises((Blocked, Unknown)):
                 topup_preview(*args, paid_funding_usdt=unknown, **costs)
 
-    def test_final_book_checks_depth_and_price_inside_the_same_tick(self):
+    def test_final_book_keeps_funded_price_and_checks_current_depth(self):
         model, reader, snapshot, values, _ = self.fixture()
         plan = entry_preview(reader, model, snapshot)
-        args = dict(quote_observation=plan['quote_observation'], quantity=plan['quantity_btc'])
+        args = dict(quantity=plan['quantity_btc'], completed_through=model.last)
         self.assertTrue(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
-        values['/fapi/v1/depth']['asks'] = [['100', '10']]
-        self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
-        values['/fapi/v1/depth']['asks'] = [['100.01', '1000']]
-        self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
+        for bid, ask, depth in [('99.8', '100', '1000'), ('99.9', '100', '1001'),
+                                ('99.9', '100', '100'), ('99.9', '100.01', '1000')]:
+            with self.subTest(bid=bid, ask=ask, depth=depth):
+                values['/fapi/v1/depth'].update(bids=[[bid, '1000']], asks=[[ask, depth]])
+                self.assertTrue(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
+        # The audit quote remains the original sizing observation.
+        self.assertEqual(plan['quote_observation']['best_ask'], '100')
+        self.assertEqual(plan['quote_observation']['visible_limit_depth_btc'], '1000')
+        for ask, depth in [('100', '1'), ('100.1', '1000')]:
+            with self.subTest(ask=ask, depth=depth):
+                values['/fapi/v1/depth']['asks'] = [[ask, depth]]
+                self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
         values['/fapi/v1/depth']['asks'] = [['100', '1000']]
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1',
-                                       quote_observation=plan['quote_observation'], quantity='251'))
+                                       quantity='251'))
 
     def test_add_cannot_spend_an_already_locked_campaign_profit(self):
         model, reader, snapshot, values, _ = self.fixture()

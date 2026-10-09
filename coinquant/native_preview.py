@@ -386,7 +386,7 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
                 tick=str(tick),sizing_capital_usdt=str(v['capital']))
 
 
-def limit_matches(reader, direction, limit_price, tick, *, quote_observation=None, quantity=None,
+def limit_matches(reader, direction, limit_price, tick, *, quantity=None,
                   completed_through=None):
     """Recheck the priced book and its executable depth immediately before send."""
     book=reader.get('/fapi/v1/depth',{'symbol':'BTCUSDT','limit':100})
@@ -413,9 +413,7 @@ def limit_matches(reader, direction, limit_price, tick, *, quote_observation=Non
     depth=sum((q for p,q in (asks if direction>0 else bids)
                if (p<=price if direction>0 else p>=price)),D(0))
     if price!=number(limit_price,positive=True):return False
-    if quote_observation is not None and (
-            bids[0][0]!=number(quote_observation['best_bid'],positive=True)
-            or asks[0][0]!=number(quote_observation['best_ask'],positive=True)
-            or depth!=number(quote_observation['visible_limit_depth_btc'],positive=True)):
-        return False
+    # The unchanged IOC limit is the worst price funded by the preview. Normal
+    # changes inside that tick or to book quantities do not alter its risk;
+    # the order must still fit the freshly observed executable depth below.
     return quantity is None or number(quantity,positive=True)<=depth*BOOK_PARTICIPATION

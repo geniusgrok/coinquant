@@ -192,11 +192,10 @@ class FinalQuoteClockTests(TestCase):
         reader.clock.return_value = (completed + 14400000 - 1000) / 1000
         reader.get.return_value = dict(E=completed + 14400000 + 1000,
                                        bids=[['100000', '1']], asks=[['100001', '1']])
-        quote = dict(best_bid='100000', best_ask='100001', visible_limit_depth_btc='1')
         self.assertTrue(limit_matches(reader, 1, '100101.0', '.1',
-                                      quote_observation=quote, quantity='.01'))
+                                      quantity='.01'))
         self.assertFalse(limit_matches(reader, 1, '100101.0', '.1',
-                                       quote_observation=quote, quantity='.01',
+                                       quantity='.01',
                                        completed_through=completed))
 
     def test_current_bar_final_book_keeps_the_existing_entry_gate(self):
