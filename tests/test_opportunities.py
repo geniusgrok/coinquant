@@ -17,9 +17,9 @@ class OpportunityTests(unittest.TestCase):
         self.assertEqual(a.take, D(115) * (D(115) / D('107.5')) ** 20)
         self.assertEqual(a.expires - a.identity, 42 * FOUR_HOURS)
 
-    def test_downward_impulse_is_symmetric(self):
+    def test_downward_impulse_does_not_occupy_the_long_slot(self):
         a = self.feed(Opportunities(), [(101, 99, 100)] * 20 + [(101, 80, 85)])[-1]
-        self.assertEqual((a.direction, a.stop), (-1, D('92.5')))
+        self.assertIsNone(a)
 
     def test_stop_and_expiry_retire_the_campaign(self):
         m = Opportunities()
@@ -31,6 +31,12 @@ class OpportunityTests(unittest.TestCase):
         for i in range(22, 21 + 42):
             self.assertEqual(m.update(i * FOUR_HOURS, D(116), D(114), D(115)), a)
         self.assertIsNone(m.update((21 + 42) * FOUR_HOURS, D(116), D(114), D(115)))
+        self.assertEqual(m.exit_event['cause'], 'time')
+        pierced = Opportunities()
+        signal = self.feed(pierced, [(101, 99, 100)] * 20 + [(120, 99, 115)])[-1]
+        self.assertIsNone(pierced.update(22 * FOUR_HOURS, D(116), signal.stop, D(110)))
+        self.assertEqual(pierced.exit_event['cause'], 'price')
+        self.assertEqual(D(pierced.exit_event['stop']), signal.stop)
 
     def test_prefix_cannot_depend_on_future_or_rewrite_objects(self):
         rows = [(101, 99, 100)] * 20 + [(120, 99, 115)] + [(116, 114, 115)] * 10

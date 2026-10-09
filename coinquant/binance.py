@@ -453,9 +453,14 @@ class Binance:
         """A canceled parent is not proof that its triggered child stopped trading."""
         observed=self.query_intent(identity,conditional=True)
         parent,child=observed['parent'],observed['child']
-        if parent.get('algoStatus') not in ('CANCELED','EXPIRED','REJECTED','FINISHED'):return False
+        status=parent.get('algoStatus')
+        # TRIGGERED is terminal only once its child has reached a terminal state.
+        if status=='TRIGGERED':
+            if child is None:return False
+        elif status not in ('CANCELED','EXPIRED','REJECTED','FINISHED'):
+            return False
         if child is None:
-            if parent['algoStatus']=='FINISHED':raise Unknown('finished protection lacks child evidence')
+            if status=='FINISHED':raise Unknown('finished protection lacks child evidence')
             return True
         original=number(child.get('origQty'),positive=True);filled=number(child.get('executedQty'))
         if original<=0 or not 0<=filled<=original:raise Unknown('invalid protection child quantities')
@@ -562,7 +567,11 @@ class Binance:
                         state.finish(intent['id'],'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
                         resolved+=1
                         continue
-                    parent_terminal = parent.get('algoStatus') in ('FINISHED', 'CANCELED', 'EXPIRED', 'REJECTED')
+                    status_name=parent.get('algoStatus')
+                    if status_name=='TRIGGERED' and (child is None or child.get('status') not in (
+                            'FILLED','CANCELED','EXPIRED','EXPIRED_IN_MATCH','REJECTED')):
+                        continue
+                    parent_terminal = status_name in ('FINISHED', 'CANCELED', 'EXPIRED', 'REJECTED', 'TRIGGERED')
                     if not parent_terminal:
                         continue
                     if child is None:
@@ -671,6 +680,49 @@ class Binance:
             return True
         return False
 
+    def proven_absent(self, state, intent):
+        """A fill-capable identity is absent only after -2013 inside retention.
+
+        The open list must not contain it, and every trade since preparation must
+        already be archived. A failed query or a full trade page is not absence.
+        """
+        from .types import Missing
+        kind=intent['kind']
+        if kind not in ('binance_order','binance_algo'):
+            return False
+        row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
+        result=json.loads(row[0]) if row else {}
+        prepared=result.get('prepared_at_ms')
+        now=int(self.clock()*1000)
+        if type(prepared) is not int or not UNACCEPTED_AFTER_MS<=now-prepared<QUERYABLE_MS:
+            return False
+        try:
+            if kind=='binance_order':
+                self.get('/fapi/v1/order',{'symbol':'BTCUSDT','origClientOrderId':intent['id']})
+            else:
+                self.get('/fapi/v1/algoOrder',{'clientAlgoId':intent['id']})
+            return False
+        except Missing:
+            pass
+        except (Blocked,Unknown):
+            return False
+        try:
+            if kind=='binance_order':
+                rows=self.get('/fapi/v1/openOrders',{'symbol':'BTCUSDT'})
+                field='clientOrderId'
+            else:
+                rows=self.get('/fapi/v1/openAlgoOrders',{'symbol':'BTCUSDT'})
+                field='clientAlgoId'
+            if not isinstance(rows,list) or any(isinstance(item,dict) and item.get(field)==intent['id'] for item in rows):
+                return False
+            trades=self._trade_page({'symbol':'BTCUSDT','startTime':prepared,'limit':1000})
+        except (Blocked,Unknown,TypeError):
+            return False
+        if len(trades)>=1000:
+            return False
+        known={item[0] for item in state.db.execute('SELECT trade_id FROM native_fills')}
+        return all(trade.get('id') in known for trade in trades)
+
     def snapshot(self, expected_uid):
         uid=self.account_identity()
         if uid!=str(expected_uid):raise Blocked('Binance account UID does not match the configured account')
@@ -689,16 +741,9 @@ class Binance:
                         'algos':self.get('/fapi/v1/openAlgoOrders',{} if scan_all else {'symbol':'BTCUSDT'})}
             wallet_observed_from_ms=int(self.clock()*1000)
             first=observe()
-            fills=self.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','limit':1000})
+            fills,fills_complete=self._recent_fills()
             second=observe()
             wallet_observed_until_ms=int(self.clock()*1000)
-            if not isinstance(fills,list) or len(fills)>1000:
-                raise Unknown('recent trade response is missing or oversized')
-            if any(f.get('symbol')!='BTCUSDT' for f in fills):
-                raise Unknown('unexpected recent trade scope')
-            if (any(type(f.get('id')) is not int or f['id']<0 for f in fills)
-                    or len({f['id'] for f in fills})!=len(fills)):
-                raise Unknown('invalid native fill cursor')
             if observation_key(first)!=observation_key(second):continue
             symbols=second['symbol']
             if not isinstance(symbols,list) or len(symbols)!=1:
@@ -712,7 +757,7 @@ class Binance:
                                   second['positions'],second['orders'],second['algos'],ticker['markPrice'])
             report.update(mark_time=ticker['time'],mark_price=ticker['markPrice'],
                           recent_fill_count=len(fills),last_fill_id=max((f['id'] for f in fills),default=-1),
-                          recent_fill_window_complete=len(fills)<1000,
+                          recent_fill_window_complete=fills_complete,
                           observed_at_ms=int(self.clock()*1000),
                           wallet_observed_from_ms=wallet_observed_from_ms,
                           wallet_observed_until_ms=wallet_observed_until_ms,
@@ -722,6 +767,38 @@ class Binance:
             self.check_all_orders=False
             return report
         raise Unknown('Binance account changed during bounded reconciliation')
+
+    def _trade_page(self, parameters):
+        fills=self.get('/fapi/v1/userTrades',parameters)
+        if not isinstance(fills,list) or len(fills)>1000:
+            raise Unknown('recent trade response is missing or oversized')
+        if any(f.get('symbol')!='BTCUSDT' for f in fills):
+            raise Unknown('unexpected recent trade scope')
+        if (any(type(f.get('id')) is not int or f['id']<0 for f in fills)
+                or len({f['id'] for f in fills})!=len(fills)):
+            raise Unknown('invalid native fill cursor')
+        return fills
+
+    def _recent_fills(self):
+        """Latest BTCUSDT fills. A full page continues by id and is not a cursor."""
+        fills=self._trade_page({'symbol':'BTCUSDT','limit':1000})
+        if len(fills)<1000:
+            return fills,True
+        seen={f['id'] for f in fills}
+        cursor=max(seen)
+        for _ in range(20):
+            page=self._trade_page({'symbol':'BTCUSDT','fromId':cursor+1,'limit':1000})
+            if not page:
+                return fills,True
+            for trade in page:
+                if trade['id']<=cursor or trade['id'] in seen:
+                    raise Unknown('fill id page did not advance')
+                seen.add(trade['id'])
+                fills.append(trade)
+            cursor=max(trade['id'] for trade in page)
+            if len(page)<1000:
+                return fills,True
+        raise Unknown('recent fill cursor exceeds bounded pages')
 
 
 def _error_body(error):

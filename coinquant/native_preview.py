@@ -11,6 +11,9 @@ from .binance import market_quantity
 BOOK_PARTICIPATION=D('.25')
 # Macro parent: equity-to-stop loss ceiling for the whole campaign position.
 MACRO_STOP_BUDGET=D('.03')
+# Trial bounds. The 10% mark buffer below is the same gap the sizer funds.
+MAX_ISOLATED_MARGIN_FRACTION=D('.25')
+LIQUIDATION_BUFFER=D('.10')
 
 
 def _loss_per_btc(direction, entry, stop, fee, slip):
@@ -132,7 +135,7 @@ def _funded_quantity(v, direction, stop, take, requested, *, q=D(0), entry=D(0),
     if not (stop<min(price,mark)<=max(price,mark)<take if direction>0
             else take<min(price,mark)<=max(price,mark)<stop):
         result['reason']='protection';return result
-    boundary=stop-direction*mark*D('.10')
+    boundary=stop-direction*mark*LIQUIDATION_BUFFER
     if boundary<=0:
         result['reason']='gap_boundary';return result
 
@@ -144,7 +147,8 @@ def _funded_quantity(v, direction, stop, take, requested, *, q=D(0), entry=D(0),
         required=max(margin,quantity*average/20,
                      total*average-(total-quantity*(mmr+fee))*boundary)
         reserve=quantity*max(price,mark)*(D('.01')+fee)
-        if required+reserve+entry_fee>v['capital']:
+        margin_cap=v['risk_capital']*MAX_ISOLATED_MARGIN_FRACTION
+        if required>margin_cap or required+reserve+entry_fee>v['capital']:
             return None
         liquidation=(total*average-required)/(total-quantity*(mmr+fee))
         if not (liquidation<stop<mark if direction>0 else mark<stop<liquidation):
@@ -160,7 +164,7 @@ def _funded_quantity(v, direction, stop, take, requested, *, q=D(0), entry=D(0),
             else:low=middle
         delta=market_quantity(low,price,v['instrument'],order='LIMIT')
         required=funded(delta) if delta else None
-        reason='funding_cap'
+        reason='margin_or_funding_cap'
     if required is None:
         result['reason']='insufficient_funded_minimum';return result
     return dict(requested=str(requested),quantity=delta,margin=required,reason=reason)
@@ -180,7 +184,7 @@ def entry_preview(reader, model, snapshot):
     take=(floor_step(opportunity.take,tick)+tick if direction>0 else floor_step(opportunity.take,tick))
     if not all(number(v['rule']['minPrice'])<=p<=number(v['rule']['maxPrice']) for p in (stop,take,price)):
         raise Blocked('protection outside current price limits')
-    fraction=model.entry_fraction('.0011')
+    fraction=model.entry_fraction(v['fee'])
     target=capital*fraction/max(price,mark)
     # Flat entry equity equals the wallet. A trial capital ceiling applies to
     # both cash funding and the equity amount from which loss may be budgeted.
@@ -265,3 +269,24 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
                 current_equity_stop_budget_usdt=str(current_budget),
                 account_equity_usdt=str(v['equity']),stop_budget_capital_usdt=str(v['risk_capital']),
                 tick=str(tick),sizing_capital_usdt=str(v['capital']))
+
+
+def limit_matches(reader, direction, limit_price, tick):
+    """True when a fresh book still produces the same IOC limit."""
+    book=reader.get('/fapi/v1/depth',{'symbol':'BTCUSDT','limit':100})
+    stamp=book.get('E')
+    if type(stamp) is not int or abs(int(reader.clock()*1000)-stamp)>15000:
+        raise Unknown('stale order book')
+    try:
+        bids=[(number(p,positive=True),number(q,positive=True)) for p,q in book['bids']]
+        asks=[(number(p,positive=True),number(q,positive=True)) for p,q in book['asks']]
+    except (TypeError,KeyError):
+        raise Unknown('invalid order book') from None
+    if (not bids or not asks or bids[0][0]>=asks[0][0]
+            or any(a[0]>=b[0] for a,b in zip(asks,asks[1:]))
+            or any(a[0]<=b[0] for a,b in zip(bids,bids[1:]))):
+        raise Unknown('invalid order book ordering')
+    tick=number(tick,positive=True)
+    raw=(asks[0][0]*D('1.001') if direction>0 else bids[0][0]*D('.999'))
+    price=(floor_step(raw,tick) if direction>0 else (raw/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
+    return price==number(limit_price,positive=True)

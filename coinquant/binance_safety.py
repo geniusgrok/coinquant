@@ -43,12 +43,11 @@ def _check_owner(snapshot, expected_owner):
 
 def _check_cursor(reader, expected_owner):
     if expected_owner is None:return
-    fills=reader.get('/fapi/v1/userTrades',{'symbol':'BTCUSDT','limit':1000})
-    if (not isinstance(fills,list) or len(fills)>1000
-            or any(not isinstance(f,dict) or f.get('symbol')!='BTCUSDT'
-                   or type(f.get('id')) is not int or f['id']<0 for f in fills)
-            or len({f['id'] for f in fills})!=len(fills)):
-        raise Unknown('final write fill cursor is unavailable')
+    if expected_owner.get('recent_fill_window_complete') is False:
+        raise Unknown('fill cursor window is incomplete')
+    fills,complete=reader._recent_fills()
+    if not complete:
+        raise Unknown('fill cursor window is incomplete')
     if max((f['id'] for f in fills),default=-1)!=expected_owner['last_fill_id']:
         raise Unknown('fill ownership changed before the safety write')
 

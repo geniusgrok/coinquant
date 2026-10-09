@@ -54,6 +54,7 @@ class NativePreviewTests(TestCase):
         self.assertGreater(quantity,0)
         self.assertEqual(quantity % D('.001'),0)
         self.assertLessEqual(quantity*D(p['entry_estimate']),D(p['notional_cap']))
+        self.assertLessEqual(D(p['allocated_margin_usdt']), D(p['stop_budget_capital_usdt'])*D('.25'))
         liquidation=(quantity*D(p['entry_estimate'])-D(p['allocated_margin_usdt']))/(quantity*(1-D(p['maintenance_bound'])-D(p['fee'])))
         self.assertLess(liquidation,D(p['stop']))
         self.assertEqual(m.checkpoint(),before)

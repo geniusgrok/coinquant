@@ -253,6 +253,8 @@ def reconcile(state, reader, model, snapshot):
     else:model.primary_consumed=campaign
     model.consumed=campaign
     model.position_campaign=campaign if total else None
+    if model.position_campaign!=model.exit_campaign:
+        model.exit_cause=model.exit_stop=model.exit_campaign=None
     state.set('linear_campaign',model.checkpoint())
     if not total and snapshot['possible_entry_remainders']==0 and all(
             observed['status'] not in ('NEW','PARTIALLY_FILLED')

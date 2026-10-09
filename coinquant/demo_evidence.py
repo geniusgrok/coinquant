@@ -76,9 +76,9 @@ def verify(proof, digest, live_limit, reader):
                 or reduction.get('reduceOnly') is not True
                 or reduction.get('status') not in TERMINAL
                 or not 0<number(reduction['executedQty'])<number(reduction['origQty'])
-                or offline['parent'].get('algoStatus')!='FINISHED'
                 or offline['child'] is None or offline['child'].get('status') not in TERMINAL
-                or number(offline['child']['executedQty'])<=0):
+                or number(offline['child']['executedQty'])<=0
+                or offline['parent'].get('algoStatus') not in ('FINISHED','TRIGGERED')):
             raise Blocked('Demo native entry, protection, partial reduction or trigger is unproven')
         for identity in (proof['stop_algo_id'],proof['take_algo_id']):
             row=state.db.execute('SELECT status,result FROM intents WHERE id=?',(identity,)).fetchone()

@@ -50,6 +50,8 @@ class Opportunities:
         self.active = None
         self.lows = deque(maxlen=WINNER_LOW_BARS)
         self.fill = None
+        # Set only on the bar that ends a campaign. None while it continues.
+        self.exit_event = None
 
     def update(self, end, high, low, close, *, effective_protection=None):
         if self.last is not None and end != self.last + self.interval:
@@ -58,6 +60,7 @@ class Opportunities:
             raise ValueError('invalid completed candle')
         prior = self.close if self.close is not None else close
         prior_atr = sum(self.tr) / self.tr.maxlen if len(self.tr) == self.tr.maxlen else None
+        self.exit_event = None
         self.tr.append(max(high - low, abs(high - prior), abs(low - prior)))
         self.close, self.last = close, end
         a = self.active
@@ -105,18 +108,20 @@ class Opportunities:
                     stop = max(stop, fill)
                 take = max(take, peak * 5)
             if through or (time_up and not extended):
+                self.exit_event = {'cause': 'price' if through else 'time',
+                                   'stop': str(effective_stop) if through else None}
                 self.active = None
             elif (peak != a.peak or stop != a.stop or take != a.take
                   or extended != a.extended or expires != a.expires):
                 self.active = Opportunity(a.identity, a.direction, stop, take, expires,
                                           a.anchor, a.risk, peak, extended)
-        if not self.active and prior_atr and abs(close - prior) > IMPULSE_ATR * prior_atr:
-            side = 1 if close > prior else -1
+        # Down impulses are not traded and must not occupy the long slot.
+        if not self.active and prior_atr and close > prior and close - prior > IMPULSE_ATR * prior_atr:
             stop = (prior + close) / 2
             take = close * (close / stop) ** TAKE_POWER
             risk = abs(close - stop)
             if take > 0 and stop > 0 and risk > 0:
-                self.active = Opportunity(end, side, stop, take, end + LIFE_BARS * FOUR_HOURS,
+                self.active = Opportunity(end, 1, stop, take, end + LIFE_BARS * FOUR_HOURS,
                                           close, risk, high, False)
         self.lows.append(low)
         return self.active

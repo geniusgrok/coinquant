@@ -120,9 +120,13 @@ def offline_report(report, state, now):
         report['next_required_review_at_ms']=checkpoint['last']+14400000
     report['unresolved_order_ids']=[p['id'] for p in state.pending()]
     report['possible_entry_remainders']=actual.get('possible_entry_remainders') if actual else None
+    journal=state.get('binance_protection_replacement') or {}
+    report['protection_replacement_pending']=bool(state.get('session_replacement')) or bool(journal and not journal.get('done'))
+    report['close_position_client_ids']=[a.get('clientAlgoId') for a in (actual.get('open_algos',[]) if actual else [])
+                                         if a.get('closePosition') is True and a.get('clientAlgoId')]
     unresolved=bool(report.get('execution_unresolved') or report.get('pending_intents')
                     or report.get('possible_entry_remainders')
-                    or report.get('protection_replacement_pending') or actual is None)
+                    or report['protection_replacement_pending'] or actual is None)
     q=D(actual['quantity_btc']) if actual and 'quantity_btc' in actual else None
     equity=D(actual['equity_usdt']) if actual and actual.get('equity_usdt') is not None else None
     report['equity_status']='unverified' if equity is None else 'positive' if equity>0 else 'nonpositive'
@@ -140,7 +144,8 @@ def offline_report(report, state, now):
         report['manual_action']=('Correct the reported configuration or state and use status to inspect current exposure; keep the original state directory.'
                                 if report.get('status')=='blocked' and not report.get('write_attempted') and not report.get('pending_intents') else
                                 'Keep the original state directory; inspect the position, orders and protection. Do not resend an unknown order or open new risk.')
-    report['offline_boundary']='Only last-observed native exchange protection may execute; strategy expiry, new candles and macro changes require another manual run. Offline manual positions can be affected by retained close-position orders.'
+    report['offline_boundary']=('Only last-observed native exchange protection may execute. While a position is open, run again after each completed four-hour candle; '
+                                'expiry, the 14-day trail and macro exits do not run while this process is stopped and need another manual run. Offline manual positions can be affected by retained close-position orders.')
     if actual and actual.get('mark_price') and q is not None:
         notional=abs(q)*D(actual['mark_price'])
         wallet=D(actual.get('wallet_usdt') or 0)
@@ -268,7 +273,9 @@ def run(config, reader, *, execute=False, monotonic=time.monotonic, wait=time.sl
                         report.update(status='unknown',income_audit={'status':'unresolved'},
                                       reason=_reason(exc,'Income audit unavailable'))
             report['pending_intents']=len(state.pending())
-            report['protection_replacement_pending']=bool(state.get('session_replacement'))
+            report['protection_replacement_pending']=bool(state.get('session_replacement') or (
+                (state.get('binance_protection_replacement') or {}).get('done') is False
+                and state.get('binance_protection_replacement')))
             if config.capital_limit is not None:
                 report['sizing_capital_usdt']=str(config.capital_limit)
             if execute:report['entry_timing']=state.get('entry_timing')

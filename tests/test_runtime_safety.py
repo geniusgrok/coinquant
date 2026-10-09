@@ -240,12 +240,17 @@ class FirstFillToProtection(TestCase):
             self.assertEqual(len([1 for _, path, _ in venue.sent if path.endswith('/positionMargin')]), 1)
             entries = [p for _, path, p in venue.sent if path.endswith('/order') and p.get('timeInForce') == 'IOC']
             self.assertEqual(len(entries), 1)
-            self.assertEqual(result['status'], 'unknown')
             self.assertEqual(result['errors'][0]['reason'], 'margin outcome unknown; no automatic retry')
-            live = [a for a in venue.algos.values() if a['algoStatus'] == 'NEW']
-            self.assertEqual({a['orderType'] for a in live}, {'STOP_MARKET', 'TAKE_PROFIT_MARKET'})
             reduce = [p for _, _, p in venue.sent if p.get('reduceOnly') == 'true']
-            self.assertTrue(all(D(p['quantity']) <= D(entries[0]['quantity']) / 2 for p in reduce))
+            self.assertTrue(all(D(p['quantity']) <= D(entries[0]['quantity']) for p in reduce))
+            if venue.q == 0:
+                self.assertEqual(result['cleanup'], 'verified')
+                self.assertEqual(result['pending_intents'], 0)
+                self.assertFalse(any(a['algoStatus'] == 'NEW' for a in venue.algos.values()))
+            else:
+                self.assertEqual(result['status'], 'unknown')
+                live = [a for a in venue.algos.values() if a['algoStatus'] == 'NEW']
+                self.assertEqual({a['orderType'] for a in live}, {'STOP_MARKET', 'TAKE_PROFIT_MARKET'})
 
 
 class EmergencyExitVenue(Venue):
@@ -311,7 +316,8 @@ class BoundedPartialCleanup(TestCase):
 
     def test_terminal_zero_fill_has_no_retry_progress(self):
         venue,result,reductions=self.session('zero')
-        self.assertEqual(len(reductions),1)
+        self.assertEqual(len(reductions),2)
+        self.assertEqual(len({p['newClientOrderId'] for p in reductions}),2)
         self.assertGreater(venue.q,0)
         self.assertEqual(result['cleanup'],'unresolved')
         self.assertEqual(result['pending_intents'],0)

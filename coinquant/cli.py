@@ -96,11 +96,11 @@ def observe(config_path, *, execute=False):
         if recovery['pending']:
             report.update(status='unknown',reason='Durable intents remain unresolved; no retry or new risk authorized')
         replacement=state.get('binance_protection_replacement')
-        if replacement and not replacement.get('done'):
+        if (replacement and not replacement.get('done')) or state.get('session_replacement'):
             report.update(status='unknown',reason='Protection replacement incomplete; reconcile before changing exposure')
-            report['protection_replacement']=replacement
+            if replacement:
+                report['protection_replacement']=replacement
         from .session import offline_report
-        report['protection_replacement_pending']=bool(replacement and not replacement.get('done'))
         offline_report(report,state,int(venue.clock()*1000))
         state.report(report)
         return report

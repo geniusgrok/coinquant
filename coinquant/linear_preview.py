@@ -46,7 +46,7 @@ def preview(model,snapshot):
                 consumed_campaign=(model.macro_consumed if model.macro_opportunity is not None and
                                    model.active is model.macro_opportunity
                                    else model.primary_consumed),position_campaign=model.position_campaign,
-                target_fraction=str(model.entry_fraction('.0011')) if action=='enter' else None,
+                target_fraction=None,
                 quantity_btc=str(quantity) if action=='hold' else '0' if action in ('exit','flat','consumed') else None,
                 quantity_status='native preflight required' if action=='enter' else 'shared inventory decision',
                 model='SX60+DFII10',macro_observation=model.macro_observation)

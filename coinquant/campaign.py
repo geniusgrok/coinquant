@@ -17,7 +17,7 @@ PRIMARY_RISK = '7.5'
 MACRO_RISK = '3.6'
 ORIGIN = 1575158400000  # 2019-12-01T00:00Z, fixed model warmup origin
 DAY = 86400000
-VERSION = 6
+VERSION = 7
 
 
 def disposition(opportunity, quantity, consumed):
@@ -44,6 +44,9 @@ class Campaign:
         self.macro_opportunity=None
         self.macro_observation=None
         self.entry_fill=None
+        self.exit_cause=None
+        self.exit_stop=None
+        self.exit_campaign=None
 
     def update(self, end, high, low, close, *, effective_protection=None):
         if type(end) is not int or end!=self.last+self.model.interval:
@@ -52,11 +55,17 @@ class Campaign:
         if not all(v.is_finite() for v in values):raise Blocked('nonfinite candle')
         active=self.model.active
         owned=active is not None and active.identity==self.position_campaign
+        owned_id=active.identity if owned else None
         # A fill belongs to the campaign that was actually owned. Replaying
         # history must not extend a different impulse with a later entry price.
         self.model.fill=self.entry_fill if owned else None
         protection=effective_protection if owned else None
         opportunity=self.model.update(end,*values,effective_protection=protection)
+        event=self.model.exit_event
+        if owned and isinstance(event,dict) and event.get('cause') in ('price','time'):
+            self.exit_cause=event['cause']
+            self.exit_campaign=owned_id
+            self.exit_stop=event.get('stop') if event.get('cause')=='price' else None
         self.day_low=min(self.day_low,values[1]) if self.day_low is not None else values[1]
         if end%DAY==0:
             if self.previous_daily is not None:self.returns.append(values[2]/self.previous_daily-1)
@@ -121,12 +130,16 @@ class Campaign:
                 else:
                     self.macro_opportunity=Opportunity(self.macro_epoch,1,stop,price*(price/stop)**20,None)
 
-    def entry_fraction(self, friction):
+    def entry_fraction(self, taker_fee):
+        """Volatility target using the live taker fee for the round trip."""
         risk=MACRO_RISK if self.macro_opportunity is not None and self.active is self.macro_opportunity else PRIMARY_RISK
         if len(self.returns)<20:
             return D(0)
+        fee=D(taker_fee)
+        if not fee.is_finite() or not 0<=fee<D('.05'):
+            raise Blocked('invalid taker fee')
         rms=(sum((r*r for r in self.returns),D(0))/20).sqrt()
-        return D(risk)*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+D(friction)))
+        return D(risk)*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*fee)
 
     def action(self, quantity):
         if quantity and self.position_campaign is None:
@@ -160,7 +173,8 @@ class Campaign:
               'daily_lows':[str(v) for v in self.daily_lows],
               'macro_epoch':self.macro_epoch,'macro_opportunity':encode(self.macro_opportunity),
               'macro_observation':self.macro_observation,
-              'entry_fill':None if self.entry_fill is None else str(self.entry_fill)}
+              'entry_fill':None if self.entry_fill is None else str(self.entry_fill),
+              'exit_cause':self.exit_cause,'exit_stop':self.exit_stop,'exit_campaign':self.exit_campaign}
         return {'body':body,'sha256':hashlib.sha256(json.dumps(body,sort_keys=True).encode()).hexdigest()}
 
     @classmethod
@@ -221,6 +235,20 @@ class Campaign:
             result.entry_fill=D(body['entry_fill']) if body['entry_fill'] is not None else None
             if result.entry_fill is not None and (not result.entry_fill.is_finite() or result.entry_fill<=0):
                 raise ValueError('entry fill')
+            result.exit_cause=body['exit_cause']
+            result.exit_stop=body['exit_stop']
+            result.exit_campaign=body['exit_campaign']
+            if result.exit_cause not in (None,'price','time'):
+                raise ValueError('exit cause')
+            if result.exit_cause=='price' and (not isinstance(result.exit_stop,str) or D(result.exit_stop)<=0):
+                raise ValueError('exit stop')
+            if result.exit_cause!='price':
+                result.exit_stop=None
+            if result.exit_campaign is not None and (type(result.exit_campaign) is not int or result.exit_campaign==0):
+                raise ValueError('exit campaign')
+            event=result.model.exit_event
+            if event is not None and (not isinstance(event,dict) or event.get('cause') not in ('price','time')):
+                raise ValueError('exit event')
             if (result.macro_epoch is not None and
                 (type(result.macro_epoch) is not int or not -(result.last+interval)<result.macro_epoch<0)):
                 raise ValueError('macro epoch')

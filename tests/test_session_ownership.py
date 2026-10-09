@@ -98,9 +98,9 @@ class SessionOwnershipTests(TestCase):
         self.assertEqual(second['pending_intents'],1)
         self.venue.wait(301)
         third=self.session()
-        self.assertEqual(third['pending_intents'],0)
-        self.assertEqual(third['cleanup'],'verified')
-        self.assertIn(('binance_algo','void'),self.intents())
+        # No -2013 was observed, so the unknown stop is not voided.
+        self.assertEqual(third['pending_intents'],1)
+        self.assertNotIn(('binance_algo','void'),self.intents())
         self.assertEqual(len(self.posts('STOP_MARKET')),1)
 
     def test_conditional_exit_rebound_at_final_account_gate_keeps_position(self):
