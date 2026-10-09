@@ -4,7 +4,7 @@ No daemon, independent cash ledger or strategy selector. Transport acknowledgmen
 never settle an intent. The CLI permits only explicit bounded trial writes.
 """
 import json
-from decimal import Decimal as D
+from decimal import Decimal as D, ROUND_CEILING
 
 from . import binance_safety as safety
 from .native_preview import entry_preview, topup_preview
@@ -341,7 +341,8 @@ class Lifecycle:
                 pass
             raise
         self.state.set('position_protection', dict(epoch=safety.replacement_epoch(self.state,plan['epoch']) if guard_epoch is not None else plan['epoch'],
-                       stop=plan['stop'],take=plan['take'],campaign=plan['campaign']))
+                       stop=plan['stop'],take=plan['take'],campaign=plan['campaign'],
+                       accepted_at_ms=int(self.reader.clock()*1000)))
         self.state.set('entry_plan', None)
         return snapshot
 
@@ -424,6 +425,21 @@ class Lifecycle:
         self.state.set('position_exit',None)
         return self.cleanup_flat(result)
 
+    def close_owned(self, rules=None, *, stop=None):
+        """Reconcile before reducing; an optional stop must still be crossed."""
+        from .campaign import Campaign
+        from .ownership import reconcile
+        self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
+        current=self.settle()
+        ownership=reconcile(self.state,self.reader,
+                            Campaign.restore(self.state.get('linear_campaign')),current)
+        self.reconciled=(current,len(self.actions),ownership)
+        q=number(current['quantity_btc'])
+        mark=number(current['mark_price'])
+        if stop is not None and q and not (mark<=stop if q>0 else mark>=stop):
+            return None
+        return self.close(current,rules,observed=True)
+
     def recover_exposure(self, snapshot):
         # Match the complete native fill history before changing any position;
         # only protection of the journaled entry's own verified fill precedes it.
@@ -485,13 +501,12 @@ class Lifecycle:
             if self.planned_protection(snapshot):
                 return snapshot
             try:
-                return self.complete_replacement(replacement,self.instrument())
+                return self.complete_replacement(replacement,self.instrument(),snapshot=snapshot)
             except (Blocked,Unknown):
                 # Only a position with no native full protection at all is
                 # reduced; a healthy leg or unresolved order keeps the block.
                 if not snapshot['native_full_position_protected'] and not snapshot['possible_entry_remainders']:
-                    self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
-                    self.close(snapshot)
+                    self.close_owned()
                 raise
         if not self.planned_protection(snapshot):
             protection = self.state.get('position_protection')
@@ -502,8 +517,7 @@ class Lifecycle:
                     protection['epoch'],protection['stop'],protection['take'],
                     instrument=self.instrument(),authorized=self.authorized)
             except (Blocked,Unknown):
-                self.reader.set_deadline(REDUCE_SECONDS, extend_only=True)
-                self.close(snapshot)
+                self.close_owned()
                 raise
         return snapshot
 
@@ -517,14 +531,35 @@ class Lifecycle:
             if order is None or order.get('algoStatus')!='NEW':return False
             if order.get('orderType')!=kind or number(order['triggerPrice'])!=number(price):
                 raise Unknown('active protection does not match the owned position plan')
-        return snapshot['native_full_position_protected'] and snapshot['stop_before_liquidation']
+        confirmed=snapshot['native_full_position_protected'] and snapshot['stop_before_liquidation']
+        if confirmed and type(protection.get('accepted_at_ms')) is not int:
+            protection['accepted_at_ms']=int(self.reader.clock()*1000)
+            self.state.set('position_protection',protection)
+        return confirmed
 
-    def complete_replacement(self,replacement,rules):
-        result=safety.replace_protection(self.reader,self.state,self.send,self.uid,
-            replacement['old_epoch'],replacement['epoch'],replacement['stop'],replacement['take'],
-            instrument=rules,authorized=self.authorized)
+    def complete_replacement(self,replacement,rules,*,snapshot=None):
+        before=snapshot if snapshot is not None else self.reader.snapshot(self.uid)
+        q=number(before['quantity_btc'])
+        mark=number(before['mark_price'])
+        stop=number(replacement['stop'])
+        if q and (mark<=stop if q>0 else mark>=stop):
+            reduced=self.close_owned(rules,stop=stop)
+            if reduced is not None:
+                return self.recover_exposure(reduced)
+        try:
+            result=safety.replace_protection(self.reader,self.state,self.send,self.uid,
+                replacement['old_epoch'],replacement['epoch'],replacement['stop'],replacement['take'],
+                instrument=rules,authorized=self.authorized)
+        except (Blocked,Unknown):
+            # The mark may cross between the session decision and the adapter's
+            # geometry gate. A fresh owned position can still leave safely.
+            reduced=self.close_owned(rules,stop=stop)
+            if reduced is not None:
+                return self.recover_exposure(reduced)
+            raise
         self.state.set('position_protection',{**{k:v for k,v in replacement.items() if k!='old_epoch'},
-                       'epoch':safety.replacement_epoch(self.state,replacement['epoch'])})
+                       'epoch':safety.replacement_epoch(self.state,replacement['epoch']),
+                       'accepted_at_ms':int(self.reader.clock()*1000)})
         self.state.set('session_replacement',None)
         return result
 
@@ -601,6 +636,8 @@ class Lifecycle:
         tick=number(ticks[0]['tickSize'],positive=True)
         q=number(snapshot['quantity_btc'])
         stop=floor_step(opportunity.stop,tick) if q>0 else -floor_step(-opportunity.stop,tick)
+        if q>0 and opportunity.extended and model.entry_fill is not None:
+            stop=max(stop,(model.entry_fill/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
         take=floor_step(opportunity.take,tick)+tick if q>0 else floor_step(opportunity.take,tick)
         if D(protection['stop'])==stop and D(protection['take'])==take and not self.state.get('session_replacement'):
             return snapshot
@@ -608,7 +645,7 @@ class Lifecycle:
         if replacement is None:
             replacement=dict(old_epoch=protection['epoch'],epoch=self.epoch(),stop=str(stop),take=str(take),campaign=opportunity.identity)
             self.state.set('session_replacement',replacement)
-        return self.complete_replacement(replacement,rules)
+        return self.complete_replacement(replacement,rules,snapshot=snapshot)
 
     def decide(self, model, snapshot):
         """One shared decision path: existing exposure is settled before new risk."""
@@ -619,7 +656,10 @@ class Lifecycle:
             snapshot=self.close(snapshot)
         elif action=='hold':
             snapshot=self.maintain(model,snapshot)
-            snapshot=self.top_up(model,snapshot)
+            if number(snapshot['quantity_btc']):
+                snapshot=self.top_up(model,snapshot)
+            else:
+                action='exit'
         return action,snapshot
 
     def top_up(self, model, snapshot):

@@ -45,17 +45,18 @@ class Campaign:
         self.macro_observation=None
         self.entry_fill=None
 
-    def update(self, end, high, low, close):
+    def update(self, end, high, low, close, *, effective_protection=None):
         if type(end) is not int or end!=self.last+self.model.interval:
             raise Blocked('complete history from fixed origin or matching checkpoint required')
         values=[D(high),D(low),D(close)]
         if not all(v.is_finite() for v in values):raise Blocked('nonfinite candle')
         active=self.model.active
+        owned=active is not None and active.identity==self.position_campaign
         # A fill belongs to the campaign that was actually owned. Replaying
         # history must not extend a different impulse with a later entry price.
-        self.model.fill=(self.entry_fill if self.entry_fill is not None and active is not None
-                         and active.identity==self.position_campaign else None)
-        opportunity=self.model.update(end,*values)
+        self.model.fill=self.entry_fill if owned else None
+        protection=effective_protection if owned else None
+        opportunity=self.model.update(end,*values,effective_protection=protection)
         self.day_low=min(self.day_low,values[1]) if self.day_low is not None else values[1]
         if end%DAY==0:
             if self.previous_daily is not None:self.returns.append(values[2]/self.previous_daily-1)

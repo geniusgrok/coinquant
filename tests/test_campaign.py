@@ -112,6 +112,69 @@ class CampaignTests(unittest.TestCase):
         state=m.checkpoint();state['body']['consumed']=123
         with self.assertRaises(Blocked):Campaign.restore(state)
 
+    def test_advance_keeps_known_fill_and_does_not_infer_an_unknown_fill_at_expiry(self):
+        interval=14400000
+        end=ORIGIN+50*interval
+        ident=ORIGIN+interval
+        for recorded in (None,D(110)):
+            with self.subTest(recorded=recorded), tempfile.TemporaryDirectory() as tmp, State(tmp,'test') as state:
+                m=Campaign()
+                m.last=m.model.last=end-interval
+                m.model.close=D(180)
+                m.model.active=Opportunity(ident,1,D(100),D(500),end,D(115),D(15),D(190),False)
+                m.model.lows.extend([D(130)]*84)
+                m.entry_fill=recorded
+                m.filled(ident)
+                state.set('linear_campaign',m.checkpoint())
+                venue=Mock()
+                venue.completed_market.return_value=dict(interval_ms=interval,complete_through=end,
+                    candles=[dict(time=end-interval,high='190',low='150',close='180')])
+                restored,_,cold=advance(state,venue)
+                self.assertFalse(cold)
+                self.assertEqual(restored.entry_fill,recorded)
+                if recorded is None:
+                    self.assertIsNone(restored.model.active)
+                else:
+                    self.assertTrue(restored.model.active.extended)
+
+    def test_advance_does_not_treat_unsubmitted_trails_as_effective_during_catchup(self):
+        interval=14400000
+        end=ORIGIN+50*interval
+        ident=ORIGIN+interval
+        with tempfile.TemporaryDirectory() as tmp, State(tmp,'test') as state:
+            m=Campaign()
+            m.last=m.model.last=end-interval
+            m.model.close=D(180)
+            m.model.active=Opportunity(ident,1,D(100),D(500),end,D(115),D(15),D(190),False)
+            m.model.lows.extend([D(130)]*84)
+            m.entry_fill=D(110)
+            m.filled(ident)
+            state.set('linear_campaign',m.checkpoint())
+            state.set('position_protection',dict(campaign=ident,stop='100',take='500',accepted_at_ms=end-interval))
+            venue=Mock()
+            venue.completed_market.return_value=dict(interval_ms=interval,complete_through=end+interval,
+                candles=[dict(time=end-interval,high='190',low='105',close='180'),
+                         dict(time=end,high='190',low='120',close='180')])
+            restored,_,_=advance(state,venue)
+            self.assertEqual(restored.model.active.identity,ident)
+            self.assertTrue(restored.model.active.extended)
+            self.assertEqual(restored.model.active.stop,D(130))
+            saved=Campaign.restore(state.get('linear_campaign'))
+            self.assertEqual(saved.model.active,restored.model.active)
+            self.assertEqual(state.get('position_protection')['stop'],'100')
+
+    def test_other_campaign_protection_does_not_override_an_unowned_primary(self):
+        interval=14400000
+        m=Campaign()
+        m.last=m.model.last=ORIGIN+49*interval
+        ident=ORIGIN+interval
+        end=m.last+interval
+        m.model.close=D(180)
+        m.model.active=Opportunity(ident,1,D(100),D(500),end,D(115),D(15),D(190),False)
+        m.position_campaign=-m.last
+        protection=dict(campaign=m.position_campaign,stop='90',take='600',accepted_at_ms=m.last)
+        self.assertIsNone(m.update(end,D(190),D(100),D(180),effective_protection=protection))
+
     def test_interrupted_bootstrap_resumes_only_verified_page(self):
         from coinquant.types import Unknown
         interval=14400000

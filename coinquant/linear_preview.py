@@ -13,16 +13,19 @@ def advance(state, venue, fill=None):
         if price.is_finite() and price>0:
             model.entry_fill=price
     bootstrap=bool(state.get('market_bootstrap'))
+    protection=state.get('position_protection') or {}
     def save_page(bars):
         for bar in bars:
-            model.update(bar['time']+model.model.interval,bar['high'],bar['low'],bar['close'])
+            model.update(bar['time']+model.model.interval,bar['high'],bar['low'],bar['close'],
+                         effective_protection=protection)
         state.set('linear_campaign',model.checkpoint())
     market=venue.completed_market(start=model.last,on_page=save_page)
     if market.get('interval_ms')!=model.model.interval:
         raise Blocked('missing complete model history')
     for bar in market['candles']:
         if bar['time']+model.model.interval>model.last:
-            model.update(bar['time']+model.model.interval,bar['high'],bar['low'],bar['close'])
+            model.update(bar['time']+model.model.interval,bar['high'],bar['low'],bar['close'],
+                         effective_protection=protection)
     if model.last!=market['complete_through']:
         raise Blocked('market and checkpoint boundaries differ')
     if bootstrap:
