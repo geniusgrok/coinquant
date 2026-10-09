@@ -381,7 +381,7 @@ class Lifecycle:
             raise Unknown('residual changed after protective child readback')
         return True
 
-    def close(self, snapshot, rules=None):
+    def close(self, snapshot, rules=None, *, stop=None):
         """Durable reduce-only exit from an owned snapshot.
 
         The reduction refreshes the account and checks that this ownership
@@ -394,6 +394,7 @@ class Lifecycle:
             raise Unknown('cannot close while a remainder could reopen the position')
         rules = rules or self.instrument()
         operation = self.state.get('position_exit')
+        row=None
         if operation is not None:
             prior=client_id(self.state.identity,operation['epoch'],'reduce')
             row=self.state.db.execute('SELECT status,result FROM intents WHERE id=?',(prior,)).fetchone()
@@ -424,6 +425,15 @@ class Lifecycle:
                 raise Blocked('position is below the native reducible quantity')
             operation = dict(epoch=self.epoch(), quantity=str(legal),direction=1 if q>0 else -1,
                              position_at_request=str(abs(q)))
+            if stop is not None and (not row or row[0] in ('rejected','void')):
+                operation['trigger_stop']=str(number(stop,positive=True))
+            self.state.set('position_exit',operation)
+        elif row is None:
+            # Explicit unconditional exits override an unsent stop condition;
+            # recovery supplies its saved condition until an intent is prepared.
+            operation=dict(operation)
+            operation.pop('trigger_stop',None)
+            if stop is not None:operation['trigger_stop']=str(number(stop,positive=True))
             self.state.set('position_exit',operation)
         opened=number(operation.get('position_at_request', operation['quantity']))
         if q*operation['direction']<=0 or abs(q)>opened:
@@ -434,7 +444,8 @@ class Lifecycle:
             result = safety.reduce_existing(self.reader,self.state,self.send,self.uid,
                 operation['epoch'],operation['quantity'],instrument=rules,authorized=self.authorized,
                 expected_owner=dict(snapshot),
-                expected_direction=operation['direction'])
+                expected_direction=operation['direction'],
+                stop=stop if not row or row[0] in ('rejected','void') else None)
         except Unknown:
             row=self.state.db.execute('SELECT status FROM intents WHERE id=?',(identity,)).fetchone()
             if not row or row[0]!='confirmed':
@@ -443,6 +454,9 @@ class Lifecycle:
             # complete fresh fill audit can turn that conflict into exit progress.
             result=self.reader.snapshot(self.uid)
             readback_changed=True
+        if result is None:
+            self.state.set('position_exit',None)
+            return None
         if number(result['quantity_btc']) or readback_changed:
             terminal=owned_observation(self.state,self.reader,identity)['parent']
             if terminal.get('status') not in TERMINAL or number(terminal['executedQty'])<=0:
@@ -474,7 +488,7 @@ class Lifecycle:
         mark=number(current['mark_price'])
         if stop is not None and q and not (mark<=stop if q>0 else mark>=stop):
             return None
-        return self.close(current,rules)
+        return self.close(current,rules,stop=stop)
 
     def recover_exposure(self, snapshot):
         # Match the complete native fill history before changing any position;
@@ -520,8 +534,10 @@ class Lifecycle:
                 self.state.set('position_protection',None)
                 self.state.set('session_replacement',None)
             return snapshot
-        if self.state.get('position_exit'):
-            return self.close(snapshot)
+        operation=self.state.get('position_exit')
+        if operation:
+            reduced=self.close(snapshot,stop=operation.get('trigger_stop'))
+            if reduced is not None:return reduced
         plan = self.state.get('entry_plan')
         if plan:
             if self.entry_residual(snapshot,plan,ownership):

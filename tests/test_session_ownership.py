@@ -92,6 +92,7 @@ class SessionOwnershipTests(TestCase):
         self.assertEqual(self.venue.q,0)
         self.assertEqual(len(self.reductions()),1)
         self.assertEqual(len(self.posts('STOP_MARKET')),1)
+
         self.assertEqual(self.posts('TAKE_PROFIT_MARKET'),[])
         # The never-observed stop still blocks new risk until it can be retired.
         self.assertEqual(second['pending_intents'],1)
@@ -101,6 +102,86 @@ class SessionOwnershipTests(TestCase):
         self.assertEqual(third['cleanup'],'verified')
         self.assertIn(('binance_algo','void'),self.intents())
         self.assertEqual(len(self.posts('STOP_MARKET')),1)
+
+    def test_conditional_exit_rebound_at_final_account_gate_keeps_position(self):
+        self.session(seconds=1)
+        quantity=self.venue.q;original=self.venue.snapshot;reads=[];writes=len(self.venue.sent)
+        def snapshot(uid):
+            self.venue.mark=D(101000 if len(reads)>=2 else 99000)
+            observed=original(uid);reads.append(observed['mark_price']);return observed
+        self.venue.snapshot=snapshot
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            engine=Lifecycle(self.venue,state,'123',authorized=True)
+            self.assertIsNone(engine.close_owned(stop=D(100000)))
+            self.assertIsNone(state.get('position_exit'))
+            self.assertEqual(state.pending(),[])
+            engine.recover_exposure(self.venue.snapshot('123'))
+        self.assertEqual(reads[:3],['99000','99000','101000'])
+        self.assertEqual(self.venue.q,quantity)
+        self.assertEqual(len(self.venue.sent),writes)
+
+    def test_unsent_conditional_exit_survives_crash_without_forcing_exit(self):
+        self.session(seconds=1)
+        quantity=self.venue.q;self.venue.mark=D(99000)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            engine=Lifecycle(self.venue,state,'123',authorized=True)
+            with patch('coinquant.lifecycle.safety.reduce_existing',side_effect=SystemExit('crash before gate')):
+                with self.assertRaises(SystemExit):engine.close_owned(stop=D(100000))
+            self.assertEqual(state.get('position_exit')['trigger_stop'],'100000')
+            self.assertEqual(state.pending(),[])
+        writes=len(self.venue.sent);self.venue.mark=D(101000)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            result=Lifecycle(self.venue,state,'123',authorized=True).recover_exposure(self.venue.snapshot('123'))
+            self.assertIsNone(state.get('position_exit'))
+            self.assertTrue(result['native_full_position_protected'])
+        self.assertEqual(self.venue.q,quantity)
+        self.assertEqual(len(self.venue.sent),writes)
+
+    def test_unconditional_exit_overrides_unsent_stop_after_rebound(self):
+        self.session(seconds=1)
+        self.venue.mark=D(99000)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            engine=Lifecycle(self.venue,state,'123',authorized=True)
+            with patch('coinquant.lifecycle.safety.reduce_existing',side_effect=SystemExit):
+                with self.assertRaises(SystemExit):engine.close_owned(stop=D(100000))
+            self.venue.mark=D(101000)
+            result=engine.close_owned()
+            self.assertEqual(D(result['quantity_btc']),0)
+            self.assertIsNone(state.get('position_exit'))
+        self.assertEqual(len(self.reductions()),1)
+
+    def test_started_partial_exit_continues_after_rebound(self):
+        self.session(seconds=1)
+        self.venue.partial_exit=True;self.venue.mark=D(99000)
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            engine=Lifecycle(self.venue,state,'123',authorized=True)
+            with self.assertRaisesRegex(Unknown,'partial exit remains'):
+                engine.close_owned(stop=D(100000))
+            self.assertEqual(len(self.reductions()),1)
+            self.venue.partial_exit=False;self.venue.mark=D(101000)
+            result=engine.recover_exposure(self.venue.snapshot('123'))
+            self.assertEqual(D(result['quantity_btc']),0)
+            self.assertIsNone(state.get('position_exit'))
+        self.assertEqual(len(self.reductions()),2)
+
+    def test_unknown_conditional_exit_is_not_cleared_or_resent_on_rebound(self):
+        self.session(seconds=1)
+        quantity=self.venue.q;send=self.venue.send;self.venue.mark=D(99000)
+        def lost(method,path,payload):
+            if payload.get('reduceOnly')=='true':
+                self.venue.sent.append((method,path,payload));raise TimeoutError()
+            return send(method,path,payload)
+        self.venue.send=lost
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            engine=Lifecycle(self.venue,state,'123',authorized=True)
+            with self.assertRaises(Unknown):engine.close_owned(stop=D(100000))
+            identity=state.pending()[0]['id'];operation=state.get('position_exit')
+            self.venue.mark=D(101000);self.venue.send=send
+            with self.assertRaises(Unknown):engine.recover_exposure(self.venue.snapshot('123'))
+            self.assertEqual(state.pending()[0]['id'],identity)
+            self.assertEqual(state.get('position_exit'),operation)
+        self.assertEqual(self.venue.q,quantity)
+        self.assertEqual(len(self.reductions()),1)
 
     def test_external_close_and_equal_manual_reopen_is_never_touched(self):
         original=self.venue.send

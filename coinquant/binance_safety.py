@@ -8,7 +8,7 @@ from decimal import Decimal as D, ROUND_CEILING
 from .config import scope
 from .state import client_id
 from .binance import market_quantity
-from .types import Blocked, NotSent, Rejected, Unknown
+from .types import Blocked, NotSent, Rejected, Unknown, number
 
 
 def risk_reducing(state, pending):
@@ -226,7 +226,7 @@ def cancel_entry(reader,state,send,uid,epoch,entry_id,*,authorized=False):
     return reader.snapshot(uid)
 
 
-def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized=False,expected_owner=None,expected_direction=None):
+def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized=False,expected_owner=None,expected_direction=None,stop=None):
     """Bounded reduce-only market request; caller supplies rule-rounded quantity."""
     # Exit sizing may follow other network reads; always refresh the full account
     # before reducing, even when the caller supplies its ownership observation.
@@ -239,6 +239,12 @@ def reduce_existing(reader,state,send,uid,epoch,quantity,*,instrument,authorized
     if before['possible_entry_remainders'] or not 0<qty<=abs(q):raise Blocked('unsafe reduction')
     if market_quantity(qty,before['mark_price'],instrument,reduce_only=True)!=qty:raise Blocked('reduction violates native quantity rule')
     identity=client_id(state.identity,epoch,'reduce')
+    prior=state.db.execute('SELECT status FROM intents WHERE id=?',(identity,)).fetchone()
+    # An already prepared request may have executed. Price cannot cancel that
+    # identity; only a never-sent conditional exit can become unnecessary.
+    if stop is not None and (not prior or prior[0] in ('rejected','void')):
+        mark=number(before['mark_price'],positive=True);stop=number(stop,positive=True)
+        if not (mark<=stop if q>0 else mark>=stop):return None
     payload=dict(symbol='BTCUSDT',positionSide='BOTH',side='SELL' if direction>0 else 'BUY',
         type='MARKET',quantity=str(qty),reduceOnly='true',newClientOrderId=identity)
     _once(state,identity,'binance_order',payload,send,'POST','/fapi/v1/order',at_ms=int(reader.clock()*1000))

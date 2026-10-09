@@ -142,6 +142,21 @@ class SafetyTests(unittest.TestCase):
                 instrument=rules(),authorized=True,expected_direction=1)
         self.assertEqual(self.native.sent,[])
 
+    def test_conditional_reduction_uses_final_mark_for_both_directions(self):
+        for q,mark in (('.003','101000'),('-.003','99000')):
+            with self.subTest(quantity=q):
+                self.native.q=q
+                snapshot=self.native.snapshot
+                self.native.snapshot=lambda uid:dict(snapshot(uid),mark_price=mark)
+                owner=self.native.snapshot('123')
+                result=reduce_existing(self.native,self.state,self.native.send,'123',100,'.003',
+                    instrument=rules(),authorized=True,expected_owner=owner,stop=D(100000))
+                self.assertIsNone(result)
+                self.assertEqual(self.native.q,q)
+                self.assertEqual(self.native.sent,[])
+                self.assertEqual(self.state.pending(),[])
+                self.native.snapshot=snapshot
+
     def test_same_size_manual_fill_between_protection_legs_stops_take(self):
         owner=self.native.snapshot('123')
         def send(*args):
