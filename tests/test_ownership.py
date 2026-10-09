@@ -18,7 +18,7 @@ class OwnershipTests(TestCase):
         state.prepare('cq-entry','binance_order',p,campaign=epoch,flat_snapshot=flat)
         start=state.get('entry_campaigns')['cq-entry']['prepared_at'];now=start+1000
         order=dict(p,orderId=1,origQty='.01',executedQty='.003',status='PARTIALLY_FILLED')
-        snapshot=dict(flat,quantity_btc='.003',entry='100',wallet_usdt='999',possible_entry_remainders=1,native_full_position_protected=False)
+        snapshot=dict(flat,quantity_btc='.003',entry='100',wallet_usdt='999',possible_entry_remainders=1,native_full_position_protected=False,last_fill_id=11)
         trade=dict(symbol='BTCUSDT',positionSide='BOTH',side='BUY',orderId=1,id=11,time=start,qty='.003')
         reader=Mock();reader.clock.return_value=now/1000;reader.query_intent.return_value={'parent':order,'child':None}
         reader.get.return_value=[trade];reader.snapshot.return_value=snapshot
@@ -75,6 +75,46 @@ class OwnershipTests(TestCase):
             r.query_intent.side_effect=lambda identity,**kw:entry if identity=='cq-entry' else (_ for _ in ()).throw(Unknown('missing'))
             self.assertEqual(reconcile(state,r,m,s)['quantity'],'0.003')
 
+    def test_new_fill_cursor_after_history_never_refreshes_or_commits(self):
+        with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+            m,r,s,_=self.fixture(state)
+            before=m.checkpoint();original=dict(s)
+            r.snapshot.return_value=dict(s,last_fill_id=13)
+            with self.assertRaises(Unknown):reconcile(state,r,m,s)
+            self.assertEqual(s,original)
+            self.assertEqual(m.checkpoint(),before)
+            self.assertIsNone(state.get('ownership_coverage'))
+
+    def test_initial_recent_cursor_requires_matching_verified_history(self):
+        with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+            m,r,s,_=self.fixture(state)
+            s['last_fill_id']=13
+            with self.assertRaises(Unknown):reconcile(state,r,m,s)
+            self.assertIsNone(state.get('ownership_coverage'))
+
+    def test_zero_fill_entry_keeps_journal_when_recent_cursor_changes(self):
+        with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+            m,r,s,_=self.fixture(state)
+            r.query_intent.return_value['parent'].update(status='CANCELED',executedQty='0')
+            state.finish('cq-entry','confirmed',{'executed_quantity':'0'})
+            s.update(quantity_btc='0',entry='0',possible_entry_remainders=0)
+            r.snapshot.return_value=dict(s,last_fill_id=13)
+            with self.assertRaises(Unknown):reconcile(state,r,m,s)
+            self.assertIn('cq-entry',state.get('entry_campaigns'))
+            self.assertIsNone(state.get('settled_entry_campaigns'))
+
+    def test_older_than_default_recent_window_keeps_verified_ownership(self):
+        with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
+            m,r,s,_=self.fixture(state)
+            reconcile(state,r,m,s)
+            r.clock.return_value+=8*86400
+            r.get.return_value=[]
+            s['last_fill_id']=-1
+            result=reconcile(state,r,m,s)
+            self.assertEqual(D(result['quantity']),D('.003'))
+            self.assertEqual(s['last_fill_id'],-1)
+            self.assertEqual(state.db.execute('SELECT COUNT(*) FROM native_fills').fetchone()[0],1)
+
     def test_lost_journal_cannot_assign_an_existing_position(self):
         with tempfile.TemporaryDirectory() as tmp,State(tmp,'binance:BTCUSDT:live:123') as state:
             with self.assertRaises(Unknown):reconcile(state,Mock(),Campaign(),{'quantity_btc':'.1'})
@@ -89,7 +129,7 @@ class OwnershipTests(TestCase):
             exit_order=dict(payload,orderId=2,reduceOnly=True,status='FILLED',origQty='.003',executedQty='.003')
             r.query_intent.side_effect=lambda identity,**kw:dict(parent=entry if identity=='cq-entry' else exit_order,child=None)
             r.get.return_value=[t,dict(t,id=12,orderId=2,side='SELL')]
-            s.update(quantity_btc='0',entry='0',possible_entry_remainders=0)
+            s.update(quantity_btc='0',entry='0',possible_entry_remainders=0,last_fill_id=12)
             reconcile(state,r,m,s)
             self.assertEqual(m.consumed,m.last);self.assertIsNone(m.position_campaign)
             self.assertEqual(state.get('entry_campaigns'),{})
@@ -119,7 +159,7 @@ class OwnershipTests(TestCase):
 
 class AbsentEntryOwnership(TestCase):
     def rejected(self,result):
-        flat=dict(account_uid='123',quantity_btc='0.00000000',possible_entry_remainders=0)
+        flat=dict(account_uid='123',quantity_btc='0.00000000',possible_entry_remainders=0,last_fill_id=-1)
         p=dict(symbol='BTCUSDT',side='BUY',positionSide='BOTH',type='LIMIT',quantity='.01')
         m=Campaign();reader=Mock();reader.snapshot.return_value=flat;reader.query_intent.side_effect=Unknown('missing')
         return m,reader,flat,p,result

@@ -45,6 +45,29 @@ class SessionTests(TestCase):
         self.assertEqual(self.venue.q,0);self.assertEqual(r['cleanup'],'verified')
         self.assertEqual(self.venue.sent,[])
 
+    def test_close_owned_rejects_manual_roundtrip_after_history_read(self):
+        self.assertEqual(self.run_session(seconds=1)['cleanup'],'verified')
+        quantity,entry,wallet=self.venue.q,self.venue.entry,self.venue.wallet
+        self.assertGreater(quantity,0)
+        get=self.venue.get;injected=[];before=len(self.venue.sent)
+        def race(path,parameters=None):
+            page=get(path,parameters)
+            if path.endswith('/userTrades') and 'startTime' in (parameters or {}) and not injected:
+                injected.append(True)
+                for oid,side,reduce in ((900,'SELL',True),(901,'BUY',False)):
+                    self.venue.now+=1
+                    self.venue.fill(dict(orderId=oid,side=side,reduceOnly=reduce,
+                                         price=str(entry),executedQty='0'),quantity)
+                self.venue.wallet=wallet
+            return page
+        self.venue.get=race
+        with State(self.directory,'binance:BTCUSDT:live:123') as state:
+            engine=Lifecycle(self.venue,state,'123',authorized=True)
+            with self.assertRaises(Unknown):engine.close_owned()
+        self.assertTrue(injected)
+        self.assertEqual(self.venue.q,quantity)
+        self.assertEqual([p for _,_,p in self.venue.sent[before:] if p.get('reduceOnly')=='true'],[])
+
     def test_macro_entry_restart_and_false_state_reduce_same_owned_position(self):
         with State(self.directory,'binance:BTCUSDT:live:123') as state:
             m=Campaign.restore(state.get('linear_campaign'))
