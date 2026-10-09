@@ -4,7 +4,7 @@ The default CLI is read-only. Explicit bounded trials use these operations
 through the same lifecycle.
 """
 import json
-from decimal import Decimal as D, ROUND_CEILING
+from decimal import Decimal as D, ROUND_CEILING, ROUND_FLOOR
 from .config import scope
 from .state import client_id
 from .binance import conditional_is_terminal, market_quantity
@@ -122,14 +122,19 @@ def send_once(state, identity, send, method, path, payload):
 
 def settled_protection(reader,state,identity):
     """Retain conclusive terminal child evidence before exchange history expires."""
+    from .ownership import owned_observation
     settled=state.get('settled_protection') or {}
-    if identity in settled or absent(state,identity):return True
+    if absent(state,identity):return True
+    if identity in settled:
+        return conditional_is_terminal(owned_observation(state,reader,identity,conditional=True))
     archived=(state.get('terminal_native_orders') or {}).get(identity)
     if archived and 'algoStatus' in archived['parent']:
-        settled[identity]=archived;state.set('settled_protection',settled)
+        observed=owned_observation(state,reader,identity,conditional=True)
+        if not conditional_is_terminal(observed):return False
+        settled[identity]=observed;state.set('settled_protection',settled)
         return True
     if not reader.conditional_terminal(identity):return False
-    observed=reader.query_intent(identity,conditional=True)
+    observed=owned_observation(state,reader,identity,conditional=True)
     if not conditional_is_terminal(observed):
         raise Unknown('protective terminal state changed')
     settled[identity]=observed
@@ -167,7 +172,15 @@ def protect_existing(reader,state,send,uid,epoch,stop,take,*,instrument,authoriz
         if (any(parent.get(k)!=v for k,v in expected.items())
                 or D(parent.get('triggerPrice','0'))!=trigger or observed['child'] is not None):
             raise Unknown('native protection not confirmed active; reconcile exposure')
-        state.finish(identity,'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
+        previous=json.loads(state.db.execute('SELECT result FROM intents WHERE id=?',(identity,)).fetchone()[0])
+        if 'algo_id' in previous and previous['algo_id']!=parent['algoId']:
+            raise Unknown('confirmed protection changed its native identity')
+        confirmed_at=previous.get('first_confirmed_at_ms')
+        if confirmed_at is None:confirmed_at=int(reader.clock()*1000)+getattr(reader,'time_offset_ms',0)
+        if type(confirmed_at) is not int or confirmed_at<=0:
+            raise Unknown('invalid native protection confirmation time')
+        state.finish(identity,'confirmed',{'algo_id':parent['algoId'],'status':'NEW',
+                                          'first_confirmed_at_ms':confirmed_at})
         timing=state.get('entry_timing') if kind=='STOP_MARKET' else None
         plan=state.get('entry_plan') if timing else None
         timed_stop=(timing and plan and timing.get('entry_id')==plan.get('id')
@@ -263,8 +276,9 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,
 
     Binance margin writes have no client transaction ID. The amount is rounded up
     to the settlement asset's native precision. A definitive success response is
-    persisted before the separate wallet readback; a lost answer is settled only
-    from native margin history, never from a balance change or a resend.
+    persisted before the separate wallet readback. A lost answer stays unknown:
+    native history has no request identity, and a balance change cannot prove it.
+    Only a verified flat account can retire that unresolved risk-reducing intent.
     """
     # Funding and margin changes do not move the fill cursor. Re-read funds even
     # when the lifecycle supplied its earlier ownership snapshot.
@@ -279,6 +293,15 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,
         raise Unknown('native available margin is unavailable')
     if not 0<amount<=min(number(before['available_usdt']),D(before['wallet_usdt'])-D(before['isolated_wallet_usdt'])):
         raise Blocked('margin addition must be funded from existing wallet')
+    # A resumed plan or the caller's earlier mark can no longer authorize its
+    # old reserve. Enforce the cap on this fresh account and the actual rounded
+    # transfer, including the margin already at the exchange.
+    capital=min(number(before['wallet_usdt']),number(before.get('equity_usdt')))
+    if reader.capital_limit is not None:capital=min(capital,number(reader.capital_limit,positive=True))
+    if capital<=0:raise Blocked('positive current capital required for margin addition')
+    cap=(capital*D('.25')).quantize(D(1).scaleb(-places),rounding=ROUND_FLOOR)
+    if D(before['isolated_wallet_usdt'])+amount>cap:
+        raise Blocked('margin addition exceeds the current 25% capital limit')
     identity=client_id(state.identity,epoch,'margin_add')
     payload=dict(symbol='BTCUSDT',positionSide='BOTH',amount=format(amount.normalize(),'f'),type=1)
     if any(p['kind']=='binance_margin' for p in state.pending()):raise Unknown('previous margin outcome unresolved')
@@ -295,7 +318,7 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,
     if (not isinstance(answer,dict) or answer.get('code')!=200 or str(answer.get('type'))!='1'
             or D(str(answer.get('amount',0)))!=amount):
         raise Unknown('margin response not definitive')
-    # Later history attribution needs this time to exclude this transfer's row.
+    # Persist this request's definitive success before the separate readback.
     state.finish(identity,'confirmed',{'prepared_at_ms':prepared,'amount':str(amount),'acknowledged':True})
     after=reader.snapshot(uid)
     _check_owner(after,expected_owner)

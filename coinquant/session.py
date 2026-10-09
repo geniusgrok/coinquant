@@ -32,13 +32,20 @@ def cycle(reader, state, uid, *, execute=False, may_enter=lambda:True, session=N
     engine=Lifecycle(reader,state,uid,authorized=execute,may_enter=may_enter,session=session)
     if actions is not None:engine.actions=actions
     if execute:
-        snapshot=engine.recover_exposure(engine.settle())
+        snapshot=engine.settle()
+        engine.recover_entry_protection(snapshot)
+        prior_protection=state.get('position_protection')
+        snapshot=engine.recover_exposure(snapshot)
         # Native risk maintenance does not wait for historical candles or macro
         # data. A bounded session may be resumed after any manual interval.
         snapshot=engine.enforce_holding_risk(snapshot)
     else:
         reader.recover_pending(state)
         snapshot=reader.snapshot(uid)
+        engine.recover_entry_protection(snapshot)
+        prior_protection=state.get('position_protection')
+        if state.get('entry_plan') and D(snapshot['quantity_btc']) and not prior_protection:
+            raise Unknown('incomplete entry protection prevents history checkpointing')
     # Fill-dependent expiry must never be checkpointed before ownership closes.
     # A read-only recovery is just as durable as an executing session.
     prior=engine.reconciled

@@ -112,10 +112,22 @@ class Campaign:
         active=eligible(row,call)
         primary=self.model.active
         if not active:
-            self.macro_epoch=self.macro_opportunity=None
+            if self.position_campaign is not None and self.position_campaign<0:
+                # A read-only decision is not an executed exit. Keep the owned
+                # geometry until native fills prove flat, so a later valid
+                # observation can still manage this same campaign.
+                if not (self.exit_campaign==self.position_campaign
+                        and self.exit_cause in ('price','time','take')):
+                    self.exit_cause='macro'
+                    self.exit_campaign=self.position_campaign
+                    self.exit_stop=None
+            else:
+                self.macro_epoch=self.macro_opportunity=None
         elif self.position_campaign is not None and self.position_campaign<0:
             if self.macro_opportunity is None or self.macro_opportunity.identity!=self.position_campaign:
                 raise Blocked('owned macro geometry unavailable')
+            if self.exit_cause=='macro' and self.exit_campaign==self.position_campaign:
+                self.exit_cause=self.exit_stop=self.exit_campaign=None
         elif self.position_campaign is not None or (
                 primary is not None and primary.direction>0 and primary.identity!=self.primary_consumed):
             self.macro_epoch=self.macro_opportunity=None
@@ -242,7 +254,7 @@ class Campaign:
             result.exit_cause=body['exit_cause']
             result.exit_stop=body['exit_stop']
             result.exit_campaign=body['exit_campaign']
-            if result.exit_cause not in (None,'price','time','take'):
+            if result.exit_cause not in (None,'price','time','take','macro'):
                 raise ValueError('exit cause')
             if result.exit_cause=='price' and (not isinstance(result.exit_stop,str)
                     or not D(result.exit_stop).is_finite() or D(result.exit_stop)<=0):

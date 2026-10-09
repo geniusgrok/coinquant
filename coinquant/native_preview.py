@@ -386,12 +386,18 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
                 tick=str(tick),sizing_capital_usdt=str(v['capital']))
 
 
-def limit_matches(reader, direction, limit_price, tick, *, quote_observation=None, quantity=None):
+def limit_matches(reader, direction, limit_price, tick, *, quote_observation=None, quantity=None,
+                  completed_through=None):
     """Recheck the priced book and its executable depth immediately before send."""
     book=reader.get('/fapi/v1/depth',{'symbol':'BTCUSDT','limit':100})
     stamp=book.get('E')
     if type(stamp) is not int or abs(int(reader.clock()*1000)-stamp)>15000:
         raise Unknown('stale order book')
+    if completed_through is not None:
+        if type(completed_through) is not int or completed_through%14400000:
+            raise Unknown('completed model time unavailable for final quote')
+        if stamp//14400000*14400000!=completed_through:
+            return False
     try:
         bids=[(number(p,positive=True),number(q,positive=True)) for p,q in book['bids']]
         asks=[(number(p,positive=True),number(q,positive=True)) for p,q in book['asks']]

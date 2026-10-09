@@ -319,12 +319,18 @@ class FirstFillToProtection(TestCase):
             self.assertEqual(result['errors'][0]['reason'], 'margin outcome unknown; no automatic retry')
             reduce = [p for _, _, p in venue.sent if p.get('reduceOnly') == 'true']
             self.assertTrue(all(D(p['quantity']) <= D(entries[0]['quantity']) for p in reduce))
+            # A five-second flat readback cannot identify a lost margin write or
+            # retire it before the signed-request expiry bound. Matching history
+            # alone is not permission to confirm this request.
+            self.assertEqual(result['status'], 'unknown')
+            self.assertEqual(result['pending_intents'], 1)
+            with State(tmp, SCOPE) as state:
+                self.assertEqual([(p['kind'], p['status']) for p in state.pending()],
+                                 [('binance_margin', 'unknown')])
             if venue.q == 0:
                 self.assertEqual(result['cleanup'], 'verified')
-                self.assertEqual(result['pending_intents'], 0)
                 self.assertFalse(any(a['algoStatus'] == 'NEW' for a in venue.algos.values()))
             else:
-                self.assertEqual(result['status'], 'unknown')
                 live = [a for a in venue.algos.values() if a['algoStatus'] == 'NEW']
                 self.assertEqual({a['orderType'] for a in live}, {'STOP_MARKET', 'TAKE_PROFIT_MARKET'})
 

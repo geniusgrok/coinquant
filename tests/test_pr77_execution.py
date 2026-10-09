@@ -196,12 +196,9 @@ class ExecutionBoundaries(TestCase):
         with State(self.directory,SCOPE) as state:
             model=Campaign.restore(state.get('linear_campaign'))
             engine=Lifecycle(self.venue,state,'123',authorized=True);engine.risk_audit_ok=True
-            original=state.set
-            def stopped(key,value):
-                if key=='entry_plan' and value is None:
-                    raise SystemExit('stopped before finishing protected entry')
-                return original(key,value)
-            with patch.object(state,'set',side_effect=stopped):
+            # Lose power before the new atomic protection/entry-plan commit;
+            # native protection already exists but the entry plan remains live.
+            with patch.object(engine,'_save_protection',side_effect=SystemExit('stopped before protected entry commit')):
                 with self.assertRaises(SystemExit):engine.enter(model,self.venue.snapshot('123'))
             self.assertIsNotNone(state.get('entry_plan'))
         stop=next(a for a in self.venue.algos.values()

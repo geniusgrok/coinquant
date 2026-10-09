@@ -34,7 +34,9 @@ class CampaignTests(unittest.TestCase):
         self.assertEqual(m.action(D(1)),'exit')
         m=Campaign.restore(json.loads(json.dumps(m.checkpoint())))
         m.position_campaign=None
-        self.assertEqual(m.action(D(0)),'flat')
+        # Clearing a model field alone is not a reconciled native exit; the
+        # retained geometry remains consumed until the fresh macro decision.
+        self.assertEqual(m.action(D(0)),'consumed')
         m.select_macro(dict(true,missing_reason='stale'), '100',t+3000)
         self.assertIsNone(m.macro_epoch)
         m.select_macro(true,'100',t+4000)

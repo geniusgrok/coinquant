@@ -65,6 +65,12 @@ def conditional_is_terminal(observed):
     if status not in ('CANCELED','EXPIRED','REJECTED','FINISHED','TRIGGERED'):
         return False
     if child is None:
+        # Cancellation cannot erase the parent's reported execution. Nonzero
+        # fill metadata cannot be archived as a childless terminal order: the
+        # missing child must remain queryable for ownership.
+        if any(parent.get(field) is not None and number(parent[field])!=0
+               for field in ('actualQty','actualPrice')):
+            raise Unknown('executed protection parent lacks its native child')
         return status not in ('FINISHED','TRIGGERED')
     original=number(child.get('origQty'),positive=True);filled=number(child.get('executedQty'))
     if not 0<=filled<=original:raise Unknown('invalid protection child quantities')
@@ -482,6 +488,13 @@ class Binance:
             result=json.loads(raw)
             if 'absent_at_ms' in result and not result.get('query_absent_within_retention'):
                 state.finish(identity,'unknown',{**result,'legacy_absence_reopened':True})
+        # Margin history has no request identity. A same-amount row could be a
+        # manual transfer, including one before this request was prepared. Keep
+        # the evidence, but do not let an older inferred success permit a retry.
+        for identity, raw in state.db.execute("SELECT id,result FROM intents WHERE kind='binance_margin' AND status='confirmed'").fetchall():
+            result=json.loads(raw)
+            if 'history_time' in result and result.get('acknowledged') is not True:
+                state.finish(identity,'unknown',{**result,'legacy_margin_history_reopened':True})
         resolved = 0
         for intent in state.pending():
             kind, payload = intent['kind'], intent['payload']
@@ -520,13 +533,9 @@ class Binance:
                 except (Blocked,Unknown,KeyError,TypeError,ValueError,ArithmeticError):
                     pass
                 continue
-            if kind=='binance_margin':
-                try:
-                    if self.recover_margin(state,intent):resolved+=1
-                except (Blocked,Unknown,KeyError,TypeError,ValueError,ArithmeticError):
-                    pass
-                continue
             if kind not in ('binance_order', 'binance_algo'):
+                # A lost margin response stays unknown. Its native history has
+                # no client/transaction ID and cannot prove this write finished.
                 continue
             try:
                 conditional = kind == 'binance_algo'
@@ -564,7 +573,15 @@ class Binance:
                         # Lost POST/readback can leave an accepted protective leg
                         # active. Matching native readback resolves acceptance,
                         # allowing the durable lifecycle to install its other leg.
-                        state.finish(intent['id'],'confirmed',{'algo_id':parent['algoId'],'status':'NEW'})
+                        previous=json.loads(state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()[0])
+                        if 'algo_id' in previous and previous['algo_id']!=parent['algoId']:
+                            raise Unknown('confirmed protection changed its native identity')
+                        confirmed_at=previous.get('first_confirmed_at_ms')
+                        if confirmed_at is None:confirmed_at=int(self.clock()*1000)+getattr(self,'time_offset_ms',0)
+                        if type(confirmed_at) is not int or confirmed_at<=0:
+                            raise Unknown('invalid native protection confirmation time')
+                        state.finish(intent['id'],'confirmed',{'algo_id':parent['algoId'],'status':'NEW',
+                                                              'first_confirmed_at_ms':confirmed_at})
                         resolved+=1
                         continue
                     if not conditional_is_terminal(observed):
@@ -632,49 +649,6 @@ class Binance:
         state.finish(intent['id'],'rejected',{**result,'absent_at_ms':now,
                                                'query_absent_within_retention':True})
         return True
-
-    def recover_margin(self, state, intent):
-        """Settle a transfer whose answer was lost from bounded native margin history.
-
-        A margin write has no client identity. Exactly one matching user add in
-        the window after preparation confirms it, and only when no other margin
-        intent could have produced a row in that window; any other add there is
-        ambiguous and stays unknown. An empty window is not treated as final: a
-        history publication delay is not documented. Such an intent is only
-        retired by the verified flat account (Lifecycle.retire_stale).
-        Balance changes never decide it.
-        """
-        row=state.db.execute('SELECT result FROM intents WHERE id=?',(intent['id'],)).fetchone()
-        prepared=json.loads(row[0]).get('prepared_at_ms') if row else None
-        if type(prepared) is not int:
-            raise Unknown('margin intent lacks its preparation time; operator review required')
-        now=int(self.clock()*1000);begin=prepared-15000
-        if not begin<now<=begin+29*86400000:
-            raise Unknown('margin history window unavailable; operator review required')
-        for other,updated in state.db.execute("SELECT result,updated FROM intents WHERE kind='binance_margin' AND id!=? AND status!='rejected'",(intent['id'],)):
-            # Intents from before preparation times were recorded are bounded by
-            # their last local update, which follows the transfer.
-            at=json.loads(other).get('prepared_at_ms')
-            if type(at) is not int:at=int(updated*1000)
-            if at>=begin-15000:
-                raise Unknown('another margin transfer may own a history row in this window')
-        rows=self.get('/fapi/v1/positionMargin/history',
-                      {'symbol':'BTCUSDT','startTime':begin,'endTime':now,'limit':500})
-        if not isinstance(rows,list) or len(rows)>=500:
-            raise Unknown('margin history incomplete')
-        adds=[]
-        for r in rows:
-            if (r.get('symbol')!='BTCUSDT' or r.get('asset','USDT')!='USDT'
-                    or r.get('positionSide','BOTH')!='BOTH' or type(r.get('time')) is not int
-                    or not begin<=r['time']<=now or str(r.get('type')) not in ('1','2')):
-                raise Unknown('unexpected margin history scope')
-            if str(r['type'])=='1' and r.get('deltaType','USER_ADJUST')=='USER_ADJUST':
-                adds.append(r)
-        amount=number(intent['payload']['amount'],positive=True)
-        if len(adds)==1 and number(adds[0].get('amount'))==amount:
-            state.finish(intent['id'],'confirmed',{'prepared_at_ms':prepared,'amount':str(amount),'history_time':adds[0]['time']})
-            return True
-        return False
 
     def proven_absent(self, state, intent):
         """A fill-capable identity is absent only after -2013 inside retention.

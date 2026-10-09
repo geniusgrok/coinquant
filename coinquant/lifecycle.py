@@ -10,6 +10,7 @@ from . import binance_safety as safety
 from .native_preview import (MAX_ISOLATED_MARGIN_FRACTION,
                              commission, entry_preview, holding_risk, limit_matches, topup_preview)
 from .ownership import TERMINAL, owned_observation
+from .opportunities import FOUR_HOURS
 from .state import client_id
 from .binance import UNACCEPTED_AFTER_MS, market_quantity
 from .types import Blocked, Unknown, number, floor_step
@@ -97,6 +98,13 @@ def blocking(state):
     return [p for p in state.pending() if not safety.risk_reducing(state,p)]
 
 
+def _guard_replacement_request(state,plan):
+    if plan.get('guard_epoch') is None:return None
+    return dict(old_ids=[client_id(state.identity,plan['guard_epoch'],k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')],
+                new_ids=[client_id(state.identity,plan['epoch'],k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')],
+                stop=str(number(plan['stop'])),take=str(number(plan['take'])))
+
+
 class Lifecycle:
     def __init__(self, reader, state, uid, *, authorized=False, may_enter=lambda:True, session=None):
         self.reader, self.state, self.uid = reader, state, uid
@@ -112,6 +120,19 @@ class Lifecycle:
         # Set only by a cashflow audit closed against the wallet observed for this
         # decision (audit.allows_new_risk). Entry and top-up both require it.
         self.risk_audit_ok = False
+        self.new_risk_bar = None
+        self.new_risk_observed_at = None
+
+    def check_entry_clock(self, model, snapshot, observed_at):
+        """A fresh quote cannot authorize risk after its model candle expires."""
+        mark_time=snapshot.get('mark_time')
+        now=int(self.reader.clock()*1000)+getattr(self.reader,'time_offset_ms',0)
+        if (type(model.last) is not int or model.last%FOUR_HOURS
+                or type(mark_time) is not int or mark_time//FOUR_HOURS*FOUR_HOURS!=model.last
+                or now//FOUR_HOURS*FOUR_HOURS!=model.last):
+            raise Blocked('completed model candle changed before new exposure')
+        self.new_risk_bar=model.last
+        self.new_risk_observed_at=observed_at
 
     def send(self, method, path, payload):
         if not self.authorized:
@@ -137,6 +158,15 @@ class Lifecycle:
         if (method=='POST' and path=='/fapi/v1/order' and payload.get('reduceOnly')=='true'
                 and exit_operation and action['id']==client_id(self.state.identity,exit_operation['epoch'],'reduce')):
             action['position_before_btc']=str(exit_operation['position_at_request'])
+        if method=='POST' and path=='/fapi/v1/order' and payload.get('reduceOnly')!='true':
+            # Durable preparation/fsync can itself straddle the close or a stop
+            # request. Refuse locally before this entry reaches the transport.
+            now=int(self.reader.clock()*1000)+getattr(self.reader,'time_offset_ms',0)
+            if (self.new_risk_bar is None or now//FOUR_HOURS*FOUR_HOURS!=self.new_risk_bar
+                    or type(self.new_risk_observed_at) is not int
+                    or abs(int(self.reader.clock()*1000)-self.new_risk_observed_at)>15000
+                    or not self.may_enter()):
+                raise Blocked('entry quote/model expired or session stopped before send')
         self.actions.append(action)
         return self.reader.send(method, path, payload)
 
@@ -156,7 +186,7 @@ class Lifecycle:
         stop=number(stop,positive=True)
         return (stop-liq) if q>0 else (liq-stop)
 
-    def _save_protection(self, payload, snapshot):
+    def _save_protection(self, payload, snapshot, *, clear_entry_plan=False):
         previous=self.state.get('position_protection')
         started=payload.pop('started_at_ms',payload.get('accepted_at_ms'))
         gap=(number(previous['buffer_distance'])
@@ -165,6 +195,13 @@ class Lifecycle:
         if gap is not None:
             payload['buffer_distance']=str(gap)
         if previous and previous.get('campaign')==payload.get('campaign'):
+            if previous.get('epoch')==payload.get('epoch'):
+                if any(number(previous[k])!=number(payload[k]) for k in ('stop','take')):
+                    raise Unknown('the same native protection identity cannot change its prices')
+                if type(previous.get('accepted_at_ms')) is int:
+                    # Reconfirming the same pair after a crash cannot erase its
+                    # known history before the next model catch-up succeeds.
+                    payload['accepted_at_ms']=previous['accepted_at_ms']
             ceilings=[number(p['loss_ceiling_usdt']) for p in (previous,payload)
                       if p.get('loss_ceiling_usdt') is not None]
             if ceilings:
@@ -178,7 +215,61 @@ class Lifecycle:
                 and previous['accepted_at_ms']<started):
             history.append({**{key:previous[key] for key in ('campaign','stop','take','accepted_at_ms')},
                             'ended_at_ms':started})
-        self.state.set_many({'position_protection':payload,'protection_catchup':history})
+        updates={'position_protection':payload,'protection_catchup':history}
+        if clear_entry_plan:
+            updates['entry_plan']=None
+        self.state.set_many(updates)
+
+    def recover_entry_protection(self,snapshot):
+        """Recover a live entry pair's history before any candle is checkpointed.
+
+        This records geometry only. Entry ownership, collateral and the initial
+        liquidation buffer still pass the normal recovery before risk can grow.
+        """
+        plan=self.state.get('entry_plan')
+        if (not plan or not number(snapshot['quantity_btc'])
+                or self.state.get('position_protection') or self.state.get('position_exit')):
+            return
+        epoch=plan['epoch']
+        request=_guard_replacement_request(self.state,plan)
+        journal=self.state.get('binance_protection_replacement') or {}
+        if request and (request==journal.get('request') or request in journal.get('superseded',[])):
+            epoch=journal['epoch']
+        candidates=[(epoch,plan['stop'],plan['take'])]
+        if plan.get('guard_epoch') is not None:
+            candidates.append((plan['guard_epoch'],plan['guard_stop'],plan['guard_take']))
+        active={a.get('clientAlgoId'):a for a in snapshot['open_algos']}
+        now=max(int(self.reader.clock()*1000)+getattr(self.reader,'time_offset_ms',0),snapshot.get('mark_time',0))
+        for epoch,stop,take in candidates:
+            ids=[client_id(self.state.identity,epoch,k) for k in ('STOP_MARKET','TAKE_PROFIT_MARKET')]
+            if any(active.get(identity,{}).get('algoStatus')!='NEW' for identity in ids):continue
+            accepted=[]
+            for identity,price in zip(ids,(stop,take)):
+                observed=owned_observation(self.state,self.reader,identity,conditional=True)
+                parent=observed['parent']
+                if (parent.get('algoStatus')!='NEW' or observed['child'] is not None
+                        or parent.get('closePosition') is not True
+                        or parent.get('side')!=('SELL' if number(snapshot['quantity_btc'])>0 else 'BUY')
+                        or number(parent.get('triggerPrice'),positive=True)!=number(price,positive=True)):
+                    raise Unknown('entry protection changed while recovering its history')
+                row=self.state.db.execute('SELECT result FROM intents WHERE id=?',(identity,)).fetchone()
+                proof=json.loads(row[0])
+                if proof.get('algo_id') is not None and str(proof['algo_id'])!=str(parent.get('algoId')):
+                    raise Unknown('entry protection native identity changed')
+                stamp=proof.get('first_confirmed_at_ms',parent.get('createTime'))
+                if type(stamp) is not int or not 0<stamp<=now:
+                    raise Unknown('entry protection history lacks a verified acceptance time')
+                created=parent.get('createTime')
+                if created is not None:
+                    if type(created) is not int or not 0<created<=now:
+                        raise Unknown('entry protection native creation time is invalid')
+                    stamp=max(stamp,created)
+                accepted.append(stamp)
+            # Both exact native parents remain NEW, so neither has terminated
+            # since its first readback (or its verified native creation time).
+            self.state.set('position_protection',dict(epoch=epoch,stop=stop,take=take,
+                campaign=plan['campaign'],accepted_at_ms=max(accepted)))
+            return
 
     def enforce_holding_risk(self, snapshot):
         """Recheck owned exposure before market catch-up and before stopping.
@@ -359,7 +450,16 @@ class Lifecycle:
                 except Blocked:
                     pass
                 except Unknown:
-                    raise
+                    # This endpoint has no request identity for a lost answer.
+                    # Never retry it, and do not let it prevent an owned exit.
+                    # It may already have funded the buffer: first settle and
+                    # reread, preserving a sufficient protected position then.
+                    self.reader.set_deadline(REDUCE_SECONDS,extend_only=True)
+                    snapshot=self.recover_exposure(self.settle())
+                    if not number(snapshot['quantity_btc']):return snapshot
+                    gap=self._gap(snapshot,protection['stop'])
+                    if snapshot.get('stop_before_liquidation') and (gap is None or gap>=target):
+                        return snapshot
                 else:
                     gap=self._gap(snapshot, protection['stop'])
                     if snapshot.get('stop_before_liquidation') and (gap is None or gap>=target):
@@ -414,6 +514,14 @@ class Lifecycle:
             row = self.state.db.execute('SELECT kind,payload FROM intents WHERE id=?', (identity,)).fetchone()
             if not row or row[0] != 'binance_algo' or json.loads(row[1]).get('closePosition') != 'true':
                 raise Unknown('unowned conditional order blocks new exposure')
+            # A new external position or entry can appear after the flat
+            # readback. Check before removing a leg that may now protect it,
+            # including between the two cancellations; never discover it only
+            # after the protection has already been removed.
+            snapshot=safety._gate(self.reader,self.state,self.uid,self.authorized,
+                                  expected_owner=dict(snapshot))
+            if number(snapshot['quantity_btc']) or snapshot['possible_entry_remainders']:
+                raise Unknown('account changed before flat protection cleanup')
             cancel_id = client_id(self.state.identity, 0, 'flat-retire:'+identity)
             safety._once(self.state, cancel_id, 'binance_algo_cancel', {'clientAlgoId':identity},
                          self.send, 'DELETE', '/fapi/v1/algoOrder', at_ms=int(self.reader.clock()*1000))
@@ -522,6 +630,7 @@ class Lifecycle:
             raise Unknown('actual position is not the verified entry fill')
         # The reserve was calculated before entry; scale to actual executed size.
         target = number(plan['allocated_margin_usdt'])*abs(q/expected)
+        replacement_started=snapshot.get('wallet_observed_from_ms',int(self.reader.clock()*1000))
         # Rules from this entry's own preflight; a plan resumed later reads them again.
         fresh = (type(plan.get('observed_at')) is int
                  and 0 <= int(self.reader.clock()*1000)-plan['observed_at'] <= RULES_FRESH_MS)
@@ -545,7 +654,23 @@ class Lifecycle:
                     plan['guard_stop'] = str(guard[0])
                     plan['guard_take'] = str(guard[1])
                     self.state.set('entry_plan', plan)
-            if guard is not None:
+            journal=self.state.get('binance_protection_replacement')
+            request=_guard_replacement_request(self.state,plan)
+            resuming_guard=bool(request and journal and
+                                (journal.get('request')==request or request in journal.get('superseded',[])))
+            if resuming_guard:
+                # The replacement may already have retired one or both guard
+                # legs. Resume its pinned identities before touching that guard.
+                snapshot=safety.replace_protection(self.reader,self.state,self.send,self.uid,
+                    guard_epoch,plan['epoch'],plan['stop'],plan['take'],instrument=rules,
+                    authorized=self.authorized,expected_owner=dict(snapshot))
+                # A finished journal is idempotent, not proof that its pair is
+                # still active at this restart. Confirm the successor itself.
+                snapshot=safety.protect_existing(self.reader,self.state,self.send,self.uid,
+                    safety.replacement_epoch(self.state,plan['epoch']),plan['stop'],plan['take'],
+                    instrument=rules,authorized=self.authorized,snapshot=snapshot,
+                    expected_owner=dict(snapshot))
+            elif guard is not None:
                 # Cover the fill at the current liquidation before moving margin.
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     guard_epoch,guard[0],guard[1],instrument=rules,authorized=self.authorized,
@@ -554,19 +679,35 @@ class Lifecycle:
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
                     snapshot=snapshot,expected_owner=dict(snapshot))
-            if (number(snapshot['isolated_wallet_usdt']) < target
+            # A saved entry target is not permission to exceed today's cap,
+            # including when its transfer/replacement already completed.
+            capital=min(number(snapshot['wallet_usdt']),number(snapshot.get('equity_usdt')))
+            limit=getattr(self.reader,'capital_limit',None)
+            if limit is not None:capital=min(capital,number(limit,positive=True))
+            places=rules.get('quotePrecision')
+            if type(places) is not int or not 0<=places<=8:
+                raise Blocked('settlement amount precision unavailable')
+            cap=floor_step(max(D(0),capital)*MAX_ISOLATED_MARGIN_FRACTION,D(1).scaleb(-places))
+            if max(target,number(snapshot['isolated_wallet_usdt']))>cap:
+                raise Blocked('entry margin target exceeds the current collateral limit')
+            if (not resuming_guard and number(snapshot['isolated_wallet_usdt']) < target
                     and not any(p['kind']=='binance_margin' for p in self.state.pending())):
                 snapshot = safety.add_margin(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],target,instrument=rules,authorized=self.authorized,snapshot=snapshot,
                     expected_owner=dict(snapshot))
-            if guard_epoch is not None:
+            if guard_epoch is not None and not resuming_guard:
                 snapshot = safety.replace_protection(self.reader,self.state,self.send,self.uid,
                     guard_epoch,plan['epoch'],plan['stop'],plan['take'],instrument=rules,
                     authorized=self.authorized,expected_owner=dict(snapshot))
-            elif not fits:
+            elif not fits and not resuming_guard:
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
                     snapshot=snapshot,expected_owner=dict(snapshot))
+            if number(snapshot['isolated_wallet_usdt']) < target:
+                # A completed transfer must not be sent again after restart.
+                # Nor may withdrawn/unconfirmed collateral become a smaller
+                # initial liquidation buffer merely because the pair is NEW.
+                raise Blocked('entry collateral no longer funds its original protection buffer')
         except (Blocked, Unknown):
             # Native entry and protection are NOT atomic. Try a bounded reduction
             # with its own budget, but never assert that a disconnected venue accepted it.
@@ -587,8 +728,8 @@ class Lifecycle:
             raise
         self._save_protection(dict(epoch=safety.replacement_epoch(self.state,plan['epoch']) if guard_epoch is not None else plan['epoch'],
                        stop=plan['stop'],take=plan['take'],campaign=plan['campaign'],
-                       accepted_at_ms=int(self.reader.clock()*1000)), snapshot)
-        self.state.set('entry_plan', None)
+                       accepted_at_ms=int(self.reader.clock()*1000),started_at_ms=replacement_started),
+                       snapshot,clear_entry_plan=True)
         return snapshot
 
     def entry_residual(self, snapshot, plan, ownership):
@@ -746,6 +887,7 @@ class Lifecycle:
         # Match the complete native fill history before changing any position;
         # only protection of the journaled entry's own verified fill precedes it.
         # A stored plan alone cannot authorize changes to external/manual trades.
+        self.recover_entry_protection(snapshot)
         plan=self.state.get('entry_plan')
         if plan and number(snapshot['quantity_btc']) and not self.state.get('position_exit'):
             try:
@@ -794,6 +936,14 @@ class Lifecycle:
                 self.state.set('position_protection',None)
                 self.state.set('session_replacement',None)
             return snapshot
+        if ownership and ownership.get('protective_exit_started'):
+            # A native closePosition child has already begun this campaign's
+            # exit. A terminal partial is not permission to hold or buy it back
+            # under another healthy pair, even in the original entry session.
+            self.risk_audit_ok=False
+            self.entry_constraint='native_protection_exit_started'
+            self.reader.set_deadline(REDUCE_SECONDS,extend_only=True)
+            return self.close(snapshot)
         operation=self.state.get('position_exit')
         if operation:
             reduced=self.close(snapshot,stop=operation.get('trigger_stop'))
@@ -851,6 +1001,20 @@ class Lifecycle:
 
     def complete_replacement(self,replacement,rules,*,snapshot=None):
         before=snapshot if snapshot is not None else self.reader.snapshot(self.uid)
+        protection=self.state.get('position_protection')
+        if (protection and protection.get('campaign')==replacement.get('campaign')
+                and protection.get('epoch')==replacement.get('old_epoch')
+                and self.planned_protection(before)):
+            # An earlier failed preflight did not retire this still-NEW pair.
+            # Its latest observed live interval survives delayed retry/catch-up.
+            # The wallet read starts before the algo list, so it is a safe lower
+            # bound even if a cancellation wins just after that list was read.
+            observed=before.get('wallet_observed_from_ms')
+            started=replacement.get('started_at_ms')
+            if (type(observed) is int and observed>=protection.get('accepted_at_ms',observed)
+                    and (type(started) is not int or observed>started)):
+                replacement={**replacement,'started_at_ms':observed}
+                self.state.set('session_replacement',replacement)
         q=number(before['quantity_btc'])
         mark=number(before['mark_price'])
         stop=number(replacement['stop'])
@@ -874,6 +1038,8 @@ class Lifecycle:
                'accepted_at_ms':int(self.reader.clock()*1000)}
         self._save_protection(saved, result)
         self.state.set('session_replacement',None)
+        if number(result['quantity_btc'])!=q:
+            return self.recover_exposure(result)
         return result
 
     def enter(self, model, snapshot):
@@ -898,13 +1064,15 @@ class Lifecycle:
             raise Blocked('session deadline or stop request prohibits a new entry')
         tick=[f['tickSize'] for f in plan['instrument']['filters'] if f.get('filterType')=='PRICE_FILTER'][0]
         if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],tick,
-                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc']))):
+                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc'])),
+                             completed_through=model.last):
             raise Unknown('order book changed before the order was sent')
         safety._check_cursor(self.reader,fresh)
         if not self.may_enter():
             raise Blocked('session deadline or stop request prohibits a new entry')
         if abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
             raise Unknown('entry preflight expired during the final book read')
+        self.check_entry_clock(model,fresh,plan['observed_at'])
         # An entry begun within the session retains a bounded protection budget;
         # the trading deadline must not cut network access immediately after fill.
         # Use the adapter clock. A wall monotonic here would outlive a virtual session
@@ -1049,6 +1217,7 @@ class Lifecycle:
         ownership=proof[2] if proof and proof[0] is snapshot and proof[1]==len(self.actions) else {}
         if (ownership.get('status')!='reconciled'
                 or ownership.get('campaign')!=fill['campaign']
+                or ownership.get('protective_exit_started')
                 or type(ownership.get('last_fill_id')) is not int
                 or ownership['last_fill_id']!=snapshot.get('last_fill_id')
                 or number(ownership.get('quantity','0'))!=number(snapshot['quantity_btc'])
@@ -1120,13 +1289,15 @@ class Lifecycle:
         if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
             return fresh
         if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],plan['tick'],
-                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc']))):
+                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc'])),
+                             completed_through=model.last):
             return fresh
         # A stop can fill during the final book read. The old position cursor
         # cannot authorize an add that would reopen the now-flat account.
         safety._check_cursor(self.reader,expected_owner)
         if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
             return fresh
+        self.check_entry_clock(model,fresh,plan['observed_at'])
         projected_margin=(number(fresh['isolated_wallet_usdt'])
                           +number(plan['quantity_btc'])*number(plan['entry_estimate'])/20)
         if projected_margin>number(plan['stop_budget_capital_usdt'])*MAX_ISOLATED_MARGIN_FRACTION:

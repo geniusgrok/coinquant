@@ -17,8 +17,8 @@ class Native(Binance):
         self.orders={};self.sent=[];self.q='.003';self.margin='30';self.remainders=0;self.cursor=7
     def snapshot(self,uid):
         return dict(account_uid=str(uid),quantity_btc=self.q,mark_price='100000',
-            native_liquidation_price='91000',isolated_wallet_usdt=self.margin,wallet_usdt='100',entry='100000',last_fill_id=self.cursor,
-            available_usdt=str(D('100')-D(self.margin)),
+            native_liquidation_price='91000',isolated_wallet_usdt=self.margin,wallet_usdt='1000',equity_usdt='1000',entry='100000',last_fill_id=self.cursor,
+            available_usdt=str(D('1000')-D(self.margin)),
             possible_entry_remainders=self.remainders,
             native_full_position_protected=len(self.orders)>=2,stop_before_liquidation=True)
     def get(self,path,parameters=None):
