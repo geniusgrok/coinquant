@@ -82,7 +82,8 @@ def _venue(reader, model, snapshot, direction):
     fresh=reader.snapshot(snapshot['account_uid'])
     if fresh['mark_time']//14400000*14400000!=model.last:
         raise Unknown('a new completed candle requires model catch-up')
-    if any(fresh[k]!=snapshot[k] for k in ('wallet_usdt','quantity_btc','entry','possible_entry_remainders')):
+    if (any(fresh[k]!=snapshot[k] for k in ('wallet_usdt','quantity_btc','entry','possible_entry_remainders'))
+            or fresh.get('last_fill_id')!=snapshot.get('last_fill_id')):
         raise Unknown('account changed during preflight')
     available=fresh.get('available_usdt')
     if available is None:raise Unknown('available USDT balance missing')
@@ -206,7 +207,7 @@ def entry_preview(reader, model, snapshot):
 
 
 def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=None, entry_capital=None,
-                  stop_slippage_fraction=None):
+                  stop_slippage_fraction=None, *, paid_commission_usdt=None, realized_pnl_usdt=None):
     """Size an IOC add toward the committed campaign quantity under owned protection.
 
     The existing close-all stop and take stay in force; the add is funded so the
@@ -215,6 +216,12 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
     q=number(snapshot['quantity_btc'])
     if not q or snapshot['possible_entry_remainders']:
         raise Unknown('top-up requires a reconciled position without remainders')
+    if stop_budget is None or stop_slippage_fraction is None:
+        raise Blocked('committed stop budget and slippage required before an add')
+    if paid_commission_usdt is None or realized_pnl_usdt is None:
+        raise Unknown('verified campaign commissions and realized PnL required before an add')
+    paid_fee=number(paid_commission_usdt);realized_pnl=number(realized_pnl_usdt)
+    if paid_fee<0:raise Unknown('unsupported negative campaign commission')
     direction=1 if q>0 else -1
     v=_venue(reader,model,snapshot,direction)
     tick,price=v['tick'],v['price']
@@ -223,21 +230,21 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
         raise Blocked('protection outside current price limits')
     entry=number(snapshot['entry'],positive=True)
     target=number(requested)
-    if stop_budget is None or stop_slippage_fraction is None:
-        raise Blocked('committed stop budget and slippage required before an add')
     current_budget,current_slip=_stop_budget(reader,v['risk_capital'])
     budget=number(stop_budget,positive=True)
     slip=number(stop_slippage_fraction,positive=True)
     if slip>=1:raise Blocked('invalid committed stop slippage')
     slip=max(slip,current_slip)
-    # Count both fees across the whole campaign, including its already-paid
-    # entry fee; this budgets the round trip without debiting that fee again.
-    old_loss=_loss_per_btc(direction,entry,stop,v['fee'],slip)
+    # Native commissions and realized PnL remain cumulative after reductions.
+    # Only the still-unpaid exit is estimated at today's commission rate.
+    exit_cost=stop*(slip+(1+slip)*v['fee'])
+    old_loss=direction*(entry-stop)+exit_cost
     per_unit=_loss_per_btc(direction,price,stop,v['fee'],slip)
-    # Fresh equity already includes the old entry fee and unrealized PnL.
+    # Fresh equity already includes paid costs, realized and unrealized PnL.
     # Its remaining risk is mark-to-stop plus the still-unpaid exit cost.
-    marked_loss=direction*(v['mark']-stop)+stop*(slip+(1+slip)*v['fee'])
-    room=min(budget-abs(q)*old_loss,current_budget-abs(q)*marked_loss)
+    marked_loss=direction*(v['mark']-stop)+exit_cost
+    room=min(budget-paid_fee+realized_pnl-abs(q)*old_loss,
+             current_budget-abs(q)*marked_loss)
     if per_unit<=0 or room<=0:
         target=abs(q)
     else:

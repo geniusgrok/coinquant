@@ -15,6 +15,8 @@ from coinquant.audit import allows_new_risk, income
 from coinquant.binance import Binance
 from coinquant.campaign import Campaign
 from coinquant.config import Config
+from coinquant.lifecycle import Lifecycle
+from coinquant.ownership import reconcile
 from coinquant.session import run
 from coinquant.state import State
 from coinquant.types import Unknown
@@ -325,15 +327,89 @@ class SmallFundBoundaries(TestCase):
 
     def preview(self, venue, tmp, **kwargs):
         from coinquant.native_preview import topup_preview
+        venue.begin_cycle(60)
+        snapshot = venue.snapshot('123')
         with State(tmp, SCOPE) as state:
             model = Campaign.restore(state.get('linear_campaign'))
             fill, protection = state.get('entry_fill'), state.get('position_protection')
-        venue.begin_cycle(60)
-        snapshot = venue.snapshot('123')
+            ownership=reconcile(state,venue,model,snapshot)
         kwargs.setdefault('entry_capital',fill['sizing_capital'])
         kwargs.setdefault('stop_slippage_fraction',fill['stop_slippage_fraction'])
+        kwargs.setdefault('paid_commission_usdt',ownership['campaign_fee_usdt'])
+        kwargs.setdefault('realized_pnl_usdt',ownership['campaign_realized_pnl_usdt'])
         return topup_preview(venue, model, snapshot, fill['requested'], protection['stop'], protection['take'],
                              fill['stop_budget'], **kwargs)
+
+    def test_topup_uses_verified_actual_campaign_costs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            venue,_=self.partial(tmp)
+            venue.begin_cycle(120)
+            with State(tmp,SCOPE) as state:
+                model=Campaign.restore(state.get('linear_campaign'))
+                snapshot=venue.snapshot('123')
+                ownership=reconcile(state,venue,model,snapshot)
+                engine=Lifecycle(venue,state,'123',authorized=True,session=state.get('entry_fill')['session'])
+                engine.risk_audit_ok=True;engine.reconciled=(snapshot,0,ownership)
+                with patch('coinquant.lifecycle.topup_preview',return_value=dict(quantity_btc='0',constraint='stop_budget')) as preview:
+                    engine.top_up(model,snapshot)
+                self.assertEqual(preview.call_count,1)
+                self.assertEqual(D(preview.call_args.kwargs['paid_commission_usdt']),
+                                 sum((D(t['commission']) for t in venue.trades),D(0)))
+                self.assertEqual(D(preview.call_args.kwargs['realized_pnl_usdt']),
+                                 sum((D(t['realizedPnl']) for t in venue.trades),D(0)))
+
+    def test_missing_or_unsupported_actual_costs_block_adds_but_keep_protection(self):
+        for field,value in (('commission',None),('commissionAsset','BNB'),('commission','NaN'),('realizedPnl',None)):
+            with self.subTest(field=field,value=value), tempfile.TemporaryDirectory() as tmp:
+                venue=Venue();venue.fraction=D('.5');venue.seed(tmp)
+                original=venue.fill
+                def fill(order,amount):
+                    original(order,amount)
+                    if amount:
+                        if value is None:venue.trades[-1].pop(field,None)
+                        else:venue.trades[-1][field]=value
+                venue.fill=fill
+                result=run(Config('123',tmp,3,1),venue,execute=True,monotonic=venue.monotonic,wait=venue.wait)
+                entries=[p for _,_,p in venue.sent if p.get('timeInForce')=='IOC']
+                self.assertEqual(len(entries),1,result)
+                self.assertGreater(venue.q,0)
+                self.assertTrue(result['actual']['native_full_position_protected'],result)
+                self.assertEqual((result['cleanup'],result['pending_intents']),('verified',0),result)
+
+    def test_cost_proof_cursor_remains_bound_after_preview_and_final_snapshot(self):
+        for phase in ('preview','snapshot'):
+            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as tmp:
+                venue,_=self.partial(tmp);venue.begin_cycle(120)
+                writes=len(venue.sent)
+                with State(tmp,SCOPE) as state:
+                    model=Campaign.restore(state.get('linear_campaign'))
+                    snapshot=venue.snapshot('123')
+                    ownership=reconcile(state,venue,model,snapshot)
+                    engine=Lifecycle(venue,state,'123',authorized=True,session=state.get('entry_fill')['session'])
+                    engine.risk_audit_ok=True;engine.reconciled=(snapshot,0,ownership)
+                    fired=[]
+                    def manual_round_trip():
+                        fired.append(True);wallet,entry,margin=venue.wallet,venue.entry,venue.margin
+                        for side,reduce,oid in (('SELL',True,900),('BUY',False,901)):
+                            venue.now+=1
+                            venue.fill(dict(side=side,reduceOnly=reduce,price=str(entry),orderId=oid,
+                                            executedQty='0'),D('.001'))
+                        venue.wallet=wallet;venue.margin=margin
+                    def preview(*args,**kwargs):
+                        if phase=='preview':manual_round_trip()
+                        return dict(quantity_btc='.001',constraint='target',entry_estimate=str(venue.mark),
+                                    allocated_margin_usdt=str(venue.margin+D('.001')*venue.mark/20),
+                                    observed_at=venue.now,side='BUY',sizing_capital_usdt='1000')
+                    original=venue.snapshot
+                    def read(uid):
+                        observed=original(uid)
+                        if phase=='snapshot' and not fired:manual_round_trip()
+                        return observed
+                    with patch('coinquant.lifecycle.topup_preview',side_effect=preview), patch.object(venue,'snapshot',side_effect=read):
+                        with self.assertRaisesRegex(Unknown,'ownership changed'):
+                            engine.top_up(model,snapshot)
+                self.assertTrue(fired)
+                self.assertEqual(len(venue.sent),writes)
 
     def test_lowered_capital_never_grows_the_position_back_to_the_old_target(self):
         with tempfile.TemporaryDirectory() as tmp:
