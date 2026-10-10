@@ -448,6 +448,8 @@ class SmallFundBoundaries(TestCase):
                 self.assertEqual(D(preview.call_args.kwargs['realized_pnl_usdt']),
                                  sum((D(t['realizedPnl']) for t in venue.trades),D(0)))
                 self.assertEqual(preview.call_args.kwargs['paid_funding_usdt'], D(1))
+                self.assertEqual(preview.call_args.kwargs['buffer_distance'],
+                                 state.get('position_protection')['buffer_distance'])
 
     def test_unverified_funding_blocks_only_the_add_not_owned_protection_or_exit(self):
         for flaw in ('missing_symbol', 'invalid_symbol', 'coverage_gap', 'income_unavailable'):

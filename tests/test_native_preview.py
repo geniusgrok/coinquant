@@ -97,6 +97,57 @@ class NativePreviewTests(TestCase):
         spent=topup_preview(r,m,held,'5','90','200.1','10',stop_slippage_fraction='.01',**costs)
         self.assertEqual(spent['quantity_btc'],'0');self.assertEqual(spent['constraint'],'stop_budget')
 
+    def test_top_up_preserves_frozen_liquidation_gap_for_both_directions(self):
+        for direction in (1,-1):
+            with self.subTest(direction=direction):
+                m,r,s,values,_=self.fixture()
+                mark=D('99.5');stop=D(100-direction*10);frozen=D(11)
+                old_margin=direction*100-(direction-D('.0055'))*(stop-direction*frozen)
+                held=dict(s,quantity_btc=str(direction),entry='100',mark_price=str(mark),
+                          isolated_wallet_usdt=str(old_margin),available_usdt=str(1000-old_margin),
+                          equity_usdt=str(1000+direction*(mark-100)))
+                r.snapshot.return_value=dict(held)
+                values['/fapi/v1/depth'].update(bids=[['99.4','1000']],asks=[['99.5','1000']])
+                args=(r,m,held,'2',stop,D(100+direction*50),'30','1000','.01')
+                costs=dict(paid_commission_usdt='.05',realized_pnl_usdt='0',paid_funding_usdt='0')
+                plan=topup_preview(*args,buffer_distance=frozen,**costs)
+                add,price,margin=(D(plan[k]) for k in ('quantity_btc','entry_estimate','allocated_margin_usdt'))
+                self.assertEqual(add,1)
+                quantity=1+add;total=direction*quantity
+                average=(100+add*price)/quantity
+                liquidation=(total*average-margin)/(total-quantity*D('.0055'))
+                self.assertGreaterEqual(direction*(stop-liquidation),frozen)
+                # A smaller saved gap cannot replace the existing 10% mark floor.
+                current=topup_preview(*args,**costs)
+                smaller=topup_preview(*args,buffer_distance='9',**costs)
+                self.assertEqual(current,smaller)
+
+    def test_frozen_buffer_can_reduce_add_without_relaxing_collateral_cap(self):
+        m,r,s,_,_=self.fixture()
+        held=dict(s,quantity_btc='1',entry='100',isolated_wallet_usdt='81.1045',available_usdt='918.8955')
+        r.snapshot.return_value=dict(held)
+        args=(r,m,held,'100','99','200','100','1000','.01')
+        costs=dict(paid_commission_usdt='.05',realized_pnl_usdt='0',paid_funding_usdt='0')
+        current=topup_preview(*args,**costs)
+        frozen=topup_preview(*args,buffer_distance='80',**costs)
+        add,price,margin=(D(frozen[k]) for k in ('quantity_btc','entry_estimate','allocated_margin_usdt'))
+        self.assertGreater(add,0)
+        self.assertLess(add,D(current['quantity_btc']))
+        quantity=1+add;average=(100+add*price)/quantity
+        stop_equity=1000-add*price*D('.0005')+quantity*(99-average)-quantity*99*D('.010505')
+        self.assertLessEqual(margin,stop_equity*D('.25'))
+        liquidation=(quantity*average-margin)/(quantity*D('.9945'))
+        self.assertGreaterEqual(99-liquidation,80)
+
+    def test_invalid_frozen_buffer_blocks_an_add(self):
+        m,r,s,_,_=self.fixture()
+        held=dict(s,quantity_btc='1',entry='100',isolated_wallet_usdt='20',available_usdt='980')
+        r.snapshot.return_value=dict(held)
+        for frozen in ('NaN','Infinity','0','-1'):
+            with self.subTest(frozen=frozen),self.assertRaises(Blocked):
+                topup_preview(r,m,held,'2','90','200','30','1000','.01',buffer_distance=frozen,
+                              paid_commission_usdt='.05',realized_pnl_usdt='0',paid_funding_usdt='0')
+
     def test_explicit_loss_budget_includes_both_fees_and_adverse_stop_slippage(self):
         m,r,s,_,_=self.fixture()
         r.loss_fraction=D('.02');r.slip_fraction=D('.01')
