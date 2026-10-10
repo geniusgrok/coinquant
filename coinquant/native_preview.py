@@ -6,9 +6,10 @@ from decimal import Decimal as D, ROUND_CEILING
 from .types import Blocked, Unknown, number, floor_step
 from .binance import market_quantity
 
-# Share of visible depth inside the IOC limit taken per order; later polls of
-# the entry session may top up the rest of the committed campaign size.
-BOOK_PARTICIPATION=D('.25')
+# Take the visible depth inside the IOC limit. A quarter-depth clip left the
+# 300-second session short of the volatility target on the trades that carry
+# the measured return; the loss budget and liquidation funding still cap size.
+BOOK_PARTICIPATION=D('1')
 # Macro parent: equity-to-stop loss ceiling for the whole campaign position.
 MACRO_STOP_BUDGET=D('.03')
 # Same liquidation gap the measured path funded: 10% of mark beyond the stop.

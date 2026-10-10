@@ -131,7 +131,7 @@ class TrialSizingTests(TestCase):
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
         values['/fapi/v1/depth'].update(bids=[['99.9', '1000']], asks=[['100', '1000']])
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1',
-                                       quote_observation=plan['quote_observation'], quantity='251'))
+                                       quote_observation=plan['quote_observation'], quantity='1001'))
 
     def test_add_cannot_spend_an_already_locked_campaign_profit(self):
         model, reader, snapshot, values, _ = self.fixture()
