@@ -156,7 +156,7 @@ class ManualRestartSchedule(TestCase):
         self.assertEqual(self.venue.q,0)
         replacements=[p for method,path,p in self.venue.sent[writes:]
                       if method=='POST' and path.endswith('/algoOrder') and p['type']=='STOP_MARKET']
-        self.assertTrue(any(D(p['triggerPrice'])>D(previous['stop']) for p in replacements))
+        self.assertFalse(any(D(p['triggerPrice'])>D(previous['stop']) for p in replacements))
         self.assertTrue(all(t['time']>=restarted for t in self.venue.trades[fills:]))
 
     def test_offline_take_survives_multiple_risk_replacements_and_interrupted_restarts(self):
@@ -168,9 +168,7 @@ class ManualRestartSchedule(TestCase):
         with State(self.directory,SCOPE) as state:
             self.assertEqual(Campaign.restore(state.get('linear_campaign')).last,self.start+FOUR_HOURS)
             first_stop=D(state.get('position_protection')['stop'])
-            self.assertGreater(first_stop,D(previous['stop']))
-            self.assertTrue(any(p['accepted_at_ms']==previous['accepted_at_ms']
-                                for p in state.get('protection_catchup')))
+            self.assertEqual(first_stop,D(previous['stop']))
         self.offline(4,take_touch=True,mark='109000')
         def unavailable(**kwargs):raise Unknown('market still unavailable after risk maintenance')
         self.venue.completed_market=unavailable
@@ -178,8 +176,7 @@ class ManualRestartSchedule(TestCase):
         self.assertEqual(second['status'],'unknown',second)
         self.assertEqual(len(self.venue.trades),fills)
         with State(self.directory,SCOPE) as state:
-            self.assertGreater(D(state.get('position_protection')['stop']),first_stop)
-            self.assertGreaterEqual(len(state.get('protection_catchup')),2)
+            self.assertEqual(D(state.get('position_protection')['stop']),first_stop)
         self.offline(5,take_touch=True,mark='109000')
         restarted=self.venue.now
         result=self.session()

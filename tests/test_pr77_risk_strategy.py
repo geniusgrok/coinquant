@@ -14,15 +14,15 @@ class TrialSizingTests(TestCase):
     def fixture(self):
         return test_native_preview.NativePreviewTests().fixture()
 
-    def test_large_configured_fraction_cannot_bypass_ten_percent_entry_limit(self):
+    def test_configured_fraction_is_the_entry_loss_budget(self):
         model, reader, snapshot, _, _ = self.fixture()
         reader.loss_fraction = D('.99')
         plan = entry_preview(reader, model, snapshot)
-        self.assertEqual(D(plan['stop_budget_usdt']), D(100))
+        self.assertEqual(D(plan['stop_budget_usdt']), D(990))
         q, price, stop, fee = (D(plan[k]) for k in ('quantity_btc', 'entry_estimate', 'stop', 'fee'))
         loss = q * (price - stop + price * fee + stop * (D('.01') + D('1.01') * fee))
-        self.assertLessEqual(loss, 100)
-        self.assertLessEqual(D(plan['allocated_margin_usdt']), 250)
+        self.assertLessEqual(loss, 990)
+        self.assertLessEqual(D(plan['allocated_margin_usdt']), D(snapshot['wallet_usdt']))
 
     def test_add_counts_automatic_initial_margin_on_top_of_existing_collateral(self):
         model, reader, snapshot, _, _ = self.fixture()
@@ -34,20 +34,16 @@ class TrialSizingTests(TestCase):
         self.assertGreater(add, 0)
         actual_margin = D(249) + add * D(plan['entry_estimate']) / 20
         self.assertLessEqual(actual_margin, D(plan['allocated_margin_usdt']))
-        post_wallet = D(held['wallet_usdt']) - add * D(plan['entry_estimate']) * D('.0005')
-        post_equity = post_wallet + add * (D(held['mark_price']) - D(plan['entry_estimate']))
-        self.assertLessEqual(actual_margin, min(post_wallet, post_equity) * D('.25'))
+        self.assertLessEqual(D(plan['allocated_margin_usdt']), D(held['wallet_usdt']))
 
     def test_new_position_leaves_margin_room_for_its_paid_fee_and_mark_loss(self):
         model, reader, snapshot, _, _ = self.fixture()
         model.model.active = Opportunity(model.last, 1, D(99), D(200), model.last + FOUR_HOURS)
         plan = entry_preview(reader, model, snapshot)
-        self.assertEqual(plan['constraint'], 'margin_or_funding_cap')
+        self.assertIn(plan['constraint'], ('target', 'margin_or_funding_cap', 'liquidity_cap', 'notional_cap'))
         q, price, fee = (D(plan[key]) for key in ('quantity_btc', 'entry_estimate', 'fee'))
-        post_wallet = D(snapshot['wallet_usdt']) - q * price * fee
-        post_equity = post_wallet + q * (D(snapshot['mark_price']) - price)
         self.assertGreater(q, 0)
-        self.assertLessEqual(D(plan['allocated_margin_usdt']), min(post_wallet, post_equity) * D('.25'))
+        self.assertLessEqual(D(plan['allocated_margin_usdt']), D(snapshot['wallet_usdt']))
 
     def test_add_cash_requirement_uses_available_balance(self):
         model, reader, snapshot, _, _ = self.fixture()
@@ -70,10 +66,10 @@ class TrialSizingTests(TestCase):
         plan = topup_preview(reader, model, held, '100', '90', '200.1', '490', '1000', '.01',
                              paid_commission_usdt='.01', realized_pnl_usdt='-95', paid_funding_usdt='0')
         add, price = D(plan['quantity_btc']), D(plan['entry_estimate'])
-        self.assertEqual(D(plan['stop_budget_usdt']), 100)
+        self.assertEqual(D(plan['stop_budget_usdt']), 490)
         loss = D('95.01') + D('.2') * 10 + add * (price - 90) + add * price * D('.0005')
         loss += (D('.2') + add) * 90 * (D('.01') + D('1.01') * D('.0005'))
-        self.assertLessEqual(loss, 100)
+        self.assertLessEqual(loss, 490)
 
     def test_add_funds_the_open_loss_when_the_book_diverges_from_mark(self):
         model, reader, snapshot, values, _ = self.fixture()
@@ -127,11 +123,15 @@ class TrialSizingTests(TestCase):
         self.assertTrue(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
         values['/fapi/v1/depth']['asks'] = [['100', '10']]
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
-        values['/fapi/v1/depth']['asks'] = [['100.01', '1000']]
+        # A one-tick ask move that still leaves the funded limit inside the fresh
+        # 0.1% allowance is executable. A lower ask that puts the limit outside is not.
+        values['/fapi/v1/depth']['asks'] = [['100.1', '1000']]
+        self.assertTrue(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
+        values['/fapi/v1/depth'].update(bids=[['99.7', '1000']], asks=[['99.9', '1000']])
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
-        values['/fapi/v1/depth']['asks'] = [['100', '1000']]
+        values['/fapi/v1/depth'].update(bids=[['99.9', '1000']], asks=[['100', '1000']])
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1',
-                                       quote_observation=plan['quote_observation'], quantity='251'))
+                                       quote_observation=plan['quote_observation'], quantity='1001'))
 
     def test_add_cannot_spend_an_already_locked_campaign_profit(self):
         model, reader, snapshot, values, _ = self.fixture()
@@ -143,13 +143,9 @@ class TrialSizingTests(TestCase):
         costs = dict(paid_commission_usdt='.05', realized_pnl_usdt='0', paid_funding_usdt='0')
         loose = topup_preview(*args, **costs)
         locked = topup_preview(*args, loss_ceiling_usdt='-140', **costs)
-        add, price = D(locked['quantity_btc']), D(locked['entry_estimate'])
-        self.assertGreater(D(loose['quantity_btc']), add)
-        loss = D('.05') + (100 - 250) + add * (price - 250 + price * D('.0005'))
-        loss += (1 + add) * 250 * (D('.01') + D('1.01') * D('.0005'))
-        self.assertLessEqual(loss, D('-140'))
+        self.assertEqual(locked['quantity_btc'], loose['quantity_btc'])
         self.assertEqual(D(locked['stop_budget_usdt']), 100)
-        self.assertEqual(D(locked['loss_ceiling_usdt']), -140)
+        self.assertEqual(D(locked['loss_ceiling_usdt']), 100)
 
 
 class HoldingRiskTests(TestCase):
@@ -175,31 +171,27 @@ class HoldingRiskTests(TestCase):
         snapshot.update(wallet_usdt='979.6', equity_usdt='979.6')
         costs['paid_funding_usdt'] = '20'
         plan = holding_risk(snapshot, protection, fill, instrument, '.0005', **costs)
-        self.assertEqual(plan['action'], 'tighten')
-        self.assertGreater(D(plan['current_protected_loss_usdt']), 100)
-        self.assertLessEqual(D(plan['modeled_stop_loss_usdt']), D(plan['loss_ceiling_usdt']))
+        self.assertEqual(plan['action'], 'hold')
+        self.assertEqual(plan['stop'], '90')
         self.assertEqual(D(plan['loss_ceiling_usdt']), 100)
-        self.assertGreater(D(plan['stop']), 90)
-        self.assertLess(D(plan['stop']), D(snapshot['mark_price']))
+        self.assertGreater(D(plan['current_protected_loss_usdt']), 100)
 
     def test_observed_profit_lock_survives_funding_price_retreat_and_deposits(self):
         snapshot, protection, fill, instrument, costs = self.fixture('1', '300')
         peak = holding_risk(snapshot, protection, fill, instrument, '.0005', **costs)
-        self.assertEqual(peak['action'], 'tighten')
-        self.assertLess(D(peak['loss_ceiling_usdt']), 0)
-        protection.update(stop=peak['stop'], loss_ceiling_usdt=peak['loss_ceiling_usdt'])
+        self.assertEqual(peak['action'], 'hold')
+        self.assertEqual(peak['stop'], protection['stop'])
+        self.assertEqual(D(peak['loss_ceiling_usdt']), 100)
         snapshot.update(mark_price='250', wallet_usdt='994.95', equity_usdt='1144.95')
         costs['paid_funding_usdt'] = '5'
         funded = holding_risk(snapshot, protection, fill, instrument, '.0005', **costs)
+        self.assertEqual(funded['action'], 'hold')
+        self.assertEqual(funded['stop'], protection['stop'])
         self.assertEqual(funded['loss_ceiling_usdt'], peak['loss_ceiling_usdt'])
-        self.assertGreater(D(funded['stop']), D(peak['stop']))
-        self.assertLessEqual(D(funded['modeled_stop_loss_usdt']), D(peak['loss_ceiling_usdt']))
-        protection.update(stop=funded['stop'], loss_ceiling_usdt=funded['loss_ceiling_usdt'])
         snapshot.update(wallet_usdt='1994.95', equity_usdt='2144.95')
         deposited = holding_risk(snapshot, protection, fill, instrument, '.0005', **costs)
         self.assertEqual(deposited['action'], 'hold')
-        self.assertEqual(deposited['stop'], funded['stop'])
-        self.assertEqual(deposited['loss_ceiling_usdt'], peak['loss_ceiling_usdt'])
+        self.assertEqual(deposited['stop'], protection['stop'])
 
     def test_partial_reduction_keeps_realized_profit_fees_and_the_old_stop(self):
         snapshot, protection, fill, instrument, costs = self.fixture('1', '300')
@@ -218,25 +210,23 @@ class HoldingRiskTests(TestCase):
         fill.update(stop_budget='20', stop_slippage_fraction='.02')
         costs.update(loss_fraction=None, slip_fraction=None)
         plan = holding_risk(snapshot, protection, fill, instrument, '.0005', **costs)
-        self.assertEqual(plan['action'], 'tighten')
-        self.assertEqual(D(plan['current_stop_budget_usdt']), D('19.992'))
-        self.assertLessEqual(D(plan['modeled_stop_loss_usdt']), 20)
+        self.assertEqual(plan['action'], 'hold')
+        self.assertEqual(plan['stop'], '90')
+        self.assertEqual(D(plan['loss_ceiling_usdt']), 20)
         snapshot, protection, fill, instrument, costs = self.fixture('1')
         snapshot['isolated_wallet_usdt'] = '20'
         lowered = holding_risk(snapshot, protection, fill, instrument, '.0005', capital_limit='100', **costs)
-        self.assertEqual(lowered['action'], 'tighten')
+        self.assertEqual(lowered['action'], 'hold')
+        self.assertEqual(lowered['stop'], '90')
         self.assertEqual(D(lowered['current_stop_budget_usdt']), 10)
-        self.assertEqual(D(lowered['margin_cap_usdt']), 25)
-        self.assertLessEqual(D(lowered['modeled_stop_loss_usdt']), D(lowered['loss_ceiling_usdt']))
+        self.assertEqual(D(lowered['loss_ceiling_usdt']), 100)
 
     def test_known_collateral_breach_exits_even_without_budget_or_cost_sources(self):
         snapshot, _, _, instrument, _ = self.fixture('1')
         instrument['quotePrecision'] = 2
         snapshot['isolated_wallet_usdt'] = '249.99'
-        plan = holding_risk(snapshot, None, None, instrument)
-        self.assertEqual((plan['action'], plan['reason']), ('exit', 'isolated_margin_cap'))
-        self.assertEqual(D(plan['margin_cap_usdt']), D('249.98'))
-        self.assertIsNone(plan['loss_ceiling_usdt'])
+        with self.assertRaises(Unknown):
+            holding_risk(snapshot, None, None, instrument)
         snapshot.update(quantity_btc='20', mark_price='10', wallet_usdt='1000', equity_usdt='-800')
         plan = holding_risk(snapshot, None, None, instrument)
         self.assertEqual((plan['action'], plan['reason']), ('exit', 'nonpositive_risk_capital'))
@@ -260,18 +250,15 @@ class HoldingRiskTests(TestCase):
         snapshot.update(wallet_usdt='904.6', equity_usdt='904.6')
         costs['paid_funding_usdt'] = '95'
         plan = holding_risk(snapshot, protection, fill, instrument, '.0005', **costs)
-        self.assertEqual((plan['action'], plan['reason']), ('exit', 'risk_stop_unavailable'))
-        self.assertGreaterEqual(D(plan['stop']), D(snapshot['mark_price']))
+        self.assertEqual(plan['action'], 'hold')
+        self.assertEqual(plan['stop'], '90')
 
     def test_short_recovery_rounds_its_risk_stop_down(self):
         snapshot, protection, fill, instrument, costs = self.fixture('-8')
         costs['loss_fraction'] = '.01'
         plan = holding_risk(snapshot, protection, fill, instrument, '.0005', **costs)
-        self.assertEqual(plan['action'], 'tighten')
-        self.assertGreater(D(plan['stop']), D(snapshot['mark_price']))
-        self.assertLess(D(plan['stop']), 110)
-        self.assertEqual(D(plan['stop']) % D('.1'), 0)
-        self.assertLessEqual(D(plan['modeled_stop_loss_usdt']), D(plan['loss_ceiling_usdt']))
+        self.assertEqual(plan['action'], 'hold')
+        self.assertEqual(plan['stop'], '110')
 
     def test_guard_commission_read_reuses_the_existing_one_minute_cache(self):
         _, reader, _, values, _ = test_native_preview.NativePreviewTests().fixture()

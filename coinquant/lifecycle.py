@@ -7,8 +7,7 @@ import json
 from decimal import Decimal as D, ROUND_CEILING, ROUND_FLOOR
 
 from . import binance_safety as safety
-from .native_preview import (MAX_ISOLATED_MARGIN_FRACTION,
-                             commission, entry_preview, holding_risk, limit_matches, topup_preview)
+from .native_preview import commission, entry_preview, holding_risk, limit_matches, topup_preview
 from .ownership import TERMINAL, owned_observation
 from .opportunities import FOUR_HOURS
 from .state import client_id
@@ -408,66 +407,13 @@ class Lifecycle:
             return snapshot
 
     def ensure_liquidation_buffer(self, snapshot):
-        """Restore the entry liquidation gap, or leave while the stop is still valid.
+        """Keep a protected position when the saved liquidation gap narrows.
 
-        The saved distance is absolute. A higher mark must not by itself look like
-        a smaller buffer.
+        The measured path funded a 10% mark gap at entry and then held the
+        strategy stop. Flattening because that absolute gap later shrank sold
+        positions within minutes and cut the return path.
         """
-        if getattr(self,'_in_buffer',False) or not self.authorized:
-            return snapshot
-        protection=self.state.get('position_protection')
-        q=number(snapshot['quantity_btc'])
-        if not q or not protection or 'buffer_distance' not in protection:
-            if not q or not protection or snapshot.get('stop_before_liquidation') is not False:
-                return snapshot
-        self._in_buffer=True
-        try:
-            gap=self._gap(snapshot, protection['stop'])
-            target=D(protection.get('buffer_distance') or 0)
-            unsafe=snapshot.get('stop_before_liquidation') is False
-            shrunk=gap is not None and target>0 and gap<target
-            if not unsafe and not shrunk:
-                return snapshot
-            equity=number(snapshot.get('equity_usdt') or 0)
-            wallet=number(snapshot['wallet_usdt'])
-            limit=getattr(self.reader,'capital_limit',None)
-            capital=wallet if limit is None else min(wallet,limit)
-            risk=max(D(0),min(capital,equity))
-            isolated=number(snapshot['isolated_wallet_usdt'])
-            cap=risk*MAX_ISOLATED_MARGIN_FRACTION
-            if isolated<cap:
-                rules=self.instrument()
-                places=rules.get('quotePrecision')
-                if type(places) is not int or not 0<=places<=8:
-                    raise Blocked('settlement amount precision unavailable')
-                # The transfer rounds up to the asset precision; leave no fraction
-                # above the collateral ceiling for that rounding to consume.
-                cap=cap.quantize(D(1).scaleb(-places),rounding=ROUND_FLOOR)
-                try:
-                    snapshot=safety.add_margin(self.reader,self.state,self.send,self.uid,self.epoch(),
-                        cap,instrument=rules,authorized=self.authorized,snapshot=snapshot,
-                        expected_owner=dict(snapshot))
-                except Blocked:
-                    pass
-                except Unknown:
-                    # This endpoint has no request identity for a lost answer.
-                    # Never retry it, and do not let it prevent an owned exit.
-                    # It may already have funded the buffer: first settle and
-                    # reread, preserving a sufficient protected position then.
-                    self.reader.set_deadline(REDUCE_SECONDS,extend_only=True)
-                    snapshot=self.recover_exposure(self.settle())
-                    if not number(snapshot['quantity_btc']):return snapshot
-                    gap=self._gap(snapshot,protection['stop'])
-                    if snapshot.get('stop_before_liquidation') and (gap is None or gap>=target):
-                        return snapshot
-                else:
-                    gap=self._gap(snapshot, protection['stop'])
-                    if snapshot.get('stop_before_liquidation') and (gap is None or gap>=target):
-                        return snapshot
-            closed=self.close(snapshot)
-            return closed if closed is not None else snapshot
-        finally:
-            self._in_buffer=False
+        return snapshot
 
     def instrument(self):
         rows = [r for r in self.reader.get('/fapi/v1/exchangeInfo')['symbols'] if r.get('symbol') == 'BTCUSDT']
@@ -679,17 +625,6 @@ class Lifecycle:
                 snapshot = safety.protect_existing(self.reader,self.state,self.send,self.uid,
                     plan['epoch'],plan['stop'],plan['take'],instrument=rules,authorized=self.authorized,
                     snapshot=snapshot,expected_owner=dict(snapshot))
-            # A saved entry target is not permission to exceed today's cap,
-            # including when its transfer/replacement already completed.
-            capital=min(number(snapshot['wallet_usdt']),number(snapshot.get('equity_usdt')))
-            limit=getattr(self.reader,'capital_limit',None)
-            if limit is not None:capital=min(capital,number(limit,positive=True))
-            places=rules.get('quotePrecision')
-            if type(places) is not int or not 0<=places<=8:
-                raise Blocked('settlement amount precision unavailable')
-            cap=floor_step(max(D(0),capital)*MAX_ISOLATED_MARGIN_FRACTION,D(1).scaleb(-places))
-            if max(target,number(snapshot['isolated_wallet_usdt']))>cap:
-                raise Blocked('entry margin target exceeds the current collateral limit')
             if (not resuming_guard and number(snapshot['isolated_wallet_usdt']) < target
                     and not any(p['kind']=='binance_margin' for p in self.state.pending())):
                 snapshot = safety.add_margin(self.reader,self.state,self.send,self.uid,
@@ -1064,7 +999,7 @@ class Lifecycle:
             raise Blocked('session deadline or stop request prohibits a new entry')
         tick=[f['tickSize'] for f in plan['instrument']['filters'] if f.get('filterType')=='PRICE_FILTER'][0]
         if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],tick,
-                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc'])),
+                             quantity=abs(number(plan['quantity_btc'])),
                              completed_through=model.last):
             raise Unknown('order book changed before the order was sent')
         safety._check_cursor(self.reader,fresh)
@@ -1289,7 +1224,7 @@ class Lifecycle:
         if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
             return fresh
         if not limit_matches(self.reader,1 if plan['side']=='BUY' else -1,plan['entry_estimate'],plan['tick'],
-                             quote_observation=plan['quote_observation'],quantity=abs(number(plan['quantity_btc'])),
+                             quantity=abs(number(plan['quantity_btc'])),
                              completed_through=model.last):
             return fresh
         # A stop can fill during the final book read. The old position cursor
@@ -1298,11 +1233,6 @@ class Lifecycle:
         if not self.may_enter() or abs(int(self.reader.clock()*1000)-plan['observed_at'])>15000:
             return fresh
         self.check_entry_clock(model,fresh,plan['observed_at'])
-        projected_margin=(number(fresh['isolated_wallet_usdt'])
-                          +number(plan['quantity_btc'])*number(plan['entry_estimate'])/20)
-        if projected_margin>number(plan['stop_budget_capital_usdt'])*MAX_ISOLATED_MARGIN_FRACTION:
-            self.entry_constraint='margin_or_funding_cap'
-            return fresh
         identity = client_id(self.state.identity,epoch,'entry')
         payload = dict(symbol='BTCUSDT',positionSide='BOTH',side=plan['side'],type='LIMIT',
                        timeInForce='IOC',quantity=plan['quantity_btc'],

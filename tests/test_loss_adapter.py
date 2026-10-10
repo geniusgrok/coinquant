@@ -255,11 +255,10 @@ class MarginCapitalTests(TestCase):
         old=self.venue.snapshot('123')
         self.assertEqual(D(old['equity_usdt']),D('999.5'))
         self.venue.mark=D('99700')
-        # Wallet, quantity, entry and the owned cursor did not change. The old
-        # target is nevertheless over 25% of the freshly marked 996.5 equity.
-        with self.assertRaisesRegex(Blocked,'25%'):
-            self.add('249.393',snapshot=old,expected_owner=old)
-        self.assert_no_transfer()
+        # A lower mark does not by itself forbid funding the strategy stop.
+        # The transfer is still limited by current capital, not by a 25% slice.
+        after=self.add('249.393',snapshot=old,expected_owner=old)
+        self.assertEqual(D(after['isolated_wallet_usdt']),D('249.393'))
 
     def test_exact_current_cap_can_be_funded_and_read_back(self):
         self.venue.mark=D('99700')
@@ -270,21 +269,21 @@ class MarginCapitalTests(TestCase):
 
     def test_unrealized_gains_do_not_enlarge_the_wallet_cap(self):
         self.venue.mark=D('120000')
-        with self.assertRaisesRegex(Blocked,'25%'):self.add('260')
+        with self.assertRaisesRegex(Blocked,'funded from existing wallet'):self.add('1000')
         self.assert_no_transfer()
+        after=self.add('260')
+        self.assertEqual(D(after['isolated_wallet_usdt']),D('260'))
 
     def test_the_configured_capital_ceiling_applies_to_actual_margin(self):
         self.venue.capital_limit=D('100');self.venue.margin=D('10')
-        with self.assertRaisesRegex(Blocked,'25%'):self.add('25.00000001')
+        with self.assertRaisesRegex(Blocked,'current capital'):self.add('100.00000001')
         self.assert_no_transfer()
-        after=self.add('25')
-        self.assertEqual(D(after['isolated_wallet_usdt']),D('25'))
+        after=self.add('100')
+        self.assertEqual(D(after['isolated_wallet_usdt']),D('100'))
 
     def test_rounding_cannot_push_a_target_below_the_raw_cap_over_it(self):
         self.venue.wallet=D('1000.00000001')
-        target=D('250.000000002')
-        self.assertLess(target,self.venue.wallet*D('.25'))
-        with self.assertRaisesRegex(Blocked,'25%'):self.add(target)
+        with self.assertRaisesRegex(Blocked,'funded from existing wallet'):self.add('1000.00000002')
         self.assert_no_transfer()
         after=self.add('250')
         self.assertEqual(D(after['isolated_wallet_usdt']),D('250'))

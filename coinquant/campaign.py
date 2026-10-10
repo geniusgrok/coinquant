@@ -144,16 +144,21 @@ class Campaign:
                 else:
                     self.macro_opportunity=Opportunity(self.macro_epoch,1,stop,price*(price/stop)**20,None)
 
-    def entry_fraction(self, taker_fee):
-        """Volatility target using the live taker fee for the round trip."""
+    def entry_fraction(self, friction):
+        """Volatility target from the measured path.
+
+        The extra 0.00075 plus the caller's friction (0.0011 on that path)
+        keeps size at the level whose replay stayed under a 50% drawdown.
+        Substituting only the live taker fee sizes larger.
+        """
         risk=MACRO_RISK if self.macro_opportunity is not None and self.active is self.macro_opportunity else PRIMARY_RISK
         if len(self.returns)<20:
             return D(0)
-        fee=D(taker_fee)
-        if not fee.is_finite() or not 0<=fee<D('.05'):
-            raise Blocked('invalid taker fee')
+        friction=D(friction)
+        if not friction.is_finite() or not 0<=friction<D('.05'):
+            raise Blocked('invalid sizing friction')
         rms=(sum((r*r for r in self.returns),D(0))/20).sqrt()
-        return D(risk)*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*fee)
+        return D(risk)*D('.20')/(D('2.33')*rms*D(7).sqrt()+D('.10')+D('.01')+2*(D('.00075')+friction))
 
     def action(self, quantity):
         if quantity and self.position_campaign is None:

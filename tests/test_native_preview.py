@@ -54,7 +54,7 @@ class NativePreviewTests(TestCase):
         self.assertGreater(quantity,0)
         self.assertEqual(quantity % D('.001'),0)
         self.assertLessEqual(quantity*D(p['entry_estimate']),D(p['notional_cap']))
-        self.assertLessEqual(D(p['allocated_margin_usdt']), D(p['stop_budget_capital_usdt'])*D('.25'))
+        self.assertLessEqual(D(p['allocated_margin_usdt']), D(p['sizing_capital_usdt']))
         liquidation=(quantity*D(p['entry_estimate'])-D(p['allocated_margin_usdt']))/(quantity*(1-D(p['maintenance_bound'])-D(p['fee'])))
         self.assertLess(liquidation,D(p['stop']))
         self.assertEqual(m.checkpoint(),before)
@@ -181,9 +181,9 @@ class NativePreviewTests(TestCase):
         plan=topup_preview(r,m,held,'100','90','1000','490','1000','.01',
                            paid_commission_usdt='.05',realized_pnl_usdt='0',paid_funding_usdt='0')
         # Entry-to-stop loss fits 490; mark-to-stop giveback already exceeds
-        # the fresh hard 100 budget. The add is refused, without reducing this position.
+        # the fresh 30% equity budget. The add is refused, without reducing this position.
         self.assertEqual(plan['quantity_btc'],'0')
-        self.assertEqual(D(plan['current_equity_stop_budget_usdt']),100)
+        self.assertEqual(D(plan['current_equity_stop_budget_usdt']),300)
 
     def test_lower_current_fee_does_not_discount_the_already_paid_entry_fee(self):
         m,r,s,values,_=self.fixture()

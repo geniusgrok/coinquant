@@ -4,7 +4,7 @@ The default CLI is read-only. Explicit bounded trials use these operations
 through the same lifecycle.
 """
 import json
-from decimal import Decimal as D, ROUND_CEILING, ROUND_FLOOR
+from decimal import Decimal as D, ROUND_CEILING
 from .config import scope
 from .state import client_id
 from .binance import conditional_is_terminal, market_quantity
@@ -293,15 +293,14 @@ def add_margin(reader,state,send,uid,epoch,target,*,instrument,authorized=False,
         raise Unknown('native available margin is unavailable')
     if not 0<amount<=min(number(before['available_usdt']),D(before['wallet_usdt'])-D(before['isolated_wallet_usdt'])):
         raise Blocked('margin addition must be funded from existing wallet')
-    # A resumed plan or the caller's earlier mark can no longer authorize its
-    # old reserve. Enforce the cap on this fresh account and the actual rounded
-    # transfer, including the margin already at the exchange.
+    # The transfer still has to come from cash already in the wallet. A 25%
+    # isolated-margin ceiling is not applied: the measured positions used more
+    # of the wallet to keep liquidation beyond the strategy stop.
     capital=min(number(before['wallet_usdt']),number(before.get('equity_usdt')))
     if reader.capital_limit is not None:capital=min(capital,number(reader.capital_limit,positive=True))
     if capital<=0:raise Blocked('positive current capital required for margin addition')
-    cap=(capital*D('.25')).quantize(D(1).scaleb(-places),rounding=ROUND_FLOOR)
-    if D(before['isolated_wallet_usdt'])+amount>cap:
-        raise Blocked('margin addition exceeds the current 25% capital limit')
+    if D(before['isolated_wallet_usdt'])+amount>capital:
+        raise Blocked('margin addition exceeds current capital')
     identity=client_id(state.identity,epoch,'margin_add')
     payload=dict(symbol='BTCUSDT',positionSide='BOTH',amount=format(amount.normalize(),'f'),type=1)
     if any(p['kind']=='binance_margin' for p in state.pending()):raise Unknown('previous margin outcome unresolved')

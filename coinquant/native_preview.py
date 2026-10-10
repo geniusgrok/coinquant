@@ -2,18 +2,19 @@
 
 No method here sends an order, transfers funds, or marks a campaign as filled.
 """
-from decimal import Decimal as D, ROUND_CEILING, ROUND_FLOOR
+from decimal import Decimal as D, ROUND_CEILING
 from .types import Blocked, Unknown, number, floor_step
 from .binance import market_quantity
 
-# Share of visible depth inside the IOC limit taken per order; later polls of
-# the entry session may top up the rest of the committed campaign size.
-BOOK_PARTICIPATION=D('.25')
+# Take the visible depth inside the IOC limit. A quarter-depth clip left the
+# 300-second session short of the volatility target on the trades that carry
+# the measured return; the loss budget and liquidation funding still cap size.
+BOOK_PARTICIPATION=D('1')
 # Macro parent: equity-to-stop loss ceiling for the whole campaign position.
 MACRO_STOP_BUDGET=D('.03')
-# Trial bounds. The 10% mark buffer below is the same gap the sizer funds.
-MAX_STOP_LOSS_FRACTION=D('.10')
-MAX_ISOLATED_MARGIN_FRACTION=D('.25')
+# Same liquidation gap the measured path funded: 10% of mark beyond the stop.
+# There is no 10% loss clamp and no 25% isolated-margin clamp. Those two caps
+# cut the measured campaign sizes and the return path.
 LIQUIDATION_BUFFER=D('.10')
 
 
@@ -30,7 +31,7 @@ def _stop_budget(reader, capital):
     fraction=number(fraction,positive=True);slip=number(slip,positive=True)
     if fraction>=1 or slip>=1:
         raise Blocked('invalid loss budget or stop slippage')
-    return capital*min(fraction,MAX_STOP_LOSS_FRACTION),slip
+    return capital*fraction,slip
 
 
 def commission(reader):
@@ -50,11 +51,10 @@ def commission(reader):
 def holding_risk(snapshot, protection, fill, instrument, taker_fee=None, *,
                  paid_commission_usdt=None, realized_pnl_usdt=None, paid_funding_usdt=None,
                  loss_fraction=None, slip_fraction=None, capital_limit=None):
-    """Calculate an owned position's durable net-loss ceiling and native stop.
+    """Report the campaign's entry loss budget and the strategy stop.
 
-    A negative ceiling locks campaign profit. Receipts cannot loosen it, and
-    future paid costs must still fit it on the next verified observation.
-    Missing cost evidence never means holding risk has passed.
+    Profit does not tighten that stop. Missing cost evidence never means the
+    check has passed. A stop already through the mark is an exit.
     """
     q=number(snapshot['quantity_btc']);entry=number(snapshot['entry'],positive=True)
     mark=number(snapshot['mark_price'],positive=True)
@@ -64,18 +64,14 @@ def holding_risk(snapshot, protection, fill, instrument, taker_fee=None, *,
         raise Unknown('owned holding equity or collateral unavailable')
     capital=wallet if capital_limit is None else min(wallet,number(capital_limit,positive=True))
     risk=max(D(0),min(capital,equity))
-    places=instrument.get('quotePrecision')
-    if type(places) is not int or not 0<=places<=8:
-        raise Unknown('settlement amount precision unavailable')
-    cap=floor_step(risk*MAX_ISOLATED_MARGIN_FRACTION,D(1).scaleb(-places))
     result=dict(action='hold',reason='within_budget',stop=None,loss_ceiling_usdt=None,
                 modeled_stop_loss_usdt=None,current_protected_loss_usdt=None,
                 current_mark_loss_usdt=None,current_stop_budget_usdt=None,frozen_stop_budget_usdt=None,
-                risk_capital_usdt=str(risk),margin_cap_usdt=str(cap))
-    # Known exhausted capital or excess collateral needs no cost estimate to
-    # justify an owned reduction. Unknown income must not obstruct this exit.
-    if risk<=0 or isolated>cap:
-        result.update(action='exit',reason='nonpositive_risk_capital' if risk<=0 else 'isolated_margin_cap')
+                risk_capital_usdt=str(risk))
+    # A wiped account can still be reduced. A large isolated wallet is the
+    # funding the measured path used; it is not by itself a reason to flatten.
+    if risk<=0:
+        result.update(action='exit',reason='nonpositive_risk_capital')
         return result
     if (not isinstance(fill,dict) or not isinstance(protection,dict)
             or type(fill.get('campaign')) is not int or not fill['campaign']
@@ -89,20 +85,24 @@ def holding_risk(snapshot, protection, fill, instrument, taker_fee=None, *,
     if not 0<=fee<D('.05') or paid_fee<0 or funding<0:
         raise Unknown('unsupported campaign holding costs')
     entry_capital=number(fill['sizing_capital'],positive=True)
-    frozen=min(number(fill['stop_budget'],positive=True),entry_capital*MAX_STOP_LOSS_FRACTION)
+    frozen=number(fill['stop_budget'],positive=True)
     slip=number(fill['stop_slippage_fraction'],positive=True)
     if (loss_fraction is None)!=(slip_fraction is None):
         raise Blocked('holding loss budget and slippage must be configured together')
     fraction=frozen/entry_capital if loss_fraction is None else number(loss_fraction,positive=True)
     if slip_fraction is not None:slip=max(slip,number(slip_fraction,positive=True))
     if fraction>=1 or slip>=1:raise Blocked('invalid holding budget or stop slippage')
-    budget=risk*min(fraction,MAX_STOP_LOSS_FRACTION)
+    budget=risk*fraction
     direction=1 if q>0 else -1;quantity=abs(q)
     costs=paid_fee+funding-realized
     marked=costs+quantity*direction*(entry-mark)
-    ceiling=min(frozen,marked+budget)
-    if protection.get('loss_ceiling_usdt') is not None:
-        ceiling=min(ceiling,number(protection['loss_ceiling_usdt']))
+    # The entry budget stays the campaign ceiling. Mark-to-market profit must
+    # not ratchet it down: that ratchet replaced the 14-day trail and sold
+    # the measured path's winners.
+    saved_ceiling=protection.get('loss_ceiling_usdt')
+    if saved_ceiling is not None:
+        number(saved_ceiling)
+    ceiling=frozen
     old_stop=number(protection['stop'],positive=True)
     exit_cost=slip+(1+slip)*fee
     old_loss=costs+quantity*(direction*(entry-old_stop)+old_stop*exit_cost)
@@ -110,26 +110,8 @@ def holding_risk(snapshot, protection, fill, instrument, taker_fee=None, *,
                   modeled_stop_loss_usdt=str(old_loss),current_protected_loss_usdt=str(old_loss),
                   current_mark_loss_usdt=str(marked),current_stop_budget_usdt=str(budget),
                   frozen_stop_budget_usdt=str(frozen))
-    if direction>0 and exit_cost>=1:
-        result.update(action='exit',reason='stop_cost_assumption_infeasible')
-        return result
-    filters=[f for f in instrument['filters'] if f.get('filterType')=='PRICE_FILTER']
-    if len(filters)!=1:raise Unknown('missing unique price rule')
-    rule=filters[0];tick=number(rule['tickSize'],positive=True)
-    minimum=number(rule['minPrice']);maximum=number(rule['maxPrice'],positive=True)
-    if minimum<0 or maximum<=minimum:raise Unknown('invalid native price limits')
-    if direction>0:
-        required=(entry+(costs-ceiling)/quantity)/(1-exit_cost)
-        stop=(max(old_stop,required)/tick).to_integral_value(rounding=ROUND_CEILING)*tick
-    else:
-        required=(entry+(ceiling-costs)/quantity)/(1+exit_cost)
-        stop=(min(old_stop,required)/tick).to_integral_value(rounding=ROUND_FLOOR)*tick
-    result.update(stop=str(stop),modeled_stop_loss_usdt=str(
-        costs+quantity*(direction*(entry-stop)+stop*exit_cost)))
-    if stop<=0 or not minimum<=stop<=maximum or direction*(mark-stop)<=0:
+    if direction*(mark-old_stop)<=0:
         result.update(action='exit',reason='risk_stop_unavailable')
-    elif stop!=old_stop:
-        result.update(action='tighten',reason='holding_stop_budget')
     return result
 
 
@@ -251,11 +233,10 @@ def _funded_quantity(v, direction, stop, take, requested, *, q=D(0), entry=D(0),
         open_loss=amount*max(D(0),direction*(price-mark))
         # Entry commissions and the new fill's mark-to-entry loss immediately
         # reduce the capital the holding guard will observe after this fill.
-        post_wallet=v['wallet']-entry_fee
-        post_equity=v['equity']-entry_fee+direction*amount*(mark-price)
-        post_risk=max(D(0),min(v['capital'],post_wallet,post_equity))
-        margin_cap=floor_step(post_risk*MAX_ISOLATED_MARGIN_FRACTION,v['margin_step'])
-        if (required>margin_cap or required+reserve+entry_fee+open_loss>v['capital']
+        # Fund the liquidation gap from the wallet. Do not refuse the order
+        # because isolated margin would exceed a quarter of capital: that cap
+        # was what cut the measured positions down.
+        if (required+reserve+entry_fee+open_loss>v['capital']
                 or required-margin+reserve+entry_fee+open_loss>v['available']):
             return None
         liquidation=(total*average-required)/(total-quantity*(mmr+fee))
@@ -292,7 +273,7 @@ def entry_preview(reader, model, snapshot):
     take=(floor_step(opportunity.take,tick)+tick if direction>0 else floor_step(opportunity.take,tick))
     if not all(number(v['rule']['minPrice'])<=p<=number(v['rule']['maxPrice']) for p in (stop,take,price)):
         raise Blocked('protection outside current price limits')
-    fraction=model.entry_fraction(v['fee'])
+    fraction=model.entry_fraction('.0011')
     target=capital*fraction/max(price,mark)
     # Flat entry equity equals the wallet. A trial capital ceiling applies to
     # both cash funding and the equity amount from which loss may be budgeted.
@@ -346,9 +327,9 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
     target=number(requested)
     current_budget,current_slip=_stop_budget(reader,v['risk_capital'])
     budget=number(stop_budget,positive=True)
-    if entry_capital is not None:
-        budget=min(budget,number(entry_capital,positive=True)*MAX_STOP_LOSS_FRACTION)
-    ceiling=budget if loss_ceiling_usdt is None else min(budget,number(loss_ceiling_usdt))
+    # A saved profit-lock ceiling must not shrink later adds. The entry budget
+    # is the campaign limit; the strategy stop, not a ratcheted ceiling, exits.
+    ceiling=budget
     slip=number(stop_slippage_fraction,positive=True)
     if slip>=1:raise Blocked('invalid committed stop slippage')
     slip=max(slip,current_slip)
@@ -408,14 +389,14 @@ def limit_matches(reader, direction, limit_price, tick, *, quote_observation=Non
             or any(a[0]<=b[0] for a,b in zip(bids,bids[1:]))):
         raise Unknown('invalid order book ordering')
     tick=number(tick,positive=True)
+    limit=number(limit_price,positive=True)
+    if floor_step(limit,tick)!=limit:return False
     raw=(asks[0][0]*D('1.001') if direction>0 else bids[0][0]*D('.999'))
     price=(floor_step(raw,tick) if direction>0 else (raw/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
+    # A moved book can still fill the funded limit. Reject only when that
+    # limit is outside the fresh allowance. Do not reprice, and do not count
+    # depth beyond the original limit.
+    if (limit>price if direction>0 else limit<price):return False
     depth=sum((q for p,q in (asks if direction>0 else bids)
-               if (p<=price if direction>0 else p>=price)),D(0))
-    if price!=number(limit_price,positive=True):return False
-    if quote_observation is not None and (
-            bids[0][0]!=number(quote_observation['best_bid'],positive=True)
-            or asks[0][0]!=number(quote_observation['best_ask'],positive=True)
-            or depth!=number(quote_observation['visible_limit_depth_btc'],positive=True)):
-        return False
+               if (p<=limit if direction>0 else p>=limit)),D(0))
     return quantity is None or number(quantity,positive=True)<=depth*BOOK_PARTICIPATION

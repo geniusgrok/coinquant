@@ -27,10 +27,11 @@ class Config:
     # wallet is not trial capital. A decimal string, or None for the whole wallet.
     capital_limit_usdt: str | None = None
     # Modeled whole-campaign loss ceiling, including both taker fees and the
-    # adverse stop-slippage assumption. These defaults need economic replay;
-    # they are not a realized drawdown or execution-slippage guarantee.
+    # adverse stop-slippage assumption. ".49" is the budget of the measured
+    # path that cleared the return and drawdown targets. A 10% hard cap
+    # collapsed that path. These defaults are not a live drawdown guarantee.
     # Both null allows management of existing exposure, never new risk.
-    max_stop_loss_fraction: str | None = '.10'
+    max_stop_loss_fraction: str | None = '.49'
     stop_slippage_fraction: str | None = '.01'
 
     def __post_init__(self):

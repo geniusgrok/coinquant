@@ -51,18 +51,19 @@ class EntryRecoveryMarginTests(TestCase):
                     observed_at=1700000000000, instrument=rules)
         return engine, snapshot, plan, rules
 
-    def test_recovery_cannot_transfer_old_target_above_current_equity_cap(self):
-        engine, snapshot, plan, rules = self.fixture('99800')
-        self.assertEqual(D(snapshot['equity_usdt']) * D('.25'), D('249.0625'))
+    def test_recovery_funds_the_strategy_buffer_from_current_capital(self):
+        engine, snapshot, plan, _ = self.fixture('99800')
+        self.assertGreater(D(plan['allocated_margin_usdt']), D(snapshot['equity_usdt']) * D('.25'))
+        self.assertLess(D(plan['allocated_margin_usdt']), D(snapshot['equity_usdt']))
+        funded = {**snapshot, 'isolated_wallet_usdt': plan['allocated_margin_usdt']}
         with patch('coinquant.lifecycle.safety.protect_existing', return_value=snapshot), \
-             patch('coinquant.lifecycle.safety.replace_protection', return_value=snapshot), \
-             patch('coinquant.lifecycle.safety.add_margin', return_value=snapshot) as transfer:
-            with self.assertRaises(Blocked):
-                engine.protect_entry(snapshot, plan, proven_order={'executedQty': '.015'})
-        transfer.assert_not_called()
-        engine.entry_fill_proven.assert_called_once_with(plan, snapshot)
-        engine.close.assert_called_once_with(snapshot, rules)
-        engine._save_protection.assert_not_called()
+             patch('coinquant.lifecycle.safety.replace_protection', return_value=funded), \
+             patch('coinquant.lifecycle.safety.add_margin', return_value=funded) as transfer:
+            result = engine.protect_entry(snapshot, plan, proven_order={'executedQty': '.015'})
+        self.assertIs(result, funded)
+        transfer.assert_called_once()
+        engine.close.assert_not_called()
+        engine._save_protection.assert_called_once()
 
     def test_currently_funded_recovery_keeps_the_owned_entry(self):
         engine, snapshot, plan, _ = self.fixture('100000')
@@ -122,12 +123,18 @@ class EntryRecoveryMarginTests(TestCase):
         self.assertLess(D(plan['stop']) - D(snapshot['native_liquidation_price']), D(10000))
         self.assert_resumed_owned_exit(engine, snapshot, plan, rules, 'original protection buffer')
 
-    def test_resumed_guard_rechecks_current_cap_even_when_original_margin_is_present(self):
-        engine, snapshot, plan, rules = self.resumed_fixture('99800')
+    def test_resumed_guard_keeps_margin_above_a_quarter_of_equity(self):
+        engine, snapshot, plan, _ = self.resumed_fixture('99800')
         self.assertEqual(D(snapshot['isolated_wallet_usdt']), D(plan['allocated_margin_usdt']))
-        self.assertEqual(D(snapshot['equity_usdt']) * D('.25'), D('249.0625'))
         self.assertGreater(D(plan['allocated_margin_usdt']), D(snapshot['equity_usdt']) * D('.25'))
-        self.assert_resumed_owned_exit(engine, snapshot, plan, rules, 'current collateral limit')
+        with patch('coinquant.lifecycle.safety.protect_existing', return_value=snapshot), \
+             patch('coinquant.lifecycle.safety.replace_protection', return_value=snapshot), \
+             patch('coinquant.lifecycle.safety.add_margin') as transfer:
+            result = engine.protect_entry(snapshot, plan, proven_order={'executedQty': '.015'})
+        self.assertIs(result, snapshot)
+        transfer.assert_not_called()
+        engine.close.assert_not_called()
+        engine._save_protection.assert_called_once()
 
 
 class OwnedMacroRecoveryTests(TestCase):
