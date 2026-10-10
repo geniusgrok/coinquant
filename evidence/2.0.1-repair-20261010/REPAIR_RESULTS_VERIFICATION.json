@@ -1,0 +1,93 @@
+{
+  "version": "repair-result-summarizer-verification-v1",
+  "passed": true,
+  "scope": "Original real full receipts and real incomplete/smoke records only; no forged audit flag, mutated source receipt, or replay.",
+  "script": {
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/repair_results.py",
+    "sha256": "7d481e7e615f446ecc7adbfbdeb5cf9a6d3c5435dbffaf1652917002d5b2363f"
+  },
+  "commands": [
+    {
+      "name": "baseline_exact_calibration",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair_results.py",
+        "--check-baselines"
+      ],
+      "expected_returncode": 0,
+      "actual_returncode": 0,
+      "stdout": "{\"passed\": true, \"baseline_fields_compared\": 22, \"control_cagr_pct\": \"27.626350225218363842056477048778673484027473448540\", \"historical_cagr_pct\": \"167.94868978615014542686241101917375147089641527108\", \"candidate_results_claimed\": false, \"files_written\": false}\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "name": "real_smoke_audit_rejected",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair_results.py",
+        "--case",
+        "margin-only",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/REGISTRATION.json",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-current.json.gz",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-audit-summary.json",
+        "https://github.com/geniusgrok/coinquant/commit/06206ac0c5383fb009df8bac20601cd9e2d9b004",
+        "--out",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair-verification-unwritten-metrics.json",
+        "--markdown",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair-verification-unwritten-results.md"
+      ],
+      "expected_returncode": 1,
+      "actual_returncode": 1,
+      "stdout": "",
+      "stderr": "repair_results rejected input: independent full795 passed audit required; no smoke/partial results\n",
+      "passed": true
+    },
+    {
+      "name": "wrong_public_head_rejected",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair_results.py",
+        "--case",
+        "margin-only",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/REGISTRATION.json",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-current.json.gz",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-audit-summary.json",
+        "https://github.com/geniusgrok/coinquant/commit/0000000000000000000000000000000000000000",
+        "--out",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair-verification-unwritten-metrics.json",
+        "--markdown",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair-verification-unwritten-results.md"
+      ],
+      "expected_returncode": 1,
+      "actual_returncode": 1,
+      "stdout": "",
+      "stderr": "repair_results rejected input: public commit URL must exactly identify the registered case head\n",
+      "passed": true
+    },
+    {
+      "name": "retired_v1_case_rejected",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair_results.py",
+        "--case",
+        "book-only",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/replays/book-only/REGISTRATION.json",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/replays/book-only/smoke-current.json.gz",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/replays/book-only/smoke-audit-summary.json",
+        "https://github.com/geniusgrok/coinquant/commit/4f65e6ba271773037383eea59a17f453bc9aa5b3",
+        "--out",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair-verification-unwritten-metrics.json",
+        "--markdown",
+        "/workspace/scratch/4a60782c7dbc/diagnosis/repair-verification-unwritten-results.md"
+      ],
+      "expected_returncode": 1,
+      "actual_returncode": 1,
+      "stdout": "",
+      "stderr": "repair_results rejected input: duplicate or undeclared case name\n",
+      "passed": true
+    }
+  ],
+  "candidate_metrics_written": false,
+  "registration_or_receipt_changed": false,
+  "online_publication_verified": false
+}

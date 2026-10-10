@@ -1,0 +1,11 @@
+{
+  "method": "one original registered 540-second segment per external process",
+  "source_producer_changed": false,
+  "original_controller_sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f",
+  "actual_launcher_sha256": "b7b1043a40dfc2b098b3110ebb108a9d4c61df7f65b48358cba8a0dd17b4c4e4",
+  "registration_sha256": "d2defabdd9f52d6c824f5bbe67d82e2a1fe17d8ef629c3412d7e370b4e330871",
+  "amendment_sha256": "a9e736d8946cf8318d9fd6839305d78895fe744c8fa046228bab8987325fba0c",
+  "prior_interrupted_run": "replays/margin-only/INTERRUPTION_20261010.json",
+  "interruption_sha256": "186e11fc64dae35874520ae4d4df199d01f66ce8a4dc1fcbe8e18dc2d1523e9c",
+  "created_at": "2026-10-10T00:05:35.786711+00:00"
+}

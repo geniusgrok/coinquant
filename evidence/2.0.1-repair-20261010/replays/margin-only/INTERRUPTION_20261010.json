@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-10-10T00:03:27.838404+00:00",
+  "status": "incomplete-process-lost",
+  "original_exec_session_id": 86310,
+  "tool_poll_error": "Unknown process id 86310",
+  "actual_completed_report_lines": 788,
+  "last_report_mtime_utc": "2026-10-09T23:58:39.258604+00:00",
+  "final_segment_receipt_exists": false,
+  "existing_segment_artifacts": [
+    {
+      "name": "full-current-segment-001.json.gz",
+      "bytes": 61944,
+      "sha256": "5048312fb466faab6a89998b9a0a297b190da2444607f368733b28d07eb5ab7a"
+    },
+    {
+      "name": "full-current-segment-001.log",
+      "bytes": 1921,
+      "sha256": "1c6713cfea6b7ff36529e01316b3b9b184a493115699b55713565b69f0ee6a3b"
+    },
+    {
+      "name": "full-current-segment-002.json.gz",
+      "bytes": 62074,
+      "sha256": "be633edc3c848723c7c70d115e2f73333946e15321a0e31042a244165bc0f0bb"
+    },
+    {
+      "name": "full-current-segment-002.log",
+      "bytes": 1419,
+      "sha256": "8dcd8390abaca29d277d1c34ee4abd2e01590037312320fbee58b025924d9d86"
+    },
+    {
+      "name": "full-current-segment-003.log",
+      "bytes": 247,
+      "sha256": "ca66f689346df99c7f1ac39cf6ec946d9b291f8f7cd9d4d364890d9e14ea6cdf"
+    }
+  ],
+  "partial_metrics_claimed": false,
+  "action": "Preserve original state and receipts; full new account replay with same frozen source/economics, one registered segment per tool process."
+}

@@ -1,0 +1,10 @@
+{
+  "head": "3561728dab351d269b19b107fb4fbabb2ac1f674",
+  "workflow": "Check",
+  "run_id": 38006105173,
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/geniusgrok/coinquant/actions/runs/38006105173",
+  "source": "GitHub connector fetch_commit_workflow_runs",
+  "python": "3.13"
+}
