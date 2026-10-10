@@ -1244,7 +1244,8 @@ class Lifecycle:
                                  paid_commission_usdt=ownership['campaign_fee_usdt'],
                                  realized_pnl_usdt=ownership['campaign_realized_pnl_usdt'],
                                  paid_funding_usdt=paid_funding,
-                                 loss_ceiling_usdt=protection.get('loss_ceiling_usdt'))
+                                 loss_ceiling_usdt=protection.get('loss_ceiling_usdt'),
+                                 buffer_distance=protection.get('buffer_distance'))
         except ValueError:
             return snapshot
         self.entry_constraint = plan['constraint']

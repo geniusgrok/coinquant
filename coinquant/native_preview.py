@@ -210,7 +210,7 @@ def _venue(reader, model, snapshot, direction):
 
 
 def _funded_quantity(v, direction, stop, take, requested, *, stop_slippage_fraction,
-                     q=D(0), entry=D(0), margin=D(0)):
+                     q=D(0), entry=D(0), margin=D(0), buffer_distance=None):
     """Round a proposed add and fund its combined position beyond the native stop."""
     price,mark,fee,mmr=v['price'],v['mark'],v['fee'],v['mmr']
     slip=number(stop_slippage_fraction,positive=True)
@@ -234,7 +234,12 @@ def _funded_quantity(v, direction, stop, take, requested, *, stop_slippage_fract
     if not (stop<min(price,mark)<=max(price,mark)<take if direction>0
             else take<min(price,mark)<=max(price,mark)<stop):
         result['reason']='protection';return result
-    boundary=stop-direction*mark*LIQUIDATION_BUFFER
+    gap=mark*LIQUIDATION_BUFFER
+    if buffer_distance is not None:
+        # Recovery preserves the campaign's original absolute liquidation gap.
+        # An add must fund that same gap even after the current mark falls.
+        gap=max(gap,number(buffer_distance,positive=True))
+    boundary=stop-direction*gap
     if boundary<=0:
         result['reason']='gap_boundary';return result
 
@@ -329,11 +334,11 @@ def entry_preview(reader, model, snapshot):
 
 def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=None, entry_capital=None,
                   stop_slippage_fraction=None, *, paid_commission_usdt=None, realized_pnl_usdt=None,
-                  paid_funding_usdt=None, loss_ceiling_usdt=None):
+                  paid_funding_usdt=None, loss_ceiling_usdt=None, buffer_distance=None):
     """Size an IOC add toward the committed campaign quantity under owned protection.
 
     The existing close-all stop and take stay in force; the add is funded so the
-    combined isolated position still liquidates beyond that stop.
+    combined isolated position keeps the saved gap beyond that stop.
     """
     q=number(snapshot['quantity_btc'])
     if not q or snapshot['possible_entry_remainders']:
@@ -383,7 +388,7 @@ def topup_preview(reader, model, snapshot, requested, stop, take, stop_budget=No
         result=dict(quantity='0',margin=margin,reason='stop_budget')
     else:
         result=_funded_quantity(v,direction,stop,take,target,stop_slippage_fraction=slip,
-                                q=q,entry=entry,margin=margin)
+                                q=q,entry=entry,margin=margin,buffer_distance=buffer_distance)
     return dict(quantity_btc=str(result['quantity']),entry_estimate=str(price),stop=str(stop),take=str(take),
                 allocated_margin_usdt=str(result['margin']),constraint=result['reason'],
                 side='BUY' if direction>0 else 'SELL',observed_at=v['fresh']['mark_time'],

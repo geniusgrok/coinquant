@@ -237,6 +237,26 @@ class ExecutionBoundaries(TestCase):
             engine.maintain(model,self.venue.snapshot('123'))
             self.assertEqual(state.get('position_protection')['buffer_distance'],original)
 
+    def test_topup_after_mark_decline_keeps_buffer_without_recovery_transfer(self):
+        self.venue.fraction=D('.5')
+        self.assertEqual(self.session()['cleanup'],'verified')
+        quantity=self.venue.q;transfers=len(self.venue.margin_history)
+        self.venue.fraction=D(1);self.venue.mark-=100
+        with State(self.directory,SCOPE) as state:
+            protection=state.get('position_protection');original=protection['buffer_distance']
+            model=Campaign.restore(state.get('linear_campaign'));snapshot=self.venue.snapshot('123')
+            ownership=reconcile(state,self.venue,model,snapshot)
+            engine=Lifecycle(self.venue,state,'123',authorized=True,session=state.get('entry_fill')['session'])
+            engine.risk_audit_ok=True;engine.reconciled=(snapshot,0,ownership)
+            result=engine.top_up(model,snapshot)
+            self.assertGreater(self.venue.q,quantity)
+            self.assertTrue(result['native_full_position_protected'])
+            self.assertEqual(state.get('position_protection')['buffer_distance'],original)
+            self.assertGreaterEqual(engine._gap(result,protection['stop']),D(original))
+        # Fund the add once before entry; do not fill the current cap afterward.
+        self.assertEqual(len(self.venue.margin_history),transfers+1)
+        self.assertEqual(self.reductions(),[])
+
     def test_triggered_terminal_protective_partial_can_close_entry_residual(self):
         with State(self.directory,SCOPE) as state:
             model=Campaign.restore(state.get('linear_campaign'))
