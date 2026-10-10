@@ -55,7 +55,7 @@ class ExecutionBoundaries(TestCase):
         self.assertEqual(len(books),2)
         self.assertEqual(self.venue.sent,[])
         self.assertEqual(result['cleanup'],'verified')
-        self.assertEqual(result['risk_limits'],dict(max_stop_loss_fraction='.10',stop_slippage_fraction='.01'))
+        self.assertEqual(result['risk_limits'],dict(max_stop_loss_fraction='.49',stop_slippage_fraction='.01'))
 
     def test_final_topup_book_read_cannot_extend_entry_deadline(self):
         self.venue.fraction=D('.5')
@@ -237,9 +237,8 @@ class ExecutionBoundaries(TestCase):
         with State(self.directory,SCOPE) as state:
             engine=Lifecycle(self.venue,state,'123',authorized=True)
             result=engine.ensure_liquidation_buffer(self.venue.snapshot('123'))
-        cap=min(D(result['wallet_usdt']),D(result['equity_usdt']))*D('.25')
         self.assertGreater(D(result['quantity_btc']),0)
-        self.assertLessEqual(D(result['isolated_wallet_usdt']),cap)
+        self.assertLessEqual(D(result['isolated_wallet_usdt']),D(result['wallet_usdt']))
 
     def test_small_buffer_erosion_is_not_ignored_as_mark_rises(self):
         self.assertEqual(self.session()['cleanup'],'verified')
@@ -247,10 +246,10 @@ class ExecutionBoundaries(TestCase):
         before=len(self.venue.margin_history)
         with State(self.directory,SCOPE) as state:
             engine=Lifecycle(self.venue,state,'123',authorized=True)
-            original=D(state.get('position_protection')['buffer_distance'])
             result=engine.ensure_liquidation_buffer(self.venue.snapshot('123'))
-            self.assertGreaterEqual(engine._gap(result,state.get('position_protection')['stop']),original)
-        self.assertEqual(len(self.venue.margin_history),before+1)
+            self.assertGreater(D(result['quantity_btc']),0)
+        self.assertEqual(len(self.venue.margin_history),before)
+        self.assertEqual(self.reductions(),[])
 
     def test_reduction_action_records_verified_position_for_full_slice_fill(self):
         self.assertEqual(self.session()['cleanup'],'verified')

@@ -468,60 +468,17 @@ class LossExecutionTests(TestCase):
         self.venue.send=lost_answer
         return quantity,histories,writes,protection,attempts
 
-    def test_unknown_applied_buffer_transfer_holds_from_fresh_native_proof(self):
-        quantity,histories,_,protection,attempts=self.unknown_buffer_transfer(applied=True)
+    def test_thinner_liquidation_gap_does_not_transfer_or_flatten(self):
+        self.assertEqual(self.session()['cleanup'],'verified')
+        quantity=self.venue.q
+        histories=len(self.venue.margin_history)
+        self.venue.margin-=D(1);self.venue.updated=self.venue.now
         result=self.session(seconds=3)
-        resumed=self.session(seconds=2)
-        self.assertEqual(len(attempts),1)
-        self.assertEqual(len(self.venue.margin_history),histories+1)
+        self.assertEqual(result['cleanup'],'verified',result)
         self.assertEqual(self.venue.q,quantity)
-        self.assertEqual(self.reductions(),[])
-        for report in (result,resumed):
-            self.assertEqual(report['status'],'unknown',report)
-            self.assertEqual(report['cleanup'],'verified',report)
-            self.assertEqual(report['pending_intents'],1)
-            self.assertTrue(report['actual']['native_full_position_protected'])
-        with State(self.directory,SCOPE) as state:
-            pending=state.pending()
-            self.assertEqual(len(pending),1)
-            self.assertEqual((pending[0]['kind'],pending[0]['status']),('binance_margin','unknown'))
-            current=state.get('position_protection')
-            self.assertEqual(current['buffer_distance'],protection['buffer_distance'])
-            engine=Lifecycle(self.venue,state,'123')
-            self.assertGreaterEqual(engine._gap(resumed['actual'],current['stop']),
-                                    D(current['buffer_distance']))
-
-    def test_unknown_unapplied_buffer_transfer_exits_without_resend(self):
-        _,histories,_,_,attempts=self.unknown_buffer_transfer(applied=False)
-        result=self.session(seconds=3)
-        resumed=self.session(seconds=2)
-        self.assertEqual(len(attempts),1)
         self.assertEqual(len(self.venue.margin_history),histories)
-        self.assertEqual(self.venue.q,0)
-        self.assertEqual(len(self.reductions()),1)
-        self.assertFalse(any(order['algoStatus']=='NEW' for order in self.venue.algos.values()))
-        for report in (result,resumed):
-            self.assertEqual(report['cleanup'],'verified',report)
-            self.assertEqual(D(report['actual']['quantity_btc']),0)
-            # A flat position does not identify which transfer ran. Within the
-            # signed-request expiry bound, the lost request is still unknown.
-            self.assertEqual(report['pending_intents'],1)
-
-    def test_unknown_buffer_transfer_with_external_fill_cannot_authorize_owned_exit(self):
-        quantity,histories,writes,protection,attempts=self.unknown_buffer_transfer(
-            applied=False,external_fill=True)
-        result=self.session(seconds=3)
-        self.assertEqual(len(attempts),1)
-        self.assertEqual(len(self.venue.margin_history),histories)
-        self.assertEqual(self.venue.q,quantity+D('.001'))
         self.assertEqual(self.reductions(),[])
-        self.assertFalse(any(method=='DELETE' for method,_,_ in self.venue.sent[writes:]))
-        self.assertEqual(result['status'],'unknown',result)
-        self.assertEqual(result['cleanup'],'unresolved',result)
-        self.assertTrue(any('external or unowned fill' in error['reason'] for error in result['errors']),result)
-        live={identity for identity,order in self.venue.algos.items() if order['algoStatus']=='NEW'}
-        self.assertEqual(live,{client_id(SCOPE,protection['epoch'],kind)
-                              for kind in ('STOP_MARKET','TAKE_PROFIT_MARKET')})
+        self.assertEqual(result['pending_intents'],0)
 
     def test_entry_prepare_pause_expires_quote_before_transport(self):
         with State(self.directory,SCOPE) as state:

@@ -140,6 +140,10 @@ class Venue(Binance):
         order=dict(p,orderId=len(self.orders)+1,clientOrderId=p['newClientOrderId'],reduceOnly=reduce,
                    origQty=p['quantity'],executedQty='0',status='FILLED')
         amount=quantity*(D('.5') if reduce and self.partial_exit else D(1) if reduce else self.fraction)
+        # A fractional participation still has to land on the native lot. An
+        # off-step residue cannot be closed and is not a Binance fill.
+        step=D('.001')
+        amount=(amount/step).to_integral_value(rounding='ROUND_FLOOR')*step
         if amount<quantity:order['status']='EXPIRED'
         self.orders[p['newClientOrderId']]=order
         self.fill(order,amount)

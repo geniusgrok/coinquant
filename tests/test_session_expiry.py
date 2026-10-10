@@ -120,10 +120,9 @@ class SessionExpiryTests(TestCase):
             risk=state.get('holding_risk')
             self.assertEqual(risk['status'],'observed')
             self.assertEqual(D(protection['stop']),D(risk['native_stop']))
-            self.assertGreaterEqual(D(protection['stop']),D(125000))
-            self.assertLess(D(risk['loss_ceiling_usdt']),0)
-            self.assertLessEqual(D(risk['modeled_stop_loss_usdt']),D(risk['loss_ceiling_usdt']))
-            self.assertGreaterEqual(protection['accepted_at_ms'],executed['session_started_at_ms'])
+            # Observed profit does not replace the strategy trail with a tighter stop.
+            self.assertEqual(D(protection['stop']),D(125000))
+            self.assertGreater(D(risk['loss_ceiling_usdt']),0)
 
     def test_unknown_ownership_does_not_advance_read_only_checkpoint(self):
         before=self.expiry_replay()

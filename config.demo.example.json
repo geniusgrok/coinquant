@@ -5,6 +5,6 @@
   "capital_limit_usdt": "100",
   "session_seconds": 300,
   "poll_seconds": 5,
-  "max_stop_loss_fraction": ".10",
+  "max_stop_loss_fraction": ".49",
   "stop_slippage_fraction": ".01"
 }

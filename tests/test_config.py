@@ -9,7 +9,7 @@ from coinquant.types import Blocked
 class StopBudgetConfigTests(TestCase):
     def test_default_and_explicit_budget_are_decimal_fractions(self):
         config=Config('123','/tmp/coinquant-config-test')
-        self.assertEqual(config.loss_fraction,D('.10'))
+        self.assertEqual(config.loss_fraction,D('.49'))
         self.assertEqual(config.slip_fraction,D('.01'))
         smaller=Config('123','/tmp/coinquant-config-test',max_stop_loss_fraction='.02',stop_slippage_fraction='.005')
         self.assertEqual(smaller.loss_fraction,D('.02'))
