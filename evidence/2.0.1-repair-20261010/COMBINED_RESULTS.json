@@ -1,0 +1,2601 @@
+{
+  "version": "coinquant-repair-results-v1",
+  "period": {
+    "start_inclusive": "2020-01-01T00:00:00Z",
+    "end_exclusive": "2026-09-20T00:00:00Z",
+    "days": 2454,
+    "year_days": "365.2425",
+    "cagr_exponent": "0.14883557457212713936430317848410757946210268948655",
+    "cagr_formula": "(final_cny / 10000) ** (365.2425 / 2454) - 1",
+    "daily_mdd_basis": "Initial 10000 plus all 2454 UTC daily closing values; each calendar year starts with previous-year-end carried equity."
+  },
+  "historical_context": {
+    "head": "79a334b2d776be2dbe8756f3a616697f9403982e",
+    "receipt": {
+      "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-previous-segment-003.json.gz",
+      "bytes": 351532,
+      "sha256": "236836c2b021b4da7233dde382d77e177e879d747baf6de3b9e129b1c3ff9f25"
+    },
+    "specification": {
+      "path": "/workspace/scratch/4a60782c7dbc/remeasure-evidence/evidence/2.0.0-remeasure-20261009/spec.json",
+      "bytes": 3230,
+      "sha256": "748c6f06c23a6b6994d4f3e7bb3d38f62f47894c662ec05be1dfe07802574cb1"
+    },
+    "source_sha256": "fbe4beaca18a12df53aa7e0206c28ba9269a8f0b211c2b360c3daeb16b2ecadc",
+    "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+    "input_sha256": "a0c5e64108edc270c0dd4982b34e87755f83b8bc3000889640535d91420bda36",
+    "risk_configuration": {
+      "capital_limit_usdt": null,
+      "max_stop_loss_fraction": ".49",
+      "stop_slippage_fraction": ".01"
+    },
+    "initial_cny": "10000",
+    "final_cny": "7516290.023435836543333855273",
+    "final_usdt": "1123359.686644933954399612117",
+    "total_return_pct": "75062.9002343583654333385527300",
+    "cagr_pct": "167.94868978615014542686241101917375147089641527108",
+    "path_mdd_proxy_pct": "46.2719771251475894680832061800",
+    "close_observation_mdd_proxy_pct": "46.0122809509164197724470410200",
+    "daily_equity": {
+      "basis": "financial.daily UTC closing-boundary valuations; initial 10000; annual prior-year-end carry",
+      "missing_values_imputed": 0,
+      "opening_post_conversion_cny": "9980.009999999999999999999996",
+      "full_period": {
+        "start_date": "2020-01-01",
+        "end_date": "2026-09-19",
+        "days": 2454,
+        "opening_equity_cny": "10000",
+        "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+        "ending_equity_cny": "7516290.023435836543333855273",
+        "return_pct": "75062.9002343583654333385527300",
+        "mdd_pct": "41.104279272585886726610829208116088883363765240119",
+        "mdd_event": {
+          "peak_at": "2021-01-08",
+          "trough_date": "2021-01-29",
+          "peak_equity_cny": "895591.3681925401793185202289",
+          "trough_equity_cny": "527464.9910695055343897136749"
+        }
+      },
+      "by_year": [
+        {
+          "start_date": "2020-01-01",
+          "end_date": "2020-12-31",
+          "days": 366,
+          "opening_equity_cny": "10000",
+          "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+          "ending_equity_cny": "564503.1986202111124751464828",
+          "return_pct": "5545.03198620211112475146482800",
+          "mdd_pct": "24.291973579499935691946792239489330074302757299150",
+          "mdd_event": {
+            "peak_at": "2020-11-24",
+            "trough_date": "2020-11-27",
+            "peak_equity_cny": "276180.1053948422847812592907",
+            "trough_equity_cny": "209090.5071604921204125507610"
+          },
+          "year": 2020,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2021-01-01",
+          "end_date": "2021-12-31",
+          "days": 365,
+          "opening_equity_cny": "564503.1986202111124751464828",
+          "opening_equity_at": "2020-12-31",
+          "ending_equity_cny": "785823.4215283432761747075333",
+          "return_pct": "39.206194659143629447589928740014089670588971530000",
+          "mdd_pct": "41.104279272585886726610829208116088883363765240119",
+          "mdd_event": {
+            "peak_at": "2021-01-08",
+            "trough_date": "2021-01-29",
+            "peak_equity_cny": "895591.3681925401793185202289",
+            "trough_equity_cny": "527464.9910695055343897136749"
+          },
+          "year": 2021,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2022-01-01",
+          "end_date": "2022-12-31",
+          "days": 365,
+          "opening_equity_cny": "785823.4215283432761747075333",
+          "opening_equity_at": "2021-12-31",
+          "ending_equity_cny": "644183.9202212110113627479223",
+          "return_pct": "-18.024342037509959324824509106819570939700574930266",
+          "mdd_pct": "26.957455803270482460478872091205001149097561710390",
+          "mdd_event": {
+            "peak_at": "2022-03-28",
+            "trough_date": "2022-08-04",
+            "peak_equity_cny": "824835.8705335995839254358882",
+            "trough_equity_cny": "602481.1052849831394662130121"
+          },
+          "year": 2022,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2023-01-01",
+          "end_date": "2023-12-31",
+          "days": 365,
+          "opening_equity_cny": "644183.9202212110113627479223",
+          "opening_equity_at": "2022-12-31",
+          "ending_equity_cny": "3400905.662730914851232670664",
+          "return_pct": "427.94016677147934225481802858277967257529584781685",
+          "mdd_pct": "9.4225920096356307604113681902756123856077752674310",
+          "mdd_event": {
+            "peak_at": "2023-01-29",
+            "trough_date": "2023-01-30",
+            "peak_equity_cny": "1076631.144126718573582570714",
+            "trough_equity_cny": "975184.5839669857177060223462"
+          },
+          "year": 2023,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2024-01-01",
+          "end_date": "2024-12-31",
+          "days": 366,
+          "opening_equity_cny": "3400905.662730914851232670664",
+          "opening_equity_at": "2023-12-31",
+          "ending_equity_cny": "5815639.416620298825697587500",
+          "return_pct": "71.002667917297111133039640134356327323935396954490",
+          "mdd_pct": "18.979332717617364060851260064772657504669337992902",
+          "mdd_event": {
+            "peak_at": "2024-03-04",
+            "trough_date": "2024-03-05",
+            "peak_equity_cny": "4733269.637739321862337143832",
+            "trough_equity_cny": "3834926.644770813863298069388"
+          },
+          "year": 2024,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31",
+          "days": 365,
+          "opening_equity_cny": "5815639.416620298825697587500",
+          "opening_equity_at": "2024-12-31",
+          "ending_equity_cny": "6589105.497454973542565855814",
+          "return_pct": "13.299759930511077996289407807551204848511471784170",
+          "mdd_pct": "4.4198959317207769266605824612922762742281029572010",
+          "mdd_event": {
+            "peak_at": "2025-01-09",
+            "trough_date": "2025-09-17",
+            "peak_equity_cny": "5841772.108740904053727683243",
+            "trough_equity_cny": "5583571.860966265794656461530"
+          },
+          "year": 2025,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2026-01-01",
+          "end_date": "2026-09-19",
+          "days": 262,
+          "opening_equity_cny": "6589105.497454973542565855814",
+          "opening_equity_at": "2025-12-31",
+          "ending_equity_cny": "7516290.023435836543333855273",
+          "return_pct": "14.071477931852598764515988264634678090311677751810",
+          "mdd_pct": "8.3005502130540882919103343375704386120841255091180",
+          "mdd_event": {
+            "peak_at": "2025-12-31",
+            "trough_date": "2026-08-19",
+            "peak_equity_cny": "6589105.497454973542565855814",
+            "trough_equity_cny": "6042173.487047616091983568690"
+          },
+          "year": 2026,
+          "complete_calendar_year": false
+        }
+      ],
+      "terminal_vs_daily_equity_difference_cny": "0E-21"
+    },
+    "net_commission_paid_usdt": "38661.6347087025",
+    "insurance_charge_usdt": "0",
+    "fees_including_insurance_usdt": "38661.6347087025",
+    "net_funding_paid_usdt": "75628.8900690461571065288",
+    "fills": 3079,
+    "filled_ordinary_orders": 301,
+    "income_records": 4275,
+    "funding_events": 1147,
+    "end_position": {
+      "quantity_btc": "0.000",
+      "flat": true,
+      "entry_usdt": "0",
+      "mark_usdt": "0",
+      "wallet_usdt": "1123359.686644933954399612117",
+      "margin_usdt": "0",
+      "live_protections": 0
+    },
+    "cleanup": {
+      "verified_sessions": 795,
+      "terminal_pending_intents": 0,
+      "execution_unresolved_sessions": 0,
+      "reported_error_entries": 735,
+      "reports_with_errors": 675,
+      "error_types": {
+        "Unknown": 18,
+        "ObservationDeadline": 671,
+        "Blocked": 46
+      },
+      "error_reasons": {
+        "completed mark minute unavailable": 9,
+        "bounded Binance observation deadline exceeded; no request sent": 671,
+        "stale or invalid Binance mark observation": 9,
+        "session deadline or stop request prohibits a new entry": 1,
+        "protection outside current price limits": 45
+      },
+      "counting_note": "Retained last-ten error entries in each terminal session report; not all attempts or exchange rejections"
+    },
+    "path_evidence": {
+      "passed": true,
+      "points": 2544832,
+      "rolling_sha256": "97c4fbcdbd4282e07076bd59591ee702a909c783a067d6043602fb0bb70abeab",
+      "mdd_proxy": "0.4627197712514758946808320618",
+      "mdd_close_proxy": "0.4601228095091641977244704102",
+      "hindsight_bounded": true,
+      "bounded_minutes": 53,
+      "rolling_digest_recomputed": true,
+      "raw_trace_files": [
+        {
+          "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-previous/path-traces/segment-001.jsonl.gz",
+          "bytes": 28428229,
+          "sha256": "99cd3861ebb7395e49b330b4327fc91551dfe91f674a037ed8c7a57f832c9da5",
+          "points": 1789766
+        },
+        {
+          "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-previous/path-traces/segment-002.jsonl.gz",
+          "bytes": 10097810,
+          "sha256": "e8834ab1b56e43b32ce90614a52fd8e6d2c1d75ad6c44d81c249d1ef0274584e",
+          "points": 722615
+        },
+        {
+          "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-previous/path-traces/segment-003.jsonl.gz",
+          "bytes": 505422,
+          "sha256": "75b71966d984a43e9fc22f06cf22e942a0e639f01d5794ab3bf81dbccbd4cefc",
+          "points": 32451
+        }
+      ],
+      "backward_timestamp_transitions_in_original_event_order": 663,
+      "limitation": "All original observation points retained and independently recomputed in original event order. OHLC extrema ordering, print/mark proxies and hindsight bounds remain the historical simulation method; no actual native risk acceptance."
+    },
+    "holding_statistics": {
+      "basis": "Actual signed fills grouped from flat to flat; any still-open group is separate",
+      "closed_exposure_groups": 49,
+      "open_exposure_groups": 0,
+      "filled_buy_orders": 252,
+      "filled_sell_orders": 49,
+      "median_closed_holding_days": "6.0833310069444444444444444444444444444444444444444",
+      "closed_within_300_seconds": 0,
+      "daily_boundaries_with_exposure": 378,
+      "closed_groups": [
+        {
+          "entered_at_ms": 1578074408923,
+          "fills": 3,
+          "realized_pnl_usdt": "1371.51714",
+          "commissions_usdt": "11.693567655",
+          "exited_at_ms": 1579028408800,
+          "held_seconds": "953999.877",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-26.4096493834932974460",
+          "net_realized_after_commission_and_funding_usdt": "1333.4139229615067025540"
+        },
+        {
+          "entered_at_ms": 1579028433819,
+          "fills": 4,
+          "realized_pnl_usdt": "-199.5870000000000000000000006",
+          "commissions_usdt": "21.947252400",
+          "exited_at_ms": 1579741208800,
+          "held_seconds": "712774.981",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-89.9239391681579561145",
+          "net_realized_after_commission_and_funding_usdt": "-311.4581915681579561145000006"
+        },
+        {
+          "entered_at_ms": 1583935227459,
+          "fills": 8,
+          "realized_pnl_usdt": "-52.5666",
+          "commissions_usdt": "2.75373855",
+          "exited_at_ms": 1583949960000,
+          "held_seconds": "14732.541",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.4221211930690867866",
+          "net_realized_after_commission_and_funding_usdt": "-55.7424597430690867866"
+        },
+        {
+          "entered_at_ms": 1586116809047,
+          "fills": 12,
+          "realized_pnl_usdt": "73.83551999999999999999999962",
+          "commissions_usdt": "11.79630144",
+          "exited_at_ms": 1586642408800,
+          "held_seconds": "525599.753",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-2.2613106401009874432",
+          "net_realized_after_commission_and_funding_usdt": "59.77790791989901255679999962"
+        },
+        {
+          "entered_at_ms": 1586811627220,
+          "fills": 2,
+          "realized_pnl_usdt": "-55.3938",
+          "commissions_usdt": "2.43734535",
+          "exited_at_ms": 1586995200000,
+          "held_seconds": "183572.78",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0.6199209420669496770",
+          "net_realized_after_commission_and_funding_usdt": "-57.2112244079330503230"
+        },
+        {
+          "entered_at_ms": 1588161608953,
+          "fills": 9,
+          "realized_pnl_usdt": "722.4903",
+          "commissions_usdt": "16.683592275",
+          "exited_at_ms": 1588273208800,
+          "held_seconds": "111599.847",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-15.6408253789949080227",
+          "net_realized_after_commission_and_funding_usdt": "690.1658823460050919773"
+        },
+        {
+          "entered_at_ms": 1588273234071,
+          "fills": 2,
+          "realized_pnl_usdt": "24.2802",
+          "commissions_usdt": "0.604697400",
+          "exited_at_ms": 1588816808800,
+          "held_seconds": "543574.729",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-1.025471071326142800",
+          "net_realized_after_commission_and_funding_usdt": "22.650031528673857200"
+        },
+        {
+          "entered_at_ms": 1594274409102,
+          "fills": 3,
+          "realized_pnl_usdt": "-41.762",
+          "commissions_usdt": "2.17988220",
+          "exited_at_ms": 1594886408800,
+          "held_seconds": "611999.698",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-3.191187158501115",
+          "net_realized_after_commission_and_funding_usdt": "-47.133069358501115"
+        },
+        {
+          "entered_at_ms": 1595347209431,
+          "fills": 10,
+          "realized_pnl_usdt": "3645.0087",
+          "commissions_usdt": "39.023965575",
+          "exited_at_ms": 1595869020000,
+          "held_seconds": "521810.569",
+          "filled_buy_orders": 3,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-100.2249779460019269630",
+          "net_realized_after_commission_and_funding_usdt": "3505.7597564789980730370"
+        },
+        {
+          "entered_at_ms": 1596744008808,
+          "fills": 2,
+          "realized_pnl_usdt": "-15.1715",
+          "commissions_usdt": "1.682618625",
+          "exited_at_ms": 1597384808800,
+          "held_seconds": "640799.992",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-5.5605254800242613145",
+          "net_realized_after_commission_and_funding_usdt": "-22.4146441050242613145"
+        },
+        {
+          "entered_at_ms": 1602216008824,
+          "fills": 19,
+          "realized_pnl_usdt": "862.232679999999999999999998",
+          "commissions_usdt": "28.657634910",
+          "exited_at_ms": 1602777608800,
+          "held_seconds": "561599.976",
+          "filled_buy_orders": 8,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-38.878957861854614",
+          "net_realized_after_commission_and_funding_usdt": "794.696087228145385999999998"
+        },
+        {
+          "entered_at_ms": 1603170009040,
+          "fills": 4,
+          "realized_pnl_usdt": "87926.5656",
+          "commissions_usdt": "151.0842258",
+          "exited_at_ms": 1611275100000,
+          "held_seconds": "8105090.96",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-13021.7949809665916528217",
+          "net_realized_after_commission_and_funding_usdt": "74753.6863932334083471783"
+        },
+        {
+          "entered_at_ms": 1612972808830,
+          "fills": 13,
+          "realized_pnl_usdt": "36233.0214",
+          "commissions_usdt": "383.524447050",
+          "exited_at_ms": 1613703608800,
+          "held_seconds": "730799.97",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-7490.010787040712180366",
+          "net_realized_after_commission_and_funding_usdt": "28359.486165909287819634"
+        },
+        {
+          "entered_at_ms": 1620885608802,
+          "fills": 12,
+          "realized_pnl_usdt": "-2695.9328",
+          "commissions_usdt": "82.198565700",
+          "exited_at_ms": 1620903780000,
+          "held_seconds": "18171.198",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-5.608781286980104",
+          "net_realized_after_commission_and_funding_usdt": "-2783.740146986980104"
+        },
+        {
+          "entered_at_ms": 1627034408888,
+          "fills": 12,
+          "realized_pnl_usdt": "5781.6444",
+          "commissions_usdt": "49.84452270",
+          "exited_at_ms": 1627297208800,
+          "held_seconds": "262799.912",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "41.7834723111746441158",
+          "net_realized_after_commission_and_funding_usdt": "5773.5833496111746441158"
+        },
+        {
+          "entered_at_ms": 1627297233809,
+          "fills": 24,
+          "realized_pnl_usdt": "-25766.245",
+          "commissions_usdt": "857.245701750",
+          "exited_at_ms": 1627337880000,
+          "held_seconds": "40646.191",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-58.5094838513523",
+          "net_realized_after_commission_and_funding_usdt": "-26682.0001856013523"
+        },
+        {
+          "entered_at_ms": 1633773609279,
+          "fills": 45,
+          "realized_pnl_usdt": "38433.28172999999999999999997",
+          "commissions_usdt": "518.0136018975",
+          "exited_at_ms": 1634317208800,
+          "held_seconds": "543599.521",
+          "filled_buy_orders": 4,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-855.0291689723330249404",
+          "net_realized_after_commission_and_funding_usdt": "37060.23895913016697505959997"
+        },
+        {
+          "entered_at_ms": 1646463608966,
+          "fills": 4,
+          "realized_pnl_usdt": "6158.5624",
+          "commissions_usdt": "47.162925450",
+          "exited_at_ms": 1648573208800,
+          "held_seconds": "2109599.834",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-106.1006994151506894680",
+          "net_realized_after_commission_and_funding_usdt": "6005.2987751348493105320"
+        },
+        {
+          "entered_at_ms": 1648573233812,
+          "fills": 47,
+          "realized_pnl_usdt": "-21115.95809999999999999999998",
+          "commissions_usdt": "896.832998775",
+          "exited_at_ms": 1648744260000,
+          "held_seconds": "171026.188",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-362.277757958417793",
+          "net_realized_after_commission_and_funding_usdt": "-22375.06885673341779299999998"
+        },
+        {
+          "entered_at_ms": 1658325608860,
+          "fills": 10,
+          "realized_pnl_usdt": "-581.0879",
+          "commissions_usdt": "22.079715375",
+          "exited_at_ms": 1658394008800,
+          "held_seconds": "68399.94",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-4.1494194437132118484",
+          "net_realized_after_commission_and_funding_usdt": "-607.3170348187132118484"
+        },
+        {
+          "entered_at_ms": 1659330008837,
+          "fills": 65,
+          "realized_pnl_usdt": "-12970.64499999999999999999991",
+          "commissions_usdt": "723.308079750",
+          "exited_at_ms": 1659722408800,
+          "held_seconds": "392399.963",
+          "filled_buy_orders": 6,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-272.4897679316062167936",
+          "net_realized_after_commission_and_funding_usdt": "-13966.44284768160621679359991"
+        },
+        {
+          "entered_at_ms": 1659722433910,
+          "fills": 4,
+          "realized_pnl_usdt": "1410.2432",
+          "commissions_usdt": "41.06477760",
+          "exited_at_ms": 1660564808800,
+          "held_seconds": "842374.89",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-36.8868206931018193760",
+          "net_realized_after_commission_and_funding_usdt": "1332.2916017068981806240"
+        },
+        {
+          "entered_at_ms": 1670371208812,
+          "fills": 8,
+          "realized_pnl_usdt": "-627.404",
+          "commissions_usdt": "55.432386000",
+          "exited_at_ms": 1671645608800,
+          "held_seconds": "1274399.988",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-63.666971003186428284",
+          "net_realized_after_commission_and_funding_usdt": "-746.503357003186428284"
+        },
+        {
+          "entered_at_ms": 1673582409001,
+          "fills": 37,
+          "realized_pnl_usdt": "49269.96819999999999999999998",
+          "commissions_usdt": "759.719013150",
+          "exited_at_ms": 1674108008800,
+          "held_seconds": "525599.799",
+          "filled_buy_orders": 10,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-1208.1329243310543200115",
+          "net_realized_after_commission_and_funding_usdt": "47302.11626251894567998849998"
+        },
+        {
+          "entered_at_ms": 1674612009028,
+          "fills": 97,
+          "realized_pnl_usdt": "19595.34760000000000000000022",
+          "commissions_usdt": "535.496799300",
+          "exited_at_ms": 1675324808800,
+          "held_seconds": "712799.772",
+          "filled_buy_orders": 11,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-890.01284025009516",
+          "net_realized_after_commission_and_funding_usdt": "18169.83796044990484000000022"
+        },
+        {
+          "entered_at_ms": 1675324833985,
+          "fills": 7,
+          "realized_pnl_usdt": "-4052.695000000000000000000008",
+          "commissions_usdt": "93.865566750",
+          "exited_at_ms": 1675970640000,
+          "held_seconds": "645806.015",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-138.229309693819078",
+          "net_realized_after_commission_and_funding_usdt": "-4284.789876443819078000000008"
+        },
+        {
+          "entered_at_ms": 1678953608814,
+          "fills": 112,
+          "realized_pnl_usdt": "100715.2228000000000000000004",
+          "commissions_usdt": "1121.328110550",
+          "exited_at_ms": 1679403608800,
+          "held_seconds": "449999.986",
+          "filled_buy_orders": 11,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-1007.9857913426810379948",
+          "net_realized_after_commission_and_funding_usdt": "98585.9088981073189620052004"
+        },
+        {
+          "entered_at_ms": 1680339608933,
+          "fills": 17,
+          "realized_pnl_usdt": "6002.084699999999999999999981",
+          "commissions_usdt": "146.397742725",
+          "exited_at_ms": 1681498808800,
+          "held_seconds": "1159199.867",
+          "filled_buy_orders": 3,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-150.8537151692477340350",
+          "net_realized_after_commission_and_funding_usdt": "5704.833242105752265964999981"
+        },
+        {
+          "entered_at_ms": 1681498833821,
+          "fills": 84,
+          "realized_pnl_usdt": "-15091.92800000000000000000008",
+          "commissions_usdt": "833.892968400",
+          "exited_at_ms": 1681761608800,
+          "held_seconds": "262774.979",
+          "filled_buy_orders": 10,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-381.3017537594245904248",
+          "net_realized_after_commission_and_funding_usdt": "-16307.12272215942459042480008"
+        },
+        {
+          "entered_at_ms": 1687500009054,
+          "fills": 30,
+          "realized_pnl_usdt": "612.3671999999999999999999221",
+          "commissions_usdt": "87.209035200",
+          "exited_at_ms": 1688155208800,
+          "held_seconds": "655199.746",
+          "filled_buy_orders": 11,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-128.802416756790660",
+          "net_realized_after_commission_and_funding_usdt": "396.3557480432093399999999221"
+        },
+        {
+          "entered_at_ms": 1697518808828,
+          "fills": 76,
+          "realized_pnl_usdt": "226598.1741999999999999999995",
+          "commissions_usdt": "1627.431556350",
+          "exited_at_ms": 1698100920000,
+          "held_seconds": "582111.172",
+          "filled_buy_orders": 11,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-160.188873810116580932",
+          "net_realized_after_commission_and_funding_usdt": "224810.5537698398834190679995"
+        },
+        {
+          "entered_at_ms": 1698566411880,
+          "fills": 49,
+          "realized_pnl_usdt": "9052.645099999999999999999954",
+          "commissions_usdt": "479.352705675",
+          "exited_at_ms": 1699178408800,
+          "held_seconds": "611996.92",
+          "filled_buy_orders": 11,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-671.988380338197296",
+          "net_realized_after_commission_and_funding_usdt": "7901.304013986802703999999954"
+        },
+        {
+          "entered_at_ms": 1700643608820,
+          "fills": 31,
+          "realized_pnl_usdt": "6381.718500000000000000000019",
+          "commissions_usdt": "311.884915725",
+          "exited_at_ms": 1701367208800,
+          "held_seconds": "723599.98",
+          "filled_buy_orders": 4,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-524.724857984060160",
+          "net_realized_after_commission_and_funding_usdt": "5545.108726290939840000000019"
+        },
+        {
+          "entered_at_ms": 1702846809035,
+          "fills": 28,
+          "realized_pnl_usdt": "20705.57989999999999999999999",
+          "commissions_usdt": "391.098406725",
+          "exited_at_ms": 1704880808800,
+          "held_seconds": "2033999.765",
+          "filled_buy_orders": 8,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-4080.3948293663279416888",
+          "net_realized_after_commission_and_funding_usdt": "16234.08666390867205831119999"
+        },
+        {
+          "entered_at_ms": 1705536008808,
+          "fills": 60,
+          "realized_pnl_usdt": "-11116.78879999999999999999998",
+          "commissions_usdt": "487.278081600",
+          "exited_at_ms": 1705604640000,
+          "held_seconds": "68631.192",
+          "filled_buy_orders": 7,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-66.014924118932072",
+          "net_realized_after_commission_and_funding_usdt": "-11670.08180571893207199999998"
+        },
+        {
+          "entered_at_ms": 1707832808806,
+          "fills": 289,
+          "realized_pnl_usdt": "-43503.53330000000000000000096",
+          "commissions_usdt": "4556.767369425",
+          "exited_at_ms": 1707834060000,
+          "held_seconds": "1251.194",
+          "filled_buy_orders": 8,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0",
+          "net_realized_after_commission_and_funding_usdt": "-48060.30066942500000000000096"
+        },
+        {
+          "entered_at_ms": 1709118008895,
+          "fills": 107,
+          "realized_pnl_usdt": "266938.7202",
+          "commissions_usdt": "2578.921646850",
+          "exited_at_ms": 1710054008800,
+          "held_seconds": "935999.905",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-27228.7937576184408467550",
+          "net_realized_after_commission_and_funding_usdt": "237131.0047955315591532450"
+        },
+        {
+          "entered_at_ms": 1716447608803,
+          "fills": 89,
+          "realized_pnl_usdt": "-10347.23639999999999999999986",
+          "commissions_usdt": "1150.096167900",
+          "exited_at_ms": 1716471540000,
+          "held_seconds": "23931.197",
+          "filled_buy_orders": 12,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-77.354514757804963",
+          "net_realized_after_commission_and_funding_usdt": "-11574.68708265780496299999986"
+        },
+        {
+          "entered_at_ms": 1724986808926,
+          "fills": 91,
+          "realized_pnl_usdt": "-13200.77969999999999999999998",
+          "commissions_usdt": "842.855504775",
+          "exited_at_ms": 1725035220000,
+          "held_seconds": "48411.074",
+          "filled_buy_orders": 11,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-36.6822700371233236536",
+          "net_realized_after_commission_and_funding_usdt": "-14080.31747481212332365359998"
+        },
+        {
+          "entered_at_ms": 1726822808976,
+          "fills": 22,
+          "realized_pnl_usdt": "640.490000000000000000000006",
+          "commissions_usdt": "218.958952500",
+          "exited_at_ms": 1727085608800,
+          "held_seconds": "262799.824",
+          "filled_buy_orders": 5,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-83.32955506679627251",
+          "net_realized_after_commission_and_funding_usdt": "338.201492433203727490000006"
+        },
+        {
+          "entered_at_ms": 1731164409171,
+          "fills": 118,
+          "realized_pnl_usdt": "152345.1389",
+          "commissions_usdt": "1271.681565825",
+          "exited_at_ms": 1731726008800,
+          "held_seconds": "561599.629",
+          "filled_buy_orders": 10,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-3160.5773886473800372776",
+          "net_realized_after_commission_and_funding_usdt": "147912.8799455276199627224"
+        },
+        {
+          "entered_at_ms": 1739120408806,
+          "fills": 29,
+          "realized_pnl_usdt": "3127.817099999999999999999994",
+          "commissions_usdt": "538.839596925",
+          "exited_at_ms": 1739232008800,
+          "held_seconds": "111599.994",
+          "filled_buy_orders": 4,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-81.618721875329794038",
+          "net_realized_after_commission_and_funding_usdt": "2507.358781199670205961999994"
+        },
+        {
+          "entered_at_ms": 1741258808856,
+          "fills": 30,
+          "realized_pnl_usdt": "-15226.84800000000000000000001",
+          "commissions_usdt": "222.088275600",
+          "exited_at_ms": 1741590008800,
+          "held_seconds": "331199.944",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-40.8143851827030138298",
+          "net_realized_after_commission_and_funding_usdt": "-15489.75066078270301382980001"
+        },
+        {
+          "entered_at_ms": 1745722808930,
+          "fills": 73,
+          "realized_pnl_usdt": "2871.119199999999999999999968",
+          "commissions_usdt": "1179.262787550",
+          "exited_at_ms": 1745834408800,
+          "held_seconds": "111599.87",
+          "filled_buy_orders": 10,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "3.604715482584",
+          "net_realized_after_commission_and_funding_usdt": "1695.461127932583999999999968"
+        },
+        {
+          "entered_at_ms": 1752390009187,
+          "fills": 34,
+          "realized_pnl_usdt": "918.7465999999999999999998578",
+          "commissions_usdt": "146.297176350",
+          "exited_at_ms": 1753196408800,
+          "held_seconds": "806399.613",
+          "filled_buy_orders": 11,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-271.0809015103151389877",
+          "net_realized_after_commission_and_funding_usdt": "501.3685221396848610122998578"
+        },
+        {
+          "entered_at_ms": 1759363208814,
+          "fills": 396,
+          "realized_pnl_usdt": "167566.5275999999999999999999",
+          "commissions_usdt": "6675.745438800",
+          "exited_at_ms": 1759737608800,
+          "held_seconds": "374399.986",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-5522.7227281984432832190",
+          "net_realized_after_commission_and_funding_usdt": "155368.0594330015567167809999"
+        },
+        {
+          "entered_at_ms": 1775437209012,
+          "fills": 290,
+          "realized_pnl_usdt": "-34729.17929999999999999999994",
+          "commissions_usdt": "4085.081064225",
+          "exited_at_ms": 1775559180000,
+          "held_seconds": "121970.988",
+          "filled_buy_orders": 12,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-256.0297669510667796963",
+          "net_realized_after_commission_and_funding_usdt": "-39070.29013117606677969629994"
+        },
+        {
+          "entered_at_ms": 1781650827982,
+          "fills": 108,
+          "realized_pnl_usdt": "-5007.930499999999999999999998",
+          "commissions_usdt": "442.205566125",
+          "exited_at_ms": 1781693940000,
+          "held_seconds": "43112.018",
+          "filled_buy_orders": 11,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "13.9717314406396460895",
+          "net_realized_after_commission_and_funding_usdt": "-5436.164334684360353910499998"
+        },
+        {
+          "entered_at_ms": 1787227208961,
+          "fills": 453,
+          "realized_pnl_usdt": "236629.4974999999999999999999",
+          "commissions_usdt": "3910.626149475",
+          "exited_at_ms": 1788102008800,
+          "held_seconds": "874799.839",
+          "filled_buy_orders": 10,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-6961.1716986118025455686",
+          "net_realized_after_commission_and_funding_usdt": "225757.6996519131974544313999"
+        }
+      ]
+    }
+  },
+  "control_2_0_0": {
+    "head": "162ee7138952925ffafbc9b68be7c754c0c0a6c3",
+    "receipt": {
+      "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current-segment-002.json.gz",
+      "bytes": 257586,
+      "sha256": "6d5fb6aaa0f3daa074ac870203834dcdb4763dc7a262e307929233b6804bab6e"
+    },
+    "specification": {
+      "path": "/workspace/scratch/4a60782c7dbc/remeasure-evidence/evidence/2.0.0-remeasure-20261009/spec.json",
+      "bytes": 3230,
+      "sha256": "748c6f06c23a6b6994d4f3e7bb3d38f62f47894c662ec05be1dfe07802574cb1"
+    },
+    "source_sha256": "9cbc2507d7d5e1f644228a37e0f9a50d69ef4aafaf7793c4cb2ccdc2a97081f2",
+    "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+    "input_sha256": "a0c5e64108edc270c0dd4982b34e87755f83b8bc3000889640535d91420bda36",
+    "risk_configuration": {
+      "capital_limit_usdt": null,
+      "max_stop_loss_fraction": ".10",
+      "stop_slippage_fraction": ".01"
+    },
+    "initial_cny": "10000",
+    "final_cny": "51498.49564014073702134529786",
+    "final_usdt": "7696.793729966937945671617907",
+    "total_return_pct": "414.984956401407370213452978600",
+    "cagr_pct": "27.626350225218363842056477048778673484027473448540",
+    "path_mdd_proxy_pct": "15.1634397847834416097821407100",
+    "close_observation_mdd_proxy_pct": "14.8996792225490021456407460100",
+    "daily_equity": {
+      "basis": "financial.daily UTC closing-boundary valuations; initial 10000; annual prior-year-end carry",
+      "missing_values_imputed": 0,
+      "opening_post_conversion_cny": "9980.009999999999999999999996",
+      "full_period": {
+        "start_date": "2020-01-01",
+        "end_date": "2026-09-19",
+        "days": 2454,
+        "opening_equity_cny": "10000",
+        "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+        "ending_equity_cny": "51498.49564014073702134529786",
+        "return_pct": "414.984956401407370213452978600",
+        "mdd_pct": "12.115394642945874683970092433241786901519478559867",
+        "mdd_event": {
+          "peak_at": "2025-01-09",
+          "trough_date": "2026-08-19",
+          "peak_equity_cny": "53377.41399080866917174650791",
+          "trough_equity_cny": "46910.52963562319384854425631"
+        }
+      },
+      "by_year": [
+        {
+          "start_date": "2020-01-01",
+          "end_date": "2020-12-31",
+          "days": 366,
+          "opening_equity_cny": "10000",
+          "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+          "ending_equity_cny": "12876.28771952470910250267658",
+          "return_pct": "28.762877195247091025026765800",
+          "mdd_pct": "10.966890026858091561135560623514023800448745539196",
+          "mdd_event": {
+            "peak_at": "2020-04-08",
+            "trough_date": "2020-09-16",
+            "peak_equity_cny": "10734.45629978806293556343906",
+            "trough_equity_cny": "9557.220282409165738702263530"
+          },
+          "year": 2020,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2021-01-01",
+          "end_date": "2021-12-31",
+          "days": 365,
+          "opening_equity_cny": "12876.28771952470910250267658",
+          "opening_equity_at": "2020-12-31",
+          "ending_equity_cny": "15964.96576970284430438510769",
+          "return_pct": "23.987333286244281077188416207656149935588334065530",
+          "mdd_pct": "5.4528193974905723578692569266219165030394778038510",
+          "mdd_event": {
+            "peak_at": "2021-04-01",
+            "trough_date": "2021-05-31",
+            "peak_equity_cny": "13374.15982941838542230970586",
+            "trough_equity_cny": "12644.89104798846765849740109"
+          },
+          "year": 2021,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2022-01-01",
+          "end_date": "2022-12-31",
+          "days": 365,
+          "opening_equity_cny": "15964.96576970284430438510769",
+          "opening_equity_at": "2021-12-31",
+          "ending_equity_cny": "17374.67863167721640230574553",
+          "return_pct": "8.8300399907503908458315807369638730949460310963000",
+          "mdd_pct": "6.4710763191771778364920087343461111644569656990560",
+          "mdd_event": {
+            "peak_at": "2022-11-03",
+            "trough_date": "2022-12-30",
+            "peak_equity_cny": "18576.79736695154749192394347",
+            "trough_equity_cny": "17374.67863167721640230574553"
+          },
+          "year": 2022,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2023-01-01",
+          "end_date": "2023-12-31",
+          "days": 365,
+          "opening_equity_cny": "17374.67863167721640230574553",
+          "opening_equity_at": "2022-12-31",
+          "ending_equity_cny": "39353.33111696152018342611860",
+          "return_pct": "126.49818135463640247383351461288603003313824923475",
+          "mdd_pct": "7.8804895880905533180837389701614119314255901840870",
+          "mdd_event": {
+            "peak_at": "2023-01-29",
+            "trough_date": "2023-01-30",
+            "peak_equity_cny": "21930.39094234259412621099209",
+            "trough_equity_cny": "20202.16876750373221613880831"
+          },
+          "year": 2023,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2024-01-01",
+          "end_date": "2024-12-31",
+          "days": 366,
+          "opening_equity_cny": "39353.33111696152018342611860",
+          "opening_equity_at": "2023-12-31",
+          "ending_equity_cny": "53138.63447321524232184698451",
+          "return_pct": "35.029571741417778626959884717732100233446404631590",
+          "mdd_pct": "5.6876590541699226092703646958139002896826291802560",
+          "mdd_event": {
+            "peak_at": "2024-07-24",
+            "trough_date": "2024-09-27",
+            "peak_equity_cny": "42679.42853642798613489221243",
+            "trough_equity_cny": "40251.96815500785809471037180"
+          },
+          "year": 2024,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31",
+          "days": 365,
+          "opening_equity_cny": "53138.63447321524232184698451",
+          "opening_equity_at": "2024-12-31",
+          "ending_equity_cny": "50977.51292155812873256087205",
+          "return_pct": "-4.0669497307960298068482084297208941322995517785770",
+          "mdd_pct": "4.6212510134868451628683712795782527122048155952740",
+          "mdd_event": {
+            "peak_at": "2025-01-09",
+            "trough_date": "2025-07-20",
+            "peak_equity_cny": "53377.41399080866917174650791",
+            "trough_equity_cny": "50910.70970578535446267687644"
+          },
+          "year": 2025,
+          "complete_calendar_year": true
+        },
+        {
+          "start_date": "2026-01-01",
+          "end_date": "2026-09-19",
+          "days": 262,
+          "opening_equity_cny": "50977.51292155812873256087205",
+          "opening_equity_at": "2025-12-31",
+          "ending_equity_cny": "51498.49564014073702134529786",
+          "return_pct": "1.0219853592784581874006078813234888019609090571800",
+          "mdd_pct": "7.9779947134592917996439970317166195967165889316020",
+          "mdd_event": {
+            "peak_at": "2025-12-31",
+            "trough_date": "2026-08-19",
+            "peak_equity_cny": "50977.51292155812873256087205",
+            "trough_equity_cny": "46910.52963562319384854425631"
+          },
+          "year": 2026,
+          "complete_calendar_year": false
+        }
+      ],
+      "terminal_vs_daily_equity_difference_cny": "0E-23"
+    },
+    "net_commission_paid_usdt": "257.2268543475",
+    "insurance_charge_usdt": "0",
+    "fees_including_insurance_usdt": "257.2268543475",
+    "net_funding_paid_usdt": "282.6634983681735604693",
+    "fills": 142,
+    "filled_ordinary_orders": 93,
+    "income_records": 926,
+    "funding_events": 740,
+    "end_position": {
+      "quantity_btc": "0.000",
+      "flat": true,
+      "entry_usdt": "0",
+      "mark_usdt": "0",
+      "wallet_usdt": "7696.793729966937945671617907",
+      "margin_usdt": "0",
+      "live_protections": 0
+    },
+    "cleanup": {
+      "verified_sessions": 795,
+      "terminal_pending_intents": 0,
+      "execution_unresolved_sessions": 0,
+      "reported_error_entries": 1065,
+      "reports_with_errors": 722,
+      "error_types": {
+        "Unknown": 317,
+        "ObservationDeadline": 703,
+        "Blocked": 45
+      },
+      "error_reasons": {
+        "completed mark minute unavailable": 9,
+        "bounded Binance observation deadline exceeded; no request sent": 703,
+        "stale or invalid Binance mark observation": 10,
+        "order book changed before the order was sent": 296,
+        "protection cancellation/child unresolved": 2,
+        "protection outside current price limits": 45
+      },
+      "counting_note": "Retained last-ten error entries in each terminal session report; not all attempts or exchange rejections"
+    },
+    "path_evidence": {
+      "passed": true,
+      "points": 1763276,
+      "rolling_sha256": "ab4f5bbc97a9d68833d224138bfd972c0429a877ecb6be59e6710df7ca284ec6",
+      "mdd_proxy": "0.1516343978478344160978214071",
+      "mdd_close_proxy": "0.1489967922254900214564074601",
+      "hindsight_bounded": true,
+      "bounded_minutes": 29,
+      "rolling_digest_recomputed": true,
+      "raw_trace_files": [
+        {
+          "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current/path-traces/segment-001.jsonl.gz",
+          "bytes": 16842418,
+          "sha256": "7c7db656b525ffe291ea6ef2645fcc5574eebccb7a77f7fb06e1c6b648274414",
+          "points": 1229884
+        },
+        {
+          "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current/path-traces/segment-002.jsonl.gz",
+          "bytes": 6497486,
+          "sha256": "b29b967e0599771d1c883cc860ad76458148dd1a9719cf5d67ec65befcf9d566",
+          "points": 533392
+        }
+      ],
+      "backward_timestamp_transitions_in_original_event_order": 371,
+      "limitation": "All original observation points retained and independently recomputed in original event order. OHLC extrema ordering, print/mark proxies and hindsight bounds remain the historical simulation method; no actual native risk acceptance."
+    },
+    "holding_statistics": {
+      "basis": "Actual signed fills grouped from flat to flat; any still-open group is separate",
+      "closed_exposure_groups": 44,
+      "open_exposure_groups": 0,
+      "filled_buy_orders": 49,
+      "filled_sell_orders": 44,
+      "median_closed_holding_days": "4.4588232581018518518518518518518518518518518518518",
+      "closed_within_300_seconds": 4,
+      "daily_boundaries_with_exposure": 241,
+      "closed_groups": [
+        {
+          "entered_at_ms": 1578074409758,
+          "fills": 2,
+          "realized_pnl_usdt": "-4.5495",
+          "commissions_usdt": "3.717168975",
+          "exited_at_ms": 1578074602600,
+          "held_seconds": "192.842",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0",
+          "net_realized_after_commission_and_funding_usdt": "-8.266668975"
+        },
+        {
+          "entered_at_ms": 1579028567513,
+          "fills": 4,
+          "realized_pnl_usdt": "-26.18916",
+          "commissions_usdt": "3.21803793",
+          "exited_at_ms": 1579741324000,
+          "held_seconds": "712756.487",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-13.1909892876367663710",
+          "net_realized_after_commission_and_funding_usdt": "-42.5981872176367663710"
+        },
+        {
+          "entered_at_ms": 1583935372372,
+          "fills": 3,
+          "realized_pnl_usdt": "-29.8418",
+          "commissions_usdt": "1.52269815",
+          "exited_at_ms": 1583949960000,
+          "held_seconds": "14587.628",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.2333243725402969158",
+          "net_realized_after_commission_and_funding_usdt": "-31.5978225225402969158"
+        },
+        {
+          "entered_at_ms": 1586116809782,
+          "fills": 4,
+          "realized_pnl_usdt": "52.74",
+          "commissions_usdt": "3.09712500",
+          "exited_at_ms": 1586494920000,
+          "held_seconds": "378110.218",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0.43884341729413452",
+          "net_realized_after_commission_and_funding_usdt": "50.08171841729413452"
+        },
+        {
+          "entered_at_ms": 1586811833925,
+          "fills": 2,
+          "realized_pnl_usdt": "-32.2182",
+          "commissions_usdt": "1.27156365",
+          "exited_at_ms": 1586995200000,
+          "held_seconds": "183366.075",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0.3227687549604779310",
+          "net_realized_after_commission_and_funding_usdt": "-33.1669948950395220690"
+        },
+        {
+          "entered_at_ms": 1588161709033,
+          "fills": 2,
+          "realized_pnl_usdt": "82.95552",
+          "commissions_usdt": "1.91843304",
+          "exited_at_ms": 1588273251400,
+          "held_seconds": "111542.367",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-1.7969806935806697048",
+          "net_realized_after_commission_and_funding_usdt": "79.2401062664193302952"
+        },
+        {
+          "entered_at_ms": 1594274496401,
+          "fills": 3,
+          "realized_pnl_usdt": "-20.11608",
+          "commissions_usdt": "0.999432540",
+          "exited_at_ms": 1594886451400,
+          "held_seconds": "611954.999",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-1.463474365682040",
+          "net_realized_after_commission_and_funding_usdt": "-22.578986905682040"
+        },
+        {
+          "entered_at_ms": 1595347209431,
+          "fills": 2,
+          "realized_pnl_usdt": "-5.658",
+          "commissions_usdt": "4.5948741",
+          "exited_at_ms": 1595347429400,
+          "held_seconds": "219.969",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0",
+          "net_realized_after_commission_and_funding_usdt": "-10.2528741"
+        },
+        {
+          "entered_at_ms": 1596744159194,
+          "fills": 3,
+          "realized_pnl_usdt": "-0.2297",
+          "commissions_usdt": "0.356272275",
+          "exited_at_ms": 1596744250800,
+          "held_seconds": "91.606",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0",
+          "net_realized_after_commission_and_funding_usdt": "-0.585972275"
+        },
+        {
+          "entered_at_ms": 1602216009496,
+          "fills": 3,
+          "realized_pnl_usdt": "138.47106",
+          "commissions_usdt": "4.563635895",
+          "exited_at_ms": 1602777608800,
+          "held_seconds": "561599.304",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-6.192506123854323",
+          "net_realized_after_commission_and_funding_usdt": "127.714917981145677"
+        },
+        {
+          "entered_at_ms": 1603170071662,
+          "fills": 6,
+          "realized_pnl_usdt": "438.2917000000000000000000007",
+          "commissions_usdt": "5.414245875",
+          "exited_at_ms": 1604321100000,
+          "held_seconds": "1151028.338",
+          "filled_buy_orders": 3,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-4.4168963762536842089",
+          "net_realized_after_commission_and_funding_usdt": "428.4605577487463157911000007"
+        },
+        {
+          "entered_at_ms": 1613142271515,
+          "fills": 2,
+          "realized_pnl_usdt": "79.6362",
+          "commissions_usdt": "2.514978900",
+          "exited_at_ms": 1613311512800,
+          "held_seconds": "169241.285",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-11.5482324308234201150",
+          "net_realized_after_commission_and_funding_usdt": "65.5729886691765798850"
+        },
+        {
+          "entered_at_ms": 1620885696469,
+          "fills": 5,
+          "realized_pnl_usdt": "-48.44",
+          "commissions_usdt": "1.491441000",
+          "exited_at_ms": 1620903780000,
+          "held_seconds": "18083.531",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.10179276382904",
+          "net_realized_after_commission_and_funding_usdt": "-50.03323376382904"
+        },
+        {
+          "entered_at_ms": 1627034434084,
+          "fills": 2,
+          "realized_pnl_usdt": "104.58485",
+          "commissions_usdt": "0.9034758375",
+          "exited_at_ms": 1627297209400,
+          "held_seconds": "262775.316",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0.7572697540404786247",
+          "net_realized_after_commission_and_funding_usdt": "104.4386439165404786247"
+        },
+        {
+          "entered_at_ms": 1633773771242,
+          "fills": 2,
+          "realized_pnl_usdt": "440.01644",
+          "commissions_usdt": "5.93680953",
+          "exited_at_ms": 1634317251400,
+          "held_seconds": "543480.158",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-9.8096817091477384336",
+          "net_realized_after_commission_and_funding_usdt": "424.2699487608522615664"
+        },
+        {
+          "entered_at_ms": 1646532021617,
+          "fills": 3,
+          "realized_pnl_usdt": "104.4355",
+          "commissions_usdt": "0.847587975",
+          "exited_at_ms": 1648573209400,
+          "held_seconds": "2041187.783",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-1.8170678936117079658",
+          "net_realized_after_commission_and_funding_usdt": "101.7708441313882920342"
+        },
+        {
+          "entered_at_ms": 1659330034359,
+          "fills": 4,
+          "realized_pnl_usdt": "-103.3892",
+          "commissions_usdt": "5.96019990",
+          "exited_at_ms": 1659722408800,
+          "held_seconds": "392374.441",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-2.2463688690680727228",
+          "net_realized_after_commission_and_funding_usdt": "-111.5957687690680727228"
+        },
+        {
+          "entered_at_ms": 1659722555863,
+          "fills": 3,
+          "realized_pnl_usdt": "37.417",
+          "commissions_usdt": "1.08991815",
+          "exited_at_ms": 1660564809400,
+          "held_seconds": "842253.537",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.9790166451080106170",
+          "net_realized_after_commission_and_funding_usdt": "35.3480652048919893830"
+        },
+        {
+          "entered_at_ms": 1670371221657,
+          "fills": 2,
+          "realized_pnl_usdt": "-17.023",
+          "commissions_usdt": "1.47500235",
+          "exited_at_ms": 1671645651400,
+          "held_seconds": "1274429.743",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-1.6938918890756022204",
+          "net_realized_after_commission_and_funding_usdt": "-20.1918942390756022204"
+        },
+        {
+          "entered_at_ms": 1673582409428,
+          "fills": 2,
+          "realized_pnl_usdt": "420.542",
+          "commissions_usdt": "5.557187250",
+          "exited_at_ms": 1673845512400,
+          "held_seconds": "263102.972",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-5.2496719254987850675",
+          "net_realized_after_commission_and_funding_usdt": "409.7351408245012149325"
+        },
+        {
+          "entered_at_ms": 1674612096637,
+          "fills": 3,
+          "realized_pnl_usdt": "330.668",
+          "commissions_usdt": "9.028929",
+          "exited_at_ms": 1675324808800,
+          "held_seconds": "712712.163",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-15.00670158657748",
+          "net_realized_after_commission_and_funding_usdt": "306.63236941342252"
+        },
+        {
+          "entered_at_ms": 1675324831207,
+          "fills": 2,
+          "realized_pnl_usdt": "-81.004",
+          "commissions_usdt": "1.90348950",
+          "exited_at_ms": 1675970640000,
+          "held_seconds": "645808.793",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-2.801257197184985",
+          "net_realized_after_commission_and_funding_usdt": "-85.708746697184985"
+        },
+        {
+          "entered_at_ms": 1678953746528,
+          "fills": 2,
+          "realized_pnl_usdt": "599.3247",
+          "commissions_usdt": "6.696671475",
+          "exited_at_ms": 1679403651400,
+          "held_seconds": "449904.872",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-6.0187824165958766004",
+          "net_realized_after_commission_and_funding_usdt": "586.6092461084041233996"
+        },
+        {
+          "entered_at_ms": 1680339634068,
+          "fills": 3,
+          "realized_pnl_usdt": "87.2984",
+          "commissions_usdt": "2.15659290",
+          "exited_at_ms": 1681498851400,
+          "held_seconds": "1159217.332",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-2.2231073814415455542",
+          "net_realized_after_commission_and_funding_usdt": "82.9186997185584544458"
+        },
+        {
+          "entered_at_ms": 1681498906014,
+          "fills": 5,
+          "realized_pnl_usdt": "-163.631",
+          "commissions_usdt": "9.18093525",
+          "exited_at_ms": 1681761608800,
+          "held_seconds": "262702.786",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-4.1989073657435561365",
+          "net_realized_after_commission_and_funding_usdt": "-177.0108426157435561365"
+        },
+        {
+          "entered_at_ms": 1687500084274,
+          "fills": 3,
+          "realized_pnl_usdt": "40.3733",
+          "commissions_usdt": "5.756214675",
+          "exited_at_ms": 1688155251400,
+          "held_seconds": "655167.126",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-8.502030627917055",
+          "net_realized_after_commission_and_funding_usdt": "26.115054697082945"
+        },
+        {
+          "entered_at_ms": 1697518934026,
+          "fills": 7,
+          "realized_pnl_usdt": "1648.1182",
+          "commissions_usdt": "11.855682300",
+          "exited_at_ms": 1698100920000,
+          "held_seconds": "581985.974",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-1.1667848904915630242",
+          "net_realized_after_commission_and_funding_usdt": "1635.0957328095084369758"
+        },
+        {
+          "entered_at_ms": 1698566424598,
+          "fills": 4,
+          "realized_pnl_usdt": "229.8192",
+          "commissions_usdt": "12.046089600",
+          "exited_at_ms": 1699178451400,
+          "held_seconds": "612026.802",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-16.892545697091968",
+          "net_realized_after_commission_and_funding_usdt": "200.880564702908032"
+        },
+        {
+          "entered_at_ms": 1700643696679,
+          "fills": 3,
+          "realized_pnl_usdt": "72.865",
+          "commissions_usdt": "3.62160825",
+          "exited_at_ms": 1701367251400,
+          "held_seconds": "723554.721",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-6.094909894382400",
+          "net_realized_after_commission_and_funding_usdt": "63.148481855617600"
+        },
+        {
+          "entered_at_ms": 1702846934387,
+          "fills": 2,
+          "realized_pnl_usdt": "242.121",
+          "commissions_usdt": "4.545161100",
+          "exited_at_ms": 1704880851400,
+          "held_seconds": "2033917.013",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-47.4065066890514611848",
+          "net_realized_after_commission_and_funding_usdt": "190.1693322109485388152"
+        },
+        {
+          "entered_at_ms": 1705536034087,
+          "fills": 3,
+          "realized_pnl_usdt": "-130.1447",
+          "commissions_usdt": "5.620503525",
+          "exited_at_ms": 1705604640000,
+          "held_seconds": "68605.913",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.761250096732956",
+          "net_realized_after_commission_and_funding_usdt": "-136.526453621732956"
+        },
+        {
+          "entered_at_ms": 1709510434168,
+          "fills": 3,
+          "realized_pnl_usdt": "287.8327",
+          "commissions_usdt": "4.675916025",
+          "exited_at_ms": 1710054051400,
+          "held_seconds": "543617.232",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-25.8881878492314124057",
+          "net_realized_after_commission_and_funding_usdt": "257.2685961257685875943"
+        },
+        {
+          "entered_at_ms": 1716447734498,
+          "fills": 3,
+          "realized_pnl_usdt": "-8.1752",
+          "commissions_usdt": "0.830401800",
+          "exited_at_ms": 1716471540000,
+          "held_seconds": "23805.502",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.055816372153192",
+          "net_realized_after_commission_and_funding_usdt": "-9.061418172153192"
+        },
+        {
+          "entered_at_ms": 1724986809212,
+          "fills": 3,
+          "realized_pnl_usdt": "-119.3655",
+          "commissions_usdt": "7.461574125",
+          "exited_at_ms": 1725035220000,
+          "held_seconds": "48410.788",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.324655659428934039",
+          "net_realized_after_commission_and_funding_usdt": "-127.151729784428934039"
+        },
+        {
+          "entered_at_ms": 1726822809585,
+          "fills": 2,
+          "realized_pnl_usdt": "5.374",
+          "commissions_usdt": "1.9041405",
+          "exited_at_ms": 1727085609400,
+          "held_seconds": "262799.815",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.724604826667793674",
+          "net_realized_after_commission_and_funding_usdt": "2.745254673332206326"
+        },
+        {
+          "entered_at_ms": 1731164410110,
+          "fills": 2,
+          "realized_pnl_usdt": "1586.7246",
+          "commissions_usdt": "13.34104605",
+          "exited_at_ms": 1731726051400,
+          "held_seconds": "561641.29",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-33.1572845602357763214",
+          "net_realized_after_commission_and_funding_usdt": "1540.2262693897642236786"
+        },
+        {
+          "entered_at_ms": 1739120579985,
+          "fills": 2,
+          "realized_pnl_usdt": "26.07",
+          "commissions_usdt": "4.800722850",
+          "exited_at_ms": 1739232009400,
+          "held_seconds": "111429.415",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.7269683729786459388",
+          "net_realized_after_commission_and_funding_usdt": "20.5423087770213540612"
+        },
+        {
+          "entered_at_ms": 1741259008974,
+          "fills": 2,
+          "realized_pnl_usdt": "-132.2025",
+          "commissions_usdt": "1.951315875",
+          "exited_at_ms": 1741590009400,
+          "held_seconds": "331000.426",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-0.3588603620987955495",
+          "net_realized_after_commission_and_funding_usdt": "-134.5126762370987955495"
+        },
+        {
+          "entered_at_ms": 1745722809345,
+          "fills": 2,
+          "realized_pnl_usdt": "25.5101",
+          "commissions_usdt": "10.920496125",
+          "exited_at_ms": 1745834451400,
+          "held_seconds": "111642.055",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0.033372982104",
+          "net_realized_after_commission_and_funding_usdt": "14.622976857104"
+        },
+        {
+          "entered_at_ms": 1752390009206,
+          "fills": 7,
+          "realized_pnl_usdt": "86.913",
+          "commissions_usdt": "14.397045300",
+          "exited_at_ms": 1753196451400,
+          "held_seconds": "806442.194",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-26.6798943163250622819",
+          "net_realized_after_commission_and_funding_usdt": "45.8360603836749377181"
+        },
+        {
+          "entered_at_ms": 1759626009247,
+          "fills": 8,
+          "realized_pnl_usdt": "68.4452000000000000000000014",
+          "commissions_usdt": "10.685971200",
+          "exited_at_ms": 1759737651400,
+          "held_seconds": "111642.153",
+          "filled_buy_orders": 2,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-2.6480028163798679736",
+          "net_realized_after_commission_and_funding_usdt": "55.1112259836201320264000014"
+        },
+        {
+          "entered_at_ms": 1775437308936,
+          "fills": 5,
+          "realized_pnl_usdt": "-25.872",
+          "commissions_usdt": "22.800195000",
+          "exited_at_ms": 1775437354400,
+          "held_seconds": "45.464",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0",
+          "net_realized_after_commission_and_funding_usdt": "-48.672195000"
+        },
+        {
+          "entered_at_ms": 1781650896674,
+          "fills": 5,
+          "realized_pnl_usdt": "-249.984",
+          "commissions_usdt": "21.940027200",
+          "exited_at_ms": 1781693940000,
+          "held_seconds": "43043.326",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "0.6931711722487886432",
+          "net_realized_after_commission_and_funding_usdt": "-271.2308560277512113568"
+        },
+        {
+          "entered_at_ms": 1787227433668,
+          "fills": 2,
+          "realized_pnl_usdt": "763.1344",
+          "commissions_usdt": "12.6560364",
+          "exited_at_ms": 1788102051400,
+          "held_seconds": "874617.732",
+          "filled_buy_orders": 1,
+          "filled_sell_orders": 1,
+          "net_funding_usdt": "-22.5319701244009561616",
+          "net_realized_after_commission_and_funding_usdt": "727.9463934755990438384"
+        }
+      ]
+    }
+  },
+  "baseline_calibration": {
+    "passed": true,
+    "reference_metrics": {
+      "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/metrics.json",
+      "bytes": 21125,
+      "sha256": "240a0c2682f52269a9dfe064082cd2d9c648258309f145bceaa3dce33caedb5e"
+    },
+    "fields_compared_exactly": [
+      "head",
+      "source_sha256",
+      "producer_sha256",
+      "input_sha256",
+      "risk_configuration",
+      "initial_cny",
+      "final_cny",
+      "final_usdt",
+      "total_return_pct",
+      "cagr_pct",
+      "path_mdd_proxy_pct",
+      "close_observation_mdd_proxy_pct",
+      "daily_equity",
+      "net_commission_paid_usdt",
+      "insurance_charge_usdt",
+      "fees_including_insurance_usdt",
+      "net_funding_paid_usdt",
+      "fills",
+      "filled_ordinary_orders",
+      "income_records",
+      "funding_events",
+      "end_position"
+    ],
+    "tolerance": null
+  },
+  "original_audit": {
+    "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-audit-summary.json",
+    "bytes": 11280,
+    "sha256": "2bc0718c9138098580c69f8986a0dc9d7efc885916f5f2c112e7c361d0401ac2"
+  },
+  "cases": {
+    "combined-v2": {
+      "head": "3561728dab351d269b19b107fb4fbabb2ac1f674",
+      "receipt": {
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-current-segment-003.json.gz",
+        "bytes": 268827,
+        "sha256": "6b1fe9dd901e933928e4148df614ff67ad94a3910fa502dfe41a17047846fc0b"
+      },
+      "specification": {
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/spec.json",
+        "bytes": 3410,
+        "sha256": "d0937a2415e464cdeae3ec0749affc11f2345269edff5e355c6edae8eef9060b"
+      },
+      "source_sha256": "c4b85d73ea573a670aef1a494e6f72675745c5099980b0077d838ddf58e029c9",
+      "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+      "input_sha256": "cc3a519a3373ba0d5349a00369df9929199d13e921c3d91dc7632f23ba36b7e1",
+      "risk_configuration": {
+        "capital_limit_usdt": null,
+        "max_stop_loss_fraction": ".10",
+        "stop_slippage_fraction": ".01"
+      },
+      "initial_cny": "10000",
+      "final_cny": "61862.28247531414447980711605",
+      "final_usdt": "9245.730811334827493494317904",
+      "total_return_pct": "518.622824753141444798071160500",
+      "cagr_pct": "31.157259759331815510443543527051277484855895269340",
+      "path_mdd_proxy_pct": "16.7574317368393372546656341400",
+      "close_observation_mdd_proxy_pct": "16.2084794051391705460316532500",
+      "daily_equity": {
+        "basis": "financial.daily UTC closing-boundary valuations; initial 10000; annual prior-year-end carry",
+        "missing_values_imputed": 0,
+        "opening_post_conversion_cny": "9980.009999999999999999999996",
+        "full_period": {
+          "start_date": "2020-01-01",
+          "end_date": "2026-09-19",
+          "days": 2454,
+          "opening_equity_cny": "10000",
+          "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+          "ending_equity_cny": "61862.28247531414447980711605",
+          "return_pct": "518.622824753141444798071160500",
+          "mdd_pct": "12.854845860840876017806469782663861022783369082194",
+          "mdd_event": {
+            "peak_at": "2025-01-09",
+            "trough_date": "2026-09-18",
+            "peak_equity_cny": "70987.63331869076256130698223",
+            "trough_equity_cny": "61862.28247531414447980711605"
+          }
+        },
+        "by_year": [
+          {
+            "start_date": "2020-01-01",
+            "end_date": "2020-12-31",
+            "days": 366,
+            "opening_equity_cny": "10000",
+            "opening_equity_at": "2020-01-01T00:00:00Z:initial-capital",
+            "ending_equity_cny": "18783.97268654375523132575017",
+            "return_pct": "87.839726865437552313257501700",
+            "mdd_pct": "9.9645919094577510087362836213793958915969282255720",
+            "mdd_event": {
+              "peak_at": "2020-04-08",
+              "trough_date": "2020-04-16",
+              "peak_equity_cny": "13920.15854130921732590280034",
+              "trough_equity_cny": "12533.07154951822696743413085"
+            },
+            "year": 2020,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2021-01-01",
+            "end_date": "2021-12-31",
+            "days": 365,
+            "opening_equity_cny": "18783.97268654375523132575017",
+            "opening_equity_at": "2020-12-31",
+            "ending_equity_cny": "23153.49349698439503574238951",
+            "return_pct": "23.261963181892968297228423660689596175661149674430",
+            "mdd_pct": "7.2194083382162954485528216487450033630319954236080",
+            "mdd_event": {
+              "peak_at": "2021-04-01",
+              "trough_date": "2021-10-10",
+              "peak_equity_cny": "21085.22630463040031474979834",
+              "trough_equity_cny": "19562.99771866213752952999529"
+            },
+            "year": 2021,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2022-01-01",
+            "end_date": "2022-12-31",
+            "days": 365,
+            "opening_equity_cny": "23153.49349698439503574238951",
+            "opening_equity_at": "2021-12-31",
+            "ending_equity_cny": "23811.31500347206042823566283",
+            "return_pct": "2.8411328362751942178623762576285873174451710400900",
+            "mdd_pct": "6.4649095006195952756015180959140639855503076781760",
+            "mdd_event": {
+              "peak_at": "2022-11-03",
+              "trough_date": "2022-12-30",
+              "peak_equity_cny": "25457.09302930517972177588379",
+              "trough_equity_cny": "23811.31500347206042823566283"
+            },
+            "year": 2022,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2023-01-01",
+            "end_date": "2023-12-31",
+            "days": 365,
+            "opening_equity_cny": "23811.31500347206042823566283",
+            "opening_equity_at": "2022-12-31",
+            "ending_equity_cny": "52694.43722932841426485794806",
+            "return_pct": "121.29998793281574308748742185701659789633458601008",
+            "mdd_pct": "7.5429178600260635768067059178243479598133574107910",
+            "mdd_event": {
+              "peak_at": "2023-01-29",
+              "trough_date": "2023-01-30",
+              "peak_equity_cny": "29869.97407684419462698888738",
+              "trough_equity_cny": "27616.90646741675856246092078"
+            },
+            "year": 2023,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2024-01-01",
+            "end_date": "2024-12-31",
+            "days": 366,
+            "opening_equity_cny": "52694.43722932841426485794806",
+            "opening_equity_at": "2023-12-31",
+            "ending_equity_cny": "70670.07591806706748861244730",
+            "return_pct": "34.112972135005285601464953378163029306939170331400",
+            "mdd_pct": "8.2361032652018422415248429736760911822541650397030",
+            "mdd_event": {
+              "peak_at": "2024-04-23",
+              "trough_date": "2024-09-27",
+              "peak_equity_cny": "58666.05902308390875713447933",
+              "trough_equity_cny": "53834.26182031845495575202560"
+            },
+            "year": 2024,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2025-01-01",
+            "end_date": "2025-12-31",
+            "days": 365,
+            "opening_equity_cny": "70670.07591806706748861244730",
+            "opening_equity_at": "2024-12-31",
+            "ending_equity_cny": "69391.38808272126337474153338",
+            "return_pct": "-1.8093766261526016242763713352407777684259218016510",
+            "mdd_pct": "5.0436492892453749833926644038694544162036646569220",
+            "mdd_event": {
+              "peak_at": "2025-01-09",
+              "trough_date": "2025-07-20",
+              "peak_equity_cny": "70987.63331869076256130698223",
+              "trough_equity_cny": "67407.26605536050291780836147"
+            },
+            "year": 2025,
+            "complete_calendar_year": true
+          },
+          {
+            "start_date": "2026-01-01",
+            "end_date": "2026-09-19",
+            "days": 262,
+            "opening_equity_cny": "69391.38808272126337474153338",
+            "opening_equity_at": "2025-12-31",
+            "ending_equity_cny": "61862.28247531414447980711605",
+            "return_pct": "-10.850201754764863508256308585605400394218981328653",
+            "mdd_pct": "10.850201754764863508256308585605400394218981328653",
+            "mdd_event": {
+              "peak_at": "2025-12-31",
+              "trough_date": "2026-09-18",
+              "peak_equity_cny": "69391.38808272126337474153338",
+              "trough_equity_cny": "61862.28247531414447980711605"
+            },
+            "year": 2026,
+            "complete_calendar_year": false
+          }
+        ],
+        "terminal_vs_daily_equity_difference_cny": "0E-23"
+      },
+      "net_commission_paid_usdt": "410.4198354450",
+      "insurance_charge_usdt": "0",
+      "fees_including_insurance_usdt": "410.4198354450",
+      "net_funding_paid_usdt": "474.4477659027840126466",
+      "fills": 174,
+      "filled_ordinary_orders": 104,
+      "income_records": 1060,
+      "funding_events": 837,
+      "end_position": {
+        "quantity_btc": "0.000",
+        "flat": true,
+        "entry_usdt": "0",
+        "mark_usdt": "0",
+        "wallet_usdt": "9245.730811334827493494317904",
+        "margin_usdt": "0",
+        "live_protections": 0
+      },
+      "cleanup": {
+        "verified_sessions": 795,
+        "terminal_pending_intents": 0,
+        "execution_unresolved_sessions": 0,
+        "reported_error_entries": 778,
+        "reports_with_errors": 688,
+        "error_types": {
+          "Unknown": 52,
+          "ObservationDeadline": 681,
+          "Blocked": 45
+        },
+        "error_reasons": {
+          "completed mark minute unavailable": 9,
+          "bounded Binance observation deadline exceeded; no request sent": 681,
+          "stale or invalid Binance mark observation": 9,
+          "order book changed before the order was sent": 32,
+          "protection cancellation/child unresolved": 2,
+          "protection outside current price limits": 45
+        },
+        "counting_note": "Retained last-ten error entries in each terminal session report; not all attempts or exchange rejections"
+      },
+      "path_evidence": {
+        "passed": true,
+        "points": 1983167,
+        "rolling_sha256": "436e7aa2e8af943fcb18ad9c6d96ab5c9b588c06263221d0e8d5f644b649d229",
+        "mdd_proxy": "0.1675743173683933725466563414",
+        "mdd_close_proxy": "0.1620847940513917054603165325",
+        "hindsight_bounded": true,
+        "bounded_minutes": 29,
+        "rolling_digest_recomputed": true,
+        "raw_trace_files": [
+          {
+            "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-current/path-traces/segment-001.jsonl.gz",
+            "bytes": 18529538,
+            "sha256": "43fbf0619da4048900a7e29b7ad8a408774cc7e06ed40f2f5a63456b0795c30b",
+            "points": 1299905
+          },
+          {
+            "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-current/path-traces/segment-002.jsonl.gz",
+            "bytes": 8203506,
+            "sha256": "6a852ae0e32451bdc4ee6e1773291c53a0249a7b1f9b694f76e234a6fbc05107",
+            "points": 616499
+          },
+          {
+            "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-current/path-traces/segment-003.jsonl.gz",
+            "bytes": 604736,
+            "sha256": "01be50fe50da0eef9dc9f3874bc29a68578fe9075c610f731422066c75b2cc02",
+            "points": 66763
+          }
+        ],
+        "backward_timestamp_transitions_in_original_event_order": 462,
+        "limitation": "All original observation points retained and independently recomputed in original event order. OHLC extrema ordering, print/mark proxies and hindsight bounds remain the historical simulation method; no actual native risk acceptance."
+      },
+      "holding_statistics": {
+        "basis": "Actual signed fills grouped from flat to flat; any still-open group is separate",
+        "closed_exposure_groups": 49,
+        "open_exposure_groups": 0,
+        "filled_buy_orders": 55,
+        "filled_sell_orders": 49,
+        "median_closed_holding_days": "4.5415245486111111111111111111111111111111111111111",
+        "closed_within_300_seconds": 2,
+        "daily_boundaries_with_exposure": 275,
+        "closed_groups": [
+          {
+            "entered_at_ms": 1578074409758,
+            "fills": 2,
+            "realized_pnl_usdt": "437.53035",
+            "commissions_usdt": "3.7616810625",
+            "exited_at_ms": 1579028451400,
+            "held_seconds": "954041.642",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-8.5024854640439083910",
+            "net_realized_after_commission_and_funding_usdt": "425.2661834734560916090"
+          },
+          {
+            "entered_at_ms": 1579028481325,
+            "fills": 3,
+            "realized_pnl_usdt": "-33.06224",
+            "commissions_usdt": "3.912278070",
+            "exited_at_ms": 1579741324000,
+            "held_seconds": "712842.675",
+            "filled_buy_orders": 2,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-16.0329503943227363615",
+            "net_realized_after_commission_and_funding_usdt": "-53.0074684643227363615"
+          },
+          {
+            "entered_at_ms": 1583935267663,
+            "fills": 3,
+            "realized_pnl_usdt": "-38.61360000000000000000000008",
+            "commissions_usdt": "2.044653000",
+            "exited_at_ms": 1583949960000,
+            "held_seconds": "14692.337",
+            "filled_buy_orders": 2,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-0.3134739661610095968",
+            "net_realized_after_commission_and_funding_usdt": "-40.97172696616100959680000008"
+          },
+          {
+            "entered_at_ms": 1586116809782,
+            "fills": 4,
+            "realized_pnl_usdt": "53.2517",
+            "commissions_usdt": "3.780366075",
+            "exited_at_ms": 1586494920000,
+            "held_seconds": "378110.218",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "0.5368517804898245628",
+            "net_realized_after_commission_and_funding_usdt": "50.0081857054898245628"
+          },
+          {
+            "entered_at_ms": 1586811630027,
+            "fills": 2,
+            "realized_pnl_usdt": "-40.8162",
+            "commissions_usdt": "1.78291215",
+            "exited_at_ms": 1586995200000,
+            "held_seconds": "183569.973",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "0.4534132510159094745",
+            "net_realized_after_commission_and_funding_usdt": "-42.1456988989840905255"
+          },
+          {
+            "entered_at_ms": 1588161609224,
+            "fills": 3,
+            "realized_pnl_usdt": "110.07884",
+            "commissions_usdt": "2.510528280",
+            "exited_at_ms": 1588273251400,
+            "held_seconds": "111642.176",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-2.3526260396220609951",
+            "net_realized_after_commission_and_funding_usdt": "105.2156856803779390049"
+          },
+          {
+            "entered_at_ms": 1588273281280,
+            "fills": 2,
+            "realized_pnl_usdt": "14.51277",
+            "commissions_usdt": "0.3628295775",
+            "exited_at_ms": 1588816809400,
+            "held_seconds": "543528.12",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-0.6152826427956856800",
+            "net_realized_after_commission_and_funding_usdt": "13.5346577797043143200"
+          },
+          {
+            "entered_at_ms": 1594274421722,
+            "fills": 2,
+            "realized_pnl_usdt": "-26.12405",
+            "commissions_usdt": "1.3183822125",
+            "exited_at_ms": 1594886451400,
+            "held_seconds": "612029.678",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-1.930973121386025",
+            "net_realized_after_commission_and_funding_usdt": "-29.373405333886025"
+          },
+          {
+            "entered_at_ms": 1595347209431,
+            "fills": 4,
+            "realized_pnl_usdt": "249.75648",
+            "commissions_usdt": "5.95023606",
+            "exited_at_ms": 1595808313000,
+            "held_seconds": "461103.569",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-10.0833324163167603165",
+            "net_realized_after_commission_and_funding_usdt": "233.7229115236832396835"
+          },
+          {
+            "entered_at_ms": 1596744009331,
+            "fills": 2,
+            "realized_pnl_usdt": "-5.2764",
+            "commissions_usdt": "0.53098920",
+            "exited_at_ms": 1597384851400,
+            "held_seconds": "640842.069",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-1.755955414744503573",
+            "net_realized_after_commission_and_funding_usdt": "-7.563344614744503573"
+          },
+          {
+            "entered_at_ms": 1602216009496,
+            "fills": 3,
+            "realized_pnl_usdt": "194.96785",
+            "commissions_usdt": "6.4356628875",
+            "exited_at_ms": 1602777651400,
+            "held_seconds": "561641.904",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-8.733021456717635",
+            "net_realized_after_commission_and_funding_usdt": "179.799165655782365"
+          },
+          {
+            "entered_at_ms": 1603170034345,
+            "fills": 5,
+            "realized_pnl_usdt": "620.4968999999999999999999996",
+            "commissions_usdt": "7.711261725",
+            "exited_at_ms": 1604321100000,
+            "held_seconds": "1151065.655",
+            "filled_buy_orders": 2,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-6.2967519273927954812",
+            "net_realized_after_commission_and_funding_usdt": "606.4888863476072045187999996"
+          },
+          {
+            "entered_at_ms": 1612972821626,
+            "fills": 4,
+            "realized_pnl_usdt": "393.75272",
+            "commissions_usdt": "6.031106040",
+            "exited_at_ms": 1613311512800,
+            "held_seconds": "338691.174",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-52.177236682216678710",
+            "net_realized_after_commission_and_funding_usdt": "335.544377277783321290"
+          },
+          {
+            "entered_at_ms": 1620885609426,
+            "fills": 2,
+            "realized_pnl_usdt": "-78.2848",
+            "commissions_usdt": "2.3868912",
+            "exited_at_ms": 1620903780000,
+            "held_seconds": "18170.574",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-0.162868422126464",
+            "net_realized_after_commission_and_funding_usdt": "-80.834559622126464"
+          },
+          {
+            "entered_at_ms": 1627034409256,
+            "fills": 3,
+            "realized_pnl_usdt": "166.38075",
+            "commissions_usdt": "1.4347256625",
+            "exited_at_ms": 1627297209400,
+            "held_seconds": "262800.144",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "1.2027225505348778157",
+            "net_realized_after_commission_and_funding_usdt": "166.1487468880348778157"
+          },
+          {
+            "entered_at_ms": 1627297238851,
+            "fills": 3,
+            "realized_pnl_usdt": "-220.8529",
+            "commissions_usdt": "7.401477075",
+            "exited_at_ms": 1627337880000,
+            "held_seconds": "40641.149",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-0.50525658434589",
+            "net_realized_after_commission_and_funding_usdt": "-228.75963365934589"
+          },
+          {
+            "entered_at_ms": 1633773721220,
+            "fills": 3,
+            "realized_pnl_usdt": "601.91739",
+            "commissions_usdt": "8.1193624425",
+            "exited_at_ms": 1634317251400,
+            "held_seconds": "543530.18",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-13.4161823375108775636",
+            "net_realized_after_commission_and_funding_usdt": "580.3818452199891224364"
+          },
+          {
+            "entered_at_ms": 1646463609292,
+            "fills": 3,
+            "realized_pnl_usdt": "176.8179",
+            "commissions_usdt": "1.361532375",
+            "exited_at_ms": 1648573251400,
+            "held_seconds": "2109642.108",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-3.0648069982368149640",
+            "net_realized_after_commission_and_funding_usdt": "172.3915606267631850360"
+          },
+          {
+            "entered_at_ms": 1648573293620,
+            "fills": 9,
+            "realized_pnl_usdt": "-213.0734",
+            "commissions_usdt": "9.369062250",
+            "exited_at_ms": 1648744260000,
+            "held_seconds": "170966.38",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-3.786973989112098",
+            "net_realized_after_commission_and_funding_usdt": "-226.229436239112098"
+          },
+          {
+            "entered_at_ms": 1658325609232,
+            "fills": 3,
+            "realized_pnl_usdt": "-19.341",
+            "commissions_usdt": "0.73482255",
+            "exited_at_ms": 1658394009400,
+            "held_seconds": "68400.168",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-0.1380947833882368444",
+            "net_realized_after_commission_and_funding_usdt": "-20.2139173333882368444"
+          },
+          {
+            "entered_at_ms": 1659330021679,
+            "fills": 5,
+            "realized_pnl_usdt": "-130.7128",
+            "commissions_usdt": "7.55396160",
+            "exited_at_ms": 1659722409400,
+            "held_seconds": "392387.721",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-2.8471419387025572882",
+            "net_realized_after_commission_and_funding_usdt": "-141.1139035387025572882"
+          },
+          {
+            "entered_at_ms": 1659722438806,
+            "fills": 3,
+            "realized_pnl_usdt": "52.0085",
+            "commissions_usdt": "1.512057375",
+            "exited_at_ms": 1660564851400,
+            "held_seconds": "842412.594",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-1.3579908303111115010",
+            "net_realized_after_commission_and_funding_usdt": "49.1384517946888884990"
+          },
+          {
+            "entered_at_ms": 1670371209283,
+            "fills": 2,
+            "realized_pnl_usdt": "-23.072",
+            "commissions_usdt": "2.034180",
+            "exited_at_ms": 1671645651400,
+            "held_seconds": "1274442.117",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-2.336402605621520304",
+            "net_realized_after_commission_and_funding_usdt": "-27.442582605621520304"
+          },
+          {
+            "entered_at_ms": 1673582409428,
+            "fills": 2,
+            "realized_pnl_usdt": "566.0268",
+            "commissions_usdt": "7.479673650",
+            "exited_at_ms": 1673845512400,
+            "held_seconds": "263102.972",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-7.0657746456713377395",
+            "net_realized_after_commission_and_funding_usdt": "551.4813517043286622605"
+          },
+          {
+            "entered_at_ms": 1674612009365,
+            "fills": 2,
+            "realized_pnl_usdt": "432.7414",
+            "commissions_usdt": "11.73327285",
+            "exited_at_ms": 1675324851400,
+            "held_seconds": "712842.035",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-19.508712062550724",
+            "net_realized_after_commission_and_funding_usdt": "401.499415087449276"
+          },
+          {
+            "entered_at_ms": 1675324881371,
+            "fills": 4,
+            "realized_pnl_usdt": "-110.2575",
+            "commissions_usdt": "2.596201875",
+            "exited_at_ms": 1675970640000,
+            "held_seconds": "645758.629",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-3.819896177979525",
+            "net_realized_after_commission_and_funding_usdt": "-116.673598052979525"
+          },
+          {
+            "entered_at_ms": 1678953671711,
+            "fills": 7,
+            "realized_pnl_usdt": "814.338",
+            "commissions_usdt": "9.11479650",
+            "exited_at_ms": 1679403651400,
+            "held_seconds": "449979.689",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-8.191242342112731468",
+            "net_realized_after_commission_and_funding_usdt": "797.031961157887268532"
+          },
+          {
+            "entered_at_ms": 1680339621666,
+            "fills": 2,
+            "realized_pnl_usdt": "117.4008",
+            "commissions_usdt": "2.9049372",
+            "exited_at_ms": 1681498851400,
+            "held_seconds": "1159229.734",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-2.9943895341865715628",
+            "net_realized_after_commission_and_funding_usdt": "111.5014732658134284372"
+          },
+          {
+            "entered_at_ms": 1681498881293,
+            "fills": 2,
+            "realized_pnl_usdt": "-205.938",
+            "commissions_usdt": "11.422023750",
+            "exited_at_ms": 1681761609400,
+            "held_seconds": "262728.107",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-5.2230311134858869015",
+            "net_realized_after_commission_and_funding_usdt": "-222.5830548634858869015"
+          },
+          {
+            "entered_at_ms": 1687500009253,
+            "fills": 3,
+            "realized_pnl_usdt": "53.4743",
+            "commissions_usdt": "7.842284625",
+            "exited_at_ms": 1688155251400,
+            "held_seconds": "655242.147",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-11.581506288422445",
+            "net_realized_after_commission_and_funding_usdt": "34.050509086577555"
+          },
+          {
+            "entered_at_ms": 1697518809219,
+            "fills": 2,
+            "realized_pnl_usdt": "2122.6591",
+            "commissions_usdt": "15.255185025",
+            "exited_at_ms": 1698100920000,
+            "held_seconds": "582110.781",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-1.5014801578835651666",
+            "net_realized_after_commission_and_funding_usdt": "2105.9024348171164348334"
+          },
+          {
+            "entered_at_ms": 1698566412082,
+            "fills": 6,
+            "realized_pnl_usdt": "291.3885",
+            "commissions_usdt": "15.212523375",
+            "exited_at_ms": 1699178451400,
+            "held_seconds": "612039.318",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-21.334120212275632",
+            "net_realized_after_commission_and_funding_usdt": "254.841856412724368"
+          },
+          {
+            "entered_at_ms": 1700643634093,
+            "fills": 2,
+            "realized_pnl_usdt": "97.5705",
+            "commissions_usdt": "4.847350725",
+            "exited_at_ms": 1701367251400,
+            "held_seconds": "723617.307",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-8.157802474019520",
+            "net_realized_after_commission_and_funding_usdt": "84.565346800980480"
+          },
+          {
+            "entered_at_ms": 1702846846901,
+            "fills": 2,
+            "realized_pnl_usdt": "327.4995",
+            "commissions_usdt": "6.125214825",
+            "exited_at_ms": 1704880851400,
+            "held_seconds": "2034004.499",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-63.8957264069824042056",
+            "net_realized_after_commission_and_funding_usdt": "257.4785587680175957944"
+          },
+          {
+            "entered_at_ms": 1705536009468,
+            "fills": 5,
+            "realized_pnl_usdt": "-173.2402",
+            "commissions_usdt": "7.51447515",
+            "exited_at_ms": 1705604640000,
+            "held_seconds": "68630.532",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-1.017851252935076",
+            "net_realized_after_commission_and_funding_usdt": "-181.772526402935076"
+          },
+          {
+            "entered_at_ms": 1707832809208,
+            "fills": 4,
+            "realized_pnl_usdt": "-201.1568",
+            "commissions_usdt": "22.45642680",
+            "exited_at_ms": 1707834060000,
+            "held_seconds": "1250.792",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "0",
+            "net_realized_after_commission_and_funding_usdt": "-223.61322680"
+          },
+          {
+            "entered_at_ms": 1709118021668,
+            "fills": 3,
+            "realized_pnl_usdt": "895.203",
+            "commissions_usdt": "8.69585625",
+            "exited_at_ms": 1710054051400,
+            "held_seconds": "936029.732",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-91.803080774168714925",
+            "net_realized_after_commission_and_funding_usdt": "794.704062975831285075"
+          },
+          {
+            "entered_at_ms": 1716447609318,
+            "fills": 8,
+            "realized_pnl_usdt": "-226.2928",
+            "commissions_usdt": "24.07356120",
+            "exited_at_ms": 1716471540000,
+            "held_seconds": "23930.682",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-1.618674792442568",
+            "net_realized_after_commission_and_funding_usdt": "-251.985035992442568"
+          },
+          {
+            "entered_at_ms": 1724986809212,
+            "fills": 3,
+            "realized_pnl_usdt": "-158.6859",
+            "commissions_usdt": "9.919504425",
+            "exited_at_ms": 1725035220000,
+            "held_seconds": "48410.788",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-0.4316010531231711342",
+            "net_realized_after_commission_and_funding_usdt": "-169.0370054781231711342"
+          },
+          {
+            "entered_at_ms": 1726822809585,
+            "fills": 2,
+            "realized_pnl_usdt": "7.2549",
+            "commissions_usdt": "2.570589675",
+            "exited_at_ms": 1727085609400,
+            "held_seconds": "262799.815",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-0.9782165160015214599",
+            "net_realized_after_commission_and_funding_usdt": "3.7060938089984785401"
+          },
+          {
+            "entered_at_ms": 1731164410110,
+            "fills": 2,
+            "realized_pnl_usdt": "2065.7358",
+            "commissions_usdt": "17.36853165",
+            "exited_at_ms": 1731726051400,
+            "held_seconds": "561641.29",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-43.1670308425711050222",
+            "net_realized_after_commission_and_funding_usdt": "2005.2002375074288949778"
+          },
+          {
+            "entered_at_ms": 1739120421612,
+            "fills": 4,
+            "realized_pnl_usdt": "-3.465",
+            "commissions_usdt": "6.509767500",
+            "exited_at_ms": 1739120513600,
+            "held_seconds": "91.988",
+            "filled_buy_orders": 2,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "0",
+            "net_realized_after_commission_and_funding_usdt": "-9.974767500"
+          },
+          {
+            "entered_at_ms": 1741258821637,
+            "fills": 2,
+            "realized_pnl_usdt": "-181.038",
+            "commissions_usdt": "2.6053305",
+            "exited_at_ms": 1741590009400,
+            "held_seconds": "331187.763",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-0.478480482798394066",
+            "net_realized_after_commission_and_funding_usdt": "-184.121810982798394066"
+          },
+          {
+            "entered_at_ms": 1745722809345,
+            "fills": 3,
+            "realized_pnl_usdt": "33.7926",
+            "commissions_usdt": "14.46611175",
+            "exited_at_ms": 1745834451400,
+            "held_seconds": "111642.055",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "0.044208365904",
+            "net_realized_after_commission_and_funding_usdt": "19.370696615904"
+          },
+          {
+            "entered_at_ms": 1752390009206,
+            "fills": 7,
+            "realized_pnl_usdt": "114.811",
+            "commissions_usdt": "19.018319100",
+            "exited_at_ms": 1753196451400,
+            "held_seconds": "806442.194",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-35.2438110104540946193",
+            "net_realized_after_commission_and_funding_usdt": "60.5488698895459053807"
+          },
+          {
+            "entered_at_ms": 1759363209207,
+            "fills": 7,
+            "realized_pnl_usdt": "375.2244",
+            "commissions_usdt": "19.51174170",
+            "exited_at_ms": 1759626313200,
+            "held_seconds": "263103.993",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-11.2939805625624119124",
+            "net_realized_after_commission_and_funding_usdt": "344.4186777374375880876"
+          },
+          {
+            "entered_at_ms": 1775437209233,
+            "fills": 2,
+            "realized_pnl_usdt": "-276.848",
+            "commissions_usdt": "29.44977750",
+            "exited_at_ms": 1775559180000,
+            "held_seconds": "121970.767",
+            "filled_buy_orders": 1,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "-1.8444926408223153982",
+            "net_realized_after_commission_and_funding_usdt": "-308.1422701408223153982"
+          },
+          {
+            "entered_at_ms": 1781650830612,
+            "fills": 6,
+            "realized_pnl_usdt": "-312.5305000000000000000000013",
+            "commissions_usdt": "27.716400525",
+            "exited_at_ms": 1781693940000,
+            "held_seconds": "43109.388",
+            "filled_buy_orders": 2,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "0.8757475077964606519",
+            "net_realized_after_commission_and_funding_usdt": "-339.3711530172035393481000013"
+          },
+          {
+            "entered_at_ms": 1787227209281,
+            "fills": 7,
+            "realized_pnl_usdt": "-12.34779999999999999999999984",
+            "commissions_usdt": "15.96901845",
+            "exited_at_ms": 1787227301200,
+            "held_seconds": "91.919",
+            "filled_buy_orders": 2,
+            "filled_sell_orders": 1,
+            "net_funding_usdt": "0",
+            "net_realized_after_commission_and_funding_usdt": "-28.31681844999999999999999984"
+          }
+        ]
+      },
+      "registration": {
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/REGISTRATION.json",
+        "bytes": 1165,
+        "sha256": "d2defabdd9f52d6c824f5bbe67d82e2a1fe17d8ef629c3412d7e370b4e330871"
+      },
+      "audit": {
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-audit-summary.json",
+        "bytes": 11879,
+        "sha256": "e4d3bc8a29dc2a1b0f285f5e9f7538f8275e46d9b02d45095aae71dd7e14c505"
+      },
+      "auditor": {
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/independent_financial_audit.py",
+        "bytes": 33968,
+        "sha256": "42f3d9631f69a45cc5375d70d9b76b06d38e969a8ef6730af177d15c32322183"
+      },
+      "public_commit_url": "https://github.com/geniusgrok/coinquant/commit/3561728dab351d269b19b107fb4fbabb2ac1f674",
+      "protocol": {
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/PROTOCOL.md",
+        "bytes": 4311,
+        "sha256": "92bd7cb57e7c60f41b12e877f26c25af6ae0fc265926aaa42cf5963fe04c2f25"
+      },
+      "book_guard_amendment": {
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/BOOK_GUARD_AMENDMENT_V2.md",
+        "bytes": 2227,
+        "sha256": "82f77795655ca333f731b11aa83dffa769d1f25d9fa2b1f576baaae26978d8d7"
+      }
+    }
+  },
+  "case_minus_control": {
+    "combined-v2": {
+      "cagr_pct_delta_pp": "3.530909534113451668387066478272604000828421820800",
+      "path_mdd_proxy_pct_delta_pp": "1.5939919520558956448834934300",
+      "total_return_pct_delta_pp": "103.637868351734074584618181900",
+      "daily_mdd_delta_pp": "0.739451217895001333836377349422074121263890522327",
+      "final_cny_difference": "10363.78683517340745846181819"
+    }
+  },
+  "calculation_dependencies": {
+    "original_summarizer": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/original_summarize_results.py",
+      "bytes": 20822,
+      "sha256": "b607c483b0c70682e3889e43b14aa9e4fd1f72db7a186ad649218b71b477bed3"
+    },
+    "original_digest_helper": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/original_compare_arms.py",
+      "bytes": 42555,
+      "sha256": "b8d097a60f390da0cc95f5424ff2f8649c7250045fa82ba5e3c7f7acffd3145e"
+    }
+  },
+  "summarizer": {
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/repair_results.py",
+    "bytes": 33829,
+    "sha256": "7d481e7e615f446ecc7adbfbdeb5cf9a6d3c5435dbffaf1652917002d5b2363f"
+  },
+  "qualification": {
+    "offline_simulation": true,
+    "native_execution_verified": false,
+    "online_publication_checked_by_this_script": false,
+    "public_head_basis": "Caller supplies previously verified immutable GitHub URL; this script checks its exact registered/measured head, not online accessibility."
+  },
+  "notes": [
+    "Every accepted result completes and independently passes the full original 795-session window.",
+    "CAGR uses cost-adjusted terminal CNY and 365.2425/2454; daily MDD uses initial 10000 plus 2454 day-end values.",
+    "The first boundary is labeled 2019-12-31 and is not an extra investment year; each later year carries prior-year-end equity.",
+    "Path MDD and close-observation MDD remain historical simulation proxies; daily MDD is separately recomputed.",
+    "2026 is a partial calendar year; its annual-table return is not annualized.",
+    "Historical 79a334b is background, not the repair control. Each repair must retain the full 2.0.0 strategy/risk registration.",
+    "Error entries are retained terminal-report entries, not every attempt. Fills, orders and exposure groups are separate counts."
+  ],
+  "accepted_full_window_cases": [
+    "control_2_0_0",
+    "combined-v2"
+  ],
+  "all_three_registered_repairs_present": false
+}

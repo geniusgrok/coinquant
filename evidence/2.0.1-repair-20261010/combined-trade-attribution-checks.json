@@ -1,0 +1,23 @@
+{
+  "checks": {
+    "candidate_receipt": true,
+    "candidate_cagr": true,
+    "candidate_daily_mdd": true,
+    "candidate_path_mdd": true,
+    "candidate_final_cny": true,
+    "candidate_fees": true,
+    "candidate_funding": true,
+    "candidate_complete_groups": true,
+    "all_years_reconcile": true,
+    "all_wallets_reconcile": true,
+    "trend_native_stop_bindings": true,
+    "registered_audit_summary_sha": true
+  },
+  "json_sha256": "58e8e24a5ae9f22bb5609722aa8f533a3b5c6b8d7446ed8f2bdc07dbd4e8e4fd",
+  "script_sha256": "658b4e537d180c043bbc873a185b718635ca355ae66f5e9579db6bdb586c6d0e",
+  "md_sha256": "f6edfecfe0142784f876d9ca2795f176440f29a86a40a862c3eabc19cf6639ca",
+  "2020_top3_actual_path_delta_share_pct": "94.584194694126941343416176949047406514356285567870",
+  "2026_aug20_actual_path_delta_share_pct": "69.774116008589215003299569080741004388300151243415",
+  "max_abs_year_reconciliation_residual_usdt": "2.38E-22",
+  "comparison_reference_sha256": "6f34fa7f50255902d7035725a0a2901245159c15a9b313ba998a83364138a4d2"
+}
