@@ -1,0 +1,59 @@
+{
+  "basis": "Exact prior six-session smoke for unchanged production, producer, strategy, default risk and economic inputs.",
+  "full_window_admitted": false,
+  "new_smoke_executed": false,
+  "new_spec": {
+    "bytes": 3456,
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/spec.json",
+    "sha256": "2dfa95efedbc9d00ed44632f80a7308add7962ea840fc60093ff0b2709416211"
+  },
+  "original_spec": {
+    "bytes": 3309,
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/spec.json",
+    "sha256": "c900615a50ac8d455a1386a607b86f82b46b1037c1a7894de6ca93d03512308a"
+  },
+  "passed": true,
+  "prior_smoke_audit": {
+    "bytes": 10565,
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-audit-summary.json",
+    "sha256": "7deefa51ce7af8fb463bdf6e3c887aaf16a9cb6bf42657566f2976680c179bb3"
+  },
+  "prior_smoke_audit_detail": {
+    "bytes": 71469,
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-audit.json",
+    "sha256": "24c4cee3e04dbbe1eeca3527b03ec3cac4a62fc968f872c2cddd2d51f71a4226"
+  },
+  "prior_smoke_receipt": {
+    "bytes": 64589,
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-current.json.gz",
+    "sha256": "ca54f680f2f82a5f70d200b0e4bcb34e674d3808aaa589def77efa90cd42909d"
+  },
+  "source_head": "06206ac0c5383fb009df8bac20601cd9e2d9b004",
+  "source_sha256": "55f044e1294f52d7c4f06800552e96e22a2af52c3c393f57eed04ec6d47f6f04",
+  "spec_differences": {
+    "failed_retry_001": [
+      {
+        "after": "Predeclared source repair experiment: margin-only; compare with retained full 2.0.0 control 162ee7138952925ffafbc9b68be7c754c0c0a6c3; unchanged v2 producer, economic inputs, schedule and default risk limits. Cold retry margin-only-rerun-002 after two preserved incomplete runs; no checkpoint or account state is imported from either failed run.",
+        "before": "Predeclared source repair experiment: margin-only; compare with retained full 2.0.0 control 162ee7138952925ffafbc9b68be7c754c0c0a6c3; unchanged v2 producer, economic inputs, schedule and default risk limits. Retry 001 after an externally interrupted 788-session run without final receipt; same economics and immutable runtime.",
+        "path": "spec[\"requested_measurement\"]"
+      },
+      {
+        "after": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/current-source-files.json",
+        "before": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/current-source-files.json",
+        "path": "spec[\"source_files_by_arm\"][\"current\"]"
+      }
+    ],
+    "original_margin": [
+      {
+        "after": "Predeclared source repair experiment: margin-only; compare with retained full 2.0.0 control 162ee7138952925ffafbc9b68be7c754c0c0a6c3; unchanged v2 producer, economic inputs, schedule and default risk limits. Cold retry margin-only-rerun-002 after two preserved incomplete runs; no checkpoint or account state is imported from either failed run.",
+        "before": "Predeclared source repair experiment: margin-only; compare with retained full 2.0.0 control 162ee7138952925ffafbc9b68be7c754c0c0a6c3; unchanged v2 producer, economic inputs, schedule and default risk limits.",
+        "path": "spec[\"requested_measurement\"]"
+      },
+      {
+        "after": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/current-source-files.json",
+        "before": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/current-source-files.json",
+        "path": "spec[\"source_files_by_arm\"][\"current\"]"
+      }
+    ]
+  }
+}

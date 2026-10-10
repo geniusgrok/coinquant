@@ -1,0 +1,23 @@
+{
+  "actual_launcher_sha256": "b7b1043a40dfc2b098b3110ebb108a9d4c61df7f65b48358cba8a0dd17b4c4e4",
+  "amendment_sha256": "a9e736d8946cf8318d9fd6839305d78895fe744c8fa046228bab8987325fba0c",
+  "cold_start": true,
+  "created_at_utc": "2026-10-10T01:21:55.323579+00:00",
+  "imported_account_state": false,
+  "method": "one original registered 540-second segment per external process",
+  "original_controller_sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f",
+  "preserved_incidents": [
+    {
+      "bytes": 1376,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/INTERRUPTION_20261010.json",
+      "sha256": "186e11fc64dae35874520ae4d4df199d01f66ce8a4dc1fcbe8e18dc2d1523e9c"
+    },
+    {
+      "bytes": 10048,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/INTERRUPTION_20261010.json",
+      "sha256": "1c88fff48a13576cecbe8b461e7ee3d6f04f3d9ec4eca5e114b78740f08b274c"
+    }
+  ],
+  "registration_sha256": "76a8b8793827267f801768a5b1029e79636b8d94148ff609a7a6077ebf2cba56",
+  "source_producer_changed": false
+}

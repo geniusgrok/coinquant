@@ -1,0 +1,217 @@
+{
+  "version": "coinquant-replay-interruption-v1",
+  "observed_at_utc": "2026-10-10T01:16:36.882970+00:00",
+  "case": "margin-only",
+  "run_directory": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001",
+  "kind": "restore_rejected_inconsistent_durable_report_prefix",
+  "qualification": "incomplete; excluded from full-window results; no partial annualized result",
+  "source_head": "06206ac0c5383fb009df8bac20601cd9e2d9b004",
+  "source_sha256": "55f044e1294f52d7c4f06800552e96e22a2af52c3c393f57eed04ec6d47f6f04",
+  "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+  "driver_restore_guard": {
+    "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-tooling-v2/driver.py",
+    "function": "restore",
+    "condition": "cursor!=previous.session_count or len(reports)!=cursor or saved.starts_ms!=starts[:cursor] or report_starts!=starts[:cursor]"
+  },
+  "latest_safe_flagged_receipt": {
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current-segment-002.json.gz",
+    "session_count": 711,
+    "can_resume": true,
+    "failure": null,
+    "last_checkpoint": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current/checkpoints/cursor-000711.json.gz",
+      "sha256": "a94bb351c046f8ac43af1749d6840b77dd0dec29f064cf15cc33a2641139279e",
+      "envelope_sha256": "0d19194e1184fdbd130195f9fd572a7c8d931801d23a005bf533fa96e187ca27",
+      "cursor": 711,
+      "durable_sqlite_sha256": "d82ae40895f10f7da7343deff808eb0e07f8f89814f62d3f3f8648bf5d53527e"
+    }
+  },
+  "failure_receipt": {
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current-segment-003.json.gz",
+    "session_count": 0,
+    "newly_run_session_count": 0,
+    "can_resume": false,
+    "failure": {
+      "phase": "restore",
+      "error_type": "ValueError",
+      "reason": "original full schedule/cursor mismatch"
+    }
+  },
+  "counts": {
+    "original_schedule": 795,
+    "checkpoint_cursor": 711,
+    "checkpoint_saved_starts": 711,
+    "persisted_reports": 709,
+    "persisted_production_calls": 709,
+    "duplicate_report_starts": 0,
+    "duplicate_call_starts": 0
+  },
+  "missing_report_starts": [
+    {
+      "schedule_index_zero_based": 454,
+      "start_ms": 1700251200000,
+      "utc": "2023-11-17T20:00:00+00:00"
+    },
+    {
+      "schedule_index_zero_based": 548,
+      "start_ms": 1726560000000,
+      "utc": "2024-09-17T08:00:00+00:00"
+    }
+  ],
+  "missing_call_starts": [
+    {
+      "schedule_index_zero_based": 454,
+      "start_ms": 1700251200000,
+      "utc": "2023-11-17T20:00:00+00:00"
+    },
+    {
+      "schedule_index_zero_based": 548,
+      "start_ms": 1726560000000,
+      "utc": "2024-09-17T08:00:00+00:00"
+    }
+  ],
+  "checks": {
+    "saved_cursor_matches_previous_session_count": true,
+    "disk_report_count_matches_cursor": false,
+    "checkpoint_starts_match_original_prefix": true,
+    "disk_report_starts_match_original_prefix": false,
+    "disk_call_starts_match_original_prefix": false,
+    "report_and_call_starts_identical": true,
+    "disk_report_sha_matches_checkpoint_and_previous_receipt": true,
+    "checkpoint_bytes_match_previous_receipt": true,
+    "failure_ran_no_new_sessions": true
+  },
+  "original_state": {
+    "expected_durable_sqlite_sha256": "d82ae40895f10f7da7343deff808eb0e07f8f89814f62d3f3f8648bf5d53527e",
+    "current_sqlite": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current/state/intents.sqlite",
+      "bytes": 10977280,
+      "sha256": "b70a8e3bcfcb81b308098eebdc87bc808526a01745c3b5118419ca78721004e8"
+    }
+  },
+  "findings": [
+    "The report prefix already had 709 rows when the checkpoint and segment002 recorded its current SHA, although their in-memory cursor and starts list represented 711 sessions.",
+    "The separate production-calls log omits the same two starts and has no duplicate starts.",
+    "The original restore guard correctly rejects both disk row-count and disk schedule-prefix mismatches.",
+    "The failed receipt local session_count=0 reflects restore never assigning reports in the new driver process; it does not mean original account state was reset."
+  ],
+  "unresolved": "The cause of the two missing append records is unproven. No host, storage, concurrency or account-cause attribution is asserted.",
+  "preservation": "No original source, spec, receipt, report, production-call record, checkpoint or account state was repaired, truncated, migrated or rolled back. A fresh separately registered original-producer margin run may be considered; this run remains incomplete.",
+  "files": [
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/REGISTRATION.json",
+      "bytes": 1326,
+      "sha256": "b14b935c4a55d82f2b464925280d5e64cb7283356563d44e1f6314d2691c1ddc"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/spec.json",
+      "bytes": 3438,
+      "sha256": "4dedd6e2a306511007feacbb054dea129cb92855f4b7ff170ee3f977c65b16e2"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/EXECUTION_METHOD.json",
+      "bytes": 719,
+      "sha256": "65f4b04cd736a2fcb4840631dde36523498ec7ab5e9261720a44d0ffc016427c"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/FULL_COMMANDS.jsonl",
+      "bytes": 2940,
+      "sha256": "01b0ae8a4f801a14799dd567e5c3289c33f5b887f19aba4fbb107a31fc43d2b1"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/PROGRESS.json",
+      "bytes": 483,
+      "sha256": "8f8c4d0efc879b0a8b147eb611188e22d46e87e1f818b3e754f9b65995b31759"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/run_pair.py",
+      "bytes": 5493,
+      "sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/run_one_segment.py",
+      "bytes": 5591,
+      "sha256": "b7b1043a40dfc2b098b3110ebb108a9d4c61df7f65b48358cba8a0dd17b4c4e4"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current/checkpoints/cursor-000711.json.gz",
+      "bytes": 221053,
+      "sha256": "a94bb351c046f8ac43af1749d6840b77dd0dec29f064cf15cc33a2641139279e"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current/reports.jsonl",
+      "bytes": 2626468,
+      "sha256": "cfc7685e8372d008c9658123008e9817c7af729f70bb8d888ed766b70ff1fec4"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current/production-calls.jsonl",
+      "bytes": 2481229,
+      "sha256": "bafa26ece6770040175256ef9289d8642b69609c344a5f51ee31329e94c5f84b"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current/state/intents.sqlite",
+      "bytes": 10977280,
+      "sha256": "b70a8e3bcfcb81b308098eebdc87bc808526a01745c3b5118419ca78721004e8"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current-segment-001.json.gz",
+      "bytes": 61950,
+      "sha256": "6a1a75372e3d22d8dbf6186a9b1998c1865b76a381121e31e6787e74f6f80eb5"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current-segment-001.log",
+      "bytes": 1919,
+      "sha256": "c187e8226fb4779b2f8dd9f7224fc9ab189939016b6a184e75e994bc45434e59"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/launcher-segment-001.log",
+      "bytes": 2972,
+      "sha256": "1c1be2dde07a40836357f72088c0c08f3660bd6e0ebc91fc5a0cdc3e6fa63ee4"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current-segment-002.json.gz",
+      "bytes": 62082,
+      "sha256": "b9d7ee884c717679a14001aea166f8725c605d2d1bdf6725f1cc439acc0d76c2"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current-segment-002.log",
+      "bytes": 1329,
+      "sha256": "f1fa48adb94028e25bb40de419564673c0cbef86c30a9cbc66b1ee19afe903bb"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/launcher-segment-002.log",
+      "bytes": 2505,
+      "sha256": "e583073a04d001b35298f2830e0995ff8bed0ce83c269efd9270e8dee18b4287"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current-segment-003.json.gz",
+      "bytes": 61670,
+      "sha256": "3b18f9264cefc01938153ed72009f5e8d4b46e01133f1a2f3ecc748e5bf634d7"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current-segment-003.log",
+      "bytes": 239,
+      "sha256": "fa528908c3c8873a22f06bfdc68e1eefd4f1ad01988796f17453d0dce1315aff"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/launcher-segment-003.log",
+      "bytes": 1415,
+      "sha256": "f85ff3e6cbbe1010f3dc05e4df48a2a8b4277d63e4a404907f122eb1694bbf0e"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/full-current/state/observations-archive.jsonl",
+      "bytes": 55606402,
+      "sha256": "68b2465637cfa0baaf2b5b26d3f1ded04fdb40758bb5ce174621b913ee657a10"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-tooling-v2/driver.py",
+      "bytes": 22695,
+      "sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-tooling-v2/research/session_schedule.json",
+      "bytes": 46681,
+      "sha256": "c21b4fcfe3cb12fb062bb01d3c3591aa0ee8c65db9e9afde3c26b1bcdc2ac28e"
+    }
+  ]
+}

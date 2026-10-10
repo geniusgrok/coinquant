@@ -1,0 +1,192 @@
+{
+  "case": "margin-only",
+  "copied_files": [
+    {
+      "bytes_identical": true,
+      "source": {
+        "bytes": 1818,
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/current-source-files.json",
+        "sha256": "e00c0ce304db64ede4608d2a004429b578f51c3c65509626f88a5a797d66919c"
+      },
+      "target": {
+        "bytes": 1818,
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/current-source-files.json",
+        "sha256": "e00c0ce304db64ede4608d2a004429b578f51c3c65509626f88a5a797d66919c"
+      }
+    },
+    {
+      "bytes_identical": true,
+      "source": {
+        "bytes": 5493,
+        "path": "/workspace/scratch/4a60782c7dbc/remeasure-evidence/evidence/2.0.0-remeasure-20261009/run_pair.py",
+        "sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f"
+      },
+      "target": {
+        "bytes": 5493,
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/run_pair.py",
+        "sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f"
+      }
+    },
+    {
+      "bytes_identical": true,
+      "source": {
+        "bytes": 5591,
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/run_one_segment.py",
+        "sha256": "b7b1043a40dfc2b098b3110ebb108a9d4c61df7f65b48358cba8a0dd17b4c4e4"
+      },
+      "target": {
+        "bytes": 5591,
+        "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/run_one_segment.py",
+        "sha256": "b7b1043a40dfc2b098b3110ebb108a9d4c61df7f65b48358cba8a0dd17b4c4e4"
+      }
+    }
+  ],
+  "created_at_utc": "2026-10-10T01:21:55.323579+00:00",
+  "directory": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002",
+  "full_window_admitted": false,
+  "head": "06206ac0c5383fb009df8bac20601cd9e2d9b004",
+  "no_account_commands": true,
+  "outputs": [
+    {
+      "bytes": 1098,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/EXECUTION_METHOD.json",
+      "sha256": "6ff55b6142add8d0bf4d4c9a7f72c9dada0578bc5eb324b7f543280517025d19"
+    },
+    {
+      "bytes": 2468,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/REGISTRATION.json",
+      "sha256": "76a8b8793827267f801768a5b1029e79636b8d94148ff609a7a6077ebf2cba56"
+    },
+    {
+      "bytes": 3637,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/SMOKE_REUSE.json",
+      "sha256": "4e39c52e7f04446ddcbbe54e6fb26e414f46a95a99c4c00bdf011b298fe07d32"
+    },
+    {
+      "bytes": 1818,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/current-source-files.json",
+      "sha256": "e00c0ce304db64ede4608d2a004429b578f51c3c65509626f88a5a797d66919c"
+    },
+    {
+      "bytes": 5591,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/run_one_segment.py",
+      "sha256": "b7b1043a40dfc2b098b3110ebb108a9d4c61df7f65b48358cba8a0dd17b4c4e4"
+    },
+    {
+      "bytes": 5493,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/run_pair.py",
+      "sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f"
+    },
+    {
+      "bytes": 3456,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/spec.json",
+      "sha256": "2dfa95efedbc9d00ed44632f80a7308add7962ea840fc60093ff0b2709416211"
+    }
+  ],
+  "passed": true,
+  "prior_frozen_inputs": [
+    {
+      "bytes": 1064,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/REGISTRATION.json",
+      "sha256": "1a27b8913631fd1c73d212a34bd1386afdbb1ae9db83c429c314eb8dc1895e09"
+    },
+    {
+      "bytes": 3309,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/spec.json",
+      "sha256": "c900615a50ac8d455a1386a607b86f82b46b1037c1a7894de6ca93d03512308a"
+    },
+    {
+      "bytes": 1818,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/current-source-files.json",
+      "sha256": "e00c0ce304db64ede4608d2a004429b578f51c3c65509626f88a5a797d66919c"
+    },
+    {
+      "bytes": 10565,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-audit-summary.json",
+      "sha256": "7deefa51ce7af8fb463bdf6e3c887aaf16a9cb6bf42657566f2976680c179bb3"
+    },
+    {
+      "bytes": 71469,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-audit.json",
+      "sha256": "24c4cee3e04dbbe1eeca3527b03ec3cac4a62fc968f872c2cddd2d51f71a4226"
+    },
+    {
+      "bytes": 64589,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/smoke-current.json.gz",
+      "sha256": "ca54f680f2f82a5f70d200b0e4bcb34e674d3808aaa589def77efa90cd42909d"
+    },
+    {
+      "bytes": 1376,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/INTERRUPTION_20261010.json",
+      "sha256": "186e11fc64dae35874520ae4d4df199d01f66ce8a4dc1fcbe8e18dc2d1523e9c"
+    },
+    {
+      "bytes": 10048,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/INTERRUPTION_20261010.json",
+      "sha256": "1c88fff48a13576cecbe8b461e7ee3d6f04f3d9ec4eca5e114b78740f08b274c"
+    },
+    {
+      "bytes": 3438,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/spec.json",
+      "sha256": "4dedd6e2a306511007feacbb054dea129cb92855f4b7ff170ee3f977c65b16e2"
+    },
+    {
+      "bytes": 5591,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/run_one_segment.py",
+      "sha256": "b7b1043a40dfc2b098b3110ebb108a9d4c61df7f65b48358cba8a0dd17b4c4e4"
+    },
+    {
+      "bytes": 5493,
+      "path": "/workspace/scratch/4a60782c7dbc/remeasure-evidence/evidence/2.0.0-remeasure-20261009/run_pair.py",
+      "sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f"
+    },
+    {
+      "bytes": 1461,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/ONE_SEGMENT_LAUNCHER.md",
+      "sha256": "a9e736d8946cf8318d9fd6839305d78895fe744c8fa046228bab8987325fba0c"
+    },
+    {
+      "bytes": 42555,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/original_compare_arms.py",
+      "sha256": "b8d097a60f390da0cc95f5424ff2f8649c7250045fa82ba5e3c7f7acffd3145e"
+    }
+  ],
+  "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+  "registration_script": {
+    "bytes": 9943,
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/register_margin_retry_002.py",
+    "sha256": "53b0bae8980977b3ce0529b832ab6f9f91be56cfaefe0c96912c564abaa46120"
+  },
+  "replay_started": false,
+  "retained_failed_directories": [
+    "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only",
+    "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001"
+  ],
+  "source_sha256": "55f044e1294f52d7c4f06800552e96e22a2af52c3c393f57eed04ec6d47f6f04",
+  "spec_differences": {
+    "failed_retry_001": [
+      {
+        "after": "Predeclared source repair experiment: margin-only; compare with retained full 2.0.0 control 162ee7138952925ffafbc9b68be7c754c0c0a6c3; unchanged v2 producer, economic inputs, schedule and default risk limits. Cold retry margin-only-rerun-002 after two preserved incomplete runs; no checkpoint or account state is imported from either failed run.",
+        "before": "Predeclared source repair experiment: margin-only; compare with retained full 2.0.0 control 162ee7138952925ffafbc9b68be7c754c0c0a6c3; unchanged v2 producer, economic inputs, schedule and default risk limits. Retry 001 after an externally interrupted 788-session run without final receipt; same economics and immutable runtime.",
+        "path": "spec[\"requested_measurement\"]"
+      },
+      {
+        "after": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/current-source-files.json",
+        "before": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/current-source-files.json",
+        "path": "spec[\"source_files_by_arm\"][\"current\"]"
+      }
+    ],
+    "original_margin": [
+      {
+        "after": "Predeclared source repair experiment: margin-only; compare with retained full 2.0.0 control 162ee7138952925ffafbc9b68be7c754c0c0a6c3; unchanged v2 producer, economic inputs, schedule and default risk limits. Cold retry margin-only-rerun-002 after two preserved incomplete runs; no checkpoint or account state is imported from either failed run.",
+        "before": "Predeclared source repair experiment: margin-only; compare with retained full 2.0.0 control 162ee7138952925ffafbc9b68be7c754c0c0a6c3; unchanged v2 producer, economic inputs, schedule and default risk limits.",
+        "path": "spec[\"requested_measurement\"]"
+      },
+      {
+        "after": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/current-source-files.json",
+        "before": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/current-source-files.json",
+        "path": "spec[\"source_files_by_arm\"][\"current\"]"
+      }
+    ]
+  }
+}

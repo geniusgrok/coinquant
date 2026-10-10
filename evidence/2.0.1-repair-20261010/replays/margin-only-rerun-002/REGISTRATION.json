@@ -1,0 +1,45 @@
+{
+  "case": "margin-only",
+  "cold_start": true,
+  "control_receipt": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current-segment-002.json.gz",
+  "control_spec": "/workspace/scratch/4a60782c7dbc/remeasure-evidence/evidence/2.0.0-remeasure-20261009/spec.json",
+  "controller_sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f",
+  "created_at_utc": "2026-10-10T01:21:55.323579+00:00",
+  "fixed_risk": {
+    "capital_limit_usdt": null,
+    "max_stop_loss_fraction": ".10",
+    "stop_slippage_fraction": ".01"
+  },
+  "head": "06206ac0c5383fb009df8bac20601cd9e2d9b004",
+  "original_run": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only",
+  "preserved_incidents": [
+    {
+      "bytes": 1376,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/INTERRUPTION_20261010.json",
+      "sha256": "186e11fc64dae35874520ae4d4df199d01f66ce8a4dc1fcbe8e18dc2d1523e9c"
+    },
+    {
+      "bytes": 10048,
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001/INTERRUPTION_20261010.json",
+      "sha256": "1c88fff48a13576cecbe8b461e7ee3d6f04f3d9ec4eca5e114b78740f08b274c"
+    }
+  ],
+  "prior_registration": {
+    "bytes": 1064,
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only/REGISTRATION.json",
+    "sha256": "1a27b8913631fd1c73d212a34bd1386afdbb1ae9db83c429c314eb8dc1895e09"
+  },
+  "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+  "protocol_sha256": "92bd7cb57e7c60f41b12e877f26c25af6ae0fc265926aaa42cf5963fe04c2f25",
+  "registration_script_sha256": "53b0bae8980977b3ce0529b832ab6f9f91be56cfaefe0c96912c564abaa46120",
+  "retry_of": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-001",
+  "retry_reason": "Retry 001 restore correctly refused a 711-session checkpoint with only 709 durable reports/calls. Both failed directories are preserved; no partial result or reconstructed state is admitted.",
+  "runtime": "/workspace/scratch/4a60782c7dbc/diagnosis/runtimes/margin-only",
+  "smoke_reuse": {
+    "bytes": 3637,
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/margin-only-rerun-002/SMOKE_REUSE.json",
+    "sha256": "4e39c52e7f04446ddcbbe54e6fb26e414f46a95a99c4c00bdf011b298fe07d32"
+  },
+  "source_sha256": "55f044e1294f52d7c4f06800552e96e22a2af52c3c393f57eed04ec6d47f6f04",
+  "spec_sha256": "2dfa95efedbc9d00ed44632f80a7308add7962ea840fc60093ff0b2709416211"
+}
