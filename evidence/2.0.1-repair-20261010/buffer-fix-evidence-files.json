@@ -1,0 +1,47 @@
+{
+  "source_commit": "29cf1fc79fc0afcd02d5ce36d4d1b808253a5662",
+  "parent_commit": "02fe20928cbe5e5ca6cc3263cfab2fe4f05d101b",
+  "status": "targeted_fix_verified_full_v3_measurement_pending",
+  "files": [
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/buffer_gap_probe.py",
+      "bytes": 7396,
+      "sha256": "13bd894d307a3dd96b62c4cdc38f28148286fbf7e4ab26724329fa29e389109d"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/buffer-gap-baseline-probe.json",
+      "bytes": 18667,
+      "sha256": "50eb8c90a11407d8ec4dc48418a2873414eb952e4e45af6e1c88c03d00ab868b"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/buffer-gap-fixed-probe.json",
+      "bytes": 18939,
+      "sha256": "95c630f0f3327eaeb953656070d3d2e5581b97f28c8c626c3564b456c115e449"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/combined_risk_attribution.py",
+      "bytes": 6073,
+      "sha256": "17c88961701d58359e09ee4f386ca9a3d5ae3356dc36127d054f5a7aa55fc992"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/combined-risk-attribution.json",
+      "bytes": 41977,
+      "sha256": "6299a641c0d20896cf2c628fc7d9cc1a8aba7e56dc0fdcc8ba3a7cd63ba67775"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/combined-risk-attribution.md",
+      "bytes": 6832,
+      "sha256": "317d6ebc0662bc9e460ee9c41efaafb6733a8b24e70214b680327b2ccc3edee9"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/buffer-targeted-tests.log",
+      "bytes": 230,
+      "sha256": "b2145f47808cc9a89c74e98f10754253393cdb438f66c203fcee84e7c07afb11"
+    },
+    {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/buffer-targeted-tests.json",
+      "bytes": 894,
+      "sha256": "f733483baf4f2495de2171683837910021391056fc3e4a52836f21a24c528184"
+    }
+  ]
+}

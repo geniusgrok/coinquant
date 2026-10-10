@@ -1,0 +1,181 @@
+﻿2026-10-10T00:51:50.5289140Z Current runner version: '2.337.0'
+2026-10-10T00:51:50.5313590Z ##[group]Runner Image Provisioner
+2026-10-10T00:51:50.5314472Z Hosted Compute Agent
+2026-10-10T00:51:50.5315060Z Version: 20261002.596
+2026-10-10T00:51:50.5315807Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-10T00:51:50.5316780Z Build Date: 2026-10-02T22:28:27Z
+2026-10-10T00:51:50.5317500Z Worker ID: {de33b935-9a6c-45ed-9df3-356178bd24d4}
+2026-10-10T00:51:50.5318295Z Region: westus3
+2026-10-10T00:51:50.5318878Z Cloud: Azure
+2026-10-10T00:51:50.5319496Z ##[endgroup]
+2026-10-10T00:51:50.5320969Z ##[group]Operating System
+2026-10-10T00:51:50.5321594Z Ubuntu
+2026-10-10T00:51:50.5322211Z 24.04.5
+2026-10-10T00:51:50.5322721Z LTS
+2026-10-10T00:51:50.5323333Z ##[endgroup]
+2026-10-10T00:51:50.5323912Z ##[group]Runner Image
+2026-10-10T00:51:50.5324516Z Image: ubuntu-24.04
+2026-10-10T00:51:50.5325187Z Version: 20261004.327.1
+2026-10-10T00:51:50.5326448Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261004.327/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-10T00:51:50.5328374Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261004.327
+2026-10-10T00:51:50.5329399Z ##[endgroup]
+2026-10-10T00:51:50.5330560Z ##[group]GITHUB_TOKEN Permissions
+2026-10-10T00:51:50.5332481Z Contents: read
+2026-10-10T00:51:50.5333212Z Metadata: read
+2026-10-10T00:51:50.5333773Z ##[endgroup]
+2026-10-10T00:51:50.5335852Z Secret source: Actions
+2026-10-10T00:51:50.5337104Z Cache mode: write
+2026-10-10T00:51:50.5337916Z Prepare workflow directory
+2026-10-10T00:51:50.5677148Z Prepare all required actions
+2026-10-10T00:51:50.5725045Z Getting action download info
+2026-10-10T00:51:50.8820921Z Download action repository 'actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+2026-10-10T00:51:50.9768395Z Download action repository 'actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1' (SHA:ece7cb06caefa5fff74198d8649806c4678c61a1)
+2026-10-10T00:51:51.1556813Z Complete job name: check
+2026-10-10T00:51:51.2337091Z ##[group]Run actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+2026-10-10T00:51:51.2338375Z with:
+2026-10-10T00:51:51.2338874Z   ref: 5a28845310f40a860e81a2a4e50fecc3c7587fbe
+2026-10-10T00:51:51.2339493Z   persist-credentials: false
+2026-10-10T00:51:51.2340041Z   repository: geniusgrok/coinquant
+2026-10-10T00:51:51.2343817Z   token: ***
+2026-10-10T00:51:51.2344270Z   ssh-strict: true
+2026-10-10T00:51:51.2344715Z   ssh-user: git
+2026-10-10T00:51:51.2345151Z   clean: true
+2026-10-10T00:51:51.2345666Z   sparse-checkout-cone-mode: true
+2026-10-10T00:51:51.2346218Z   fetch-depth: 1
+2026-10-10T00:51:51.2346875Z   fetch-tags: false
+2026-10-10T00:51:51.2347352Z   show-progress: true
+2026-10-10T00:51:51.2347830Z   lfs: false
+2026-10-10T00:51:51.2348261Z   submodules: false
+2026-10-10T00:51:51.2348720Z   set-safe-directory: true
+2026-10-10T00:51:51.2349241Z   allow-unsafe-pr-checkout: false
+2026-10-10T00:51:51.2350076Z ##[endgroup]
+2026-10-10T00:51:51.3367692Z Syncing repository: geniusgrok/coinquant
+2026-10-10T00:51:51.3370423Z ##[group]Getting Git version info
+2026-10-10T00:51:51.3371598Z Working directory is '/home/runner/work/coinquant/coinquant'
+2026-10-10T00:51:51.3373227Z [command]/usr/bin/git version
+2026-10-10T00:51:51.3447444Z git version 2.55.0
+2026-10-10T00:51:51.3478967Z ##[endgroup]
+2026-10-10T00:51:51.3499216Z Temporarily overriding HOME='/home/runner/work/_temp/a4f2830d-d6d5-4eb5-b9a6-4b19bb284ddf' before making global git config changes
+2026-10-10T00:51:51.3502168Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-10T00:51:51.3504494Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/coinquant/coinquant
+2026-10-10T00:51:51.3564278Z Deleting the contents of '/home/runner/work/coinquant/coinquant'
+2026-10-10T00:51:51.3569894Z ##[group]Initializing the repository
+2026-10-10T00:51:51.3574639Z [command]/usr/bin/git init /home/runner/work/coinquant/coinquant
+2026-10-10T00:51:51.3712143Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-10T00:51:51.3714175Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-10T00:51:51.3715802Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-10T00:51:51.3717275Z hint: call:
+2026-10-10T00:51:51.3717917Z hint:
+2026-10-10T00:51:51.3718718Z hint: 	git config --global init.defaultBranch <name>
+2026-10-10T00:51:51.3719738Z hint:
+2026-10-10T00:51:51.3720679Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-10T00:51:51.3722261Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-10T00:51:51.3723487Z hint:
+2026-10-10T00:51:51.3724158Z hint: 	git branch -m <name>
+2026-10-10T00:51:51.3724945Z hint:
+2026-10-10T00:51:51.3725966Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-10T00:51:51.3728079Z Initialized empty Git repository in /home/runner/work/coinquant/coinquant/.git/
+2026-10-10T00:51:51.3731179Z [command]/usr/bin/git remote add origin https://github.com/geniusgrok/coinquant
+2026-10-10T00:51:51.3782385Z ##[endgroup]
+2026-10-10T00:51:51.3783777Z ##[group]Disabling automatic garbage collection
+2026-10-10T00:51:51.3786179Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-10T00:51:51.3824495Z ##[endgroup]
+2026-10-10T00:51:51.3825725Z ##[group]Setting up auth
+2026-10-10T00:51:51.3834171Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-10T00:51:51.3873311Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-10T00:51:51.4285590Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-10T00:51:51.4322882Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-10T00:51:51.4622347Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-10T00:51:51.4626447Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-10T00:51:51.4863811Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-10T00:51:51.4910837Z ##[endgroup]
+2026-10-10T00:51:51.4913067Z ##[group]Fetching the repository
+2026-10-10T00:51:51.4923498Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 5a28845310f40a860e81a2a4e50fecc3c7587fbe
+2026-10-10T00:51:52.1231630Z From https://github.com/geniusgrok/coinquant
+2026-10-10T00:51:52.1233182Z  * branch            5a28845310f40a860e81a2a4e50fecc3c7587fbe -> FETCH_HEAD
+2026-10-10T00:51:52.1236816Z ##[endgroup]
+2026-10-10T00:51:52.1237661Z ##[group]Determining the checkout info
+2026-10-10T00:51:52.1239407Z ##[endgroup]
+2026-10-10T00:51:52.1245929Z [command]/usr/bin/git sparse-checkout disable
+2026-10-10T00:51:52.1305509Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-10T00:51:52.1335999Z ##[group]Checking out the ref
+2026-10-10T00:51:52.1341579Z [command]/usr/bin/git checkout --progress --force 5a28845310f40a860e81a2a4e50fecc3c7587fbe
+2026-10-10T00:51:52.1458412Z Note: switching to '5a28845310f40a860e81a2a4e50fecc3c7587fbe'.
+2026-10-10T00:51:52.1458931Z 
+2026-10-10T00:51:52.1459266Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-10T00:51:52.1460006Z changes and commit them, and you can discard any commits you make in this
+2026-10-10T00:51:52.1461371Z state without impacting any branches by switching back to a branch.
+2026-10-10T00:51:52.1462113Z 
+2026-10-10T00:51:52.1462622Z If you want to create a new branch to retain commits you create, you may
+2026-10-10T00:51:52.1464203Z do so (now or later) by using -c with the switch command. Example:
+2026-10-10T00:51:52.1465018Z 
+2026-10-10T00:51:52.1465409Z   git switch -c <new-branch-name>
+2026-10-10T00:51:52.1466011Z 
+2026-10-10T00:51:52.1466430Z Or undo this operation with:
+2026-10-10T00:51:52.1467298Z 
+2026-10-10T00:51:52.1467683Z   git switch -
+2026-10-10T00:51:52.1468075Z 
+2026-10-10T00:51:52.1468517Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-10T00:51:52.1469079Z 
+2026-10-10T00:51:52.1469696Z HEAD is now at 5a28845 Merge 230a61daade55d7d80de56f61aae24e660fb3a40 into 162ee7138952925ffafbc9b68be7c754c0c0a6c3
+2026-10-10T00:51:52.1472837Z ##[endgroup]
+2026-10-10T00:51:52.1515859Z [command]/usr/bin/git log -1 --format=%H
+2026-10-10T00:51:52.1543042Z 5a28845310f40a860e81a2a4e50fecc3c7587fbe
+2026-10-10T00:51:52.1552465Z ##[group]Removing auth
+2026-10-10T00:51:52.1556097Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-10T00:51:52.1589985Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-10T00:51:52.1812692Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-10T00:51:52.1841646Z http.https://github.com/.extraheader
+2026-10-10T00:51:52.1850876Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-10T00:51:52.1884910Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-10T00:51:52.2103405Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-10T00:51:52.2140586Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-10T00:51:52.2357524Z ##[endgroup]
+2026-10-10T00:51:52.2638055Z ##[group]Run actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+2026-10-10T00:51:52.2638748Z with:
+2026-10-10T00:51:52.2639163Z   python-version: 3.13
+2026-10-10T00:51:52.2639583Z   check-latest: false
+2026-10-10T00:51:52.2642374Z   token: ***
+2026-10-10T00:51:52.2642787Z   update-environment: true
+2026-10-10T00:51:52.2643229Z   allow-prereleases: false
+2026-10-10T00:51:52.2643659Z   freethreaded: false
+2026-10-10T00:51:52.2644062Z ##[endgroup]
+2026-10-10T00:51:52.4015676Z ##[group]Installed versions
+2026-10-10T00:51:52.4136097Z Successfully set up CPython (3.13.16)
+2026-10-10T00:51:52.4137604Z ##[endgroup]
+2026-10-10T00:51:52.4309639Z ##[group]Run python -m compileall -q coinquant tests
+2026-10-10T00:51:52.4310392Z [36;1mpython -m compileall -q coinquant tests[0m
+2026-10-10T00:51:52.4310967Z [36;1mpython -m unittest discover -s tests[0m
+2026-10-10T00:51:52.4703884Z shell: /usr/bin/bash -e {0}
+2026-10-10T00:51:52.4704505Z env:
+2026-10-10T00:51:52.4705132Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.16/x64
+2026-10-10T00:51:52.4705989Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.16/x64/lib/pkgconfig
+2026-10-10T00:51:52.4707039Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.16/x64
+2026-10-10T00:51:52.4707822Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.16/x64
+2026-10-10T00:51:52.4708598Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.16/x64
+2026-10-10T00:51:52.4709381Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.16/x64/lib
+2026-10-10T00:51:52.4710076Z ##[endgroup]
+2026-10-10T00:52:01.7571550Z ....................................................................................................................................................................../home/runner/work/coinquant/coinquant/coinquant/state.py:221: ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f85d07997b0>
+2026-10-10T00:52:01.7573326Z   for a, b, c, d in self.db.execute(
+2026-10-10T00:52:01.7573927Z ResourceWarning: Enable tracemalloc to get the object allocation traceback
+2026-10-10T00:52:10.6588865Z ......................................................................................................................................................................................blocked: write trial requires --trial and --authorize-uid
+2026-10-10T00:52:11.6890779Z .read_only: 
+2026-10-10T00:52:22.9039234Z .........................................................................................................
+2026-10-10T00:52:22.9040105Z ----------------------------------------------------------------------
+2026-10-10T00:52:22.9040690Z Ran 454 tests in 28.684s
+2026-10-10T00:52:22.9040924Z 
+2026-10-10T00:52:22.9041022Z OK
+2026-10-10T00:52:23.0309104Z Post job cleanup.
+2026-10-10T00:52:23.1809709Z Post job cleanup.
+2026-10-10T00:52:23.2709603Z [command]/usr/bin/git version
+2026-10-10T00:52:23.2755957Z git version 2.55.0
+2026-10-10T00:52:23.2801600Z Temporarily overriding HOME='/home/runner/work/_temp/4a483fcb-c100-4111-8e1b-ad68be3d1810' before making global git config changes
+2026-10-10T00:52:23.2802888Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-10T00:52:23.2807918Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/coinquant/coinquant
+2026-10-10T00:52:23.2850657Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-10T00:52:23.2885906Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-10T00:52:23.3145679Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-10T00:52:23.3185954Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-10T00:52:23.3462604Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-10T00:52:23.3512759Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-10T00:52:23.4038150Z Cleaning up orphan processes

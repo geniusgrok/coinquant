@@ -1,0 +1,16 @@
+{
+  "head": "230a61daade55d7d80de56f61aae24e660fb3a40",
+  "amendment_sha256": "040729b29351abcf2a87244ba66f385eefbb2db33c5601cd80a31198d0bba9f4",
+  "scripts": {
+    "repair_results_v2.py": {
+      "bytes": 40105,
+      "sha256": "2a68756edaa743ad83f56f36659e9d447dbd1a31f8d9c6724133785e966f7b6d"
+    },
+    "plot_repair_results_v2.py": {
+      "bytes": 21698,
+      "sha256": "7678b0ab8def06867de4c2281b184c0ad95b4c56e21aa70d59ee3a2213d3a3e0"
+    }
+  },
+  "syntax": "passed",
+  "public_source_verification_sha256": "2ac4c9a306c55ec32934890c182c3f64c63783d1c21f851f073914c7e3d058a1"
+}

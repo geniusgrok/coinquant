@@ -1,0 +1,26 @@
+{
+  "case": "combined-v3",
+  "head": "230a61daade55d7d80de56f61aae24e660fb3a40",
+  "runtime": "/workspace/scratch/4a60782c7dbc/diagnosis/runtimes/combined-v3",
+  "source_sha256": "7ebb6013f4472339eb63bbde2a583db762c9965d4694944caf55f1316340f1ba",
+  "spec_sha256": "338b8f98cef56d9bb795eeebad7933f4f39f1bc3204401337f1cf07adcbeff70",
+  "protocol_sha256": "92bd7cb57e7c60f41b12e877f26c25af6ae0fc265926aaa42cf5963fe04c2f25",
+  "book_guard_amendment_sha256": "82f77795655ca333f731b11aa83dffa769d1f25d9fa2b1f576baaae26978d8d7",
+  "frozen_buffer_amendment_sha256": "040729b29351abcf2a87244ba66f385eefbb2db33c5601cd80a31198d0bba9f4",
+  "incremental_base": {
+    "case": "combined-v2",
+    "head": "3561728dab351d269b19b107fb4fbabb2ac1f674",
+    "receipt_sha256": "6b1fe9dd901e933928e4148df614ff67ad94a3910fa502dfe41a17047846fc0b",
+    "spec_sha256": "d0937a2415e464cdeae3ec0749affc11f2345269edff5e355c6edae8eef9060b"
+  },
+  "producer_sha256": "9b5ee3aea3a4f977b0b20c7b25e4a81ecdc5b7b188d9f26a3e119e03101f5413",
+  "controller_sha256": "04c1d75e44596eee9c600bb6e1ab6a33e35e41df82bccae6a0bddb51f5cda40f",
+  "registration_script_sha256": "a72b54928dc61e8c76cd891e264f8d29072991b1342f26ba954cc0e7af0e5e9a",
+  "control_receipt": "/workspace/scratch/4a60782c7dbc/coinquant-remeasure-2.0.0-v2/full-current-segment-002.json.gz",
+  "control_spec": "/workspace/scratch/4a60782c7dbc/remeasure-evidence/evidence/2.0.0-remeasure-20261009/spec.json",
+  "fixed_risk": {
+    "capital_limit_usdt": null,
+    "max_stop_loss_fraction": ".10",
+    "stop_slippage_fraction": ".01"
+  }
+}

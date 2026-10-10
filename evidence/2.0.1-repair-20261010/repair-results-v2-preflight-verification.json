@@ -1,0 +1,72 @@
+{
+  "version": "coinquant-repair-results-v2-preflight-v1",
+  "passed": true,
+  "scope": "Syntax, frozen-function preservation, and observed placeholder rejection only; no full result claim, account command, replay, or business test execution.",
+  "identities": {
+    "repair_results.py": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/repair_results.py",
+      "bytes": 33829,
+      "sha256": "7d481e7e615f446ecc7adbfbdeb5cf9a6d3c5435dbffaf1652917002d5b2363f"
+    },
+    "plot_repair_results.py": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/plot_repair_results.py",
+      "bytes": 17963,
+      "sha256": "ca788ef638e0168d410e5f9a59b1d18fe032025611df1925d09e0dc9eb6dfeee"
+    },
+    "repair_results_v2.py": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/repair_results_v2.py",
+      "bytes": 40101,
+      "sha256": "7aa2183ea08900268c36925e16751fc044fd88a7f164c5710d42d0882526ef06"
+    },
+    "plot_repair_results_v2.py": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/plot_repair_results_v2.py",
+      "bytes": 21694,
+      "sha256": "a449337f6026c1b2216b485704c67d02cdda30db754173a731fd9c2c75983530"
+    },
+    "FROZEN_BUFFER_AMENDMENT_V3.md": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/FROZEN_BUFFER_AMENDMENT_V3.md",
+      "bytes": 3062,
+      "sha256": "040729b29351abcf2a87244ba66f385eefbb2db33c5601cd80a31198d0bba9f4"
+    },
+    "register_case_v3.py": {
+      "path": "/workspace/scratch/4a60782c7dbc/diagnosis/register_case_v3.py",
+      "bytes": 4062,
+      "sha256": "a72b54928dc61e8c76cd891e264f8d29072991b1342f26ba954cc0e7af0e5e9a"
+    }
+  },
+  "unchanged_function_ast": [
+    "passed_audit",
+    "spec_binding",
+    "holding_statistics",
+    "paired_binding",
+    "delta",
+    "daily_series"
+  ],
+  "v3_placeholder": "REPLACE_WITH_FROZEN_COMBINED_V3_HEAD",
+  "observed_cli_rejections": [
+    {
+      "script": "repair_results_v2.py",
+      "invocation": "All four --case names supplied with nonexistent candidate paths, using default FINAL_RESULTS outputs",
+      "exit_code": 1,
+      "stderr": "repair_results_v2 rejected input: runtime head is not frozen; replace the explicit placeholder for combined-v3"
+    },
+    {
+      "script": "plot_repair_results_v2.py",
+      "invocation": "Default FINAL_RESULTS.json and figures-v3",
+      "exit_code": 2,
+      "stderr": "No verified repair charts: ValueError: runtime head is not frozen; replace the explicit placeholder for combined-v3"
+    }
+  ],
+  "audited_control_and_combined_v2_binding_readback": {
+    "normalized_economic_input_sha256": "e10d27940a697e5d8b8054e50a3e4e9280cac937b4e6355a725ba8f3333afe18",
+    "strategy_sha256": "8bb9778453a26af0a119d709db6305807d8a947db2c04db00930c17ab562e06e",
+    "complete_795": true
+  },
+  "final_artifacts_written": false,
+  "remaining_validation": [
+    "Root must replace both v3 head placeholders with the publicly frozen measured head and retain new script identities.",
+    "Supply all four registered full795 repair receipts and their independent audits against exact 2.0.0, then execute repair_results_v2.py.",
+    "Check v3 incremental_base and frozen_buffer_amendment bindings; verify original 2x2 and v3-minus-v2 delta are distinct.",
+    "Execute plot_repair_results_v2.py against FINAL_RESULTS.json and inspect both five-curve SVG/PNG charts for labels, legend spacing and highlighted v3 drawdown."
+  ]
+}

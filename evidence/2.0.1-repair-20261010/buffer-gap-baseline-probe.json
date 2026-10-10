@@ -1,0 +1,605 @@
+{
+  "version": 1,
+  "scope": "two completed combined-v2 campaigns; pure Decimal probe",
+  "attribution": {
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/combined-trade-attribution.json",
+    "bytes": 477277,
+    "sha256": "58e8e24a5ae9f22bb5609722aa8f533a3b5c6b8d7446ed8f2bdc07dbd4e8e4fd"
+  },
+  "receipt": {
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-current-segment-003.json.gz",
+    "bytes": 268827,
+    "sha256": "6b1fe9dd901e933928e4148df614ff67ad94a3910fa502dfe41a17047846fc0b"
+  },
+  "native_preview_source": {
+    "path": "/workspace/scratch/4a60782c7dbc/diagnosis/runtimes/combined-v2/coinquant/native_preview.py",
+    "sha256": "372555093dbd6b6aa960023b79be3ebd9e503c49d3c44dfc15f4c913fb6684fe"
+  },
+  "patched_function_exercised": false,
+  "cases": [
+    {
+      "entry_day": "2025-02-09",
+      "campaign": -1739120402800,
+      "prior_observation": {
+        "sequence": 22611,
+        "source": {
+          "kind": "archived_jsonl",
+          "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-current/state/observations-archive.jsonl",
+          "line_number": 22611
+        },
+        "actual": {
+          "quantity_btc": "0.025",
+          "entry": "96486.3",
+          "wallet_usdt": "9689.510269057764248838317905",
+          "equity_usdt": "9687.230268928014248838317905",
+          "isolated_wallet_usdt": "386.60501484",
+          "mark_price": "96395.09999481",
+          "mark_time": 1739120478982,
+          "observed_at_ms": 1739120479000,
+          "last_fill_id": 138,
+          "native_liquidation_price": "81490.6707632889112396278602",
+          "protective_algos": [
+            {
+              "algo_id": 418,
+              "trigger": "91130.30",
+              "type": "STOP_MARKET"
+            },
+            {
+              "algo_id": 419,
+              "trigger": "297545.30",
+              "type": "TAKE_PROFIT_MARKET"
+            }
+          ],
+          "possible_entry_remainders": 0
+        }
+      },
+      "closing_observation": {
+        "sequence": 22612,
+        "source": {
+          "kind": "archived_jsonl",
+          "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-current/state/observations-archive.jsonl",
+          "line_number": 22612
+        },
+        "actions": [
+          {
+            "at_ms": 1739120497400,
+            "id": null,
+            "method": "POST",
+            "path": "/fapi/v1/positionMargin"
+          },
+          {
+            "at_ms": 1739120501000,
+            "id": "cq-85bff4b8a40be44e745f5defec1132",
+            "method": "POST",
+            "path": "/fapi/v1/order"
+          },
+          {
+            "at_ms": 1739120512600,
+            "id": "cq-6246948db5c284f2bb1f0078808be1",
+            "method": "POST",
+            "path": "/fapi/v1/order",
+            "position_before_btc": "0.045"
+          },
+          {
+            "at_ms": 1739120518000,
+            "id": "cq-6f4b84905d8067b1d46c6c083832dc",
+            "method": "DELETE",
+            "path": "/fapi/v1/algoOrder"
+          },
+          {
+            "at_ms": 1739120523600,
+            "id": "cq-764360b8e7ab135b2e45f16ab77355",
+            "method": "DELETE",
+            "path": "/fapi/v1/algoOrder"
+          }
+        ],
+        "model_preview": {
+          "action": "exit",
+          "opportunity": {
+            "anchor": null,
+            "direction": 1,
+            "expires": null,
+            "extended": false,
+            "identity": -1739120402800,
+            "peak": null,
+            "risk": null,
+            "stop": "91130.3",
+            "take": "297545.2833931693714177435555"
+          },
+          "position_campaign": -1739120402800,
+          "consumed_campaign": -1739120402800,
+          "entry_constraint": "target",
+          "quantity_btc": "0.025",
+          "ownership": {
+            "campaign": -1739120402800,
+            "campaign_fee_usdt": "1.809118125",
+            "campaign_realized_pnl_usdt": "0",
+            "entry_remainder": 0,
+            "fill_count": 2,
+            "last_fill_id": 138,
+            "protection_confirmed": true,
+            "protection_slippage": [],
+            "protective_exit_started": false,
+            "quantity": "0.025",
+            "status": "reconciled"
+          }
+        }
+      },
+      "actual_orders": [
+        {
+          "symbol": "BTCUSDT",
+          "orderId": 415,
+          "clientOrderId": "cq-abb986aebedb903531fcc6f0bbd339",
+          "side": "BUY",
+          "positionSide": "BOTH",
+          "type": "LIMIT",
+          "origQty": "0.045",
+          "executedQty": "0.025",
+          "price": "96486.30",
+          "reduceOnly": false,
+          "status": "EXPIRED"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "orderId": 420,
+          "clientOrderId": "cq-85bff4b8a40be44e745f5defec1132",
+          "side": "BUY",
+          "positionSide": "BOTH",
+          "type": "LIMIT",
+          "origQty": "0.02",
+          "executedQty": "0.02",
+          "price": "96471.00",
+          "reduceOnly": false,
+          "status": "FILLED"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "orderId": 421,
+          "clientOrderId": "cq-6246948db5c284f2bb1f0078808be1",
+          "side": "SELL",
+          "positionSide": "BOTH",
+          "type": "MARKET",
+          "origQty": "0.045",
+          "executedQty": "0.045",
+          "price": "96402.5",
+          "reduceOnly": true,
+          "status": "FILLED"
+        }
+      ],
+      "actual_fills": [
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "BUY",
+          "orderId": 415,
+          "id": 137,
+          "time": 1739120421612,
+          "qty": "0.015",
+          "price": "96486.3",
+          "commissionAsset": "USDT",
+          "commission": "1.085470875",
+          "realizedPnl": "0"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "BUY",
+          "orderId": 415,
+          "id": 138,
+          "time": 1739120421835,
+          "qty": "0.01",
+          "price": "96486.3",
+          "commissionAsset": "USDT",
+          "commission": "0.72364725",
+          "realizedPnl": "0"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "BUY",
+          "orderId": 420,
+          "id": 139,
+          "time": 1739120502058,
+          "qty": "0.02",
+          "price": "96471",
+          "commissionAsset": "USDT",
+          "commission": "1.447065",
+          "realizedPnl": "0"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "SELL",
+          "orderId": 421,
+          "id": 140,
+          "time": 1739120513600,
+          "qty": "0.045",
+          "price": "96402.5",
+          "commissionAsset": "USDT",
+          "commission": "3.253584375",
+          "realizedPnl": "-3.465"
+        }
+      ],
+      "sent_indexes": [
+        752,
+        753,
+        754
+      ],
+      "sent": [
+        [
+          "POST",
+          "/fapi/v1/positionMargin",
+          {
+            "symbol": "BTCUSDT",
+            "positionSide": "BOTH",
+            "amount": "212.44396078",
+            "type": 1
+          }
+        ],
+        [
+          "POST",
+          "/fapi/v1/order",
+          {
+            "symbol": "BTCUSDT",
+            "positionSide": "BOTH",
+            "side": "BUY",
+            "type": "LIMIT",
+            "timeInForce": "IOC",
+            "quantity": "0.020",
+            "price": "96471.00",
+            "newClientOrderId": "cq-85bff4b8a40be44e745f5defec1132",
+            "newOrderRespType": "RESULT"
+          }
+        ],
+        [
+          "POST",
+          "/fapi/v1/order",
+          {
+            "symbol": "BTCUSDT",
+            "positionSide": "BOTH",
+            "side": "SELL",
+            "type": "MARKET",
+            "quantity": "0.045",
+            "reduceOnly": "true",
+            "newClientOrderId": "cq-6246948db5c284f2bb1f0078808be1"
+          }
+        ]
+      ],
+      "frozen_gap_reconstructed": "9639.6292367110887603721398",
+      "post_topup_margin_reconstructed": "695.51997562",
+      "post_topup_gap_reconstructed": "9638.21999821194088229542089",
+      "gap_shrink": "1.40923849914787807671891",
+      "inferred_fixture_mark": "96382.1999821194088229542089",
+      "fixture_mark_is_native_observation": false,
+      "baseline_plan": {
+        "requested": "0.045",
+        "quantity": "0.020",
+        "margin": "695.519975620000000000000000",
+        "reason": "target"
+      },
+      "minimum_extra_margin": "0.063051092000000000000000",
+      "extra_margin_rounded_up": "0.06305110",
+      "patched_plan": null,
+      "patched_transfer_rounded_up": "212.50701188",
+      "patched_post_topup_gap": "9639.62923688989467214259771",
+      "patched_post_topup_margin": "695.58302672",
+      "modeled_stop_equity": "9403.234164956514248838317905",
+      "modeled_stop_margin_cap": "2350.80854123",
+      "same_quantity_fits_frozen_gap_and_existing_cap": true
+    },
+    {
+      "entry_day": "2026-08-20",
+      "campaign": 1787155200000,
+      "prior_observation": {
+        "sequence": 29946,
+        "source": {
+          "kind": "sqlite_read_only",
+          "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-current/state/intents.sqlite",
+          "table": "observations"
+        },
+        "actual": {
+          "quantity_btc": "0.133",
+          "entry": "71979.4",
+          "wallet_usdt": "9266.867684634827493494317904",
+          "equity_usdt": "9256.690380458837493494317904",
+          "isolated_wallet_usdt": "1730.42376114",
+          "mark_price": "71902.87891597",
+          "mark_time": 1787227266525,
+          "observed_at_ms": 1787227266600,
+          "last_fill_id": 172,
+          "native_liquidation_price": "59309.72595325376554284882435",
+          "protective_algos": [
+            {
+              "algo_id": 494,
+              "trigger": "66501.30",
+              "type": "STOP_MARKET"
+            },
+            {
+              "algo_id": 495,
+              "trigger": "124752.10",
+              "type": "TAKE_PROFIT_MARKET"
+            }
+          ],
+          "possible_entry_remainders": 0
+        }
+      },
+      "closing_observation": {
+        "sequence": 29947,
+        "source": {
+          "kind": "sqlite_read_only",
+          "path": "/workspace/scratch/4a60782c7dbc/diagnosis/replays/combined-v2/full-current/state/intents.sqlite",
+          "table": "observations"
+        },
+        "actions": [
+          {
+            "at_ms": 1787227285000,
+            "id": null,
+            "method": "POST",
+            "path": "/fapi/v1/positionMargin"
+          },
+          {
+            "at_ms": 1787227288600,
+            "id": "cq-dbd2b699781bf8240358489d2af6c2",
+            "method": "POST",
+            "path": "/fapi/v1/order"
+          },
+          {
+            "at_ms": 1787227300200,
+            "id": "cq-f3077d7398c5af346526519a26978e",
+            "method": "POST",
+            "path": "/fapi/v1/order",
+            "position_before_btc": "0.148"
+          },
+          {
+            "at_ms": 1787227305600,
+            "id": "cq-f187dc117333ce5412ad2853f1f074",
+            "method": "DELETE",
+            "path": "/fapi/v1/algoOrder"
+          },
+          {
+            "at_ms": 1787227311200,
+            "id": "cq-0416fa11ecd3734055480152d06f96",
+            "method": "DELETE",
+            "path": "/fapi/v1/algoOrder"
+          }
+        ],
+        "model_preview": {
+          "action": "exit",
+          "opportunity": {
+            "anchor": "68523.7",
+            "direction": 1,
+            "expires": 1787760000000,
+            "extended": false,
+            "identity": 1787155200000,
+            "peak": "72487.5",
+            "risk": "2022.35",
+            "stop": "66501.35",
+            "take": "124752.0445016014971761752518"
+          },
+          "position_campaign": 1787155200000,
+          "consumed_campaign": 1787155200000,
+          "entry_constraint": "target",
+          "quantity_btc": "0.133",
+          "ownership": {
+            "campaign": 1787155200000,
+            "campaign_fee_usdt": "7.17994515",
+            "campaign_realized_pnl_usdt": "0",
+            "entry_remainder": 0,
+            "fill_count": 5,
+            "last_fill_id": 172,
+            "protection_confirmed": true,
+            "protection_slippage": [],
+            "protective_exit_started": false,
+            "quantity": "0.133",
+            "status": "reconciled"
+          }
+        }
+      },
+      "actual_orders": [
+        {
+          "symbol": "BTCUSDT",
+          "orderId": 491,
+          "clientOrderId": "cq-3f307d1abb146c57df78c475596d26",
+          "side": "BUY",
+          "positionSide": "BOTH",
+          "type": "LIMIT",
+          "origQty": "0.148",
+          "executedQty": "0.133",
+          "price": "71979.40",
+          "reduceOnly": false,
+          "status": "EXPIRED"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "orderId": 496,
+          "clientOrderId": "cq-dbd2b699781bf8240358489d2af6c2",
+          "side": "BUY",
+          "positionSide": "BOTH",
+          "type": "LIMIT",
+          "origQty": "0.015",
+          "executedQty": "0.015",
+          "price": "71928.40",
+          "reduceOnly": false,
+          "status": "FILLED"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "orderId": 497,
+          "clientOrderId": "cq-f3077d7398c5af346526519a26978e",
+          "side": "SELL",
+          "positionSide": "BOTH",
+          "type": "MARKET",
+          "origQty": "0.148",
+          "executedQty": "0.148",
+          "price": "71890.8",
+          "reduceOnly": true,
+          "status": "FILLED"
+        }
+      ],
+      "actual_fills": [
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "BUY",
+          "orderId": 491,
+          "id": 168,
+          "time": 1787227209281,
+          "qty": "0.002",
+          "price": "71979.4",
+          "commissionAsset": "USDT",
+          "commission": "0.1079691",
+          "realizedPnl": "0"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "BUY",
+          "orderId": 491,
+          "id": 169,
+          "time": 1787227209409,
+          "qty": "0.015",
+          "price": "71979.4",
+          "commissionAsset": "USDT",
+          "commission": "0.80976825",
+          "realizedPnl": "0"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "BUY",
+          "orderId": 491,
+          "id": 170,
+          "time": 1787227209782,
+          "qty": "0.034",
+          "price": "71979.4",
+          "commissionAsset": "USDT",
+          "commission": "1.8354747",
+          "realizedPnl": "0"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "BUY",
+          "orderId": 491,
+          "id": 171,
+          "time": 1787227209987,
+          "qty": "0.022",
+          "price": "71979.4",
+          "commissionAsset": "USDT",
+          "commission": "1.1876601",
+          "realizedPnl": "0"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "BUY",
+          "orderId": 491,
+          "id": 172,
+          "time": 1787227210127,
+          "qty": "0.06",
+          "price": "71979.4",
+          "commissionAsset": "USDT",
+          "commission": "3.239073",
+          "realizedPnl": "0"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "BUY",
+          "orderId": 496,
+          "id": 173,
+          "time": 1787227289600,
+          "qty": "0.015",
+          "price": "71928.4",
+          "commissionAsset": "USDT",
+          "commission": "0.8091945",
+          "realizedPnl": "0"
+        },
+        {
+          "symbol": "BTCUSDT",
+          "positionSide": "BOTH",
+          "side": "SELL",
+          "orderId": 497,
+          "id": 174,
+          "time": 1787227301200,
+          "qty": "0.148",
+          "price": "71890.8",
+          "commissionAsset": "USDT",
+          "commission": "7.9798788",
+          "realizedPnl": "-12.34779999999999999999999984"
+        }
+      ],
+      "sent_indexes": [
+        890,
+        891,
+        892
+      ],
+      "sent": [
+        [
+          "POST",
+          "/fapi/v1/positionMargin",
+          {
+            "symbol": "BTCUSDT",
+            "positionSide": "BOTH",
+            "amount": "139.74490436",
+            "type": 1
+          }
+        ],
+        [
+          "POST",
+          "/fapi/v1/order",
+          {
+            "symbol": "BTCUSDT",
+            "positionSide": "BOTH",
+            "side": "BUY",
+            "type": "LIMIT",
+            "timeInForce": "IOC",
+            "quantity": "0.015",
+            "price": "71928.40",
+            "newClientOrderId": "cq-dbd2b699781bf8240358489d2af6c2",
+            "newOrderRespType": "RESULT"
+          }
+        ],
+        [
+          "POST",
+          "/fapi/v1/order",
+          {
+            "symbol": "BTCUSDT",
+            "positionSide": "BOTH",
+            "side": "SELL",
+            "type": "MARKET",
+            "quantity": "0.148",
+            "reduceOnly": "true",
+            "newClientOrderId": "cq-f3077d7398c5af346526519a26978e"
+          }
+        ]
+      ],
+      "frozen_gap_reconstructed": "7191.57404674623445715117565",
+      "post_topup_margin_reconstructed": "1924.11496550",
+      "post_topup_gap_reconstructed": "7186.78726460934155176046049",
+      "gap_shrink": "4.78678213689290539071516",
+      "inferred_fixture_mark": "71867.8726460934155176046049",
+      "fixture_mark_is_native_observation": false,
+      "baseline_plan": {
+        "requested": "0.148",
+        "quantity": "0.015",
+        "margin": "1924.114965500000000000000001",
+        "reason": "target"
+      },
+      "minimum_extra_margin": "0.704370204661654135338346",
+      "extra_margin_rounded_up": "0.70437021",
+      "patched_plan": null,
+      "patched_transfer_rounded_up": "140.44927457",
+      "patched_post_topup_gap": "7191.57404678251296305105709",
+      "patched_post_topup_margin": "1924.81933571",
+      "modeled_stop_equity": "8350.187305391827493494317904",
+      "modeled_stop_margin_cap": "2087.54682634",
+      "same_quantity_fits_frozen_gap_and_existing_cap": true
+    }
+  ],
+  "limits": [
+    "Inferred fixture marks are not native intermediate observations.",
+    "The exact Blocked reason inside recovery was not persisted and is not claimed as observed.",
+    "This verifies the buffer/funding invariant, not a new full-window result or native acceptance."
+  ]
+}
