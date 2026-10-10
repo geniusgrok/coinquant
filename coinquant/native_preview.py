@@ -388,14 +388,14 @@ def limit_matches(reader, direction, limit_price, tick, *, quote_observation=Non
             or any(a[0]<=b[0] for a,b in zip(bids,bids[1:]))):
         raise Unknown('invalid order book ordering')
     tick=number(tick,positive=True)
+    limit=number(limit_price,positive=True)
+    if floor_step(limit,tick)!=limit:return False
     raw=(asks[0][0]*D('1.001') if direction>0 else bids[0][0]*D('.999'))
     price=(floor_step(raw,tick) if direction>0 else (raw/tick).to_integral_value(rounding=ROUND_CEILING)*tick)
+    # A moved book can still fill the funded limit. Reject only when that
+    # limit is outside the fresh allowance. Do not reprice, and do not count
+    # depth beyond the original limit.
+    if (limit>price if direction>0 else limit<price):return False
     depth=sum((q for p,q in (asks if direction>0 else bids)
-               if (p<=price if direction>0 else p>=price)),D(0))
-    if price!=number(limit_price,positive=True):return False
-    if quote_observation is not None and (
-            bids[0][0]!=number(quote_observation['best_bid'],positive=True)
-            or asks[0][0]!=number(quote_observation['best_ask'],positive=True)
-            or depth!=number(quote_observation['visible_limit_depth_btc'],positive=True)):
-        return False
+               if (p<=limit if direction>0 else p>=limit)),D(0))
     return quantity is None or number(quantity,positive=True)<=depth*BOOK_PARTICIPATION

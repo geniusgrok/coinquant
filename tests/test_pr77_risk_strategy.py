@@ -123,9 +123,13 @@ class TrialSizingTests(TestCase):
         self.assertTrue(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
         values['/fapi/v1/depth']['asks'] = [['100', '10']]
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
-        values['/fapi/v1/depth']['asks'] = [['100.01', '1000']]
+        # A one-tick ask move that still leaves the funded limit inside the fresh
+        # 0.1% allowance is executable. A lower ask that puts the limit outside is not.
+        values['/fapi/v1/depth']['asks'] = [['100.1', '1000']]
+        self.assertTrue(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
+        values['/fapi/v1/depth'].update(bids=[['99.7', '1000']], asks=[['99.9', '1000']])
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1', **args))
-        values['/fapi/v1/depth']['asks'] = [['100', '1000']]
+        values['/fapi/v1/depth'].update(bids=[['99.9', '1000']], asks=[['100', '1000']])
         self.assertFalse(limit_matches(reader, 1, plan['entry_estimate'], '.1',
                                        quote_observation=plan['quote_observation'], quantity='251'))
 
